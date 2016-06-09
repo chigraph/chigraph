@@ -12,3 +12,8 @@ Because it is optimized and compiled by LLVM, the runtime os chigraphs is extrem
 
 ## Easy bindings
 Each node is just a fancy function call, so bindings for C/C++ libraries should be a breeze.
+
+## Implementation
+* Rendering using skia
+* All backends/base nodes using C++
+* Compilation using LLVM
