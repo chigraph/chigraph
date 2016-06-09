@@ -1,0 +1,11 @@
+PROJECT_NAME           = "chigraph"
+PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
+STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@
+INPUT                  = @PROJECT_SOURCE_DIR@/include \
+                         @PROJECT_SOURCE_DIR@/src
+FILE_PATTERNS          = *.hpp \
+                         *.cpp
+RECURSIVE              = YES
+OUTPUT_DIRECTORY       = doc
+JAVADOC_AUTOBRIEF      = YES
+PREDEFINED             = DOXYGEN_SHOULD_SKIP_THIS
