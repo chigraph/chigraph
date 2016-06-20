@@ -1,0 +1,25 @@
+{
+  "required_modules": [
+    "io"
+  ],
+  "nodes": [
+    {
+      "type": "lang:main",
+      "location": [0, 0]
+    },
+    {
+      "type": "io:print",
+      "location": [10, 0]
+    }
+  ],
+  "connections": [
+    {
+      "input": "0.outexec",
+      "output": "1.exec"
+    },
+    {
+      "input": "Hello",
+      "output": "1.string"
+    }
+  ]
+}

@@ -8,17 +8,7 @@ option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 # Use our extra modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-
-find_package(Cairo REQUIRED)
-find_package(LLVM REQUIRED)
-
-set(CHIGRAPH_PRIVATE_FILES
-	
-)
-
-set(CHIGRAPH_PUBLIC_FILES
-	
-)
+add_subdirectory(chig)
 
 # Unit tests...
 if(CG_BUILD_TESTS)
