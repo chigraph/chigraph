@@ -5,10 +5,8 @@ project(chigraph)
 
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 
-# Use our extra modules
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
-
 add_subdirectory(chig)
+add_subdirectory(chigc)
 
 # Unit tests...
 if(CG_BUILD_TESTS)

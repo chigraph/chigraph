@@ -1,25 +1,37 @@
 {
-  "required_modules": [
-    "io"
-  ],
-  "nodes": [
+  "module": {
+    "name": "main",
+    "dependencies": [
+      "io"
+    ]
+  },
+  "graphs": [
     {
-      "type": "lang:main",
-      "location": [0, 0]
-    },
-    {
-      "type": "io:print",
-      "location": [10, 0]
-    }
-  ],
-  "connections": [
-    {
-      "input": "0.outexec",
-      "output": "1.exec"
-    },
-    {
-      "input": "Hello",
-      "output": "1.string"
+      "type": "function",
+      "name": "main",
+      "exported": true,
+      "inputs": {},
+      "outputs": {},
+      "nodes": [
+        {
+          "type": "lang:entry",
+          "location": [0, 0]
+        },
+        {
+          "type": "io:print",
+          "location": [10, 0]
+        }
+      ],
+      "connections": [
+        {
+          "input": "0.outexec",
+          "output": "1.exec"
+        },
+        {
+          "input": "Hello",
+          "output": "1.string"
+        }
+      ]
     }
   ]
 }
