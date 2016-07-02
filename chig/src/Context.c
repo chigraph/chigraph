@@ -21,8 +21,7 @@ void ChigDestroyContext(ChigContext* context) {
 
 	// destroy the modules
 	for(size_t i = 0; i < context->numModules; ++i) {
-		LLVMDisposeModule(context->modules[i].module);
-		free(context->modules[i].nodes);
+		ChigDestroyModule(context->modules + i);
 	}
 
 	free(context);
@@ -43,17 +42,6 @@ ChigModule* ChigGetModuleByName(ChigContext* context, const char* moduleName) {
 			return &context->modules[i];
 		}
 	}
-}
-
-ChigNodeType ChigGetNodeType(ChigContext* context, const char* module, const char* name) {
-	// if it is from lang
-	int is_lang = strcmp(module, "lang");
-
-	// get how many pointers
-	unsigned int num_pointers = 0;
-	while(name[strlen(name) - 1 - num_pointers] == '*') ++num_pointers;
-
-	// find the ChigModule that holds it
 }
 
 ChigModule* ChigParseFromJSON(json_object* inJson) {

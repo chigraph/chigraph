@@ -24,14 +24,14 @@ void ChigDestroyContext(ChigContext* context);
 
 // path should be a path to a .bc file
 ChigModule* ChigLoadModule(ChigContext* context, const char* path);
+// parse from JSON
+ChigModule* ChigParseFromJSON(json_object* inJson);
+
+
 void ChigUnloadModule(ChigContext* context, ChigModule* toUnload);
 
 ChigModule* ChigGetModuleByName(ChigContext* context, const char* moduleName);
 
-ChigNodeType ChigGetNodeType(ChigContext* context, const char* module, const char* name);
 
-
-// parse from JSON
-ChigModule* ChigParseFromJSON(json_object* inJson);
 
 #endif // CHIG_CONTEXT_H

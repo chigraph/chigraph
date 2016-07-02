@@ -7,15 +7,20 @@
 
 #include <llvm-c/Core.h>
 
-typedef struct {
+typedef struct ChigModule {
 	LLVMModuleRef module;
 
-	ChigNodeTypeImported* nodes;
+	ChigNodeType* nodes;
 	size_t numNodes;
 
 	const char* name;
 
 } ChigModule;
+
+ChigModule* ChigCreateModuleFromLLVMModule(LLVMModuleRef module, const char* name);
+void ChigDestroyModule(ChigModule* module);
+
+ChigNodeType* ChigGetNodeTypeByName(ChigModule* module, const char* name);
 
 
 

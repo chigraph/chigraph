@@ -10,6 +10,7 @@ set(CHIG_PUBLIC_FILES
 
 set(CHIG_PRIVATE_FILES
 	src/Context.c
+	src/Module.c
 )
 
 # llvm-c seems to need these
