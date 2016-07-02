@@ -2,15 +2,19 @@ cmake_minimum_required(VERSION 3.0)
 
 project(chigraph)
 
+# add the module dirs
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 
+find_package(JsonC REQUIRED)
+
 add_subdirectory(chig)
-add_subdirectory(chigc)
+#add_subdirectory(chigc)
 
 # Unit tests...
 if(CG_BUILD_TESTS)
-	add_subdirectory(test)
+#	add_subdirectory(test)
 endif()
 
 # Documentation
