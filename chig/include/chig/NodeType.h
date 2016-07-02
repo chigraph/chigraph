@@ -36,8 +36,8 @@ typedef struct ChigNodeTypeImported {
 typedef struct ChigNodeType {
 	
 	EChigNodeType type;
-	const char* name;
-	const char* description;
+	char name[128];
+	char description[4096];
 
 	// inputs and outputs
 	LLVMTypeRef* inputs;

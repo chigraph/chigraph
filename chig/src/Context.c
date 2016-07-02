@@ -21,7 +21,7 @@ void ChigDestroyContext(ChigContext* context) {
 
 	// destroy the modules
 	for(size_t i = 0; i < context->numModules; ++i) {
-		ChigDestroyModule(context->modules + i);
+		ChigDestroyModule(context->modules[i]);
 	}
 
 	free(context);
@@ -38,10 +38,11 @@ void ChigUnloadModule(ChigContext* context, ChigModule* toUnload) {
 
 ChigModule* ChigGetModuleByName(ChigContext* context, const char* moduleName) {
 	for(size_t i = 0; i < context->numModules; ++i) {
-		if(strcmp(context->modules[i].name, moduleName)) {
-			return &context->modules[i];
+		if(strcmp(context->modules[i]->name, moduleName)) {
+			return context->modules[i];
 		}
 	}
+	return NULL;
 }
 
 ChigModule* ChigParseFromJSON(json_object* inJson) {

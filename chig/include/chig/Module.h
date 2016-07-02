@@ -13,7 +13,7 @@ typedef struct ChigModule {
 	ChigNodeType* nodes;
 	size_t numNodes;
 
-	const char* name;
+	char* name;
 
 } ChigModule;
 

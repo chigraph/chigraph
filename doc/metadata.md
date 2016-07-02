@@ -4,4 +4,9 @@ Not just any function defined in LLVM IR can be treated as a node. It must have 
 * Differentiate the outputs from the inputs
 * Get descriptions of the node, inputs, and outputs
 
-The metadata format is as follows:
+In the module, for each node, there should be a metadata entry with name `chig-<func_name>`, with the format:
+
+```LLVM
+!0 = !{!"Description for the function", i32 <num arguments>, !"argument description 1", !"argument-description 2"}
+!chig-<func_name> = !{!0}
+```

@@ -12,7 +12,7 @@
 
 typedef struct {
 
-	ChigModule* modules;
+	ChigModule** modules;
 	size_t numModules;
 
 	LLVMContextRef context;
