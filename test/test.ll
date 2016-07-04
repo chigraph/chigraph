@@ -1,5 +1,5 @@
 
-!0 = !{!"Add two numbers", i32 2, !"a", !"b", !"out"}
+!0 = !{!"Add two numbers\00", !"2\00", !"a\00", !"b\00", !"out\00"}
 !chig-std__add = !{!0}
 
 define i32 @std__add(i32 %a, i32 %b) {

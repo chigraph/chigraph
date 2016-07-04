@@ -1,21 +1,15 @@
-
-
 find_package(LLVM REQUIRED)
 
 set(CHIG_PUBLIC_FILES
-	include/chig/NodeType.h
-	include/chig/Context.h
-	include/chig/Module.h
+	include/chig/NodeType.hpp
+	include/chig/Context.hpp
+	include/chig/ImportedModule.hpp
 )
 
 set(CHIG_PRIVATE_FILES
-	src/Context.c
-	src/Module.c
+	src/Context.cpp
+	src/ImportedModule.cpp
 )
-
-# llvm-c seems to need these
-add_definitions("-D__STDC_LIMIT_MACROS")
-add_definitions("-D__STDC_CONSTANT_MACROS")
 
 add_library(chig SHARED ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
 
