@@ -8,7 +8,6 @@
 #include <iterator>
 #include <utility>
 
-#include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Function.h>
 
@@ -35,18 +34,21 @@ struct NodeType {
 
 struct FunctionCallNodeType : NodeType {
 
-	FunctionCallNodeType(llvm::Function* func, int num_inputs, std::string description, const std::vector<std::string>& iodescs) : function{func} {
+	FunctionCallNodeType(llvm::Function* func, int num_inputs, std::string argDescription, const std::vector<std::string>& iodescs) : function{func} {
 		name = func->getName();
-		description = std::move(description);
+		description = std::move(argDescription);
 
 		// populate inputs and outputs
 		inputTypes.resize(num_inputs);
-		std::copy(func->getArgumentList().begin(), std::advance(func->getArgumentList().begin(), num_inputs), inputTypes.begin());
+		auto beginningOfOutptus = func->getArgumentList().begin();
+		std::advance(beginningOfOutptus, num_inputs);
+		
+		std::transform(func->getArgumentList().begin(), beginningOfOutptus, inputTypes.begin(), [](auto& arg){return arg.getType();});
 
 		int num_outputs = std::distance(func->getArgumentList().begin(), func->getArgumentList().end()) - num_inputs;
 
 		outputTypes.resize(num_outputs);
-		std::copy(std::advance(func->getArgumentList().begin(), num_inputs), func->getArgumentList().end(), outputTypes.begin());
+		std::transform(beginningOfOutptus, func->getArgumentList().end(), outputTypes.begin(), [](auto& arg){return arg.getType();});
 
 	}
 

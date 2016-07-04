@@ -16,55 +16,30 @@ ImportedModule::ImportedModule(std::unique_ptr<llvm::Module> arg_module) {
 		auto metadataTagName = "chig-" + function.getName();
 
 		// see if it has the metadata tags. It is a named metadata in the module called chig-<func name>
-		auto metadata = module->getNamedMetadata(metadataTagName);
-		if(metadata) {
+		auto root_metadata = module->getNamedMetadata(metadataTagName);
+		if(root_metadata) {
+			
+			auto metadata = root_metadata->getOperand(0);
+			
 			// extract the metadata
 			unsigned num_operands = metadata->getNumOperands();
 
-			auto newNodeType = std::make_unique<FunctionCallNodeType>();
-
-			// set the function type
-			newNodeType->function = function;
-
-			// get the description
-			strcpy(node->description, LLVMGetMDString(mdnodes[0], NULL));
-
+			std::string description = static_cast<llvm::MDString*>(metadata->getOperand(0).get())->getString();
+			
 			// get the number of inputs
-			int num_inputs = atoi(LLVMGetMDString(mdnodes[1], NULL));
+			int num_inputs = atoi(static_cast<llvm::MDString*>(metadata->getOperand(1).get())->getString().operator std::string().c_str());
 
-			// allocate the inputs and outputs
-			node->inputs = malloc(sizeof(LLVMTypeRef) * num_inputs)
-
-			// read the types from the function
-			LLVMValueRef value = LLVMGetFirstParam(function);
-			while(value) {
-
-				LLVMTypeOf()
-
-				// go to the next value
-				value = LLVMGetNextParam(value);
+			// get the rest of the descs
+			std::vector<std::string> ioDescriptions;
+			for(size_t i = 2; i < num_operands; ++i) {
+				ioDescriptions.push_back(static_cast<llvm::MDString*>(metadata->getOperand(i).get())->getString());
 			}
+			
+			// construct it and add it to the vector
+			nodes.push_back(std::make_unique<FunctionCallNodeType>(&function, num_inputs, description, ioDescriptions));
 
 		}
-
-		// go on to the next one
-		function = LLVMGetNextFunction(function);
 	}
 
 }
 
-
-void ChigDestroyModule(ChigModule* module) {
-	free(module->nodes);
-	free(module);
-}
-
-ChigNodeType* ChigGetNodeTypeByName(ChigModule* module, const char* name) {
-
-	for(size_t i = 0; i < module->numNodes; ++i) {
-		if(strcmp(module->nodes[i].name, name)) {
-			return module->nodes + i;
-		}
-	}
-	return NULL;
-}

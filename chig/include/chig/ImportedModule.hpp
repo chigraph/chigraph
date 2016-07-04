@@ -15,7 +15,7 @@ struct ImportedModule {
 
 	std::unique_ptr<llvm::Module> module;
 
-	std::vector<NodeType> nodes;
+	std::vector<std::unique_ptr<NodeType>> nodes;
 
 };
 

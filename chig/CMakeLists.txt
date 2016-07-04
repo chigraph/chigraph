@@ -11,6 +11,9 @@ set(CHIG_PRIVATE_FILES
 	src/ImportedModule.cpp
 )
 
+add_definitions("-D__STDC_LIMIT_MACROS")
+add_definitions("-D__STDC_CONSTANT_MACROS")
+
 add_library(chig SHARED ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
 
 target_include_directories(chig
@@ -18,6 +21,8 @@ target_include_directories(chig
 	${LLVM_INCLUDE_DIRS}
 	include/
 )
+
+target_compile_features(chig PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
 
 llvm_map_components_to_libnames(llvm_libs core irreader)
 
