@@ -10,6 +10,8 @@
 
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Function.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Instructions.h>
 
 
 namespace chig {
@@ -24,17 +26,23 @@ struct NodeType {
 
 	// inputs and outputs
 	std::vector<llvm::Type*> inputTypes;
+	std::vector<std::string> inputDescs;
+	
 	std::vector<llvm::Type*> outputTypes;
-
+	std::vector<std::string> outputDescs;
+	
 	unsigned int numOutputExecs = 1;
 
-	virtual void codegen(std::vector<llvm::Value*> inputs, std::vector<llvm::Value*> outputs, llvm::BasicBlock* codegenInto, std::vector<llvm::BasicBlock*> outputBlocks) = 0;
+	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) = 0;
 	
 };
 
 struct FunctionCallNodeType : NodeType {
 
-	FunctionCallNodeType(llvm::Function* func, int num_inputs, std::string argDescription, const std::vector<std::string>& iodescs) : function{func} {
+	FunctionCallNodeType(llvm::Function* func, int num_inputs, int numExecOutputs, std::string argDescription, const std::vector<std::string>& iodescs) : function{func} {
+		
+		numOutputExecs = numExecOutputs;
+		
 		name = func->getName();
 		description = std::move(argDescription);
 
@@ -50,16 +58,53 @@ struct FunctionCallNodeType : NodeType {
 		outputTypes.resize(num_outputs);
 		std::transform(beginningOfOutptus, func->getArgumentList().end(), outputTypes.begin(), [](auto& arg){return arg.getType();});
 
+		// copy in the descriptions
+		inputDescs.resize(num_inputs);
+		std::copy(iodescs.begin(), iodescs.begin() + num_inputs, inputDescs.begin());
+		
+		outputDescs.resize(num_outputs);
+		std::copy(iodescs.begin() + num_inputs, iodescs.end(), outputDescs.begin());
 	}
 
 	llvm::Function* function;
 
-	virtual void codegen(std::vector<llvm::Value*> inputs, std::vector<llvm::Value*> outputs, llvm::BasicBlock* codegenInto, std::vector<llvm::BasicBlock*> outputBlocks) override {
+	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 
-
-
+		auto ret = codegenInto->CreateCall(function, io);
+		
+		// TODO: better default
+		auto sw = codegenInto->CreateSwitch(ret, outputBlocks[0], numOutputExecs); 
+		
+		for(size_t i = 0; i < outputBlocks.size(); ++i) {
+			sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(llvm::getGlobalContext(), 32), i), outputBlocks[i]);
+		}
+		
 	}
 
+};
+
+struct IfNodeType : NodeType {
+	
+	IfNodeType() {
+		
+		name = "if";
+		description = "branch on a bool";
+		
+		numOutputExecs = 2;
+		
+		inputTypes = { llvm::Type::getInt1Ty(llvm::getGlobalContext()) };
+		inputDescs = { "condition" };
+		
+		
+		
+	}
+	
+	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+
+		codegenInto->CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
+		
+	}
+	
 };
 
 }

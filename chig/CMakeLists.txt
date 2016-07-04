@@ -1,4 +1,5 @@
 find_package(LLVM REQUIRED)
+find_package(Boost REQUIRED system filesystem)
 
 set(CHIG_PUBLIC_FILES
 	include/chig/NodeType.hpp
@@ -29,5 +30,6 @@ llvm_map_components_to_libnames(llvm_libs core irreader)
 
 target_link_libraries(chig
 	PUBLIC
-	${llvm_libs}
+	${llvm_libs} 
+	${Boost_LIBRARIES}
 )

@@ -25,10 +25,15 @@ struct Context {
 
 	ImportedModule* getModuleByName(const char* moduleName);
 	
+	llvm::LLVMContext context;
+	
 	std::vector<std::unique_ptr<ImportedModule>> modules;
 	std::vector<std::string> searchPaths;
 
-	llvm::LLVMContext context;
+	
+private:
+	
+	std::string resolveModulePath(const char* path);
 
 };
 

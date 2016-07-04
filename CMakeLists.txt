@@ -10,7 +10,7 @@ option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 find_package(JsonC REQUIRED)
 
 add_subdirectory(chig)
-#add_subdirectory(chigc)
+add_subdirectory(chigc)
 
 # Unit tests...
 if(CG_BUILD_TESTS)
