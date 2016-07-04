@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include "chig/ImportedModule.hpp"
-
 #include <iterator>
 #include <utility>
 
@@ -12,6 +10,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Instructions.h>
+#include <llvm/IR/Module.h>
 
 
 namespace chig {
@@ -19,9 +18,16 @@ namespace chig {
 // generic type
 struct NodeType {
 
+	NodeType() {}
+	
+	// no move or copy, these are pointer-only
+	NodeType(const NodeType& other) = delete;
+	NodeType(NodeType&& other) = delete;
+	
 	virtual ~NodeType() = default;
 
 	std::string name;
+	std::string module;
 	std::string description;
 
 	// inputs and outputs
@@ -33,13 +39,15 @@ struct NodeType {
 	
 	unsigned int numOutputExecs = 1;
 
-	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) = 0;
+	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
 	
 };
 
 struct FunctionCallNodeType : NodeType {
 
-	FunctionCallNodeType(llvm::Function* func, int num_inputs, int numExecOutputs, std::string argDescription, const std::vector<std::string>& iodescs) : function{func} {
+	FunctionCallNodeType(llvm::Module* argModule, llvm::Function* func, int num_inputs, int numExecOutputs, std::string argDescription, const std::vector<std::string>& iodescs) : function{func} {
+		
+		module = argModule->getName();
 		
 		numOutputExecs = numExecOutputs;
 		
@@ -68,7 +76,7 @@ struct FunctionCallNodeType : NodeType {
 
 	llvm::Function* function;
 
-	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
 
 		auto ret = codegenInto->CreateCall(function, io);
 		
@@ -87,6 +95,7 @@ struct IfNodeType : NodeType {
 	
 	IfNodeType() {
 		
+		module = "lang";
 		name = "if";
 		description = "branch on a bool";
 		
@@ -95,15 +104,34 @@ struct IfNodeType : NodeType {
 		inputTypes = { llvm::Type::getInt1Ty(llvm::getGlobalContext()) };
 		inputDescs = { "condition" };
 		
-		
-		
 	}
 	
-	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
 
 		codegenInto->CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
 		
 	}
+	
+	
+};
+
+struct EntryNodeType : NodeType {
+	
+	EntryNodeType(const std::vector<llvm::Type*>& argInputTypes, const std::vector<std::string>& descs) {
+		
+		module = "lang";
+		name = "entry";
+		description = "entry to a function";
+		
+		numOutputExecs = 1;
+		
+		inputTypes = argInputTypes;
+		inputDescs = descs;
+		
+	}
+
+	// this is treated differently during codegen
+	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {}
 	
 };
 

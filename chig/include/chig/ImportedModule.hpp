@@ -3,15 +3,16 @@
 
 #pragma once
 
-#include "chig/NodeType.hpp"
-
 #include <llvm/IR/Module.h>
 
 namespace chig{
 
+struct NodeType;
+
 struct ImportedModule {
 
 	ImportedModule(std::unique_ptr<llvm::Module> module);
+	~ImportedModule();
 
 	std::unique_ptr<llvm::Module> module;
 

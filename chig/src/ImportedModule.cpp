@@ -1,4 +1,5 @@
 #include "chig/ImportedModule.hpp"
+#include "chig/NodeType.hpp"
 
 #include <stdlib.h>
 #include <string.h>
@@ -41,10 +42,11 @@ ImportedModule::ImportedModule(std::unique_ptr<llvm::Module> arg_module) {
 			}
 			
 			// construct it and add it to the vector
-			nodes.push_back(std::make_unique<FunctionCallNodeType>(&function, num_inputs, numOutputExecPaths, description, ioDescriptions));
+			nodes.push_back(std::make_unique<FunctionCallNodeType>(module.get(), &function, num_inputs, numOutputExecPaths, description, ioDescriptions));
 
 		}
 	}
 
 }
 
+ImportedModule::~ImportedModule() = default;
