@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/GuapoTaco/chigraph.svg?branch=master)](https://travis-ci.org/GuapoTaco/chigraph)
+
 # chigraph
 A systems language implemented in a flow graph using LLVM
 
