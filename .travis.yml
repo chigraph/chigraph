@@ -1,0 +1,14 @@
+sudo: required
+
+arch:
+    packages:
+        - llvm
+        - cmake
+        - boost
+    script:
+        - cmake .
+        - make
+        - make test
+        
+script:
+  - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
