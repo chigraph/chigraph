@@ -4,6 +4,7 @@
 #pragma once
 
 #include "chig/ImportedModule.hpp"
+#include "chig/NodeType.hpp"
 
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@ namespace chig {
 
 struct Context {
 
-	Context() = default;
+	Context();
 
 	// no move or copy, doesn't make sense
 	Context(const Context& context) = delete;
@@ -30,6 +31,7 @@ struct Context {
 	std::vector<std::unique_ptr<ImportedModule>> modules;
 	std::vector<std::string> searchPaths;
 
+	std::vector<std::unique_ptr<NodeType>> langNodeTypes;
 	
 private:
 	

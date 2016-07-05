@@ -11,7 +11,7 @@ namespace chig {
 
 struct NodeInstance {
 	
-	NodeInstance(NodeType* nodeType);
+	NodeInstance(NodeType* nodeType, float x, float y);
 	
 	NodeInstance(const NodeInstance&) = default;
 	NodeInstance(NodeInstance&&) = default;

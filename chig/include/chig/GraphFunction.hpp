@@ -9,14 +9,16 @@
 #include <llvm/IR/Module.h>
 
 #include <string>
+#include <vector>
 
 namespace chig {
 
 // this is an AST-like representation of a function in a graph
 struct GraphFunction {
 	
-	GraphFunction(const nlohmann::json& data);
-	GraphFunction(){};
+	GraphFunction(std::string name, const std::vector<std::pair<llvm::Type*, std::string>>& inputs, const std::vector<std::pair<llvm::Type*, std::string>>& outputs);
+	
+	static GraphFunction fromJSON(const nlohmann::json& j);
 	
 	nlohmann::json toJSON();
 	
@@ -29,8 +31,7 @@ struct GraphFunction {
 	std::vector<std::unique_ptr<NodeInstance>> nodes;
 	NodeInstance* entry;
 	
-	std::vector<llvm::Type*> inputs;
-	std::vector<llvm::Type*> outputs;
+	std::vector<std::pair<llvm::Type*, std::string>> outputs;
 	
 };
 

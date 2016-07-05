@@ -23,12 +23,14 @@
       ],
       "connections": [
         {
-          "input": "0.outexec",
-          "output": "1.exec"
+          "type": "exec",
+          "input": [0,0],
+          "output": [1,0]"
         },
         {
+          "type": "data",
           "input": "Hello",
-          "output": "1.string"
+          "output": [1,0]
         }
       ]
     }

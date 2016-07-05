@@ -31,11 +31,9 @@ struct NodeType {
 	std::string description;
 
 	// inputs and outputs
-	std::vector<llvm::Type*> inputTypes;
-	std::vector<std::string> inputDescs;
+	std::vector<std::pair<llvm::Type*, std::string>> inputs;
 	
-	std::vector<llvm::Type*> outputTypes;
-	std::vector<std::string> outputDescs;
+	std::vector<std::pair<llvm::Type*, std::string>> outputs;
 	
 	unsigned int numOutputExecs = 1;
 
@@ -55,23 +53,18 @@ struct FunctionCallNodeType : NodeType {
 		description = std::move(argDescription);
 
 		// populate inputs and outputs
-		inputTypes.resize(num_inputs);
+		inputs.resize(num_inputs);
 		auto beginningOfOutptus = func->getArgumentList().begin();
 		std::advance(beginningOfOutptus, num_inputs);
 		
-		std::transform(func->getArgumentList().begin(), beginningOfOutptus, inputTypes.begin(), [](auto& arg){return arg.getType();});
+		std::transform(func->getArgumentList().begin(), beginningOfOutptus, iodescs.begin(), inputs.begin(), 
+			[](auto& arg, auto& desc){return std::make_pair(arg.getType(), desc);});
 
 		int num_outputs = std::distance(func->getArgumentList().begin(), func->getArgumentList().end()) - num_inputs;
 
-		outputTypes.resize(num_outputs);
-		std::transform(beginningOfOutptus, func->getArgumentList().end(), outputTypes.begin(), [](auto& arg){return arg.getType();});
+		outputs.resize(num_outputs);
+		std::transform(beginningOfOutptus, func->getArgumentList().end(), iodescs.begin() + num_inputs, outputs.begin(), [](auto& arg, auto& desc){return std::make_pair(arg.getType(), desc);});
 
-		// copy in the descriptions
-		inputDescs.resize(num_inputs);
-		std::copy(iodescs.begin(), iodescs.begin() + num_inputs, inputDescs.begin());
-		
-		outputDescs.resize(num_outputs);
-		std::copy(iodescs.begin() + num_inputs, iodescs.end(), outputDescs.begin());
 	}
 
 	llvm::Function* function;
@@ -101,8 +94,7 @@ struct IfNodeType : NodeType {
 		
 		numOutputExecs = 2;
 		
-		inputTypes = { llvm::Type::getInt1Ty(llvm::getGlobalContext()) };
-		inputDescs = { "condition" };
+		inputs = { {llvm::Type::getInt1Ty(llvm::getGlobalContext()), "condition"} };
 		
 	}
 	
@@ -117,7 +109,7 @@ struct IfNodeType : NodeType {
 
 struct EntryNodeType : NodeType {
 	
-	EntryNodeType(const std::vector<llvm::Type*>& argInputTypes, const std::vector<std::string>& descs) {
+	EntryNodeType(const std::vector<std::pair<llvm::Type*, std::string>>& funInputs) {
 		
 		module = "lang";
 		name = "entry";
@@ -125,8 +117,7 @@ struct EntryNodeType : NodeType {
 		
 		numOutputExecs = 1;
 		
-		inputTypes = argInputTypes;
-		inputDescs = descs;
+		inputs = funInputs;
 		
 	}
 

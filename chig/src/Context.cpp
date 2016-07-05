@@ -1,5 +1,6 @@
 #include "chig/Context.hpp"
 #include "chig/ImportedModule.hpp"
+#include "chig/NodeType.hpp"
 
 #include <llvm/Bitcode/ReaderWriter.h>
 
@@ -7,6 +8,9 @@
 
 using namespace chig;
 using namespace llvm;
+
+Context::Context() {
+}
 
 ImportedModule* Context::loadModule(const char* path) {
 	
