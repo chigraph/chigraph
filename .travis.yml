@@ -14,4 +14,4 @@ script:
   - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+    - sudo bash <(curl -s https://codecov.io/bash)
