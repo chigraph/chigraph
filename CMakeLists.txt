@@ -14,6 +14,7 @@ add_subdirectory(chigc)
 
 # Unit tests...
 if(CG_BUILD_TESTS)
+	enable_testing()
 	add_subdirectory(test)
 endif()
 
