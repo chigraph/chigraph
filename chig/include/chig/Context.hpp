@@ -20,10 +20,18 @@ struct Context {
 	Context(const Context& context) = delete;
 	Context(Context&&) = delete;
 	
-	// there should be a `name`.bc file in one of the search paths
+	/// Loads a module from disk. The module on disk must be a \c .bc file 
+	/// in either the working Direcotry or in on of the search paths in \c searchPaths. 
+	/// \param name The name of the module to load
+	/// \return The module that was loaded. This is already stored in the \c modules vector.
 	ImportedModule* loadModule(const char* name);
+	
+	/// Unloads a module
+	/// \param toUnload The module to unload; must be in \c modules
 	void unloadModule(ImportedModule* toUnload);
 
+	/// Gets the module by the name
+	/// \param 
 	ImportedModule* getModuleByName(const char* moduleName);
 	
 	llvm::LLVMContext context;
