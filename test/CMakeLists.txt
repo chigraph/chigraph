@@ -7,4 +7,4 @@ add_definitions("-D__STDC_CONSTANT_MACROS")
 
 add_subdirectory(MetadataParse)
 add_subdirectory(JSONSerializer)
-add_subdirectory(JSONReader)
+#add_subdirectory(JSONReader)
