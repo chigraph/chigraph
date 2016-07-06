@@ -2,19 +2,15 @@ language: cpp
 sudo: required
 dist: trusty
 
-matrix:
-    include:
-        - os:linux
-        compiler: gcc
-        addons:
-            apt:
-                sources: ['ubuntu-toolchain-r-test']
-                packages: ['g++-4.9']
-            before_script:
-                - pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
-            after_success:
-                - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage"
-                - make
-                - make test
-                - coveralls
-            env: COMPILER=g++-4.9
+
+
+            
+before_script:
+- sudo apt-get install g++-4.9 cmake libboost-all-dev llvm-3.7 llvm-3.7-dev libllvm3.7
+- sudo pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
+after_success:
+- cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage"
+- make
+- make test
+- coveralls
+env: COMPILER=g++-4.9
