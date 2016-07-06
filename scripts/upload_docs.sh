@@ -17,7 +17,7 @@ cd ..
 TMP=$(mktemp -d)
 
 # store the files
-cp build/doc/html/* $TMPs
+cp -a build/doc/html/ $TMP/
 
 # go the the gh-pages branch and add them
 git checkout gh-pages
