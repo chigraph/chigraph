@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/GuapoTaco/chigraph.svg?maxAge=2592000)](https://travis-ci.org/GuapoTaco/chigraph) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
+[![Travis](https://img.shields.io/travis/GuapoTaco/chigraph.svg?maxAge=2592000)](https://travis-ci.org/GuapoTaco/chigraph) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://opensource.org/licenses/MIT) [![Documentation](https://img.shields.io/badge/documentation-online-brightgreen.svg?style=flat)](https://GuapoTaco.github.io/chigraph)
 
 # chigraph
 A systems language implemented in a flow graph using LLVM
