@@ -17,7 +17,7 @@ cd ..
 TMP=$(mktemp -d)
 
 # store the files
-cp -a build/doc/html/ $TMP/
+rsync build/doc/html/* $TMP/
 
 # go the the gh-pages branch and add them
 git checkout gh-pages
@@ -26,7 +26,7 @@ git checkout gh-pages
 rm -r $(find . -maxdepth 1  -not -path "./.git" -not -path '.')
 
 # copy it in
-cp $TMP/* ./
+rsync $TMP/* ./
 
 # commit
 git add .
