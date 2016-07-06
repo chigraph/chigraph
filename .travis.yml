@@ -10,7 +10,7 @@ before_script:
 - sudo apt-get update
 - sudo apt-get install g++-4.9 cmake libboost-all-dev llvm-3.4-dev -y
 - sudo pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
-after_success:
+script:
 - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage"
 - make
 - make test
