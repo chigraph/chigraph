@@ -28,6 +28,10 @@ rm -r $(find . -maxdepth 1  -not -path "./.git" -not -path '.')
 # copy it in
 rsync $TMP/* ./
 
+rm -rf $TMP
+
 # commit
 git add .
 git commit -m"[BOT] Update docs"
+git push
+git checkout master
