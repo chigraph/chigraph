@@ -23,7 +23,7 @@ cp -a build/doc/html/ $TMP/
 git checkout gh-pages
 
 # delete everything that is here
-rm $(find . -maxdepth 1  -not -path "./.git" -not -path '.')
+rm -r $(find . -maxdepth 1  -not -path "./.git" -not -path '.')
 
 # copy it in
 cp $TMP/* ./
