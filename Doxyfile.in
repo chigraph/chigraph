@@ -5,6 +5,7 @@ INPUT                  = @PROJECT_SOURCE_DIR@/chig/include \
                          @PROJECT_SOURCE_DIR@/chig/src
 FILE_PATTERNS          = *.hpp \
                          *.cpp
+EXCLUDE_PATTERNS       = @PROJECT_SOURCE_DIR@/chig/include/json.hpp
 RECURSIVE              = YES
 OUTPUT_DIRECTORY       = doc
 JAVADOC_AUTOBRIEF      = YES
