@@ -98,7 +98,7 @@ nlohmann::json GraphFunction::toJSON() {
 	return jsonData;
 }
 
-llvm::Module* GraphFunction::compile() {
+llvm::Function* GraphFunction::compile() {
 }
 
 NodeInstance* GraphFunction::insertNode(NodeType* type, float x, float y) {

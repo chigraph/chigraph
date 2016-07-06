@@ -12,6 +12,8 @@
 
 namespace chig {
 
+/// The class that handles modules
+/// It also stores a \c LLVMContext object to be used everywhere. 
 struct Context {
 
 	Context();
@@ -34,12 +36,10 @@ struct Context {
 	/// \param 
 	ImportedModule* getModuleByName(const char* moduleName);
 	
-	llvm::LLVMContext context;
+	llvm::LLVMContext context; /// The LLVM context to use with everything under the context
 	
-	std::vector<std::unique_ptr<ImportedModule>> modules;
-	std::vector<std::string> searchPaths;
-
-	std::vector<std::unique_ptr<NodeType>> langNodeTypes;
+	std::vector<std::unique_ptr<ImportedModule>> modules; /// The modules that have been loaded. 
+	std::vector<std::string> searchPaths; /// The places to search for modules
 	
 private:
 	
