@@ -9,15 +9,19 @@
     {
       "type": "function",
       "name": "main",
-      "inputs": {},
-      "outputs": {},
+      "inputs": {
+        "input": "i32"
+      },
+      "outputs": {
+        "out": "i1*"
+      },
       "nodes": [
         {
           "type": "lang:entry",
           "location": [0, 0]
         },
         {
-          "type": "io:print",
+          "type": "lang:exit",
           "location": [10, 0]
         }
       ],
@@ -25,11 +29,11 @@
         {
           "type": "exec",
           "input": [0,0],
-          "output": [1,0]"
+          "output": [1,0]
         },
         {
           "type": "data",
-          "input": "Hello",
+          "input": [0,0],
           "output": [1,0]
         }
       ]
