@@ -3,7 +3,7 @@
 set -e
 
 SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd ..
+cd $SCRIPTSDIR/..
 
 # generate docs
 mkdir -p build
