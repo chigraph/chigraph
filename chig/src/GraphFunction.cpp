@@ -5,8 +5,9 @@
 
 using namespace chig;
 
-GraphFunction::GraphFunction(std::string name, const std::vector<std::pair<llvm::Type*, std::string>>& inputs, const std::vector<std::pair<llvm::Type*, std::string>>& outputs)
-	: graphName{std::move(name)} {
+GraphFunction::GraphFunction(std::string name, const std::vector<std::pair<llvm::Type*, std::string>>& inputs, const std::vector<std::pair<llvm::Type*, std::string>>& argOutputs)
+	: graphName{std::move(name)},
+	outputs{argOutputs}{
 	
 	nodes.emplace_back(std::make_unique<NodeInstance>(new EntryNodeType(inputs), 0.f, 0.f));
 	entry = nodes[0].get();
@@ -28,8 +29,10 @@ nlohmann::json GraphFunction::toJSON() {
 	inputsJson = nlohmann::json::object();
 	for(size_t i = 0; i < entry->type->outputs.size(); ++i) {
 		std::string type;
+
 		llvm::raw_string_ostream stream{type};
 		entry->type->outputs[i].first->print(stream);
+		stream.flush();
 		
 		inputsJson[entry->type->outputs[i].second] = type;
 	}
@@ -41,6 +44,7 @@ nlohmann::json GraphFunction::toJSON() {
 		std::string type;
 		llvm::raw_string_ostream stream{type};
 		outputs[i].first->print(stream);
+		stream.flush();
 		
 		outputJson[outputs[i].second] = type;
 	}

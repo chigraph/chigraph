@@ -8,7 +8,7 @@ int main() {
 	// create some random nodes
 	Context c;
 	
-	GraphFunction func("hello", {}, {});
+	GraphFunction func("hello", {{llvm::Type::getInt32Ty(c.context), "in1"}}, {{llvm::Type::getInt1PtrTy(c.context), "out"}} );
 	auto ifNode = func.insertNode(new IfNodeType(), 44.f, 23.f);
 	
 	func.entry->connectExec(ifNode, 0, 0);
@@ -22,8 +22,12 @@ int main() {
 {
   "type": "function",
   "name": "hello",
-  "inputs": {},
-  "outputs": {},
+  "inputs": {
+    "in1": "i32"
+  },
+  "outputs": {
+    "out": "i1*"
+  },
   "nodes": [
     {
       "type": "lang:entry",

@@ -117,7 +117,7 @@ struct EntryNodeType : NodeType {
 		
 		numOutputExecs = 1;
 		
-		inputs = funInputs;
+		outputs = funInputs;
 		
 	}
 
