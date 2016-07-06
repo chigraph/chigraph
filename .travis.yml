@@ -1,15 +1,20 @@
+language: cpp
 sudo: required
+dist: trusty
 
-arch:
-    packages:
-        - llvm
-        - cmake
-        - boost
-    script:
-        - cmake .
-        - make
-        - make test
-        
-script:
-  - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
-
+matrix:
+    include:
+        - os:linux
+        compiler: gcc
+        addons:
+            apt:
+                sources: ['ubuntu-toolchain-r-test']
+                packages: ['g++-4.9']
+            before_script:
+                - pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
+            after_success:
+                - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage"
+                - make
+                - make test
+                - coveralls
+            env: COMPILER=g++-4.9
