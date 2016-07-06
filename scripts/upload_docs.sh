@@ -32,6 +32,11 @@ rm -rf $TMP
 
 # commit
 git add .
+
+# if there is an error, then there is nothing to do, that's fine
+set +e
 git commit -m"[BOT] Update docs"
+set -e
+
 git push
 git checkout master
