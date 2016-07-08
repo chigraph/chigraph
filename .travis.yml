@@ -10,7 +10,7 @@ arch:
         - python-pip
     script:
         - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
-        - cmake .
+        - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -std=c++11 -lstdc++"
         - make
         - make test
         - coveralls
