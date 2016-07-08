@@ -14,7 +14,6 @@ arch:
         - make
         - make test
         - coveralls --exclude /usr/ --exclude test/ --include chig/
-        - sudo bash <(curl -s https://codecov.io/bash)
         
 script:
   - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
