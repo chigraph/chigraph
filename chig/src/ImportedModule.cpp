@@ -35,10 +35,10 @@ ImportedModule::ImportedModule(std::unique_ptr<llvm::Module> arg_module) {
 			// get the number of inputs
 			int num_inputs = atoi(static_cast<llvm::MDString*>(metadata->getOperand(2).get())->getString().operator std::string().c_str());
 
-			// get the rest of the descs
+			// get the rest of the descs from the variable names
 			std::vector<std::string> ioDescriptions;
-			for(size_t i = 3; i < num_operands; ++i) {
-				ioDescriptions.push_back(static_cast<llvm::MDString*>(metadata->getOperand(i).get())->getString());
+			for(const auto& arg : function.getArgumentList()) {
+				ioDescriptions.push_back(arg.getName());
 			}
 			
 			// construct it and add it to the vector
