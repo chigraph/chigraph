@@ -1,4 +1,4 @@
-find_package(LLVM REQUIRED)
+find_package(LLVM REQUIRED CONFIG)
 find_package(Boost REQUIRED system filesystem)
 
 set(CHIG_PUBLIC_FILES
