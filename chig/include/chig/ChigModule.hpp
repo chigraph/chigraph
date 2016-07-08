@@ -1,5 +1,5 @@
-#ifndef CHIG_MODULE_HPP
-#define CHIG_MODULE_HPP
+#ifndef CHIG_CHIG_MODULE_HPP
+#define CHIG_CHIG_MODULE_HPP
 
 #pragma once
 
@@ -12,9 +12,9 @@
 
 namespace chig {
 
-struct Module {
+struct ChigModule {
 	
-	virtual ~Module();
+	virtual ~ChigModule();
 	
 	virtual std::vector<std::function<std::unique_ptr<NodeType>(nlohmann::json& data)>> getNodeTypes() = 0;
 	virtual std::unique_ptr<NodeType> createNodeType(const char* name, const nlohmann::json& json_data) = 0;
@@ -26,4 +26,4 @@ struct Module {
 
 }
 
-#endif // CHIG_MODULE_HPP
+#endif // CHIG_CHIG_MODULE_HPP
