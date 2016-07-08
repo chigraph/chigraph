@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "chig/json.hpp"
+
 #include <iterator>
 #include <utility>
 
@@ -38,6 +40,7 @@ struct NodeType {
 	unsigned int numOutputExecs = 1;
 
 	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
+	virtual nlohmann::json toJSON() const {return {};}
 	
 };
 
