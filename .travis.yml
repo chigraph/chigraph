@@ -8,7 +8,7 @@ dist: trusty
 before_script:
 - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 - sudo apt-get update
-- sudo apt-get install g++-5 cmake libboost-all-dev llvm-3.6-dev llvm-3.6-doc llvm-3.6-runtime llvm-3.6 llvm-3.6-tools -y
+- sudo apt-get install g++-5 cmake libboost-all-dev llvm-3.5-dev llvm-3.5-doc llvm-3.5-runtime llvm-3.5 llvm-3.5-tools -y
 - sudo pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
 script:
 - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" -DCMAKE_CXX_COMPILER=g++-5
