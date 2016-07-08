@@ -22,10 +22,6 @@ struct NodeType {
 
 	NodeType() {}
 	
-	// no move or copy, these are pointer-only
-	NodeType(const NodeType& other) = delete;
-	NodeType(NodeType&& other) = delete;
-	
 	virtual ~NodeType() = default;
 
 	std::string name;
@@ -41,6 +37,8 @@ struct NodeType {
 
 	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
 	virtual nlohmann::json toJSON() const {return {};}
+	
+	virtual std::unique_ptr<NodeType> clone() const = 0;
 	
 };
 
@@ -70,6 +68,9 @@ struct FunctionCallNodeType : NodeType {
 
 	}
 
+	FunctionCallNodeType(const FunctionCallNodeType&) = default;
+	FunctionCallNodeType(FunctionCallNodeType&&) = default;
+	
 	llvm::Function* function;
 
 	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
@@ -83,6 +84,10 @@ struct FunctionCallNodeType : NodeType {
 			sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(llvm::getGlobalContext(), 32), i), outputBlocks[i]);
 		}
 		
+	}
+	
+	virtual std::unique_ptr<NodeType> clone() const override {
+		return std::make_unique<FunctionCallNodeType>(*this);
 	}
 
 };
@@ -107,6 +112,10 @@ struct IfNodeType : NodeType {
 		
 	}
 	
+	virtual std::unique_ptr<NodeType> clone() const override{
+		return std::make_unique<IfNodeType>(*this);
+	}
+	
 	
 };
 
@@ -127,6 +136,9 @@ struct EntryNodeType : NodeType {
 	// this is treated differently during codegen
 	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {}
 	
+	virtual std::unique_ptr<NodeType> clone() const override {
+		return std::make_unique<EntryNodeType>(*this);
+	}
 };
 
 }

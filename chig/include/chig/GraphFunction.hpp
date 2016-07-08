@@ -40,7 +40,7 @@ struct GraphFunction {
 	/// \param type The type of the node
 	/// \param x The x location of the node
 	/// \param y The y location of the node
-	NodeInstance* insertNode(NodeType* type, float x, float y);
+	NodeInstance* insertNode(std::unique_ptr<NodeType> type, float x, float y);
 	
 	std::string graphName; /// the name of the function
 	

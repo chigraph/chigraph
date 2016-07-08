@@ -9,7 +9,7 @@ GraphFunction::GraphFunction(std::string name, const std::vector<std::pair<llvm:
 	: graphName{std::move(name)},
 	outputs{argOutputs}{
 	
-	nodes.emplace_back(std::make_unique<NodeInstance>(new EntryNodeType(inputs), 0.f, 0.f));
+	nodes.emplace_back(std::make_unique<NodeInstance>(std::make_unique<EntryNodeType>(inputs), 0.f, 0.f));
 	entry = nodes[0].get();
 	
 }
@@ -105,8 +105,8 @@ nlohmann::json GraphFunction::toJSON() {
 llvm::Function* GraphFunction::compile() {
 }
 
-NodeInstance* GraphFunction::insertNode(NodeType* type, float x, float y) {
-	auto ptr = std::make_unique<NodeInstance>(type, x, y);
+NodeInstance* GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y) {
+	auto ptr = std::make_unique<NodeInstance>(std::move(type), x, y);
 	
 	nodes.push_back(std::move(ptr));
 	

@@ -53,3 +53,26 @@ ImportedModule::ImportedModule(std::unique_ptr<llvm::Module> arg_module) {
 }
 
 ImportedModule::~ImportedModule() = default;
+
+std::vector<std::function<std::unique_ptr<NodeType> (const nlohmann::json&)>> chig::ImportedModule::getNodeTypes()
+{
+	std::vector<std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>> ret;
+	ret.reserve(nodes.size());
+	
+	std::transform(nodes.begin(), nodes.end(), std::back_inserter(ret), [](auto& node_type) {
+		return [ty = node_type.get()](const nlohmann::json&) {
+			return std::make_unique<FunctionCallNodeType>(*ty);
+		};
+	});
+	
+	return ret;
+}
+
+std::unique_ptr<NodeType> chig::ImportedModule::createNodeType(const char* name, const nlohmann::json&)
+{
+	auto iter = std::find_if(nodes.begin(), nodes.end(), [&](auto& func) {
+		return func->name == name;
+	});
+	return iter == nodes.end() ? std::make_unique<FunctionCallNodeType>(**iter) : nullptr;
+}
+

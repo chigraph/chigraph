@@ -11,17 +11,13 @@ namespace chig {
 
 struct NodeInstance {
 	
-	NodeInstance(NodeType* nodeType, float x, float y);
+	NodeInstance(std::unique_ptr<NodeType> nodeType, float x, float y);
 	
 	NodeInstance(const NodeInstance&) = default;
 	NodeInstance(NodeInstance&&) = default;
 	
-	// these functions are called when connecting some node to the inputs. 
-	void connectExec(NodeInstance* other, unsigned int inputID, unsigned int otherOutputID);
-	void connectData(NodeInstance* other, unsigned int inputID, unsigned int otherOutputID);
-	
 	// general data
-	NodeType* type = nullptr;
+	std::unique_ptr<NodeType> type = nullptr;
 	
 	float x = 0.f;
 	float y = 0.0;
@@ -32,6 +28,29 @@ struct NodeInstance {
 	std::vector<std::pair<NodeInstance*, unsigned int>> outputExecConnections;
 	std::vector<std::pair<NodeInstance*, unsigned int>> outputDataConnections;
 };
+
+/// Connects two nodes' data connections
+/// \param lhs The node to the left, the node outputting the data
+/// \param outID The ID of data connection in \c lhs to be connected
+/// \param rhs The node to the right, that takes in the data as a parameter
+/// \param inID The ID of data input in \c rhs
+inline void connectData(NodeInstance& lhs, size_t outID, NodeInstance& rhs, size_t inID) {
+	
+	lhs.outputDataConnections[outID] = {&rhs, inID};
+	rhs.inputDataConnections[inID] = {&lhs, outID};
+
+}
+
+/// Connects two nodes' exec connections
+/// \param lhs The node to the left, the node outputting the connections
+/// \param outID The ID of exec connection in \c lhs to be connected
+/// \param rhs The node to the right, that takes in the exec as a parameter
+/// \param inID The ID of exec input in \c rhs
+inline void connectExec(NodeInstance& lhs, size_t outID, NodeInstance& rhs, size_t inID) {
+	
+	lhs.outputExecConnections[outID] = {&rhs, inID};
+	rhs.inputExecConnections[inID] = {&lhs, outID};
+}
 
 }
 

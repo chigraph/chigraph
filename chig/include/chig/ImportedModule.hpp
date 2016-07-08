@@ -23,11 +23,11 @@ struct ImportedModule : ChigModule {
 	virtual ~ImportedModule();
 	
 	std::unique_ptr<NodeType> createNodeType(const char * name, const nlohmann::json & json_data) override;
-	std::vector<std::function<std::unique_ptr<NodeType> (nlohmann::json &)> > getNodeTypes() override;
+	std::vector<std::function<std::unique_ptr<NodeType>(const nlohmann::json &)> > getNodeTypes() override;
 	
 	std::unique_ptr<llvm::Module> module; /// The \c llvm::Module that it represents
 
-	std::vector<std::unique_ptr<NodeType>> nodes; /// The nodes that the module contains
+	std::vector<std::unique_ptr<FunctionCallNodeType>> nodes; /// The nodes that the module contains
 
 };
 

@@ -9,9 +9,10 @@ int main() {
 	Context c;
 	
 	GraphFunction func("hello", {{llvm::Type::getInt32Ty(c.context), "in1"}}, {{llvm::Type::getInt1PtrTy(c.context), "out"}} );
-	auto ifNode = func.insertNode(new IfNodeType(), 44.f, 23.f);
+	auto ifNode = func.insertNode(std::make_unique<IfNodeType>(), 44.f, 23.f);
 	
-	func.entry->connectExec(ifNode, 0, 0);
+	connectExec(*func.entry, 0, *ifNode, 0);
+	connectData(*func.entry, 0, *ifNode, 0);
 	
 	// dump to JSON, make sure it's legit
 	auto dumpedJSON = func.toJSON();
@@ -41,8 +42,13 @@ int main() {
   "connections": [
     {
       "type": "exec",
-      "input": [1,0],
-      "output": [0,0]
+      "input": [0,0],
+      "output": [1,0]
+    },
+    {
+      "type": "data",
+      "input": [0,0],
+      "output": [1,0]
     }
   ]
 }
