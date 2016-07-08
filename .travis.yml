@@ -2,12 +2,14 @@ sudo: required
 
 arch:
     packages:
+        - base
+        - base-devel
         - llvm
         - cmake
         - boost
         - python-pip
     script:
-        - sudo pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
+        - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
         - cmake .
         - make
         - make test
