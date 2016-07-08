@@ -14,12 +14,17 @@ Context::Context() {
 
 ImportedModule* Context::loadModule(const char* path) {
 	
+	using namespace std::string_literals;
+	
 	// resolve the file
 	std::string abs_path = resolveModulePath(path);
+	if(abs_path == "") {
+		throw std::runtime_error("Failed to file module: "s + path);
+	}
 	
 	auto buf = MemoryBuffer::getFile(abs_path);
 	if(!buf) {
-		throw std::runtime_error("Error reading file: + " + buf.getError().message());
+		throw std::runtime_error("Error reading file: " + buf.getError().message());
 	}
 	
 	auto module = parseBitcodeFile(**buf, context);
@@ -55,7 +60,7 @@ std::string chig::Context::resolveModulePath(const char* path)
 	
 	namespace fs = boost::filesystem;
 	
-	std::string file_name = path + ".bc"s;
+	std::string file_name = path;
 	
 	// see if it is in `pwd`
 	if(fs::is_regular_file(file_name)) {

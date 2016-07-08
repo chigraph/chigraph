@@ -12,7 +12,7 @@ int main() {
 	
 	Context c;
 	
-	auto module = c.loadModule("test");
+	auto module = c.loadModule("add_test.bc");
 	
 	assert(module->nodes.size() == 1);
 	

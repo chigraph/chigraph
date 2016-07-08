@@ -24,6 +24,9 @@ ImportedModule::ImportedModule(std::unique_ptr<llvm::Module> arg_module) {
 			
 			// extract the metadata
 			unsigned num_operands = metadata->getNumOperands();
+			if(num_operands != 3) {
+				throw std::runtime_error("Error: not the correct metadata found in an llvm module \"" + function.getName().str() + "\". See doc/meatadata.md for more info");
+			}
 
 			// get the desc
 			std::string description = static_cast<llvm::MDString*>(metadata->getOperand(0).get())->getString();
