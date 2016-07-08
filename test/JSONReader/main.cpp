@@ -18,7 +18,7 @@ int main() {
 	
 	auto data = nlohmann::json::parse(str);
 	
-	auto graph = GraphFunction::fromJSON(data["graphs"][0]);
+	auto graph = GraphFunction::fromJSON(c, data["graphs"][0]);
 	
 	assert(graph.entry->type->outputs.size() == 1);
 	assert(graph.entry->type->outputs[0].first == llvm::Type::getInt32Ty(c.context));

@@ -8,7 +8,7 @@ int main() {
 	// create some random nodes
 	Context c;
 	
-	GraphFunction func("hello", {{llvm::Type::getInt32Ty(c.context), "in1"}}, {{llvm::Type::getInt1PtrTy(c.context), "out"}} );
+	GraphFunction func(c, "hello", {{llvm::Type::getInt32Ty(c.context), "in1"}}, {{llvm::Type::getInt1PtrTy(c.context), "out"}} );
 	auto ifNode = func.insertNode(std::make_unique<IfNodeType>(), 44.f, 23.f);
 	
 	connectExec(*func.entry, 0, *ifNode, 0);

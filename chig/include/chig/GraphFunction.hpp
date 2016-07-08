@@ -5,6 +5,7 @@
 
 #include "chig/NodeInstance.hpp"
 #include "chig/json.hpp"
+#include "chig/Context.hpp"
 
 #include <llvm/IR/Module.h>
 
@@ -19,15 +20,17 @@ struct GraphFunction {
 	
 	/// Construct the graph
 	/// Also constructs a input node
+	/// \param context The context
 	/// \param name The name of the function
 	/// \param inputs The types and descriptions of the inputs
 	/// \param outputs The types and descriptions of the outputs
-	GraphFunction(std::string name, const std::vector<std::pair<llvm::Type*, std::string>>& inputs, const std::vector<std::pair<llvm::Type*, std::string>>& outputs);
+	GraphFunction(Context& context, std::string name, const std::vector<std::pair<llvm::Type*, std::string>>& inputs, const std::vector<std::pair<llvm::Type*, std::string>>& outputs);
 	
 	/// Constructs a GraphFunction from a JOSN object
 	/// \param j The JSON object to read from
+	/// \context The context to create the GraphFunction with
 	/// \return The GraphFunction that has been produced
-	static GraphFunction fromJSON(const nlohmann::json& j);
+	static GraphFunction fromJSON(Context& context, const nlohmann::json& j);
 	
 	/// Serialize the GraphFunction to JSON
 	/// \return The JSON object representing the graph
@@ -48,6 +51,8 @@ struct GraphFunction {
 	NodeInstance* entry; /// A convenience pointer holding the entry point of the function.
 	
 	std::vector<std::pair<llvm::Type*, std::string>> outputs; /// The output types + descriptions
+	
+	Context* owningContext;
 	
 };
 

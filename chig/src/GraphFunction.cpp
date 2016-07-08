@@ -2,20 +2,73 @@
 #include "chig/NodeType.hpp"
 
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/AsmParser/Parser.h>
+#include <llvm/Support/SourceMgr.h>
+
 
 using namespace chig;
 
-GraphFunction::GraphFunction(std::string name, const std::vector<std::pair<llvm::Type*, std::string>>& inputs, const std::vector<std::pair<llvm::Type*, std::string>>& argOutputs)
+GraphFunction::GraphFunction(Context& context, std::string name, const std::vector<std::pair<llvm::Type*, std::string>>& inputs, const std::vector<std::pair<llvm::Type*, std::string>>& argOutputs)
 	: graphName{std::move(name)},
-	outputs{argOutputs}{
+	outputs{argOutputs},
+	owningContext{&context} {
 	
 	nodes.emplace_back(std::make_unique<NodeInstance>(std::make_unique<EntryNodeType>(inputs), 0.f, 0.f));
 	entry = nodes[0].get();
 	
 }
 
-GraphFunction GraphFunction::fromJSON(const nlohmann::json& data) {
-	// TODO: implement
+GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& data) {
+	
+	if(data["type"] != "function") {
+		throw std::runtime_error("Error deserializing GraphFunction: JSON data wasn't a function");
+	}
+	std::string name = data["name"];
+	
+	// get inputs
+	// TODO: user-made types
+	
+	// TODO: less hacky way to get types
+	// This generates some IR with that type then extracts that. Yeah it's hacky
+	std::vector<std::pair<llvm::Type*, std::string>> inputs;
+	for(auto inIter = data["inputs"].begin(); inIter != data["inputs"].end(); ++inIter) {
+		std::string typeStr = inIter.value();
+		auto IR = "@G = external global " + typeStr;
+		auto err = llvm::SMDiagnostic();
+		auto tmpModule = llvm::parseAssemblyString(IR, err, context.context);
+		inputs.push_back({tmpModule->getNamedValue("G")->getType(), inIter.key()});
+	}
+	
+	// same for outptus
+	std::vector<std::pair<llvm::Type*, std::string>> outputs;
+	for(auto outIter = data["outptus"].begin(); outIter != data["outputs"].end(); ++outIter) {
+		std::string typeStr = outIter.value();
+		auto IR = "@G = external global " + typeStr;
+		auto err = llvm::SMDiagnostic();
+		auto tmpModule = llvm::parseAssemblyString(IR, err, context.context);
+		outputs.push_back({tmpModule->getNamedValue("G")->getType(), outIter.key()});
+	}
+	
+	// construct it
+	GraphFunction ret(context, name, inputs, outputs);
+	
+	// read the nodes
+	for(const auto& node : data["nodes"]) {
+		std::string fullType = node["type"];
+		std::string moduleName = fullType.substr(0, fullType.find(':'));
+		std::string typeName = fullType.substr(fullType.find(':') + 1);
+		
+		auto* moduleWithNodeType = context.getModuleByName(moduleName.c_str());
+		
+		auto nodeType = moduleWithNodeType->createNodeType(typeName.c_str(), node["data"]);
+		
+		ret.nodes.push_back(std::make_unique<NodeInstance>(std::move(nodeType), node["location"][0], node["location"][0]));
+		
+	}
+	
+	// read the connections
+	
+	
 }
 
 nlohmann::json GraphFunction::toJSON() {
