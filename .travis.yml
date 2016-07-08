@@ -1,20 +1,14 @@
-language: cpp
 sudo: required
-dist: trusty
 
-
-
-            
-before_script:
-- sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-- sudo apt-add-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.5 main"
-- wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-- sudo apt-get update
-- sudo apt-get install g++-5 cmake libboost-all-dev llvm-3.5-dev -y
-- sudo pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
+arch:
+    packages:
+        - llvm
+        - cmake
+        - boost
+    script:
+        - cmake .
+        - make
+        - make test
+        
 script:
-- cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" -DCMAKE_CXX_COMPILER=g++-5
-- make
-- make test
-- coveralls
-env: COMPILER=g++-4.9
+  - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
