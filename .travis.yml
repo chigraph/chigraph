@@ -5,10 +5,13 @@ arch:
         - llvm
         - cmake
         - boost
+        - python-pip
     script:
+        - sudo pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
         - cmake .
         - make
         - make test
+        - coveralls
         
 script:
   - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
