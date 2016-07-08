@@ -11,7 +11,9 @@ before_script:
 - echo 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main' | sudo tee -a /etc/apt/sources.list
 - echo 'deb-src http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main' | sudo tee -a /etc/apt/sources.list
 - sudo apt-get update
-- sudo apt-get install g++-5 cmake libboost-all-dev llvm-3.8-doc llvm-3.8-runtime llvm-3.8 llvm-3.8-tools llvm-3.8-dev -y
+- wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
+- sudo apt-get update
+- sudo apt-get install g++-5 cmake libboost-all-dev llvm-3.8-dev -y
 - sudo pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
 script:
 - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" -DCMAKE_CXX_COMPILER=g++-5
