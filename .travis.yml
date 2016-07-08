@@ -13,7 +13,8 @@ arch:
         - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -std=c++11 -lstdc++"
         - make
         - make test
-        - coveralls
+        - coveralls --exclude /usr/ --exclude test/ --include chig/
+        - bash <(curl -s https://codecov.io/bash)
         
 script:
   - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
