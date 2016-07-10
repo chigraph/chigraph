@@ -11,6 +11,7 @@
 namespace chig{
 
 struct NodeType;
+struct Context;
 
 /// A module imported from a \c llvm::Module*
 /// Finds the nodes in an \c llvm::Module* and exposes them
@@ -18,12 +19,14 @@ struct ImportedModule : ChigModule {
 
 	/// Create a \c ImportedModule from a llvm::Module*. 
 	/// This object will take exclusive ownership over the object
-	ImportedModule(std::unique_ptr<llvm::Module> module);
+	ImportedModule(Context& contextArg, std::unique_ptr<llvm::Module> module);
 	
-	virtual ~ImportedModule();
+	virtual ~ImportedModule() = default;
 	
-	std::unique_ptr<NodeType> createNodeType(const char * name, const nlohmann::json & json_data) override;
-	std::vector<std::function<std::unique_ptr<NodeType>(const nlohmann::json &)> > getNodeTypes() override;
+	std::unique_ptr<NodeType> createNodeType(const char * name, const nlohmann::json & json_data) const override;
+	
+	// TODO: implement this
+	llvm::Type * getType(const char * name) override {}
 	
 	std::unique_ptr<llvm::Module> module; /// The \c llvm::Module that it represents
 

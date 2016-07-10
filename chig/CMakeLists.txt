@@ -2,6 +2,8 @@ find_package(LLVM REQUIRED CONFIG)
 find_package(Boost REQUIRED system filesystem)
 
 set(CHIG_PUBLIC_FILES
+	include/chig/ChigModule.hpp
+	include/chig/LangModule.hpp
 	include/chig/NodeType.hpp
 	include/chig/Context.hpp
 	include/chig/ImportedModule.hpp
@@ -14,6 +16,7 @@ set(CHIG_PRIVATE_FILES
 	src/ImportedModule.cpp
 	src/NodeInstance.cpp
 	src/GraphFunction.cpp
+	src/LangModule.cpp
 )
 
 add_definitions("-D__STDC_LIMIT_MACROS")

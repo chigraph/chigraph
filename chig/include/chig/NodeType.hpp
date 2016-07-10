@@ -17,10 +17,12 @@
 
 namespace chig {
 
+struct Context;
+
 // generic type
 struct NodeType {
 
-	NodeType() {}
+	NodeType(Context& con) : context{&con} {}
 	
 	virtual ~NodeType() = default;
 
@@ -28,6 +30,8 @@ struct NodeType {
 	std::string module;
 	std::string description;
 
+	Context* context;
+	
 	// inputs and outputs
 	std::vector<std::pair<llvm::Type*, std::string>> inputs;
 	
@@ -35,16 +39,24 @@ struct NodeType {
 	
 	unsigned int numOutputExecs = 1;
 
+	/// A virtual function that is called when this node needs to be called
+	/// \param io This has the values that are the inputs and outputs of the function. 
+	/// This vector will always have the size of `inputs.size() + outputs.size()` and starts with the inputs.
+	/// The types are gaurenteed to be the same as inputs and outputs
+	/// \param codegenInto The IRBuilder object that is used to place calls into
+	/// \param outputBlocks The blocks that can be outputted. This will be the same size as numOutputExecs.
 	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
 	virtual nlohmann::json toJSON() const {return {};}
 	
+	/// Clones the type
+	///
 	virtual std::unique_ptr<NodeType> clone() const = 0;
 	
 };
 
 struct FunctionCallNodeType : NodeType {
 
-	FunctionCallNodeType(llvm::Module* argModule, llvm::Function* func, int num_inputs, int numExecOutputs, std::string argDescription, const std::vector<std::string>& iodescs) : function{func} {
+	FunctionCallNodeType(Context& context, llvm::Module* argModule, llvm::Function* func, int num_inputs, int numExecOutputs, std::string argDescription, const std::vector<std::string>& iodescs) : NodeType(context), function{func} {
 		
 		module = argModule->getName();
 		
@@ -77,12 +89,20 @@ struct FunctionCallNodeType : NodeType {
 
 		auto ret = codegenInto->CreateCall(function, io);
 		
-		// TODO: better default
-		auto sw = codegenInto->CreateSwitch(ret, outputBlocks[0], numOutputExecs); 
-		
-		for(size_t i = 0; i < outputBlocks.size(); ++i) {
-			sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(llvm::getGlobalContext(), 32), i), outputBlocks[i]);
+		// we can optimize with a unconditional jump
+		if(numOutputExecs == 1) {
+			
+			codegenInto->CreateBr(outputBlocks[0]);
+			
+		} else {
+			
+			auto sw = codegenInto->CreateSwitch(ret, outputBlocks[0], numOutputExecs); 
+			
+			for(size_t i = 0; i < outputBlocks.size(); ++i) {
+				sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(llvm::getGlobalContext(), 32), i), outputBlocks[i]);
+			}
 		}
+
 		
 	}
 	
@@ -90,55 +110,6 @@ struct FunctionCallNodeType : NodeType {
 		return std::make_unique<FunctionCallNodeType>(*this);
 	}
 
-};
-
-struct IfNodeType : NodeType {
-	
-	IfNodeType() {
-		
-		module = "lang";
-		name = "if";
-		description = "branch on a bool";
-		
-		numOutputExecs = 2;
-		
-		inputs = { {llvm::Type::getInt1Ty(llvm::getGlobalContext()), "condition"} };
-		
-	}
-	
-	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
-
-		codegenInto->CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
-		
-	}
-	
-	virtual std::unique_ptr<NodeType> clone() const override{
-		return std::make_unique<IfNodeType>(*this);
-	}
-	
-	
-};
-
-struct EntryNodeType : NodeType {
-	
-	EntryNodeType(const std::vector<std::pair<llvm::Type*, std::string>>& funInputs) {
-		
-		module = "lang";
-		name = "entry";
-		description = "entry to a function";
-		
-		numOutputExecs = 1;
-		
-		outputs = funInputs;
-		
-	}
-
-	// this is treated differently during codegen
-	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {}
-	
-	virtual std::unique_ptr<NodeType> clone() const override {
-		return std::make_unique<EntryNodeType>(*this);
-	}
 };
 
 }

@@ -6,27 +6,28 @@ int main() {
 	
 	Context c;
 	
-	assert(c.modules.size() == 0);
-	
-	auto mod = c.loadModule("add_test.bc");
-	
+	// only the lang module should be loaded
 	assert(c.modules.size() == 1);
-	assert(c.modules[0].get() == mod);
-	assert(c.modules[0]->nodes.size() == 1);
+	
+	auto mod = c.loadModuleFromBc("add_test.bc");
+	
+	assert(c.modules.size() == 2); // lang and add_test.bc
+	assert(c.modules[1].get() == mod);
+	assert(static_cast<ImportedModule*>(c.modules[1].get())->nodes.size() == 1);
 	assert(c.getModuleByName("add_test.bc") == mod);
 	
 	c.unloadModule(mod);
 	
-	assert(c.modules.size() == 0);
+	assert(c.modules.size() == 1);
 	
 	// load a module that doens't exist
 	try {
-		c.loadModule("wtfisthis");
+		c.loadModuleFromBc("wtfisthis");
 		assert(false);
 	} catch(std::exception& e) {
 		
 	}
 	
-	assert(c.modules.size() == 0);
+	assert(c.modules.size() == 1);
 	
 }

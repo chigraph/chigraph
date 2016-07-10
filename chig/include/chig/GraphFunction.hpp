@@ -22,9 +22,7 @@ struct GraphFunction {
 	/// Also constructs a input node
 	/// \param context The context
 	/// \param name The name of the function
-	/// \param inputs The types and descriptions of the inputs
-	/// \param outputs The types and descriptions of the outputs
-	GraphFunction(Context& context, std::string name, const std::vector<std::pair<llvm::Type*, std::string>>& inputs, const std::vector<std::pair<llvm::Type*, std::string>>& outputs);
+	GraphFunction(Context& context, std::string name);
 	
 	/// Constructs a GraphFunction from a JOSN object
 	/// \param j The JSON object to read from
@@ -37,6 +35,8 @@ struct GraphFunction {
 	nlohmann::json toJSON();
 	
 	/// Compile the graph to an \c llvm::Function
+	/// Throws on error
+	/// \return The \c llvm::Function that it was compiled to
 	llvm::Function* compile();
 	
 	/// Add a node to the graph
@@ -48,9 +48,6 @@ struct GraphFunction {
 	std::string graphName; /// the name of the function
 	
 	std::vector<std::unique_ptr<NodeInstance>> nodes; /// Storage for the nodes
-	NodeInstance* entry; /// A convenience pointer holding the entry point of the function.
-	
-	std::vector<std::pair<llvm::Type*, std::string>> outputs; /// The output types + descriptions
 	
 	Context* owningContext;
 	

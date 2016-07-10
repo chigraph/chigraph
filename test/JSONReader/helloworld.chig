@@ -7,19 +7,15 @@
   },
   "graphs": [
     {
-      "type": "function",
+      "type": "function", 
       "name": "main",
-      "inputs": {
-        "input": "i32"
-      },
-      "outputs": {
-        "out": "i1*"
-      },
       "nodes": [
         {
           "type": "lang:entry",
           "location": [0, 0],
-          "data": {}
+          "data": {
+            "input": "lang:i32"
+          }
         },
         {
           "type": "lang:exit",

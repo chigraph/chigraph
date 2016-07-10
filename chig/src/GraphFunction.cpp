@@ -8,13 +8,9 @@
 
 using namespace chig;
 
-GraphFunction::GraphFunction(Context& context, std::string name, const std::vector<std::pair<llvm::Type*, std::string>>& inputs, const std::vector<std::pair<llvm::Type*, std::string>>& argOutputs)
+GraphFunction::GraphFunction(Context& context, std::string name)
 	: graphName{std::move(name)},
-	outputs{argOutputs},
 	owningContext{&context} {
-	
-	nodes.emplace_back(std::make_unique<NodeInstance>(std::make_unique<EntryNodeType>(inputs), 0.f, 0.f));
-	entry = nodes[0].get();
 	
 }
 
@@ -25,50 +21,101 @@ GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& da
 	}
 	std::string name = data["name"];
 	
-	// get inputs
-	// TODO: user-made types
-	
-	// TODO: less hacky way to get types
-	// This generates some IR with that type then extracts that. Yeah it's hacky
-	std::vector<std::pair<llvm::Type*, std::string>> inputs;
-	for(auto inIter = data["inputs"].begin(); inIter != data["inputs"].end(); ++inIter) {
-		std::string typeStr = inIter.value();
-		auto IR = "@G = external global " + typeStr;
-		auto err = llvm::SMDiagnostic();
-		auto tmpModule = llvm::parseAssemblyString(IR, err, context.context);
-		inputs.push_back({tmpModule->getNamedValue("G")->getType(), inIter.key()});
-	}
-	
-	// same for outptus
-	std::vector<std::pair<llvm::Type*, std::string>> outputs;
-	for(auto outIter = data["outptus"].begin(); outIter != data["outputs"].end(); ++outIter) {
-		std::string typeStr = outIter.value();
-		auto IR = "@G = external global " + typeStr;
-		auto err = llvm::SMDiagnostic();
-		auto tmpModule = llvm::parseAssemblyString(IR, err, context.context);
-		outputs.push_back({tmpModule->getNamedValue("G")->getType(), outIter.key()});
-	}
-	
 	// construct it
-	GraphFunction ret(context, name, inputs, outputs);
+	GraphFunction ret(context, name);
 	
 	// read the nodes
+	if(data.find("nodes") == data.end()) {
+		throw std::runtime_error("Error reading JOSN: each function needs an nodes JSON array of objects. JSON dump: " + data.dump());
+	}
 	for(const auto& node : data["nodes"]) {
+		if(node.find("type") == node.end()) {
+			throw std::runtime_error("Error reading JOSN: each node needs a \"type\" element. JSON dump: " + node.dump());
+		}
 		std::string fullType = node["type"];
 		std::string moduleName = fullType.substr(0, fullType.find(':'));
 		std::string typeName = fullType.substr(fullType.find(':') + 1);
 		
 		auto* moduleWithNodeType = context.getModuleByName(moduleName.c_str());
+		if(!moduleWithNodeType) {
+			throw std::runtime_error("No loaded module named \"" + moduleName + "\". JSON dump: " + node.dump());
+		}
+		
+		if(node.find("data") == node.end()) {
+			throw std::runtime_error("Error reading JOSN: each node needs a \"data\" object. JSON dump: " + node.dump());
+		}
 		
 		auto nodeType = moduleWithNodeType->createNodeType(typeName.c_str(), node["data"]);
-		
+		if(!nodeType) {
+			throw std::runtime_error("Error creating node type. Module \"" + moduleName + "\"; Node type name: \"" + typeName + "\"");
+		}
+		auto testIter = node.find("location");
+		if(testIter != node.end()) {
+			// make sure it is the right size
+			if(!testIter.value().is_array() || testIter.value().size() == 2) {
+				throw std::runtime_error("Error reading json: node[x].location must be an array of size 2 of floats. JOSN dump: " + node.dump());
+			}
+		} else {
+			throw std::runtime_error("each node much have a array of size 2 for the location. JSON dump: " + node.dump());
+		}
 		ret.nodes.push_back(std::make_unique<NodeInstance>(std::move(nodeType), node["location"][0], node["location"][0]));
 		
 	}
 	
 	// read the connections
+	for(auto& connection : data["connections"]) {
+		
+		std::string type = connection["type"];
+		bool isData = type == "data";
+		// it either has to be "data" or "exec"
+		if(!isData && type != "exec") {
+			throw std::runtime_error("Unrecoginized data type: " + type);
+		}
+		
+		int InputNodeID = connection["input"][0];
+		int InputConnectionID = connection["input"][1];
+		
+		int OutputNodeID = connection["output"][0];
+		int OutputConnectionID = connection["output"][1];
+		
+		// make sure the nodes exist
+		if(InputNodeID >= ret.nodes.size()) {
+			throw std::runtime_error("Out of bounds in input node in connection " + connection.dump() + " : no node with ID " + std::to_string(InputNodeID));
+		}
+		if(OutputNodeID >= ret.nodes.size()) {
+			throw std::runtime_error("Out of bounds in output node in connection " + connection.dump() + " : no node with ID " + std::to_string(InputNodeID));
+		}
+		
+		if(OutputNodeID == InputNodeID) {
+			throw std::runtime_error("Cannot connect a node to itsself! JSON dump: " + connection.dump());
+		}
+		
+		// connect
+		if(isData) {
+			// make sure the connection exists
+			if(InputConnectionID >= ret.nodes[InputNodeID]->outputDataConnections.size()) {
+				throw std::runtime_error("Out of bounds in data connection: there is no output data dock with id " + std::to_string(InputConnectionID) + " in connection " + connection.dump());
+			}
+			if(OutputConnectionID >= ret.nodes[OutputNodeID]->inputDataConnections.size()) {
+				throw std::runtime_error("Out of bounds in data connection: there is no input data dock with id " + std::to_string(OutputConnectionID) + " in connection " + connection.dump());
+			}
+			
+			connectData(*ret.nodes[InputNodeID], InputConnectionID, *ret.nodes[OutputNodeID], OutputConnectionID);
+		} else {
+			// make sure the connection exists
+			if(InputConnectionID >= ret.nodes[InputNodeID]->outputExecConnections.size()) {
+				throw std::runtime_error("Out of bounds in data connection: there is no output exec dock with id " + std::to_string(InputConnectionID) + " in connection " + connection.dump());
+			}
+			if(OutputConnectionID >= ret.nodes[OutputNodeID]->inputExecConnections.size()) {
+				throw std::runtime_error("Out of bounds in data connection: there is no input exec dock with id " + std::to_string(OutputConnectionID) + " in connection " + connection.dump());
+			}
+			
+			connectExec(*ret.nodes[InputNodeID], InputConnectionID, *ret.nodes[OutputNodeID], OutputConnectionID);
+
+		}
+	}
 	
-	
+	return ret;
 }
 
 nlohmann::json GraphFunction::toJSON() {
@@ -77,30 +124,21 @@ nlohmann::json GraphFunction::toJSON() {
 	jsonData["type"] = "function";
 	jsonData["name"] = graphName;
 	
-	// create inputs JSON
-	auto& inputsJson = jsonData["inputs"];
-	inputsJson = nlohmann::json::object();
-	for(size_t i = 0; i < entry->type->outputs.size(); ++i) {
-		std::string type;
-
-		llvm::raw_string_ostream stream{type};
-		entry->type->outputs[i].first->print(stream);
-		stream.flush();
-		
-		inputsJson[entry->type->outputs[i].second] = type;
+	auto entryFinder = [](auto& node) {
+		return node->type->module == "lang" && node->type->name == "entry";
+	};
+	
+	// find the entry
+	auto entryIter = std::find_if(nodes.begin(), nodes.end(), entryFinder);
+	if(entryIter == nodes.end()) {
+		throw std::runtime_error("Error: no input node");
+	}
+	// make sure there is only 1 input
+	if(std::find_if(entryIter + 1, nodes.end(), entryFinder) != nodes.end()) {
+		throw std::runtime_error("Error: you cannot have two input nodes!");
 	}
 	
-	// create outputs JSON
-	auto& outputJson = jsonData["outputs"];
-	outputJson = nlohmann::json::object();
-	for(size_t i = 0; i < outputs.size(); ++i) {
-		std::string type;
-		llvm::raw_string_ostream stream{type};
-		outputs[i].first->print(stream);
-		stream.flush();
-		
-		outputJson[outputs[i].second] = type;
-	}
+	auto* entry = entryIter->get();
 	
 	// serialize the nodes
 	auto& jsonNodes = jsonData["nodes"];
@@ -110,7 +148,8 @@ nlohmann::json GraphFunction::toJSON() {
 		auto& node = nodes[node_id];
 		jsonNodes.push_back({
 			{"type", node->type->module + ':' + node->type->name},
-			{"location", {node->x, node->y}}
+			{"location", {node->x, node->y}},
+			{"data", node->type->toJSON()}
 		});
 		// add its connections. Just out the outputs to avoid duplicates
 		

@@ -1,14 +1,16 @@
 #include "chig/ImportedModule.hpp"
 #include "chig/NodeType.hpp"
+#include "chig/Context.hpp"
 
 #include <stdlib.h>
 #include <string.h>
 
 using namespace chig;
 
-ImportedModule::ImportedModule(std::unique_ptr<llvm::Module> arg_module) {
+ImportedModule::ImportedModule(Context& contextArg, std::unique_ptr<llvm::Module> arg_module) : ChigModule(contextArg) {
 
 	module = std::move(arg_module);
+	name = module->getName();
 
 	// start finding nodes
 	for(auto&& function : module->getFunctionList()) {
@@ -45,30 +47,14 @@ ImportedModule::ImportedModule(std::unique_ptr<llvm::Module> arg_module) {
 			}
 			
 			// construct it and add it to the vector
-			nodes.push_back(std::make_unique<FunctionCallNodeType>(module.get(), &function, num_inputs, numOutputExecPaths, description, ioDescriptions));
+			nodes.push_back(std::make_unique<FunctionCallNodeType>(*context, module.get(), &function, num_inputs, numOutputExecPaths, description, ioDescriptions));
 
 		}
 	}
 
 }
 
-ImportedModule::~ImportedModule() = default;
-
-std::vector<std::function<std::unique_ptr<NodeType> (const nlohmann::json&)>> chig::ImportedModule::getNodeTypes()
-{
-	std::vector<std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>> ret;
-	ret.reserve(nodes.size());
-	
-	std::transform(nodes.begin(), nodes.end(), std::back_inserter(ret), [](auto& node_type) {
-		return [ty = node_type.get()](const nlohmann::json&) {
-			return std::make_unique<FunctionCallNodeType>(*ty);
-		};
-	});
-	
-	return ret;
-}
-
-std::unique_ptr<NodeType> chig::ImportedModule::createNodeType(const char* name, const nlohmann::json&)
+std::unique_ptr<NodeType> chig::ImportedModule::createNodeType(const char* name, const nlohmann::json&) const
 {
 	auto iter = std::find_if(nodes.begin(), nodes.end(), [&](auto& func) {
 		return func->name == name;

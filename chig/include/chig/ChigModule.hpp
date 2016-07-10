@@ -12,15 +12,21 @@
 
 namespace chig {
 
+struct Context;
+
 struct ChigModule {
+	
+	ChigModule(Context& contextArg) : context{&contextArg}
+		{}
 	
 	virtual ~ChigModule() = default;
 	
-	virtual std::vector<std::function<std::unique_ptr<NodeType>(const nlohmann::json& data)>> getNodeTypes() = 0;
-	virtual std::unique_ptr<NodeType> createNodeType(const char* name, const nlohmann::json& json_data) = 0;
+	virtual std::unique_ptr<NodeType> createNodeType(const char* name, const nlohmann::json& json_data) const = 0;
+	virtual llvm::Type* getType(const char* name) = 0;
 	
 	std::string name;
 	
+	Context* context;
 	
 };
 
