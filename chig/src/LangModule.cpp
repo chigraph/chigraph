@@ -34,8 +34,23 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg) {
 			
 			return std::make_unique<EntryNodeType>(*context, inputs);
 			
-		}
-		}
+		}},
+		{"exit"s, [this](const nlohmann::json& data) {
+			// transform the JSON data into this data structure
+			std::vector<std::pair<llvm::Type*, std::string>> outputs;
+			
+			for(auto iter = data.begin(); iter != data.end(); ++iter) {
+				
+				std::string qualifiedType = iter.value();
+				std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
+				std::string type = qualifiedType.substr(qualifiedType.find(':') + 1);
+				
+				outputs.emplace_back(context->getType(module.c_str(), type.c_str()), iter.key());
+			}
+			
+			return std::make_unique<EntryNodeType>(*context, outputs);
+
+		}}
 	};
 }
 

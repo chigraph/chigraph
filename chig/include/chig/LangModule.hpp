@@ -65,7 +65,32 @@ struct EntryNodeType : NodeType {
 	nlohmann::json toJSON() const override {
 		nlohmann::json ret;
 		
+		for(auto& pair : outputs) {
+			// TODO: user made types
+			ret[pair.second] = "lang:" + context->stringifyType(pair.first);
+		}
 		
+		return ret;
+	}
+};
+
+struct ExitNodeType : NodeType {
+	
+	ExitNodeType(Context& con, const std::vector<std::pair<llvm::Type*, std::string>>& funOutputs): NodeType{con} {
+		inputs = funOutputs;
+	}
+	
+	virtual void codegen(const std::vector<llvm::Value*>&, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>&) const override {
+		// TODO: multiple return paths
+		codegenInto->CreateRet(llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), 0));
+	}
+	
+	virtual std::unique_ptr<NodeType> clone() const override {
+		return std::make_unique<ExitNodeType>(*this);
+	}
+	
+	nlohmann::json toJSON() const override {
+		nlohmann::json ret;
 		
 		for(auto& pair : outputs) {
 			// TODO: user made types
@@ -74,6 +99,7 @@ struct EntryNodeType : NodeType {
 		
 		return ret;
 	}
+	
 };
 
 

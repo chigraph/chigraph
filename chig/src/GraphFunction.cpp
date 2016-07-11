@@ -53,7 +53,7 @@ GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& da
 		if(testIter != node.end()) {
 			// make sure it is the right size
 			if(!testIter.value().is_array() || testIter.value().size() == 2) {
-				throw std::runtime_error("Error reading json: node[x].location must be an array of size 2 of floats. JOSN dump: " + node.dump());
+			//	throw std::runtime_error("Error reading json: node[x].location must be an array of size 2 of floats. JOSN dump: " + node.dump());
 			}
 		} else {
 			throw std::runtime_error("each node much have a array of size 2 for the location. JSON dump: " + node.dump());
