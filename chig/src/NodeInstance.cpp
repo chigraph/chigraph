@@ -8,13 +8,11 @@ NodeInstance::NodeInstance(std::unique_ptr<NodeType> nodeType, float arg_x, floa
 	y{arg_y} {
 	assert(type);
 	
-	// TODO: multiple exec inputs
-	inputExecConnections.resize(1, {nullptr, ~0});
+	inputDataConnections.resize(type->dataInputs.size(), {nullptr, ~0});
+	outputDataConnections.resize(type->dataOutputs.size(), {nullptr, ~0});
 	
-	inputDataConnections.resize(type->inputs.size(), {nullptr, ~0});
-	
-	outputExecConnections.resize(type->numOutputExecs, {nullptr, ~0});
-	outputDataConnections.resize(type->outputs.size(), {nullptr, ~0});
+	inputExecConnections.resize(type->execInputs.size(), {nullptr, ~0});
+	outputExecConnections.resize(type->execOutputs.size(), {nullptr, ~0});
 }
 
 

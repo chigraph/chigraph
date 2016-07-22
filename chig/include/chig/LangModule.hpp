@@ -23,13 +23,14 @@ struct IfNodeType : NodeType {
 		name = "if";
 		description = "branch on a bool";
 		
-		numOutputExecs = 2;
+		execInputs = {""};
+		execOutputs = {"True", "False"};
 		
-		inputs = { {llvm::Type::getInt1Ty(llvm::getGlobalContext()), "condition"} };
+		dataInputs = { {llvm::Type::getInt1Ty(llvm::getGlobalContext()), "condition"} };
 		
 	}
 	
-	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
+	virtual void codegen(size_t /*execInputID*/, const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
 
 		codegenInto->CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
 		
@@ -49,14 +50,14 @@ struct EntryNodeType : NodeType {
 		name = "entry";
 		description = "entry to a function";
 		
-		numOutputExecs = 1;
+		execOutputs = {""};
 		
-		outputs = funInputs;
+		dataOutputs = funInputs;
 		
 	}
 
-	// this is treated differently during codegen
-	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {}
+	// this is treated differently during codegen TODO: think about this
+	virtual void codegen(size_t /*inputExecID*/,const std::vector<llvm::Value*>& /*io*/, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {}
 	
 	virtual std::unique_ptr<NodeType> clone() const override {
 		return std::make_unique<EntryNodeType>(*this);
@@ -65,7 +66,7 @@ struct EntryNodeType : NodeType {
 	nlohmann::json toJSON() const override {
 		nlohmann::json ret;
 		
-		for(auto& pair : outputs) {
+		for(auto& pair : dataOutputs) {
 			// TODO: user made types
 			ret[pair.second] = "lang:" + context->stringifyType(pair.first);
 		}
@@ -77,10 +78,17 @@ struct EntryNodeType : NodeType {
 struct ExitNodeType : NodeType {
 	
 	ExitNodeType(Context& con, const std::vector<std::pair<llvm::Type*, std::string>>& funOutputs): NodeType{con} {
-		inputs = funOutputs;
+		
+		execInputs = {""};
+		
+		module = "lang";
+		name = "exit";
+		description = "exit from a function; think return";
+		
+		dataInputs = funOutputs;
 	}
 	
-	virtual void codegen(const std::vector<llvm::Value*>&, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>&) const override {
+	virtual void codegen(size_t /*execInputID*/,const std::vector<llvm::Value*>&, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>&) const override {
 		// TODO: multiple return paths
 		codegenInto->CreateRet(llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), 0));
 	}
@@ -92,7 +100,7 @@ struct ExitNodeType : NodeType {
 	nlohmann::json toJSON() const override {
 		nlohmann::json ret;
 		
-		for(auto& pair : outputs) {
+		for(auto& pair : dataOutputs) {
 			// TODO: user made types
 			ret[pair.second] = "lang:" + context->stringifyType(pair.first);
 		}

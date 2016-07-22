@@ -31,25 +31,44 @@ struct NodeInstance {
 
 /// Connects two nodes' data connections
 /// \param lhs The node to the left, the node outputting the data
-/// \param outID The ID of data connection in \c lhs to be connected
+/// \param connectionInputID The ID of data connection in \c lhs to be connected
 /// \param rhs The node to the right, that takes in the data as a parameter
-/// \param inID The ID of data input in \c rhs
-inline void connectData(NodeInstance& lhs, size_t outID, NodeInstance& rhs, size_t inID) {
+/// \param connectionOutputID The ID of data input in \c rhs
+inline void connectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID) {
 	
-	lhs.outputDataConnections[outID] = {&rhs, inID};
-	rhs.inputDataConnections[inID] = {&lhs, outID};
+	// make sure the connection exists
+	// the input to the connection is the output to the node
+	if(connectionInputID >= lhs.outputDataConnections.size()) {
+		throw std::runtime_error("Out of bounds in data connection: there is no output exec dock with id " + std::to_string(connectionInputID) + " in node with type " + lhs.type->module + ':' + lhs.type->name);
+	}
+	if(connectionOutputID >= rhs.inputDataConnections.size()) {
+		throw std::runtime_error("Out of bounds in data connection: there is no output exec dock with id " + std::to_string(connectionInputID) + " in node with type " + lhs.type->module + ':' + lhs.type->name);
+	}
+	
+
+	lhs.outputDataConnections[connectionInputID] = {&rhs, connectionOutputID};
+	rhs.inputDataConnections[connectionOutputID] = {&lhs, connectionInputID};
 
 }
 
 /// Connects two nodes' exec connections
 /// \param lhs The node to the left, the node outputting the connections
-/// \param outID The ID of exec connection in \c lhs to be connected
+/// \param connectionInputID The ID of exec connection in \c lhs to be connected
 /// \param rhs The node to the right, that takes in the exec as a parameter
-/// \param inID The ID of exec input in \c rhs
-inline void connectExec(NodeInstance& lhs, size_t outID, NodeInstance& rhs, size_t inID) {
+/// \param connectionOutputID The ID of exec input in \c rhs
+inline void connectExec(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID) {
 	
-	lhs.outputExecConnections[outID] = {&rhs, inID};
-	rhs.inputExecConnections[inID] = {&lhs, outID};
+	// make sure the connection exists
+	if(connectionInputID >= lhs.outputExecConnections.size()) {
+		throw std::runtime_error("Out of bounds in exec connection: there is no output exec dock with id " + std::to_string(connectionInputID) + " in node with type " + lhs.type->module + ':' + lhs.type->name);
+	}
+	if(connectionOutputID >= rhs.inputExecConnections.size()) {
+		throw std::runtime_error("Out of bounds in exec connection: there is no input exec dock with id " + std::to_string(connectionOutputID) + " in node with type " + lhs.type->module + ':' + lhs.type->name);
+	}
+	
+	// connect it!
+	lhs.outputExecConnections[connectionInputID] = {&rhs, connectionOutputID};
+	rhs.inputExecConnections[connectionOutputID] = {&lhs, connectionOutputID};
 }
 
 }

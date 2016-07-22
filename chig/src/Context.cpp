@@ -95,9 +95,7 @@ void Context::addModule(std::unique_ptr<ChigModule> modToAdd)
 
 llvm::Type * Context::getType(const char* module, const char* name)
 {
-	auto realModule = module ? module : nullptr;
-	// TODO: implement
-	return nullptr;
+	return getModuleByName(module)->getType(name);
 }
 
 std::unique_ptr<NodeType> Context::getNodeType(const char* moduleName, const char* name, const nlohmann::json& data)

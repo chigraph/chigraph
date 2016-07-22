@@ -48,7 +48,7 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg) {
 				outputs.emplace_back(context->getType(module.c_str(), type.c_str()), iter.key());
 			}
 			
-			return std::make_unique<EntryNodeType>(*context, outputs);
+			return std::make_unique<ExitNodeType>(*context, outputs);
 
 		}}
 	};

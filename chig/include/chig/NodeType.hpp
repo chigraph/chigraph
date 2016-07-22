@@ -33,19 +33,21 @@ struct NodeType {
 	Context* context;
 	
 	// inputs and outputs
-	std::vector<std::pair<llvm::Type*, std::string>> inputs;
+	std::vector<std::pair<llvm::Type*, std::string>> dataInputs;
 	
-	std::vector<std::pair<llvm::Type*, std::string>> outputs;
+	std::vector<std::pair<llvm::Type*, std::string>> dataOutputs;
 	
-	unsigned int numOutputExecs = 1;
+	std::vector<std::string> execInputs;
+	std::vector<std::string> execOutputs;
 
 	/// A virtual function that is called when this node needs to be called
+	/// \param execInputID The ID of the exec input
 	/// \param io This has the values that are the inputs and outputs of the function. 
 	/// This vector will always have the size of `inputs.size() + outputs.size()` and starts with the inputs.
 	/// The types are gaurenteed to be the same as inputs and outputs
 	/// \param codegenInto The IRBuilder object that is used to place calls into
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as numOutputExecs.
-	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
+	virtual void codegen(size_t execInputID, const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
 	virtual nlohmann::json toJSON() const {return {};}
 	
 	/// Clones the type
@@ -60,23 +62,24 @@ struct FunctionCallNodeType : NodeType {
 		
 		module = argModule->getName();
 		
-		numOutputExecs = numExecOutputs;
+		// TODO: gather metadata for exec descs
+		execOutputs.resize(numExecOutputs);
 		
 		name = func->getName();
 		description = std::move(argDescription);
 
 		// populate inputs and outputs
-		inputs.resize(num_inputs);
+		dataInputs.resize(num_inputs);
 		auto beginningOfOutptus = func->getArgumentList().begin();
 		std::advance(beginningOfOutptus, num_inputs);
 		
-		std::transform(func->getArgumentList().begin(), beginningOfOutptus, iodescs.begin(), inputs.begin(), 
+		std::transform(func->getArgumentList().begin(), beginningOfOutptus, iodescs.begin(), dataInputs.begin(), 
 			[](auto& arg, auto& desc){return std::make_pair(arg.getType(), desc);});
 
 		int num_outputs = std::distance(func->getArgumentList().begin(), func->getArgumentList().end()) - num_inputs;
 
-		outputs.resize(num_outputs);
-		std::transform(beginningOfOutptus, func->getArgumentList().end(), iodescs.begin() + num_inputs, outputs.begin(), [](auto& arg, auto& desc){return std::make_pair(arg.getType(), desc);});
+		dataOutputs.resize(num_outputs);
+		std::transform(beginningOfOutptus, func->getArgumentList().end(), iodescs.begin() + num_inputs, dataOutputs.begin(), [](auto& arg, auto& desc){return std::make_pair(arg.getType(), desc);});
 
 	}
 
@@ -85,18 +88,18 @@ struct FunctionCallNodeType : NodeType {
 	
 	llvm::Function* function;
 
-	virtual void codegen(const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
+	virtual void codegen(size_t execInputID, const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
 
 		auto ret = codegenInto->CreateCall(function, io);
 		
 		// we can optimize with a unconditional jump
-		if(numOutputExecs == 1) {
+		if(execOutputs.size() == 1) {
 			
 			codegenInto->CreateBr(outputBlocks[0]);
 			
 		} else {
 			
-			auto sw = codegenInto->CreateSwitch(ret, outputBlocks[0], numOutputExecs); 
+			auto sw = codegenInto->CreateSwitch(ret, outputBlocks[0], execOutputs.size()); 
 			
 			for(size_t i = 0; i < outputBlocks.size(); ++i) {
 				sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(llvm::getGlobalContext(), 32), i), outputBlocks[i]);

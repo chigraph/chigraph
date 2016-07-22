@@ -26,7 +26,9 @@ struct ImportedModule : ChigModule {
 	std::unique_ptr<NodeType> createNodeType(const char * name, const nlohmann::json & json_data) const override;
 	
 	// TODO: implement this
-	llvm::Type * getType(const char * name) override {}
+	llvm::Type* getType(const char * name) override {
+		return nullptr;
+	}
 	
 	std::unique_ptr<llvm::Module> module; /// The \c llvm::Module that it represents
 

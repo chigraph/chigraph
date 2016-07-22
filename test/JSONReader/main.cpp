@@ -23,9 +23,9 @@ int main() {
 	assert(graph.nodes.size() == 2);
 	assert(graph.nodes[0]->type->module == "lang");
 	assert(graph.nodes[0]->type->name == "entry");
-	assert(graph.nodes[0]->type->outputs.size() == 1);
-	assert(graph.nodes[0]->type->outputs[0].first == llvm::Type::getInt32Ty(c.context));
-	assert(graph.nodes[0]->type->outputs[0].second == "input");
+	assert(graph.nodes[0]->type->dataOutputs.size() == 1);
+	assert(c.stringifyType(graph.nodes[0]->type->dataOutputs[0].first) == "i32*");
+	assert(graph.nodes[0]->type->dataOutputs[0].second == "input");
 	
 	assert(graph.nodes[0]->outputExecConnections.size() == 1);
 	assert(graph.nodes[0]->outputExecConnections[0].first == graph.nodes[1].get());

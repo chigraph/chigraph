@@ -36,16 +36,11 @@ GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& da
 		std::string moduleName = fullType.substr(0, fullType.find(':'));
 		std::string typeName = fullType.substr(fullType.find(':') + 1);
 		
-		auto* moduleWithNodeType = context.getModuleByName(moduleName.c_str());
-		if(!moduleWithNodeType) {
-			throw std::runtime_error("No loaded module named \"" + moduleName + "\". JSON dump: " + node.dump());
-		}
-		
 		if(node.find("data") == node.end()) {
 			throw std::runtime_error("Error reading JOSN: each node needs a \"data\" object. JSON dump: " + node.dump());
 		}
 		
-		auto nodeType = moduleWithNodeType->createNodeType(typeName.c_str(), node["data"]);
+		auto nodeType = context.getNodeType(moduleName.c_str(), typeName.c_str(), node["data"]);
 		if(!nodeType) {
 			throw std::runtime_error("Error creating node type. Module \"" + moduleName + "\"; Node type name: \"" + typeName + "\"");
 		}
@@ -91,27 +86,11 @@ GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& da
 		}
 		
 		// connect
+		// these functions do bounds checking, it's okay
 		if(isData) {
-			// make sure the connection exists
-			if(InputConnectionID >= ret.nodes[InputNodeID]->outputDataConnections.size()) {
-				throw std::runtime_error("Out of bounds in data connection: there is no output data dock with id " + std::to_string(InputConnectionID) + " in connection " + connection.dump());
-			}
-			if(OutputConnectionID >= ret.nodes[OutputNodeID]->inputDataConnections.size()) {
-				throw std::runtime_error("Out of bounds in data connection: there is no input data dock with id " + std::to_string(OutputConnectionID) + " in connection " + connection.dump());
-			}
-			
 			connectData(*ret.nodes[InputNodeID], InputConnectionID, *ret.nodes[OutputNodeID], OutputConnectionID);
 		} else {
-			// make sure the connection exists
-			if(InputConnectionID >= ret.nodes[InputNodeID]->outputExecConnections.size()) {
-				throw std::runtime_error("Out of bounds in data connection: there is no output exec dock with id " + std::to_string(InputConnectionID) + " in connection " + connection.dump());
-			}
-			if(OutputConnectionID >= ret.nodes[OutputNodeID]->inputExecConnections.size()) {
-				throw std::runtime_error("Out of bounds in data connection: there is no input exec dock with id " + std::to_string(OutputConnectionID) + " in connection " + connection.dump());
-			}
-			
 			connectExec(*ret.nodes[InputNodeID], InputConnectionID, *ret.nodes[OutputNodeID], OutputConnectionID);
-
 		}
 	}
 	
@@ -194,7 +173,9 @@ nlohmann::json GraphFunction::toJSON() {
 	return jsonData;
 }
 
+// TODO: implement
 llvm::Function* GraphFunction::compile() {
+	return nullptr;
 }
 
 NodeInstance* GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y) {

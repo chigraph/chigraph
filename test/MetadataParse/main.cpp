@@ -19,14 +19,14 @@ int main() {
 	auto& node = module->nodes[0];
 	
 	assert(node->description == "Add two numbers");
-	assert(node->numOutputExecs == 1);
+	assert(node->execOutputs.size() == 1);
 	
-	assert(node->inputs.size() == 2);
-	assert((node->inputs[0] == std::make_pair((llvm::Type*)llvm::Type::getInt32Ty(c.context), "a"s)));
-	assert((node->inputs[1] == std::make_pair((llvm::Type*)llvm::Type::getInt32Ty(c.context), "b"s)));
+	assert(node->dataInputs.size() == 2);
+	assert((node->dataInputs[0] == std::make_pair((llvm::Type*)llvm::Type::getInt32Ty(c.context), "a"s)));
+	assert((node->dataInputs[1] == std::make_pair((llvm::Type*)llvm::Type::getInt32Ty(c.context), "b"s)));
 	
-	assert(node->outputs.size() == 1);
-	assert((node->outputs[0] == std::make_pair((llvm::Type*)llvm::Type::getInt32PtrTy(c.context), "out"s)));
+	assert(node->dataOutputs.size() == 1);
+	assert((node->dataOutputs[0] == std::make_pair((llvm::Type*)llvm::Type::getInt32PtrTy(c.context), "out"s)));
 	
 	
 	
