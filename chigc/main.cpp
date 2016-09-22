@@ -7,9 +7,4 @@
 
 using namespace chig;
 
-int main() {
-
-	
-}
-
-
+int main() {}

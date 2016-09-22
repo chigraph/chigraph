@@ -7,35 +7,31 @@
 
 #include <llvm/IR/Module.h>
 
-
-namespace chig{
-
+namespace chig
+{
 struct NodeType;
 struct Context;
+struct FunctionCallNodeType;
 
 /// A module imported from a \c llvm::Module*
 /// Finds the nodes in an \c llvm::Module* and exposes them
 struct ImportedModule : ChigModule {
-
-	/// Create a \c ImportedModule from a llvm::Module*. 
+	/// Create a \c ImportedModule from a llvm::Module*.
 	/// This object will take exclusive ownership over the object
 	ImportedModule(Context& contextArg, std::unique_ptr<llvm::Module> module);
-	
+
 	virtual ~ImportedModule() = default;
-	
-	std::unique_ptr<NodeType> createNodeType(const char * name, const nlohmann::json & json_data) const override;
-	
+
+	std::unique_ptr<NodeType> createNodeType(
+		const char* name, const nlohmann::json& json_data) const override;
+
 	// TODO: implement this
-	llvm::Type* getType(const char * name) override {
-		return nullptr;
-	}
-	
-	std::unique_ptr<llvm::Module> module; /// The \c llvm::Module that it represents
+	llvm::Type* getType(const char* name) override { return nullptr; }
+	std::unique_ptr<llvm::Module> module;  /// The \c llvm::Module that it represents
 
-	std::vector<std::unique_ptr<FunctionCallNodeType>> nodes; /// The nodes that the module contains
-
+	std::vector<std::unique_ptr<FunctionCallNodeType>>
+		nodes;  /// The nodes that the module contains
 };
-
 }
 
-#endif // CHIG_IMPORTED_MODULE_HPP
+#endif  // CHIG_IMPORTED_MODULE_HPP

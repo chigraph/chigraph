@@ -3,33 +3,31 @@
 
 #pragma once
 
-#include "chig/NodeType.hpp"
 #include "chig/json.hpp"
 
-#include <vector>
+#include <llvm/IR/Type.h>
+
 #include <functional>
 #include <string>
+#include <vector>
 
-namespace chig {
-
+namespace chig
+{
 struct Context;
+struct NodeType;
 
 struct ChigModule {
-	
-	ChigModule(Context& contextArg) : context{&contextArg}
-		{}
-	
+	ChigModule(Context& contextArg) : context{&contextArg} {}
 	virtual ~ChigModule() = default;
-	
-	virtual std::unique_ptr<NodeType> createNodeType(const char* name, const nlohmann::json& json_data) const = 0;
-	virtual llvm::Type* getType(const char* name) = 0;
-	
-	std::string name;
-	
-	Context* context;
-	
-};
 
+	virtual std::unique_ptr<NodeType> createNodeType(
+		const char* name, const nlohmann::json& json_data) const = 0;
+	virtual llvm::Type* getType(const char* name) = 0;
+
+	std::string name;
+
+	Context* context;
+};
 }
 
-#endif // CHIG_CHIG_MODULE_HPP
+#endif  // CHIG_CHIG_MODULE_HPP
