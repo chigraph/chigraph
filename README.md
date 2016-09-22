@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/GuapoTaco/chigraph.svg?maxAge=2592000)](https://travis-ci.org/GuapoTaco/chigraph) [![Documentation](https://img.shields.io/badge/documentation-online-brightgreen.svg?style=flat)](https://GuapoTaco.github.io/chigraph) [![Coverage Status](https://coveralls.io/repos/github/russelltg/chigraph/badge.svg?branch=master)](https://coveralls.io/github/russelltg/chigraph?branch=master)
+[![Build Status](https://travis-ci.org/russelltg/chigraph.svg?branch=master)](https://travis-ci.org/russelltg/chigraph) [![Documentation](https://img.shields.io/badge/documentation-online-brightgreen.svg?style=flat)](https://GuapoTaco.github.io/chigraph) [![Coverage Status](https://coveralls.io/repos/github/russelltg/chigraph/badge.svg?branch=master)](https://coveralls.io/github/russelltg/chigraph?branch=master)
 
 
 # chigraph
