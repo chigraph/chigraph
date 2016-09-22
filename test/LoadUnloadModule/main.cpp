@@ -17,6 +17,14 @@ int main()
 	assert(c.getModuleByName("add_test.bc") == mod);
 
 	c.unloadModule(mod);
+	
+	try {
+		c.unloadModule(reinterpret_cast<ChigModule*>(343ull));
+
+		assert(false);
+	} catch(std::exception&) {
+		
+	} 
 
 	assert(c.modules.size() == 1);
 
