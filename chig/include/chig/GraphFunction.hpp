@@ -36,8 +36,15 @@ struct GraphFunction {
 	
 	/// Compile the graph to an \c llvm::Function
 	/// Throws on error
+	/// \param module The module to codgen into
 	/// \return The \c llvm::Function that it was compiled to
-	llvm::Function* compile();
+	llvm::Function* compile(llvm::Module* module);
+	
+	/// Gets the node with type lang:entry
+	/// returns {nullptr, ~0} on failure
+	/// Also returns {nullptr, ~0} if there are two entry nodes, which is illegal
+	/// \return {Entry node, ID in node array}
+	std::pair<NodeInstance*, size_t> getEntryNode() noexcept;
 	
 	/// Add a node to the graph
 	/// \param type The type of the node
@@ -51,6 +58,10 @@ struct GraphFunction {
 	
 	Context* owningContext;
 	
+private:
+	
+	llvm::BasicBlock* codegenConnection(NodeInstance& node, size_t output, std::unordered_map<NodeInstance*, NodeInstanceCache>& cache);
+
 };
 
 }
