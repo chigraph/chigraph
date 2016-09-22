@@ -4,26 +4,26 @@
 
 using namespace chig;
 
-int main() {
-	
+int main()
+{
 	// create some random nodes
 	Context c;
-	
+
 	GraphFunction func(c, "hello");
-	
-	std::vector<std::pair<llvm::Type*, std::string>> inputs = {{llvm::Type::getInt32Ty(c.context), "in1"}};
+
+	std::vector<std::pair<llvm::Type*, std::string>> inputs = {
+		{llvm::Type::getInt32Ty(c.context), "in1"}};
 	auto entry = func.insertNode(std::make_unique<EntryNodeType>(c, inputs), 32, 32);
 	auto ifNode = func.insertNode(c.getNodeType("lang", "if", {}), 44.f, 23.f);
-	
-	
+
 	connectExec(*entry, 0, *ifNode, 0);
 	connectData(*entry, 0, *ifNode, 0);
-	
+
 	// dump to JSON, make sure it's legit
 	auto dumpedJSON = func.toJSON();
-	
+
 	using namespace nlohmann;
-	
+
 	auto correctJSON = R"ENDJSON(
 {
   "type": "function",
@@ -57,10 +57,11 @@ int main() {
 }
 )ENDJSON"_json;
 
-	if(dumpedJSON != correctJSON) {
-		std::cout << dumpedJSON << std::endl << std::endl << "is not the same as\n\n\n" << correctJSON;
+	if (dumpedJSON != correctJSON) {
+		std::cout << dumpedJSON << std::endl
+				  << std::endl
+				  << "is not the same as\n\n\n"
+				  << correctJSON;
 		return 1;
 	}
-
 }
-
