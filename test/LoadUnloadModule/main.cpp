@@ -21,11 +21,10 @@ int main()
 	assert(c.getModuleByName("yourmum") == nullptr);
 
 	assert(c.unloadModule(mod));
-	
-	assert(!(c.unloadModule(reinterpret_cast<ChigModule*>(343ull))));
+	assert(!c.unloadModule(mod)); // shouldn't unload the second time
 
 
-	assert(c.modules.size() == 1);
+	assert(c.modules.size() == 2);
 
 	// load a module that doens't exist
 	try {
@@ -34,5 +33,5 @@ int main()
 	} catch (std::exception& e) {
 	}
 
-	assert(c.modules.size() == 1);
+	assert(c.modules.size() == 2);
 }

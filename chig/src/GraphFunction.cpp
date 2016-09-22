@@ -121,18 +121,7 @@ nlohmann::json GraphFunction::toJSON()
 	auto* entry = getEntryNode().first;
 	if(!entry) {
 		throw std::runtime_error("Not exactly one entry node in GraphFunction!");
-	
-	// find the entry
-	auto entryIter = std::find_if(nodes.begin(), nodes.end(), entryFinder);
-	if(entryIter == nodes.end()) {
-		throw std::runtime_error("Error: no input node");
 	}
-	// make sure there is only 1 input
-	if(std::find_if(entryIter + 1, nodes.end(), entryFinder) != nodes.end()) {
-		throw std::runtime_error("Error: you cannot have two input nodes!");
-	}
-
-	auto* entry = entryIter->get();
 	
 	// serialize the nodes
 	auto& jsonNodes = jsonData["nodes"];
@@ -182,44 +171,8 @@ nlohmann::json GraphFunction::toJSON()
 	return jsonData;
 }
 
-// the cache entryies for one node
-struct NodeInstanceCache {
-	// these are going to be pointers to whatever the inputs actually are so it can pass through the block more than once
-	std::vector<llvm::Value*> inputs;
-	std::vector<llvm::BasicBlock*> execInputBlocks; // the exec input 
-	std::vector<llvm::Value*> outputs;
-	
-	bool initialized = false;
-};
 
-// this function is called recursively
-// this codegens the call to the right of this connection
-llvm::BasicBlock* GraphFunction::codegenConnection(NodeInstance& node, size_t output, std::unordered_map<NodeInstance*, NodeInstanceCache>& cache) {
-	
-	// get the cache entry
-	NodeInstanceCache& cacheEntry = cache[&node];
-	
-	// initialize the cache entry correctly
-	if(!cacheEntry.initialized) {
-		cacheEntry.inputs.resize(node.inputDataConnections.size(), nullptr);
-		cacheEntry.execInputBlocks.resize(node.type->execInputs.size(), nullptr);
-		cacheEntry.outputs.resize(node.outputDataConnections.size(), nullptr);
-		cacheEntry.initialized = true;
-	}
-	
-	// see if this already exists
-	
-	
-}
-
-
-
-llvm::Function* GraphFunction::compile(llvm::Module* module) {
-	
-	// get the entry node
-	auto entry = getEntryNode().first;
-	
-	struct 
+llvm::Function* GraphFunction::compile (llvm::Module* mod) {
 	
 }
 
@@ -240,11 +193,15 @@ std::pair<NodeInstance*, size_t> GraphFunction::getEntryNode() noexcept {
 	
 	return {entryIter->get(), std::distance(nodes.begin(), entryIter)};
 	
+}
 
+NodeInstance* GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y)
+{
 	auto ptr = std::make_unique<NodeInstance>(std::move(type), x, y);
 
 	nodes.push_back(std::move(ptr));
 
 	return nodes[nodes.size() - 1].get();
+
 }
 

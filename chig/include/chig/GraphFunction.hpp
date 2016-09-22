@@ -11,6 +11,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 namespace chig
 {
@@ -58,8 +59,6 @@ struct GraphFunction {
 	Context* owningContext;
 private:
 	
-	llvm::BasicBlock* codegenConnection(NodeInstance& node, size_t output, std::unordered_map<NodeInstance*, NodeInstanceCache>& cache);
-
 };
 }
 

@@ -55,10 +55,6 @@ struct EntryNodeType : NodeType {
 
 	// the function doesn't have to do anything...this class just holds metadata
 	virtual void codegen(size_t /*inputExecID*/,const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* /*codegenInto*/, const std::vector<llvm::BasicBlock*>& /*outputBlocks*/) const override {}
-		llvm::IRBuilder<>* codegenInto,
-		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
-	{
-	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
 	{
