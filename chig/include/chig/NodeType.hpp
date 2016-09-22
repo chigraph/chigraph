@@ -4,6 +4,7 @@
 #pragma once
 
 #include "chig/json.hpp"
+#include "chig/Context.hpp"
 
 #include <iterator>
 #include <utility>
@@ -13,11 +14,10 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/Module.h>
-
+#include <llvm/IR/LLVMContext.h>
 
 namespace chig {
 
-struct Context;
 
 // generic type
 struct NodeType {
@@ -102,7 +102,7 @@ struct FunctionCallNodeType : NodeType {
 			auto sw = codegenInto->CreateSwitch(ret, outputBlocks[0], execOutputs.size()); 
 			
 			for(size_t i = 0; i < outputBlocks.size(); ++i) {
-				sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(llvm::getGlobalContext(), 32), i), outputBlocks[i]);
+				sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(context->context, 32), i), outputBlocks[i]);
 			}
 		}
 

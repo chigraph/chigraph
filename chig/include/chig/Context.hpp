@@ -4,7 +4,6 @@
 #pragma once
 
 #include "chig/ImportedModule.hpp"
-#include "chig/NodeType.hpp"
 
 #include <string>
 #include <vector>

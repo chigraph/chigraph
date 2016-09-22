@@ -26,7 +26,7 @@ struct IfNodeType : NodeType {
 		execInputs = {""};
 		execOutputs = {"True", "False"};
 		
-		dataInputs = { {llvm::Type::getInt1Ty(llvm::getGlobalContext()), "condition"} };
+		dataInputs = { {llvm::Type::getInt1Ty(context->context), "condition"} };
 		
 	}
 	

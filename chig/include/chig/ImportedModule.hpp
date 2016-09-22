@@ -12,6 +12,7 @@ namespace chig{
 
 struct NodeType;
 struct Context;
+struct FunctionCallNodeType;
 
 /// A module imported from a \c llvm::Module*
 /// Finds the nodes in an \c llvm::Module* and exposes them

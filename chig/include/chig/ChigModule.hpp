@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include "chig/NodeType.hpp"
 #include "chig/json.hpp"
+
+#include <llvm/IR/Type.h>
 
 #include <vector>
 #include <functional>
@@ -13,6 +14,7 @@
 namespace chig {
 
 struct Context;
+struct NodeType;
 
 struct ChigModule {
 	
