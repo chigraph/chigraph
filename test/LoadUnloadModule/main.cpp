@@ -15,16 +15,12 @@ int main()
 	assert(c.modules[1].get() == mod);
 	assert(static_cast<ImportedModule*>(c.modules[1].get())->nodes.size() == 1);
 	assert(c.getModuleByName("add_test.bc") == mod);
+	assert(c.getModuleByName("yourmum") == nullptr);
 
-	c.unloadModule(mod);
+	assert(c.unloadModule(mod));
 	
-	try {
-		c.unloadModule(reinterpret_cast<ChigModule*>(343ull));
+	assert(!(c.unloadModule(reinterpret_cast<ChigModule*>(343ull))));
 
-		assert(false);
-	} catch(std::exception&) {
-		
-	} 
 
 	assert(c.modules.size() == 1);
 

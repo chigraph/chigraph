@@ -62,7 +62,7 @@ ChigModule* Context::getModuleByName(const char* moduleName)
 			return module.get();
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 std::string chig::Context::resolveModulePath(const char* path)
