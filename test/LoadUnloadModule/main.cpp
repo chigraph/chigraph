@@ -11,7 +11,10 @@ int main()
 
 	auto mod = c.loadModuleFromBc("add_test.bc");
 
-	assert(c.modules.size() == 2);  // lang and add_test.bc
+	c.searchPaths.push_back("testdir");
+	auto mod2 = c.loadModuleFromBc("add_tester.bc"); 
+
+	assert(c.modules.size() == 3);  // lang and add_test.bc and add_tester.bc
 	assert(c.modules[1].get() == mod);
 	assert(static_cast<ImportedModule*>(c.modules[1].get())->nodes.size() == 1);
 	assert(c.getModuleByName("add_test.bc") == mod);
