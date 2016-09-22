@@ -27,6 +27,7 @@ add_library(chig SHARED ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
 target_include_directories(chig
 	PUBLIC
 	${LLVM_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIR}
 	include/
 )
 
