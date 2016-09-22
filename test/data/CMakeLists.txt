@@ -1,8 +1,10 @@
 # This builds random external files for the tests
 
+find_package(LLVM)
+
 # compile the ll into a bc
 add_custom_target(assembleadd_test
-	COMMAND llvm-as add_test.ll -o "${CMAKE_CURRENT_BINARY_DIR}/../add_test.bc"
+COMMAND ${LLVM_TOOLS_BINARY_DIR}/llvm-as add_test.ll -o "${CMAKE_CURRENT_BINARY_DIR}/../add_test.bc"
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 

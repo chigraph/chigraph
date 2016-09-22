@@ -81,7 +81,7 @@ std::string chig::Context::resolveModulePath(const char* path)
 	// search in searchPaths
 	for (auto& search_path : searchPaths) {
 		if (fs::is_regular_file(search_path + '/' + file_name)) {
-			return search_path;
+            return search_path + '/' + file_name;
 		}
 	}
 
