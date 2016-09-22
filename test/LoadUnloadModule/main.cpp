@@ -11,8 +11,8 @@ int main()
 
 	auto mod = c.loadModuleFromBc("add_test.bc");
 
-	c.searchPaths.push_back("testdir");
-	auto mod2 = c.loadModuleFromBc("add_tester.bc"); 
+	c.searchPaths.push_back("..");
+	auto mod2 = c.loadModuleFromBc("test/add_test.bc"); 
 
 	assert(c.modules.size() == 3);  // lang and add_test.bc and add_tester.bc
 	assert(c.modules[1].get() == mod);
