@@ -24,8 +24,6 @@ struct Context {
 	Context(const Context& context) = delete;
 	Context(Context&&) = delete;
 
-	ChigModule* 
-	
 	/// Unloads a module
 	/// \param toUnload The module to unload; must be in \c modules
 	/// \return true if the module was found and unloaded, false if it was not found and nothing
