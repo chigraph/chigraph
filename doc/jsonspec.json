@@ -1,0 +1,67 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "Chigraph",
+	"description": "The code specification for the Chigraph language. https://github.com/russelltg/chigraph",
+	"type": "object",
+	"properties": {
+		"module": {
+			"description": "The module description",
+			"type": "object",
+			"properties": {
+				"name": {
+					"description": "The name of the module.",
+					"type": "string"
+				},
+				"dependencies": {
+					"description": "The modules this module depends on",
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"graphs": {
+			"description": "The definitions of the graphs",
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"type": {
+						"description": "The type of the graph. For now only function is accepted.",
+						"type": "string"
+					},
+					"name": {
+						"description": "The description of the graph.",
+						"type": "string"
+					},
+					"nodes": {
+						"description": "The nodes",
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties":  {
+								"type": {
+									"description": "The type of the node, in the format module:name",
+									"type": "string"
+								},
+								"location": {
+									"description": "the location on the graph. For cosmetic purposes only.",
+									"type": "array",
+									"items": {
+										"type": "number"
+									},
+									"minItems": 2,
+									"maxItems": 2
+								},
+								"data": {
+									
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,5 +1,4 @@
 #include "chig/Context.hpp"
-#include "chig/ImportedModule.hpp"
 #include "chig/LangModule.hpp"
 #include "chig/NodeType.hpp"
 
@@ -12,36 +11,6 @@ using namespace chig;
 using namespace llvm;
 
 Context::Context() { addModule(std::make_unique<LangModule>(*this)); }
-ImportedModule* Context::loadModuleFromBc(const char* path)
-{
-	using namespace std::string_literals;
-
-	// resolve the file
-	std::string abs_path = resolveModulePath(path);
-	if (abs_path == "") {
-		throw std::runtime_error("Failed to file module: "s + path);
-	}
-
-	auto buf = MemoryBuffer::getFile(abs_path);
-	if (!buf) {
-		throw std::runtime_error("Error reading file: " + buf.getError().message());
-	}
-
-	auto module = parseBitcodeFile(**buf, context);
-	if (!module) {
-		throw std::runtime_error("Failed to parse file: " + module.getError().message());
-	}
-
-	// create `ImportedModule`
-	auto impModule = std::make_unique<ImportedModule>(*this, std::move(*module));
-
-	// cache the result because impModule will be moved into the vector
-	auto ret = impModule.get();
-
-	modules.push_back(std::move(impModule));
-
-	return ret;
-}
 
 bool Context::unloadModule(ChigModule* toUnload)
 {

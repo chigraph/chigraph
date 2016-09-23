@@ -6,14 +6,12 @@ set(CHIG_PUBLIC_FILES
 	include/chig/LangModule.hpp
 	include/chig/NodeType.hpp
 	include/chig/Context.hpp
-	include/chig/ImportedModule.hpp
 	include/chig/GraphFunction.hpp
 	include/chig/NodeInstance.hpp
 )
 
 set(CHIG_PRIVATE_FILES
 	src/Context.cpp
-	src/ImportedModule.cpp
 	src/NodeInstance.cpp
 	src/GraphFunction.cpp
 	src/LangModule.cpp
