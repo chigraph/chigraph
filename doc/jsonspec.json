@@ -10,13 +10,15 @@
 			"properties": {
 				"name": {
 					"description": "The name of the module.",
-					"type": "string"
+					"type": "string",
+					"pattern": "\\w+"
 				},
 				"dependencies": {
 					"description": "The modules this module depends on",
 					"type": "array",
 					"items": {
-						"type": "string"
+						"type": "string",
+						"pattern": "\\w+"
 					}
 				}
 			}
@@ -29,7 +31,8 @@
 				"properties": {
 					"type": {
 						"description": "The type of the graph. For now only function is accepted.",
-						"type": "string"
+						"type": "string",
+						"pattern": "function"
 					},
 					"name": {
 						"description": "The description of the graph.",
@@ -43,7 +46,8 @@
 							"properties":  {
 								"type": {
 									"description": "The type of the node, in the format module:name",
-									"type": "string"
+									"type": "string",
+									"pattern": "\\w+:\\w+"
 								},
 								"location": {
 									"description": "the location on the graph. For cosmetic purposes only.",
@@ -55,7 +59,39 @@
 									"maxItems": 2
 								},
 								"data": {
-									
+									"type": "object"
+								}
+							}
+						}
+					},
+					"connections": {
+						"description": "The connections between the nodes",
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"type": {
+									"type": "string",
+									"description": "The type of the connection (data or exec)",
+									"pattern": "data|exec"
+								},
+								"input": {
+									"description": "the location on the graph. For cosmetic purposes only.",
+									"type": "array",
+									"items": {
+										"type": "integer"
+									},
+									"minItems": 2,
+									"maxItems": 2
+								},
+								"output": {
+									"description": "the location on the graph. For cosmetic purposes only.",
+									"type": "array",
+									"items": {
+										"type": "integer"
+									},
+									"minItems": 2,
+									"maxItems": 2
 								}
 							}
 						}
