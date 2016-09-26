@@ -76,7 +76,7 @@
 									"pattern": "data|exec"
 								},
 								"input": {
-									"description": "the location on the graph. For cosmetic purposes only.",
+									"description": "The location of the input to the conneciton. First is node ID, second is connection ID in that node.",
 									"type": "array",
 									"items": {
 										"type": "integer"
@@ -85,7 +85,7 @@
 									"maxItems": 2
 								},
 								"output": {
-									"description": "the location on the graph. For cosmetic purposes only.",
+									"description": "The location of the output to the connection. First is the node ID, second is the connection ID in that node.",
 									"type": "array",
 									"items": {
 										"type": "integer"
