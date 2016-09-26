@@ -21,7 +21,8 @@
 						"pattern": "\\w+"
 					}
 				}
-			}
+			},
+			"required": ["name", "dependencies"]
 		},
 		"graphs": {
 			"description": "The definitions of the graphs",
@@ -61,7 +62,8 @@
 								"data": {
 									"type": "object"
 								}
-							}
+							},
+							"required": ["type", "location", "data"]
 						}
 					},
 					"connections": {
@@ -93,11 +95,13 @@
 									"minItems": 2,
 									"maxItems": 2
 								}
-							}
+							},
+							"required": ["type", "input", "output"]
 						}
 					}
 				}
 			}
 		}
-	}
+	},
+	"required": ["module", "graphs"]
 }
