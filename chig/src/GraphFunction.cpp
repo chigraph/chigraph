@@ -179,11 +179,15 @@ struct cache {
 // Codegens a single input to a node
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache) {
 	
+	llvm::IRBuilder<> builder(block);
 	// get input values
 	std::vector<llvm::Value*> inputParams;
 	for(auto& param : node->inputDataConnections) {
 		// TODO: error handling
-		inputParams.push_back(nodeCache[param.first].outputs[param.second]);
+		
+		// get pointers to the objects
+		auto value = nodeCache[param.first].outputs[param.second];
+		inputParams.push_back(value); // TODO: pass ptr to value
 	}
 	
 	
@@ -194,7 +198,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	auto& outputCache = nodeCache[node].outputs;
 	for(auto& output : node->type->dataOutputs) {
 		// TODO: research address spaces
-		llvm::AllocaInst* alloc = entryBuilder.CreateAlloca(llvm::PointerType::get(output.first, 0), nullptr); // TODO: name
+		llvm::AllocaInst* alloc = entryBuilder.CreateAlloca(output.first, nullptr); // TODO: name
 		outputCache.push_back(alloc);
 	}
 	
@@ -251,8 +255,8 @@ llvm::Function* GraphFunction::compile (llvm::Module* mod) {
 	}
 	
 	codegenHelper(node, execInputID, block, f, nodeCache);
-
 	
+	return f;
 }
 
 std::pair<NodeInstance*, size_t> GraphFunction::getEntryNode() noexcept {
