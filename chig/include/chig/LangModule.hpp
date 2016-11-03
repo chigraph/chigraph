@@ -28,10 +28,11 @@ struct IfNodeType : NodeType {
 	}
 
 	virtual void codegen(size_t /*execInputID*/, const std::vector<llvm::Value*>& io,
-		llvm::IRBuilder<>* codegenInto,
+		llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
 	{
-		codegenInto->CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
+		llvm::IRBuilder<> builder(codegenInto);
+		builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
@@ -54,7 +55,8 @@ struct EntryNodeType : NodeType {
 	}
 
 	// the function doesn't have to do anything...this class just holds metadata
-	virtual void codegen(size_t /*inputExecID*/,const std::vector<llvm::Value*>& io, llvm::IRBuilder<>* /*codegenInto*/, const std::vector<llvm::BasicBlock*>& /*outputBlocks*/) const override {}
+	virtual void codegen(size_t /*inputExecID*/,const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
+	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
 	{
@@ -88,10 +90,11 @@ struct ExitNodeType : NodeType {
 	}
 
 	virtual void codegen(size_t /*execInputID*/, const std::vector<llvm::Value*>&,
-		llvm::IRBuilder<>* codegenInto, const std::vector<llvm::BasicBlock*>&) const override
+		llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>&) const override
 	{
 		// TODO: multiple return paths
-		codegenInto->CreateRet(llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), 0));
+		llvm::IRBuilder<> builder(codegenInto);
+		builder.CreateRet(llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), 0));
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override

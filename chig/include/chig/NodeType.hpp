@@ -47,7 +47,7 @@ struct NodeType {
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
 	/// numOutputExecs.
 	virtual void codegen(size_t execInputID, const std::vector<llvm::Value*>& io,
-		llvm::IRBuilder<>* codegenInto,
+		llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
 	virtual nlohmann::json toJSON() const { return {}; }
 	/// Clones the type
@@ -94,17 +94,19 @@ struct FunctionCallNodeType : NodeType {
 	llvm::Function* function;
 
 	virtual void codegen(size_t execInputID, const std::vector<llvm::Value*>& io,
-		llvm::IRBuilder<>* codegenInto,
+		llvm::BasicBlock* codegenIntoBlock,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
 	{
-		auto ret = codegenInto->CreateCall(function, io);
+		llvm::IRBuilder<> codegenInto(codegenIntoBlock);
+		
+		auto ret = codegenInto.CreateCall(function, io);
 
 		// we can optimize with a unconditional jump
 		if (execOutputs.size() == 1) {
-			codegenInto->CreateBr(outputBlocks[0]);
+			codegenInto.CreateBr(outputBlocks[0]);
 
 		} else {
-			auto sw = codegenInto->CreateSwitch(ret, outputBlocks[0], execOutputs.size());
+			auto sw = codegenInto.CreateSwitch(ret, outputBlocks[0], execOutputs.size());
 
 			for (size_t i = 0; i < outputBlocks.size(); ++i) {
 				sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(context->context, 32), i),

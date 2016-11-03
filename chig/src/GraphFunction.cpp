@@ -171,8 +171,87 @@ nlohmann::json GraphFunction::toJSON()
 	return jsonData;
 }
 
+	
+struct cache {
+	std::vector<llvm::Value*> outputs;
+};
+
+// Codegens a single input to a node
+void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache) {
+	
+	// get input values
+	std::vector<llvm::Value*> inputParams;
+	for(auto& param : node->inputDataConnections) {
+		// TODO: error handling
+		inputParams.push_back(nodeCache[param.first].outputs[param.second]);
+	}
+	
+	
+	auto entryBlock = &f->getEntryBlock();
+	llvm::IRBuilder<> entryBuilder(entryBlock);
+	
+	// create outputs
+	auto& outputCache = nodeCache[node].outputs;
+	for(auto& output : node->type->dataOutputs) {
+		// TODO: research address spaces
+		llvm::AllocaInst* alloc = entryBuilder.CreateAlloca(llvm::PointerType::get(output.first, 0), nullptr); // TODO: name
+		outputCache.push_back(alloc);
+	}
+	
+	// combine 
+	std::copy(outputCache.begin(), outputCache.end(), std::back_inserter(inputParams));
+	
+	
+	// create output blocks
+	std::vector<llvm::BasicBlock*> outputBlocks;
+	for(auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
+		outputBlocks.push_back(llvm::BasicBlock::Create(f->getContext(), node->type->execOutputs[idx], f));
+	}
+	
+	// codegen
+	node->type->codegen(execInputID, inputParams, block, outputBlocks);
+	
+	// codegen for all outputs
+	for(auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
+		auto& output = node->outputExecConnections[idx];
+		if(output.first) codegenHelper(output.first, output.second, outputBlocks[idx], f, nodeCache);
+	}
+	
+
+}
 
 llvm::Function* GraphFunction::compile (llvm::Module* mod) {
+	
+	const auto& argument_connections = getEntryNode().first->type->dataOutputs; // ouptuts from entry are arguments
+	
+	// TODO: return types
+	std::vector<llvm::Type*> arguments;
+	arguments.reserve(argument_connections.size());
+	std::transform(argument_connections.begin(), argument_connections.end(), std::back_inserter(arguments), [](const std::pair<llvm::Type*, std::string>& p) {
+		return p.first;
+	});
+	
+	llvm::Function* f = llvm::Function::Create(
+		llvm::FunctionType::get(llvm::Type::getVoidTy(mod->getContext()), arguments, false), llvm::GlobalValue::LinkageTypes::ExternalLinkage, graphName, mod);
+	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), graphName, f);
+	
+	// follow linked list
+	NodeInstance* node = getEntryNode().first;
+	unsigned execInputID = node->outputExecConnections[0].second; // the exec connection to codegen from
+
+	std::unordered_map<NodeInstance*, cache> nodeCache;
+	
+	// do entry, it's special
+	auto& outputs = nodeCache[node].outputs;
+	auto idx = 0ull;
+	for(auto& arg : f->getArgumentList()) {
+		arg.setName(node->type->dataOutputs[idx].second);
+		outputs.push_back(&arg);
+		++idx;
+	}
+	
+	codegenHelper(node, execInputID, block, f, nodeCache);
+
 	
 }
 

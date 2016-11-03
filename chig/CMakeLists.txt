@@ -31,7 +31,7 @@ target_include_directories(chig
 
 target_compile_features(chig PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
 
-llvm_map_components_to_libnames(llvm_libs core irreader)
+llvm_map_components_to_libnames(llvm_libs core irreader support bitwriter)
 
 
 target_link_libraries(chig
