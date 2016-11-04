@@ -13,6 +13,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include <boost/optional.hpp>
+
 namespace chig
 {
 /// this is an AST-like representation of a function in a graph
@@ -32,20 +34,31 @@ struct GraphFunction {
 
 	/// Serialize the GraphFunction to JSON
 	/// \return The JSON object representing the graph
-	nlohmann::json toJSON();
+	nlohmann::json toJSON() const;
 
 	/// Compile the graph to an \c llvm::Function
 	/// Throws on error
 	/// \param module The module to codgen into
 	/// \return The \c llvm::Function that it was compiled to
-	llvm::Function* compile(llvm::Module* module);
+	llvm::Function* compile(llvm::Module* module) const;
 	
 	/// Gets the node with type lang:entry
 	/// returns {nullptr, ~0} on failure
 	/// Also returns {nullptr, ~0} if there are two entry nodes, which is illegal
 	/// \return {Entry node, ID in node array}
-	std::pair<NodeInstance*, size_t> getEntryNode() noexcept;
+	std::pair<NodeInstance*, size_t> getEntryNode() const noexcept;
 
+	
+	/// Gets the nodes with a given type
+	/// \param module The module the type is in
+	/// \param name THe name of the type
+	/// \return A vector of NodeInstance to size_t (the index) that match.
+	std::vector<std::pair<NodeInstance*, size_t>> getNodesWithType(const char* module, const char* name) const noexcept;
+	
+	/// Gets the return type, based on the exit nodes
+	/// \return The type of the return, or {} if there are multiple or if there are none
+	boost::optional<std::vector<llvm::Type*>> getReturnTypes() const noexcept;
+	
 	/// Add a node to the graph
 	/// \param type The type of the node
 	/// \param x The x location of the node
@@ -57,6 +70,7 @@ struct GraphFunction {
 	std::vector<std::unique_ptr<NodeInstance>> nodes;  /// Storage for the nodes
 
 	Context* owningContext;
+	
 private:
 	
 };

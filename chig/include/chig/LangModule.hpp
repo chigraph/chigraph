@@ -27,7 +27,7 @@ struct IfNodeType : NodeType {
 		dataInputs = {{llvm::Type::getInt1Ty(context->context), "condition"}};
 	}
 
-	virtual void codegen(size_t /*execInputID*/, const std::vector<llvm::Value*>& io,
+	virtual void codegen(size_t /*execInputID*/, llvm::Function*, const std::vector<llvm::Value*>& io,
 		llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
 	{
@@ -55,7 +55,11 @@ struct EntryNodeType : NodeType {
 	}
 
 	// the function doesn't have to do anything...this class just holds metadata
-	virtual void codegen(size_t /*inputExecID*/,const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
+	virtual void codegen(size_t /*inputExecID*/, llvm::Function* f, const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
+		llvm::IRBuilder<> builder(codegenInto); 
+		// just go to the block
+		builder.CreateBr(outputBlocks[0]);
+		
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
@@ -76,6 +80,49 @@ struct EntryNodeType : NodeType {
 	}
 };
 
+struct ConstIntNodeType : NodeType {
+	
+	ConstIntNodeType(Context& con, int num)
+		: NodeType{con},
+		number{num}
+	{
+		module = "lang";
+		name = "const-int";
+		description = "constant int value";
+
+		execInputs = {""};
+		execOutputs = {""};
+
+		dataOutputs = {{llvm::IntegerType::getInt32Ty(con.context), "out"}};
+		
+	}
+
+	// the function doesn't have to do anything...this class just holds metadata
+	virtual void codegen(size_t /*inputExecID*/, llvm::Function* f, const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
+		llvm::IRBuilder<> builder(codegenInto); 
+		// just go to the block
+		assert(io.size() == 1);
+		
+		builder.CreateStore(llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->context), number), io[0], false);
+		builder.CreateBr(outputBlocks[0]);
+		
+	}
+
+	virtual std::unique_ptr<NodeType> clone() const override
+	{
+		return std::make_unique<ConstIntNodeType>(*this);
+	}
+
+	nlohmann::json toJSON() const override
+	{
+		nlohmann::json ret = number;
+
+		return ret;
+	}
+	
+	int number;
+};
+
 struct ExitNodeType : NodeType {
 	ExitNodeType(Context& con, const std::vector<std::pair<llvm::Type*, std::string>>& funOutputs)
 		: NodeType{con}
@@ -89,12 +136,20 @@ struct ExitNodeType : NodeType {
 		dataInputs = funOutputs;
 	}
 
-	virtual void codegen(size_t /*execInputID*/, const std::vector<llvm::Value*>&,
+	virtual void codegen(size_t execInputID, llvm::Function* f, const std::vector<llvm::Value*>& io,
 		llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>&) const override
 	{
-		// TODO: multiple return paths
+		// assign the return types
 		llvm::IRBuilder<> builder(codegenInto);
-		builder.CreateRet(llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), 0));
+		size_t ret_start = f->arg_size() - io.size(); // returns are after args, find where returns start
+		auto arg_iter = f->arg_begin();
+		std::advance(arg_iter, ret_start);
+		for(int idx = 0; idx < io.size(); ++idx) {
+			builder.CreateStore(io[idx], &*arg_iter, false); // TODO: volitility?
+			++arg_iter;
+		}
+		
+		builder.CreateRet(llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), execInputID));
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
@@ -125,6 +180,7 @@ struct LangModule : ChigModule {
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
 		nodes;
 };
+
 }
 
 #endif  // CHIG_LANG_MODULE_HPP

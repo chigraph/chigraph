@@ -46,7 +46,7 @@ struct NodeType {
 	/// \param codegenInto The IRBuilder object that is used to place calls into
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
 	/// numOutputExecs.
-	virtual void codegen(size_t execInputID, const std::vector<llvm::Value*>& io,
+	virtual void codegen(size_t execInputID, llvm::Function* f, const std::vector<llvm::Value*>& io,
 		llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
 	virtual nlohmann::json toJSON() const { return {}; }
@@ -93,7 +93,7 @@ struct FunctionCallNodeType : NodeType {
 
 	llvm::Function* function;
 
-	virtual void codegen(size_t execInputID, const std::vector<llvm::Value*>& io,
+	virtual void codegen(size_t execInputID, llvm::Function* f, const std::vector<llvm::Value*>& io,
 		llvm::BasicBlock* codegenIntoBlock,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
 	{

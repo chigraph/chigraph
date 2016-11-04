@@ -46,7 +46,13 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 
 			 return std::make_unique<ExitNodeType>(*context, outputs);
 
-		 }}};
+		 }},
+		{"const-int"s, [this](const nlohmann::json& data) {
+			int num = data;
+			
+			return std::make_unique<ConstIntNodeType>(*context, num);
+		}}
+	};
 }
 
 std::unique_ptr<NodeType> LangModule::createNodeType(

@@ -40,15 +40,15 @@ inline void connectData(
 	// the input to the connection is the output to the node
 	if (connectionInputID >= lhs.outputDataConnections.size()) {
 		throw std::runtime_error(
-			"Out of bounds in data connection: there is no output exec dock with id " +
+			"Out of bounds in data connection: there is no output data dock with id " +
 			std::to_string(connectionInputID) + " in node with type " + lhs.type->module + ':' +
 			lhs.type->name);
 	}
 	if (connectionOutputID >= rhs.inputDataConnections.size()) {
 		throw std::runtime_error(
-			"Out of bounds in data connection: there is no output exec dock with id " +
-			std::to_string(connectionInputID) + " in node with type " + lhs.type->module + ':' +
-			lhs.type->name);
+			"Out of bounds in data connection: there is no input data dock with id " +
+			std::to_string(connectionInputID) + " in node with type " + rhs.type->module + ':' +
+			rhs.type->name);
 	}
 
 	lhs.outputDataConnections[connectionInputID] = {&rhs, connectionOutputID};
@@ -75,8 +75,8 @@ inline void connectExec(
 	if (connectionOutputID >= rhs.inputExecConnections.size()) {
 		throw std::runtime_error(
 			"Out of bounds in exec connection: there is no input exec dock with id " +
-			std::to_string(connectionOutputID) + " in node with type " + lhs.type->module + ':' +
-			lhs.type->name);
+			std::to_string(connectionOutputID) + " in node with type " + rhs.type->module + ':' +
+			rhs.type->name);
 	}
 
 	// connect it!

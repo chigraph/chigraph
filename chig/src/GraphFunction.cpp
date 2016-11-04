@@ -6,6 +6,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <unordered_map>
 
+
 using namespace chig;
 
 GraphFunction::GraphFunction(Context& context, std::string name)
@@ -111,7 +112,7 @@ GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& da
 	return ret;
 }
 
-nlohmann::json GraphFunction::toJSON()
+nlohmann::json GraphFunction::toJSON() const
 {
 	auto jsonData = nlohmann::json{};
 
@@ -198,7 +199,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	auto& outputCache = nodeCache[node].outputs;
 	for(auto& output : node->type->dataOutputs) {
 		// TODO: research address spaces
-		llvm::AllocaInst* alloc = entryBuilder.CreateAlloca(output.first, nullptr); // TODO: name
+		llvm::AllocaInst* alloc = entryBuilder.CreateAlloca(output.first, nullptr, output.second); // TODO: name
 		outputCache.push_back(alloc);
 	}
 	
@@ -213,7 +214,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	}
 	
 	// codegen
-	node->type->codegen(execInputID, inputParams, block, outputBlocks);
+	node->type->codegen(execInputID, f, inputParams, block, outputBlocks);
 	
 	// codegen for all outputs
 	for(auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
@@ -224,19 +225,29 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 }
 
-llvm::Function* GraphFunction::compile (llvm::Module* mod) {
+llvm::Function* GraphFunction::compile (llvm::Module* mod) const {
 	
 	const auto& argument_connections = getEntryNode().first->type->dataOutputs; // ouptuts from entry are arguments
 	
-	// TODO: return types
+	// get return types;
+	auto ret = getReturnTypes();
+	if(!ret) {
+		throw std::runtime_error("Failed to compile function: no return type");
+	}
+	
 	std::vector<llvm::Type*> arguments;
 	arguments.reserve(argument_connections.size());
 	std::transform(argument_connections.begin(), argument_connections.end(), std::back_inserter(arguments), [](const std::pair<llvm::Type*, std::string>& p) {
 		return p.first;
 	});
 	
+	// make these pointers
+	std::transform(ret->begin(), ret->end(), std::back_inserter(arguments), [](llvm::Type* t) {
+		return llvm::PointerType::get(t, 0);
+	});
+	
 	llvm::Function* f = llvm::Function::Create(
-		llvm::FunctionType::get(llvm::Type::getVoidTy(mod->getContext()), arguments, false), llvm::GlobalValue::LinkageTypes::ExternalLinkage, graphName, mod);
+		llvm::FunctionType::get(llvm::IntegerType::getInt32Ty(mod->getContext()), arguments, false), llvm::GlobalValue::LinkageTypes::ExternalLinkage, graphName, mod);
 	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), graphName, f);
 	
 	// follow linked list
@@ -245,11 +256,17 @@ llvm::Function* GraphFunction::compile (llvm::Module* mod) {
 
 	std::unordered_map<NodeInstance*, cache> nodeCache;
 	
+	auto outputNode = getNodesWithType("lang", "exit")[0].first;
+	
 	// do entry, it's special
 	auto& outputs = nodeCache[node].outputs;
 	auto idx = 0ull;
 	for(auto& arg : f->getArgumentList()) {
-		arg.setName(node->type->dataOutputs[idx].second);
+		if(idx < node->type->dataOutputs.size()) {
+			arg.setName(node->type->dataOutputs[idx].second);
+		} else {
+			arg.setName(outputNode->type->dataInputs[idx - node->type->dataOutputs.size()].second);
+		}
 		outputs.push_back(&arg);
 		++idx;
 	}
@@ -259,24 +276,55 @@ llvm::Function* GraphFunction::compile (llvm::Module* mod) {
 	return f;
 }
 
-std::pair<NodeInstance*, size_t> GraphFunction::getEntryNode() noexcept {
-	auto entryFinder = [](auto& node) {
-		return node->type->module == "lang" && node->type->name == "entry";
+std::pair<NodeInstance*, size_t> GraphFunction::getEntryNode() const noexcept {
+
+	auto matching = getNodesWithType("lang", "entry");
+	
+	if(matching.size() == 1) {
+		return matching[0];
+	}
+	return {nullptr, ~0};
+}
+
+std::vector<std::pair<NodeInstance *, size_t> > GraphFunction::getNodesWithType(const char* module, const char* name) const noexcept
+{
+	auto typeFinder = [&](auto& node) {
+		return node->type->module == module && node->type->name == name;
 	};
 	
-	// find the entry
-	auto entryIter = std::find_if(nodes.begin(), nodes.end(), entryFinder);
-	if(entryIter == nodes.end()) {
-		return {nullptr, ~0ull};
-	}
-	// make sure there is only 1 input
-	if(std::find_if(entryIter + 1, nodes.end(), entryFinder) != nodes.end()) {
-		return {nullptr, ~0ull};
+	std::vector<std::pair<NodeInstance*, size_t>> ret;
+	auto iter = std::find_if(nodes.begin(), nodes.end(), typeFinder);
+	while(iter != nodes.end()) {
+		ret.emplace_back(iter->get(), std::distance(nodes.begin(), iter));
+		
+		iter = std::find_if(iter + 1, nodes.end(), typeFinder);
 	}
 	
-	return {entryIter->get(), std::distance(nodes.begin(), entryIter)};
-	
+	return ret;
 }
+
+boost::optional<std::vector<llvm::Type*>> GraphFunction::getReturnTypes() const noexcept
+{
+	auto matching = getNodesWithType("lang", "exit");
+	
+	if(matching.size() == 0) return {};
+	
+	auto& types = matching[0].first->type->dataInputs;
+	
+	// make sure they are all the same
+	if(!std::all_of(matching.begin(), matching.end(), [&](auto pair) {
+		return std::equal(types.begin(), types.end(), pair.first->type->dataInputs.begin());
+	})) {
+		return {};
+	}
+	
+	std::vector<llvm::Type*> ret;
+	ret.resize(types.size());
+	std::transform(types.begin(), types.end(), ret.begin(), [](auto pair){return pair.first;});
+	
+	return ret;
+}
+
 
 NodeInstance* GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y)
 {
