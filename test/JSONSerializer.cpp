@@ -8,9 +8,10 @@ using namespace chig;
 
 TEST_CASE("JsonSerializer", "[json]")
 {
-	GIVEN("A default constructed Context and GraphFunction named hello") {
+	GIVEN("A default constructed Context with a LangModule and GraphFunction named hello") {
 		
 		Context c;
+		c.addModule(std::make_unique<LangModule>(c));
 		
 		GraphFunction func(c, "hello");
 
