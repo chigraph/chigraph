@@ -8,25 +8,30 @@ using namespace chig;
 
 TEST_CASE("JsonSerializer", "[json]")
 {
-	// create some random nodes
-	Context c;
+	GIVEN("A default constructed Context and GraphFunction named hello") {
+		
+		Context c;
+		
+		GraphFunction func(c, "hello");
 
-	GraphFunction func(c, "hello");
+		WHEN("We create some nodes and try to dump json") {
+			
+			std::vector<std::pair<llvm::Type*, std::string>> inputs = {
+				{llvm::Type::getInt32Ty(c.context), "in1"}};
+			auto entry = func.insertNode(std::make_unique<EntryNodeType>(c, inputs), 32, 32);
+			auto ifNode = func.insertNode(c.getNodeType("lang", "if", {}), 44.f, 23.f);
 
-	std::vector<std::pair<llvm::Type*, std::string>> inputs = {
-		{llvm::Type::getInt32Ty(c.context), "in1"}};
-	auto entry = func.insertNode(std::make_unique<EntryNodeType>(c, inputs), 32, 32);
-	auto ifNode = func.insertNode(c.getNodeType("lang", "if", {}), 44.f, 23.f);
+			connectExec(*entry, 0, *ifNode, 0);
+			connectData(*entry, 0, *ifNode, 0);
+			
+			
+			auto dumpedJSON = func.toJSON();
+			
+			THEN("It should be the same as the sample!") {
+				
+				using namespace nlohmann;
 
-	connectExec(*entry, 0, *ifNode, 0);
-	connectData(*entry, 0, *ifNode, 0);
-
-	// dump to JSON, make sure it's legit
-	auto dumpedJSON = func.toJSON();
-
-	using namespace nlohmann;
-
-	auto correctJSON = R"ENDJSON(
+				auto correctJSON = R"ENDJSON(
 {
   "type": "function",
   "name": "hello",
@@ -58,11 +63,12 @@ TEST_CASE("JsonSerializer", "[json]")
   ]
 }
 )ENDJSON"_json;
+		
+				REQUIRE(dumpedJSON == correctJSON);
+			}
 
-	if (dumpedJSON != correctJSON) {
-		std::cout << dumpedJSON << std::endl
-				  << std::endl
-				  << "is not the same as\n\n\n"
-				  << correctJSON;
+		}
+		
 	}
+
 }

@@ -7,7 +7,7 @@ add_definitions("-D__STDC_CONSTANT_MACROS")
 add_subdirectory(data)
 
 
-add_executable(tests main.cpp  Context.cpp)
+add_executable(tests main.cpp  Context.cpp JSONReader.cpp JSONSerializer.cpp)
 target_link_libraries(tests PUBLIC chig)
 
 add_test(NAME tests 
