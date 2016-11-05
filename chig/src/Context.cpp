@@ -24,28 +24,6 @@ ChigModule* Context::getModuleByName(const char* moduleName)
 	return nullptr;
 }
 
-std::string chig::Context::resolveModulePath(const char* path)
-{
-	using namespace std::string_literals;
-
-	namespace fs = boost::filesystem;
-
-	std::string file_name = path;
-
-	// see if it is in `pwd`
-	if (fs::is_regular_file(file_name)) {
-		return file_name;
-	}
-
-	// search in searchPaths
-	for (auto& search_path : searchPaths) {
-		if (fs::is_regular_file(search_path + '/' + file_name)) {
-            return search_path + '/' + file_name;
-		}
-	}
-
-	return {};
-}
 
 void Context::addModule(std::unique_ptr<ChigModule> modToAdd)
 {
