@@ -1,10 +1,12 @@
+#include "catch.hpp"
+
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
 #include <chig/LangModule.hpp>
 
 using namespace chig;
 
-int main()
+TEST_CASE("JsonSerializer", "[json]")
 {
 	// create some random nodes
 	Context c;
@@ -62,6 +64,5 @@ int main()
 				  << std::endl
 				  << "is not the same as\n\n\n"
 				  << correctJSON;
-		return 1;
 	}
 }

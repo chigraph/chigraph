@@ -10,22 +10,12 @@
 using namespace chig;
 using namespace llvm;
 
-Context::Context() { addModule(std::make_unique<LangModule>(*this)); }
-
-bool Context::unloadModule(ChigModule* toUnload)
-{
-	auto iter = std::find_if(
-		modules.begin(), modules.end(), [=](auto& ptr) { return ptr.get() == toUnload; });
-	if (iter != modules.end()) {
-		modules.erase(iter);
-		return true;
-	}
-
-	return false;
-}
+Context::Context() { }
 
 ChigModule* Context::getModuleByName(const char* moduleName)
 {
+	if(!moduleName) throw std::runtime_error("Cannot pass nullptr into getModuleByName");
+	
 	for (auto& module : modules) {
 		if (module->name == moduleName) {
 			return module.get();
@@ -59,12 +49,20 @@ std::string chig::Context::resolveModulePath(const char* path)
 
 void Context::addModule(std::unique_ptr<ChigModule> modToAdd)
 {
+	if(!modToAdd) throw std::runtime_error("Cannot add nullptr as module to a Context");
+	
+	// make sure it's unique
+	auto ptr = getModuleByName(modToAdd->name.c_str());
+	if(ptr != nullptr) throw std::runtime_error("Cannot add module named " + modToAdd->name + " for a second time.");
+	
 	modules.emplace_back(std::move(modToAdd));
 }
 
 llvm::Type* Context::getType(const char* module, const char* name)
 {
-	return getModuleByName(module)->getType(name);
+	auto mod = getModuleByName(module);
+	if(!mod) return nullptr;
+	return mod->getType(name);
 }
 
 std::unique_ptr<NodeType> Context::getNodeType(

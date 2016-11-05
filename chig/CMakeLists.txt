@@ -3,18 +3,21 @@ find_package(Boost REQUIRED system filesystem)
 
 set(CHIG_PUBLIC_FILES
 	include/chig/ChigModule.hpp
-	include/chig/LangModule.hpp
-	include/chig/NodeType.hpp
 	include/chig/Context.hpp
 	include/chig/GraphFunction.hpp
+	include/chig/JsonModule.hpp
+	include/chig/LangModule.hpp
 	include/chig/NodeInstance.hpp
+	include/chig/NodeType.hpp
 )
 
 set(CHIG_PRIVATE_FILES
+	src/ChigModule.cpp
 	src/Context.cpp
 	src/NodeInstance.cpp
 	src/GraphFunction.cpp
 	src/LangModule.cpp
+	src/ChigModule.cpp
 )
 
 add_definitions("-D__STDC_LIMIT_MACROS")

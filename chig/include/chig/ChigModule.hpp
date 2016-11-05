@@ -22,7 +22,7 @@ struct ChigModule {
 
 	virtual std::unique_ptr<NodeType> createNodeType(
 		const char* name, const nlohmann::json& json_data) const = 0;
-	virtual llvm::Type* getType(const char* name) = 0;
+	virtual llvm::Type* getType(const char* name) const = 0;
 
 	std::string name;
 

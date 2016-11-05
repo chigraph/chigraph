@@ -3,6 +3,7 @@
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/Support/SourceMgr.h>
+#include <llvm/AsmParser/Parser.h>
 
 using namespace chig;
 
@@ -66,14 +67,16 @@ std::unique_ptr<NodeType> LangModule::createNodeType(
 }
 
 // the lang module just has the basic llvm types.
-llvm::Type* LangModule::getType(const char* name)
+llvm::Type* LangModule::getType(const char* name) const
 {
 	using namespace std::string_literals;
-
+	
 	// just parse the type
 	auto IR = "@G = external global "s + name;
 	auto err = llvm::SMDiagnostic();
 	auto tmpModule = llvm::parseAssemblyString(IR, err, context->context);
-
-	return tmpModule->getNamedValue("G")->getType();
+	if(!tmpModule) return nullptr;
+	
+	// returns the pointer type, so get the contained type
+	return tmpModule->getNamedValue("G")->getType()->getContainedType(0); 
 }

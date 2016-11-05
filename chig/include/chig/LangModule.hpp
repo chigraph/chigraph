@@ -172,11 +172,12 @@ struct ExitNodeType : NodeType {
 
 struct LangModule : ChigModule {
 	LangModule(Context& context);
+	~LangModule() = default;
 
-	std::unique_ptr<NodeType> createNodeType(
+	virtual std::unique_ptr<NodeType> createNodeType(
 		const char* name, const nlohmann::json& json_data) const override;
-	llvm::Type* getType(const char* name) override;
-
+	virtual llvm::Type* getType(const char* name) const override;
+	
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
 		nodes;
 };

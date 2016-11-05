@@ -1,8 +1,10 @@
+#include <catch.hpp>
+
 #include <chig/Context.hpp>
 
 using namespace chig;
 
-int main()
+TEST_CASE("LoadUnloadModule", "[module]")
 {
 	Context c;
 

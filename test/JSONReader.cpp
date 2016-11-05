@@ -1,3 +1,5 @@
+#include <catch.hpp>
+
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
 
@@ -5,7 +7,7 @@
 
 using namespace chig;
 
-int main()
+TEST_CASE("Read json", "[json]")
 {
 	Context c;
 

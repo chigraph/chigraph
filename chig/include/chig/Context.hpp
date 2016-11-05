@@ -16,6 +16,7 @@ namespace chig
 /// The class that handles modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 struct Context {
+	
 	/// Creates a context with just the lang module
 	///
 	Context();
@@ -23,12 +24,6 @@ struct Context {
 	// no move or copy, doesn't make sense
 	Context(const Context& context) = delete;
 	Context(Context&&) = delete;
-
-	/// Unloads a module
-	/// \param toUnload The module to unload; must be in \c modules
-	/// \return true if the module was found and unloaded, false if it was not found and nothing
-	/// happened
-	bool unloadModule(ChigModule* toUnload);
 
 	/// Gets the module by the name
 	/// \param moduleName The name of the module to find
@@ -38,11 +33,6 @@ struct Context {
 	/// Adds a custom module to the Context
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
 	void addModule(std::unique_ptr<ChigModule> modToAdd);
-
-	llvm::LLVMContext context;  /// The LLVM context to use with everything under the context
-
-	std::vector<std::unique_ptr<ChigModule>> modules;  /// The modules that have been loaded.
-	std::vector<std::string> searchPaths;			   /// The places to search for modules
 
 	/// Gets a llvm::Type from a module
 	/// \param module The name of the module, "lang" if nullptr
@@ -59,6 +49,11 @@ struct Context {
 	/// Turns a type into a string
 	/// \ty The type to stringify
 	std::string stringifyType(llvm::Type* ty);
+
+	llvm::LLVMContext context;  /// The LLVM context to use with everything under the context
+
+	std::vector<std::unique_ptr<ChigModule>> modules;  /// The modules that have been loaded.
+	std::vector<std::string> searchPaths;			   /// The places to search for modules
 
 private:
 	std::string resolveModulePath(const char* path);

@@ -1,3 +1,5 @@
+#include <catch.hpp>
+
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
 #include <chig/LangModule.hpp>
@@ -9,7 +11,7 @@
 
 using namespace chig;
 
-int main() {
+TEST_CASE("Code can be generated", "[GraphFunction]") {
 	
 	// create some random nodes
 	Context c;
