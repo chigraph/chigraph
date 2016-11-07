@@ -7,6 +7,7 @@
 #include <fstream>
 
 using namespace chig;
+using namespace nlohmann;
 
 TEST_CASE("Read json", "[json]")
 {
@@ -15,46 +16,49 @@ TEST_CASE("Read json", "[json]")
 		Context c;
 		c.addModule(std::make_unique<LangModule>(c));
 
-		WHEN("Helloworld.chig is loaded from file and we load a graph function from it") {
+		WHEN("We load some empty JSON then it should throw") {
 			
-			std::ifstream t("helloworld.chig");
-			assert(t);
-			std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+			REQUIRE_THROWS(GraphFunction::fromJSON(c, json::parse("null")));
 			
+		}		
+		
+		WHEN("We load an empty JSON object then it should throw") {
 			
-			auto data = nlohmann::json::parse(str);
-
-			auto graph = GraphFunction::fromJSON(c, data["graphs"][0]);
-			
-			THEN("All the stuff defined in helloworld will work") {
-				REQUIRE(graph.nodes.size() == 2);
-				REQUIRE(graph.nodes[0]->type->module == "lang");
-				REQUIRE(graph.nodes[0]->type->name == "entry");
-				REQUIRE(graph.nodes[0]->type->dataOutputs.size() == 1);
-				REQUIRE(c.stringifyType(graph.nodes[0]->type->dataOutputs[0].first) == "i32");
-				REQUIRE(graph.nodes[0]->type->dataOutputs[0].second == "input");
-                
-				REQUIRE(graph.nodes[0]->outputExecConnections.size() == 1);
-				REQUIRE(graph.nodes[0]->outputExecConnections[0].first == graph.nodes[1].get());
-				REQUIRE(graph.nodes[0]->outputExecConnections[0].second == 0);
-                
-				REQUIRE(graph.nodes[0]->outputDataConnections.size() == 1);
-				REQUIRE(graph.nodes[0]->outputDataConnections[0].first == graph.nodes[1].get());
-				REQUIRE(graph.nodes[0]->outputDataConnections[0].second == 0);
-                
-				REQUIRE(graph.nodes[1]->type->module == "lang");
-				REQUIRE(graph.nodes[1]->type->name == "exit");
-                
-				REQUIRE(graph.nodes[1]->inputDataConnections.size() == 1);
-				REQUIRE(graph.nodes[1]->inputDataConnections[0].first == graph.nodes[0].get());
-				REQUIRE(graph.nodes[1]->inputDataConnections[0].second == 0);
-                
-				REQUIRE(graph.nodes[1]->inputExecConnections.size() == 1);
-				REQUIRE(graph.nodes[1]->inputExecConnections[0].first == graph.nodes[0].get());
-				REQUIRE(graph.nodes[1]->inputExecConnections[0].second == 0);
-			}
+			REQUIRE_THROWS(GraphFunction::fromJSON(c, json::parse("{}")));
 			
 		}
+		
+		WHEN("We load a non-function type") {
+			
+			auto inputJSON = R"ENDJSON(
+				{
+					"type": "notfunction"
+				})ENDJSON"_json;
+				
+			REQUIRE_THROWS(GraphFunction::fromJSON(c, inputJSON)); 
+			
+		}
+		
+		WHEN("We have a function type but no nodes") {
+			auto inputJSON = R"ENDJSON(
+				{
+					"type": "function"
+				})ENDJSON"_json;
+			
+			REQUIRE_THROWS(GraphFunction::fromJSON(c, inputJSON)); 
+
+		}
+		WHEN("We have a function with nodes but nodes is null") {
+			auto inputJSON = R"ENDJSON(
+				{
+					"type": "function",
+					"nodes": null
+				})ENDJSON"_json;
+			
+			REQUIRE_THROWS(GraphFunction::fromJSON(c, inputJSON)); 
+
+		}
+		
 		
 	}
 

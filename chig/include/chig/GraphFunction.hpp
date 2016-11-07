@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
 #include <boost/optional.hpp>
 
@@ -30,7 +31,7 @@ struct GraphFunction {
 	/// \param j The JSON object to read from
 	/// \context The context to create the GraphFunction with
 	/// \return The GraphFunction that has been produced
-	static GraphFunction fromJSON(Context& context, const nlohmann::json& j);
+	static std::unique_ptr<GraphFunction> fromJSON(Context& context, const nlohmann::json& j);
 
 	/// Serialize the GraphFunction to JSON
 	/// \return The JSON object representing the graph

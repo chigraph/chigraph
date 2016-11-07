@@ -14,15 +14,26 @@ GraphFunction::GraphFunction(Context& context, std::string name)
 {
 }
 
-GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& data)
+std::unique_ptr<GraphFunction> GraphFunction::fromJSON(Context& context, const nlohmann::json& data)
 {
+	if(!data.is_object()) {
+		throw std::runtime_error("json object passed to fromJSON that isn't a object: " + data.dump(2));
+	}
+	// make sure it has a type element
+	if(data.find("type") == data.end()) {
+		throw std::runtime_error("json object without \"type\" element");
+	}
 	if (data["type"] != "function") {
 		throw std::runtime_error("Error deserializing GraphFunction: JSON data wasn't a function");
+	}
+	// make sure there is a name
+	if (data.find("name") == data.end()) {
+		throw std::runtime_error("json object with name object");
 	}
 	std::string name = data["name"];
 
 	// construct it
-	GraphFunction ret(context, name);
+	auto ret = std::make_unique<GraphFunction>(context, name);
 
 	// read the nodes
 	if (data.find("nodes") == data.end()) {
@@ -62,7 +73,7 @@ GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& da
 				"each node much have a array of size 2 for the location. JSON dump: " +
 				node.dump());
 		}
-		ret.nodes.push_back(std::make_unique<NodeInstance>(
+		ret->nodes.push_back(std::make_unique<NodeInstance>(
 			std::move(nodeType), node["location"][0], node["location"][0]));
 	}
 
@@ -82,12 +93,12 @@ GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& da
 		int OutputConnectionID = connection["output"][1];
 
 		// make sure the nodes exist
-		if (InputNodeID >= ret.nodes.size()) {
+		if (InputNodeID >= ret->nodes.size()) {
 			throw std::runtime_error("Out of bounds in input node in connection " +
 									 connection.dump() + " : no node with ID " +
 									 std::to_string(InputNodeID));
 		}
-		if (OutputNodeID >= ret.nodes.size()) {
+		if (OutputNodeID >= ret->nodes.size()) {
 			throw std::runtime_error("Out of bounds in output node in connection " +
 									 connection.dump() + " : no node with ID " +
 									 std::to_string(InputNodeID));
@@ -101,10 +112,10 @@ GraphFunction GraphFunction::fromJSON(Context& context, const nlohmann::json& da
 		// connect
 		// these functions do bounds checking, it's okay
 		if (isData) {
-			connectData(*ret.nodes[InputNodeID], InputConnectionID, *ret.nodes[OutputNodeID],
+			connectData(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
 				OutputConnectionID);
 		} else {
-			connectExec(*ret.nodes[InputNodeID], InputConnectionID, *ret.nodes[OutputNodeID],
+			connectExec(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
 				OutputConnectionID);
 		}
 	}
