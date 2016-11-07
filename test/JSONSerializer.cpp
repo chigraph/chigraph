@@ -44,11 +44,11 @@ TEST_CASE("JsonSerializer", "[json]")
 						"name": "hello",
 						"nodes": [
 							{
-							"type": "lang:entry",
-							"location": [32.0,32.0],
-							"data": {
-								"in1": "lang:i32"
-							}
+								"type": "lang:entry",
+								"location": [32.0,32.0],
+								"data": {
+									"in1": "lang:i32"
+								}
 							}
 						],
 						"connections": []
@@ -87,56 +87,87 @@ TEST_CASE("JsonSerializer", "[json]")
 					REQUIRE(correctJSON == func.toJSON());
 				}
 				
-			}
-			
-		
-			
-		/*	
-			connectExec(*entry, 0, *ifNode, 0);
-			connectData(*entry, 0, *ifNode, 0);
-			
-			
-			auto dumpedJSON = func.toJSON();
-			
-			THEN("It should be the same as the sample!") {
+				WHEN("We connect the entry to the ifNode exec") {
+					
+					connectExec(*entry, 0, *ifNode, 0);
+					
+					THEN("The JSON should be correct") {
+						auto correctJSON = R"ENDJSON(
+							{
+								"type": "function",
+								"name": "hello",
+								"nodes": [
+									{
+										"type": "lang:entry",
+										"location": [32.0,32.0],
+										"data": {
+											"in1": "lang:i32"
+										}
+									},
+									{
+										"type": "lang:if",
+										"location": [44.0, 23.0],
+										"data": null
+									}
+								],
+								"connections": [
+									{
+										"type": "exec",
+										"input": [0, 0],
+										"output": [1, 0]
+									}
+								]
+							})ENDJSON"_json;
+						
+						REQUIRE(correctJSON == func.toJSON());
+					}
+					
+					WHEN("Connect the data")  {
+						
+						connectData(*entry, 0, *ifNode, 0);
+						
+						THEN("The JSON should be correct") {
+							
+							auto correctJSON = R"ENDJSON(
+								{
+								"type": "function",
+								"name": "hello",
+								"nodes": [
+									{
+									"type": "lang:entry",
+									"location": [32.0,32.0],
+									"data": {
+										"in1": "lang:i32"
+									}
+									},
+									{
+										"type": "lang:if",
+										"location": [44.0,23.0],
+										"data": null
+									}
+								],
+								"connections": [
+									{
+										"type": "exec",
+										"input": [0,0],
+										"output": [1,0]
+									},
+									{
+										"type": "data",
+										"input": [0,0],
+										"output": [1,0]
+									}
+								]
+								})ENDJSON"_json;
+						
+							REQUIRE(correctJSON == func.toJSON());
+						}
+					}
+					
+				}
 				
-
-				auto correctJSON = R"ENDJSON(
-{
-  "type": "function",
-  "name": "hello",
-  "nodes": [
-    {
-      "type": "lang:entry",
-      "location": [32.0,32.0],
-      "data": {
-        "in1": "lang:i32"
-      }
-    },
-    {
-      "type": "lang:if",
-      "location": [44.0,23.0],
-      "data": null
-    }
-  ],
-  "connections": [
-    {
-      "type": "exec",
-      "input": [0,0],
-      "output": [1,0]
-    },
-    {
-      "type": "data",
-      "input": [0,0],
-      "output": [1,0]
-    }
-  ]
-}
-)ENDJSON"_json;
-		
-				REQUIRE(dumpedJSON == correctJSON);
 			}
-*/
+			
 		}
 		
 	} 
