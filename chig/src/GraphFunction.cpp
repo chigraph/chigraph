@@ -118,15 +118,12 @@ nlohmann::json GraphFunction::toJSON() const
 
 	jsonData["type"] = "function";
 	jsonData["name"] = graphName;
-
-	auto* entry = getEntryNode().first;
-	if(!entry) {
-		throw std::runtime_error("Not exactly one entry node in GraphFunction!");
-	}
 	
 	// serialize the nodes
 	auto& jsonNodes = jsonData["nodes"];
+	jsonNodes = nlohmann::json::array(); // make sure even if it's empty it's an aray
 	auto& jsonConnections = jsonData["connections"];
+	jsonConnections = nlohmann::json::array(); // make sure even if it's empty it's an aray
 
 	for (auto node_id = 0ull; node_id < nodes.size(); ++node_id) {
 		auto& node = nodes[node_id];
