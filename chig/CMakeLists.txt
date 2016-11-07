@@ -9,6 +9,7 @@ set(CHIG_PUBLIC_FILES
 	include/chig/LangModule.hpp
 	include/chig/NodeInstance.hpp
 	include/chig/NodeType.hpp
+        include/chig/Result.hpp
 )
 
 set(CHIG_PRIVATE_FILES

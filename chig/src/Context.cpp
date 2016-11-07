@@ -12,9 +12,9 @@ using namespace llvm;
 
 Context::Context() { }
 
-ChigModule* Context::getModuleByName(const char* moduleName)
+Result Context::getModuleByName(const char* moduleName, ChigModule** ret) noexcept
 {
-	if(!moduleName) throw std::runtime_error("Cannot pass nullptr into getModuleByName");
+    return
 	
 	for (auto& module : modules) {
 		if (module->name == moduleName) {

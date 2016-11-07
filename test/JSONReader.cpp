@@ -58,7 +58,26 @@ TEST_CASE("Read json", "[json]")
 			REQUIRE_THROWS(GraphFunction::fromJSON(c, inputJSON)); 
 
 		}
-		
+        WHEN("We have a function with nodes but no name") {
+            auto inputJSON = R"ENDJSON(
+                {
+                    "type": "function",
+                    "nodes": []
+                })ENDJSON"_json;
+
+            REQUIRE_THROWS(GraphFunction::fromJSON(c, inputJSON));
+
+        }
+        WHEN("We have a function with nodes and a name--this should work!") {
+            auto inputJSON = R"ENDJSON(
+                {
+                    "type": "function",
+                    "nodes": []
+                })ENDJSON"_json;
+
+            REQUIRE_THROWS(GraphFunction::fromJSON(c, inputJSON));
+
+        }
 		
 	}
 
