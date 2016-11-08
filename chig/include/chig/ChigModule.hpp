@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <cstdlib>
+#include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
 #include <llvm/IR/Type.h>

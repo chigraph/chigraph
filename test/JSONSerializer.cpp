@@ -22,7 +22,7 @@ TEST_CASE("JsonSerializer", "[json]")
 			
 			res = func.toJSON(&ret);
 			
-			REQUIRE(ret);
+			REQUIRE(!!res);
 			REQUIRE(ret == expected);
 			
 		};

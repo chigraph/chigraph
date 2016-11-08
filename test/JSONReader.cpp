@@ -84,12 +84,13 @@ TEST_CASE("Read json", "[json]")
 
 			requireErrs(inputJSON, "E4");
 		}
-		WHEN("We have a function with nodes and a name--this should work!")
+
+		WHEN("We have a function with nodes and a name it should work")
 		{
 			auto inputJSON = R"ENDJSON(
 				{
 					"type": "function",
-					"name": "Hello"
+					"name": "Hello",
 					"nodes": []
 				})ENDJSON"_json;
 

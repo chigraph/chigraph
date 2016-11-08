@@ -1,5 +1,4 @@
 find_package(LLVM REQUIRED CONFIG)
-find_package(Boost REQUIRED system filesystem)
 
 set(CHIG_PUBLIC_FILES
 	include/chig/ChigModule.hpp
@@ -24,7 +23,7 @@ set(CHIG_PRIVATE_FILES
 add_definitions("-D__STDC_LIMIT_MACROS")
 add_definitions("-D__STDC_CONSTANT_MACROS")
 
-add_library(chig SHARED ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
+add_library(chig ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
 
 target_include_directories(chig
 	PUBLIC
@@ -41,5 +40,12 @@ llvm_map_components_to_libnames(llvm_libs core irreader support bitwriter)
 target_link_libraries(chig
 	PUBLIC
 	${llvm_libs} 
-	${Boost_LIBRARIES}
+)
+
+target_link_libraries(chig
+PUBLIC
+	debug ${Boost_SYSTEM_LIBRARY_DEBUG}
+	optimized ${Boost_SYSTEM_LIBRARY_RELEASE}
+	debug ${Boost_FILESYSTEM_LIBRARY_DEBUG}
+	optimized ${Boost_FILESYSTEM_LIBRARY_RELEASE}
 )

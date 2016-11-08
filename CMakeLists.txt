@@ -7,6 +7,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mod
 
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 
+find_package(Boost REQUIRED system filesystem program_options)
+
+
 add_subdirectory(chig)
 add_subdirectory(chigc)
 

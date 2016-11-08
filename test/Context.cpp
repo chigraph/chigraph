@@ -14,7 +14,6 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		Context c;
 		Result res;
 
-		THEN("Adding an empty module throws") { REQUIRE_THROWS(c.addModule(nullptr)); }
 		THEN("There will be no modules in it") { REQUIRE(c.modules.size() == 0); }
 		THEN("stringifyType return proper strings")
 		{
@@ -35,10 +34,6 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 				REQUIRE(c.getModuleByName("lang")->name == "lang");
 			}
 
-			THEN("Passing nullptr to getModuleByName should fail with nullptr")
-			{
-				REQUIRE_THROWS(c.getModuleByName(nullptr));
-			}
 
 			THEN("getNodeType should work for basic types")
 			{

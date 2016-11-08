@@ -46,23 +46,23 @@ TEST_CASE("LangModule", "[module]")
 			
 			res = c.getType("lang", "i32a", &test);
 			REQUIRE(!res);
-			REQUIRE(res.result_json["errorcode"] == "E21");
+			REQUIRE(res.result_json[0]["errorcode"] == "E21");
 			
 			res = c.getType("lang", "i32*a", &test);
 			REQUIRE(!res);
-			REQUIRE(res.result_json["errorcode"] == "E21");
+			REQUIRE(res.result_json[0]["errorcode"] == "E21");
 			
 			res = c.getType("lang", "*i32**", &test);
 			REQUIRE(!res);
-			REQUIRE(res.result_json["errorcode"] == "E21");
+			REQUIRE(res.result_json[0]["errorcode"] == "E21");
 			
 			res = c.getType("lang", "&i8", &test);
 			REQUIRE(!res);
-			REQUIRE(res.result_json["errorcode"] == "E21");
+			REQUIRE(res.result_json[0]["errorcode"] == "E21");
 			
 			res = c.getType("lang", "pq", &test);
 			REQUIRE(!res);
-			REQUIRE(res.result_json["errorcode"] == "E21");
+			REQUIRE(res.result_json[0]["errorcode"] == "E21");
 
 		}
 
