@@ -9,10 +9,10 @@
 
 #include <llvm/IR/Module.h>
 
-#include <string>
-#include <vector>
-#include <unordered_map>
 #include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include <boost/optional.hpp>
 
@@ -30,36 +30,38 @@ struct GraphFunction {
 	/// Constructs a GraphFunction from a JOSN object
 	/// \param j The JSON object to read from
 	/// \context The context to create the GraphFunction with
-	/// \return The GraphFunction that has been produced
-	static std::unique_ptr<GraphFunction> fromJSON(Context& context, const nlohmann::json& j);
+	/// \param ret_func The GraphFunction that has been produced
+	/// \return The result
+	static Result fromJSON(Context& context, const nlohmann::json& j, std::unique_ptr<GraphFunction>* ret_func);
 
 	/// Serialize the GraphFunction to JSON
-	/// \return The JSON object representing the graph
-	nlohmann::json toJSON() const;
+	/// \param toFill The JSON object representing the graph
+	/// \return The result
+	Result toJSON(nlohmann::json* toFill) const;
 
 	/// Compile the graph to an \c llvm::Function
 	/// Throws on error
 	/// \param module The module to codgen into
 	/// \return The \c llvm::Function that it was compiled to
 	llvm::Function* compile(llvm::Module* module) const;
-	
+
 	/// Gets the node with type lang:entry
 	/// returns {nullptr, ~0} on failure
 	/// Also returns {nullptr, ~0} if there are two entry nodes, which is illegal
 	/// \return {Entry node, ID in node array}
 	std::pair<NodeInstance*, size_t> getEntryNode() const noexcept;
 
-	
 	/// Gets the nodes with a given type
 	/// \param module The module the type is in
 	/// \param name THe name of the type
 	/// \return A vector of NodeInstance to size_t (the index) that match.
-	std::vector<std::pair<NodeInstance*, size_t>> getNodesWithType(const char* module, const char* name) const noexcept;
-	
+	std::vector<std::pair<NodeInstance*, size_t>> getNodesWithType(
+		const char* module, const char* name) const noexcept;
+
 	/// Gets the return type, based on the exit nodes
 	/// \return The type of the return, or {} if there are multiple or if there are none
 	boost::optional<std::vector<llvm::Type*>> getReturnTypes() const noexcept;
-	
+
 	/// Add a node to the graph
 	/// \param type The type of the node
 	/// \param x The x location of the node
@@ -71,9 +73,8 @@ struct GraphFunction {
 	std::vector<std::unique_ptr<NodeInstance>> nodes;  /// Storage for the nodes
 
 	Context* owningContext;
-	
+
 private:
-	
 };
 }
 

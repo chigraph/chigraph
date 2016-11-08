@@ -10,13 +10,14 @@
 using namespace chig;
 using namespace llvm;
 
-Context::Context() { }
+Context::Context() {}
 
-Result Context::getModuleByName(const char* moduleName, ChigModule** ret) noexcept
+ChigModule* Context::getModuleByName(const char* moduleName) noexcept
 {
-    return
-	
-	for (auto& module : modules) {
+	Result res;
+
+	for (auto& module : modules)
+	{
 		if (module->name == moduleName) {
 			return module.get();
 		}
@@ -24,32 +25,56 @@ Result Context::getModuleByName(const char* moduleName, ChigModule** ret) noexce
 	return nullptr;
 }
 
-
-void Context::addModule(std::unique_ptr<ChigModule> modToAdd)
+Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 {
-	if(!modToAdd) throw std::runtime_error("Cannot add nullptr as module to a Context");
+	Result res;
 	
+	assert(modToAdd);
+
 	// make sure it's unique
 	auto ptr = getModuleByName(modToAdd->name.c_str());
-	if(ptr != nullptr) throw std::runtime_error("Cannot add module named " + modToAdd->name + " for a second time.");
-	
+	if (ptr != nullptr) {
+		res.add_entry("E24", "Cannot add already existing module again", {{"moduleName", modToAdd->name}});
+		return res;
+	}
+
 	modules.emplace_back(std::move(modToAdd));
+	
+	return res;
 }
 
-llvm::Type* Context::getType(const char* module, const char* name)
+Result Context::getType(const char* module, const char* name, llvm::Type** toFill) noexcept
 {
-	auto mod = getModuleByName(module);
-	if(!mod) return nullptr;
-	return mod->getType(name);
+	Result res;
+	
+	ChigModule* mod = getModuleByName(module);
+	if(!mod) {
+		res.add_entry("E20", "Could not find module", {{"module", module}});
+		return res;
+	}
+	
+	*toFill = mod->getType(name);
+	if(!*toFill) {
+		res.add_entry("E21", "Could not find type in module", {{"type", name}, {"module", module}});
+	}
+	
+	return res;
 }
 
-std::unique_ptr<NodeType> Context::getNodeType(
-	const char* moduleName, const char* name, const nlohmann::json& data)
+Result Context::getNodeType(
+	const char* moduleName, const char* name, const nlohmann::json& data, std::unique_ptr<NodeType>* toFill) noexcept
 {
+	Result res;
+	
 	auto module = getModuleByName(moduleName);
-	if (!module) return nullptr;
+	if (!module) {
+		res.add_entry("E20", "Could not find module", {{"module", moduleName}});
+		return res;
+	}
 
-	return module->createNodeType(name, data);
+	*toFill = module->createNodeType(name, data);
+	
+	return res;
 }
 
 std::string chig::Context::stringifyType(llvm::Type* ty)

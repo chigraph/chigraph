@@ -17,7 +17,6 @@ namespace chig
 /// The class that handles modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 struct Context {
-	
 	/// Creates a context with just the lang module
 	///
 	Context();
@@ -28,33 +27,31 @@ struct Context {
 
 	/// Gets the module by the name
 	/// \param moduleName The name of the module to find
-    /// \param ret_module The module that has the name \c moduleName, nullptr if none were found
-    /// \return The result
-    Result getModuleByName(const char* moduleName, ChigModule** ret_module) noexcept;
+	/// \return ret_module The module that has the name \c moduleName, nullptr if none were found
+	ChigModule* getModuleByName(const char* moduleName) noexcept;
 
 	/// Adds a custom module to the Context
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
-    void addModule(std::unique_ptr<ChigModule> modToAdd) noexcept;
+	Result addModule(std::unique_ptr<ChigModule> modToAdd) noexcept;
 
 	/// Gets a llvm::Type from a module
 	/// \param module The name of the module, "lang" if nullptr
 	/// \param name The name of the type, required
-    /// \param ret_type The return type
-    /// \return The result
-    Result getType(const char* module, const char* name, llvm::Type** ret_type) noexcept;
+	/// \param ret_type The return type
+	/// \return The result
+	Result getType(const char* module, const char* name, llvm::Type** ret_type) noexcept;
 
 	/// Gets a NodeType from the JSON and name
 	/// \param module The module name.
 	/// \param name The name of the node type
 	/// \param data The JSON data that is used to construct the NodeType.
-    Result getNodeType(
-        const char* module, const char* name, const nlohmann::json& data, std::unique_ptr<NodeType>* ret_nodetype) noexcept;
+	Result getNodeType(const char* module, const char* name, const nlohmann::json& data,
+		std::unique_ptr<NodeType>* ret_nodetype) noexcept;
 
 	/// Turns a type into a string
-    /// \param ty The type to stringify
-    /// \param ret_string The return string
-    /// \return The result
-    Result stringifyType(llvm::Type* ty, std::string* ret_string);
+	/// \param ty The type to stringify
+	/// \return The return string
+	std::string stringifyType(llvm::Type* ty);
 
 	llvm::LLVMContext context;  /// The LLVM context to use with everything under the context
 

@@ -9,14 +9,26 @@ using namespace nlohmann;
 
 TEST_CASE("JsonSerializer", "[json]")
 {
-	GIVEN("A default constructed Context with a LangModule and GraphFunction named hello") {
-		
+	GIVEN("A default constructed Context with a LangModule and GraphFunction named hello")
+	{
+		Result res;
 		Context c;
 		c.addModule(std::make_unique<LangModule>(c));
-		
+
 		GraphFunction func(c, "hello");
 
-		THEN("The JSON should be correct") {
+		auto requireWorks = [&](nlohmann::json expected) {
+			nlohmann::json ret;
+			
+			res = func.toJSON(&ret);
+			
+			REQUIRE(ret);
+			REQUIRE(ret == expected);
+			
+		};
+		
+		THEN("The JSON should be correct")
+		{
 			auto correctJSON = R"ENDJSON(
 				{
 					"type": "function",
@@ -25,19 +37,19 @@ TEST_CASE("JsonSerializer", "[json]")
 					"connections": []
 				}
 			)ENDJSON"_json;
-			
-			REQUIRE(correctJSON == func.toJSON());
+
+			requireWorks(correctJSON);
 		}
-		
-		WHEN("We create some nodes and try to dump json") {
-			
-			
+
+		WHEN("We create some nodes and try to dump json")
+		{
 			std::vector<std::pair<llvm::Type*, std::string>> inputs = {
 				{llvm::Type::getInt32Ty(c.context), "in1"}};
-			
+
 			auto entry = func.insertNode(std::make_unique<EntryNodeType>(c, inputs), 32, 32);
-			
-			THEN("The JSON should be correct") {
+
+			THEN("The JSON should be correct")
+			{
 				auto correctJSON = R"ENDJSON(
 					{
 						"type": "function",
@@ -54,14 +66,19 @@ TEST_CASE("JsonSerializer", "[json]")
 						"connections": []
 					}
 					)ENDJSON"_json;
-				
-				REQUIRE(correctJSON == func.toJSON());
+
+				requireWorks(correctJSON);
 			}
-			
-			WHEN("A lang:if is added") {
-				auto ifNode = func.insertNode(c.getNodeType("lang", "if", {}), 44.f, 23.f);
+
+			WHEN("A lang:if is added")
+			{
+				std::unique_ptr<NodeType> ifType;
+				res = c.getNodeType("lang", "if", {}, &ifType);
+				REQUIRE(!!res);
+				auto ifNode = func.insertNode(std::move(ifType), 44.f, 23.f);
 				
-				THEN("The JSON should be correct") {
+				THEN("The JSON should be correct")
+				{
 					auto correctJSON = R"ENDJSON(
 						{
 							"type": "function",
@@ -83,15 +100,16 @@ TEST_CASE("JsonSerializer", "[json]")
 							"connections": []
 						}
 						)ENDJSON"_json;
-					
-					REQUIRE(correctJSON == func.toJSON());
+
+					requireWorks(correctJSON);
 				}
-				
-				WHEN("We connect the entry to the ifNode exec") {
-					
+
+				WHEN("We connect the entry to the ifNode exec")
+				{
 					connectExec(*entry, 0, *ifNode, 0);
-					
-					THEN("The JSON should be correct") {
+
+					THEN("The JSON should be correct")
+					{
 						auto correctJSON = R"ENDJSON(
 							{
 								"type": "function",
@@ -118,16 +136,16 @@ TEST_CASE("JsonSerializer", "[json]")
 									}
 								]
 							})ENDJSON"_json;
-						
-						REQUIRE(correctJSON == func.toJSON());
+
+						requireWorks(correctJSON);
 					}
-					
-					WHEN("Connect the data")  {
-						
+
+					WHEN("Connect the data")
+					{
 						connectData(*entry, 0, *ifNode, 0);
-						
-						THEN("The JSON should be correct") {
-							
+
+						THEN("The JSON should be correct")
+						{
 							auto correctJSON = R"ENDJSON(
 								{
 								"type": "function",
@@ -159,17 +177,12 @@ TEST_CASE("JsonSerializer", "[json]")
 									}
 								]
 								})ENDJSON"_json;
-						
-							REQUIRE(correctJSON == func.toJSON());
+
+							requireWorks(correctJSON);
 						}
 					}
-					
 				}
-				
 			}
-			
 		}
-		
-	} 
-
+	}
 }

@@ -8,19 +8,13 @@
 
 #include <vector>
 
-namespace chig {
-
+namespace chig
+{
 struct JsonModule : ChigModule {
-	
-
 	JsonModule(const nlohamn::json& json_data, Context& cont);
-	
-	std::vector<GraphFunction*> graphFunctions;
-	
-	
-	
-};
 
+	std::vector<GraphFunction*> graphFunctions;
+};
 }
 
-#endif // CHIG_JSON_MODULE_HPP
+#endif  // CHIG_JSON_MODULE_HPP

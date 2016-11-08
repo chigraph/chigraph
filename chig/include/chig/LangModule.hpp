@@ -27,12 +27,14 @@ struct IfNodeType : NodeType {
 		dataInputs = {{llvm::Type::getInt1Ty(context->context), "condition"}};
 	}
 
-	virtual void codegen(size_t /*execInputID*/, llvm::Function*, const std::vector<llvm::Value*>& io,
-		llvm::BasicBlock* codegenInto,
+	virtual Result codegen(size_t /*execInputID*/, llvm::Function*,
+		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
 	{
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
+		
+		return {};
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
@@ -55,11 +57,15 @@ struct EntryNodeType : NodeType {
 	}
 
 	// the function doesn't have to do anything...this class just holds metadata
-	virtual void codegen(size_t /*inputExecID*/, llvm::Function* f, const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
-		llvm::IRBuilder<> builder(codegenInto); 
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Function* f,
+		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
+	{
+		llvm::IRBuilder<> builder(codegenInto);
 		// just go to the block
 		builder.CreateBr(outputBlocks[0]);
 		
+		return {};
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
@@ -67,24 +73,23 @@ struct EntryNodeType : NodeType {
 		return std::make_unique<EntryNodeType>(*this);
 	}
 
-	nlohmann::json toJSON() const override
+	Result toJSON(nlohmann::json* ret_json) const override
 	{
-		nlohmann::json ret;
+		Result res;
+		auto& ret = *ret_json;
+		ret = {};
 
 		for (auto& pair : dataOutputs) {
 			// TODO: user made types
 			ret[pair.second] = "lang:" + context->stringifyType(pair.first);
 		}
 
-		return ret;
+		return res;
 	}
 };
 
 struct ConstIntNodeType : NodeType {
-	
-	ConstIntNodeType(Context& con, int num)
-		: NodeType{con},
-		number{num}
+	ConstIntNodeType(Context& con, int num) : NodeType{con}, number{num}
 	{
 		module = "lang";
 		name = "const-int";
@@ -94,18 +99,21 @@ struct ConstIntNodeType : NodeType {
 		execOutputs = {""};
 
 		dataOutputs = {{llvm::IntegerType::getInt32Ty(con.context), "out"}};
-		
 	}
 
 	// the function doesn't have to do anything...this class just holds metadata
-	virtual void codegen(size_t /*inputExecID*/, llvm::Function* f, const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks) const override {
-		llvm::IRBuilder<> builder(codegenInto); 
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Function* f,
+		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
+	{
+		llvm::IRBuilder<> builder(codegenInto);
 		// just go to the block
 		assert(io.size() == 1);
-		
-		builder.CreateStore(llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->context), number), io[0], false);
+
+		builder.CreateStore(
+			llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->context), number), io[0],
+			false);
 		builder.CreateBr(outputBlocks[0]);
-		
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
@@ -113,13 +121,13 @@ struct ConstIntNodeType : NodeType {
 		return std::make_unique<ConstIntNodeType>(*this);
 	}
 
-	nlohmann::json toJSON() const override
+	Result toJSON(nlohmann::json* fill_json) const override
 	{
-		nlohmann::json ret = number;
+		*fill_json = number;
 
-		return ret;
+		return {};
 	}
-	
+
 	int number;
 };
 
@@ -136,20 +144,22 @@ struct ExitNodeType : NodeType {
 		dataInputs = funOutputs;
 	}
 
-	virtual void codegen(size_t execInputID, llvm::Function* f, const std::vector<llvm::Value*>& io,
+	virtual Result codegen(size_t execInputID, llvm::Function* f, const std::vector<llvm::Value*>& io,
 		llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>&) const override
 	{
 		// assign the return types
 		llvm::IRBuilder<> builder(codegenInto);
-		size_t ret_start = f->arg_size() - io.size(); // returns are after args, find where returns start
+		size_t ret_start =
+			f->arg_size() - io.size();  // returns are after args, find where returns start
 		auto arg_iter = f->arg_begin();
 		std::advance(arg_iter, ret_start);
-		for(int idx = 0; idx < io.size(); ++idx) {
-			builder.CreateStore(io[idx], &*arg_iter, false); // TODO: volitility?
+		for (int idx = 0; idx < io.size(); ++idx) {
+			builder.CreateStore(io[idx], &*arg_iter, false);  // TODO: volitility?
 			++arg_iter;
 		}
-		
-		builder.CreateRet(llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), execInputID));
+
+		builder.CreateRet(
+			llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), execInputID));
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
@@ -157,16 +167,17 @@ struct ExitNodeType : NodeType {
 		return std::make_unique<ExitNodeType>(*this);
 	}
 
-	nlohmann::json toJSON() const override
+	Result toJSON(nlohmann::json* ret_json) const override
 	{
-		nlohmann::json ret;
+		Result res;
+		auto& ret = *ret_json;
 
 		for (auto& pair : dataOutputs) {
 			// TODO: user made types
 			ret[pair.second] = "lang:" + context->stringifyType(pair.first);
 		}
 
-		return ret;
+		return res;
 	}
 };
 
@@ -177,11 +188,10 @@ struct LangModule : ChigModule {
 	virtual std::unique_ptr<NodeType> createNodeType(
 		const char* name, const nlohmann::json& json_data) const override;
 	virtual llvm::Type* getType(const char* name) const override;
-	
+
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
 		nodes;
 };
-
 }
 
 #endif  // CHIG_LANG_MODULE_HPP

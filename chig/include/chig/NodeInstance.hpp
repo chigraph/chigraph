@@ -33,55 +33,54 @@ struct NodeInstance {
 /// \param connectionInputID The ID of data connection in \c lhs to be connected
 /// \param rhs The node to the right, that takes in the data as a parameter
 /// \param connectionOutputID The ID of data input in \c rhs
-inline void connectData(
+inline Result connectData(
 	NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID)
 {
+	Result res;
+	
 	// make sure the connection exists
 	// the input to the connection is the output to the node
 	if (connectionInputID >= lhs.outputDataConnections.size()) {
-		throw std::runtime_error(
-			"Out of bounds in data connection: there is no output data dock with id " +
-			std::to_string(connectionInputID) + " in node with type " + lhs.type->module + ':' +
-			lhs.type->name);
+		res.add_entry("E16", "Output Data connection doesn't exist in node", {{"Requested ID", connectionInputID}, {"Node Type", lhs.type->module + ":" + lhs.type->name}});
 	}
 	if (connectionOutputID >= rhs.inputDataConnections.size()) {
-		throw std::runtime_error(
-			"Out of bounds in data connection: there is no input data dock with id " +
-			std::to_string(connectionInputID) + " in node with type " + rhs.type->module + ':' +
-			rhs.type->name);
+		res.add_entry("E17", "Input Data connection doesn't exist in node", {{"Requested ID", connectionOutputID}, {"Node Type", rhs.type->module + ":" + rhs.type->name}});
 	}
+	
+	// if there are errors, back out
+	if(!res) return res;
 
 	lhs.outputDataConnections[connectionInputID] = {&rhs, connectionOutputID};
 	rhs.inputDataConnections[connectionOutputID] = {&lhs, connectionInputID};
+	
+	return res;
 }
-
-
 
 /// Connects two nodes' exec connections
 /// \param lhs The node to the left, the node outputting the connections
 /// \param connectionInputID The ID of exec connection in \c lhs to be connected
 /// \param rhs The node to the right, that takes in the exec as a parameter
 /// \param connectionOutputID The ID of exec input in \c rhs
-inline void connectExec(
+inline Result connectExec(
 	NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID)
 {
+	Result res;
+	
 	// make sure the connection exists
 	if (connectionInputID >= lhs.outputExecConnections.size()) {
-		throw std::runtime_error(
-			"Out of bounds in exec connection: there is no output exec dock with id " +
-			std::to_string(connectionInputID) + " in node with type " + lhs.type->module + ':' +
-			lhs.type->name);
+		res.add_entry("E18", "Output exec connection doesn't exist in node", {{"Requested ID", connectionInputID}, {"Node Type", lhs.type->module + ":" + lhs.type->name}});
 	}
 	if (connectionOutputID >= rhs.inputExecConnections.size()) {
-		throw std::runtime_error(
-			"Out of bounds in exec connection: there is no input exec dock with id " +
-			std::to_string(connectionOutputID) + " in node with type " + rhs.type->module + ':' +
-			rhs.type->name);
+		res.add_entry("E19", "Input exec connection doesn't exist in node", {{"Requested ID", connectionInputID}, {"Node Type", rhs.type->module + ":" + rhs.type->name}});
 	}
 
+	if(!res) return res;
+	
 	// connect it!
 	lhs.outputExecConnections[connectionInputID] = {&rhs, connectionOutputID};
 	rhs.inputExecConnections[connectionOutputID] = {&lhs, connectionOutputID};
+	
+	return res;
 }
 }
 
