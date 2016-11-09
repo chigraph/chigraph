@@ -83,11 +83,13 @@ Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std
 			if (!testIter.value().is_array()){
 				
 				res.add_entry("E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeID}});
+				return res;
 			}
 			
-			if(testIter.value().size() == 2) {
-				res.add_entry("E11", "Node doesn't have a location that is an array of size 2.", {{"nodeid", nodeID}});
+			if(testIter.value().size() != 2) {
+				res.add_entry("E11", "Node doesn't have a location that is an array of size 2.", {{"nodeid", nodeID}, {"Size of Array", testIter.value().size()}});
 
+				return res;
 			}
 		} else {
 			res.add_entry("E12", "Node doesn't have a location.", {{"nodeid", nodeID}});

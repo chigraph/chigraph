@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
 																		      "nodes": [
 																			          {
 																							            "type": "lang:entry",
-																										          "location": [0, 0],
+																										          "location": [0.0, 0.0],
 																												            "data": {
 																																	            "input": "lang:i32"
 																																				          }
@@ -66,6 +66,8 @@ int main(int argc, char** argv) {
 	)ENDJSON"_json;
 
 	Result r = GraphFunction::fromJSON(c, jsondata["graphs"][0], &func);
+	std::cout << r.result_json;
+	std::cout.flush();
 	std::unique_ptr<llvm::Module> mod = std::make_unique<llvm::Module>("hello", c.context);
 	auto llfunc = func->compile(mod.get());
 
