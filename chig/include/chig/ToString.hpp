@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#ifdef MYTABLET
 namespace std{
 	template<typename T>
 	string to_string(T to_conv) {
@@ -19,3 +20,4 @@ namespace std{
 		return atoi(s.c_str());
 	}
 }
+#endif

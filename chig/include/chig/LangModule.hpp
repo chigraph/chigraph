@@ -114,6 +114,8 @@ struct ConstIntNodeType : NodeType {
 			llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->context), number), io[0],
 			false);
 		builder.CreateBr(outputBlocks[0]);
+
+        return {};
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
@@ -160,6 +162,8 @@ struct ExitNodeType : NodeType {
 
 		builder.CreateRet(
 			llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), execInputID));
+
+        return {};
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override

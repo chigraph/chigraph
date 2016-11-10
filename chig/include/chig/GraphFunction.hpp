@@ -42,8 +42,9 @@ struct GraphFunction {
 	/// Compile the graph to an \c llvm::Function
 	/// Throws on error
 	/// \param module The module to codgen into
-	/// \return The \c llvm::Function that it was compiled to
-	llvm::Function* compile(llvm::Module* module) const;
+    /// \param ret The \c llvm::Function that it was compiled to
+    /// \ret The result
+    Result compile(llvm::Module* module, llvm::Function** ret) const;
 
 	/// Gets the node with type lang:entry
 	/// returns {nullptr, ~0} on failure
