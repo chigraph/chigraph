@@ -20,20 +20,20 @@ TEST_CASE("Read json", "[json]")
 		auto requireErrs = [&](nlohmann::json obj, const char* ec) {
 			std::unique_ptr<GraphFunction> func;
 			res = GraphFunction::fromJSON(c, obj, &func);
-			
+
 			REQUIRE(!res);
 			REQUIRE(res.result_json["errorcode"] == ec);
 		};
-		
+
 		auto requireWorks = [&](nlohmann::json obj) {
 			std::unique_ptr<GraphFunction> func;
 			res = GraphFunction::fromJSON(c, obj, &func);
-			
+
 			REQUIRE(!!res);
-			
+
 			return func;
 		};
-		
+
 		WHEN("We load some empty JSON then it should throw")
 		{
 			requireErrs(json::parse("null"), "E1");
@@ -60,7 +60,6 @@ TEST_CASE("Read json", "[json]")
 				{
 					"type": "function"
 				})ENDJSON"_json;
-
 
 			requireErrs(inputJSON, "E4");
 		}

@@ -33,7 +33,7 @@ struct IfNodeType : NodeType {
 	{
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
-		
+
 		return {};
 	}
 
@@ -64,7 +64,7 @@ struct EntryNodeType : NodeType {
 		llvm::IRBuilder<> builder(codegenInto);
 		// just go to the block
 		builder.CreateBr(outputBlocks[0]);
-		
+
 		return {};
 	}
 
@@ -115,7 +115,7 @@ struct ConstIntNodeType : NodeType {
 			false);
 		builder.CreateBr(outputBlocks[0]);
 
-        return {};
+		return {};
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override
@@ -146,8 +146,9 @@ struct ExitNodeType : NodeType {
 		dataInputs = funOutputs;
 	}
 
-	virtual Result codegen(size_t execInputID, llvm::Function* f, const std::vector<llvm::Value*>& io,
-		llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>&) const override
+	virtual Result codegen(size_t execInputID, llvm::Function* f,
+		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+		const std::vector<llvm::BasicBlock*>&) const override
 	{
 		// assign the return types
 		llvm::IRBuilder<> builder(codegenInto);
@@ -163,7 +164,7 @@ struct ExitNodeType : NodeType {
 		builder.CreateRet(
 			llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), execInputID));
 
-        return {};
+		return {};
 	}
 
 	virtual std::unique_ptr<NodeType> clone() const override

@@ -30,7 +30,7 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 					llvm::Type* llty;
 					// TODO: maybe not discard res
 					context->getType(module.c_str(), type.c_str(), &llty);
-					
+
 					inputs.emplace_back(llty, iter.key());
 				}
 
@@ -47,12 +47,10 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 					std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
 					std::string type = qualifiedType.substr(qualifiedType.find(':') + 1);
 
-					
 					llvm::Type* llty;
 					// TODO: don't discard res
 					context->getType(module.c_str(), type.c_str(), &llty);
-					outputs.emplace_back(
-						llty, iter.key());
+					outputs.emplace_back(llty, iter.key());
 				}
 
 				return std::make_unique<ExitNodeType>(*context, outputs);

@@ -47,16 +47,14 @@ struct NodeType {
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
 	/// numOutputExecs.
 	/// \return The Result
-	virtual Result codegen(size_t execInputID, llvm::Function* f, const std::vector<llvm::Value*>& io,
-		llvm::BasicBlock* codegenInto,
+	virtual Result codegen(size_t execInputID, llvm::Function* f,
+		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
-		
-	/// Create the JSON necessary to store the object. 
+
+	/// Create the JSON necessary to store the object.
 	/// \param ret_json The json obejct to fill into
 	/// \return The result
 	virtual Result toJSON(nlohmann::json* ret_json) const { return {}; }
-	
-	
 	/// Clones the type
 	/// \return The clone
 	virtual std::unique_ptr<NodeType> clone() const = 0;
@@ -100,8 +98,8 @@ struct FunctionCallNodeType : NodeType {
 
 	llvm::Function* function;
 
-	virtual Result codegen(size_t execInputID, llvm::Function* f, const std::vector<llvm::Value*>& io,
-		llvm::BasicBlock* codegenIntoBlock,
+	virtual Result codegen(size_t execInputID, llvm::Function* f,
+		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenIntoBlock,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
 	{
 		llvm::IRBuilder<> codegenInto(codegenIntoBlock);
@@ -120,7 +118,7 @@ struct FunctionCallNodeType : NodeType {
 					outputBlocks[i]);
 			}
 		}
-		
+
 		return {};
 	}
 

@@ -16,54 +16,54 @@ TEST_CASE("LangModule", "[module]")
 		{
 			llvm::Type* test;
 			Result res;
-			
+
 			res = c.getType("lang", "i32", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == llvm::IntegerType::getInt32Ty(c.context));
-			
+
 			res = c.getType("lang", "i32*", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == llvm::IntegerType::getInt32PtrTy(c.context));
-			
+
 			res = c.getType("lang", "i32**", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == llvm::PointerType::get(llvm::IntegerType::getInt32PtrTy(c.context), 0));
-			
+
 			res = c.getType("lang", "i8", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == llvm::IntegerType::getInt8Ty(c.context));
-			
+
 			res = c.getType("lang", "double", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == llvm::Type::getDoubleTy(c.context));
-			
 		}
 
-		THEN("We try to get associated types with incorrect parameters, it returns the correct errors")
+		THEN(
+			"We try to get associated types with incorrect parameters, it returns the correct "
+			"errors")
 		{
 			llvm::Type* test;
 			Result res;
-			
+
 			res = c.getType("lang", "i32a", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E21");
-			
+
 			res = c.getType("lang", "i32*a", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E21");
-			
+
 			res = c.getType("lang", "*i32**", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E21");
-			
+
 			res = c.getType("lang", "&i8", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E21");
-			
+
 			res = c.getType("lang", "pq", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E21");
-
 		}
 
 		WHEN("We try to get if node")
@@ -106,14 +106,14 @@ TEST_CASE("LangModule", "[module]")
 		WHEN("We try to get entry node")
 		{
 			Result res;
-			
+
 			std::unique_ptr<NodeType> entryNode = nullptr;
-			
+
 			res = c.getNodeType("lang", "entry",
-				nlohmann::json::parse(R"end(   {"hello": "i32", "hello2": "i32*"}   )end"), &entryNode);
+				nlohmann::json::parse(R"end(   {"hello": "i32", "hello2": "i32*"}   )end"),
+				&entryNode);
 			REQUIRE(!!res);
-			
-			
+
 			THEN("It should be totally valid")
 			{
 				REQUIRE(entryNode != nullptr);

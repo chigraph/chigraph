@@ -4,26 +4,28 @@
 #pragma once
 
 #include "chig/ChigModule.hpp"
-#include "chig/json.hpp"
-#include "chig/Result.hpp"
 #include "chig/GraphFunction.hpp"
+#include "chig/Result.hpp"
+#include "chig/json.hpp"
 
 #include <vector>
 
 namespace chig
 {
 struct JsonModule : ChigModule {
+	/// Constructor for a json module
+	JsonModule(const nlohmann::json& json_data, Context& cont, Result* res);
 
-    /// Constructor for a json module
-    JsonModule(const nlohmann::json& json_data, Context& cont, Result* res);
+	JsonModule(const JsonModule&) = delete;
+	JsonModule(JsonModule&&) = delete;
 
-    JsonModule(const JsonModule&) = delete;
-    JsonModule(JsonModule&&) = delete;
+	JsonModule& operator=(const JsonModule&) = delete;
+	JsonModule& operator=(JsonModule&&) = delete;
 
-    JsonModule& operator=(const JsonModule&) = delete;
-    JsonModule& operator=(JsonModule&&) = delete;
+	std::vector<GraphFunction*> functions;
 
-	std::vector<GraphFunction*> graphFunctions;
+	std::string name;
+	std::vector<std::string> dependent_modules;
 };
 }
 

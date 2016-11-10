@@ -19,14 +19,14 @@ TEST_CASE("JsonSerializer", "[json]")
 
 		auto requireWorks = [&](nlohmann::json expected) {
 			nlohmann::json ret;
-			
+
 			res = func.toJSON(&ret);
-			
+
 			REQUIRE(!!res);
 			REQUIRE(ret == expected);
-			
+
 		};
-		
+
 		THEN("The JSON should be correct")
 		{
 			auto correctJSON = R"ENDJSON(
@@ -76,7 +76,7 @@ TEST_CASE("JsonSerializer", "[json]")
 				res = c.getNodeType("lang", "if", {}, &ifType);
 				REQUIRE(!!res);
 				auto ifNode = func.insertNode(std::move(ifType), 44.f, 23.f);
-				
+
 				THEN("The JSON should be correct")
 				{
 					auto correctJSON = R"ENDJSON(

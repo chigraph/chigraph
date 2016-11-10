@@ -13,10 +13,11 @@ GraphFunction::GraphFunction(Context& context, std::string name)
 {
 }
 
-Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_ptr)
+Result GraphFunction::fromJSON(
+	Context& context, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_ptr)
 {
 	Result res;
-	
+
 	if (!data.is_object()) {
 		res.add_entry("E1", "Graph json isn't a JSON object", {});
 		return res;
@@ -40,7 +41,7 @@ Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std
 	// construct it
 	*ret_ptr = std::make_unique<GraphFunction>(context, name);
 	auto& ret = *ret_ptr;
-	
+
 	// read the nodes
 	if (data.find("nodes") == data.end()) {
 		res.add_entry("E5", "JSON in graph doesn't have nodes object", {});
@@ -55,17 +56,17 @@ Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std
 		std::string fullType = node["type"];
 		std::string moduleName = fullType.substr(0, fullType.find(':'));
 		std::string typeName = fullType.substr(fullType.find(':') + 1);
-		
-		if(moduleName.size() == 0) {
+
+		if (moduleName.size() == 0) {
 			res.add_entry("E7", "Node has an empty module name", {"nodeid", nodeID});
 			return res;
 		}
-		
-		if(typeName.size() == 0) {
+
+		if (typeName.size() == 0) {
 			res.add_entry("E8", "Node has an empty type name", {"nodeid", nodeID});
 			return res;
 		}
-		
+
 		if (node.find("data") == node.end()) {
 			res.add_entry("E9", "Node doens't have a data section", {"nodeid", nodeID});
 			return res;
@@ -73,36 +74,35 @@ Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std
 
 		std::unique_ptr<NodeType> nodeType;
 		res += context.getNodeType(moduleName.c_str(), typeName.c_str(), node["data"], &nodeType);
-		
+
 		if (!res) {
 			return res;
 		}
 		auto testIter = node.find("location");
 		if (testIter != node.end()) {
 			// make sure it is the right size
-			if (!testIter.value().is_array()){
-				
-				res.add_entry("E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeID}});
-                continue;
+			if (!testIter.value().is_array()) {
+				res.add_entry(
+					"E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeID}});
+				continue;
 			}
-			
-            if(testIter.value().size() != 2) {
-				res.add_entry("E11", "Node doesn't have a location that is an array of size 2.", {{"nodeid", nodeID}});
-                continue;
+
+			if (testIter.value().size() != 2) {
+				res.add_entry("E11", "Node doesn't have a location that is an array of size 2.",
+					{{"nodeid", nodeID}});
+				continue;
 			}
 		} else {
 			res.add_entry("E12", "Node doesn't have a location.", {{"nodeid", nodeID}});
-            continue;
+			continue;
 		}
-		
-		
+
 		ret->nodes.push_back(std::make_unique<NodeInstance>(
 			std::move(nodeType), node["location"][0], node["location"][0]));
-		
+
 		++nodeID;
 	}
 
-	
 	size_t connID = 0;
 	// read the connections
 	for (auto& connection : data["connections"]) {
@@ -110,7 +110,8 @@ Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std
 		bool isData = type == "data";
 		// it either has to be "data" or "exec"
 		if (!isData && type != "exec") {
-			res.add_entry("E13", "Unrecognized connection type", {{"connectionid", connID}, {"Found Type", type}});
+			res.add_entry("E13", "Unrecognized connection type",
+				{{"connectionid", connID}, {"Found Type", type}});
 			continue;
 		}
 
@@ -122,14 +123,16 @@ Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std
 
 		// make sure the nodes exist
 		if (InputNodeID >= ret->nodes.size()) {
-			res.add_entry("E14", "Input node for connection doesn't exist", {{"connectionid", connID}, {"Requested Node", InputNodeID}});
+			res.add_entry("E14", "Input node for connection doesn't exist",
+				{{"connectionid", connID}, {"Requested Node", InputNodeID}});
 			continue;
 		}
 		if (OutputNodeID >= ret->nodes.size()) {
-			res.add_entry("E15", "Output node for connection doesn't exist", {{"connectionid", connID}, {"Requested Node", InputNodeID}});
+			res.add_entry("E15", "Output node for connection doesn't exist",
+				{{"connectionid", connID}, {"Requested Node", InputNodeID}});
 			continue;
 		}
-		
+
 		// connect
 		// these functions do bounds checking, it's okay
 		if (isData) {
@@ -139,7 +142,7 @@ Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std
 			connectExec(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
 				OutputConnectionID);
 		}
-		
+
 		++connID;
 	}
 
@@ -149,10 +152,10 @@ Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std
 Result GraphFunction::toJSON(nlohmann::json* toFill) const
 {
 	Result res;
-	
+
 	*toFill = nlohmann::json{};
 	auto& jsonData = *toFill;
-	
+
 	jsonData["type"] = "function";
 	jsonData["name"] = graphName;
 
@@ -164,7 +167,7 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 
 	for (auto node_id = 0ull; node_id < nodes.size(); ++node_id) {
 		auto& node = nodes[node_id];
-		
+
 		nlohmann::json nodeJson;
 		res += node->type->toJSON(&nodeJson);
 		jsonNodes.push_back({{"type", node->type->module + ':' + node->type->name},
@@ -263,7 +266,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) const
 {
-    Result res;
+	Result res;
 
 	const auto& argument_connections =
 		getEntryNode().first->type->dataOutputs;  // ouptuts from entry are arguments
@@ -271,8 +274,8 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	// get return types;
 	auto ret = getReturnTypes();
 	if (!ret) {
-        res.add_entry("E34", "No return type in functin", {});
-        return res;
+		res.add_entry("E34", "No return type in functin", {});
+		return res;
 	}
 
 	std::vector<llvm::Type*> arguments;
@@ -314,7 +317,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 
 	codegenHelper(node, execInputID, block, f, nodeCache);
 
-    return res;
+	return res;
 }
 
 std::pair<NodeInstance*, size_t> GraphFunction::getEntryNode() const noexcept

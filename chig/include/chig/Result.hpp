@@ -8,16 +8,13 @@
 namespace chig
 {
 struct Result {
-	
-	void add_entry(const char* ec, const char* overview, nlohmann::json data) {
+	void add_entry(const char* ec, const char* overview, nlohmann::json data)
+	{
 		assert(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
-		
-		result_json.push_back(nlohmann::json({
-			{"errorcode", ec},
-			{"overview", overview},
-			{"data", data}
-		}));
-		if(ec[0] == 'E') success = false;
+
+		result_json.push_back(
+			nlohmann::json({{"errorcode", ec}, {"overview", overview}, {"data", data}}));
+		if (ec[0] == 'E') success = false;
 	}
 
 	nlohmann::json result_json = nlohmann::json::array();

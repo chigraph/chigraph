@@ -34,7 +34,6 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 				REQUIRE(c.getModuleByName("lang")->name == "lang");
 			}
 
-
 			THEN("getNodeType should work for basic types")
 			{
 				std::unique_ptr<NodeType> ty;
@@ -48,11 +47,10 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 				res = c.getNodeType("lan", "if", {}, &ty);
 				REQUIRE(!res);
 				REQUIRE(res.result_json["errorcode"] == "E20");
-				
+
 				res = c.getNodeType("lang", "eef", {}, &ty);
 				REQUIRE(!res);
 				REQUIRE(res.result_json["errorcode"] == "E21");
-				
 			}
 
 			THEN("getType should work for basic types")
@@ -62,7 +60,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 					res = c.getType("lang", ty, &llty);
 					REQUIRE(c.stringifyType(llty) == ty);
 				};
-				
+
 				checkTy("i32");
 				checkTy("i1");
 				checkTy("i32*");
@@ -76,11 +74,10 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 				res = c.getType("lang", "iiint", &ty);
 				REQUIRE(!res);
 				REQUIRE(res.result_json["errorcode"] == "E21");
-				
+
 				res = c.getType("lag", "i8", &ty);
 				REQUIRE(!res);
 				REQUIRE(res.result_json["errorcode"] == "E20");
-				
 			}
 		}
 	}

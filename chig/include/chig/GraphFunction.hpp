@@ -32,7 +32,8 @@ struct GraphFunction {
 	/// \context The context to create the GraphFunction with
 	/// \param ret_func The GraphFunction that has been produced
 	/// \return The result
-	static Result fromJSON(Context& context, const nlohmann::json& j, std::unique_ptr<GraphFunction>* ret_func);
+	static Result fromJSON(
+		Context& context, const nlohmann::json& j, std::unique_ptr<GraphFunction>* ret_func);
 
 	/// Serialize the GraphFunction to JSON
 	/// \param toFill The JSON object representing the graph
@@ -42,9 +43,9 @@ struct GraphFunction {
 	/// Compile the graph to an \c llvm::Function
 	/// Throws on error
 	/// \param module The module to codgen into
-    /// \param ret The \c llvm::Function that it was compiled to
-    /// \ret The result
-    Result compile(llvm::Module* module, llvm::Function** ret) const;
+	/// \param ret The \c llvm::Function that it was compiled to
+	/// \ret The result
+	Result compile(llvm::Module* module, llvm::Function** ret) const;
 
 	/// Gets the node with type lang:entry
 	/// returns {nullptr, ~0} on failure
