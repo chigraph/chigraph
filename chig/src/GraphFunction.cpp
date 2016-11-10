@@ -83,16 +83,16 @@ Result GraphFunction::fromJSON(Context& context, const nlohmann::json& data, std
 			if (!testIter.value().is_array()){
 				
 				res.add_entry("E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeID}});
-				return res;
+                continue;
 			}
 			
-			if(testIter.value().size() != 2) {
-				res.add_entry("E11", "Node doesn't have a location that is an array of size 2.", {{"nodeid", nodeID}, {"Size of Array", testIter.value().size()}});
-
-				return res;
+            if(testIter.value().size() != 2) {
+				res.add_entry("E11", "Node doesn't have a location that is an array of size 2.", {{"nodeid", nodeID}});
+                continue;
 			}
 		} else {
 			res.add_entry("E12", "Node doesn't have a location.", {{"nodeid", nodeID}});
+            continue;
 		}
 		
 		
@@ -261,15 +261,18 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	}
 }
 
-llvm::Function* GraphFunction::compile(llvm::Module* mod) const
+Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) const
 {
+    Result res;
+
 	const auto& argument_connections =
 		getEntryNode().first->type->dataOutputs;  // ouptuts from entry are arguments
 
 	// get return types;
 	auto ret = getReturnTypes();
 	if (!ret) {
-		throw std::runtime_error("Failed to compile function: no return type");
+        res.add_entry("E34", "No return type in functin", {});
+        return res;
 	}
 
 	std::vector<llvm::Type*> arguments;
@@ -311,7 +314,7 @@ llvm::Function* GraphFunction::compile(llvm::Module* mod) const
 
 	codegenHelper(node, execInputID, block, f, nodeCache);
 
-	return f;
+    return res;
 }
 
 std::pair<NodeInstance*, size_t> GraphFunction::getEntryNode() const noexcept

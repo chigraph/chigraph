@@ -5,13 +5,23 @@
 
 #include "chig/ChigModule.hpp"
 #include "chig/json.hpp"
+#include "chig/Result.hpp"
+#include "chig/GraphFunction.hpp"
 
 #include <vector>
 
 namespace chig
 {
 struct JsonModule : ChigModule {
-	JsonModule(const nlohamn::json& json_data, Context& cont);
+
+    /// Constructor for a json module
+    JsonModule(const nlohmann::json& json_data, Context& cont, Result* res);
+
+    JsonModule(const JsonModule&) = delete;
+    JsonModule(JsonModule&&) = delete;
+
+    JsonModule& operator=(const JsonModule&) = delete;
+    JsonModule& operator=(JsonModule&&) = delete;
 
 	std::vector<GraphFunction*> graphFunctions;
 };
