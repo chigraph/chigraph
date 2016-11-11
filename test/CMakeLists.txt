@@ -11,3 +11,5 @@ add_test(NAME tests
 	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 	COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests
 )
+
+add_subdirectory(error)

@@ -22,7 +22,7 @@ struct JsonModule : ChigModule {
 	JsonModule& operator=(const JsonModule&) = delete;
 	JsonModule& operator=(JsonModule&&) = delete;
 
-	std::vector<GraphFunction*> functions;
+	std::vector<std::unique_ptr<GraphFunction>> functions;
 
 	std::string name;
 	std::vector<std::string> dependencies;

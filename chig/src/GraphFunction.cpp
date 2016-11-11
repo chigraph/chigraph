@@ -105,46 +105,54 @@ Result GraphFunction::fromJSON(
 
 	size_t connID = 0;
 	// read the connections
-	for (auto& connection : data["connections"]) {
-		std::string type = connection["type"];
-		bool isData = type == "data";
-		// it either has to be "data" or "exec"
-		if (!isData && type != "exec") {
-			res.add_entry("E13", "Unrecognized connection type",
-				{{"connectionid", connID}, {"Found Type", type}});
-			continue;
+	{
+		auto connIter = data.find("connections");
+		if(connIter == data.end() || !connIter->is_array()) {
+			res.add_entry("E35", "No connections array in function", {});
+			return res;
 		}
+		for (auto& connection : data["connections"]) {
+			std::string type = connection["type"];
+			bool isData = type == "data";
+			// it either has to be "data" or "exec"
+			if (!isData && type != "exec") {
+				res.add_entry("E13", "Unrecognized connection type",
+					{{"connectionid", connID}, {"Found Type", type}});
+				continue;
+			}
 
-		int InputNodeID = connection["input"][0];
-		int InputConnectionID = connection["input"][1];
+			int InputNodeID = connection["input"][0];
+			int InputConnectionID = connection["input"][1];
 
-		int OutputNodeID = connection["output"][0];
-		int OutputConnectionID = connection["output"][1];
+			int OutputNodeID = connection["output"][0];
+			int OutputConnectionID = connection["output"][1];
 
-		// make sure the nodes exist
-		if (InputNodeID >= ret->nodes.size()) {
-			res.add_entry("E14", "Input node for connection doesn't exist",
-				{{"connectionid", connID}, {"Requested Node", InputNodeID}});
-			continue;
+			// make sure the nodes exist
+			if (InputNodeID >= ret->nodes.size()) {
+				res.add_entry("E14", "Input node for connection doesn't exist",
+					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
+				continue;
+			}
+			if (OutputNodeID >= ret->nodes.size()) {
+				res.add_entry("E15", "Output node for connection doesn't exist",
+					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
+				continue;
+			}
+
+			// connect
+			// these functions do bounds checking, it's okay
+			if (isData) {
+				connectData(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
+					OutputConnectionID);
+			} else {
+				connectExec(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
+					OutputConnectionID);
+			}
+
+			++connID;
 		}
-		if (OutputNodeID >= ret->nodes.size()) {
-			res.add_entry("E15", "Output node for connection doesn't exist",
-				{{"connectionid", connID}, {"Requested Node", InputNodeID}});
-			continue;
-		}
-
-		// connect
-		// these functions do bounds checking, it's okay
-		if (isData) {
-			connectData(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
-				OutputConnectionID);
-		} else {
-			connectExec(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
-				OutputConnectionID);
-		}
-
-		++connID;
 	}
+	
 
 	return res;
 }

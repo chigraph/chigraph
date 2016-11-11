@@ -51,7 +51,7 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 		functions.reserve(iter->size());
 		for(auto graph : *iter) {
 			std::unique_ptr<GraphFunction> newf;
-			*r += GraphFunction::fromJSON(&context, graph, &newf);
+			*r += GraphFunction::fromJSON(*context, graph, &newf);
 			functions.push_back(std::move(newf));
 		}
 		

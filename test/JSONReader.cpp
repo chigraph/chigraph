@@ -22,7 +22,7 @@ TEST_CASE("Read json", "[json]")
 			res = GraphFunction::fromJSON(c, obj, &func);
 
 			REQUIRE(!res);
-			REQUIRE(res.result_json["errorcode"] == ec);
+			REQUIRE(res.result_json[0]["errorcode"] == ec);
 		};
 
 		auto requireWorks = [&](nlohmann::json obj) {
@@ -84,7 +84,7 @@ TEST_CASE("Read json", "[json]")
 			requireErrs(inputJSON, "E4");
 		}
 
-		WHEN("We have a function with nodes and a name it should work")
+		WHEN("We have a function with nodes and a name, but no connections")
 		{
 			auto inputJSON = R"ENDJSON(
 				{
@@ -93,9 +93,7 @@ TEST_CASE("Read json", "[json]")
 					"nodes": []
 				})ENDJSON"_json;
 
-			auto obj = requireWorks(inputJSON);
-			REQUIRE(obj->graphName == "Hello");
-			REQUIRE(obj->nodes.size() == 0);
+			requireErrs(inputJSON, "E35");
 		}
 	}
 }

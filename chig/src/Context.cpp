@@ -72,7 +72,11 @@ Result Context::getNodeType(const char* moduleName, const char* name, const nloh
 	}
 
 	*toFill = module->createNodeType(name, data);
-
+	if(!*toFill) {
+		res.add_entry("E21", "Could not create node type", {{"Requested Type", name}, {"Module Name", moduleName}});
+		return res;
+	}
+	
 	return res;
 }
 
