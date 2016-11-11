@@ -6,16 +6,15 @@
 int main(int argc, char** argv) {
 	
 	if(argc != 2) {
-		std::cerr << "Usage: errorchecker outputtoparse.json E10" << std::endl;
+		std::cerr << "Usage: errorchecker E10" << std::endl;
 		return 1;
 	}
 	
 	// get all data
 	nlohmann::json newData;
-	std::ifstream stream(argv[1]);
-	stream >> newData;
+	std::cin >> newData;
 	
-	if(newData[0]["errorcode"] == argv[2]) {
+	if(newData[0]["errorcode"] == argv[1]) {
 		return 0;
 	} else {
 		return 1;
