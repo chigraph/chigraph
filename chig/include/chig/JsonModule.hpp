@@ -25,7 +25,7 @@ struct JsonModule : ChigModule {
 	std::vector<GraphFunction*> functions;
 
 	std::string name;
-	std::vector<std::string> dependent_modules;
+	std::vector<std::string> dependencies;
 };
 }
 
