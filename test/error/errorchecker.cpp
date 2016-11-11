@@ -12,10 +12,11 @@
 using namespace chig;
 using namespace nlohmann;
 
-int main() {
+int main(int argc, char** argv) {
 	
-	const char* file = "${FULL_JSON_FILE}";
-	const char* expectedErr = "${EXPECTED_ERR}";
+	const char* file = argv[1];
+	const char* expectedErr = argv[2];
+
 	
 	
 	std::ifstream ifile(file);
