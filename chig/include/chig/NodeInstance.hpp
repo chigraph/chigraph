@@ -50,6 +50,15 @@ inline Result connectData(
 			{{"Requested ID", connectionOutputID},
 				{"Node Type", rhs.type->module + ":" + rhs.type->name}});
 	}
+	
+	// make sure the connection is of the right type
+	if(lhs.type->dataOutputs[connectionInputID].first != rhs.type->dataInputs[connectionOutputID].first) {
+		res.add_entry("E24", "Connecting data nodes with different types is invalid", {
+			{"Left Hand Type", lhs.type->context->stringifyType(lhs.type->dataOutputs[connectionInputID].first)},
+			{"Right Hand Type", lhs.type->context->stringifyType(rhs.type->dataOutputs[connectionOutputID].first)}
+		});
+		return res;
+	}
 
 	// if there are errors, back out
 	if (!res) return res;
