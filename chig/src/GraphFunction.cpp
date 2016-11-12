@@ -118,20 +118,43 @@ Result GraphFunction::fromJSON(
 				continue;
 			}
 			
+			if (connection.find("input") == connection.end()) {
+				res.add_entry("E16", "No input element in connection",  {{"connectionid", connID}});
+				continue;
+			}
+			if (!connection.find("input")->is_array() || connection.find("input")->size() != 2 || 
+				!connection.find("input")->operator[](0).is_number_integer() || 
+				!connection.find("input")->operator[](1).is_number_integer()
+			) {
+				res.add_entry("E17", "Incorrect connection input format, must be an array of two ints", {{"connectionid", connID}, {"Requested Type", *connection.find("input")}});
+				continue;
+			}
 			int InputNodeID = connection["input"][0];
 			int InputConnectionID = connection["input"][1];
 
+			
+			if (connection.find("output") == connection.end()) {
+				res.add_entry("E18", "No output element in connection",  {{"connectionid", connID}});
+				continue;
+			}
+			if (!connection.find("output")->is_array() || connection.find("output")->size() != 2 || 
+				!connection.find("output")->operator[](0).is_number_integer() || 
+				!connection.find("output")->operator[](1).is_number_integer()
+			) {
+				res.add_entry("E19", "Incorrect connection output format, must be an array of two ints", {{"connectionid", connID}, {"Requested Type", *connection.find("output")}});
+				continue;
+			}
 			int OutputNodeID = connection["output"][0];
 			int OutputConnectionID = connection["output"][1];
 
 			// make sure the nodes exist
 			if (InputNodeID >= ret->nodes.size()) {
-				res.add_entry("E16", "Input node for connection doesn't exist",
+				res.add_entry("E20", "Input node for connection doesn't exist",
 					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
 				continue;
 			}
 			if (OutputNodeID >= ret->nodes.size()) {
-				res.add_entry("E17", "Output node for connection doesn't exist",
+				res.add_entry("E21", "Output node for connection doesn't exist",
 					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
 				continue;
 			}
@@ -139,10 +162,10 @@ Result GraphFunction::fromJSON(
 			// connect
 			// these functions do bounds checking, it's okay
 			if (isData) {
-				connectData(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
+				res += connectData(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
 					OutputConnectionID);
 			} else {
-				connectExec(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
+				res += connectExec(*ret->nodes[InputNodeID], InputConnectionID, *ret->nodes[OutputNodeID],
 					OutputConnectionID);
 			}
 

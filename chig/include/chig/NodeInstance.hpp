@@ -41,12 +41,12 @@ inline Result connectData(
 	// make sure the connection exists
 	// the input to the connection is the output to the node
 	if (connectionInputID >= lhs.outputDataConnections.size()) {
-		res.add_entry("E16", "Output Data connection doesn't exist in node",
+		res.add_entry("E22", "Output Data connection doesn't exist in node",
 			{{"Requested ID", connectionInputID},
 				{"Node Type", lhs.type->module + ":" + lhs.type->name}});
 	}
 	if (connectionOutputID >= rhs.inputDataConnections.size()) {
-		res.add_entry("E17", "Input Data connection doesn't exist in node",
+		res.add_entry("E23", "Input Data connection doesn't exist in node",
 			{{"Requested ID", connectionOutputID},
 				{"Node Type", rhs.type->module + ":" + rhs.type->name}});
 	}
@@ -72,12 +72,12 @@ inline Result connectExec(
 
 	// make sure the connection exists
 	if (connectionInputID >= lhs.outputExecConnections.size()) {
-		res.add_entry("E18", "Output exec connection doesn't exist in node",
+		res.add_entry("E22", "Output exec connection doesn't exist in node",
 			{{"Requested ID", connectionInputID},
 				{"Node Type", lhs.type->module + ":" + lhs.type->name}});
 	}
 	if (connectionOutputID >= rhs.inputExecConnections.size()) {
-		res.add_entry("E19", "Input exec connection doesn't exist in node",
+		res.add_entry("E23", "Input exec connection doesn't exist in node",
 			{{"Requested ID", connectionInputID},
 				{"Node Type", rhs.type->module + ":" + rhs.type->name}});
 	}
