@@ -71,9 +71,6 @@ Result GraphFunction::fromJSON(
 		std::unique_ptr<NodeType> nodeType;
 		res += context.getNodeType(moduleName.c_str(), typeName.c_str(), node["data"], &nodeType);
 
-		if (!res) {
-			return res;
-		}
 		auto testIter = node.find("location");
 		if (testIter != node.end()) {
 			// make sure it is the right size
@@ -104,19 +101,23 @@ Result GraphFunction::fromJSON(
 	{
 		auto connIter = data.find("connections");
 		if(connIter == data.end() || !connIter->is_array()) {
-			res.add_entry("E35", "No connections array in function", {});
+			res.add_entry("E13", "No connections array in function", {});
 			return res;
 		}
 		for (auto& connection : data["connections"]) {
+			if(connection.find("type") == connection.end() || !connection.find("type")->is_string()) {
+				res.add_entry("E14", "No type string in connection", {"connectionid", connID});
+				continue;
+			}
 			std::string type = connection["type"];
 			bool isData = type == "data";
 			// it either has to be "data" or "exec"
 			if (!isData && type != "exec") {
-				res.add_entry("E13", "Unrecognized connection type",
+				res.add_entry("E15", "Unrecognized connection type",
 					{{"connectionid", connID}, {"Found Type", type}});
 				continue;
 			}
-
+			
 			int InputNodeID = connection["input"][0];
 			int InputConnectionID = connection["input"][1];
 
@@ -125,12 +126,12 @@ Result GraphFunction::fromJSON(
 
 			// make sure the nodes exist
 			if (InputNodeID >= ret->nodes.size()) {
-				res.add_entry("E14", "Input node for connection doesn't exist",
+				res.add_entry("E16", "Input node for connection doesn't exist",
 					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
 				continue;
 			}
 			if (OutputNodeID >= ret->nodes.size()) {
-				res.add_entry("E15", "Output node for connection doesn't exist",
+				res.add_entry("E17", "Output node for connection doesn't exist",
 					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
 				continue;
 			}
