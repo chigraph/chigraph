@@ -49,8 +49,8 @@ Result GraphFunction::fromJSON(
 	}
 	size_t nodeID = 0;
 	for (const auto& node : data["nodes"]) {
-		if (node.find("type") == node.end()) {
-			res.add_entry("E6", "Node doesn't have a type pair", {{"nodeid", nodeID}});
+		if (node.find("type") == node.end() || !node.find("type")->is_string()) {
+			res.add_entry("E6", "Node doesn't have a \"type\" string", {{"nodeid", nodeID}});
 			return res;
 		}
 		std::string fullType = node["type"];
