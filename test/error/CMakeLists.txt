@@ -14,7 +14,7 @@ foreach(JSON_FILE ${ERROR_TESTS})
 	set(FULL_JSON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${JSON_FILE})
 	
 	add_test(NAME ${JSON_FILE}_test
-		COMMAND error_tester ${JSON_FILE} ${EXPECTED_ERR}
+		COMMAND error_tester ${FULL_JSON_FILE} ${EXPECTED_ERR}
 	)
 	
 endforeach()

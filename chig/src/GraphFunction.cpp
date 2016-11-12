@@ -43,7 +43,7 @@ Result GraphFunction::fromJSON(
 	auto& ret = *ret_ptr;
 
 	// read the nodes
-	if (data.find("nodes") == data.end() || data["nodes"].is_array()) {
+	if (data.find("nodes") == data.end() || !data["nodes"].is_array()) {
 		res.add_entry("E5", "JSON in graph doesn't have nodes array", {});
 		return res;
 	}

@@ -35,6 +35,7 @@ int main(int argc, char** argv) {
 		if(res.result_json[0]["errorcode"] == expectedErr) {
 			return 0;
 		} else {
+			std::cerr << "Expected error " << expectedErr << " but got " << res.result_json[0]["errorcode"] << std::endl;
 			return 1;
 		}
 	}
@@ -51,6 +52,7 @@ int main(int argc, char** argv) {
 		if(res.result_json[0]["errorcode"] == expectedErr) {
 			return 0;
 		} else {
+			std::cerr << "Expected error " << expectedErr << " but got " << res.result_json[0]["errorcode"] << std::endl;
 			return 1;
 		}
 	}
