@@ -44,7 +44,7 @@ TEST_CASE("JsonSerializer", "[json]")
 		WHEN("We create some nodes and try to dump json")
 		{
 			std::vector<std::pair<llvm::Type*, std::string>> inputs = {
-				{llvm::Type::getInt32Ty(c.context), "in1"}};
+				{llvm::Type::getInt1Ty(c.context), "in1"}};
 
 			auto entry = func.insertNode(std::make_unique<EntryNodeType>(c, inputs), 32, 32);
 
@@ -59,7 +59,7 @@ TEST_CASE("JsonSerializer", "[json]")
 								"type": "lang:entry",
 								"location": [32.0,32.0],
 								"data": {
-									"in1": "lang:i32"
+									"in1": "lang:i1"
 								}
 							}
 						],
@@ -88,7 +88,7 @@ TEST_CASE("JsonSerializer", "[json]")
 									"type": "lang:entry",
 									"location": [32.0,32.0],
 									"data": {
-										"in1": "lang:i32"
+										"in1": "lang:i1"
 									}
 								},
 								{
@@ -119,7 +119,7 @@ TEST_CASE("JsonSerializer", "[json]")
 										"type": "lang:entry",
 										"location": [32.0,32.0],
 										"data": {
-											"in1": "lang:i32"
+											"in1": "lang:i1"
 										}
 									},
 									{
@@ -142,7 +142,9 @@ TEST_CASE("JsonSerializer", "[json]")
 
 					WHEN("Connect the data")
 					{
-						connectData(*entry, 0, *ifNode, 0);
+						res = connectData(*entry, 0, *ifNode, 0);
+						
+						REQUIRE(res.result_json == json::array());
 
 						THEN("The JSON should be correct")
 						{
@@ -155,7 +157,7 @@ TEST_CASE("JsonSerializer", "[json]")
 									"type": "lang:entry",
 									"location": [32.0,32.0],
 									"data": {
-										"in1": "lang:i32"
+										"in1": "lang:i1"
 									}
 									},
 									{

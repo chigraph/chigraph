@@ -55,7 +55,7 @@ inline Result connectData(
 	if(lhs.type->dataOutputs[connectionInputID].first != rhs.type->dataInputs[connectionOutputID].first) {
 		res.add_entry("E24", "Connecting data nodes with different types is invalid", {
 			{"Left Hand Type", lhs.type->context->stringifyType(lhs.type->dataOutputs[connectionInputID].first)},
-			{"Right Hand Type", lhs.type->context->stringifyType(rhs.type->dataOutputs[connectionOutputID].first)}
+			{"Right Hand Type", lhs.type->context->stringifyType(rhs.type->dataInputs[connectionOutputID].first)}
 		});
 		return res;
 	}
