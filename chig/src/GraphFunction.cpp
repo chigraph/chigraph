@@ -54,16 +54,12 @@ Result GraphFunction::fromJSON(
 			return res;
 		}
 		std::string fullType = node["type"];
-		std::string moduleName = fullType.substr(0, fullType.find(':'));
-		std::string typeName = fullType.substr(fullType.find(':') + 1);
+		size_t colonId = fullType.find(':');
+		std::string moduleName = fullType.substr(0, colonId);
+		std::string typeName = fullType.substr(colonId + 1);
 
-		if (moduleName.size() == 0) {
-			res.add_entry("E7", "Node has an empty module name", {"nodeid", nodeID});
-			return res;
-		}
-
-		if (typeName.size() == 0) {
-			res.add_entry("E8", "Node has an empty type name", {"nodeid", nodeID});
+		if (colonId == std::string::npos || moduleName.size() == 0 || typeName.size() == 0) {
+			res.add_entry("E7", "Incorrect qualified module name (should be module:type)", {{"nodeid", nodeID}, {"Requested Qualified Name", fullType}});
 			return res;
 		}
 

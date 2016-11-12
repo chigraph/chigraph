@@ -4,6 +4,7 @@
 
 #include <chig/GraphFunction.hpp>
 #include <chig/Context.hpp>
+#include <chig/LangModule.hpp>
 
 
 
@@ -26,6 +27,7 @@ int main(int argc, char** argv) {
 	auto newData = json::parse(str);
 	
 	Context c;
+	c.addModule(std::make_unique<LangModule>(c));
 	Result res;
 	
 	std::unique_ptr<GraphFunction> graphFunc;
