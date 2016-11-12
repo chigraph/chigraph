@@ -12,7 +12,7 @@ arch:
         - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
         - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -std=c++11 -lstdc++"
         - make
-        - ./test/tests
+        - make test
         - coveralls --exclude /usr/ --exclude test/ --exclude chig/include/chig/json.hpp --include chig/
         
 script:
