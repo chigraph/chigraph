@@ -1,5 +1,9 @@
 #include "chig/JsonModule.hpp"
 
+#include "chig/Result.hpp"
+#include "chig/GraphFunction.hpp"
+#include "chig/NodeType.hpp"
+
 using namespace chig;
 
 JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r) : ChigModule(cont)
@@ -56,4 +60,19 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 		}
 		
 	}
+}
+
+
+Result JsonModule::compile(std::unique_ptr<llvm::Module>* mod) const {
+	// create llvm module
+	*mod = std::make_unique<llvm::Module>(name, context->context);
+	
+	Result res;
+	
+	for(auto& graph : functions) {
+		llvm::Function* f;
+		res += graph->compile(mod->get(), &f);
+	}
+	
+	return res;
 }

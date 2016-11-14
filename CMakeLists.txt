@@ -9,6 +9,7 @@ option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 
 find_package(Boost REQUIRED system filesystem program_options)
 
+add_subdirectory(third_party/libexecstream)
 
 add_subdirectory(chig)
 add_subdirectory(chigc)

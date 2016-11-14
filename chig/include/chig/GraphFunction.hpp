@@ -3,8 +3,7 @@
 
 #pragma once
 
-#include "chig/Context.hpp"
-#include "chig/NodeInstance.hpp"
+#include "chig/Fwd.hpp"
 #include "chig/json.hpp"
 
 #include <llvm/IR/Module.h>
@@ -26,6 +25,9 @@ struct GraphFunction {
 	/// \param context The context
 	/// \param name The name of the function
 	GraphFunction(Context& context, std::string name);
+	
+	/// Destructor
+	~GraphFunction();
 
 	/// Constructs a GraphFunction from a JOSN object
 	/// \param j The JSON object to read from
@@ -75,8 +77,6 @@ struct GraphFunction {
 	std::vector<std::unique_ptr<NodeInstance>> nodes;  /// Storage for the nodes
 
 	Context* owningContext;
-
-private:
 };
 }
 

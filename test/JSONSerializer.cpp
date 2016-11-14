@@ -3,6 +3,7 @@
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
 #include <chig/LangModule.hpp>
+#include <chig/NodeInstance.hpp>
 
 using namespace chig;
 using namespace nlohmann;

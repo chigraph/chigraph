@@ -87,3 +87,169 @@ llvm::Type* LangModule::getType(const char* name) const
 	// returns the pointer type, so get the contained type
 	return tmpModule->getNamedValue("G")->getType()->getContainedType(0);
 }
+
+Result IfNodeType::codegen(size_t, llvm::Function*, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*>& outputBlocks) const
+{
+    llvm::IRBuilder<> builder(codegenInto);
+    builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
+
+    return {};
+}
+
+IfNodeType::IfNodeType(Context& con) : NodeType(con)
+{
+    module = "lang";
+    name = "if";
+    description = "branch on a bool";
+
+    execInputs = {""};
+    execOutputs = {"True", "False"};
+
+    dataInputs = {{llvm::Type::getInt1Ty(context->context), "condition"}};
+}
+
+
+std::unique_ptr< chig::NodeType, std::default_delete< chig::NodeType > > IfNodeType::clone() const
+{
+    return std::make_unique<IfNodeType>(*this);
+}
+
+
+EntryNodeType::EntryNodeType(Context& con, const std::vector< std::pair< llvm::Type*,std::string>>& funInputs) 
+		: NodeType{con}
+{
+    module = "lang";
+    name = "entry";
+    description = "entry to a function";
+
+    execOutputs = {""};
+
+    dataOutputs = funInputs;
+}
+
+
+Result EntryNodeType::codegen(size_t, llvm::Function* f, const std::vector< llvm::Value*, std::allocator< llvm::Value* > >& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*, std::allocator< llvm::BasicBlock* > >& outputBlocks) const
+{
+    llvm::IRBuilder<> builder(codegenInto);
+    // just go to the block
+    builder.CreateBr(outputBlocks[0]);
+
+    return {};
+}
+
+
+std::unique_ptr< NodeType > EntryNodeType::clone() const
+{
+    return std::make_unique<EntryNodeType>(*this);
+}
+
+
+Result EntryNodeType::toJSON(nlohmann::json* ret_json) const
+{
+    Result res;
+    auto& ret = *ret_json;
+    ret = {};
+
+    for (auto& pair : dataOutputs) {
+        // TODO: user made types
+        ret[pair.second] = "lang:" + context->stringifyType(pair.first);
+    }
+
+    return res;
+}
+
+
+ConstIntNodeType::ConstIntNodeType(Context& con, int num) : NodeType{con}, number{num}
+{
+    module = "lang";
+    name = "const-int";
+    description = "constant int value";
+
+    execInputs = {""};
+    execOutputs = {""};
+
+    dataOutputs = {{llvm::IntegerType::getInt32Ty(con.context), "out"}};
+}
+
+
+Result ConstIntNodeType::codegen(size_t, llvm::Function* f, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*, std::allocator< llvm::BasicBlock* > >& outputBlocks) const
+{
+    llvm::IRBuilder<> builder(codegenInto);
+    // just go to the block
+    assert(io.size() == 1);
+
+    builder.CreateStore(
+        llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->context), number), io[0],
+        false);
+    builder.CreateBr(outputBlocks[0]);
+
+    return {};
+}
+
+
+std::unique_ptr< chig::NodeType> ConstIntNodeType::clone() const
+{
+    return std::make_unique<ConstIntNodeType>(*this);
+}
+
+
+Result ConstIntNodeType::toJSON(nlohmann::json* fill_json) const
+{
+    *fill_json = number;
+
+    return {};
+}
+
+
+ExitNodeType::ExitNodeType(Context& con, const std::vector< std::pair< llvm::Type*, std::string>>& funOutputs) : NodeType{con}
+{
+    execInputs = {""};
+
+    module = "lang";
+    name = "exit";
+    description = "exit from a function; think return";
+
+    dataInputs = funOutputs;
+}
+
+
+Result ExitNodeType::codegen(size_t execInputID, llvm::Function* f, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock* >&) const
+{
+    // assign the return types
+    llvm::IRBuilder<> builder(codegenInto);
+    size_t ret_start =
+        f->arg_size() - io.size();  // returns are after args, find where returns start
+    auto arg_iter = f->arg_begin();
+    std::advance(arg_iter, ret_start);
+    for (int idx = 0; idx < io.size(); ++idx) {
+        builder.CreateStore(io[idx], &*arg_iter, false);  // TODO: volitility?
+        ++arg_iter;
+    }
+
+    builder.CreateRet(
+        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), execInputID));
+
+    return {};
+}
+
+
+std::unique_ptr< NodeType> ExitNodeType::clone() const
+{
+    return std::make_unique<ExitNodeType>(*this);
+}
+
+
+Result ExitNodeType::toJSON(nlohmann::json* ret_json) const
+{
+    Result res;
+    auto& ret = *ret_json;
+
+    for (auto& pair : dataOutputs) {
+        // TODO: user made types
+        ret[pair.second] = "lang:" + context->stringifyType(pair.first);
+    }
+
+    return res;
+}
+
+

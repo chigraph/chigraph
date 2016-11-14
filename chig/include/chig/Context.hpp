@@ -7,13 +7,15 @@
 #include <string>
 #include <vector>
 
-#include "chig/ChigModule.hpp"
-#include "chig/Result.hpp"
+#include "chig/Fwd.hpp"
+#include "chig/json.hpp"
 
 #include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Type.h>
 
 namespace chig
 {
+
 /// The class that handles modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 struct Context {

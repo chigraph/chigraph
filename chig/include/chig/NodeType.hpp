@@ -5,6 +5,7 @@
 
 #include "chig/Context.hpp"
 #include "chig/json.hpp"
+#include "chig/Result.hpp"
 
 #include <iterator>
 #include <utility>

@@ -13,3 +13,4 @@ add_test(NAME api_tests
 )
 
 add_subdirectory(error)
+add_subdirectory(codegen)

@@ -1,5 +1,6 @@
 #include "chig/GraphFunction.hpp"
 #include "chig/NodeType.hpp"
+#include "chig/NodeInstance.hpp"
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/Support/SourceMgr.h>
@@ -12,6 +13,8 @@ GraphFunction::GraphFunction(Context& context, std::string name)
 	: graphName{std::move(name)}, owningContext{&context}
 {
 }
+
+GraphFunction::~GraphFunction() = default;
 
 Result GraphFunction::fromJSON(
 	Context& context, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_ptr)

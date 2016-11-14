@@ -3,16 +3,16 @@
 
 #pragma once
 
-#include "chig/ChigModule.hpp"
-#include "chig/GraphFunction.hpp"
-#include "chig/Result.hpp"
+#include "chig/Fwd.hpp"
 #include "chig/json.hpp"
+
+#include "chig/ChigModule.hpp"
 
 #include <vector>
 
 namespace chig
 {
-struct JsonModule : ChigModule {
+struct JsonModule : public ChigModule {
 	/// Constructor for a json module
 	JsonModule(const nlohmann::json& json_data, Context& cont, Result* res);
 
@@ -21,10 +21,15 @@ struct JsonModule : ChigModule {
 
 	JsonModule& operator=(const JsonModule&) = delete;
 	JsonModule& operator=(JsonModule&&) = delete;
+	
+	std::unique_ptr<NodeType> createNodeType(
+		const char* name, const nlohmann::json& json_data) const override {return nullptr;}
+	llvm::Type* getType(const char* name) const override {return nullptr;}
 
 	std::vector<std::unique_ptr<GraphFunction>> functions;
+	
+	Result compile(std::unique_ptr<llvm::Module>* mod) const;
 
-	std::string name;
 	std::vector<std::string> dependencies;
 };
 }

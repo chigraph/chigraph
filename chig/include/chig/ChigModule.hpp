@@ -3,20 +3,20 @@
 
 #pragma once
 
-#include <cstdlib>
+#include "chig/Fwd.hpp"
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
+
 #include <llvm/IR/Type.h>
 
+#include <cstdlib>
 #include <functional>
 #include <string>
 #include <vector>
 
 namespace chig
 {
-struct Context;
-struct NodeType;
 
 struct ChigModule {
 	ChigModule(Context& contextArg) : context{&contextArg} {}
