@@ -9,7 +9,7 @@ target_link_libraries(api_tests PUBLIC chig)
 
 add_test(NAME api_tests 
 	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-	COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests
+	COMMAND api_tests
 )
 
 add_subdirectory(error)

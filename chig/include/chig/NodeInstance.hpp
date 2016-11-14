@@ -44,11 +44,13 @@ inline Result connectData(
 		res.add_entry("E22", "Output Data connection doesn't exist in node",
 			{{"Requested ID", connectionInputID},
 				{"Node Type", lhs.type->module + ":" + lhs.type->name}});
+		return res;
 	}
 	if (connectionOutputID >= rhs.inputDataConnections.size()) {
 		res.add_entry("E23", "Input Data connection doesn't exist in node",
 			{{"Requested ID", connectionOutputID},
 				{"Node Type", rhs.type->module + ":" + rhs.type->name}});
+		return res;
 	}
 	
 	// make sure the connection is of the right type

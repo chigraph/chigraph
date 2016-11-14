@@ -24,8 +24,13 @@ int main(int argc, char** argv) {
 	std::string str((std::istreambuf_iterator<char>(ifile)),
                  std::istreambuf_iterator<char>());
 	
-	auto newData = json::parse(str);
-	
+	json newData;
+	try {
+		newData = json::parse(str);
+	} catch(std::exception& e) {
+		std::cerr << "Error parsing: " << e.what();
+		return 1;
+	}
 	Context c;
 	c.addModule(std::make_unique<LangModule>(c));
 	Result res;
