@@ -27,6 +27,8 @@ int main(int argc, char** argv)
 
 	general.add_options()
 		("help,h", "Produce Help Message")
+		("command", po::value<std::string>(), "which command")
+		("subargs", po::value<std::vector<std::string>>(), "arguments for command")
 		;
 
 	po::positional_options_description pos;
@@ -63,7 +65,7 @@ int main(int argc, char** argv)
 	opts.erase(opts.begin()); // remove the command
 	
 	if(cmd == "compile") {
-		compile(opts);
+		return compile(opts);
 	}
 	// TODO: write other ones
 	

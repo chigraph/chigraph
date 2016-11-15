@@ -1,0 +1,29 @@
+{
+  "name": "main",
+  "dependencies":  [],
+  "graphs": [
+    {
+      "type": "function",
+      "name": "helloworld",
+      "nodes": [
+          {
+              "type": "lang:if",
+              "data": {},
+              "location": [2, 2]
+          },
+          {
+            "type": "lang:exit",
+            "data": {},
+            "location": [1, 2]
+          }
+      ],
+      "connections": [
+          {
+              "type": "exec",
+              "input": [0, 0],
+              "output": [1, 0]
+          }
+      ]
+    }
+  ]
+} 
