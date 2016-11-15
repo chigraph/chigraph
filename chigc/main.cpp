@@ -18,6 +18,7 @@ using namespace chig;
 
 int main(int argc, char** argv)
 {
+	
 	namespace po = boost::program_options;
 	namespace fs = boost::filesystem;
 

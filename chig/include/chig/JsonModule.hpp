@@ -4,6 +4,7 @@
 #pragma once
 
 #include "chig/Fwd.hpp"
+#include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
 #include "chig/ChigModule.hpp"

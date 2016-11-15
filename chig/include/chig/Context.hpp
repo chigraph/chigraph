@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "chig/Fwd.hpp"
+#include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
 #include <llvm/IR/LLVMContext.h>
