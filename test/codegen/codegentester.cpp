@@ -4,6 +4,27 @@
 
 #include <boost/filesystem.hpp>
 
+#include <llvm/ADT/STLExtras.h>
+#include <llvm/ExecutionEngine/ExecutionEngine.h>
+#include <llvm/ExecutionEngine/GenericValue.h>
+#include <llvm/IR/Argument.h>
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Constants.h>
+#include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/Function.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/Support/SourceMgr.h>
+#include <llvm/IRReader/IRReader.h>
+#include <llvm/IR/Instructions.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Type.h>
+#include <llvm/Support/Casting.h>
+#include <llvm/Support/ManagedStatic.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/Support/raw_ostream.h>
+
+
 using namespace chig;
 using namespace nlohmann;
 
@@ -53,6 +74,19 @@ int main(int argc, char** argv) {
 	
 	std::string outputir((std::istreambuf_iterator<char>(chigcexe.out())),
                  std::istreambuf_iterator<char>(chigcexe.out()));
+	
+	// create a llvm::Module
+	llvm::SMDiagnostic err;
+	llvm::LLVMContext c;
+	llvm::MemoryBufferRef mem{llvm::StringRef(outputir), "chigc"};
+	auto mod = llvm::parseIR(mem, err, c);
+	
+	// JIT the code!
+	llvm::InitializeNativeTarget();
+	
+	auto EE = llvm::EngineBuilder(std::move(mod)).create();
+	
+	EE->runFunction(mod->getFunction("main"), {});
 
 }
 

@@ -11,8 +11,8 @@ find_package(Boost REQUIRED system filesystem program_options)
 
 add_subdirectory(third_party/libexecstream)
 
+add_subdirectory(libchig)
 add_subdirectory(chig)
-add_subdirectory(chigc)
 
 # Unit tests...
 if(CG_BUILD_TESTS)
