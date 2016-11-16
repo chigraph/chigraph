@@ -11,6 +11,7 @@
 #include <chig/json.hpp>
 #include <chig/NodeType.hpp>
 #include <chig/GraphFunction.hpp>
+#include <chig/LangModule.hpp>
 
 #include <llvm/Support/raw_os_ostream.h>
 #include <llvm/IR/Module.h>
@@ -32,7 +33,7 @@ int compile(const std::vector<std::string> opts) {
 	pos.add("input-file", 1);
 	
 	po::variables_map vm;
-	po::store(po::command_line_parser(opts).options(compile_opts).run(), vm);
+	po::store(po::command_line_parser(opts).options(compile_opts).positional(pos).run(), vm);
 	
 	if(vm.count("input-file") == 0) {
 		std::cerr << "chig compile: error: no input files" << std::endl;
@@ -59,9 +60,15 @@ int compile(const std::vector<std::string> opts) {
 
 	Result res;
 	Context c;
+	c.addModule(std::make_unique<LangModule>(c));
 	// load it as a module
 	JsonModule module(read_json, c, &res);
 	
+	if(!res) {
+		std::cerr << res.result_json.dump(2) << std::endl;
+		return 1;
+	}
+
 	std::unique_ptr<llvm::Module> llmod;
 	res += module.compile(&llmod);
 

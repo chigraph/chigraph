@@ -73,6 +73,7 @@ Result GraphFunction::fromJSON(
 
 		std::unique_ptr<NodeType> nodeType;
 		res += context.getNodeType(moduleName.c_str(), typeName.c_str(), node["data"], &nodeType);
+		if(!res) { continue; }
 
 		auto testIter = node.find("location");
 		if (testIter != node.end()) {
@@ -298,6 +299,12 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) const
 {
 	Result res;
+
+	auto entry = getEntryNode();
+	if(!entry.first) {
+		res.add_entry("EUKN", "No entry node", {});
+		return res;
+	}
 
 	const auto& argument_connections =
 		getEntryNode().first->type->dataOutputs;  // ouptuts from entry are arguments

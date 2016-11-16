@@ -1,6 +1,6 @@
-add_executable(codegen_tester codegentester.cpp)
-target_link_libraries(codegen_tester PUBLIC chigcore)
-target_link_libraries(codegen_tester PUBLIC execstream)
+#add_executable(codegen_tester codegentester.cpp)
+#target_link_libraries(codegen_tester PUBLIC chigcore)
+#target_link_libraries(codegen_tester PUBLIC execstream)
 
 # These don't follow chigfn or chigmod specs, so don't use that extension
 file(GLOB CODEGEN_TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.json") 
