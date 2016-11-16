@@ -80,10 +80,23 @@ int compile(const std::vector<std::string> opts) {
 	
 	// create output
 	if(vm.count("output")) {
-		fs::ofstream outstream{vm["output"].as<std::string>()};
+		fs::path outpath{vm["output"].as<std::string>()};
 		
-		llvm::raw_os_ostream llstream(outstream);
-		llmod->print(llstream, nullptr);
+		fs::ostream outstream(outpath);
+
+		llvm::raw_os_ostream llstream;
+		if(outpath == "-") {
+			llstream = llvm::raw_os_ostream{std::cout};
+		} else {
+			llstream = llvm::raw_os_ostream{outstream};
+		}
+
+		if (outpath.extension() == ".bc") {
+			
+		} else if(outpath.extension() == ".ll") {
+			llmod->print(llstream, nullptr);
+		}
+
 	} else {
 		
 		llvm::raw_os_ostream llstream(std::cout);
