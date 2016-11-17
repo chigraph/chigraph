@@ -17,10 +17,10 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		THEN("There will be no modules in it") { REQUIRE(c.modules.size() == 0); }
 		THEN("stringifyType return proper strings")
 		{
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32Ty(c.context)) == "i32");
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt1Ty(c.context)) == "i1");
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32PtrTy(c.context)) == "i32*");
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt8Ty(c.context)) == "i8");
+			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32Ty(c.llcontext)) == "i32");
+			REQUIRE(c.stringifyType(llvm::IntegerType::getInt1Ty(c.llcontext)) == "i1");
+			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32PtrTy(c.llcontext)) == "i32*");
+			REQUIRE(c.stringifyType(llvm::IntegerType::getInt8Ty(c.llcontext)) == "i8");
 		}
 
 		WHEN("A LangModule is created and added")

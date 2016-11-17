@@ -45,7 +45,7 @@ TEST_CASE("JsonSerializer", "[json]")
 		WHEN("We create some nodes and try to dump json")
 		{
 			std::vector<std::pair<llvm::Type*, std::string>> inputs = {
-				{llvm::Type::getInt1Ty(c.context), "in1"}};
+				{llvm::Type::getInt1Ty(c.llcontext), "in1"}};
 
 			auto entry = func.insertNode(std::make_unique<EntryNodeType>(c, inputs), 32, 32);
 

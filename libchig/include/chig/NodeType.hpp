@@ -115,7 +115,7 @@ struct FunctionCallNodeType : NodeType {
 			auto sw = codegenInto.CreateSwitch(ret, outputBlocks[0], execOutputs.size());
 
 			for (size_t i = 0; i < outputBlocks.size(); ++i) {
-				sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(context->context, 32), i),
+				sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(context->llcontext, 32), i),
 					outputBlocks[i]);
 			}
 		}

@@ -89,7 +89,6 @@ int compile(const std::vector<std::string> opts) {
 		auto lloutstream = outpath.string() == "-" ?
 			std::unique_ptr<llvm::raw_ostream>(std::make_unique<llvm::raw_os_ostream>(std::cout)) : 
 			std::unique_ptr<llvm::raw_ostream>(std::make_unique<llvm::raw_fd_ostream>(outpath.string(), ec, llvm::sys::fs::F_None));
-		std::cout << "path: " << outpath.string() << " " << (outpath.string() == "-") << std::endl;
 		
 		std::string outtype;
 		if(vm.count("output-type")) {

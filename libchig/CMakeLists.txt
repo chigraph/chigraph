@@ -15,8 +15,9 @@ set(CHIG_PRIVATE_FILES
 	src/Context.cpp
 	src/NodeInstance.cpp
 	src/GraphFunction.cpp
-        src/LangModule.cpp
-        src/JsonModule.cpp
+	src/LangModule.cpp
+	src/JsonModule.cpp
+	src/ChigModule.cpp
 )
 
 add_definitions("-D__STDC_LIMIT_MACROS")

@@ -19,23 +19,23 @@ TEST_CASE("LangModule", "[module]")
 
 			res = c.getType("lang", "i32", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::IntegerType::getInt32Ty(c.context));
+			REQUIRE(test == llvm::IntegerType::getInt32Ty(c.llcontext));
 
 			res = c.getType("lang", "i32*", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::IntegerType::getInt32PtrTy(c.context));
+			REQUIRE(test == llvm::IntegerType::getInt32PtrTy(c.llcontext));
 
 			res = c.getType("lang", "i32**", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::PointerType::get(llvm::IntegerType::getInt32PtrTy(c.context), 0));
+			REQUIRE(test == llvm::PointerType::get(llvm::IntegerType::getInt32PtrTy(c.llcontext), 0));
 
 			res = c.getType("lang", "i8", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::IntegerType::getInt8Ty(c.context));
+			REQUIRE(test == llvm::IntegerType::getInt8Ty(c.llcontext));
 
 			res = c.getType("lang", "double", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::Type::getDoubleTy(c.context));
+			REQUIRE(test == llvm::Type::getDoubleTy(c.llcontext));
 		}
 
 		THEN(

@@ -19,7 +19,7 @@ namespace chig
 {
 
 struct ChigModule {
-	ChigModule(Context& contextArg) : context{&contextArg} {}
+	ChigModule(Context& contextArg);
 	virtual ~ChigModule() = default;
 
 	virtual std::unique_ptr<NodeType> createNodeType(
@@ -29,6 +29,8 @@ struct ChigModule {
 	std::string name;
 
 	Context* context;
+	
+	llvm::Module* llmodule;
 };
 }
 

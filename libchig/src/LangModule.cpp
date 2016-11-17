@@ -81,7 +81,7 @@ llvm::Type* LangModule::getType(const char* name) const
 	// just parse the type
 	auto IR = "@G = external global "s + name;
 	auto err = llvm::SMDiagnostic();
-	auto tmpModule = llvm::parseAssemblyString(IR, err, context->context);
+	auto tmpModule = llvm::parseAssemblyString(IR, err, context->llcontext);
 	if (!tmpModule) return nullptr;
 
 	// returns the pointer type, so get the contained type
@@ -105,7 +105,7 @@ IfNodeType::IfNodeType(Context& con) : NodeType(con)
     execInputs = {""};
     execOutputs = {"True", "False"};
 
-    dataInputs = {{llvm::Type::getInt1Ty(context->context), "condition"}};
+    dataInputs = {{llvm::Type::getInt1Ty(context->llcontext), "condition"}};
 }
 
 
@@ -168,7 +168,7 @@ ConstIntNodeType::ConstIntNodeType(Context& con, int num) : NodeType{con}, numbe
     execInputs = {""};
     execOutputs = {""};
 
-    dataOutputs = {{llvm::IntegerType::getInt32Ty(con.context), "out"}};
+    dataOutputs = {{llvm::IntegerType::getInt32Ty(con.llcontext), "out"}};
 }
 
 
@@ -179,7 +179,7 @@ Result ConstIntNodeType::codegen(size_t, llvm::Function* f, const std::vector< l
     assert(io.size() == 1);
 
     builder.CreateStore(
-        llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->context), number), io[0],
+        llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->llcontext), number), io[0],
         false);
     builder.CreateBr(outputBlocks[0]);
 
@@ -227,7 +227,7 @@ Result ExitNodeType::codegen(size_t execInputID, llvm::Function* f, const std::v
     }
 
     builder.CreateRet(
-        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->context), execInputID));
+        llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->llcontext), execInputID));
 
     return {};
 }

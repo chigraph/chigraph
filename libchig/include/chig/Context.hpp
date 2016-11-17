@@ -56,7 +56,7 @@ struct Context {
 	/// \return The return string
 	std::string stringifyType(llvm::Type* ty);
 
-	llvm::LLVMContext context;  /// The LLVM context to use with everything under the context
+	llvm::LLVMContext llcontext;  /// The LLVM context to use with everything under the context
 
 	std::vector<std::unique_ptr<ChigModule>> modules;  /// The modules that have been loaded.
 	std::vector<std::string> searchPaths;			   /// The places to search for modules
