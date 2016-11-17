@@ -1,0 +1,89 @@
+#include <vector>
+#include <string>
+#include <iostream>
+
+#include <chig/JsonModule.hpp>
+#include <chig/Context.hpp>
+#include <chig/Result.hpp>
+#include <chig/json.hpp>
+#include <chig/NodeType.hpp>
+#include <chig/GraphFunction.hpp>
+#include <chig/LangModule.hpp>
+
+#include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
+
+#include <llvm/ExecutionEngine/GenericValue.h>
+#include <llvm/ExecutionEngine/Interpreter.h>
+#include <llvm/Support/TargetSelect.h>
+
+
+namespace po = boost::program_options;
+namespace fs = boost::filesystem;
+
+using namespace chig;
+
+int run(std::vector<std::string> opts) {
+	
+	po::options_description run_opts;
+	run_opts.add_options()
+		("input-file", po::value<std::string>(), "The input file, - for stdin. Should be a chig module")
+		;
+	
+	po::positional_options_description pos;
+	pos.add("input-file", 1);
+	
+	po::variables_map vm;
+	po::store(po::command_line_parser(opts).options(run_opts).positional(pos).run(), vm);
+	
+	if(vm.count("input-file") == 0) {
+		std::cerr << "chig compile: error: no input files" << std::endl;
+		return 1;
+	}
+	
+	std::string infile = vm["input-file"].as<std::string>();
+	
+	nlohmann::json read_json;
+	
+	if(infile == "-") {
+		std::cin >> read_json;
+	} else {
+	// make sure it's an actual file
+		fs::path inpath = infile;
+		if(!fs::is_regular_file(inpath)) {
+			std::cerr << "error: Cannot open input file " << inpath;
+			return 1;
+		}
+		
+		fs::ifstream stream(inpath);
+		stream >> read_json;
+	}
+
+	Result res;
+	Context c;
+	c.addModule(std::make_unique<LangModule>(c));
+	// load it as a module
+	JsonModule module(read_json, c, &res);
+	
+	if(!res) {
+		std::cerr << res.result_json.dump(2) << std::endl;
+		return 1;
+	}
+
+	std::unique_ptr<llvm::Module> llmod;
+	res += module.compile(&llmod);
+
+	// run it!
+	
+	llvm::Function* entry = llmod->getFunction("main");
+	
+	llvm::InitializeNativeTarget();
+	
+	llvm::ExecutionEngine* EE = llvm::EngineBuilder(std::move(llmod)).create();
+	
+	std::vector<llvm::GenericValue> noargs;
+	auto ret = EE->runFunction(entry, noargs);
+	
+	
+	return 0;
+}

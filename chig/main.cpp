@@ -15,6 +15,7 @@
 #include <vector>
 
 extern int compile(const std::vector<std::string> opts);
+extern int run(const std::vector<std::string> opts);
 
 using namespace chig;
 
@@ -66,6 +67,8 @@ int main(int argc, char** argv)
 	
 	if(cmd == "compile") {
 		return compile(opts);
+	} else if (cmd == "run") {
+		return run(opts);
 	}
 	// TODO: write other ones
 

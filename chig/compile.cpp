@@ -15,6 +15,8 @@
 
 #include <llvm/Support/raw_os_ostream.h>
 #include <llvm/IR/Module.h>
+#include <llvm/Bitcode/ReaderWriter.h>
+#include <llvm/Support/FileSystem.h>
 
 using namespace chig;
 
@@ -83,12 +85,10 @@ int compile(const std::vector<std::string> opts) {
 	if(vm.count("output")) {
 		fs::path outpath{vm["output"].as<std::string>()};
 		
-		fs::ofstream filestream{outpath};
-
-		llvm::raw_os_ostream llfilestream{filestream};
-		llvm::raw_os_ostream llcout{std::cout};
-
-		llvm::raw_ostream& lloutstream = outpath.string() == "-" ? llcout : llfilestream;
+		std::error_code ec;
+		auto lloutstream = outpath.string() == "-" ?
+			std::unique_ptr<llvm::raw_ostream>(std::make_unique<llvm::raw_os_ostream>(std::cout)) : 
+			std::unique_ptr<llvm::raw_ostream>(std::make_unique<llvm::raw_fd_ostream>(outpath.string(), ec, llvm::sys::fs::F_None));
 		std::cout << "path: " << outpath.string() << " " << (outpath.string() == "-") << std::endl;
 		
 		std::string outtype;
@@ -101,9 +101,9 @@ int compile(const std::vector<std::string> opts) {
 		}
 
 		if (outtype == "bc") {
-			
+			llvm::WriteBitcodeToFile(llmod.get(), *lloutstream);
 		} else if(outtype == "ll") {
-			llmod->print(lloutstream, nullptr);
+			llmod->print(*lloutstream, nullptr);
 		} else {
 			std::cerr << "Unrecognized output-type: " << outtype << std::endl;
 			return 1;
