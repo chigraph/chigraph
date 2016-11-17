@@ -61,73 +61,7 @@ struct NodeType {
 	virtual std::unique_ptr<NodeType> clone() const = 0;
 };
 
-struct FunctionCallNodeType : NodeType {
-	FunctionCallNodeType(Context& context, llvm::Module* argModule, llvm::Function* func,
-		int num_inputs, int numExecOutputs, std::string argDescription,
-		const std::vector<std::string>& iodescs)
-		: NodeType(context), function{func}
-	{
-		module = argModule->getName();
 
-		// TODO: gather metadata for exec descs
-		execOutputs.resize(numExecOutputs);
-
-		name = func->getName();
-		description = std::move(argDescription);
-
-		// populate inputs and outputs
-		dataInputs.resize(num_inputs);
-		auto beginningOfOutptus = func->getArgumentList().begin();
-		std::advance(beginningOfOutptus, num_inputs);
-
-		std::transform(func->getArgumentList().begin(), beginningOfOutptus, iodescs.begin(),
-			dataInputs.begin(),
-			[](auto& arg, auto& desc) { return std::make_pair(arg.getType(), desc); });
-
-		int num_outputs =
-			std::distance(func->getArgumentList().begin(), func->getArgumentList().end()) -
-			num_inputs;
-
-		dataOutputs.resize(num_outputs);
-		std::transform(beginningOfOutptus, func->getArgumentList().end(),
-			iodescs.begin() + num_inputs, dataOutputs.begin(),
-			[](auto& arg, auto& desc) { return std::make_pair(arg.getType(), desc); });
-	}
-
-	FunctionCallNodeType(const FunctionCallNodeType&) = default;
-	FunctionCallNodeType(FunctionCallNodeType&&) = default;
-
-	llvm::Function* function;
-
-	virtual Result codegen(size_t execInputID, llvm::Function* f,
-		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenIntoBlock,
-		const std::vector<llvm::BasicBlock*>& outputBlocks) const override
-	{
-		llvm::IRBuilder<> codegenInto(codegenIntoBlock);
-
-		auto ret = codegenInto.CreateCall(function, io);
-
-		// we can optimize with a unconditional jump
-		if (execOutputs.size() == 1) {
-			codegenInto.CreateBr(outputBlocks[0]);
-
-		} else {
-			auto sw = codegenInto.CreateSwitch(ret, outputBlocks[0], execOutputs.size());
-
-			for (size_t i = 0; i < outputBlocks.size(); ++i) {
-				sw->addCase(llvm::ConstantInt::get(llvm::IntegerType::get(context->llcontext, 32), i),
-					outputBlocks[i]);
-			}
-		}
-
-		return {};
-	}
-
-	virtual std::unique_ptr<NodeType> clone() const override
-	{
-		return std::make_unique<FunctionCallNodeType>(*this);
-	}
-};
 }
 
 #endif  // CHIG_NODE_TYPE_HPP

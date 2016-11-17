@@ -1,6 +1,6 @@
 {
   "name": "main",
-  "dependencies":  [],
+  "dependencies":  ["lang", "c"],
   "graphs": [
     {
       "type": "function",
@@ -15,12 +15,25 @@
             "type": "lang:exit",
             "data": {},
             "location": [1, 2]
+          },
+          {
+            "type": "c:func",
+            "data": {
+              "code": "#include <stdio.h>\n void dothing(){puts(\"HI\");}",
+              "function": "puts"
+            },
+            "location": [23, 3]
           }
       ],
       "connections": [
           {
               "type": "exec",
               "input": [0, 0],
+              "output": [2, 0]
+          },
+		  {
+              "type": "exec",
+              "input": [2, 0],
               "output": [1, 0]
           }
       ]

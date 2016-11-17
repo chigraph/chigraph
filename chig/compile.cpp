@@ -12,6 +12,7 @@
 #include <chig/NodeType.hpp>
 #include <chig/GraphFunction.hpp>
 #include <chig/LangModule.hpp>
+#include <chig/CModule.hpp>
 
 #include <llvm/Support/raw_os_ostream.h>
 #include <llvm/IR/Module.h>
@@ -58,12 +59,19 @@ int compile(const std::vector<std::string> opts) {
 		}
 		
 		fs::ifstream stream(inpath);
-		stream >> read_json;
+		
+		try {
+			stream >> read_json;
+		} catch (std::exception& e) {
+			std::cerr << e.what() << std::endl;
+			return 1;
+		}
 	}
 
 	Result res;
 	Context c;
 	c.addModule(std::make_unique<LangModule>(c));
+	c.addModule(std::make_unique<CModule>(c));
 	// load it as a module
 	JsonModule module(read_json, c, &res);
 	
