@@ -27,6 +27,7 @@ int compile(const std::vector<std::string> opts) {
 	compile_opts.add_options()
 		("input-file", po::value<std::string>(), "Input file, - for stdin")
 		("output,o", po::value<std::string>(), "Output file, - for stdout")
+		("output-type,t", po::value<std::string>(), "The output type, either bc or ll. If an output file is defined, then this can be inferred")
 		;
 	
 	po::positional_options_description pos;
@@ -82,19 +83,30 @@ int compile(const std::vector<std::string> opts) {
 	if(vm.count("output")) {
 		fs::path outpath{vm["output"].as<std::string>()};
 		
-		fs::ostream outstream(outpath);
+		fs::ofstream filestream{outpath};
 
-		llvm::raw_os_ostream llstream;
-		if(outpath == "-") {
-			llstream = llvm::raw_os_ostream{std::cout};
+		llvm::raw_os_ostream llfilestream{filestream};
+		llvm::raw_os_ostream llcout{std::cout};
+
+		llvm::raw_ostream& lloutstream = outpath.string() == "-" ? llcout : llfilestream;
+		std::cout << "path: " << outpath.string() << " " << (outpath.string() == "-") << std::endl;
+		
+		std::string outtype;
+		if(vm.count("output-type")) {
+			outtype = vm["output-type"].as<std::string>();
+
 		} else {
-			llstream = llvm::raw_os_ostream{outstream};
+			// Then infer from extension or ll if cout is being used
+			outtype = outpath.string() == "-" ? "ll" : outpath.extension().string().substr(1);
 		}
 
-		if (outpath.extension() == ".bc") {
+		if (outtype == "bc") {
 			
-		} else if(outpath.extension() == ".ll") {
-			llmod->print(llstream, nullptr);
+		} else if(outtype == "ll") {
+			llmod->print(lloutstream, nullptr);
+		} else {
+			std::cerr << "Unrecognized output-type: " << outtype << std::endl;
+			return 1;
 		}
 
 	} else {
