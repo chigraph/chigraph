@@ -250,7 +250,7 @@ struct cache {
 
 // Codegens a single input to a node
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block,
-	llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache)
+	llvm::Module* mod, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache)
 {
 	llvm::IRBuilder<> builder(block);
 	// get input values
@@ -272,6 +272,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		// TODO: research address spaces
 		llvm::AllocaInst* alloc =
 			entryBuilder.CreateAlloca(output.first, nullptr, output.second);  // TODO: name
+		alloc->setName(output.second);
 		outputCache.push_back(alloc);
 	}
 
@@ -286,13 +287,13 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	}
 
 	// codegen
-	node->type->codegen(execInputID, f, inputParams, block, outputBlocks);
+	node->type->codegen(execInputID, mod, f, inputParams, block, outputBlocks);
 
 	// codegen for all outputs
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
 		if (output.first)
-			codegenHelper(output.first, output.second, outputBlocks[idx], f, nodeCache);
+			codegenHelper(output.first, output.second, outputBlocks[idx], mod, f, nodeCache);
 	}
 }
 
@@ -312,7 +313,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	// get return types;
 	auto ret = getReturnTypes();
 	if (!ret) {
-		res.add_entry("E34", "No return type in functin", {});
+		res.add_entry("E34", "No return type in function", {});
 		return res;
 	}
 
@@ -353,7 +354,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		++idx;
 	}
 
-	codegenHelper(node, execInputID, block, f, nodeCache);
+	codegenHelper(node, execInputID, block, mod, f, nodeCache);
 
 	return res;
 }

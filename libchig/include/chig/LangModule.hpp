@@ -17,7 +17,7 @@ namespace chig
 struct IfNodeType : NodeType {
 	IfNodeType(Context& con);
 
-	virtual Result codegen(size_t /*execInputID*/, llvm::Function*,
+	virtual Result codegen(size_t /*execInputID*/, llvm::Module* mod, llvm::Function*,
 		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override;
 
@@ -28,7 +28,7 @@ struct EntryNodeType : NodeType {
 	EntryNodeType(Context& con, const std::vector<std::pair<llvm::Type*, std::string>>& funInputs);
 
 	// the function doesn't have to do anything...this class just holds metadata
-	virtual Result codegen(size_t /*inputExecID*/, llvm::Function* f,
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
 		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override;
 
@@ -41,7 +41,7 @@ struct ConstIntNodeType : NodeType {
 	ConstIntNodeType(Context& con, int num) ;
 
 	// the function doesn't have to do anything...this class just holds metadata
-	virtual Result codegen(size_t /*inputExecID*/, llvm::Function* f,
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
 		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override;
 
@@ -56,7 +56,7 @@ struct ExitNodeType : NodeType {
 	ExitNodeType(Context& con, const std::vector<std::pair<llvm::Type*, std::string>>& funOutputs)
 		;
 
-	virtual Result codegen(size_t execInputID, llvm::Function* f,
+	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>&) const override;
 

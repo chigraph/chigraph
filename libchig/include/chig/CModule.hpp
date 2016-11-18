@@ -32,7 +32,7 @@ struct CFuncNode : NodeType {
 	CFuncNode(Context& con, const std::string& modulecode, const std::string& functocall);
 
 	// the function doesn't have to do anything...this class just holds metadata
-	virtual Result codegen(size_t /*inputExecID*/, llvm::Function* f,
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
 		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override;
 
@@ -40,10 +40,9 @@ struct CFuncNode : NodeType {
 
 	Result toJSON(nlohmann::json* fill_json) const override;
 
-	int number;
+	std::string functocall;
 	
 	std::unique_ptr<llvm::Module> llcompiledmod;
-	llvm::Function* llfunc;
 };
 
 }

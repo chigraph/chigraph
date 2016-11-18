@@ -88,7 +88,7 @@ llvm::Type* LangModule::getType(const char* name) const
 	return tmpModule->getNamedValue("G")->getType()->getContainedType(0);
 }
 
-Result IfNodeType::codegen(size_t, llvm::Function*, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*>& outputBlocks) const
+Result IfNodeType::codegen(size_t, llvm::Module* mod, llvm::Function*, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*>& outputBlocks) const
 {
     llvm::IRBuilder<> builder(codegenInto);
     builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
@@ -128,7 +128,7 @@ EntryNodeType::EntryNodeType(Context& con, const std::vector< std::pair< llvm::T
 }
 
 
-Result EntryNodeType::codegen(size_t, llvm::Function* f, const std::vector< llvm::Value*, std::allocator< llvm::Value* > >& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*, std::allocator< llvm::BasicBlock* > >& outputBlocks) const
+Result EntryNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f, const std::vector< llvm::Value*, std::allocator< llvm::Value* > >& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*, std::allocator< llvm::BasicBlock* > >& outputBlocks) const
 {
     llvm::IRBuilder<> builder(codegenInto);
     // just go to the block
@@ -172,7 +172,7 @@ ConstIntNodeType::ConstIntNodeType(Context& con, int num) : NodeType{con}, numbe
 }
 
 
-Result ConstIntNodeType::codegen(size_t, llvm::Function* f, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*, std::allocator< llvm::BasicBlock* > >& outputBlocks) const
+Result ConstIntNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*, std::allocator< llvm::BasicBlock* > >& outputBlocks) const
 {
     llvm::IRBuilder<> builder(codegenInto);
     // just go to the block
@@ -213,7 +213,7 @@ ExitNodeType::ExitNodeType(Context& con, const std::vector< std::pair< llvm::Typ
 }
 
 
-Result ExitNodeType::codegen(size_t execInputID, llvm::Function* f, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock* >&) const
+Result ExitNodeType::codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock* >&) const
 {
     // assign the return types
     llvm::IRBuilder<> builder(codegenInto);

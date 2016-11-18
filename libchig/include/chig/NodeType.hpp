@@ -48,7 +48,7 @@ struct NodeType {
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
 	/// numOutputExecs.
 	/// \return The Result
-	virtual Result codegen(size_t execInputID, llvm::Function* f,
+	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
 
