@@ -78,6 +78,11 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 	llvm::SMDiagnostic diag;
 	llcompiledmod = llvm::parseIR({ir, "clang-generated"}, diag, con.llcontext);
 	
+	if(!llcompiledmod) {
+		diag.print("chig compile", llvm::errs());
+		return;
+	}
+	
 	auto llfunc = llcompiledmod->getFunction(functocall);
 	
 	if(!llfunc) {
