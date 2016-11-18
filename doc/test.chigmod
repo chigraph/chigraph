@@ -25,12 +25,12 @@
             "location": [23, 3]
           },
           "itoa": {
-			"type": "c:func",
-			"data": {
-              "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
-              "function": "doitoa"
-			},
-			"location": [2, 2]
+      			"type": "c:func",
+      			"data": {
+                    "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
+                    "function": "doitoa"
+      			},
+			      "location": [2, 2]
           },
           "str": {
             "type": "lang:strliteral",
@@ -40,8 +40,8 @@
           "puts2": {
             "type": "c:func",
             "data": {
-              "code": "#include <stdio.h> \n int doputs(const char* arg) { return puts(arg);}",
-              "function": "doputs"
+              "code": "#include <stdio.h> \n int doputs2(const char* arg) { return puts(arg);}",
+              "function": "doputs2"
             },
             "location": [23, 123]
           }
@@ -61,7 +61,7 @@
               "type": "exec",
               "input": ["puts", 0],
               "output": ["itoa", 0]
-          },         
+          },
           {
               "type": "exec",
               "input": ["itoa", 0],
@@ -76,18 +76,18 @@
               "type": "data",
               "input": ["str", 0],
               "output": ["puts", 0]
-          },          
+          },
           {
               "type": "data",
               "input": ["puts", 0],
               "output": ["itoa", 0]
-          },          
+          },
           {
               "type": "data",
               "input": ["itoa", 0],
-              "output": ["puts", 0]
+              "output": ["puts2", 0]
           }
       ]
     }
   ]
-} 
+}

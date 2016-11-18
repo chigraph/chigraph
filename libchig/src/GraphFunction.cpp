@@ -50,7 +50,7 @@ Result GraphFunction::fromJSON(
 		res.add_entry("E5", "JSON in graph doesn't have nodes object", {});
 		return res;
 	}
-	
+
 	for (auto nodeiter = data["nodes"].begin(); nodeiter != data["nodes"].end(); ++nodeiter) {
 		auto node = nodeiter.value();
 		std::string nodeid = nodeiter.key();
@@ -120,13 +120,13 @@ Result GraphFunction::fromJSON(
 					{{"connectionid", connID}, {"Found Type", type}});
 				continue;
 			}
-			
+
 			if (connection.find("input") == connection.end()) {
 				res.add_entry("E16", "No input element in connection",  {{"connectionid", connID}});
 				continue;
 			}
-			if (!connection.find("input")->is_array() || connection.find("input")->size() != 2 || 
-				!connection.find("input")->operator[](0).is_string() || 
+			if (!connection.find("input")->is_array() || connection.find("input")->size() != 2 ||
+				!connection.find("input")->operator[](0).is_string() ||
 				!connection.find("input")->operator[](1).is_number_integer()
 			) {
 				res.add_entry("E17", "Incorrect connection input format, must be an array of of a string (node id) and int (connection id)", {{"connectionid", connID}, {"Requested Type", *connection.find("input")}});
@@ -135,13 +135,13 @@ Result GraphFunction::fromJSON(
 			std::string InputNodeID = connection["input"][0];
 			int InputConnectionID = connection["input"][1];
 
-			
+
 			if (connection.find("output") == connection.end()) {
 				res.add_entry("E18", "No output element in connection",  {{"connectionid", connID}});
 				continue;
 			}
-			if (!connection.find("output")->is_array() || connection.find("output")->size() != 2 || 
-				!connection.find("output")->operator[](0).is_string() || 
+			if (!connection.find("output")->is_array() || connection.find("output")->size() != 2 ||
+				!connection.find("output")->operator[](0).is_string() ||
 				!connection.find("output")->operator[](1).is_number_integer()
 			) {
 				res.add_entry("E19", "Incorrect connection output format, must be an array of a string (node id) and int (connection id)", {{"connectionid", connID}, {"Requested Type", *connection.find("output")}});
@@ -175,7 +175,7 @@ Result GraphFunction::fromJSON(
 			++connID;
 		}
 	}
-	
+
 
 	return res;
 }
@@ -236,7 +236,7 @@ struct cache {
 };
 
 // Codegens a single input to a node
-void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block,
+void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block, llvm::BasicBlock* allocblock,
 	llvm::Module* mod, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache)
 {
 	llvm::IRBuilder<> builder(block);
@@ -253,13 +253,14 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 	auto entryBlock = &f->getEntryBlock();
 	llvm::IRBuilder<> entryBuilder(entryBlock);
+	llvm::IRBuilder<> allocBuilder(allocblock);
 
 	// create outputs
 	auto& outputCache = nodeCache[node].outputs;
 	for (auto& output : node->type->dataOutputs) {
 		// TODO: research address spaces
 		llvm::AllocaInst* alloc =
-			entryBuilder.CreateAlloca(output.first, nullptr, output.second);  // TODO: name
+			allocBuilder.CreateAlloca(output.first, nullptr, output.second);  // TODO: name
 		alloc->setName(output.second);
 		outputCache.push_back(alloc);
 	}
@@ -281,7 +282,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
 		if (output.first)
-			codegenHelper(output.first, output.second, outputBlocks[idx], mod, f, nodeCache);
+			codegenHelper(output.first, output.second, outputBlocks[idx], allocblock, mod, f, nodeCache);
 	}
 }
 
@@ -318,7 +319,9 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	llvm::Function* f = llvm::Function::Create(
 		llvm::FunctionType::get(llvm::IntegerType::getInt32Ty(mod->getContext()), arguments, false),
 		llvm::GlobalValue::LinkageTypes::ExternalLinkage, graphName, mod);
+	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), graphName, f);
 	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), graphName, f);
+	auto blockcpy = block;
 
 	// follow "linked list"
 	NodeInstance* node = getEntryNode();
@@ -342,7 +345,10 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		++idx;
 	}
 
-	codegenHelper(node, execInputID, block, mod, f, nodeCache);
+	codegenHelper(node, execInputID, block, allocblock, mod, f, nodeCache);
+
+	llvm::IRBuilder<> allocbuilder(allocblock);
+	allocbuilder.CreateBr(blockcpy);
 
 	return res;
 }
@@ -401,7 +407,7 @@ NodeInstance* GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x,
 {
 	auto ptr = std::make_unique<NodeInstance>(std::move(type), x, y, id);
 
-	
+
 	auto emplaced = nodes.emplace(id, std::move(ptr)).first;
 
 	return emplaced->second.get();

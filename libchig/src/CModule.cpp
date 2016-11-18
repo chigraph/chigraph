@@ -25,12 +25,12 @@ llvm::Type* CModule::getType(const char* name) const {
 }
 
 std::unique_ptr<NodeType> CModule::createNodeType(const char* name, const nlohmann::json& json_data) const {
-	
+
 	if(strcmp(name, "func") == 0) {
-		
+
 		return std::make_unique<CFuncNode>(*context, json_data["code"], json_data["function"]);
 	}
-	
+
 	return nullptr;
 }
 
@@ -39,14 +39,14 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 	module = "c";
 	name = "func";
 	description = "call C code";
-	
+
 	execInputs = {""};
 	execOutputs = {""};
-	
+
 	std::string ir;
 	std::string error;
 	try {
-	
+
 		// compile the C code
 		exec_stream_t clangexe;
 		clangexe.set_wait_timeout(exec_stream_t::s_out, 100000);
@@ -54,18 +54,18 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 		clangexe.start(CHIG_CLANG_EXE, arguments.begin(), arguments.end());
 		clangexe.in() << Ccode;
 		clangexe.close_in();
-		
-		ir = std::string{std::istreambuf_iterator<char>(clangexe.out()), 
+
+		ir = std::string{std::istreambuf_iterator<char>(clangexe.out()),
 			std::istreambuf_iterator<char>()};
-			
-			
-		error = std::string{std::istreambuf_iterator<char>(clangexe.err()), 
+
+
+		error = std::string{std::istreambuf_iterator<char>(clangexe.err()),
 			std::istreambuf_iterator<char>()};
 	} catch(std::exception& e) {
 		std::cerr << e.what() << std::endl;
 		return;
 	}
-	
+
 	if(!error.empty()) {
 		std::cerr << "Error encountered while generating IR: " << error << std::endl;
 	}
@@ -74,31 +74,31 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 		std::cerr << "Failed to gen IR!" << std::endl;
 		return;
 	}
-	
+
 	llvm::SMDiagnostic diag;
 	llcompiledmod = llvm::parseIR({ir, "clang-generated"}, diag, con.llcontext);
-	
+
 	if(!llcompiledmod) {
 		diag.print("chig compile", llvm::errs());
 		return;
 	}
-	
+
 	auto llfunc = llcompiledmod->getFunction(functocall);
-	
+
 	if(!llfunc) {
 		std::cerr << "Failed to get function " << functocall << " in C module." << std::endl;
 		return;
 	}
-	
+
 	// get arguments
 	std::transform(llfunc->arg_begin(), llfunc->arg_end(), std::back_inserter(dataInputs), [](const llvm::Argument& argument) {
 		return std::make_pair(argument.getType(), argument.getName());
 	});
-	
+
 	// get return type
 	dataOutputs = {{llfunc->getReturnType(), ""}};
-	
-	
+
+
 }
 
 
@@ -113,37 +113,35 @@ Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f, const st
 {
 	// create a copy of the module
 	auto copymod = llvm::CloneModule(llcompiledmod.get());
-	
+
 	// link it in
 	llvm::Linker::linkModules(*mod, std::move(copymod));
-	
+
 	auto llfunc = mod->getFunction(functocall);
 	assert(llfunc);
-	
+
 	llvm::IRBuilder<> builder(codegenInto);
-	
+
 	auto callinst = builder.CreateCall(llfunc, io);
-	
+
 	if(dataOutputs.size()) {
-		auto ret = callinst->getReturnedArgOperand();
-		
-		builder.CreateStore(ret, io[dataInputs.size()]);
+
+		builder.CreateStore(callinst, io[dataInputs.size()]);
 	}
-	
+
 	builder.CreateBr(outputBlocks[0]);
-	
-	
+
+
 	return {};
 }
 
 nlohmann::json CFuncNode::toJSON() const
 {
 	auto j = nlohmann::json{};
-	
+
 	j = nlohmann::json::object();
 	j["code"] = ccode;
 	j["function"] = functocall;
-	
+
 	return j;
 }
-
