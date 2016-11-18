@@ -97,6 +97,8 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 
 std::unique_ptr<NodeType> CFuncNode::clone() const
 {
+	// TODO: implement
+	return nullptr;
 }
 
 Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f, const std::vector<llvm::Value *>& io, llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock *>& outputBlocks) const

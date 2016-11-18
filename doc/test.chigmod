@@ -20,7 +20,7 @@
             "type": "c:func",
             "data": {
               "code": "#include <stdio.h>\n int doputs(const char* arg) { return puts(arg);}",
-              "function": "puts"
+              "function": "doputs"
             },
             "location": [23, 3]
           },
