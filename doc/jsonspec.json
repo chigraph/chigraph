@@ -4,25 +4,18 @@
 	"description": "The code specification for the Chigraph language. https://github.com/russelltg/chigraph",
 	"type": "object",
 	"properties": {
-		"module": {
-			"description": "The module description",
-			"type": "object",
-			"properties": {
-				"name": {
-					"description": "The name of the module.",
-					"type": "string",
-					"pattern": "\\w+"
-				},
-				"dependencies": {
-					"description": "The modules this module depends on",
-					"type": "array",
-					"items": {
-						"type": "string",
-						"pattern": "\\w+"
-					}
-				}
-			},
-			"required": ["name", "dependencies"]
+		"name": {
+			"description": "The name of the module.",
+			"type": "string",
+			"pattern": "\\w+"
+		},
+		"dependencies": {
+			"description": "The modules this module depends on",
+			"type": "array",
+			"items": {
+				"type": "string",
+				"pattern": "\\w+"
+			}
 		},
 		"graphs": {
 			"description": "The definitions of the graphs",
@@ -41,29 +34,29 @@
 					},
 					"nodes": {
 						"description": "The nodes",
-						"type": "array",
-						"items": {
-							"type": "object",
-							"properties":  {
-								"type": {
-									"description": "The type of the node, in the format module:name",
-									"type": "string",
-									"pattern": "\\w+:\\w+"
-								},
-								"location": {
-									"description": "the location on the graph. For cosmetic purposes only.",
-									"type": "array",
-									"items": {
-										"type": "number"
+						"type": "object",
+						"patternProperties": {
+							".*": {
+								"type": "object",
+								"properties":  {
+									"type": {
+										"description": "The type of the node, in the format module:name",
+										"type": "string",
+										"pattern": "\\w+:\\w+"
 									},
-									"minItems": 2,
-									"maxItems": 2
+									"location": {
+										"description": "the location on the graph. For cosmetic purposes only.",
+										"type": "array",
+										"items": {
+											"type": "number"
+										},
+										"minItems": 2,
+										"maxItems": 2
+									},
+									"data": {}
 								},
-								"data": {
-									"type": "object"
-								}
-							},
-							"required": ["type", "location", "data"]
+								"required": ["type", "location", "data"]
+							}
 						}
 					},
 					"connections": {
@@ -75,23 +68,33 @@
 								"type": {
 									"type": "string",
 									"description": "The type of the connection (data or exec)",
-									"pattern": "data|exec"
+									"enum": ["data", "exec"]
 								},
 								"input": {
 									"description": "The location of the input to the conneciton. First is node ID, second is connection ID in that node.",
 									"type": "array",
-									"items": {
-										"type": "integer"
-									},
+									"items": [
+										{
+											"type": "string"
+										},
+										{
+											"type": "integer"
+										}
+									],
 									"minItems": 2,
 									"maxItems": 2
 								},
 								"output": {
 									"description": "The location of the output to the connection. First is the node ID, second is the connection ID in that node.",
 									"type": "array",
-									"items": {
-										"type": "integer"
-									},
+									"items": [
+										{
+											"type": "string"
+										},
+										{
+											"type": "integer"
+										}
+									],
 									"minItems": 2,
 									"maxItems": 2
 								}
@@ -103,5 +106,5 @@
 			}
 		}
 	},
-	"required": ["module", "graphs"]
+	"required": ["graphs"]
 }

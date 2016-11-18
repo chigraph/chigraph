@@ -53,14 +53,14 @@ struct GraphFunction {
 	/// Gets the node with type lang:entry
 	/// returns {nullptr, ~0} on failure
 	/// Also returns {nullptr, ~0} if there are two entry nodes, which is illegal
-	/// \return {Entry node, ID in node array}
-	std::pair<NodeInstance*, size_t> getEntryNode() const noexcept;
+	/// \return Entry node
+	NodeInstance* getEntryNode() const noexcept;
 
 	/// Gets the nodes with a given type
 	/// \param module The module the type is in
 	/// \param name THe name of the type
-	/// \return A vector of NodeInstance to size_t (the index) that match.
-	std::vector<std::pair<NodeInstance*, size_t>> getNodesWithType(
+	/// \return A vector of NodeInstance
+	std::vector<NodeInstance*> getNodesWithType(
 		const char* module, const char* name) const noexcept;
 
 	/// Gets the return type, based on the exit nodes
@@ -71,11 +71,12 @@ struct GraphFunction {
 	/// \param type The type of the node
 	/// \param x The x location of the node
 	/// \param y The y location of the node
-	NodeInstance* insertNode(std::unique_ptr<NodeType> type, float x, float y);
+	/// \param id The node ID
+	NodeInstance* insertNode(std::unique_ptr<NodeType> type, float x, float y, const std::string& id);
 
 	std::string graphName;  /// the name of the function
 
-	std::vector<std::unique_ptr<NodeInstance>> nodes;  /// Storage for the nodes
+	std::unordered_map<std::string, std::unique_ptr<NodeInstance>> nodes;  /// Storage for the nodes
 
 	Context* owningContext;
 };

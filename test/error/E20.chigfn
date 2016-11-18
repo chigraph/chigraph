@@ -1,18 +1,18 @@
 {
 	"type": "function",
 	"name": "helloworld",
-	"nodes": [
-		{
+	"nodes": {
+		"if": {
 			"type": "lang:if",
 			"data": {},
 			"location": [2, 2]
 		}
-	],
+	},
 	"connections": [
 		{
 			"type": "exec",
-			"input": [1, 0],
-			"output": [0, 0]
+			"input": ["this doesn't exist", 0],
+			"output": ["if", 0]
 		}
 	]
 }

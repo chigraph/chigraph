@@ -34,7 +34,7 @@ std::unique_ptr<NodeType> CModule::createNodeType(const char* name, const nlohma
 	return nullptr;
 }
 
-CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::string& functocall_) : NodeType{con}, functocall{functocall_}
+CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::string& functocall_) : NodeType{con}, functocall{functocall_}, ccode(Ccode)
 {
 	module = "c";
 	name = "func";
@@ -86,9 +86,10 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 	}
 	
 	// get arguments
-	std::transform(llfunc->arg_begin(), llfunc->arg_end(), std::back_inserter(dataOutputs), [](const llvm::Argument& argument) {
+	std::transform(llfunc->arg_begin(), llfunc->arg_end(), std::back_inserter(dataInputs), [](const llvm::Argument& argument) {
 		return std::make_pair(argument.getType(), argument.getName());
 	});
+	
 	
 }
 
@@ -119,7 +120,14 @@ Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f, const st
 	return {};
 }
 
-Result CFuncNode::toJSON(nlohmann::json* fill_json) const
+nlohmann::json CFuncNode::toJSON() const
 {
+	auto j = nlohmann::json{};
+	
+	j = nlohmann::json::object();
+	j["code"] = ccode;
+	j["function"] = functocall;
+	
+	return j;
 }
 

@@ -46,14 +46,16 @@ Result GraphFunction::fromJSON(
 	auto& ret = *ret_ptr;
 
 	// read the nodes
-	if (data.find("nodes") == data.end() || !data["nodes"].is_array()) {
-		res.add_entry("E5", "JSON in graph doesn't have nodes array", {});
+	if (data.find("nodes") == data.end() || !data["nodes"].is_object()) {
+		res.add_entry("E5", "JSON in graph doesn't have nodes object", {});
 		return res;
 	}
-	size_t nodeID = 0;
-	for (const auto& node : data["nodes"]) {
+	
+	for (auto nodeiter = data["nodes"].begin(); nodeiter != data["nodes"].end(); ++nodeiter) {
+		auto node = nodeiter.value();
+		std::string nodeid = nodeiter.key();
 		if (node.find("type") == node.end() || !node.find("type")->is_string()) {
-			res.add_entry("E6", "Node doesn't have a \"type\" string", {{"nodeid", nodeID}});
+			res.add_entry("E6", "Node doesn't have a \"type\" string", {{"nodeid", nodeid}});
 			return res;
 		}
 		std::string fullType = node["type"];
@@ -62,12 +64,12 @@ Result GraphFunction::fromJSON(
 		std::string typeName = fullType.substr(colonId + 1);
 
 		if (colonId == std::string::npos || moduleName.size() == 0 || typeName.size() == 0) {
-			res.add_entry("E7", "Incorrect qualified module name (should be module:type)", {{"nodeid", nodeID}, {"Requested Qualified Name", fullType}});
+			res.add_entry("E7", "Incorrect qualified module name (should be module:type)", {{"nodeid", nodeid}, {"Requested Qualified Name", fullType}});
 			return res;
 		}
 
 		if (node.find("data") == node.end()) {
-			res.add_entry("E9", "Node doens't have a data section", {"nodeid", nodeID});
+			res.add_entry("E9", "Node doens't have a data section", {"nodeid", nodeid});
 			return res;
 		}
 
@@ -80,24 +82,21 @@ Result GraphFunction::fromJSON(
 			// make sure it is the right size
 			if (!testIter.value().is_array()) {
 				res.add_entry(
-					"E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeID}});
+					"E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeid}});
 				continue;
 			}
 
 			if (testIter.value().size() != 2) {
 				res.add_entry("E11", "Node doesn't have a location that is an array of size 2.",
-					{{"nodeid", nodeID}});
+					{{"nodeid", nodeid}});
 				continue;
 			}
 		} else {
-			res.add_entry("E12", "Node doesn't have a location.", {{"nodeid", nodeID}});
+			res.add_entry("E12", "Node doesn't have a location.", {{"nodeid", nodeid}});
 			continue;
 		}
 
-		ret->nodes.push_back(std::make_unique<NodeInstance>(
-			std::move(nodeType), node["location"][0], node["location"][0]));
-
-		++nodeID;
+		ret->insertNode(std::move(nodeType), node["location"][0], node["location"][0], nodeid);
 	}
 
 	size_t connID = 0;
@@ -127,13 +126,13 @@ Result GraphFunction::fromJSON(
 				continue;
 			}
 			if (!connection.find("input")->is_array() || connection.find("input")->size() != 2 || 
-				!connection.find("input")->operator[](0).is_number_integer() || 
+				!connection.find("input")->operator[](0).is_string() || 
 				!connection.find("input")->operator[](1).is_number_integer()
 			) {
-				res.add_entry("E17", "Incorrect connection input format, must be an array of two ints", {{"connectionid", connID}, {"Requested Type", *connection.find("input")}});
+				res.add_entry("E17", "Incorrect connection input format, must be an array of of a string (node id) and int (connection id)", {{"connectionid", connID}, {"Requested Type", *connection.find("input")}});
 				continue;
 			}
-			int InputNodeID = connection["input"][0];
+			std::string InputNodeID = connection["input"][0];
 			int InputConnectionID = connection["input"][1];
 
 			
@@ -142,24 +141,24 @@ Result GraphFunction::fromJSON(
 				continue;
 			}
 			if (!connection.find("output")->is_array() || connection.find("output")->size() != 2 || 
-				!connection.find("output")->operator[](0).is_number_integer() || 
+				!connection.find("output")->operator[](0).is_string() || 
 				!connection.find("output")->operator[](1).is_number_integer()
 			) {
-				res.add_entry("E19", "Incorrect connection output format, must be an array of two ints", {{"connectionid", connID}, {"Requested Type", *connection.find("output")}});
+				res.add_entry("E19", "Incorrect connection output format, must be an array of a string (node id) and int (connection id)", {{"connectionid", connID}, {"Requested Type", *connection.find("output")}});
 				continue;
 			}
-			int OutputNodeID = connection["output"][0];
+			std::string OutputNodeID = connection["output"][0];
 			int OutputConnectionID = connection["output"][1];
 
 			// make sure the nodes exist
-			if (InputNodeID >= ret->nodes.size()) {
+			if (ret->nodes.find(InputNodeID) == ret->nodes.end()) {
 				res.add_entry("E20", "Input node for connection doesn't exist",
 					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
 				continue;
 			}
-			if (OutputNodeID >= ret->nodes.size()) {
+			if (ret->nodes.find(OutputNodeID) == ret->nodes.end()) {
 				res.add_entry("E21", "Output node for connection doesn't exist",
-					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
+					{{"connectionid", connID}, {"Requested Node", OutputNodeID}});
 				continue;
 			}
 
@@ -193,17 +192,17 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 
 	// serialize the nodes
 	auto& jsonNodes = jsonData["nodes"];
-	jsonNodes = nlohmann::json::array();  // make sure even if it's empty it's an aray
+	jsonNodes = nlohmann::json::object();  // make sure even if it's empty it's an object
 	auto& jsonConnections = jsonData["connections"];
 	jsonConnections = nlohmann::json::array();  // make sure even if it's empty it's an aray
 
-	for (auto node_id = 0ull; node_id < nodes.size(); ++node_id) {
-		auto& node = nodes[node_id];
+	for (auto nodeIter = nodes.begin(); nodeIter != nodes.end(); ++nodeIter) {
+		auto& node = nodeIter->second;
+		std::string nodeID = nodeIter->first;
 
-		nlohmann::json nodeJson;
-		res += node->type->toJSON(&nodeJson);
-		jsonNodes.push_back({{"type", node->type->module + ':' + node->type->name},
-			{"location", {node->x, node->y}}, {"data", nodeJson}});
+		nlohmann::json nodeJson = node->type->toJSON();
+		jsonNodes[nodeID] = {{"type", node->type->module + ':' + node->type->name},
+			{"location", {node->x, node->y}}, {"data", nodeJson}};
 		// add its connections. Just out the outputs to avoid duplicates
 
 		// add the exec outputs
@@ -211,15 +210,9 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 			auto& conn = node->outputExecConnections[conn_id];
 			// if there is actually a connection
 			if (conn.first) {
-				// find the ID of the second
-				// TODO: there is a more effiecent way to codegen this. Cache incomplete connections
-				// for both sides, then check if this node completes any of the connections
-				auto other_id = std::distance(
-					nodes.begin(), std::find_if(nodes.begin(), nodes.end(),
-									   [&](auto& un_ptr) { return un_ptr.get() == conn.first; }));
 
-				jsonConnections.push_back({{"type", "exec"}, {"input", {node_id, conn_id}},
-					{"output", {other_id, conn.second}}});
+				jsonConnections.push_back({{"type", "exec"}, {"input", {nodeID, conn_id}},
+					{"output", {conn.first->id, conn.second}}});
 			}
 		}
 
@@ -228,15 +221,9 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 			auto& conn = node->outputDataConnections[conn_id];
 			// if there is actually a connection
 			if (conn.first) {
-				// find the ID of the second
-				// TODO: there is a more effiecent way to codegen this. Cache incomplete connections
-				// for both sides, then check if this node completes any of the connections
-				auto other_id = std::distance(
-					nodes.begin(), std::find_if(nodes.begin(), nodes.end(),
-									   [&](auto& un_ptr) { return un_ptr.get() == conn.first; }));
 
-				jsonConnections.push_back({{"type", "data"}, {"input", {node_id, conn_id}},
-					{"output", {other_id, conn.second}}});
+				jsonConnections.push_back({{"type", "data"}, {"input", {nodeID, conn_id}},
+					{"output", {conn.first->id, conn.second}}});
 			}
 		}
 	}
@@ -260,7 +247,8 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 		// get pointers to the objects
 		auto value = nodeCache[param.first].outputs[param.second];
-		inputParams.push_back(value);  // TODO: pass ptr to value
+		// dereference
+		inputParams.push_back(builder.CreateLoad(value, ""));  // TODO: pass ptr to value
 	}
 
 	auto entryBlock = &f->getEntryBlock();
@@ -302,13 +290,13 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	Result res;
 
 	auto entry = getEntryNode();
-	if(!entry.first) {
+	if(!entry) {
 		res.add_entry("EUKN", "No entry node", {});
 		return res;
 	}
 
 	const auto& argument_connections =
-		getEntryNode().first->type->dataOutputs;  // ouptuts from entry are arguments
+		getEntryNode()->type->dataOutputs;  // ouptuts from entry are arguments
 
 	// get return types;
 	auto ret = getReturnTypes();
@@ -332,14 +320,14 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		llvm::GlobalValue::LinkageTypes::ExternalLinkage, graphName, mod);
 	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), graphName, f);
 
-	// follow linked list
-	NodeInstance* node = getEntryNode().first;
+	// follow "linked list"
+	NodeInstance* node = getEntryNode();
 	unsigned execInputID =
 		node->outputExecConnections[0].second;  // the exec connection to codegen from
 
 	std::unordered_map<NodeInstance*, cache> nodeCache;
 
-	auto outputNode = getNodesWithType("lang", "exit")[0].first;
+	auto outputNode = getNodesWithType("lang", "exit")[0];
 
 	// do entry, it's special
 	auto& outputs = nodeCache[node].outputs;
@@ -359,28 +347,29 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	return res;
 }
 
-std::pair<NodeInstance*, size_t> GraphFunction::getEntryNode() const noexcept
+NodeInstance* GraphFunction::getEntryNode() const noexcept
 {
 	auto matching = getNodesWithType("lang", "entry");
 
 	if (matching.size() == 1) {
 		return matching[0];
 	}
-	return {nullptr, ~0};
+	return nullptr;
 }
 
-std::vector<std::pair<NodeInstance*, size_t>> GraphFunction::getNodesWithType(
+std::vector<NodeInstance*> GraphFunction::getNodesWithType(
 	const char* module, const char* name) const noexcept
 {
 	auto typeFinder = [&](
-		auto& node) { return node->type->module == module && node->type->name == name; };
+		auto& pair) { return pair.second->type->module == module && pair.second->type->name == name; };
 
-	std::vector<std::pair<NodeInstance*, size_t>> ret;
+	std::vector<NodeInstance*> ret;
 	auto iter = std::find_if(nodes.begin(), nodes.end(), typeFinder);
 	while (iter != nodes.end()) {
-		ret.emplace_back(iter->get(), std::distance(nodes.begin(), iter));
+		ret.emplace_back(iter->second.get());
 
-		iter = std::find_if(iter + 1, nodes.end(), typeFinder);
+		std::advance(iter, 1); // don't process the same one twice!
+		iter = std::find_if(iter, nodes.end(), typeFinder);
 	}
 
 	return ret;
@@ -392,11 +381,11 @@ boost::optional<std::vector<llvm::Type*>> GraphFunction::getReturnTypes() const 
 
 	if (matching.size() == 0) return {};
 
-	auto& types = matching[0].first->type->dataInputs;
+	auto& types = matching[0]->type->dataInputs;
 
 	// make sure they are all the same
 	if (!std::all_of(matching.begin(), matching.end(), [&](auto pair) {
-			return std::equal(types.begin(), types.end(), pair.first->type->dataInputs.begin());
+			return std::equal(types.begin(), types.end(), pair->type->dataInputs.begin());
 		})) {
 		return {};
 	}
@@ -408,11 +397,12 @@ boost::optional<std::vector<llvm::Type*>> GraphFunction::getReturnTypes() const 
 	return ret;
 }
 
-NodeInstance* GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y)
+NodeInstance* GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y, const std::string& id)
 {
-	auto ptr = std::make_unique<NodeInstance>(std::move(type), x, y);
+	auto ptr = std::make_unique<NodeInstance>(std::move(type), x, y, id);
 
-	nodes.push_back(std::move(ptr));
+	
+	auto emplaced = nodes.emplace(id, std::move(ptr)).first;
 
-	return nodes[nodes.size() - 1].get();
+	return emplaced->second.get();
 }

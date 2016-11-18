@@ -85,13 +85,27 @@ int run(std::vector<std::string> opts) {
 	
 	llvm::Function* entry = llmod->getFunction("main");
 	
+	if(!entry) {
+		std::cerr << "No main function in module: " << std::endl;
+		return 1;
+	}
+	
 	llvm::InitializeNativeTarget();
 	
-	llvm::ExecutionEngine* EE = llvm::EngineBuilder(std::move(llmod)).create();
+	llvm::EngineBuilder EEBuilder(std::move(llmod));
+	
+	std::string errMsg;
+	EEBuilder.setErrorStr(&errMsg);
+	
+	std::unique_ptr<llvm::ExecutionEngine> EE(EEBuilder.create());
+	
+	if(!EE) {
+		std::cerr << errMsg << std::endl;
+		return 1;
+	}
 	
 	std::vector<llvm::GenericValue> noargs;
 	auto ret = EE->runFunction(entry, noargs);
-	
 	
 	return 0;
 }

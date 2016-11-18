@@ -53,9 +53,8 @@ struct NodeType {
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
 
 	/// Create the JSON necessary to store the object.
-	/// \param ret_json The json obejct to fill into
-	/// \return The result
-	virtual Result toJSON(nlohmann::json* ret_json) const { return {}; }
+	/// \ret The json obejct
+	virtual nlohmann::json toJSON() const { return {}; }
 	/// Clones the type
 	/// \return The clone
 	virtual std::unique_ptr<NodeType> clone() const = 0;

@@ -34,7 +34,7 @@ struct EntryNodeType : NodeType {
 
 	virtual std::unique_ptr<NodeType> clone() const override;
 
-	Result toJSON(nlohmann::json* ret_json) const override;
+	nlohmann::json toJSON() const override;
 };
 
 struct ConstIntNodeType : NodeType {
@@ -47,7 +47,7 @@ struct ConstIntNodeType : NodeType {
 
 	virtual std::unique_ptr<NodeType> clone() const override;
 
-	Result toJSON(nlohmann::json* fill_json) const override;
+	nlohmann::json toJSON() const override;
 
 	int number;
 };
@@ -62,7 +62,22 @@ struct ExitNodeType : NodeType {
 
 	virtual std::unique_ptr<NodeType> clone() const override;
 
-	Result toJSON(nlohmann::json* ret_json) const override;
+	nlohmann::json toJSON() const override;
+};
+
+struct StringLiteralNodeType : NodeType {
+	StringLiteralNodeType(Context& con, std::string str)
+		;
+
+	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
+		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+		const std::vector<llvm::BasicBlock*>&) const override;
+
+	virtual std::unique_ptr<NodeType> clone() const override;
+
+	nlohmann::json toJSON() const override;
+	
+	std::string literalString;
 };
 
 struct LangModule : ChigModule {

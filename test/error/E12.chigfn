@@ -1,10 +1,10 @@
 {
 	"type": "function",
 	"name": "helloworld",
-	"nodes": [
-		{
+	"nodes": {
+		"if": {
 			"type": "lang:if",
 			"data": {}
 		}
-	]
+	}
 }

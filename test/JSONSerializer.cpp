@@ -34,7 +34,7 @@ TEST_CASE("JsonSerializer", "[json]")
 				{
 					"type": "function",
 					"name": "hello",
-					"nodes": [],
+					"nodes": {},
 					"connections": []
 				}
 			)ENDJSON"_json;
@@ -47,7 +47,7 @@ TEST_CASE("JsonSerializer", "[json]")
 			std::vector<std::pair<llvm::Type*, std::string>> inputs = {
 				{llvm::Type::getInt1Ty(c.llcontext), "in1"}};
 
-			auto entry = func.insertNode(std::make_unique<EntryNodeType>(c, inputs), 32, 32);
+			auto entry = func.insertNode(std::make_unique<EntryNodeType>(c, inputs), 32, 32, "entry");
 
 			THEN("The JSON should be correct")
 			{
@@ -55,15 +55,15 @@ TEST_CASE("JsonSerializer", "[json]")
 					{
 						"type": "function",
 						"name": "hello",
-						"nodes": [
-							{
+						"nodes": {
+							"entry": {
 								"type": "lang:entry",
 								"location": [32.0,32.0],
 								"data": {
 									"in1": "lang:i1"
 								}
 							}
-						],
+						},
 						"connections": []
 					}
 					)ENDJSON"_json;
@@ -76,7 +76,7 @@ TEST_CASE("JsonSerializer", "[json]")
 				std::unique_ptr<NodeType> ifType;
 				res = c.getNodeType("lang", "if", {}, &ifType);
 				REQUIRE(!!res);
-				auto ifNode = func.insertNode(std::move(ifType), 44.f, 23.f);
+				auto ifNode = func.insertNode(std::move(ifType), 44.f, 23.f, "if");
 
 				THEN("The JSON should be correct")
 				{
@@ -84,20 +84,20 @@ TEST_CASE("JsonSerializer", "[json]")
 						{
 							"type": "function",
 							"name": "hello",
-							"nodes": [
-								{
+							"nodes": {
+								"entry": {
 									"type": "lang:entry",
 									"location": [32.0,32.0],
 									"data": {
 										"in1": "lang:i1"
 									}
 								},
-								{
+								"if": {
 									"type": "lang:if",
 									"location": [44.0, 23.0],
 									"data": null
 								}
-							],
+							},
 							"connections": []
 						}
 						)ENDJSON"_json;
@@ -115,28 +115,29 @@ TEST_CASE("JsonSerializer", "[json]")
 							{
 								"type": "function",
 								"name": "hello",
-								"nodes": [
-									{
+								"nodes": {
+									"entry": {
 										"type": "lang:entry",
 										"location": [32.0,32.0],
 										"data": {
 											"in1": "lang:i1"
 										}
 									},
-									{
+									"if": {
 										"type": "lang:if",
 										"location": [44.0, 23.0],
 										"data": null
 									}
-								],
+								},
 								"connections": [
 									{
 										"type": "exec",
-										"input": [0, 0],
-										"output": [1, 0]
+										"input": ["entry",0],
+										"output": ["if",0]
 									}
 								]
-							})ENDJSON"_json;
+							}
+						)ENDJSON"_json;
 
 						requireWorks(correctJSON);
 					}
@@ -153,30 +154,30 @@ TEST_CASE("JsonSerializer", "[json]")
 								{
 								"type": "function",
 								"name": "hello",
-								"nodes": [
-									{
-									"type": "lang:entry",
-									"location": [32.0,32.0],
-									"data": {
-										"in1": "lang:i1"
-									}
+								"nodes": {
+									"entry": {
+										"type": "lang:entry",
+										"location": [32.0,32.0],
+										"data": {
+											"in1": "lang:i1"
+										}
 									},
-									{
+									"if": {
 										"type": "lang:if",
-										"location": [44.0,23.0],
+										"location": [44.0, 23.0],
 										"data": null
 									}
-								],
+								},
 								"connections": [
 									{
 										"type": "exec",
-										"input": [0,0],
-										"output": [1,0]
+										"input": ["entry",0],
+										"output": ["if",0]
 									},
 									{
 										"type": "data",
-										"input": [0,0],
-										"output": [1,0]
+										"input": ["entry",0],
+										"output": ["if",0]
 									}
 								]
 								})ENDJSON"_json;

@@ -38,9 +38,10 @@ struct CFuncNode : NodeType {
 
 	virtual std::unique_ptr<NodeType> clone() const override;
 
-	Result toJSON(nlohmann::json* fill_json) const override;
+	nlohmann::json toJSON() const override;
 
 	std::string functocall;
+	std::string ccode;
 	
 	std::unique_ptr<llvm::Module> llcompiledmod;
 };

@@ -1,13 +1,13 @@
 {
 	"type": "function",
 	"name": "helloworld",
-	"nodes": [
-		{
+	"nodes": {
+		"if": {
 			"type": "lang:if",
 			"data": {},
 			"location": [2, 2]
 		}
-	],
+	},
 	"connections": [
 		{
 			"type": "notexecordata"

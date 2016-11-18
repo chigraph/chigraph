@@ -35,8 +35,8 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 				}
 
 				return std::make_unique<EntryNodeType>(*context, inputs);
-
-			}},
+			}
+		},
 		{"exit"s,
 			[this](const nlohmann::json& data) {
 				// transform the JSON data into this data structure
@@ -55,12 +55,21 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 
 				return std::make_unique<ExitNodeType>(*context, outputs);
 
-			}},
+			}
+		},
 		{"const-int"s, [this](const nlohmann::json& data) {
-			 int num = data;
+				int num = data;
 
-			 return std::make_unique<ConstIntNodeType>(*context, num);
-		 }}};
+				return std::make_unique<ConstIntNodeType>(*context, num);
+			}
+		},
+		{"strliteral"s, [this](const nlohmann::json& data) {
+			std::string str = data;
+			
+			return std::make_unique<StringLiteralNodeType>(*context, str);
+		}
+		}
+		};
 }
 
 std::unique_ptr<NodeType> LangModule::createNodeType(
@@ -144,18 +153,16 @@ std::unique_ptr< NodeType > EntryNodeType::clone() const
 }
 
 
-Result EntryNodeType::toJSON(nlohmann::json* ret_json) const
+nlohmann::json EntryNodeType::toJSON() const
 {
-    Result res;
-    auto& ret = *ret_json;
-    ret = {};
+    nlohmann::json ret;
 
     for (auto& pair : dataOutputs) {
         // TODO: user made types
         ret[pair.second] = "lang:" + context->stringifyType(pair.first);
     }
 
-    return res;
+    return ret;
 }
 
 
@@ -193,11 +200,9 @@ std::unique_ptr< chig::NodeType> ConstIntNodeType::clone() const
 }
 
 
-Result ConstIntNodeType::toJSON(nlohmann::json* fill_json) const
+nlohmann::json ConstIntNodeType::toJSON() const
 {
-    *fill_json = number;
-
-    return {};
+    return number;
 }
 
 
@@ -239,17 +244,62 @@ std::unique_ptr< NodeType> ExitNodeType::clone() const
 }
 
 
-Result ExitNodeType::toJSON(nlohmann::json* ret_json) const
+nlohmann::json ExitNodeType::toJSON() const
 {
-    Result res;
-    auto& ret = *ret_json;
+	nlohmann::json ret;
 
     for (auto& pair : dataOutputs) {
         // TODO: user made types
         ret[pair.second] = "lang:" + context->stringifyType(pair.first);
     }
 
-    return res;
+    return ret;
 }
 
+
+
+
+StringLiteralNodeType::StringLiteralNodeType(Context& con, std::string str) : NodeType{con}, literalString(std::move(str))
+{
+	
+    execInputs = {""};
+	execOutputs = {""};
+
+    module = "lang";
+    name = "strliteral";
+    description = "exit from a function; think return";
+
+	// TODO: research address types
+	dataOutputs = {{llvm::PointerType::getInt8PtrTy(con.llcontext, 0), "string"}};
+}
+
+
+Result StringLiteralNodeType::codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock* >& outputBlocks) const
+{
+	llvm::IRBuilder<> builder(codegenInto);
+	
+	auto global = builder.CreateGlobalString(literalString);
+	
+	auto const0ID = llvm::ConstantInt::get(context->llcontext, llvm::APInt(32, 0, false));
+	auto gep = builder.CreateGEP(global, {const0ID, const0ID});
+	builder.CreateStore(gep, io[0], false);
+	
+	builder.CreateBr(outputBlocks[0]);
+	
+	return {};
+	
+}
+
+
+std::unique_ptr< NodeType> StringLiteralNodeType::clone() const
+{
+    return std::make_unique<StringLiteralNodeType>(*this);
+}
+
+
+nlohmann::json StringLiteralNodeType::toJSON() const
+{
+    return literalString;
+	
+}
 
