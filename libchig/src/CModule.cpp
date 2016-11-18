@@ -95,6 +95,9 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 		return std::make_pair(argument.getType(), argument.getName());
 	});
 	
+	// get return type
+	dataOutputs = {{llfunc->getReturnType(), ""}};
+	
 	
 }
 
@@ -119,7 +122,13 @@ Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f, const st
 	
 	llvm::IRBuilder<> builder(codegenInto);
 	
-	builder.CreateCall(llfunc, io);
+	auto callinst = builder.CreateCall(llfunc, io);
+	
+	if(dataOutputs.size()) {
+		auto ret = callinst->getReturnedArgOperand();
+		
+		builder.CreateStore(ret, io[dataInputs.size()]);
+	}
 	
 	builder.CreateBr(outputBlocks[0]);
 	

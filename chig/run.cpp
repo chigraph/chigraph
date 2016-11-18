@@ -56,7 +56,7 @@ int run(std::vector<std::string> opts) {
 			return 1;
 		}
 		
-		fs::ifstream stream(inpath);	
+		fs::ifstream stream(inpath);
 		
 		try {
 			stream >> read_json;
@@ -104,8 +104,7 @@ int run(std::vector<std::string> opts) {
 		return 1;
 	}
 	
-	std::vector<llvm::GenericValue> noargs;
-	auto ret = EE->runFunction(entry, noargs);
+	auto ret = EE->runFunction(entry, {});
 	
 	return 0;
 }
