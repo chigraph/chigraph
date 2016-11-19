@@ -14,6 +14,8 @@ add_subdirectory(third_party/libexecstream)
 add_subdirectory(libchig)
 add_subdirectory(chig)
 
+add_subdirectory(gui)
+
 # Unit tests...
 if(CG_BUILD_TESTS)
 	enable_testing()
