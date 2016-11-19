@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	
-	fs::ifstream jsonstream;
+	fs::ifstream jsonstream{JSONfile};
 	
 	json j;
 	
@@ -65,29 +65,53 @@ int main(int argc, char** argv) {
 	
 	json chigmodule = j["module"];
 	
-	int returncode = j["exeectedret"];
+	int expectedreturncode = j["expectedret"];
 	
 	// this program is to be started where chigc is
-	std::vector<std::string> args = {"compile", "-", "-o-"};
-	exec_stream_t chigcexe("./chig", args.begin(), args.end());
-	chigcexe.in() << chigmodule;
-	chigcexe.close_in();
+	exec_stream_t chigexe;
+	chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
+	chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
 	
-	std::string outputir((std::istreambuf_iterator<char>(chigcexe.out())),
-                 std::istreambuf_iterator<char>(chigcexe.out()));
+	std::vector<std::string> args = {"run", "-"};
+	chigexe.start("./chig", args.begin(), args.end());
+	chigexe.in() << chigmodule;
+	chigexe.close_in();
 	
-	// create a llvm::Module
-	llvm::SMDiagnostic err;
-	llvm::LLVMContext c;
-	llvm::MemoryBufferRef mem{llvm::StringRef(outputir), "chigc"};
-	auto mod = llvm::parseIR(mem, err, c);
+	// get the output streams
+	std::string stdout = std::string{std::istreambuf_iterator<char>(chigexe.out()),
+		std::istreambuf_iterator<char>()};
 	
-	// JIT the code!
-	llvm::InitializeNativeTarget();
+	std::string stderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
+		std::istreambuf_iterator<char>()};
 	
-	auto EE = llvm::EngineBuilder(std::move(mod)).create();
+	chigexe.close();
+	int retcode = chigexe.exit_code();
 	
-	EE->runFunction(mod->getFunction("main"), {});
+	if(retcode != expectedreturncode) {
+		std::cerr << "Unexpected retcode: " << retcode << " expected was " << expectedreturncode << std::endl << 
+			"stdout: \"" << stdout << "\"" << std::endl <<
+			"stderr: \"" << stderr << "\"" << std::endl;
+			
+		return 1;
+	}
+	
+	if(stdout != expectedcout) {
+		std::cerr << "Unexpected stdout: " << stdout << " expected was " << expectedcout << std::endl << 
+			"retcode: \"" << retcode << "\"" << std::endl <<
+			"stderr: \"" << stderr << "\"" << std::endl;
+			
+		return 1;
+	}
+	
+	if(stderr != expectedcerr) {
+		std::cerr << "Unexpected stderr: " << stderr << " expected was " << expectedcerr << std::endl << 
+			"retcode: \"" << retcode << "\"" << std::endl <<
+			"stdout: \"" << stdout << "\"" << std::endl;
+			
+		return 1;
+	}
+	
+	
 
 }
 

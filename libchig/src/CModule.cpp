@@ -55,7 +55,7 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 		clangexe.in() << Ccode;
 		clangexe.close_in();
 
-		      bitcode = std::string{std::istreambuf_iterator<char>(clangexe.out()),
+		bitcode = std::string{std::istreambuf_iterator<char>(clangexe.out()),
 			std::istreambuf_iterator<char>()};
 
 
