@@ -5,7 +5,7 @@
 
 #include <exec-stream.h>
 
-#include <llvm/IRReader/IRReader.h>
+#include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Transforms/Utils/Cloning.h>
@@ -43,19 +43,19 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 	execInputs = {""};
 	execOutputs = {""};
 
-	std::string ir;
+	std::string bitcode;
 	std::string error;
 	try {
 
 		// compile the C code
 		exec_stream_t clangexe;
 		clangexe.set_wait_timeout(exec_stream_t::s_out, 100000);
-		std::vector<std::string> arguments = {"-xc", "-", "-S", "-emit-llvm", "-O0", "-o-"};
+		std::vector<std::string> arguments = {"-xc", "-", "-c", "-emit-llvm", "-O0", "-o-"};
 		clangexe.start(CHIG_CLANG_EXE, arguments.begin(), arguments.end());
 		clangexe.in() << Ccode;
 		clangexe.close_in();
 
-		ir = std::string{std::istreambuf_iterator<char>(clangexe.out()),
+		      bitcode = std::string{std::istreambuf_iterator<char>(clangexe.out()),
 			std::istreambuf_iterator<char>()};
 
 
@@ -70,14 +70,20 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 		std::cerr << "Error encountered while generating IR: " << error << std::endl;
 	}
 
-	if (ir.empty()) {
+	if (bitcode.empty()) {
 		std::cerr << "Failed to gen IR!" << std::endl;
 		return;
 	}
 
 	llvm::SMDiagnostic diag;
-	llcompiledmod = llvm::parseIR({ir, "clang-generated"}, diag, con.llcontext);
-
+	auto modorerror = llvm::parseBitcodeFile(llvm::MemoryBufferRef(bitcode, "clang-generated"), con.llcontext);
+	
+	if(!modorerror) {
+		std::cerr << "error parsing clang-generated bitcode module: " << modorerror.getError() << std::endl;
+		return;
+	}
+	llcompiledmod = std::move(*modorerror);
+	
 	if(!llcompiledmod) {
 		diag.print("chig compile", llvm::errs());
 		return;

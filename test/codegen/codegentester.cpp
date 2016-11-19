@@ -68,7 +68,8 @@ int main(int argc, char** argv) {
 	int returncode = j["exeectedret"];
 	
 	// this program is to be started where chigc is
-	exec_stream_t chigcexe("./chigc", "-");
+	std::vector<std::string> args = {"compile", "-", "-o-"};
+	exec_stream_t chigcexe("./chig", args.begin(), args.end());
 	chigcexe.in() << chigmodule;
 	chigcexe.close_in();
 	
