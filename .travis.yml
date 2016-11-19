@@ -2,9 +2,8 @@ sudo: required
 
 arch:
     packages:
-        - base
-        - base-devel
         - llvm
+        - clang
         - cmake
         - boost
         - python-pip
