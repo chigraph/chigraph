@@ -8,6 +8,8 @@ arch:
         - cmake
         - boost
         - python-pip
+        - kf5
+        - extra-cmake-modules
     script:
         - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
         - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -std=c++11 -lstdc++"
