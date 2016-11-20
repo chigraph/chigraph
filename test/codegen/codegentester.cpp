@@ -1,4 +1,6 @@
 #include <chig/Context.hpp>
+#include <chig/Result.hpp>
+#include <chig/JsonModule.hpp>
 
 #include <exec-stream.h>
 
@@ -24,6 +26,7 @@
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Support/raw_ostream.h>
 
+#include <chig/json.hpp>
 
 using namespace chig;
 using namespace nlohmann;
@@ -78,10 +81,10 @@ int main(int argc, char** argv) {
 	chigexe.close_in();
 	
 	// get the output streams
-	std::string stdout = std::string{std::istreambuf_iterator<char>(chigexe.out()),
+	std::string generatedstdout = std::string{std::istreambuf_iterator<char>(chigexe.out()),
 		std::istreambuf_iterator<char>()};
 	
-	std::string stderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
+	std::string generatedstderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
 		std::istreambuf_iterator<char>()};
 	
 	chigexe.close();
@@ -95,7 +98,7 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	
-	if(stdout != expectedcout) {
+	if(generatedstdout != expectedcout) {
 		std::cerr << "Unexpected stdout: " << stdout << " expected was " << expectedcout << std::endl << 
 			"retcode: \"" << retcode << "\"" << std::endl <<
 			"stderr: \"" << stderr << "\"" << std::endl;
@@ -103,7 +106,7 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	
-	if(stderr != expectedcerr) {
+	if(generatedstderr != expectedcerr) {
 		std::cerr << "Unexpected stderr: " << stderr << " expected was " << expectedcerr << std::endl << 
 			"retcode: \"" << retcode << "\"" << std::endl <<
 			"stdout: \"" << stdout << "\"" << std::endl;
