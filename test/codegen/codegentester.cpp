@@ -1,6 +1,8 @@
 #include <chig/Context.hpp>
 #include <chig/Result.hpp>
 #include <chig/JsonModule.hpp>
+#include <chig/NodeType.hpp>
+#include <chig/GraphFunction.hpp>
 
 #include <exec-stream.h>
 
@@ -121,9 +123,9 @@ int main(int argc, char** argv) {
 	JsonModule deserialized(chigmodule, c, &r);
 
 	nlohmann::json serializedmodule;
-	r += deserialized.toJSON(&toJSON);
+	r += deserialized.toJSON(&serializedmodule);
 
-	if(serializedmodule != chigmodue)  {
+	if(serializedmodule != chigmodule)  {
 		std::cerr << "Serialization and deserialization failed. \noriginal: " << chigmodule.dump(2) << "\n\nserialized: " << serializedmodule.dump(2) << std::endl;
 	}
 

@@ -76,3 +76,24 @@ Result JsonModule::compile(std::unique_ptr<llvm::Module>* mod) const {
 	
 	return res;
 }
+
+Result JsonModule::toJSON(nlohmann::json* to_fill) const {
+	auto& ret = *to_fill;
+	ret = nlohmann::json::object();
+
+	Result res;
+
+	ret["name"] = name;
+	ret["dependencies"] = dependencies;
+
+	auto& graphsjson = ret["graphs"];
+	graphsjson = nlohmann::json::array();
+	for(auto& graph : functions) {
+
+		nlohmann::json to_fill;
+		res += graph->toJSON(&to_fill);
+		graphsjson.push_back(to_fill);
+	}
+
+	return  res;
+}
