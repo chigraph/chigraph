@@ -111,7 +111,19 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	
+	Context c;
 	
+	// test serialization and deserialization
+	Result r;
+	JsonModule deserialized(chigmodule, c, &r);
+
+	nlohmann::json serializedmodule;
+	r += deserialized.toJSON(&toJSON);
+
+	if(serializedmodule != chigmodue)  {
+		std::cerr << "Serialization and deserialization failed. \noriginal: " << chigmodule.dump(2) << "\n\nserialized: " << serializedmodule.dump(2) << std::endl;
+	}
+
 
 }
 
