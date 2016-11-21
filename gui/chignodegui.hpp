@@ -8,20 +8,14 @@
 
 #include <chig/ChigModule.hpp>
 
-extern const char* typetocreate;
-extern chig::ChigModule* chigmodule;
-
 class ChigNodeGui : NodeDataModel {
 	
 public:
 	
+	ChigNodeGui(chig::ChigModule* module_, QString type_) : type{type_}, module{module_} { }
+  
 	QString type;
 	chig::ChigModule* module;
-	
-	ChigNodeGui() {
-		type = typetocreate;
-		module = chigmodule;
-	}
 	
 	QString caption() const override { 
 		return QString("Text Source"); 
@@ -29,21 +23,21 @@ public:
 
 	bool captionVisible() const override { return true; }
 
-	static QString name() { 
-		return typetocreate;
-		
+	QString name() { 
+		return QString::fromStdString(module->name) + ":" + type;
+	}
+	
+	std::unique_ptr<NodeDataModel> clone() {
+		return std::make_unique<ChigNodeGui>(type, module);
 	}
 	
 };
 
 inline void registerModule(chig::ChigModule* module) {
 
-	chigmodule = module;
-
 	auto nodetypes = module->getNodeTypeNames();
 	
 	for(auto& nodetype : nodetypes) {
-		typetocreate = nodetype.c_str();
 		
 		DataModelRegistry::registerModel<ChigNodeGui>();
 	}
