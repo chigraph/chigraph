@@ -88,6 +88,13 @@ struct LangModule : ChigModule {
 		const char* name, const nlohmann::json& json_data) const override;
 	virtual llvm::Type* getType(const char* name) const override;
 
+	virtual std::vector<std::string> getNodeTypeNames() const override {
+		return {"if", "entry", "exit", "const-int", "strliteral"};
+	}
+	virtual std::vector<std::string> getTypeNames() const override {
+		return {"i32", "i1"}; // TODO: do i need more?
+	}
+	
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
 		nodes;
 };

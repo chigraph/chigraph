@@ -27,6 +27,9 @@ struct JsonModule : public ChigModule {
 		const char* name, const nlohmann::json& json_data) const override {return nullptr;}
 	llvm::Type* getType(const char* name) const override {return nullptr;}
 
+	virtual std::vector<std::string> getNodeTypeNames() const override {return {}; } // TODO: implement
+	virtual std::vector<std::string> getTypeNames() const override { return {}; } // TODO: implement
+	
 	Result toJSON(nlohmann::json* to_fill) const;
 	
 	std::vector<std::unique_ptr<GraphFunction>> functions;

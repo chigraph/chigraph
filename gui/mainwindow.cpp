@@ -1,12 +1,21 @@
 #include "mainwindow.h"
 
 #include <QAction>
+#include <QTextStream>
 #include <KActionCollection>
 #include <KStandardAction>
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <QApplication>
 #include <QFileDialog>
+
+#include <chig/Context.hpp>
+#include <chig/JsonModule.hpp>
+#include <chig/json.hpp>
+
+#include <fstream>
+
+#include "chignodegui.hpp"
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
@@ -48,9 +57,21 @@ void MainWindow::setupActions()
 }
 
 void MainWindow::openFile() {
-	auto file = QFileDialog::getOpenFileName(this, i18n("Chig Module"), QDir::homePath(), tr("Chigraph Modules (*.chigmod)"));
+	QString filename = QFileDialog::getOpenFileName(this, i18n("Chig Module"), QDir::homePath(), tr("Chigraph Modules (*.chigmod)"));
+	std::ifstream stream(filename.toStdString());
 	
+	chig::Context c;
+	chig::Result res;
+	
+	// read the JSON
+	nlohmann::json j;
+	stream >> j;
+	
+	
+	mod = new chig::JsonModule(j, &res);
+	
+	// TODO: deal with res
+	
+	registerModule(mod);
 	
 }
-
-

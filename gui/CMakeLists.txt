@@ -15,12 +15,14 @@ find_package(KF5 REQUIRED COMPONENTS CoreAddons I18n XmlGui WidgetsAddons)
 set(GUI_SRCS
 	main.cpp
 	mainwindow.cpp
+	chignodegui.cpp
 )
 
 set(GUI_HEADERS
 	mainwindow.h
+	chignodegui.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS})
 
-target_link_libraries(chiggui Qt5::Widgets KF5::CoreAddons KF5::I18n KF5::XmlGui KF5::WidgetsAddons nodes)
+target_link_libraries(chiggui Qt5::Widgets KF5::CoreAddons KF5::I18n KF5::XmlGui KF5::WidgetsAddons nodes chigcore)
