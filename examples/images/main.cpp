@@ -10,11 +10,11 @@
 static std::unique_ptr<DataModelRegistry>
 registerDataModels()
 {
-  auto ret = std::make_unique<DataModelRegistry>();
+  auto ret = std::unique_ptr<DataModelRegistry>(new DataModelRegistry);
 
-  ret->registerModel(std::make_unique<ImageShowModel>());
+  ret->registerModel(std::unique_ptr<ImageShowModel>(new ImageShowModel));
 
-  ret->registerModel(std::make_unique<ImageLoaderModel>());
+  ret->registerModel(std::unique_ptr<ImageLoaderModel>(new ImageLoaderModel));
 
   return ret;
 }
