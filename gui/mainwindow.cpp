@@ -7,9 +7,9 @@
 #include <KMessageBox>
 #include <QApplication>
 
-
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
+	
 	setupActions();
 }
 

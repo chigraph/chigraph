@@ -5,6 +5,10 @@
 
 #include <KXmlGuiWindow>
 
+class GraphicsNodeView;
+class GraphicsNodeScene;
+
+
 class MainWindow : public KXmlGuiWindow {
 	
 public:
@@ -12,6 +16,8 @@ public:
 	
 	void setupActions();
 	
+	GraphicsNodeView *view = nullptr;
+	GraphicsNodeScene *scene = nullptr;
 };
 
 #endif // CHIGGUI_MAINWINDOW_H

@@ -24,3 +24,5 @@ set(GUI_HEADERS
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS})
 
 target_link_libraries(chiggui Qt5::Widgets KF5::CoreAddons KF5::I18n KF5::XmlGui KF5::WidgetsAddons)
+
+#target_include_directories(chiggui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/qt5-node-editor/src)
