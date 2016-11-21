@@ -6,9 +6,14 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <QApplication>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
+	scene = new FlowScene();
+	view = new FlowView(scene);
+	
+	setCentralWidget(view);
 	
 	setupActions();
 }
@@ -28,8 +33,24 @@ void MainWindow::setupActions()
 	
 	KStandardAction::quit(qApp, SLOT(quit()), actionCollection());
 	
+	QAction* openAction = actionCollection()->addAction(KStandardAction::Open, QStringLiteral("open"));
+	openAction->setWhatsThis(QStringLiteral("Open a chigraph module"));
+	connect(openAction, &QAction::triggered, this, &MainWindow::openFile);
+	
+	QAction* newAction = actionCollection()->addAction(KStandardAction::New, QStringLiteral("new"));
+	newAction->setWhatsThis(QStringLiteral("Create a new chigraph module"));
+	//newAction->setIcon(QIcon::fromTheme(QStringLiteral("new")))
+	
+	QAction* saveAction = actionCollection()->addAction(KStandardAction::Save, QStringLiteral("save"));
+	saveAction->setWhatsThis(QStringLiteral("Save the chigraph module"));
 	
 	setupGUI(Default, "chigguiui.rc");
+}
+
+void MainWindow::openFile() {
+	auto file = QFileDialog::getOpenFileName(this, i18n("Chig Module"), QDir::homePath(), tr("Chigraph Modules (*.chigmod)"));
+	
+	
 }
 
 

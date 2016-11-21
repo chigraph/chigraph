@@ -5,9 +5,8 @@
 
 #include <KXmlGuiWindow>
 
-class GraphicsNodeView;
-class GraphicsNodeScene;
-
+#include <nodes/FlowView>
+#include <nodes/FlowScene>
 
 class MainWindow : public KXmlGuiWindow {
 	
@@ -16,8 +15,12 @@ public:
 	
 	void setupActions();
 	
-	GraphicsNodeView *view = nullptr;
-	GraphicsNodeScene *scene = nullptr;
+	FlowScene* scene = nullptr;
+	FlowView* view = nullptr;
+	
+public slots:
+	void openFile();
+	
 };
 
 #endif // CHIGGUI_MAINWINDOW_H

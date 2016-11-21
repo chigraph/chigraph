@@ -5,6 +5,8 @@ project(chigraph)
 # add the module dirs
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
+set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
+
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 option(CG_BUILD_GUI "Should the GUI be built" ON)
 
@@ -16,6 +18,7 @@ add_subdirectory(libchig)
 add_subdirectory(chig)
 
 if(CG_BUILD_GUI)
+	add_subdirectory(third_party/nodeeditor)
 	add_subdirectory(gui)
 endif()
 

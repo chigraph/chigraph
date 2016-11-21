@@ -8,17 +8,14 @@
  
   <MenuBar>
     <Menu name="file" >
-      <Action name="ask" />
+	  <Action name="open" />
+	  <Action name="new" />
     </Menu>
-    <Menu >
-      <text>A&amp;nother Menu</text>
-      <Action name="ask" />
-    </Menu >
   </MenuBar>
  
   <ToolBar name="mainToolBar" >
     <text>Main Toolbar</text>
-    <Action name="ask" />
+	  <Action name="open" />
   </ToolBar>
  
 </gui>
