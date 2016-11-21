@@ -13,10 +13,10 @@
 static std::unique_ptr<DataModelRegistry>
 registerDataModels()
 {
-  auto ret = std::make_unique<DataModelRegistry>();
-  ret->registerModel(std::make_unique<TextSourceDataModel>());
+  auto ret = std::unique_ptr<DataModelRegistry>(new DataModelRegistry);
+  ret->registerModel(std::unique_ptr<TextSourceDataModel>(new TextSourceDataModel));
 
-  ret->registerModel(std::make_unique<TextSourceDataModel>());
+  ret->registerModel(std::unique_ptr<TextSourceDataModel>(new TextSourceDataModel));
 
   return ret;
 }

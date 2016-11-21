@@ -21,6 +21,7 @@
 #include "FlowItemInterface.hpp"
 #include "FlowView.hpp"
 #include "DataModelRegistry.hpp"
+#include "UniquePtr.hpp"
 
 std::shared_ptr<Connection>
 FlowScene::
