@@ -218,12 +218,14 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 
 		// add the data outputs
 		for (auto conn_id = 0ull; conn_id < node->outputDataConnections.size(); ++conn_id) {
-			auto& conn = node->outputDataConnections[conn_id];
-			// if there is actually a connection
-			if (conn.first) {
+			auto& connsforid = node->outputDataConnections[conn_id];
+			for(auto& conn : connsforid) {
+				// if there is actually a connection
+				if (conn.first) {
 
-				jsonConnections.push_back({{"type", "data"}, {"input", {nodeID, conn_id}},
-					{"output", {conn.first->id, conn.second}}});
+					jsonConnections.push_back({{"type", "data"}, {"input", {nodeID, conn_id}},
+						{"output", {conn.first->id, conn.second}}});
+				}
 			}
 		}
 	}
@@ -237,7 +239,7 @@ struct cache {
 
 // Codegens a single input to a node
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block, llvm::BasicBlock* allocblock,
-	llvm::Module* mod, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache)
+	llvm::Module* mod, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache, Result& r)
 {
 	llvm::IRBuilder<> builder(block);
 	// get input values
@@ -245,6 +247,14 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	for (auto& param : node->inputDataConnections) {
 		// TODO: error handling
 
+		auto cacheiter = nodeCache.find(param.first);
+		
+		if(cacheiter == nodeCache.end()) {
+			res.add_entry("E231", "Failed to find in cache", {{"nodeid", param.first->id}}});
+			
+			continue;
+		}
+		
 		// get pointers to the objects
 		auto value = nodeCache[param.first].outputs[param.second];
 		// dereference

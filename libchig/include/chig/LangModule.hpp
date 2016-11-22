@@ -40,7 +40,6 @@ struct EntryNodeType : NodeType {
 struct ConstIntNodeType : NodeType {
 	ConstIntNodeType(Context& con, int num) ;
 
-	// the function doesn't have to do anything...this class just holds metadata
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
 		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
 		const std::vector<llvm::BasicBlock*>& outputBlocks) const override;
@@ -50,6 +49,20 @@ struct ConstIntNodeType : NodeType {
 	nlohmann::json toJSON() const override;
 
 	int number;
+};
+
+struct ConstBoolNodeType : NodeType {
+	ConstBoolNodeType(Context& con, bool num) ;
+
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
+		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+		const std::vector<llvm::BasicBlock*>& outputBlocks) const override;
+
+	virtual std::unique_ptr<NodeType> clone() const override;
+
+	nlohmann::json toJSON() const override;
+
+	bool value;
 };
 
 struct ExitNodeType : NodeType {

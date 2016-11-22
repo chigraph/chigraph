@@ -22,10 +22,10 @@ struct NodeInstance {
 	float y = 0.0;
 
 	// connections
-	std::vector<std::pair<NodeInstance*, unsigned int>> inputExecConnections;
+	std::vector<std::vector<std::pair<NodeInstance*, unsigned int>>> inputExecConnections;
 	std::vector<std::pair<NodeInstance*, unsigned int>> inputDataConnections;
 	std::vector<std::pair<NodeInstance*, unsigned int>> outputExecConnections;
-	std::vector<std::pair<NodeInstance*, unsigned int>> outputDataConnections;
+	std::vector<std::vector<std::pair<NodeInstance*, unsigned int>>> outputDataConnections;
 	
 	std::string id;
 };

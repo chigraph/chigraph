@@ -64,6 +64,13 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 				return std::make_unique<ConstIntNodeType>(*context, num);
 			}
 		},
+		{"const-bool"s, [this](const nlohmann::json& data) {
+			
+				bool num = data.is_boolean() ? (bool)data : false;
+
+				return std::make_unique<ConstBoolNodeType>(*context, num);
+			}
+		},
 		{"strliteral"s, [this](const nlohmann::json& data) {
 			std::string str;
 			if(data.is_string()) {
@@ -209,6 +216,46 @@ std::unique_ptr< chig::NodeType> ConstIntNodeType::clone() const
 nlohmann::json ConstIntNodeType::toJSON() const
 {
     return number;
+}
+
+
+ConstBoolNodeType::ConstBoolNodeType(Context& con, bool num) : NodeType{con}, value{num}
+{
+    module = "lang";
+    name = "const-bool";
+    description = "constant boolean value";
+
+    execInputs = {""};
+    execOutputs = {""};
+
+    dataOutputs = {{llvm::IntegerType::getInt1Ty(con.llcontext), "out"}};
+}
+
+
+Result ConstBoolNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f, const std::vector< llvm::Value*>& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*, std::allocator< llvm::BasicBlock* > >& outputBlocks) const
+{
+    llvm::IRBuilder<> builder(codegenInto);
+    // just go to the block
+    assert(io.size() == 1);
+
+    builder.CreateStore(
+        llvm::ConstantInt::get(llvm::IntegerType::getInt1Ty(context->llcontext), value), io[0],
+        false);
+    builder.CreateBr(outputBlocks[0]);
+
+    return {};
+}
+
+
+std::unique_ptr< chig::NodeType> ConstBoolNodeType::clone() const
+{
+    return std::make_unique<ConstBoolNodeType>(*this);
+}
+
+
+nlohmann::json ConstBoolNodeType::toJSON() const
+{
+    return value;
 }
 
 

@@ -8,9 +8,9 @@ NodeInstance::NodeInstance(std::unique_ptr<NodeType> nodeType, float arg_x, floa
 	assert(type);
 
 	inputDataConnections.resize(type->dataInputs.size(), {nullptr, ~0});
-	outputDataConnections.resize(type->dataOutputs.size(), {nullptr, ~0});
+	outputDataConnections.resize(type->dataOutputs.size(), {});
 
-	inputExecConnections.resize(type->execInputs.size(), {nullptr, ~0});
+	inputExecConnections.resize(type->execInputs.size(), {});
 	outputExecConnections.resize(type->execOutputs.size(), {nullptr, ~0});
 }
 
@@ -65,7 +65,7 @@ Result connectData(
 		return res;
 	}
 
-	lhs.outputDataConnections[connectionInputID] = {&rhs, connectionOutputID};
+	lhs.outputDataConnections[connectionInputID].emplace_back(&rhs, connectionOutputID);
 	rhs.inputDataConnections[connectionOutputID] = {&lhs, connectionInputID};
 
 	return res;
@@ -111,7 +111,7 @@ Result connectExec(
 
 	// connect it!
 	lhs.outputExecConnections[connectionInputID] = {&rhs, connectionOutputID};
-	rhs.inputExecConnections[connectionOutputID] = {&lhs, connectionOutputID};
+	rhs.inputExecConnections[connectionOutputID].emplace_back(&lhs, connectionOutputID);
 
 	return res;
 }
