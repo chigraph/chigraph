@@ -28,6 +28,14 @@ std::unique_ptr<NodeType> CModule::createNodeType(const char* name, const nlohma
 
 	if(strcmp(name, "func") == 0) {
 
+		std::string code;
+		if(json_data["code"].is_string()) {
+			code = json_data;
+		}
+		
+		std::string function;
+		if(json_data["function"].is_string())
+		
 		return std::make_unique<CFuncNode>(*context, json_data["code"], json_data["function"]);
 	}
 

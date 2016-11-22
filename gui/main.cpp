@@ -4,7 +4,7 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 
-#include "mainwindow.h"
+#include "mainwindow.hpp"
 
 
 int main(int argc, char** argv) {

@@ -58,13 +58,19 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 			}
 		},
 		{"const-int"s, [this](const nlohmann::json& data) {
-				int num = data;
+			
+				int num = data.is_number_integer() ? (int)data : 0;
 
 				return std::make_unique<ConstIntNodeType>(*context, num);
 			}
 		},
 		{"strliteral"s, [this](const nlohmann::json& data) {
-			std::string str = data;
+			std::string str;
+			if(data.is_string()) {
+				str = data;
+			} else {
+				str = "";
+			}
 			
 			return std::make_unique<StringLiteralNodeType>(*context, str);
 		}

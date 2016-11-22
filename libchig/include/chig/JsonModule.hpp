@@ -8,6 +8,7 @@
 #include "chig/json.hpp"
 
 #include "chig/ChigModule.hpp"
+#include "chig/NodeType.hpp"
 
 #include <vector>
 

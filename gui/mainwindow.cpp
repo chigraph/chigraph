@@ -1,17 +1,23 @@
-#include "mainwindow.h"
+#include "mainwindow.hpp"
 
-#include <QAction>
-#include <QTextStream>
 #include <KActionCollection>
 #include <KStandardAction>
 #include <KLocalizedString>
 #include <KMessageBox>
+
+#include <QAction>
+#include <QTextStream>
 #include <QApplication>
 #include <QFileDialog>
+#include <QHBoxLayout>
+#include <QSplitter>
 
 #include <chig/Context.hpp>
 #include <chig/JsonModule.hpp>
 #include <chig/json.hpp>
+#include <chig/LangModule.hpp>
+#include <chig/GraphFunction.hpp>
+#include <chig/CModule.hpp>
 
 #include <fstream>
 
@@ -19,12 +25,31 @@
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
-	scene = new FlowScene();
+	
+	scene = new FlowScene(std::make_unique<DataModelRegistry>());
+	addModule(std::make_unique<chig::LangModule>(ccontext));
+	addModule(std::make_unique<chig::CModule>(ccontext));
+	
 	view = new FlowView(scene);
 	
-	setCentralWidget(view);
+	QFrame* hb = new QFrame(this);
+	QHBoxLayout* hlayout = new QHBoxLayout(hb);
+	hlayout->setMargin(0);
+	hlayout->setSpacing(0);
+	
+	setCentralWidget(hb);
+	
+	QSplitter* splitter = new QSplitter;
+	functionpane = new FunctionsPane(splitter, this);
+	
+	splitter->addWidget(functionpane);
+	splitter->addWidget(view);
+	
+	hlayout->addWidget(splitter);
 	
 	setupActions();
+	
+
 }
 
 void MainWindow::setupActions()
@@ -56,22 +81,54 @@ void MainWindow::setupActions()
 	setupGUI(Default, "chigguiui.rc");
 }
 
+
+inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> module) {
+
+	
+	auto nodetypes = module->getNodeTypeNames();
+	
+	for(auto& nodetype : nodetypes) {
+		scene->registry().registerModel(std::make_unique<ChigNodeGui>(module.get(), QString::fromStdString(nodetype)));
+	}
+	
+	ccontext.addModule(std::move(module));
+	
+}
+
+
 void MainWindow::openFile() {
 	QString filename = QFileDialog::getOpenFileName(this, i18n("Chig Module"), QDir::homePath(), tr("Chigraph Modules (*.chigmod)"));
+	
+	if(filename == "") return;
+	
 	std::ifstream stream(filename.toStdString());
 	
-	chig::Context c;
 	chig::Result res;
 	
 	// read the JSON
 	nlohmann::json j;
-	stream >> j;
 	
+	try {
+		stream >> j;
+	} catch (std::exception& e) {
+		KMessageBox::detailedError(this, "Invalid JSON file \"" + filename +
+			"\"", e.what(), "Error Loading");
+		
+		return;
+	}
 	
-	mod = new chig::JsonModule(j, &res);
+	auto mod = std::make_unique<chig::JsonModule>(j, ccontext, &res);
 	
-	// TODO: deal with res
+	if(!res) {
+		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + filename +
+			"\"", QString::fromStdString(res.result_json.dump(2)), "Error Loading");
+		
+		return;
+	}
 	
-	registerModule(mod);
+	addModule(std::move(mod));
+	
+	// call signal
+	openJsonModule(mod.get());
 	
 }

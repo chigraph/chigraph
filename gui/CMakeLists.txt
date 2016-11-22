@@ -16,13 +16,21 @@ set(GUI_SRCS
 	main.cpp
 	mainwindow.cpp
 	chignodegui.cpp
+	functionspane.cpp
 )
 
 set(GUI_HEADERS
-	mainwindow.h
+	mainwindow.hpp
 	chignodegui.hpp
+	functionspane.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS})
 
 target_link_libraries(chiggui Qt5::Widgets KF5::CoreAddons KF5::I18n KF5::XmlGui KF5::WidgetsAddons nodes chigcore)
+
+target_compile_features(chiggui PRIVATE cxx_variable_templates)
+
+if(UNIX)
+	target_compile_options(chiggui PRIVATE "-fexceptions")
+endif()
