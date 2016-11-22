@@ -90,6 +90,12 @@ int run(std::vector<std::string> opts) {
 		return 1;
 	}
 	
+	std::error_code ec;
+	llvm::raw_fd_ostream lloutstream("out.ll", ec, llvm::sys::fs::F_None);
+	
+	llmod->print(lloutstream, nullptr);
+
+	
 	llvm::InitializeNativeTarget();
 	
 	llvm::EngineBuilder EEBuilder(std::move(llmod));

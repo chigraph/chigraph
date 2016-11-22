@@ -1,7 +1,7 @@
 {
   "testname": "test if and const bool",
   "expectedret": 0,
-  "expectedstdout": "true\n",
+  "expectedstdout": "false\n",
   "expectedstderr": "",
   "module":
 
@@ -26,7 +26,7 @@
   			},
         "true": {
           "type": "lang:const-bool",
-          "data": true,
+          "data": false,
           "location": [23, 1]
         },
         "if": {

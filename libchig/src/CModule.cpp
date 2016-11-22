@@ -138,7 +138,12 @@ Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f, const st
 
 	llvm::IRBuilder<> builder(codegenInto);
 
-	auto callinst = builder.CreateCall(llfunc, io);
+	std::vector<llvm::Value*> inputs = io;
+	if(dataOutputs.size()) {
+		inputs.pop_back();
+	}
+	
+	auto callinst = builder.CreateCall(llfunc, inputs);
 
 	if(dataOutputs.size()) {
 

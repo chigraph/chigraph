@@ -239,26 +239,43 @@ struct cache {
 
 // Codegens a single input to a node
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block, llvm::BasicBlock* allocblock,
-	llvm::Module* mod, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache, Result& r)
+	llvm::Module* mod, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res)
 {
 	llvm::IRBuilder<> builder(block);
 	// get input values
 	std::vector<llvm::Value*> inputParams;
+	
+	size_t inputID = 0;
 	for (auto& param : node->inputDataConnections) {
 		// TODO: error handling
 
+		if(!param.first) {
+			res.add_entry("E232", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+			
+			return;
+		}
+		
 		auto cacheiter = nodeCache.find(param.first);
 		
 		if(cacheiter == nodeCache.end()) {
-			res.add_entry("E231", "Failed to find in cache", {{"nodeid", param.first->id}}});
+			res.add_entry("E231", "Failed to find in cache", {{"nodeid", param.first->id}});
 			
-			continue;
+			return;
+		}
+		
+		auto& cacheObject = cacheiter->second;
+        if(param.second >= cacheObject.outputs.size()) {
+			res.add_entry("E232", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+			
+			return;
 		}
 		
 		// get pointers to the objects
-		auto value = nodeCache[param.first].outputs[param.second];
+		auto value = cacheObject.outputs[param.second];
 		// dereference
 		inputParams.push_back(builder.CreateLoad(value, ""));  // TODO: pass ptr to value
+		
+		++inputID;
 	}
 
 	auto entryBlock = &f->getEntryBlock();
@@ -292,7 +309,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
 		if (output.first)
-			codegenHelper(output.first, output.second, outputBlocks[idx], allocblock, mod, f, nodeCache);
+			codegenHelper(output.first, output.second, outputBlocks[idx], allocblock, mod, f, nodeCache, res);
 	}
 }
 
@@ -355,7 +372,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		++idx;
 	}
 
-	codegenHelper(node, execInputID, block, allocblock, mod, f, nodeCache);
+	codegenHelper(node, execInputID, block, allocblock, mod, f, nodeCache, res);
 
 	llvm::IRBuilder<> allocbuilder(allocblock);
 	allocbuilder.CreateBr(blockcpy);
