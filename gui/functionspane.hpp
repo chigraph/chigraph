@@ -10,7 +10,7 @@
 class MainWindow;
 
 class FunctionsPane : public QListWidget {
-	
+	Q_OBJECT
 public:
 	
 	FunctionsPane(QWidget* parent, MainWindow* win);
@@ -18,6 +18,11 @@ public:
 public slots:
 	
 	void updateModule(chig::JsonModule* mod);
+	void selectItem(QListWidgetItem* newitem);
+	
+signals:
+	
+	void functionSelected(QString name);
 	
 };
 

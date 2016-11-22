@@ -280,7 +280,7 @@ load()
 
 
 FlowScene::
-FlowScene(std::unique_ptr<DataModelRegistry> registry) : _registry{std::move(registry)}
+FlowScene(std::shared_ptr<DataModelRegistry> registry) : _registry{std::move(registry)}
 {
   setItemIndexMethod(QGraphicsScene::NoIndex);
 }

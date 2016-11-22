@@ -17,12 +17,14 @@ set(GUI_SRCS
 	mainwindow.cpp
 	chignodegui.cpp
 	functionspane.cpp
+	functionview.cpp
 )
 
 set(GUI_HEADERS
 	mainwindow.hpp
 	chignodegui.hpp
 	functionspane.hpp
+	functionview.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS})

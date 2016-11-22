@@ -8,12 +8,13 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 {
 	connect(win, &MainWindow::openJsonModule, this, &FunctionsPane::updateModule);
 	
-	
-	
+	connect(this, &QListWidget::itemDoubleClicked, this, &FunctionsPane::selectItem);
 }
 
 void FunctionsPane::updateModule(chig::JsonModule* mod)
 {
+	assert(mod);
+	
 	clear();
 	
 	// go through functions
@@ -22,3 +23,8 @@ void FunctionsPane::updateModule(chig::JsonModule* mod)
 		
 	}
 }
+
+void FunctionsPane::selectItem(QListWidgetItem* item){
+	functionSelected(item->text());
+}
+

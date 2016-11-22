@@ -83,7 +83,7 @@ public:
     virtual QWidget* embeddedWidget() override { return nullptr; };
 	
 	// We don't need saving...chigraph has its own serialization
-	void save(Properties &p) const override {}
+	void save(Properties&) const override {}
 	
 };
 

@@ -25,12 +25,11 @@
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
+	reg = std::make_shared<DataModelRegistry>();
 	
-	scene = new FlowScene(std::make_unique<DataModelRegistry>());
 	addModule(std::make_unique<chig::LangModule>(ccontext));
 	addModule(std::make_unique<chig::CModule>(ccontext));
 	
-	view = new FlowView(scene);
 	
 	QFrame* hb = new QFrame(this);
 	QHBoxLayout* hlayout = new QHBoxLayout(hb);
@@ -41,14 +40,17 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	
 	QSplitter* splitter = new QSplitter;
 	functionpane = new FunctionsPane(splitter, this);
+	connect(functionpane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
+	
+	functabs = new QTabWidget(this);
+	functabs->setMovable(true);
 	
 	splitter->addWidget(functionpane);
-	splitter->addWidget(view);
+	splitter->addWidget(functabs);
 	
 	hlayout->addWidget(splitter);
 	
 	setupActions();
-	
 
 }
 
@@ -88,7 +90,7 @@ inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> module) {
 	auto nodetypes = module->getNodeTypeNames();
 	
 	for(auto& nodetype : nodetypes) {
-		scene->registry().registerModel(std::make_unique<ChigNodeGui>(module.get(), QString::fromStdString(nodetype)));
+		reg->registerModel(std::make_unique<ChigNodeGui>(module.get(), QString::fromStdString(nodetype)));
 	}
 	
 	ccontext.addModule(std::move(module));
@@ -119,6 +121,8 @@ void MainWindow::openFile() {
 	
 	auto mod = std::make_unique<chig::JsonModule>(j, ccontext, &res);
 	
+	
+	
 	if(!res) {
 		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + filename +
 			"\"", QString::fromStdString(res.result_json.dump(2)), "Error Loading");
@@ -126,9 +130,29 @@ void MainWindow::openFile() {
 		return;
 	}
 	
+	if(!mod) {
+		KMessageBox::error(this, "Unknown error in loading JsonModule from file \"" + filename + "\"", "Error Loading");
+		return;
+	}
+	
+	module = mod.get(); // cache it because of it it invalidated after the move()
 	addModule(std::move(mod));
 	
 	// call signal
-	openJsonModule(mod.get());
+	openJsonModule(module);
 	
+}
+
+void MainWindow::newFunctionSelected(QString qstr) {
+	// load graph
+	auto graphfunciter = std::find_if(module->functions.begin(), module->functions.end(), [&](auto& graphptr) {
+		return qstr == QString::fromStdString(graphptr->graphName);
+	});
+	
+	if(graphfunciter == module->functions.end()) {
+		KMessageBox::error(this, "Unable to find function" + qstr + " in module", "Wrong function name");
+		return;
+	}
+	
+	functabs->addTab(new FunctionView(graphfunciter->get(), reg, functabs), qstr);
 }

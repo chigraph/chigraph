@@ -27,16 +27,18 @@ llvm::Type* CModule::getType(const char* name) const {
 std::unique_ptr<NodeType> CModule::createNodeType(const char* name, const nlohmann::json& json_data) const {
 
 	if(strcmp(name, "func") == 0) {
-
+		
 		std::string code;
-		if(json_data["code"].is_string()) {
-			code = json_data;
+		if(json_data.is_object() && json_data.find("code") != json_data.end() && json_data["code"].is_string()) {
+			code = json_data["code"];
 		}
 		
 		std::string function;
-		if(json_data["function"].is_string())
+		if(json_data.is_object() && json_data.find("function") != json_data.end() && json_data["function"].is_string()) {
+			function = json_data["function"];
+		}
 		
-		return std::make_unique<CFuncNode>(*context, json_data["code"], json_data["function"]);
+		return std::make_unique<CFuncNode>(*context, code, function);
 	}
 
 	return nullptr;

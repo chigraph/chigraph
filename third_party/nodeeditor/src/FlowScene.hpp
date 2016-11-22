@@ -37,7 +37,7 @@ class NODE_EDITOR_PUBLIC FlowScene
 {
 public:
 
-  FlowScene(std::unique_ptr<DataModelRegistry> registry = nullptr);
+  FlowScene(std::shared_ptr<DataModelRegistry> registry = std::make_shared<DataModelRegistry>());
 
   ~FlowScene();
 
@@ -89,7 +89,7 @@ private:
 
   std::unordered_map<QUuid, SharedConnection> _connections;
   std::unordered_map<QUuid, SharedNode>       _nodes;
-  std::unique_ptr<DataModelRegistry>          _registry;
+  std::shared_ptr<DataModelRegistry>          _registry;
 };
 
 std::shared_ptr<Node>
