@@ -102,10 +102,10 @@ struct LangModule : ChigModule {
 	virtual llvm::Type* getType(const char* name) const override;
 
 	virtual std::vector<std::string> getNodeTypeNames() const override {
-		return {"if", "entry", "exit", "const-int", "strliteral"};
+		return {"if", "entry", "exit", "const-int", "strliteral", "const-bool"};
 	}
 	virtual std::vector<std::string> getTypeNames() const override {
-		return {"i32", "i1"}; // TODO: do i need more?
+		return {"i32", "i1", "double"}; // TODO: do i need more?
 	}
 	
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>

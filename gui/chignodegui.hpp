@@ -15,24 +15,28 @@ class ChigNodeGui : public NodeDataModel {
 	
 public:
 	
-	ChigNodeGui(chig::ChigModule* module_, QString type_) : type{type_}, module{module_} {
-		ty = module->createNodeType(type.toStdString().c_str(), {});
+	ChigNodeGui(chig::ChigModule* module_, std::string type_, nlohmann::json j) : type{type_}, module{module_}, jsonData{j} {
+		ty = module->createNodeType(type.c_str(), j);
+		if(!ty) {
+			std::cerr << "Failed to create stuff for module. " << type << "\n\n" << j.dump(2);
+		}
 	}
   
-	QString type;
+	std::string type;
 	chig::ChigModule* module;
 	std::unique_ptr<chig::NodeType> ty;
+	nlohmann::json jsonData;
 	
 	QString caption() const override { 
-		return type; 
+		return QString::fromStdString(type); 
 	}
 
 	QString name() { 
-		return QString::fromStdString(module->name) + ":" + type;
+		return QString::fromStdString(module->name + ":" + type);
 	}
 	
 	std::unique_ptr<NodeDataModel> clone() override {
-		return std::unique_ptr<ChigNodeGui>(new ChigNodeGui(module, type));
+		return std::unique_ptr<ChigNodeGui>(new ChigNodeGui(module, type, jsonData));
 	}
 	
 	virtual unsigned int nPorts(PortType portType) const override {

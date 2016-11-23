@@ -90,7 +90,7 @@ inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> module) {
 	auto nodetypes = module->getNodeTypeNames();
 	
 	for(auto& nodetype : nodetypes) {
-		reg->registerModel(std::make_unique<ChigNodeGui>(module.get(), QString::fromStdString(nodetype)));
+		reg->registerModel(std::make_unique<ChigNodeGui>(module.get(), nodetype, nlohmann::json()));
 	}
 	
 	ccontext.addModule(std::move(module));
@@ -154,5 +154,5 @@ void MainWindow::newFunctionSelected(QString qstr) {
 		return;
 	}
 	
-	functabs->addTab(new FunctionView(graphfunciter->get(), reg, functabs), qstr);
+	functabs->addTab(new FunctionView(module, graphfunciter->get(), reg, functabs), qstr);
 }
