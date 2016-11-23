@@ -14,10 +14,16 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
+#include <llvm/CodeGen/LinkAllCodegenComponents.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/ExecutionEngine/Interpreter.h>
+#include <llvm/ExecutionEngine/JITEventListener.h>
+#include <llvm/ExecutionEngine/MCJIT.h>
+#include <llvm/ExecutionEngine/ObjectCache.h>
+#include <llvm/ExecutionEngine/OrcMCJITReplacement.h>
+#include <llvm/ExecutionEngine/SectionMemoryManager.h>
+#include <llvm/ExecutionEngine/Orc/OrcRemoteTargetClient.h>
 #include <llvm/Support/TargetSelect.h>
-
 
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
@@ -25,6 +31,10 @@ namespace fs = boost::filesystem;
 using namespace chig;
 
 int run(std::vector<std::string> opts) {
+	
+	llvm::InitializeNativeTarget();
+	llvm::InitializeNativeTargetAsmPrinter();
+	llvm::InitializeNativeTargetAsmParser();
 	
 	po::options_description run_opts;
 	run_opts.add_options()
@@ -96,10 +106,14 @@ int run(std::vector<std::string> opts) {
 	llmod->print(lloutstream, nullptr);
 
 	
-	llvm::InitializeNativeTarget();
 	
 	llvm::EngineBuilder EEBuilder(std::move(llmod));
 	
+	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
+	EEBuilder.setVerifyModules(true);
+
+	EEBuilder.setOptLevel(llvm::CodeGenOpt::Default);
+
 	std::string errMsg;
 	EEBuilder.setErrorStr(&errMsg);
 	
@@ -110,7 +124,7 @@ int run(std::vector<std::string> opts) {
 		return 1;
 	}
 	
-	auto ret = EE->runFunction(entry, {});
+	auto ret = EE->runFunctionAsMain(entry, {}, nullptr);
 	
 	return 0;
 }
