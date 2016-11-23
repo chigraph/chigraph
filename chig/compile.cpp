@@ -63,7 +63,7 @@ int compile(const std::vector<std::string> opts) {
 		try {
 			stream >> read_json;
 		} catch (std::exception& e) {
-			std::cerr << e.what() << std::endl;
+			std::cerr << "Error reading JSON: " << e.what() << std::endl;
 			return 1;
 		}
 	}

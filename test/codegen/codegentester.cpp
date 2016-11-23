@@ -115,129 +115,202 @@ int main(int argc, char** argv) {
 	std::string expectedcout = j["expectedstdout"];
 	std::string expectedcerr = j["expectedstderr"];
 	
-	json chigmodule = j["module"];
+	const json chigmodule = j["module"];
 	
 	int expectedreturncode = j["expectedret"];
 	
-	// this program is to be started where chigc is
-	exec_stream_t chigexe;
-	chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
-	chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
+	// chig run
+	{
 	
-	std::vector<std::string> args = {"run", "-"};
-	chigexe.start("./chig", args.begin(), args.end());
-	chigexe.in() << chigmodule;
-	chigexe.close_in();
-	
-	// get the output streams
-	std::string generatedstdout = std::string{std::istreambuf_iterator<char>(chigexe.out()),
-		std::istreambuf_iterator<char>()};
-	
-	std::string generatedstderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
-		std::istreambuf_iterator<char>()};
-	
-	chigexe.close();
-	int retcode = chigexe.exit_code();
-	
-	if(retcode != expectedreturncode) {
-		std::cerr << "(chig run) Unexpected retcode: " << retcode << " expected was " << expectedreturncode << std::endl << 
-			"stdout: \"" << stdout << "\"" << std::endl <<
-			"stderr: \"" << stderr << "\"" << std::endl;
-			
-		return 1;
-	}
-	
-	if(generatedstdout != expectedcout) {
-		std::cerr << "(chig run) Unexpected stdout: " << stdout << " expected was " << expectedcout << std::endl << 
-			"retcode: \"" << retcode << "\"" << std::endl <<
-			"stderr: \"" << stderr << "\"" << std::endl;
-			
-		return 1;
-	}
-	
-	if(generatedstderr != expectedcerr) {
-		std::cerr << "(chig run) Unexpected stderr: " << stderr << " expected was " << expectedcerr << std::endl << 
-			"retcode: \"" << retcode << "\"" << std::endl <<
-			"stdout: \"" << stdout << "\"" << std::endl;
-			
-		return 1;
-	}
-	
-	Context c;
-	c.addModule(std::make_unique<LangModule>(c));
-	c.addModule(std::make_unique<CModule>(c));
-	
-	// test serialization and deserialization
-	Result r;
-	JsonModule deserialized(chigmodule, c, &r);
-
-	nlohmann::json serializedmodule;
-	r += deserialized.toJSON(&serializedmodule);
-
-	if(!r) {
-		std::cerr << "Error deserializing module: \n\n" << r.result_json.dump(2) << std::endl;
-		return 1;
-	}
-	
-	if(!areJsonEqual(serializedmodule, chigmodule))  {
-		std::cerr << "Serialization and deserialization failed. \noriginal: \n\n\n" << chigmodule.dump(2) << "\n\n\n\n======SERIALIZED=====\n\n\n\n" << serializedmodule.dump(2) << std::endl;
-		return 1;
-	}
-	
-	// go through chig compile
-	exec_stream_t chigexe2;
-	chigexe2.set_wait_timeout(exec_stream_t::s_out, 100000);
-	chigexe2.set_wait_timeout(exec_stream_t::s_err, 100000);
-	
-	std::vector<std::string> args2 = {"compile", "-"};
-	chigexe2.start("./chig", args2.begin(), args2.end());
-	chigexe2.in() << chigmodule;
-	chigexe2.close_in();
-	
-	// get the output streams
-	std::string generatedir = std::string{std::istreambuf_iterator<char>(chigexe2.out()),
-		std::istreambuf_iterator<char>()};
-	
-	// now go through lli
-	exec_stream_t lliexe;
-	lliexe.set_wait_timeout(exec_stream_t::s_out, 100000);
-	lliexe.set_wait_timeout(exec_stream_t::s_err, 100000);
-	
-	lliexe.start(CHIG_LLI_EXE, "");
-	lliexe.in() << generatedir;
-	lliexe.close_in();
-	
-	std::string llistdout = std::string{std::istreambuf_iterator<char>(lliexe.out()),
-		std::istreambuf_iterator<char>()};
+		// this program is to be started where chigc is
+		exec_stream_t chigexe;
+		chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
+		chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
 		
-	std::string llistderr = std::string{std::istreambuf_iterator<char>(lliexe.err()),
-		std::istreambuf_iterator<char>()};
-
-	lliexe.close();
-	int retcodelli = lliexe.exit_code();
+		std::vector<std::string> args = {"run", "-"};
+		chigexe.start("./chig", args.begin(), args.end());
+		chigexe.in() << chigmodule;
+		chigexe.close_in();
 		
-	if(retcodelli != expectedreturncode) {
-		std::cerr << "(lli) Unexpected retcode: " << retcode << " expected was " << expectedreturncode << std::endl << 
-			"stdout: \"" << stdout << "\"" << std::endl <<
-			"stderr: \"" << stderr << "\"" << std::endl;
-			
-		return 1;
+		// get the output streams
+		std::string generatedstdout = std::string{std::istreambuf_iterator<char>(chigexe.out()),
+			std::istreambuf_iterator<char>()};
+		
+		std::string generatedstderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
+			std::istreambuf_iterator<char>()};
+		
+		chigexe.close();
+		int retcode = chigexe.exit_code();
+		
+		if(retcode != expectedreturncode) {
+			std::cerr << "(chig run) Unexpected retcode: " << retcode << " expected was " << expectedreturncode << std::endl << 
+				"stdout: \"" << generatedstdout << "\"" << std::endl <<
+				"stderr: \"" << generatedstderr << "\"" << std::endl;
+				
+			return 1;
+		}
+		
+		if(generatedstdout != expectedcout) {
+			std::cerr << "(chig run) Unexpected stdout: " << generatedstdout << " expected was " << expectedcout << std::endl << 
+				"retcode: \"" << retcode << "\"" << std::endl <<
+				"stderr: \"" << generatedstderr << "\"" << std::endl;
+				
+			return 1;
+		}
+		
+		if(generatedstderr != expectedcerr) {
+			std::cerr << "(chig run) Unexpected stderr: " << generatedstderr << " expected was " << expectedcerr << std::endl << 
+				"retcode: \"" << retcode << "\"" << std::endl <<
+				"stdout: \"" << generatedstdout << "\"" << std::endl;
+				
+			return 1;
+		}
+	
 	}
 	
-	if(llistdout != expectedcout) {
-		std::cerr << "(lli) Unexpected stdout: " << stdout << " expected was " << expectedcout << std::endl << 
-			"retcode: \"" << retcode << "\"" << std::endl <<
-			"stderr: \"" << stderr << "\"" << std::endl;
+	// serialize deserialize
+	{
 			
-		return 1;
+		Context c;
+		c.addModule(std::make_unique<LangModule>(c));
+		c.addModule(std::make_unique<CModule>(c));
+		
+		// test serialization and deserialization
+		Result r;
+		JsonModule deserialized(chigmodule, c, &r);
+
+		nlohmann::json serializedmodule;
+		r += deserialized.toJSON(&serializedmodule);
+
+		if(!r) {
+			std::cerr << "Error deserializing module: \n\n" << r.result_json.dump(2) << std::endl;
+			return 1;
+		}
+		
+		if(!areJsonEqual(serializedmodule, chigmodule))  {
+			std::cerr << "Serialization and deserialization failed. \noriginal: \n\n\n" << chigmodule.dump(2) << "\n\n\n\n======SERIALIZED=====\n\n\n\n" << serializedmodule.dump(2) << std::endl;
+			return 1;
+		}
+	}
+
+	// chig compile + lli
+	{
+		// go through chig compile
+		exec_stream_t chigexe;
+		chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
+		chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
+		
+		std::vector<std::string> args2 = {"compile", "-"};
+		chigexe.start("./chig", args2.begin(), args2.end());
+		chigexe.in() << chigmodule;
+		chigexe.close_in();
+		
+		// get the output streams
+		std::string generatedir = std::string{std::istreambuf_iterator<char>(chigexe.out()),
+			std::istreambuf_iterator<char>()};
+		
+		// now go through lli
+		exec_stream_t lliexe;
+		lliexe.set_wait_timeout(exec_stream_t::s_out, 100000);
+		lliexe.set_wait_timeout(exec_stream_t::s_err, 100000);
+		
+		lliexe.start(CHIG_LLI_EXE, "");
+		lliexe.in() << generatedir;
+		lliexe.close_in();
+		
+		std::string llistdout = std::string{std::istreambuf_iterator<char>(lliexe.out()),
+			std::istreambuf_iterator<char>()};
+			
+		std::string llistderr = std::string{std::istreambuf_iterator<char>(lliexe.err()),
+			std::istreambuf_iterator<char>()};
+
+		lliexe.close();
+		int retcodelli = lliexe.exit_code();
+			
+		if(retcodelli != expectedreturncode) {
+			std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was " << expectedreturncode << std::endl << 
+				"stdout: \"" << llistdout << "\"" << std::endl <<
+				"stderr: \"" << llistderr << "\"" << std::endl;
+				
+			return 1;
+		}
+		
+		if(llistdout != expectedcout) {
+			std::cerr << "(lli ll) Unexpected stdout: " << llistdout << " expected was " << expectedcout << std::endl << 
+				"retcode: \"" << retcodelli << "\"" << std::endl <<
+				"stderr: \"" << llistderr << "\"" << std::endl;
+				
+			return 1;
+		}
+		
+		if(llistderr != expectedcerr) {
+			std::cerr << "(lli ll) Unexpected stderr: " << stderr << " expected was " << expectedcerr << std::endl << 
+				"retcode: \"" << retcodelli << "\"" << std::endl <<
+				"stdout: \"" << llistdout << "\"" << std::endl;
+				
+			return 1;
+		}
+	
 	}
 	
-	if(llistderr != expectedcerr) {
-		std::cerr << "(lli) Unexpected stderr: " << stderr << " expected was " << expectedcerr << std::endl << 
-			"retcode: \"" << retcode << "\"" << std::endl <<
-			"stdout: \"" << stdout << "\"" << std::endl;
+	// chig compile -tbc + lli
+	{
+		// go through chig compile
+		exec_stream_t chigexe;
+		chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
+		chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
+		
+		std::vector<std::string> args2 = {"compile", "-", "-tbc"};
+		chigexe.start("./chig", args2.begin(), args2.end());
+		chigexe.in() << chigmodule;
+		chigexe.close_in();
+		
+		// get the output streams
+		std::string generatedbc = std::string{std::istreambuf_iterator<char>(chigexe.out()),
+			std::istreambuf_iterator<char>()};
+		
+		// now go through lli
+		exec_stream_t lliexe;
+		lliexe.set_wait_timeout(exec_stream_t::s_out, 100000);
+		lliexe.set_wait_timeout(exec_stream_t::s_err, 100000);
+		
+		lliexe.start(CHIG_LLI_EXE, "");
+		lliexe.in() << generatedbc;
+		lliexe.close_in();
+		
+		std::string llistdout = std::string{std::istreambuf_iterator<char>(lliexe.out()),
+			std::istreambuf_iterator<char>()};
 			
-		return 1;
+		std::string llistderr = std::string{std::istreambuf_iterator<char>(lliexe.err()),
+			std::istreambuf_iterator<char>()};
+
+		lliexe.close();
+		int retcodelli = lliexe.exit_code();
+			
+		if(retcodelli != expectedreturncode) {
+			std::cerr << "(lli bc) Unexpected retcode: " << retcodelli << " expected was " << expectedreturncode << std::endl << 
+				"stdout: \"" << llistdout << "\"" << std::endl <<
+				"stderr: \"" << llistderr << "\"" << std::endl;
+				
+			return 1;
+		}
+		
+		if(llistdout != expectedcout) {
+			std::cerr << "(lli bc) Unexpected stdout: " << llistdout << " expected was " << expectedcout << std::endl << 
+				"retcode: \"" << retcodelli << "\"" << std::endl <<
+				"stderr: \"" << llistderr << "\"" << std::endl;
+				
+			return 1;
+		}
+		
+		if(llistderr != expectedcerr) {
+			std::cerr << "(lli bc) Unexpected stderr: " << stderr << " expected was " << expectedcerr << std::endl << 
+				"retcode: \"" << retcodelli << "\"" << std::endl <<
+				"stdout: \"" << llistdout << "\"" << std::endl;
+				
+			return 1;
+		}
+	
 	}
 	
 }
