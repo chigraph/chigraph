@@ -81,7 +81,9 @@ int run(std::vector<std::string> opts) {
 	c.addModule(std::make_unique<LangModule>(c));
 	c.addModule(std::make_unique<CModule>(c));
 	// load it as a module
-	JsonModule module(read_json, c, &res);
+	auto Umodule = std::make_unique<JsonModule>(read_json, c, &res);
+	auto module = Umodule.get();
+	c.addModule(std::move(Umodule));
 	
 	if(!res) {
 		std::cerr << res.result_json.dump(2) << std::endl;
@@ -89,7 +91,7 @@ int run(std::vector<std::string> opts) {
 	}
 
 	std::unique_ptr<llvm::Module> llmod;
-	res += module.compile(&llmod);
+	res += module->compile(&llmod);
 
 	// run it!
 	

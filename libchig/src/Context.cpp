@@ -48,13 +48,13 @@ Result Context::getType(const char* module, const char* name, llvm::Type** toFil
 
 	ChigModule* mod = getModuleByName(module);
 	if (!mod) {
-		res.add_entry("E20", "Could not find module", {{"module", module}});
+		res.add_entry("E36", "Could not find module", {{"module", module}});
 		return res;
 	}
 
 	*toFill = mod->getType(name);
 	if (!*toFill) {
-		res.add_entry("E21", "Could not find type in module", {{"type", name}, {"module", module}});
+		res.add_entry("E37", "Could not find type in module", {{"type", name}, {"module", module}});
 	}
 
 	return res;
@@ -67,13 +67,13 @@ Result Context::getNodeType(const char* moduleName, const char* name, const nloh
 
 	auto module = getModuleByName(moduleName);
 	if (!module) {
-		res.add_entry("E20", "Could not find module", {{"module", moduleName}});
+		res.add_entry("E36", "Could not find module", {{"module", moduleName}});
 		return res;
 	}
 
 	*toFill = module->createNodeType(name, data);
 	if(!*toFill) {
-		res.add_entry("E21", "Could not create node type", {{"Requested Type", name}, {"Module Name", moduleName}});
+		res.add_entry("E37", "Could not create node type", {{"Requested Type", name}, {"Module Name", moduleName}});
 		return res;
 	}
 	
