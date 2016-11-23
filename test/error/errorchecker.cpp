@@ -4,6 +4,7 @@
 
 #include <chig/GraphFunction.hpp>
 #include <chig/Context.hpp>
+#include <chig/JsonModule.hpp>
 #include <chig/LangModule.hpp>
 
 
@@ -13,10 +14,25 @@
 using namespace chig;
 using namespace nlohmann;
 
+// returns -1 for failure, 1 for keep going  and 0 for success
+int checkForErrors(Result res, const char* expectedErr) {
+	if(!res) {
+		if(res.result_json[0]["errorcode"] == expectedErr) {
+			return 0;
+		} else {
+			std::cerr << "Expected error " << expectedErr << " but got " << res.result_json[0]["errorcode"] << std::endl;
+			return -1;
+		}
+	}
+
+	return 1;
+}
+
 int main(int argc, char** argv) {
-	
-	const char* file = argv[1];
-	const char* expectedErr = argv[2];
+
+	const char* mode = argv[1];
+	const char* file = argv[2];
+	const char* expectedErr = argv[3];
 
 	
 	
@@ -35,34 +51,42 @@ int main(int argc, char** argv) {
 	c.addModule(std::make_unique<LangModule>(c));
 	Result res;
 	
-	std::unique_ptr<GraphFunction> graphFunc;
-	res = GraphFunction::fromJSON(c, newData, &graphFunc);
-	
-	if(!res) {
-		if(res.result_json[0]["errorcode"] == expectedErr) {
-			return 0;
-		} else {
-			std::cerr << "Expected error " << expectedErr << " but got " << res.result_json[0]["errorcode"] << std::endl;
-			return 1;
-		}
-	}
-	
+	if(strcmp(mode, "mod") == 0) {
+		auto mod = std::make_unique<JsonModule>(newData, c, &res);
+
+		int ret = checkForErrors(res, expectedErr);
+		if(ret != 1) return ret;
+
+		auto llmod = std::make_unique<llvm::Module>("main", c.llcontext);
+		res += mod->compile(&llmod);
+
+		ret = checkForErrors(res, expectedErr);
+		if(ret != 1) return ret;
+
+		return 1;
+
+	} else if(strcmp(mode, "func") == 0) {
+
+		std::unique_ptr<GraphFunction> graphFunc;
+		res = GraphFunction::fromJSON(c, newData, &graphFunc);
+		
+		int ret = checkForErrors(res, expectedErr);
+		if(ret != 1) return ret;
+
 	// create module for the functions
-	auto llmod = std::make_unique<llvm::Module>("main", c.llcontext);
-	
-	
-	llvm::Function* func;
-	res += graphFunc->compile(llmod.get(), &func);
-	
-	
-	if(!res) {
-		if(res.result_json[0]["errorcode"] == expectedErr) {
-			return 0;
-		} else {
-			std::cerr << "Expected error " << expectedErr << " but got " << res.result_json[0]["errorcode"] << std::endl;
-			return 1;
-		}
+		auto llmod = std::make_unique<llvm::Module>("main", c.llcontext);
+		
+			
+		llvm::Function* func;
+		res += graphFunc->compile(llmod.get(), &func);
+		
+		ret = checkForErrors(res, expectedErr);
+		if(ret != 1) return ret;
+				
+		return 1;
+
+	} else {
+		std::cerr << "Unregnized mode: " << mode << std::endl;
+		return 1;
 	}
-	
-	return 1;
 } 
