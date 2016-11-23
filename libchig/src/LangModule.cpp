@@ -168,7 +168,7 @@ std::unique_ptr< NodeType > EntryNodeType::clone() const
 
 nlohmann::json EntryNodeType::toJSON() const
 {
-    nlohmann::json ret;
+    nlohmann::json ret = nlohmann::json::object();
 
     for (auto& pair : dataOutputs) {
         // TODO: user made types
@@ -299,7 +299,7 @@ std::unique_ptr< NodeType> ExitNodeType::clone() const
 
 nlohmann::json ExitNodeType::toJSON() const
 {
-	nlohmann::json ret;
+	nlohmann::json ret = nlohmann::json::object();
 
     for (auto& pair : dataOutputs) {
         // TODO: user made types

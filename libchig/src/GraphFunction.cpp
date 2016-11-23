@@ -96,7 +96,7 @@ Result GraphFunction::fromJSON(
 			continue;
 		}
 
-		ret->insertNode(std::move(nodeType), node["location"][0], node["location"][0], nodeid);
+		ret->insertNode(std::move(nodeType), node["location"][0], node["location"][1], nodeid);
 	}
 
 	size_t connID = 0;

@@ -1,5 +1,5 @@
 #include "chig/CModule.hpp"
-#include "chig/Config.h"
+#include "chig/Config.hpp"
 
 #include <iterator>
 

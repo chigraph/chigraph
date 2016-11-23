@@ -3,14 +3,15 @@
 #include <chig/JsonModule.hpp>
 #include <chig/NodeType.hpp>
 #include <chig/GraphFunction.hpp>
+#include <chig/LangModule.hpp>
+#include <chig/CModule.hpp>
+#include <chig/Config.hpp>
 
 #include <exec-stream.h>
 
 #include <boost/filesystem.hpp>
 
 #include <llvm/ADT/STLExtras.h>
-#include <llvm/ExecutionEngine/ExecutionEngine.h>
-#include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/IR/Argument.h>
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Constants.h>
@@ -34,6 +35,52 @@ using namespace chig;
 using namespace nlohmann;
 
 namespace fs = boost::filesystem;
+
+bool areArrayEqualUnordered(nlohmann::json lhs, nlohmann::json rhs) {
+	std::vector<nlohmann::json> objects;
+	
+	for(auto& obj : lhs) {
+		objects.push_back(obj);
+	}
+	
+	for(auto& obj : rhs) {
+		auto iter = std::find(objects.begin(), objects.end(), obj);
+		
+		if(iter == objects.end()) return false;
+		
+		objects.erase(iter);
+	}
+	
+	return true;
+}
+
+bool areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
+	
+	if(!areArrayEqualUnordered(lhs["dependencies"], rhs["dependencies"])) return false;
+	
+	if(lhs["name"] != rhs["name"]) return false;
+	
+	auto& lgraphs = lhs["graphs"];
+	auto& rgraphs = rhs["graphs"];
+	
+	if(lgraphs.size() != rgraphs.size()) return false;
+	
+	for(size_t iter = 0; iter != lgraphs.size(); ++iter) {
+		
+		auto& lgraph = lgraphs[0];
+		auto& rgraph = rgraphs[0];
+		
+		if(!areArrayEqualUnordered(lgraph["connections"], rgraph["connections"])) return false;
+		
+		if(lgraph["name"] != rgraph["name"]) return false;
+		if(lgraph["nodes"] != rgraph["nodes"]) return false;
+		if(lgraph["type"] != rgraph["type"]) return false;
+		
+	}
+	
+	return true;
+	
+}
 
 int main(int argc, char** argv) {
 	
@@ -93,7 +140,7 @@ int main(int argc, char** argv) {
 	int retcode = chigexe.exit_code();
 	
 	if(retcode != expectedreturncode) {
-		std::cerr << "Unexpected retcode: " << retcode << " expected was " << expectedreturncode << std::endl << 
+		std::cerr << "(chig run) Unexpected retcode: " << retcode << " expected was " << expectedreturncode << std::endl << 
 			"stdout: \"" << stdout << "\"" << std::endl <<
 			"stderr: \"" << stderr << "\"" << std::endl;
 			
@@ -101,7 +148,7 @@ int main(int argc, char** argv) {
 	}
 	
 	if(generatedstdout != expectedcout) {
-		std::cerr << "Unexpected stdout: " << stdout << " expected was " << expectedcout << std::endl << 
+		std::cerr << "(chig run) Unexpected stdout: " << stdout << " expected was " << expectedcout << std::endl << 
 			"retcode: \"" << retcode << "\"" << std::endl <<
 			"stderr: \"" << stderr << "\"" << std::endl;
 			
@@ -109,7 +156,7 @@ int main(int argc, char** argv) {
 	}
 	
 	if(generatedstderr != expectedcerr) {
-		std::cerr << "Unexpected stderr: " << stderr << " expected was " << expectedcerr << std::endl << 
+		std::cerr << "(chig run) Unexpected stderr: " << stderr << " expected was " << expectedcerr << std::endl << 
 			"retcode: \"" << retcode << "\"" << std::endl <<
 			"stdout: \"" << stdout << "\"" << std::endl;
 			
@@ -117,6 +164,8 @@ int main(int argc, char** argv) {
 	}
 	
 	Context c;
+	c.addModule(std::make_unique<LangModule>(c));
+	c.addModule(std::make_unique<CModule>(c));
 	
 	// test serialization and deserialization
 	Result r;
@@ -125,10 +174,71 @@ int main(int argc, char** argv) {
 	nlohmann::json serializedmodule;
 	r += deserialized.toJSON(&serializedmodule);
 
-	if(serializedmodule != chigmodule)  {
-		std::cerr << "Serialization and deserialization failed. \noriginal: " << chigmodule.dump(2) << "\n\nserialized: " << serializedmodule.dump(2) << std::endl;
+	if(!r) {
+		std::cerr << "Error deserializing module: \n\n" << r.result_json.dump(2) << std::endl;
+		return 1;
 	}
+	
+	if(!areJsonEqual(serializedmodule, chigmodule))  {
+		std::cerr << "Serialization and deserialization failed. \noriginal: \n\n\n" << chigmodule.dump(2) << "\n\n\n\n======SERIALIZED=====\n\n\n\n" << serializedmodule.dump(2) << std::endl;
+		return 1;
+	}
+	
+	// go through chig compile
+	exec_stream_t chigexe2;
+	chigexe2.set_wait_timeout(exec_stream_t::s_out, 100000);
+	chigexe2.set_wait_timeout(exec_stream_t::s_err, 100000);
+	
+	std::vector<std::string> args2 = {"compile", "-"};
+	chigexe2.start("./chig", args2.begin(), args2.end());
+	chigexe2.in() << chigmodule;
+	chigexe2.close_in();
+	
+	// get the output streams
+	std::string generatedir = std::string{std::istreambuf_iterator<char>(chigexe2.out()),
+		std::istreambuf_iterator<char>()};
+	
+	// now go through lli
+	exec_stream_t lliexe;
+	lliexe.set_wait_timeout(exec_stream_t::s_out, 100000);
+	lliexe.set_wait_timeout(exec_stream_t::s_err, 100000);
+	
+	lliexe.start(CHIG_LLI_EXE, "");
+	lliexe.in() << generatedir;
+	lliexe.close_in();
+	
+	std::string llistdout = std::string{std::istreambuf_iterator<char>(lliexe.out()),
+		std::istreambuf_iterator<char>()};
+		
+	std::string llistderr = std::string{std::istreambuf_iterator<char>(lliexe.err()),
+		std::istreambuf_iterator<char>()};
 
-
+	lliexe.close();
+	int retcodelli = lliexe.exit_code();
+		
+	if(retcodelli != expectedreturncode) {
+		std::cerr << "(lli) Unexpected retcode: " << retcode << " expected was " << expectedreturncode << std::endl << 
+			"stdout: \"" << stdout << "\"" << std::endl <<
+			"stderr: \"" << stderr << "\"" << std::endl;
+			
+		return 1;
+	}
+	
+	if(llistdout != expectedcout) {
+		std::cerr << "(lli) Unexpected stdout: " << stdout << " expected was " << expectedcout << std::endl << 
+			"retcode: \"" << retcode << "\"" << std::endl <<
+			"stderr: \"" << stderr << "\"" << std::endl;
+			
+		return 1;
+	}
+	
+	if(llistderr != expectedcerr) {
+		std::cerr << "(lli) Unexpected stderr: " << stderr << " expected was " << expectedcerr << std::endl << 
+			"retcode: \"" << retcode << "\"" << std::endl <<
+			"stdout: \"" << stdout << "\"" << std::endl;
+			
+		return 1;
+	}
+	
 }
 

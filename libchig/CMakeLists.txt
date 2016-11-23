@@ -1,6 +1,7 @@
 find_package(LLVM REQUIRED CONFIG)
 
 find_program(CLANG_EXE clang)
+find_program(LLI_EXE lli)
 
 set(CHIG_PUBLIC_FILES
 	include/chig/ChigModule.hpp
@@ -27,7 +28,7 @@ add_definitions("-D__STDC_LIMIT_MACROS")
 add_definitions("-D__STDC_CONSTANT_MACROS")
 
 add_library(chigcore ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.h.in ${CMAKE_BINARY_DIR}/chig/Config.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.hpp.in ${CMAKE_BINARY_DIR}/chig/Config.hpp)
 
 target_include_directories(chigcore
 	PUBLIC
