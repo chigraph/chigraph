@@ -17,6 +17,6 @@ Because it is optimized and compiled by LLVM, chigraph has speeds similar to tho
 Each node is just a fancy function call, so bindings for C/C++ libraries should be a breeze.
 
 ## Implementation
-* Rendering using cairo
+* Rendering using Qt/[nodeeditor](https://github.com/paceholder/nodeeditor)
 * All backends/base nodes using C++
 * Compilation using LLVM
