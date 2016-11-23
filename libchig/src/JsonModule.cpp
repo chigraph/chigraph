@@ -3,6 +3,7 @@
 #include "chig/Result.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/NodeType.hpp"
+#include <chig/NodeInstance.hpp>
 
 using namespace chig;
 
@@ -97,3 +98,85 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const {
 
 	return  res;
 }
+
+GraphFunction* JsonModule::graphFuncFromName(const char* str) const {
+    auto iter = std::find_if(functions.begin(), functions.end(), [&](auto& ptr)  {
+        return ptr->graphName == str;
+    });
+
+    if(iter != functions.end()) return iter->get();
+    return nullptr;
+}
+
+std::unique_ptr<NodeType> JsonModule::createNodeType(
+	const char* name, const nlohmann::json& json_data) const {
+	
+	auto graph = graphFuncFromName(name);
+	
+	if(!graph) return nullptr;
+	
+	return std::make_unique<JsonFuncCallNodeType>(context, this, name);
+}
+
+
+std::vector<std::string> JsonModule::getNodeTypeNames() const {
+    
+	std::vector<std::string> ret;
+	std::transform(functions.begin(), functions.end(), std::back_inserter(ret), [](auto& gPtr) {
+		return gPtr->graphName;
+	});
+	
+	return ret;
+}
+
+
+JsonFuncCallNodeType::JsonFuncCallNodeType(Context* c, const JsonModule* JModule_, const char* funcname) : NodeType(*c), JModule{JModule_}
+{
+	auto* mygraph = JModule->graphFuncFromName(funcname);
+	
+	assert(mygraph); // TODO: actual error reporting
+	
+	auto inNode = mygraph->getEntryNode();
+	auto outtys = mygraph->getReturnTypes();
+	
+	std::transform(outtys->begin(), outtys->end(), std::back_inserter(dataOutputs), [](auto ty) {
+		return std::make_pair(ty, ""); // TODO: output names
+	});
+	
+	// the inputs to the function are the types the entry yields
+	dataInputs = inNode->type->dataOutputs;
+	
+	name = funcname;
+	module = JModule->name;
+	// TODO: description
+	
+	execInputs = {""};
+	execOutputs = {""};
+}
+
+Result JsonFuncCallNodeType::codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f, const std::vector<llvm::Value *>& io, llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock *>& outputBlocks) const
+{
+	llvm::IRBuilder<> builder(codegenInto);
+	
+	// TODO: intermodule calls
+	
+	builder.CreateCall(mod->getFunction(name), io);
+	
+	builder.CreateBr(outputBlocks[0]);
+	
+	return {};
+}
+
+
+nlohmann::json JsonFuncCallNodeType::toJSON() const
+{
+	return {};
+}
+
+
+std::unique_ptr<NodeType> JsonFuncCallNodeType::clone() const
+{
+	return std::make_unique<JsonFuncCallNodeType>(context, JModule, name.c_str());
+	
+}
+
