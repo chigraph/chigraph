@@ -89,9 +89,16 @@ int compile(const std::vector<std::string> opts) {
 		return 1;
 	}
 	
-	// create output
+	
+	fs::path outpath;
 	if(vm.count("output")) {
-		fs::path outpath{vm["output"].as<std::string>()};
+		outpath = vm["output"].as<std::string>();
+	} else {
+		outpath = "-";
+	}
+	
+	// create output
+	{
 		
 		std::error_code ec;
 		auto lloutstream = outpath.string() == "-" ?
@@ -116,10 +123,6 @@ int compile(const std::vector<std::string> opts) {
 			return 1;
 		}
 
-	} else {
-		
-		llvm::raw_os_ostream llstream(std::cout);
-		llmod->print(llstream, nullptr);
 	}
 
 	
