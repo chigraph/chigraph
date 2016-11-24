@@ -31,7 +31,10 @@ struct JsonModule : public ChigModule {
 	virtual std::vector<std::string> getNodeTypeNames() const override; // TODO: implement
 	virtual std::vector<std::string> getTypeNames() const override { return {}; } // TODO: implement
 	
+	Result loadGraphs();
+
 	Result toJSON(nlohmann::json* to_fill) const;
+	
 	
 	std::vector<std::unique_ptr<GraphFunction>> functions;
 	

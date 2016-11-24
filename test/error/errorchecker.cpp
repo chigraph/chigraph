@@ -6,9 +6,6 @@
 #include <chig/Context.hpp>
 #include <chig/JsonModule.hpp>
 #include <chig/LangModule.hpp>
-
-
-
 #include <chig/json.hpp>
 
 using namespace chig;
@@ -57,6 +54,12 @@ int main(int argc, char** argv) {
 		int ret = checkForErrors(res, expectedErr);
 		if(ret != 1) return ret;
 
+		res += mod->loadGraphs();
+
+
+		ret = checkForErrors(res, expectedErr);
+		if(ret != 1) return ret;
+
 		auto llmod = std::make_unique<llvm::Module>("main", c.llcontext);
 		res += mod->compile(&llmod);
 
@@ -71,6 +74,12 @@ int main(int argc, char** argv) {
 		res = GraphFunction::fromJSON(c, newData, &graphFunc);
 		
 		int ret = checkForErrors(res, expectedErr);
+		if(ret != 1) return ret;
+		
+		res += graphFunc->loadGraph();
+
+
+		ret = checkForErrors(res, expectedErr);
 		if(ret != 1) return ret;
 
 	// create module for the functions

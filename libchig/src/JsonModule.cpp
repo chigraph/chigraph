@@ -134,6 +134,16 @@ std::vector<std::string> JsonModule::getNodeTypeNames() const {
 	return ret;
 }
 
+Result JsonModule::loadGraphs() {
+	Result res;
+
+	for(auto& graph : functions) {
+		res += graph->loadGraph();
+	}
+
+	return res;
+}
+
 
 JsonFuncCallNodeType::JsonFuncCallNodeType(Context* c, const JsonModule* JModule_, const char* funcname) : NodeType(*c), JModule{JModule_}
 {
@@ -184,4 +194,3 @@ std::unique_ptr<NodeType> JsonFuncCallNodeType::clone() const
 	return std::make_unique<JsonFuncCallNodeType>(context, JModule, name.c_str());
 	
 }
-

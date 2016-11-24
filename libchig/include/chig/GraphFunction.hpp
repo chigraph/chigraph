@@ -6,6 +6,7 @@
 #include "chig/Fwd.hpp"
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
+#include "chig/Graph.hpp"
 
 #include <llvm/IR/Module.h>
 
@@ -56,29 +57,29 @@ struct GraphFunction {
 	/// \return Entry node
 	NodeInstance* getEntryNode() const noexcept;
 
-	/// Gets the nodes with a given type
-	/// \param module The module the type is in
-	/// \param name THe name of the type
-	/// \return A vector of NodeInstance
-	std::vector<NodeInstance*> getNodesWithType(
-		const char* module, const char* name) const noexcept;
-
-	/// Gets the return type, based on the exit nodes
-	/// \return The type of the return, or {} if there are multiple or if there are none
-	boost::optional<std::vector<llvm::Type*>> getReturnTypes() const noexcept;
-
 	/// Add a node to the graph
 	/// \param type The type of the node
 	/// \param x The x location of the node
 	/// \param y The y location of the node
 	/// \param id The node ID
-	NodeInstance* insertNode(std::unique_ptr<NodeType> type, float x, float y, const std::string& id);
+	NodeInstance* insertNode(std::unique_ptr<NodeType> type, float x, float y, const std::string& id) {
+		return graph.insertNode(std::move(type), x, y,  id);
+	}
+
+
+	/// Gets the return type, based on the exit nodes
+	/// \return The type of the return, or {} if there are multiple or if there are none
+	boost::optional<std::vector<llvm::Type*>> getReturnTypes() const noexcept;
+
+	/// Load the graph from the source json
+	/// \return The result
+	Result loadGraph();
 
 	std::string graphName;  /// the name of the function
-
-	std::unordered_map<std::string, std::unique_ptr<NodeInstance>> nodes;  /// Storage for the nodes
-
-	Context* owningContext;
+	
+	nlohmann::json source;
+	Context* context;
+	Graph graph;
 };
 }
 
