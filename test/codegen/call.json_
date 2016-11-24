@@ -14,7 +14,7 @@
     		"nodes": {
           "entry": {
             "type": "lang:entry",
-            "data": {},
+            "data": [],
             "location": [12, 13]
           },
           "strliteral": {
@@ -95,9 +95,9 @@
         "nodes": {
           "entry": {
             "type": "lang:entry",
-            "data": {
-              "str": "i8*"
-            },
+            "data": [
+              {"str", "i8*"}
+            ],
             "location": [12, 12]
           },
           "puts": {

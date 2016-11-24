@@ -57,6 +57,8 @@ struct JsonFuncCallNodeType : public NodeType {
 	
 };
 
+
+
 }
 
 #endif  // CHIG_JSON_MODULE_HPP

@@ -59,9 +59,9 @@ TEST_CASE("JsonSerializer", "[json]")
 							"entry": {
 								"type": "lang:entry",
 								"location": [32.0,32.0],
-								"data": {
-									"in1": "lang:i1"
-								}
+								"data": [
+									{"in1": "lang:i1"}
+								]
 							}
 						},
 						"connections": []
@@ -88,9 +88,9 @@ TEST_CASE("JsonSerializer", "[json]")
 								"entry": {
 									"type": "lang:entry",
 									"location": [32.0,32.0],
-									"data": {
-										"in1": "lang:i1"
-									}
+									"data": [
+										{"in1": "lang:i1"}
+									]
 								},
 								"if": {
 									"type": "lang:if",
@@ -119,9 +119,9 @@ TEST_CASE("JsonSerializer", "[json]")
 									"entry": {
 										"type": "lang:entry",
 										"location": [32.0,32.0],
-										"data": {
-											"in1": "lang:i1"
-										}
+										"data": [
+											{"in1": "lang:i1"}
+										]
 									},
 									"if": {
 										"type": "lang:if",
@@ -158,9 +158,9 @@ TEST_CASE("JsonSerializer", "[json]")
 									"entry": {
 										"type": "lang:entry",
 										"location": [32.0,32.0],
-										"data": {
-											"in1": "lang:i1"
-										}
+										"data": [
+											{"in1": "lang:i1"}
+										]
 									},
 									"if": {
 										"type": "lang:if",

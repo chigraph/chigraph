@@ -22,16 +22,27 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 				// transform the JSON data into this data structure
 				std::vector<std::pair<llvm::Type*, std::string>> inputs;
 
-				for (auto iter = data.begin(); iter != data.end(); ++iter) {
-					std::string qualifiedType = iter.value();
-					std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
-					std::string type = qualifiedType.substr(qualifiedType.find(':') + 1);
+				if(data.is_array()) {
+				
+					for (const auto& input : data) {
+						
+						std::string docString;
+						std::string qualifiedType;
+						for(auto iter = input.begin(); iter != input.end(); ++iter) {
+							docString = iter.key();
+							qualifiedType = iter.value();
+						}
+						
+						std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
+						std::string type = qualifiedType.substr(qualifiedType.find(':') + 1);
 
-					llvm::Type* llty;
-					// TODO: maybe not discard res
-					context->getType(module.c_str(), type.c_str(), &llty);
+						llvm::Type* llty;
+						// TODO: maybe not discard res
+						context->getType(module.c_str(), type.c_str(), &llty);
 
-					inputs.emplace_back(llty, iter.key());
+						inputs.emplace_back(llty, docString);
+					}
+				
 				}
 
 				return std::make_unique<EntryNodeType>(*context, inputs);
@@ -42,15 +53,27 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 				// transform the JSON data into this data structure
 				std::vector<std::pair<llvm::Type*, std::string>> outputs;
 
-				for (auto iter = data.begin(); iter != data.end(); ++iter) {
-					std::string qualifiedType = iter.value();
-					std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
-					std::string type = qualifiedType.substr(qualifiedType.find(':') + 1);
+				if(data.is_array()) {
+				
+					for (const auto& output : data) {
+						
+						std::string docString;
+						std::string qualifiedType;
+						for(auto iter = output.begin(); iter != output.end(); ++iter) {
+							docString = iter.key();
+							qualifiedType = iter.value();
+						}
+						
+						std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
+						std::string type = qualifiedType.substr(qualifiedType.find(':') + 1);
 
-					llvm::Type* llty;
-					// TODO: don't discard res
-					context->getType(module.c_str(), type.c_str(), &llty);
-					outputs.emplace_back(llty, iter.key());
+						llvm::Type* llty;
+						// TODO: maybe not discard res
+						context->getType(module.c_str(), type.c_str(), &llty);
+
+						outputs.emplace_back(llty, docString);
+					}
+				
 				}
 
 				return std::make_unique<ExitNodeType>(*context, outputs);
@@ -168,11 +191,11 @@ std::unique_ptr< NodeType > EntryNodeType::clone() const
 
 nlohmann::json EntryNodeType::toJSON() const
 {
-    nlohmann::json ret = nlohmann::json::object();
+    nlohmann::json ret = nlohmann::json::array();
 
     for (auto& pair : dataOutputs) {
         // TODO: user made types
-        ret[pair.second] = "lang:" + context->stringifyType(pair.first);
+		ret.push_back({{pair.second, "lang:" + context->stringifyType(pair.first)}});
     }
 
     return ret;
@@ -299,11 +322,11 @@ std::unique_ptr< NodeType> ExitNodeType::clone() const
 
 nlohmann::json ExitNodeType::toJSON() const
 {
-	nlohmann::json ret = nlohmann::json::object();
+	nlohmann::json ret = nlohmann::json::array();
 
     for (auto& pair : dataOutputs) {
-        // TODO: user made types
-        ret[pair.second] = "lang:" + context->stringifyType(pair.first);
+		// TODO: use made types
+        ret.push_back({{pair.second, "lang:" + context->stringifyType(pair.first)}});
     }
 
     return ret;

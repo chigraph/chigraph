@@ -36,7 +36,7 @@ using namespace nlohmann;
 
 namespace fs = boost::filesystem;
 
-bool areArrayEqualUnordered(nlohmann::json lhs, nlohmann::json rhs) {
+std::string areArrayEqualUnordered(nlohmann::json lhs, nlohmann::json rhs) {
 	std::vector<nlohmann::json> objects;
 	
 	for(auto& obj : lhs) {
@@ -46,39 +46,52 @@ bool areArrayEqualUnordered(nlohmann::json lhs, nlohmann::json rhs) {
 	for(auto& obj : rhs) {
 		auto iter = std::find(objects.begin(), objects.end(), obj);
 		
-		if(iter == objects.end()) return false;
+		if(iter == objects.end()) return "object: " + obj.dump(2) + " not in serialized";
 		
 		objects.erase(iter);
 	}
 	
-	return true;
+	if(!objects.empty()) {
+		std::string errstring = "objects in lhs that aren't in original: \n\n";
+		for(auto obj : objects) {
+			errstring += obj.dump(2);
+			errstring += "\n\n";
+		}
+		return errstring;
+	}
+	
+	return "";
 }
 
-bool areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
+std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
 	
-	if(!areArrayEqualUnordered(lhs["dependencies"], rhs["dependencies"])) return false;
+	std::string errstring;
 	
-	if(lhs["name"] != rhs["name"]) return false;
+	errstring = areArrayEqualUnordered(lhs["dependencies"], rhs["dependencies"]);
+	if(!errstring.empty()) return "dependencies not equal: " + errstring;
+	
+	if(lhs["name"] != rhs["name"]) return "names not equal: serialized: " + lhs["name"].dump(-1) + " original: " + rhs["name"].dump(-1);
 	
 	auto& lgraphs = lhs["graphs"];
 	auto& rgraphs = rhs["graphs"];
 	
-	if(lgraphs.size() != rgraphs.size()) return false;
+	if(lgraphs.size() != rgraphs.size()) return "different number of graphs";
 	
 	for(size_t iter = 0; iter != lgraphs.size(); ++iter) {
 		
 		auto& lgraph = lgraphs[0];
 		auto& rgraph = rgraphs[0];
 		
-		if(!areArrayEqualUnordered(lgraph["connections"], rgraph["connections"])) return false;
+		errstring = areArrayEqualUnordered(lgraph["connections"], rgraph["connections"]);
+		if(!errstring.empty()) return "connections not equal in graph #" + std::to_string(iter) + " " + errstring;
 		
-		if(lgraph["name"] != rgraph["name"]) return false;
-		if(lgraph["nodes"] != rgraph["nodes"]) return false;
-		if(lgraph["type"] != rgraph["type"]) return false;
+		if(lgraph["name"] != rgraph["name"]) return "graph name in graph #" + std::to_string(iter) + " not equal; serialized: " + lgraph["name"].dump(-1) + "  original: " + rgraph["name"].dump(-1);
+		if(lgraph["nodes"] != rgraph["nodes"]) return "graph nodes in graph #" + std::to_string(iter) + " not equal; \nserialized: \n" + lgraph["nodes"].dump(-1) + "\n\noriginal:\n " + rgraph["nodes"].dump(-1);
+		if(lgraph["type"] != rgraph["type"]) return "graph name in graph #" + std::to_string(iter) + "not equal; serialized: " + lgraph["type"].dump(-1) + "  original: " + rgraph["type"].dump(-1);
 		
 	}
 	
-	return true;
+	return "";
 	
 }
 
@@ -187,8 +200,9 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 		
-		if(!areJsonEqual(serializedmodule, chigmodule))  {
-			std::cerr << "Serialization and deserialization failed. \noriginal: \n\n\n" << chigmodule.dump(2) << "\n\n\n\n======SERIALIZED=====\n\n\n\n" << serializedmodule.dump(2) << std::endl;
+		std::string err = areJsonEqual(serializedmodule, chigmodule);
+		if(!err.empty())  {
+			std::cerr << "Serialization and deserialization failed. error: " + err + "\n\noriginal: \n\n\n" << chigmodule.dump(-1) << "\n\n\n\n======SERIALIZED=====\n\n\n\n" << serializedmodule.dump(-1) << std::endl;
 			return 1;
 		}
 	}
