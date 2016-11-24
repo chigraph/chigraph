@@ -25,7 +25,7 @@ FunctionView::FunctionView(chig::JsonModule* module, chig::GraphFunction* func_,
 	hlayout->addWidget(view);
 	
 	// create nodes
-	for(auto& node : func->nodes) {
+	for(auto& node : func->graph.nodes) {
 		
 		std::shared_ptr<Node> guinode = scene->createNode(std::make_unique<ChigNodeGui>(module->context->getModuleByName(node.second->type->module.c_str()), node.second->type->name, node.second->type->toJSON()));
 		
@@ -36,7 +36,7 @@ FunctionView::FunctionView(chig::JsonModule* module, chig::GraphFunction* func_,
 	}
 	
 	// create connections
-	for(auto& node : func->nodes) {
+	for(auto& node : func->graph.nodes) {
 		
 		auto guinode = assoc[node.second.get()].lock();
 		
