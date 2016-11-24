@@ -110,7 +110,7 @@ TEST_CASE("LangModule", "[module]")
 			std::unique_ptr<NodeType> entryNode = nullptr;
 
 			res = c.getNodeType("lang", "entry",
-				nlohmann::json::parse(R"end(   [{"hello": "i32"}, {"hello2": "i32*"}]   )end"),
+				nlohmann::json::parse(R"end(   [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}]   )end"),
 				&entryNode);
 			REQUIRE(!!res);
 

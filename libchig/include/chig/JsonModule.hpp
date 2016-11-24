@@ -24,8 +24,8 @@ struct JsonModule : public ChigModule {
 	JsonModule& operator=(const JsonModule&) = delete;
 	JsonModule& operator=(JsonModule&&) = delete;
 	
-	std::unique_ptr<NodeType> createNodeType(
-		const char* name, const nlohmann::json& json_data) const override;
+	Result createNodeType(
+		const char* name, const nlohmann::json& json_data,std::unique_ptr<NodeType>* toFill) const override;
 	llvm::Type* getType(const char* name) const override {return nullptr;}
 
 	virtual std::vector<std::string> getNodeTypeNames() const override; // TODO: implement

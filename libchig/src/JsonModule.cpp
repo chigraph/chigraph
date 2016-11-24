@@ -108,14 +108,19 @@ GraphFunction* JsonModule::graphFuncFromName(const char* str) const {
     return nullptr;
 }
 
-std::unique_ptr<NodeType> JsonModule::createNodeType(
-	const char* name, const nlohmann::json& json_data) const {
+Result JsonModule::createNodeType(
+	const char* name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const {
 	
+	Result res;
+		
 	auto graph = graphFuncFromName(name);
 	
-	if(!graph) return nullptr;
+	if(!graph) {
+		res.add_entry("EUKN", "Graph not found in module", {{"Module Name", name}, {"Requested Graph", name}});
+	}
 	
-	return std::make_unique<JsonFuncCallNodeType>(context, this, name);
+	*toFill = std::make_unique<JsonFuncCallNodeType>(context, this, name);
+	return {};
 }
 
 

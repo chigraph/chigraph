@@ -18,8 +18,8 @@ struct CModule : ChigModule {
 	CModule(Context& context);
 	~CModule() = default;
 
-	virtual std::unique_ptr<NodeType> createNodeType(
-		const char* name, const nlohmann::json& json_data) const override;
+	virtual Result createNodeType(
+		const char* name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const override;
 	virtual llvm::Type* getType(const char* name) const override;
 
 	virtual std::vector<std::string> getNodeTypeNames() const override { return {"func"}; };
@@ -32,7 +32,7 @@ struct CModule : ChigModule {
 
 struct CFuncNode : NodeType {
 	
-	CFuncNode(Context& con, const std::string& modulecode, const std::string& functocall);
+	CFuncNode(Context& con, const std::string& modulecode, const std::string& functocall, Result& res);
 
 	// the function doesn't have to do anything...this class just holds metadata
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,

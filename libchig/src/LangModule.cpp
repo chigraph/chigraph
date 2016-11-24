@@ -15,9 +15,9 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 
 	// populate them
 	nodes = {
-		{"if"s, [this](const nlohmann::json&) { return std::make_unique<IfNodeType>(*context); }},
+		{"if"s, [this](const nlohmann::json&, Result& res) { return std::make_unique<IfNodeType>(*context); }},
 		{"entry"s,
-			[this](const nlohmann::json& data) {
+			[this](const nlohmann::json& data, Result& res) {
 
 				// transform the JSON data into this data structure
 				std::vector<std::pair<llvm::Type*, std::string>> inputs;
@@ -38,18 +38,28 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 
 						llvm::Type* llty;
 						// TODO: maybe not discard res
-						context->getType(module.c_str(), type.c_str(), &llty);
+						res += context->getType(module.c_str(), type.c_str(), &llty);
 
+						if(!res) continue;
+		
 						inputs.emplace_back(llty, docString);
+		
 					}
 				
+				} else {
+					res.add_entry("WUKN", "Data for lang:entry must be an array", {{"Given Data", data}});
 				}
 
-				return std::make_unique<EntryNodeType>(*context, inputs);
+				if(res) {
+					return std::make_unique<EntryNodeType>(*context, inputs);
+					
+				} else {
+					return std::unique_ptr<EntryNodeType>();
+				}
 			}
 		},
 		{"exit"s,
-			[this](const nlohmann::json& data) {
+			[this](const nlohmann::json& data, Result& res) {
 				// transform the JSON data into this data structure
 				std::vector<std::pair<llvm::Type*, std::string>> outputs;
 
@@ -74,32 +84,47 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 						outputs.emplace_back(llty, docString);
 					}
 				
+				} else {
+					res.add_entry("WUKN", "Data for lang:exit must be an array", {{"Given Data", data}});
 				}
 
 				return std::make_unique<ExitNodeType>(*context, outputs);
 
 			}
 		},
-		{"const-int"s, [this](const nlohmann::json& data) {
+		{"const-int"s, [this](const nlohmann::json& data, Result& res) {
+				
+				int num = 0;
 			
-				int num = data.is_number_integer() ? (int)data : 0;
+				if(data.is_number_integer()) {
+					num = data;
+				} else {
+					res.add_entry("WUKN", "Data for lang:const-int must be an integer", {{"Given Data", data}});
+				}
+				
 
 				return std::make_unique<ConstIntNodeType>(*context, num);
 			}
 		},
-		{"const-bool"s, [this](const nlohmann::json& data) {
+		{"const-bool"s, [this](const nlohmann::json& data, Result& res) {
+				
+				bool val = false;
+				
+				if(data.is_boolean()) {
+					val = data;
+				} else {
+					res.add_entry("WUKN", "Data for lang:const-bool must be a boolean", {{"Given Data", data}});
+				}
 			
-				bool num = data.is_boolean() ? (bool)data : false;
-
-				return std::make_unique<ConstBoolNodeType>(*context, num);
+				return std::make_unique<ConstBoolNodeType>(*context, val);
 			}
 		},
-		{"strliteral"s, [this](const nlohmann::json& data) {
+		{"strliteral"s, [this](const nlohmann::json& data, Result& res) {
 			std::string str;
 			if(data.is_string()) {
 				str = data;
 			} else {
-				str = "";
+				res.add_entry("WUKN", "Data for lang:strliteral must be a string", {{"Given Data", data}});
 			}
 			
 			return std::make_unique<StringLiteralNodeType>(*context, str);
@@ -108,14 +133,20 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 		};
 }
 
-std::unique_ptr<NodeType> LangModule::createNodeType(
-	const char* name, const nlohmann::json& json_data) const
+Result LangModule::createNodeType(
+	const char* name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const
 {
+	Result res;
+	
 	auto iter = nodes.find(name);
 	if (iter != nodes.end()) {
-		return iter->second(json_data);
+		*toFill = iter->second(json_data, res);
+		return res;
 	}
-	return nullptr;
+	
+	res.add_entry("E37", "Failed to find node in module", {{"Module", "lang"}, {"Requested Node Type", name}});
+	
+	return res;
 }
 
 // the lang module just has the basic llvm types.

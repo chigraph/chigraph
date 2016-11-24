@@ -97,8 +97,8 @@ struct LangModule : ChigModule {
 	LangModule(Context& context);
 	~LangModule() = default;
 
-	virtual std::unique_ptr<NodeType> createNodeType(
-		const char* name, const nlohmann::json& json_data) const override;
+	virtual Result createNodeType(
+		const char* name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const override;
 	virtual llvm::Type* getType(const char* name) const override;
 
 	virtual std::vector<std::string> getNodeTypeNames() const override {
@@ -108,7 +108,7 @@ struct LangModule : ChigModule {
 		return {"i32", "i1", "double"}; // TODO: do i need more?
 	}
 	
-	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
+	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&, Result&)>>
 		nodes;
 };
 }

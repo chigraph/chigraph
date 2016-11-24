@@ -24,27 +24,39 @@ llvm::Type* CModule::getType(const char* name) const {
 	return nullptr;
 }
 
-std::unique_ptr<NodeType> CModule::createNodeType(const char* name, const nlohmann::json& json_data) const {
+Result CModule::createNodeType(const char* name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const {
 
+	Result res;
+	
 	if(strcmp(name, "func") == 0) {
+		
+		if(!json_data.is_object()) {
+			res.add_entry("WUKN", "Data for c:func must be an object", {{"Given Data"}, json_data});
+		}
 		
 		std::string code;
 		if(json_data.is_object() && json_data.find("code") != json_data.end() && json_data["code"].is_string()) {
 			code = json_data["code"];
+		} else {
+			res.add_entry("WUKN", "Data for c:func must have a pair with the key of code and that the data is a string", {{"Given Data"}, json_data});
 		}
 		
 		std::string function;
 		if(json_data.is_object() && json_data.find("function") != json_data.end() && json_data["function"].is_string()) {
 			function = json_data["function"];
+		} else {
+			res.add_entry("WUKN", "Data for c:func must have a pair with the key of function and that the data is a string", {{"Given Data"}, json_data});
 		}
 		
-		return std::make_unique<CFuncNode>(*context, code, function);
+		*toFill = std::make_unique<CFuncNode>(*context, code, function, res);
+		return res;
 	}
 
-	return nullptr;
+	res.add_entry("E37", "Unrecognized node type in module", {{"Module", "c"} ,{"Requested Type", name}});
+	return res;
 }
 
-CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::string& functocall_) : NodeType{con}, functocall{functocall_}, ccode(Ccode)
+CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::string& functocall_, Result& res) : NodeType{con}, functocall{functocall_}, ccode(Ccode)
 {
 	module = "c";
 	name = "func";
@@ -77,11 +89,12 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 	}
 
 	if(!error.empty()) {
-		std::cerr << "Error encountered while generating IR: " << error << std::endl;
+		res.add_entry("EUKN", "Error encountered while generating IR", {{"Error Text", error}});
+		return;
 	}
 
 	if (bitcode.empty()) {
-		std::cerr << "Failed to gen IR!" << std::endl;
+		res.add_entry("EUKN", "Unknown error encountered while generating IR", {});
 		return;
 	}
 
@@ -89,20 +102,20 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 	auto modorerror = llvm::parseBitcodeFile(llvm::MemoryBufferRef(bitcode, "clang-generated"), con.llcontext);
 	
 	if(!modorerror) {
-		std::cerr << "error parsing clang-generated bitcode module: " << modorerror.getError() << std::endl;
+		
+		std::string errorString;
+		llvm::raw_string_ostream errorStream(errorString);
+		diag.print("chig compile", errorStream);
+		
+		res.add_entry("EUKN", "Error parsing clang-generated bitcode module", {{"Error Code", modorerror.getError().value()}, {"Error Text", errorString}});
 		return;
 	}
 	llcompiledmod = std::move(*modorerror);
-	
-	if(!llcompiledmod) {
-		diag.print("chig compile", llvm::errs());
-		return;
-	}
 
 	auto llfunc = llcompiledmod->getFunction(functocall);
 
 	if(!llfunc) {
-		std::cerr << "Failed to get function " << functocall << " in C module." << std::endl;
+		res.add_entry("EUKN", "Failed to get function in clang-compiled module", {{"Requested Function", functocall}});
 		return;
 	}
 

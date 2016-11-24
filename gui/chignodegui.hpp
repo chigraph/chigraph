@@ -16,9 +16,9 @@ class ChigNodeGui : public NodeDataModel {
 public:
 	
 	ChigNodeGui(chig::ChigModule* module_, std::string type_, nlohmann::json j) : type{type_}, module{module_}, jsonData{j} {
-		ty = module->createNodeType(type.c_str(), j);
-		if(!ty) {
-			std::cerr << "Failed to create stuff for module. " << type << "\n\n" << j.dump(2);
+		auto res = module->createNodeType(type.c_str(), j, &ty);
+		if(!res) {
+			std::cerr << "Failed to create stuff for module. Error: " << res.result_json.dump(2) << std::endl;
 		}
 	}
   

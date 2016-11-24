@@ -6,7 +6,7 @@
 #include "chig/Fwd.hpp"
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
-
+#include "chig/Result.hpp"
 
 #include <llvm/IR/Type.h>
 
@@ -22,8 +22,8 @@ struct ChigModule {
 	ChigModule(Context& contextArg);
 	virtual ~ChigModule() = default;
 
-	virtual std::unique_ptr<NodeType> createNodeType(
-		const char* name, const nlohmann::json& json_data) const = 0;
+	virtual Result createNodeType(
+		const char* name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* retType) const = 0;
 	virtual llvm::Type* getType(const char* name) const = 0;
 	
 	virtual std::vector<std::string> getNodeTypeNames() const = 0;
