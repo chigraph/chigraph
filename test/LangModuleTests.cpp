@@ -12,6 +12,7 @@ TEST_CASE("LangModule", "[module]")
 		Context c;
 		c.addModule(std::make_unique<LangModule>(c));
 
+		
 		THEN("We try to get associated types with correct parameters, it works")
 		{
 			llvm::Type* test;
@@ -36,6 +37,9 @@ TEST_CASE("LangModule", "[module]")
 			res = c.getType("lang", "double", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == llvm::Type::getDoubleTy(c.llcontext));
+			
+			REQUIRE(c.getModuleByName("lang")->getNodeTypeNames() == std::vector<std::string>({"if", "entry", "exit", "const-int", "strliteral", "const-bool"}));
+			REQUIRE(c.getModuleByName("lang")->getTypeNames() == std::vector<std::string>({"i32", "i1", "double"}));
 		}
 
 		THEN(
