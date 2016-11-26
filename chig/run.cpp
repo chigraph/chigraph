@@ -84,6 +84,7 @@ int run(std::vector<std::string> opts) {
 	auto Umodule = std::make_unique<JsonModule>(read_json, c, &res);
 	auto module = Umodule.get();
 	c.addModule(std::move(Umodule));
+    module->loadGraphs();
 	
 	if(!res) {
 		std::cerr << res.result_json.dump(2) << std::endl;

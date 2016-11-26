@@ -191,6 +191,7 @@ int main(int argc, char** argv) {
 		// test serialization and deserialization
 		Result r;
 		JsonModule deserialized(chigmodule, c, &r);
+        deserialized.loadGraphs();
 
 		nlohmann::json serializedmodule;
 		r += deserialized.toJSON(&serializedmodule);
