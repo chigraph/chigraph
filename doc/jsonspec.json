@@ -28,6 +28,34 @@
 						"type": "string",
 						"pattern": "function"
 					},
+					"inputs": {
+						"description": "The input types",
+						"type": "array",
+						"items": {
+							"type": "object",
+							"patternProperties": {
+								"\\w*": {
+									"type": "string"
+								}
+							},
+							"maxProperties": 1,
+							"minProperties": 1
+						}
+					},
+					"inputs": {
+						"description": "The input types",
+						"type": "array",
+						"items": {
+							"type": "object",
+							"patternProperties": {
+								"\\w*": {
+									"type": "string"
+								}
+							},
+							"maxProperties": 1,
+							"minProperties": 1
+						}
+					},
 					"name": {
 						"description": "The description of the graph.",
 						"type": "string"

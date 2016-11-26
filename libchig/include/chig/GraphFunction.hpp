@@ -66,16 +66,18 @@ struct GraphFunction {
 		return graph.insertNode(std::move(type), x, y,  id);
 	}
 
-
-	/// Gets the return type, based on the exit nodes
-	/// \return The type of the return, or {} if there are multiple or if there are none
-	boost::optional<std::vector<llvm::Type*>> getReturnTypes() const noexcept;
+	/// Get the LLVM function type for the function
+	/// \return The function type
+	llvm::FunctionType* getFunctionType() const;
 
 	/// Load the graph from the source json
 	/// \return The result
 	Result loadGraph();
 
 	std::string graphName;  /// the name of the function
+	
+	std::vector<std::pair<llvm::Type*, std::string>> inputs;
+	std::vector<std::pair<llvm::Type*, std::string>> outputs;
 	
 	nlohmann::json source;
 	Context* context;

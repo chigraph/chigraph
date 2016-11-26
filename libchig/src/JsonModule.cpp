@@ -5,6 +5,8 @@
 #include "chig/NodeType.hpp"
 #include <chig/NodeInstance.hpp>
 
+#include <llvm/IR/Module.h>
+
 using namespace chig;
 
 JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r) : ChigModule(cont)
@@ -69,6 +71,11 @@ Result JsonModule::compile(std::unique_ptr<llvm::Module>* mod) const {
 	*mod = std::make_unique<llvm::Module>(name, context->llcontext);
 	
 	Result res;
+	
+	// create prototypes
+	for(auto& graph : functions) {
+		(*mod)->getOrInsertFunction(graph->graphName, graph->getFunctionType());
+	}
 	
 	for(auto& graph : functions) {
 		llvm::Function* f;
@@ -151,15 +158,9 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(Context* c, const JsonModule* JModule
 	
 	assert(mygraph); // TODO: actual error reporting
 	
-	auto inNode = mygraph->getEntryNode();
-	auto outtys = mygraph->getReturnTypes();
+	dataOutputs = mygraph->outputs;
 	
-	std::transform(outtys->begin(), outtys->end(), std::back_inserter(dataOutputs), [](auto ty) {
-		return std::make_pair(ty, ""); // TODO: output names
-	});
-	
-	// the inputs to the function are the types the entry yields
-	dataInputs = inNode->type->dataOutputs;
+	dataInputs = mygraph->inputs;
 	
 	name = funcname;
 	module = JModule->name;
@@ -171,15 +172,25 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(Context* c, const JsonModule* JModule
 
 Result JsonFuncCallNodeType::codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f, const std::vector<llvm::Value *>& io, llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock *>& outputBlocks) const
 {
+	Result res;
+	
 	llvm::IRBuilder<> builder(codegenInto);
 	
 	// TODO: intermodule calls
 	
+	auto func = mod->getFunction(name);
+	
+	if(!func) {
+		res.add_entry("EUKN", "Could not find function in llvm module", {{"Requested Function", name}});
+		return res;
+	}
+	
+	// TODO: output blocks	
 	builder.CreateCall(mod->getFunction(name), io);
 	
 	builder.CreateBr(outputBlocks[0]);
 	
-	return {};
+	return res;
 }
 
 

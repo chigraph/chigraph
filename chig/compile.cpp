@@ -74,9 +74,16 @@ int compile(const std::vector<std::string> opts) {
 	c.addModule(std::make_unique<CModule>(c));
 	// load it as a module
 	auto Umodule = std::make_unique<JsonModule>(read_json, c, &res);
+	
+	if(!res) {
+		std::cerr << res.result_json.dump(2) << std::endl;
+		return 1;
+	}
+	
     auto module = Umodule.get();
     c.addModule(std::move(Umodule));
-    module->loadGraphs();
+    res += module->loadGraphs();
+	
 	
 	if(!res) {
 		std::cerr << res.result_json.dump(2) << std::endl;

@@ -190,11 +190,13 @@ int main(int argc, char** argv) {
 		
 		// test serialization and deserialization
 		Result r;
-		JsonModule deserialized(chigmodule, c, &r);
-        deserialized.loadGraphs();
+		auto Udeserialized = std::make_unique<JsonModule>(chigmodule, c, &r);
+        auto deserialized = Udeserialized.get();
+        c.addModule(std::move(Udeserialized));
+        deserialized->loadGraphs();
 
 		nlohmann::json serializedmodule;
-		r += deserialized.toJSON(&serializedmodule);
+		r += deserialized->toJSON(&serializedmodule);
 
 		if(!r) {
 			std::cerr << "Error deserializing module: \n\n" << r.result_json.dump(2) << std::endl;

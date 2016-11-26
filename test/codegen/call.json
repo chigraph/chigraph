@@ -11,6 +11,8 @@
   		{
     		"type": "function",
     		"name": "main",
+        "inputs": [],
+        "outputs": [],
     		"nodes": {
           "entry": {
             "type": "lang:entry",
@@ -92,11 +94,17 @@
       {
         "name": "docall",
         "type": "function",
+        "inputs": [
+          {"str": "lang:i8*"}
+        ],
+        "outputs": [
+          {"out": "lang:i32"}
+        ],
         "nodes": {
           "entry": {
             "type": "lang:entry",
             "data": [
-              {"str", "i8*"}
+              {"str": "lang:i8*"}
             ],
             "location": [12, 12]
           },
@@ -111,7 +119,7 @@
           "exit": {
             "type": "lang:exit",
             "data": {
-              "out": "i8*"
+              "out": "lang:i32"
             }
           }
         },

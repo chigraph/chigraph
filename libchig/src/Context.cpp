@@ -76,10 +76,21 @@ Result Context::getNodeType(const char* moduleName, const char* name, const nloh
 	return res;
 }
 
-std::string chig::Context::stringifyType(llvm::Type* ty)
+std::string Context::stringifyType(llvm::Type* ty)
 {
 	std::string data;
 	llvm::raw_string_ostream stream{data};
 	ty->print(stream);
 	return stream.str();
+}
+
+std::string Context::stringifyModule(llvm::Module *llmod) {
+
+  std::string ret;
+
+  llvm::raw_string_ostream lloutstream{ret};
+
+  llmod->print(lloutstream, nullptr);
+
+  return ret;
 }

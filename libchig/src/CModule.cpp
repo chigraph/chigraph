@@ -152,12 +152,18 @@ Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f, const st
 	llvm::IRBuilder<> builder(codegenInto);
 
 	std::vector<llvm::Value*> inputs = io;
+	
+	std::string outputName;
+	
+	// remove the return type if there is one
 	if(dataOutputs.size()) {
 		inputs.pop_back();
+		outputName = dataOutputs[0].second;
 	}
 	
-	auto callinst = builder.CreateCall(llfunc, inputs);
+	auto callinst = builder.CreateCall(llfunc, inputs, outputName);
 
+	// store theoutput if there are any
 	if(dataOutputs.size()) {
 
 		builder.CreateStore(callinst, io[dataInputs.size()]);

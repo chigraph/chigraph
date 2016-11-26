@@ -40,10 +40,62 @@ Result GraphFunction::fromJSON(
 		return res;
 	}
 	std::string name = data["name"];
-
+	
+	if(data.find("inputs") == data.end() || !data["inputs"].is_array()) {
+		res.add_entry("E43", "JSON in graph doesn't have an inputs array", {});
+		return res;
+	}
+	
+	
 	// construct it
 	*ret_ptr = std::make_unique<GraphFunction>(context, name);
 	auto& ret = *ret_ptr;
+	
+	for(auto param : data["inputs"]) {
+		
+		for(auto iter = param.begin(); iter != param.end(); ++iter) {
+			
+			std::string qualifiedType = iter.value();
+			std::string docString = iter.key();
+			
+			std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
+			std::string name = qualifiedType.substr(qualifiedType.find(':') + 1);
+			
+			llvm::Type* ty;
+			res += context.getType(module.c_str(), name.c_str(), &ty);
+			
+			if(!res) return res;
+			
+			ret->inputs.emplace_back(ty, docString);
+		}
+		
+	}
+
+	if(data.find("outputs") == data.end() || !data["outputs"].is_array()) {
+		res.add_entry("E44", "JSON in graph doesn't have an outputs array", {});
+		return res;
+	}
+	
+	for(auto param : data["outputs"]) {
+		
+		for(auto iter = param.begin(); iter != param.end(); ++iter) {
+			
+			std::string qualifiedType = iter.value();
+			std::string docString = iter.key();
+			
+			std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
+			std::string name = qualifiedType.substr(qualifiedType.find(':') + 1);
+			
+			llvm::Type* ty;
+			res += context.getType(module.c_str(), name.c_str(), &ty);
+			
+			if(!res) return res;
+			
+			ret->outputs.emplace_back(ty, docString);
+		}
+		
+	}
+	
 
 	ret->source = data;
 
@@ -73,6 +125,8 @@ struct cache {
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block, llvm::BasicBlock* allocblock,
 	llvm::Module* mod, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res)
 {
+	auto printmod = [&](){std::cout << node->type->context->stringifyModule(mod);};
+	
 	llvm::IRBuilder<> builder(block);
 	// get input values
 	std::vector<llvm::Value*> inputParams;
@@ -82,7 +136,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		// TODO: error handling
 
 		if(!param.first) {
-			res.add_entry("E232", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+			res.add_entry("EUKN", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
 			
 			return;
 		}
@@ -90,14 +144,14 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		auto cacheiter = nodeCache.find(param.first);
 		
 		if(cacheiter == nodeCache.end()) {
-			res.add_entry("E231", "Failed to find in cache", {{"nodeid", param.first->id}});
+			res.add_entry("EUKN", "Failed to find in cache", {{"nodeid", param.first->id}});
 			
 			return;
 		}
 		
 		auto& cacheObject = cacheiter->second;
         if(param.second >= cacheObject.outputs.size()) {
-			res.add_entry("E232", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+			res.add_entry("EUKN", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
 			
 			return;
 		}
@@ -105,13 +159,11 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		// get pointers to the objects
 		auto value = cacheObject.outputs[param.second];
 		// dereference
-		inputParams.push_back(builder.CreateLoad(value, ""));  // TODO: pass ptr to value
+		inputParams.push_back(builder.CreateLoad(value, node->type->dataInputs[inputID].second));  // TODO: pass ptr to value
 		
 		++inputID;
 	}
 
-	auto entryBlock = &f->getEntryBlock();
-	llvm::IRBuilder<> entryBuilder(entryBlock);
 	llvm::IRBuilder<> allocBuilder(allocblock);
 
 	// create outputs
@@ -119,7 +171,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	for (auto& output : node->type->dataOutputs) {
 		// TODO: research address spaces
 		llvm::AllocaInst* alloc =
-			allocBuilder.CreateAlloca(output.first, nullptr, output.second);  // TODO: name
+			allocBuilder.CreateAlloca(output.first, nullptr, output.second); 
 		alloc->setName(output.second);
 		outputCache.push_back(alloc);
 	}
@@ -130,13 +182,19 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	// create output blocks
 	std::vector<llvm::BasicBlock*> outputBlocks;
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
-		outputBlocks.push_back(
-			llvm::BasicBlock::Create(f->getContext(), node->type->execOutputs[idx], f));
+		auto outBlock = llvm::BasicBlock::Create(f->getContext(), node->type->execOutputs[idx], f);
+		outputBlocks.push_back(outBlock);
+		
+		outBlock->setName("node_" + node->outputExecConnections[idx].first->id);
+		
 	}
 
 	// codegen
-	node->type->codegen(execInputID, mod, f, inputParams, block, outputBlocks);
-
+	res += node->type->codegen(execInputID, mod, f, inputParams, block, outputBlocks);
+	if(!res) {
+		return;
+	}
+	
 	// codegen for all outputs
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
@@ -155,31 +213,9 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		return res;
 	}
 
-	const auto& argument_connections =
-		getEntryNode()->type->dataOutputs;  // ouptuts from entry are arguments
-
-	// get return types;
-	auto ret = getReturnTypes();
-	if (!ret) {
-		res.add_entry("E34", "No return type in function", {});
-		return res;
-	}
-
-	std::vector<llvm::Type*> arguments;
-	arguments.reserve(argument_connections.size());
-	std::transform(argument_connections.begin(), argument_connections.end(),
-		std::back_inserter(arguments),
-		[](const std::pair<llvm::Type*, std::string>& p) { return p.first; });
-
-	// make these pointers
-	std::transform(ret->begin(), ret->end(), std::back_inserter(arguments),
-		[](llvm::Type* t) { return llvm::PointerType::get(t, 0); });
-
-	llvm::Function* f = llvm::Function::Create(
-		llvm::FunctionType::get(llvm::IntegerType::getInt32Ty(mod->getContext()), arguments, false),
-		llvm::GlobalValue::LinkageTypes::ExternalLinkage, graphName, mod);
-	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), graphName, f);
-	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), graphName, f);
+	llvm::Function* f = llvm::cast<llvm::Function>(mod->getOrInsertFunction(graphName, getFunctionType())); // TODO: name mangling
+	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
+	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), graphName + "_entry", f);
 	auto blockcpy = block;
 
 	// follow "linked list"
@@ -189,7 +225,18 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 
 	std::unordered_map<NodeInstance*, cache> nodeCache;
 
-	auto outputNode = graph.getNodesWithType("lang", "exit")[0];
+	NodeInstance* outputNode;
+	// get output node 
+	{
+		auto outputNodes = graph.getNodesWithType("lang", "exit");
+		
+		if(outputNodes.empty()) {
+			res.add_entry("EUKN", "No output nodes in graph", {{"Graph Name", graphName}});
+			return res;
+		}
+		
+		outputNode = outputNodes[0];
+	}
 
 	// do entry, it's special
 	auto& outputs = nodeCache[node].outputs;
@@ -221,27 +268,6 @@ NodeInstance* GraphFunction::getEntryNode() const noexcept
 	}
 	return nullptr;
 }
-boost::optional<std::vector<llvm::Type*>> GraphFunction::getReturnTypes() const noexcept
-{
-	auto matching = graph.getNodesWithType("lang", "exit");
-
-	if (matching.size() == 0) return {};
-
-	auto& types = matching[0]->type->dataInputs;
-
-	// make sure they are all the same
-	if (!std::all_of(matching.begin(), matching.end(), [&](auto pair) {
-			return std::equal(types.begin(), types.end(), pair->type->dataInputs.begin());
-		})) {
-		return {};
-	}
-
-	std::vector<llvm::Type*> ret;
-	ret.resize(types.size());
-	std::transform(types.begin(), types.end(), ret.begin(), [](auto pair) { return pair.first; });
-
-	return ret;
-}
 
 Result GraphFunction::loadGraph() {
 	Result res;
@@ -250,3 +276,18 @@ Result GraphFunction::loadGraph() {
 	return res;
 }
 
+llvm::FunctionType* GraphFunction::getFunctionType() const {
+
+	std::vector<llvm::Type*> arguments;
+	arguments.reserve(inputs.size());
+	std::transform(inputs.begin(), inputs.end(),
+		std::back_inserter(arguments),
+		[](const std::pair<llvm::Type*, std::string>& p) { return p.first; });
+
+	// make these pointers
+	std::transform(outputs.begin(), outputs.end(), std::back_inserter(arguments),
+		[](auto& tyanddoc) { return llvm::PointerType::get(tyanddoc.first, 0); });
+
+	return llvm::FunctionType::get(llvm::IntegerType::getInt32Ty(context->llcontext), arguments, false);
+	
+}
