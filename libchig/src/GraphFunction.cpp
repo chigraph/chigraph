@@ -121,63 +121,109 @@ struct cache {
 	std::vector<llvm::Value*> outputs;
 };
 
+
+
 // Codegens a single input to a node
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block, llvm::BasicBlock* allocblock,
 	llvm::Module* mod, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res)
 {
+	// print the cache for debugging
+// 	std::cout << "Cache before serializing " << node->id << std::endl;
+// 	for(auto& pair : nodeCache) {
+// 		std::cout << pair.first->id << " = [";
+// 		for(auto& output : pair.second.outputs) {
+// 			std::cout << node->type->context->stringifyType(output->getType()) << ", ";
+// 		}
+// 		std::cout << ']' << std::endl;
+// 	}
+// 	
+// 	std::cout << "====================================" << std::endl << std::endl;
+// 	
 	auto printmod = [&](){std::cout << node->type->context->stringifyModule(mod);};
 	
 	llvm::IRBuilder<> builder(block);
-	// get input values
-	std::vector<llvm::Value*> inputParams;
+
+	// get inputs and outputs
+	std::vector<llvm::Value*> io;
 	
-	size_t inputID = 0;
-	for (auto& param : node->inputDataConnections) {
-		// TODO: error handling
+	// add inputs
+	{
+		size_t inputID = 0;
+		for (auto& param : node->inputDataConnections) {
 
-		if(!param.first) {
-			res.add_entry("EUKN", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+			// make sure everything is A-OK
+			if(!param.first) {
+				res.add_entry("EUKN", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+				
+				return;
+			}
 			
-			return;
-		}
-		
-		auto cacheiter = nodeCache.find(param.first);
-		
-		if(cacheiter == nodeCache.end()) {
-			res.add_entry("EUKN", "Failed to find in cache", {{"nodeid", param.first->id}});
+			auto cacheiter = nodeCache.find(param.first);
 			
-			return;
-		}
-		
-		auto& cacheObject = cacheiter->second;
-        if(param.second >= cacheObject.outputs.size()) {
-			res.add_entry("EUKN", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+			if(cacheiter == nodeCache.end()) {
+				res.add_entry("EUKN", "Failed to find in cache", {{"nodeid", param.first->id}});
+				
+				return;
+			}
 			
-			return;
+			auto& cacheObject = cacheiter->second;
+			if(param.second >= cacheObject.outputs.size()) {
+				res.add_entry("EUKN", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+				
+				return;
+			}
+			
+			// get pointers to the objects
+			auto value = cacheObject.outputs[param.second];
+			// dereference
+			io.push_back(builder.CreateLoad(value, node->type->dataInputs[inputID].second));  // TODO: pass ptr to value
+			
+			// make sure it's the right type
+			if(io[io.size() - 1]->getType() != node->type->dataInputs[inputID].first) {
+				
+				res.add_entry("EINT", "Internal codegen error: unexpected type in cache.", 
+					{{"Expected LLVM type", node->type->context->stringifyType(node->type->dataInputs[inputID].first)}, 
+					{"Found type", node->type->context->stringifyType(io[io.size() - 1]->getType())},
+					{"Node ID", node->id},
+					{"Input ID", inputID}
+					});
+			}
+			
+			++inputID;
 		}
-		
-		// get pointers to the objects
-		auto value = cacheObject.outputs[param.second];
-		// dereference
-		inputParams.push_back(builder.CreateLoad(value, node->type->dataInputs[inputID].second));  // TODO: pass ptr to value
-		
-		++inputID;
+
 	}
+	
+	// get outputs
+	{
+		llvm::IRBuilder<> allocBuilder(allocblock);
 
-	llvm::IRBuilder<> allocBuilder(allocblock);
+		// create outputs
+		auto& outputCache = nodeCache[node].outputs;
+		
+		for (auto& output : node->type->dataOutputs) {
+			// TODO: research address spaces
+			llvm::AllocaInst* alloc =
+				allocBuilder.CreateAlloca(output.first, nullptr, output.second); 
+			alloc->setName(output.second);
+			outputCache.push_back(alloc);
+			io.push_back(alloc);
+			
+			// make sure the type is right
+			if(llvm::PointerType::get(output.first, 0) != alloc->getType()) {
+				
+				res.add_entry("EINT", "Internal codegen error: unexpected type returned from alloca.", 
+					{{"Expected LLVM type", node->type->context->stringifyType(llvm::PointerType::get(output.first, 0))}, 
+					{"Yielded type", node->type->context->stringifyType(alloc->getType())},
+					{"Node ID", node->id}
+					});
+			}
+			
+		}
 
-	// create outputs
-	auto& outputCache = nodeCache[node].outputs;
-	for (auto& output : node->type->dataOutputs) {
-		// TODO: research address spaces
-		llvm::AllocaInst* alloc =
-			allocBuilder.CreateAlloca(output.first, nullptr, output.second); 
-		alloc->setName(output.second);
-		outputCache.push_back(alloc);
+
 	}
-
-	// combine
-	std::copy(outputCache.begin(), outputCache.end(), std::back_inserter(inputParams));
+	
 
 	// create output blocks
 	std::vector<llvm::BasicBlock*> outputBlocks;
@@ -190,12 +236,12 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	}
 
 	// codegen
-	res += node->type->codegen(execInputID, mod, f, inputParams, block, outputBlocks);
+	res += node->type->codegen(execInputID, mod, f, io, block, outputBlocks);
 	if(!res) {
 		return;
 	}
 	
-	// codegen for all outputs
+	// recurse!
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
 		if (output.first)
@@ -238,8 +284,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		outputNode = outputNodes[0];
 	}
 
-	// do entry, it's special
-	auto& outputs = nodeCache[node].outputs;
+	// set argument names
 	auto idx = 0ull;
 	for (auto& arg : f->getArgumentList()) {
 		if (idx < node->type->dataOutputs.size()) {
@@ -247,7 +292,6 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		} else {
 			arg.setName(outputNode->type->dataInputs[idx - node->type->dataOutputs.size()].second);
 		}
-		outputs.push_back(&arg);
 		++idx;
 	}
 
