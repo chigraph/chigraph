@@ -4,150 +4,269 @@
   "expectedstdout": "Yay happy!\n11\n",
   "expectedstderr": "",
   "module":
-  {
-  	"name": "main",
-  	"dependencies":  ["lang", "c"],
-  	"graphs": [
-  		{
-    		"type": "function",
-    		"name": "main",
-        "inputs": [],
-        "outputs": [],
-    		"nodes": {
-          "entry": {
-            "type": "lang:entry",
-            "data": [],
-            "location": [12, 13]
-          },
-          "strliteral": {
-            "type": "lang:strliteral",
-            "data": "Yay happy!",
-            "location": [12, 13]
-          },
-          "call": {
-            "type": "main:docall",
-            "data": null,
-            "location": [12, 13]
-          },
-          "itoa": {
-    					"type": "c:func",
-    					"data": {
-    						"code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
-    						"function": "doitoa"
-    					},
-    					"location": [2, 2]
-    			},
-          "call2": {
-            "type": "main:docall",
-            "data": null,
-            "location": [12, 13]
-          },
-          "exit": {
-            "type": "lang:exit",
-            "data": {},
-            "location": [12, 321]
-          }
+ 
+ 
+ {
+  "name":"main",
+  "dependencies":[
+    "lang",
+    "c"
+  ],
+  "graphs":[
+    {
+      "type":"function",
+      "name":"main",
+      "inputs":[
+
+      ],
+      "outputs":[
+
+      ],
+      "nodes":{
+        "entry":{
+          "type":"lang:entry",
+          "data":[
+
+          ],
+          "location":[
+            12,
+            13
+          ]
         },
-    		"connections": [
-          {
-            "type": "exec",
-            "input": ["entry", 0],
-            "output": ["strliteral"]
+        "strliteral":{
+          "type":"lang:strliteral",
+          "data":"Yay happy!",
+          "location":[
+            12,
+            13
+          ]
+        },
+        "call":{
+          "type":"main:docall",
+          "data":null,
+          "location":[
+            12,
+            13
+          ]
+        },
+        "itoa":{
+          "type":"c:func",
+          "data":{
+            "code":"#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
+            "function":"doitoa"
           },
-          {
-            "type": "exec",
-            "input": ["strliteral", 0],
-            "output": ["docall"]
-          },
-          {
-            "type": "exec",
-            "input": ["docall", 0],
-            "output": ["itoa"]
-          },
-          {
-            "type": "exec",
-            "input": ["itoa", 0],
-            "output": ["docall2"]
-          },
-          {
-            "type": "exec",
-            "input": ["docall2", 0],
-            "output": ["exit"]
-          },
-          {
-            "type": "data",
-            "input": ["strliteral", 0],
-            "output": ["docall", 0]
-          },
-          {
-            "type": "data",
-            "input": ["docall", 0],
-            "output": ["itoa", 0]
-          },
-          {
-            "type": "data",
-            "input": ["itoa", 0],
-            "output": ["docall2", 0]
-          }
-    		]
-  		},
-      {
-        "name": "docall",
-        "type": "function",
-        "inputs": [
-          {"str": "lang:i8*"}
-        ],
-        "outputs": [
-          {"out": "lang:i32"}
-        ],
-        "nodes": {
-          "entry": {
-            "type": "lang:entry",
-            "data": [
-              {"str": "lang:i8*"}
-            ],
-            "location": [12, 12]
-          },
-          "puts": {
-            "type": "c:func",
-            "data": {
-              "code": "#include <stdio.h> \n int doputs(const char* arg) { return puts(arg); }",
-              "function": "doputs"
-            },
-            "location": [12, 13]
-          },
-          "exit": {
-            "type": "lang:exit",
-            "data": {
-              "out": "lang:i32"
+          "location":[
+            2,
+            2
+          ]
+        },
+        "call2":{
+          "type":"main:docall",
+          "data":null,
+          "location":[
+            12,
+            13
+          ]
+        },
+        "exit":{
+          "type":"lang:exit",
+          "data":[
+
+          ],
+          "location":[
+            12,
+            321
+          ]
+        }
+      },
+      "connections":[
+        {
+          "type":"exec",
+          "input":[
+            "entry",
+            0
+          ],
+          "output":[
+            "strliteral",
+            0
+          ]
+        },
+        {
+          "type":"exec",
+          "input":[
+            "strliteral",
+            0
+          ],
+          "output":[
+            "call",
+            0
+          ]
+        },
+        {
+          "type":"exec",
+          "input":[
+            "call",
+            0
+          ],
+          "output":[
+            "itoa",
+            0
+          ]
+        },
+        {
+          "type":"exec",
+          "input":[
+            "itoa",
+            0
+          ],
+          "output":[
+            "call2",
+            0
+          ]
+        },
+        {
+          "type":"exec",
+          "input":[
+            "call2",
+            0
+          ],
+          "output":[
+            "exit",
+            0
+          ]
+        },
+        {
+          "type":"data",
+          "input":[
+            "strliteral",
+            0
+          ],
+          "output":[
+            "call",
+            0
+          ]
+        },
+        {
+          "type":"data",
+          "input":[
+            "call",
+            0
+          ],
+          "output":[
+            "itoa",
+            0
+          ]
+        },
+        {
+          "type":"data",
+          "input":[
+            "itoa",
+            0
+          ],
+          "output":[
+            "call2",
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "name":"docall",
+      "type":"function",
+      "inputs":[
+        {
+          "str":"lang:i8*"
+        }
+      ],
+      "outputs":[
+        {
+          "out":"lang:i32"
+        }
+      ],
+      "nodes":{
+        "entry":{
+          "type":"lang:entry",
+          "data":[
+            {
+              "str":"lang:i8*"
             }
-          }
+          ],
+          "location":[
+            12,
+            12
+          ]
         },
-        "connections": [
-          {
-            "type": "exec",
-            "input": ["entry", 0],
-            "output": ["puts", 0]
+        "puts":{
+          "type":"c:func",
+          "data":{
+            "code":"#include <stdio.h> \n int doputs(const char* mystr) { return puts(mystr); }",
+            "function":"doputs"
           },
-          {
-            "type": "exec",
-            "input": ["puts", 0],
-            "output": ["exit", 0]
-          },
-          {
-            "type": "data",
-            "input": ["entry", 0],
-            "output": ["puts", 0]
-          },
-          {
-            "type": "data",
-            "input": ["puts", 0],
-            "output": ["exit", 0]
-          }
-        ]
-      }
-  	]
+          "location":[
+            12,
+            13
+          ]
+        },
+        "exit":{
+          "type":"lang:exit",
+          "data":[
+            {
+              "out":"lang:i32"
+            }
+          ],
+          "location": [23, 23]
+        }
+      },
+      "connections":[
+        {
+          "type":"exec",
+          "input":[
+            "entry",
+            0
+          ],
+          "output":[
+            "puts",
+            0
+          ]
+        },
+        {
+          "type":"exec",
+          "input":[
+            "puts",
+            0
+          ],
+          "output":[
+            "exit",
+            0
+          ]
+        },
+        {
+          "type":"data",
+          "input":[
+            "entry",
+            0
+          ],
+          "output":[
+            "puts",
+            0
+          ]
+        },
+        {
+          "type":"data",
+          "input":[
+            "puts",
+            0
+          ],
+          "output":[
+            "exit",
+            0
+          ]
+        }
+      ]
     }
+  ]
+}
+
 
 
 }

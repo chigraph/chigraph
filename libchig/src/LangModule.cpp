@@ -207,7 +207,15 @@ EntryNodeType::EntryNodeType(Context& con, const std::vector< std::pair< llvm::T
 Result EntryNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f, const std::vector< llvm::Value*, std::allocator< llvm::Value* > >& io, llvm::BasicBlock* codegenInto, const std::vector< llvm::BasicBlock*, std::allocator< llvm::BasicBlock* > >& outputBlocks) const
 {
     llvm::IRBuilder<> builder(codegenInto);
-    // just go to the block
+	
+	// store the arguments
+	auto arg_iter = f->arg_begin();
+	for(size_t id = 0; id < io.size(); ++id) {
+		builder.CreateStore(&*arg_iter, io[id]);
+		
+		++arg_iter;
+	}
+	
     builder.CreateBr(outputBlocks[0]);
 
     return {};
@@ -369,7 +377,7 @@ nlohmann::json ExitNodeType::toJSON() const
 StringLiteralNodeType::StringLiteralNodeType(Context& con, std::string str) : NodeType{con}, literalString(std::move(str))
 {
 	
-    execInputs = {""};
+	execInputs = {""};
 	execOutputs = {""};
 
     module = "lang";
