@@ -31,11 +31,11 @@ public:
 		return QString::fromStdString(type); 
 	}
 
-	QString name() { 
+	QString name() const override { 
 		return QString::fromStdString(module->name + ":" + type);
 	}
 	
-	std::unique_ptr<NodeDataModel> clone() override {
+	std::unique_ptr<NodeDataModel> clone() const override {
 		return std::unique_ptr<ChigNodeGui>(new ChigNodeGui(module, type, jsonData));
 	}
 	
