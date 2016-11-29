@@ -3,36 +3,34 @@
 #ifndef CHIG_CMODULE_HPP
 #define CHIG_CMODULE_HPP
 
-#include <unordered_map>
 #include <functional>
 #include <memory>
+#include <unordered_map>
 
-#include "chig/Fwd.hpp"
 #include "chig/ChigModule.hpp"
+#include "chig/Fwd.hpp"
 #include "chig/NodeType.hpp"
 #include "chig/json.hpp"
 
-namespace chig {
-
+namespace chig
+{
 struct CModule : ChigModule {
 	CModule(Context& context);
 	~CModule() = default;
 
-	virtual Result createNodeType(
-		const char* name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const override;
+	virtual Result createNodeType(const char* name, const nlohmann::json& json_data,
+		std::unique_ptr<NodeType>* toFill) const override;
 	virtual llvm::Type* getType(const char* name) const override;
 
 	virtual std::vector<std::string> getNodeTypeNames() const override { return {"func"}; };
 	virtual std::vector<std::string> getTypeNames() const override { return {}; };
-	
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
 		nodes;
-	
 };
 
 struct CFuncNode : NodeType {
-	
-	CFuncNode(Context& con, const std::string& modulecode, const std::string& functocall, Result& res);
+	CFuncNode(
+		Context& con, const std::string& modulecode, const std::string& functocall, Result& res);
 
 	// the function doesn't have to do anything...this class just holds metadata
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
@@ -45,10 +43,9 @@ struct CFuncNode : NodeType {
 
 	std::string functocall;
 	std::string ccode;
-	
+
 	std::unique_ptr<llvm::Module> llcompiledmod;
 };
-
 }
 
-#endif // CHIG_CMODULE_HPP
+#endif  // CHIG_CMODULE_HPP

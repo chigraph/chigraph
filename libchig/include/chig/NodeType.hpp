@@ -4,8 +4,8 @@
 #pragma once
 
 #include "chig/Context.hpp"
-#include "chig/json.hpp"
 #include "chig/Result.hpp"
+#include "chig/json.hpp"
 
 #include <iterator>
 #include <utility>
@@ -59,8 +59,6 @@ struct NodeType {
 	/// \return The clone
 	virtual std::unique_ptr<NodeType> clone() const = 0;
 };
-
-
 }
 
 #endif  // CHIG_NODE_TYPE_HPP

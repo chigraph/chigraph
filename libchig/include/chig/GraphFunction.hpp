@@ -4,9 +4,9 @@
 #pragma once
 
 #include "chig/Fwd.hpp"
+#include "chig/Graph.hpp"
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
-#include "chig/Graph.hpp"
 
 #include <llvm/IR/Module.h>
 
@@ -27,7 +27,7 @@ struct GraphFunction {
 	/// \param context The context
 	/// \param name The name of the function
 	GraphFunction(Context& context, std::string name);
-	
+
 	/// Destructor
 	~GraphFunction();
 
@@ -62,8 +62,10 @@ struct GraphFunction {
 	/// \param x The x location of the node
 	/// \param y The y location of the node
 	/// \param id The node ID
-	NodeInstance* insertNode(std::unique_ptr<NodeType> type, float x, float y, const std::string& id) {
-		return graph.insertNode(std::move(type), x, y,  id);
+	NodeInstance* insertNode(
+		std::unique_ptr<NodeType> type, float x, float y, const std::string& id)
+	{
+		return graph.insertNode(std::move(type), x, y, id);
 	}
 
 	/// Get the LLVM function type for the function
@@ -75,10 +77,10 @@ struct GraphFunction {
 	Result loadGraph();
 
 	std::string graphName;  /// the name of the function
-	
+
 	std::vector<std::pair<llvm::Type*, std::string>> inputs;
 	std::vector<std::pair<llvm::Type*, std::string>> outputs;
-	
+
 	nlohmann::json source;
 	Context* context;
 	Graph graph;

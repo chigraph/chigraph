@@ -12,13 +12,12 @@
 #include "chig/json.hpp"
 
 #include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
 #include <llvm/IR/Type.h>
 #include <llvm/Support/raw_os_ostream.h>
-#include <llvm/IR/Module.h>
 
 namespace chig
 {
-
 /// The class that handles modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 struct Context {
@@ -66,10 +65,6 @@ struct Context {
 private:
 	std::string resolveModulePath(const char* path);
 };
-
-
-
-
 }
 
 #endif  // CHIG_CONTEXT_HPP

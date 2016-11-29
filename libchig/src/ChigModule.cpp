@@ -4,5 +4,4 @@
 
 using namespace chig;
 
-ChigModule::ChigModule(Context& contextArg) : context{&contextArg} {
-}
+ChigModule::ChigModule(Context& contextArg) : context{&contextArg} {}

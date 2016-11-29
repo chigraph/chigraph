@@ -1,12 +1,12 @@
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
+#include <chig/JsonModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/NodeType.hpp>
-#include <chig/JsonModule.hpp>
 #include <chig/Result.hpp>
 
-#include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
 
 #include <llvm/Support/raw_os_ostream.h>
 
@@ -24,26 +24,23 @@ int main(int argc, char** argv)
 	namespace po = boost::program_options;
 	namespace fs = boost::filesystem;
 
-	po::options_description general("chig: Chigraph command line. Usage: chig <command> <arguments>", 50);
+	po::options_description general(
+		"chig: Chigraph command line. Usage: chig <command> <arguments>", 50);
 
-	general.add_options()
-		("help,h", "Produce Help Message")
-		("command", po::value<std::string>(), "which command")
-		("subargs", po::value<std::vector<std::string>>(), "arguments for command")
-		;
+	general.add_options()("help,h", "Produce Help Message")("command", po::value<std::string>(),
+		"which command")("subargs", po::value<std::vector<std::string>>(), "arguments for command");
 
 	po::positional_options_description pos;
-	pos.add("command", 1)
-		.add("subargs", -1);
+	pos.add("command", 1).add("subargs", -1);
 
 	po::variables_map vm;
-	
+
 	po::parsed_options parsed = po::command_line_parser(argc, argv)
-		.options(general)
-		.positional(pos)
-		.allow_unregistered()
-		.run();
-	
+									.options(general)
+									.positional(pos)
+									.allow_unregistered()
+									.run();
+
 	po::store(parsed, vm);
 
 	po::notify(vm);
@@ -53,19 +50,20 @@ int main(int argc, char** argv)
 		std::cout << general << std::endl;
 		return 0;
 	}
-	
-	if(vm.count("command") != 1) {
+
+	if (vm.count("command") != 1) {
 		std::cout << general << std::endl;
 		// TODO: cout commands
 		return 1;
 	}
-	
+
 	std::string cmd = vm["command"].as<std::string>();
-	
-	std::vector<std::string> opts = po::collect_unrecognized(parsed.options, po::include_positional);
-	opts.erase(opts.begin()); // remove the command
-	
-	if(cmd == "compile") {
+
+	std::vector<std::string> opts =
+		po::collect_unrecognized(parsed.options, po::include_positional);
+	opts.erase(opts.begin());  // remove the command
+
+	if (cmd == "compile") {
 		return compile(opts);
 	} else if (cmd == "run") {
 		return run(opts);
@@ -74,5 +72,4 @@ int main(int argc, char** argv)
 
 	std::cerr << "Unrecognized command: " << cmd << std::endl;
 	return 1;
-	
 }

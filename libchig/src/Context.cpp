@@ -72,7 +72,7 @@ Result Context::getNodeType(const char* moduleName, const char* name, const nloh
 	}
 
 	res += module->createNodeType(name, data, toFill);
-	
+
 	return res;
 }
 
@@ -83,4 +83,3 @@ std::string Context::stringifyType(llvm::Type* ty)
 	ty->print(stream);
 	return stream.str();
 }
-

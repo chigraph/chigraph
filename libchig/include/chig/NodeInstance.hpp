@@ -26,7 +26,7 @@ struct NodeInstance {
 	std::vector<std::pair<NodeInstance*, unsigned int>> inputDataConnections;
 	std::vector<std::pair<NodeInstance*, unsigned int>> outputExecConnections;
 	std::vector<std::vector<std::pair<NodeInstance*, unsigned int>>> outputDataConnections;
-	
+
 	std::string id;
 };
 
