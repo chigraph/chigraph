@@ -125,7 +125,11 @@ CFuncNode::CFuncNode(chig::Context& con, const std::string& Ccode, const std::st
 	});
 
 	// get return type
-	dataOutputs = {{llfunc->getReturnType(), ""}};
+    auto ret = llfunc->getReturnType();
+    
+    if(!ret->isVoidTy()) {
+        dataOutputs = {{ret, ""}}; 
+    }
 
 
 }
