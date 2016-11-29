@@ -1,0 +1,65 @@
+{
+  "testname": "const int",
+  "expectedret": 0,
+  "expectedstdout": "42",
+  "expectedstderr": "",
+  "module": {
+	"name": "main",
+	"dependencies":  ["lang", "c"],
+	"graphs": [
+      {
+        "name": "main",
+        "type": "function",
+        "inputs": [],
+        "outputs": [],
+        "nodes": {
+          "entry": {
+            "type": "lang:entry",
+            "data": [],
+            "location": [23,23]
+          },
+          "cint": {
+            "type": "lang:const-int",
+            "data": 42,
+            "location": [23,23]
+          },
+          "printf": {
+            "type": "c:func",
+            "data": {
+              "code": "#include <stdio.h> \n void printint(int i){printf(\"%i\", i); }",
+              "function": "printint"
+            },
+            "location": [32,32]
+          },
+          "exit": {
+            "type": "lang:exit",
+            "data": [],
+            "location": [32,32]
+          }
+        },
+        "connections": [
+          {
+            "type": "exec",
+            "input": ["entry", 0],
+            "output": ["cint", 0]
+          },
+          {
+            "type": "exec",
+            "input": ["cint", 0],
+            "output": ["printf", 0]
+          },
+          {
+            "type": "exec",
+            "input": ["printf", 0],
+            "output": ["exit", 0]
+          },
+          {
+            "type": "data",
+            "input": ["cint", 0],
+            "output": ["printf", 0]
+          }
+        ]
+      }
+	]
+  }
+}
