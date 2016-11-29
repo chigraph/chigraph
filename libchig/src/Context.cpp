@@ -84,13 +84,3 @@ std::string Context::stringifyType(llvm::Type* ty)
 	return stream.str();
 }
 
-std::string Context::stringifyModule(llvm::Module *llmod) {
-
-  std::string ret;
-
-  llvm::raw_string_ostream lloutstream{ret};
-
-  llmod->print(lloutstream, nullptr);
-
-  return ret;
-}

@@ -27,6 +27,18 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		{
 			c.addModule(std::make_unique<LangModule>(c));
 
+            WHEN("Lang module is added again") 
+            {
+                Result res;
+                res += c.addModule(std::make_unique<LangModule>(c));
+                
+                THEN("It should emit E24") 
+                {
+                    // TODO: different E number
+                    REQUIRE(res.result_json[0]["errorcode"] == "E24");
+                }
+            }
+            
 			THEN("There should be 1 module in c") { REQUIRE(c.modules.size() == 1); }
 			THEN("Getting the lang module from c should work")
 			{
