@@ -31,9 +31,9 @@ before_install:
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install
   - cd ../..
-  - 'git clone https://anongit.kde.org/itemviews.git'
-  - mkdir itemviews/build
-  - cd itemviews/build
+  - 'git clone https://anongit.kde.org/kitemviews.git'
+  - mkdir kitemviews/build
+  - cd kitemviews/build
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install -j8
   - cd ../..
