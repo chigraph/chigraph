@@ -1,6 +1,10 @@
-[![Stories in Ready](https://badge.waffle.io/russelltg/chigraph.png?label=ready&title=Ready)](https://waffle.io/russelltg/chigraph)
-[![Build Status](https://travis-ci.org/russelltg/chigraph.svg?branch=master)](https://travis-ci.org/russelltg/chigraph) [![Documentation](https://img.shields.io/badge/documentation-online-brightgreen.svg?style=flat)](https://GuapoTaco.github.io/chigraph) [![Coverage Status](https://coveralls.io/repos/github/russelltg/chigraph/badge.svg?branch=master)](https://coveralls.io/github/russelltg/chigraph?branch=master)
+Linux build: [![Build Status](https://travis-ci.org/russelltg/chigraph.svg?branch=master)](https://travis-ci.org/russelltg/chigraph) 
 
+Documentation: [![Documentation](https://img.shields.io/badge/documentation-online-brightgreen.svg?style=flat)](https://GuapoTaco.github.io/chigraph) 
+
+Test coverage: [![Coverage Status](https://coveralls.io/repos/github/russelltg/chigraph/badge.svg?branch=master)](https://coveralls.io/github/russelltg/chigraph?branch=master)
+
+Task board: [![Task Board](https://img.shields.io/badge/task%20board-online-brightgreen.svg?style=flat)](https://huboard.com/russelltg/chigraph) 
 
 # chigraph
 A systems language that is not in text--it is a flowgraph.
