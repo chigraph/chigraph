@@ -38,39 +38,25 @@ FunctionView::FunctionView(chig::JsonModule* module, chig::GraphFunction* func_,
 	// create connections
 	for(auto& node : func->graph.nodes) {
 		
-		auto guinode = assoc[node.second.get()].lock();
+		auto thisNode = assoc[node.second.get()].lock();
 		
 		size_t connId = 0;
 		for(auto& conn : node.second->inputDataConnections) {
 			
-			auto guiother = assoc[conn.first].lock();
+			auto inData = assoc[conn.first].lock();
 			
-			auto guiconn = scene->createConnection(PortType::Out, guiother, conn.first->outputDataConnections.size() + conn.second);
-			guiconn->setNodeToPort(guinode, PortType::In, node.second->outputDataConnections.size() + connId);
-			
-			guinode->nodeState().setConnection(PortType::In,
-				connId,
-				guiconn);
-			
-			guiother->nodeState().setConnection(PortType::Out, conn.second, guiconn);
-			
+            scene->createConnection(thisNode, connId + node.second->inputExecConnections.size(), inData, conn.second + conn.first->outputExecConnections.size());
+            
 			++connId;
 		}
 		
 		connId = 0;
 		for(auto& conn : node.second->outputExecConnections) {
 			
-			auto guiother = assoc[conn.first].lock();
+			auto outExecNode = assoc[conn.first].lock();
 			
-			auto guiconn = scene->createConnection(PortType::In, guiother, conn.second);
-			guiconn->setNodeToPort(guinode, PortType::Out, connId);
-			
-			guinode->nodeState().setConnection(PortType::Out,
-				connId,
-				guiconn);
-			
-			guiother->nodeState().setConnection(PortType::In, conn.second, guiconn);
-			
+			scene->createConnection(outExecNode, conn.second, thisNode, connId);
+            
 			++connId;
 		}
 		

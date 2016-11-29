@@ -86,6 +86,7 @@ void MainWindow::setupActions()
 
 inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> module) {
 
+    assert(module);
 	
 	auto nodetypes = module->getNodeTypeNames();
 	
@@ -120,24 +121,33 @@ void MainWindow::openFile() {
 	}
 	
 	auto mod = std::make_unique<chig::JsonModule>(j, ccontext, &res);
-	
-	
-	
-	if(!res) {
+    
+    if(!res) {
 		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + filename +
 			"\"", QString::fromStdString(res.result_json.dump(2)), "Error Loading");
 		
 		return;
 	}
 	
-	if(!mod) {
+    
+    if(!mod) {
 		KMessageBox::error(this, "Unknown error in loading JsonModule from file \"" + filename + "\"", "Error Loading");
 		return;
 	}
+    
+	module = mod.get();
+    addModule(std::move(mod));
+    
+    res += module->loadGraphs();
 	
-	module = mod.get(); // cache it because of it it invalidated after the move()
-	addModule(std::move(mod));
 	
+	if(!res) {
+		KMessageBox::detailedError(this, "Failed to load graphs in JsonModule \"" + filename +
+			"\"", QString::fromStdString(res.result_json.dump(2)), "Error Loading");
+		
+		return;
+	}
+
 	// call signal
 	openJsonModule(module);
 	
