@@ -57,6 +57,7 @@ createConnection(PortType connectedPort,
 
   _connections[connection->id()] = connection;
 
+  connectionCreated(*connection);
   return connection;
 }
 
@@ -88,6 +89,7 @@ createConnection(std::shared_ptr<Node> nodeIn,
 
   _connections[connection->id()] = connection;
   
+  connectionCreated(*connection);
   return connection;
   
 }
@@ -121,6 +123,8 @@ void
 FlowScene::
 deleteConnection(std::shared_ptr<Connection> connection)
 {
+  connectionDeleted(*connection);
+  
   connection->removeFromNodes();
   _connections.erase(connection->id());
 }
@@ -137,6 +141,7 @@ createNode(std::unique_ptr<NodeDataModel> && dataModel)
 
   _nodes[node->id()] = node;
 
+  nodeCreated(*node);
   return node;
 }
 
@@ -162,6 +167,8 @@ restoreNode(Properties const &p)
   node->restore(p);
 
   _nodes[node->id()] = node;
+  
+  nodeCreated(*node);
   return node;
 }
 
@@ -171,7 +178,8 @@ FlowScene::
 removeNode(NodeGraphicsObject* ngo)
 {
   std::shared_ptr<Node> const node = ngo->node().lock();
-
+  nodeDeleted(*node);
+  
   auto deleteConnections = [&node, this] (PortType portType)
   {
     auto nodeState = node->nodeState();
@@ -196,7 +204,8 @@ FlowScene::
 removeConnection(ConnectionGraphicsObject* cgo)
 {
   std::shared_ptr<Connection> const conn = cgo->connection().lock();
-
+  connectionDeleted(*conn);
+  
   deleteConnection(conn);
 }
 

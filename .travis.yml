@@ -1,20 +1,26 @@
 sudo: required
+distro: trusty
 
-arch:
-    packages:
-        - llvm
-        - clang
-        - cmake
-        - boost
-        - python-pip
-        - kf5
-        - extra-cmake-modules
-    script:
-        - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
-        - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -std=c++11 -lstdc++"
-        - make
-        - CTEST_OUTPUT_ON_FAILURE=1 make test
-        - coveralls --exclude /usr/ --exclude test/ --exclude third_party --exclude libchig/include/chig/json.hpp --include libchig/ --include chig/
-        
-script:
-  - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
+language: cpp
+
+compilers:
+  - clang-3.8
+  - clang-3.9
+  - g++-5
+
+env:
+  - LLVM_ROOT=/usr/lib/llvm-3.8/lib/cmake/llvm BUILD_TYPE=Debug
+  - LLVM_ROOT=/usr/lib/llvm-3.8/lib/cmake/llvm BUILD_TYPE=Release
+  - LLVM_ROOT=/usr/lib/llvm-3.9/lib/cmake/llvm BUILD_TYPE=Debug
+  - LLVM_ROOT=/usr/lib/llvm-3.9/lib/cmake/llvm BUILD_TYPE=Release
+
+before_install:
+  - 'sudo add-apt-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main"'
+  - 'sudo add-apt-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main"'
+  - 'sudo wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -'
+  - sudo apt-get install llvm-3.8-dev clang-3.8 llvm-3.9-dev clang-3.9 g++-5 qtbase5-dev cmake libkf5widgetsaddons-dev libkf5xmlgui-dev python3 python3-pip
+  - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
+  - cmake . -DLLVM_ROOT=$LLVM_ROOT -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage"
+  - make -j4
+  - CTEST_OUTPUT_ON_FAILURE=1 make test
+  - coveralls --exclude /usr/ --exclude test/ --exclude third_party --exclude libchig/include/chig/json.hpp --include libchig/ --include chig/
