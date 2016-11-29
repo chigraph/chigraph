@@ -23,13 +23,13 @@ before_install:
   - sudo apt-get install -y llvm-3.8-dev clang-3.8 llvm-3.9-dev clang-3.9 g++-5 qtbase5-dev cmake python3 python3-pip
   - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
   - cd ..
-  - 'git clone https://git.kde.org/kwidgetsaddons.git'
+  - 'git clone https://anongit.kde.org/kwidgetsaddons.git'
   - mkdir kwidgetsaddons/build
   - cd kwidgetsaddons/build
   - cmake ..
   - sudo make install
   - cd ../..
-  - 'git clone https://git.kde.org/kxmlgui.git'
+  - 'git clone https://anongit.kde.org/kxmlgui.git'
   - mkdir kxmlgui/build
   - cd kxmlgui/build
   - cmake ..
