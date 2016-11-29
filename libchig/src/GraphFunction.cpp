@@ -127,20 +127,6 @@ struct cache {
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block, llvm::BasicBlock* allocblock,
 	llvm::Module* mod, llvm::Function* f, std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res)
 {
-	// print the cache for debugging
-// 	std::cout << "Cache before serializing " << node->id << std::endl;
-// 	for(auto& pair : nodeCache) {
-// 		std::cout << pair.first->id << " = [";
-// 		for(auto& output : pair.second.outputs) {
-// 			std::cout << node->type->context->stringifyType(output->getType()) << ", ";
-// 		}
-// 		std::cout << ']' << std::endl;
-// 	}
-// 	
-// 	std::cout << "====================================" << std::endl << std::endl;
-// 	
-	auto printmod = [&](){std::cout << node->type->context->stringifyModule(mod);};
-	
 	llvm::IRBuilder<> builder(block);
 
 	// get inputs and outputs
