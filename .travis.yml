@@ -43,6 +43,12 @@ before_install:
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install -j8
   - cd ../..
+  - 'git clone https://anongit.kde.org/karchive.git'
+  - mkdir karchive/build
+  - cd karchive/build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - sudo make install -j8
+  - cd ../..
   - 'git clone https://anongit.kde.org/kiconthemes.git'
   - mkdir kiconthemes/build
   - cd kiconthemes/build
