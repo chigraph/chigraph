@@ -55,6 +55,12 @@ before_install:
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install -j8
   - cd ../..
+  - 'git clone https://anongit.kde.org/kconfigwidgets.git'
+  - mkdir kconfigwidgets/build
+  - cd kconfigwidgets/build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - sudo make install -j8
+  - cd ../..
   - 'git clone https://anongit.kde.org/ki18n.git'
   - mkdir ki18n/build
   - cd ki18n/build
