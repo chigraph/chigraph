@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <QApplication>
 #include <QFileDialog>
+#include <QDebug>
 #include <QHBoxLayout>
 #include <QSplitter>
 
@@ -40,13 +41,17 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	
 	QSplitter* splitter = new QSplitter;
 	functionpane = new FunctionsPane(splitter, this);
+    
 	connect(functionpane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
 	
 	functabs = new QTabWidget(this);
 	functabs->setMovable(true);
+    functabs->setTabsClosable(true);
+    connect(functabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
 	
 	splitter->addWidget(functionpane);
 	splitter->addWidget(functabs);
+    splitter->setSizes({200, 1000});
 	
 	hlayout->addWidget(splitter);
 	
@@ -75,10 +80,10 @@ void MainWindow::setupActions()
 	
 	QAction* newAction = actionCollection()->addAction(KStandardAction::New, QStringLiteral("new"));
 	newAction->setWhatsThis(QStringLiteral("Create a new chigraph module"));
-	//newAction->setIcon(QIcon::fromTheme(QStringLiteral("new")))
 	
 	QAction* saveAction = actionCollection()->addAction(KStandardAction::Save, QStringLiteral("save"));
 	saveAction->setWhatsThis(QStringLiteral("Save the chigraph module"));
+    connect(saveAction, &QAction::triggered, this, &MainWindow::save);
 	
 	setupGUI(Default, "chigguiui.rc");
 }
@@ -98,9 +103,22 @@ inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> module) {
 	
 }
 
+void MainWindow::save() {
+  
+  if(module) {
+      std::ofstream stream(filename.toStdString());
+      
+      nlohmann::json j;
+      chig::Result r = module->toJSON(&j);
+      
+      stream << j;
+  }
+  
+}
+
 
 void MainWindow::openFile() {
-	QString filename = QFileDialog::getOpenFileName(this, i18n("Chig Module"), QDir::homePath(), tr("Chigraph Modules (*.chigmod)"));
+	filename = QFileDialog::getOpenFileName(this, i18n("Chig Module"), QDir::homePath(), tr("Chigraph Modules (*.chigmod)"));
 	
 	if(filename == "") return;
 	
@@ -164,5 +182,22 @@ void MainWindow::newFunctionSelected(QString qstr) {
 		return;
 	}
 	
-	functabs->addTab(new FunctionView(module, graphfunciter->get(), reg, functabs), qstr);
+	auto iter = openFunctions.find(qstr);
+    if(iter != openFunctions.end()) {
+      functabs->setCurrentWidget(iter->second);
+      return;
+    }
+	
+	auto view = new FunctionView(module, graphfunciter->get(), reg, functabs);
+	int idx = functabs->addTab(view, qstr);
+    openFunctions[qstr] = view;
+    functabs->setTabText(idx, qstr);
+    functabs->setCurrentWidget(view);
 }
+
+void MainWindow::closeTab(int idx)
+{
+  openFunctions.erase(std::find_if(openFunctions.begin(), openFunctions.end(), [&](auto& p) { return p.second == functabs->widget(idx); }));
+  functabs->removeTab(idx);
+}
+

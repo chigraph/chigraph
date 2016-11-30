@@ -8,14 +8,16 @@
  
   <MenuBar>
     <Menu name="file" >
-	  <Action name="open" />
 	  <Action name="new" />
+	  <Action name="open" />
+	  <Action name="save" />
     </Menu>
   </MenuBar>
  
   <ToolBar name="mainToolBar" >
     <text>Main Toolbar</text>
 	  <Action name="open" />
+	  <Action name="save" />
   </ToolBar>
  
 </gui>

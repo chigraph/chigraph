@@ -348,7 +348,7 @@ nlohmann::json ExitNodeType::toJSON() const
 {
 	nlohmann::json ret = nlohmann::json::array();
 
-	for (auto& pair : dataOutputs) {
+	for (auto& pair : dataInputs) {
 		// TODO: use made types
 		ret.push_back({{pair.second, "lang:" + context->stringifyType(pair.first)}});
 	}

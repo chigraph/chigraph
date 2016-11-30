@@ -25,6 +25,7 @@ public:
 	
 	void setupActions();
 	
+    std::unordered_map<QString, QWidget*> openFunctions;
 	QTabWidget* functabs;
 	std::shared_ptr<DataModelRegistry> reg;
 	
@@ -35,10 +36,13 @@ public:
 	void addModule(std::unique_ptr<chig::ChigModule> c);
 	
 	chig::JsonModule* module = nullptr;
+    QString filename;
 	
 public slots:
 	void openFile();
 	void newFunctionSelected(QString name);
+    void save();
+    void closeTab(int idx);
 	
 signals:
 	void openJsonModule(chig::JsonModule* mod);

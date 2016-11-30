@@ -55,6 +55,11 @@ setConnection(PortType portType,
 {
   auto &connections = getEntries(portType);
 
+  if(portIndex >= connections.size()) 
+    throw std::runtime_error(std::string("Failed to setConnection: ") + 
+    (portType == PortType::In ? "In" : "Out") + 
+    "[" + std::to_string(portIndex) + "]");
+  
   connections[portIndex].emplace(connection->id(),
                                  connection);
 }
