@@ -26,6 +26,13 @@ public:
 	chig::GraphFunction* func;
 	
 	std::unordered_map<chig::NodeInstance*, std::weak_ptr<Node>> assoc;
+    
+public slots:
+    void nodeAdded(Node& n);
+    void nodeDeleted(Node& n);
+    
+    void connectionAdded(Connection& c);
+    void connectionDeleted(Connection& c);
 	
 };
 

@@ -20,6 +20,9 @@ FunctionView::FunctionView(chig::JsonModule* module, chig::GraphFunction* func_,
 	hlayout->setSpacing(0);
 	
 	scene = new FlowScene(reg);
+    connect(scene, &FlowScene::nodeCreated, this, &FunctionView::nodeAdded);
+    connect(scene, &FlowScene::nodeDeleted, this, &FunctionView::nodeDeleted);
+    
 	view = new FlowView(scene);
 	
 	hlayout->addWidget(view);
@@ -27,7 +30,7 @@ FunctionView::FunctionView(chig::JsonModule* module, chig::GraphFunction* func_,
 	// create nodes
 	for(auto& node : func->graph.nodes) {
 		
-		std::shared_ptr<Node> guinode = scene->createNode(std::make_unique<ChigNodeGui>(module->context->getModuleByName(node.second->type->module.c_str()), node.second->type->name, node.second->type->toJSON()));
+		std::shared_ptr<Node> guinode = scene->createNode(std::make_unique<ChigNodeGui>(node.second.get()));
 		
 		guinode->nodeGraphicsObject()->setPos({node.second->x, node.second->y});
 		
@@ -61,4 +64,24 @@ FunctionView::FunctionView(chig::JsonModule* module, chig::GraphFunction* func_,
 		}
 		
 	}
+}
+
+
+void FunctionView::nodeAdded(Node& n) {
+  auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel().get());
+  
+  if(!ptr) return;
+  
+  
+  
+}
+void FunctionView::nodeDeleted(Node& n) {
+  
+}
+
+void FunctionView::connectionAdded(Connection& c) {
+  
+}
+void FunctionView::connectionDeleted(Connection& c) {
+  
 }

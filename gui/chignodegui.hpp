@@ -8,42 +8,37 @@
 
 #include <chig/ChigModule.hpp>
 #include <chig/NodeType.hpp>
+#include <chig/NodeInstance.hpp>
 
 #include <memory>
 
 class ChigNodeGui : public NodeDataModel {
 	
 public:
+
 	
-	ChigNodeGui(chig::ChigModule* module_, std::string type_, nlohmann::json j) : type{type_}, module{module_}, jsonData{j} {
-		auto res = module->createNodeType(type.c_str(), j, &ty);
-		if(!res) {
-			std::cerr << "Failed to create stuff for module. Error: " << res.result_json.dump(2) << std::endl;
-		}
-	}
-  
-	std::string type;
-	chig::ChigModule* module;
-	std::unique_ptr<chig::NodeType> ty;
-	nlohmann::json jsonData;
+	ChigNodeGui(chig::NodeInstance* inst_) : inst{inst_} {
+        
+    }
+    chig::NodeInstance* inst;
 	
 	QString caption() const override { 
-		return QString::fromStdString(type); 
+		return QString::fromStdString(inst->id); 
 	}
 
 	QString name() const override { 
-		return QString::fromStdString(module->name + ":" + type);
+		return QString::fromStdString(inst->type->module + ":" + inst->type->name);
 	}
 	
 	std::unique_ptr<NodeDataModel> clone() const override {
-		return std::unique_ptr<ChigNodeGui>(new ChigNodeGui(module, type, jsonData));
+		return std::unique_ptr<ChigNodeGui>(new ChigNodeGui(inst));
 	}
 	
 	virtual unsigned int nPorts(PortType portType) const override {
 		if(portType == PortType::In) {
-			return ty->execInputs.size() + ty->dataInputs.size();
+			return inst->type->execInputs.size() + inst->type->dataInputs.size();
 		} else if(portType == PortType::Out) {
-			return ty->execOutputs.size() + ty->dataOutputs.size();
+			return inst->type->execOutputs.size() + inst->type->dataOutputs.size();
 		}
 		
 		return 1; // ?
@@ -52,26 +47,26 @@ public:
 	virtual NodeDataType dataType(PortType pType, PortIndex pIndex) const override {
 		if(pType == PortType::In) {
 			std::pair<std::string, std::string> idandname;
-			if(pIndex >= int(ty->execInputs.size())) {
+			if(pIndex >= int(inst->type->execInputs.size())) {
 				
-				if(pIndex - ty->execInputs.size() >= ty->dataInputs.size()) return {};
+				if(pIndex - inst->type->execInputs.size() >= inst->type->dataInputs.size()) return {};
 				
-				idandname = {module->context->stringifyType(ty->dataInputs[pIndex - ty->execInputs.size()].first), 
-					ty->dataInputs[pIndex - ty->execInputs.size()].second};
+				idandname = {inst->type->context->stringifyType(inst->type->dataInputs[pIndex - inst->type->execInputs.size()].first), 
+					inst->type->dataInputs[pIndex - inst->type->execInputs.size()].second};
 				
 			} else {
-				idandname = {"exec", ty->execInputs[pIndex]};
+				idandname = {"exec", inst->type->execInputs[pIndex]};
 			}
 			return {QString::fromStdString(idandname.first), QString::fromStdString(idandname.second)};
 		} else if(pType == PortType::Out) {
 			std::pair<std::string, std::string> idandname;
-			if(pIndex >= int(ty->execOutputs.size())) {
+			if(pIndex >= int(inst->type->execOutputs.size())) {
 				
-				idandname = {module->context->stringifyType(ty->dataOutputs[pIndex - ty->execOutputs.size()].first), 
-					ty->dataOutputs[pIndex - ty->execOutputs.size()].second};
+				idandname = {inst->type->context->stringifyType(inst->type->dataOutputs[pIndex - inst->type->execOutputs.size()].first), 
+					inst->type->dataOutputs[pIndex - inst->type->execOutputs.size()].second};
 				
 			} else {
-				idandname = {"exec", ty->execOutputs[pIndex]};
+				idandname = {"exec", inst->type->execOutputs[pIndex]};
 			}
 			return {QString::fromStdString(idandname.first), QString::fromStdString(idandname.second)};
 

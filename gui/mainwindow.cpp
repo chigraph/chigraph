@@ -96,7 +96,10 @@ inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> module) {
 	auto nodetypes = module->getNodeTypeNames();
 	
 	for(auto& nodetype : nodetypes) {
-		reg->registerModel(std::make_unique<ChigNodeGui>(module.get(), nodetype, nlohmann::json()));
+        std::unique_ptr<chig::NodeType> ty;
+        module->createNodeType(nodetype.c_str(), {}, &ty);
+        auto inst = new chig::NodeInstance(std::move(ty), 0, 0, nodetype);
+		reg->registerModel(std::make_unique<ChigNodeGui>(inst));
 	}
 	
 	ccontext.addModule(std::move(module));

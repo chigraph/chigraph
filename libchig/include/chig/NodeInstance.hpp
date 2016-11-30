@@ -11,9 +11,12 @@ namespace chig
 {
 struct NodeInstance {
 	NodeInstance(std::unique_ptr<NodeType> nodeType, float x, float y, std::string id);
-
-	NodeInstance(const NodeInstance&) = default;
-	NodeInstance(NodeInstance&&) = default;
+    
+    NodeInstance(NodeInstance&&) = default;
+    NodeInstance(const NodeInstance& other);
+    
+    NodeInstance& operator=(NodeInstance&&) = default;
+    NodeInstance& operator=(const NodeInstance&);
 
 	// general data
 	std::unique_ptr<NodeType> type = nullptr;
@@ -22,10 +25,10 @@ struct NodeInstance {
 	float y = 0.0;
 
 	// connections
-	std::vector<std::vector<std::pair<NodeInstance*, unsigned int>>> inputExecConnections;
-	std::vector<std::pair<NodeInstance*, unsigned int>> inputDataConnections;
-	std::vector<std::pair<NodeInstance*, unsigned int>> outputExecConnections;
-	std::vector<std::vector<std::pair<NodeInstance*, unsigned int>>> outputDataConnections;
+	std::vector<std::vector<std::pair<NodeInstance*, size_t>>> inputExecConnections;
+	std::vector<std::pair<NodeInstance*, size_t>> inputDataConnections;
+	std::vector<std::pair<NodeInstance*, size_t>> outputExecConnections;
+	std::vector<std::vector<std::pair<NodeInstance*, size_t>>> outputDataConnections;
 
 	std::string id;
 };

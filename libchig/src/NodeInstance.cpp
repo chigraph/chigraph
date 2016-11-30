@@ -15,6 +15,23 @@ NodeInstance::NodeInstance(
 	outputExecConnections.resize(type->execOutputs.size(), {nullptr, ~0});
 }
 
+
+NodeInstance::NodeInstance(const NodeInstance& other) 
+  : type(other.type->clone()),
+  x{other.x},
+  y{other.y},
+  id{other.id + "_"} {}
+
+  
+NodeInstance& NodeInstance::operator=(const NodeInstance& other) {
+  type = other.type->clone();
+  x = other.x;
+  y = other.y;
+  id = other.id + "_";
+  
+  return *this;
+}
+  
 namespace chig
 {
 Result connectData(
@@ -63,6 +80,18 @@ Result connectData(
 		return res;
 	}
 
+	// if we are replacing a connection, disconnect it
+	if(rhs.inputDataConnections[connectionOutputID].first != nullptr) {
+        auto& extconn = rhs.inputDataConnections[connectionOutputID];
+        
+        // the node that we were connectd to's vector of output data connections
+        auto& extconnvec = extconn.first->outputDataConnections[extconn.second];
+        
+        extconnvec.erase(
+          std::find(extconnvec.begin(), extconnvec.end(), 
+          std::make_pair(&rhs, connectionOutputID)));
+    }
+	
 	lhs.outputDataConnections[connectionInputID].emplace_back(&rhs, connectionOutputID);
 	rhs.inputDataConnections[connectionOutputID] = {&lhs, connectionInputID};
 
@@ -102,6 +131,16 @@ Result connectExec(
 
 	if (!res) return res;
 
+    
+	// if we are replacing a connection, disconnect it
+	if(lhs.outputExecConnections[connectionInputID].first != nullptr) {
+        auto& extconnvec = lhs.outputExecConnections[connectionInputID].first->inputExecConnections[lhs.outputExecConnections[connectionInputID].second];
+        
+        extconnvec.erase(
+          std::find(extconnvec.begin(), extconnvec.end(), 
+          std::make_pair(&lhs, connectionOutputID)));
+    }
+    
 	// connect it!
 	lhs.outputExecConnections[connectionInputID] = {&rhs, connectionOutputID};
 	rhs.inputExecConnections[connectionOutputID].emplace_back(&lhs, connectionOutputID);
