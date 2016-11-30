@@ -1,158 +1,20 @@
 sudo: required
-dist: trusty
 
-language: cpp
-
-compiler:
-  - clang-3.8
-  - clang-3.9
-  - g++-5
-
-env:
-  - LLVM_ROOT=/usr/lib/llvm-3.8/lib/cmake/llvm BUILD_TYPE=Debug    QT_VER=56
-  - LLVM_ROOT=/usr/lib/llvm-3.8/lib/cmake/llvm BUILD_TYPE=Release  QT_VER=56
-  - LLVM_ROOT=/usr/lib/llvm-3.9/lib/cmake/llvm BUILD_TYPE=Debug    QT_VER=56
-  - LLVM_ROOT=/usr/lib/llvm-3.9/lib/cmake/llvm BUILD_TYPE=Release  QT_VER=56
-
-before_install:
-  - 'sudo add-apt-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main"'
-  - 'sudo add-apt-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main"'
-  - 'sudo wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -'
-  - 'sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test'
-  - 'sudo add-apt-repository -y ppa:beineri/opt-qt561-trusty'
-  - sudo apt-get update
-  - sudo apt-get install -y llvm-3.8-dev clang-3.8 llvm-3.9-dev clang-3.9 qt56x11extras  g++-5 libxcb1 libxcb1-dev libx11-xcb1 libx11-xcb-dev libxcb-keysyms1 libxcb-keysyms1-dev cmake python3 python3-pip  qt56base qt56tools qt56svg qt56script
-  - source /opt/qt56/bin/qt56-env.sh
-  - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
-  - cd ..
-  - 'git clone https://anongit.kde.org/extra-cmake-modules.git'
-  - mkdir extra-cmake-modules/build
-  - cd extra-cmake-modules/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kitemviews.git'
-  - mkdir kitemviews/build
-  - cd kitemviews/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kwidgetsaddons.git'
-  - mkdir kwidgetsaddons/build
-  - cd kwidgetsaddons/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/karchive.git'
-  - mkdir karchive/build
-  - cd karchive/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kcoreaddons.git'
-  - mkdir kcoreaddons/build
-  - cd kcoreaddons/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kauth.git'
-  - mkdir kauth/build
-  - cd kauth/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kconfig.git'
-  - mkdir kconfig/build
-  - cd kconfig/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kcodecs.git'
-  - mkdir kcodecs/build
-  - cd kcodecs/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kguiaddons.git'
-  - mkdir kguiaddons/build
-  - cd kguiaddons/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/ki18n.git'
-  - mkdir ki18n/build
-  - cd ki18n/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kconfigwidgets.git'
-  - mkdir kconfigwidgets/build
-  - cd kconfigwidgets/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kiconthemes.git'
-  - mkdir kiconthemes/build
-  - cd kiconthemes/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kcompletion.git'
-  - mkdir kcompletion/build
-  - cd kcompletion/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kwindowsystem.git'
-  - mkdir kwindowsystem/build
-  - cd kwindowsystem/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kcrash.git'
-  - mkdir kcrash/build
-  - cd kcrash/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kdbusaddons.git'
-  - mkdir kdbusaddons/build
-  - cd kdbusaddons/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kservice.git'
-  - mkdir kservice/build
-  - cd kservice/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/sonnet.git'
-  - mkdir sonnet/build
-  - cd sonnet/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/ktextwidgets.git'
-  - mkdir ktextwidgets/build
-  - cd ktextwidgets/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kglobalaccel.git'
-  - mkdir kglobalaccel/build
-  - cd kglobalaccel/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - 'git clone https://anongit.kde.org/kxmlgui.git'
-  - mkdir kxmlgui/build
-  - cd kxmlgui/build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - sudo make install -j8
-  - cd ../..
-  - cd chigraph
-  - cmake . -DLLVM_ROOT=$LLVM_ROOT -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage"
-  - make -j4
-  - CTEST_OUTPUT_ON_FAILURE=1 make test
-  - coveralls --exclude /usr/ --exclude test/ --exclude third_party --exclude libchig/include/chig/json.hpp --include libchig/ --include chig/
+arch:
+    packages:
+        - llvm
+        - clang
+        - cmake
+        - boost
+        - python-pip
+        - kf5
+        - extra-cmake-modules
+    script:
+        - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
+        - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -std=c++11 -lstdc++"
+        - make
+        - CTEST_OUTPUT_ON_FAILURE=1 make test
+        - coveralls --exclude /usr/ --exclude test/ --exclude third_party --exclude libchig/include/chig/json.hpp --include libchig/ --include chig/
+        
+script:
+  - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
