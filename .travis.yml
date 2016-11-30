@@ -103,6 +103,12 @@ before_install:
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install -j8
   - cd ../..
+  - 'git clone https://anongit.kde.org/kservice.git'
+  - mkdir kservice/build
+  - cd kservice/build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - sudo make install -j8
+  - cd ../..
   - 'git clone https://anongit.kde.org/ktextwidgets.git'
   - mkdir ktextwidgets/build
   - cd ktextwidgets/build
