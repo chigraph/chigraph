@@ -81,7 +81,7 @@ before_install:
   - cd ../..
   - 'git clone https://anongit.kde.org/kdoctools.git'
   - mkdir kdoctools/build
-  - cd kguiaddons/build
+  - cd kdoctools/build
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install -j8
   - cd ../..
