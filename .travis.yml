@@ -103,9 +103,33 @@ before_install:
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install -j8
   - cd ../..
+  - 'git clone https://anongit.kde.org/kwindowsystem.git'
+  - mkdir kwindowsystem/build
+  - cd kwindowsystem/build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - sudo make install -j8
+  - cd ../..
+  - 'git clone https://anongit.kde.org/kcrash.git'
+  - mkdir kcrash/build
+  - cd kcrash/build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - sudo make install -j8
+  - cd ../..
+  - 'git clone https://anongit.kde.org/kdbusaddons.git'
+  - mkdir kdbusaddons/build
+  - cd kdbusaddons/build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - sudo make install -j8
+  - cd ../..
   - 'git clone https://anongit.kde.org/kservice.git'
   - mkdir kservice/build
   - cd kservice/build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - sudo make install -j8
+  - cd ../..
+  - 'git clone https://anongit.kde.org/sonnet.git'
+  - mkdir sonnet/build
+  - cd sonnet/build
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install -j8
   - cd ../..
