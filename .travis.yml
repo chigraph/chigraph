@@ -79,6 +79,12 @@ before_install:
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install -j8
   - cd ../..
+  - 'git clone https://anongit.kde.org/kdoctools.git'
+  - mkdir kdoctools/build
+  - cd kguiaddons/build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - sudo make install -j8
+  - cd ../..
   - 'git clone https://anongit.kde.org/kjs.git'
   - mkdir kjs/build
   - cd kjs/build
