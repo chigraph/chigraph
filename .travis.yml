@@ -139,6 +139,12 @@ before_install:
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - sudo make install -j8
   - cd ../..
+  - 'git clone https://anongit.kde.org/kglobalaccel.git'
+  - mkdir kglobalaccel/build
+  - cd kglobalaccel/build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - sudo make install -j8
+  - cd ../..
   - 'git clone https://anongit.kde.org/kxmlgui.git'
   - mkdir kxmlgui/build
   - cd kxmlgui/build
