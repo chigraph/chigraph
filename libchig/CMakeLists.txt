@@ -59,3 +59,6 @@ PUBLIC
 	optimized ${Boost_FILESYSTEM_LIBRARY_RELEASE}
 )
 
+install(TARGETS chigcore DESTINATION lib)
+install(DIRECTORY include/chig DESTINATION include)
+

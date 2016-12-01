@@ -36,3 +36,6 @@ target_compile_features(chiggui PRIVATE cxx_variable_templates)
 if(UNIX)
 	target_compile_options(chiggui PRIVATE "-fexceptions")
 endif()
+
+install(TARGETS chiggui DESTINATION bin)
+install(FILES chigguiui.rc DESTINATION ${KXMLGUI_INSTALL_DIR}/chiggui)

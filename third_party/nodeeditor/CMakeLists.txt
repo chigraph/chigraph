@@ -51,5 +51,8 @@ target_link_libraries(nodes
                       Qt5::Gui
                       Qt5::OpenGL)
 
-
+install(TARGETS nodes 
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib)
+                      
 add_subdirectory(examples)
