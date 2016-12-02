@@ -26,7 +26,9 @@ struct GraphFunction {
 	/// Also constructs a input node
 	/// \param context The context
 	/// \param name The name of the function
-	GraphFunction(Context& context, std::string name);
+	GraphFunction(Context& context, std::string name,
+		std::vector<std::pair<llvm::Type*, std::string>> inputs,
+		std::vector<std::pair<llvm::Type*, std::string>> outputs);
 
 	/// Destructor
 	~GraphFunction();
@@ -85,6 +87,14 @@ struct GraphFunction {
 	Context* context;
 	Graph graph;
 };
+
+inline std::pair<std::string, std::string> parseColonPair(const std::string& in)
+{
+	std::string module = in.substr(0, in.find(':'));
+	std::string name = in.substr(in.find(':') + 1);
+
+	return {module, name};
+}
 }
 
 #endif  // CHIG_GRAPH_FUNCTION_HPP

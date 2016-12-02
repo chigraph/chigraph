@@ -9,21 +9,20 @@
 
 class MainWindow;
 
-class FunctionsPane : public QListWidget {
+class FunctionsPane : public QListWidget
+{
 	Q_OBJECT
 public:
-	
 	FunctionsPane(QWidget* parent, MainWindow* win);
-	
+
 public slots:
-	
+
 	void updateModule(chig::JsonModule* mod);
 	void selectItem(QListWidgetItem* newitem);
-	
+
 signals:
-	
+
 	void functionSelected(QString name);
-	
 };
 
-#endif // CHIGGUI_FUNCTIONS_PANE_HPP
+#endif  // CHIGGUI_FUNCTIONS_PANE_HPP

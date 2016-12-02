@@ -88,6 +88,8 @@ std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
 		if(lgraph["name"] != rgraph["name"]) return "graph name in graph #" + std::to_string(iter) + " not equal; serialized: " + lgraph["name"].dump(-1) + "  original: " + rgraph["name"].dump(-1);
 		if(lgraph["nodes"] != rgraph["nodes"]) return "graph nodes in graph #" + std::to_string(iter) + " not equal; \nserialized: \n" + lgraph["nodes"].dump(-1) + "\n\noriginal:\n " + rgraph["nodes"].dump(-1);
 		if(lgraph["type"] != rgraph["type"]) return "graph name in graph #" + std::to_string(iter) + "not equal; serialized: " + lgraph["type"].dump(-1) + "  original: " + rgraph["type"].dump(-1);
+		if(lgraph["inputs"] != rgraph["inputs"]) return "graph inputs in graph #" + std::to_string(iter) + "not equal; serialized: " + lgraph["inputs"].dump(-1) + "  original: " + rgraph["inputs"].dump(-1);
+		if(lgraph["outputs"] != rgraph["outputs"]) return "graph outputs in graph #" + std::to_string(iter) + "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " + rgraph["outputs"].dump(-1);
 		
 	}
 	

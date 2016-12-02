@@ -3,14 +3,20 @@
 #include "chig/NodeType.hpp"
 
 #include <llvm/AsmParser/Parser.h>
+#include <llvm/IR/Type.h>
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Support/raw_ostream.h>
 #include <unordered_map>
 
 using namespace chig;
 
-GraphFunction::GraphFunction(Context& context_, std::string name)
-	: graphName{std::move(name)}, context{&context_}
+GraphFunction::GraphFunction(Context& context_, std::string name,
+	std::vector<std::pair<llvm::Type*, std::string>> inputs_,
+	std::vector<std::pair<llvm::Type*, std::string>> outputs_)
+	: graphName{std::move(name)},
+	  context{&context_},
+	  inputs(std::move(inputs_)),
+	  outputs(std::move(outputs_))
 {
 }
 
@@ -46,24 +52,21 @@ Result GraphFunction::fromJSON(
 		return res;
 	}
 
-	// construct it
-	*ret_ptr = std::make_unique<GraphFunction>(context, name);
-	auto& ret = *ret_ptr;
-
+	std::vector<std::pair<llvm::Type*, std::string>> inputs;
 	for (auto param : data["inputs"]) {
 		for (auto iter = param.begin(); iter != param.end(); ++iter) {
 			std::string qualifiedType = iter.value();
 			std::string docString = iter.key();
 
-			std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
-			std::string name = qualifiedType.substr(qualifiedType.find(':') + 1);
+			std::string module, name;
+			std::tie(module, name) = parseColonPair(qualifiedType);
 
 			llvm::Type* ty;
 			res += context.getType(module.c_str(), name.c_str(), &ty);
 
 			if (!res) return res;
 
-			ret->inputs.emplace_back(ty, docString);
+			inputs.emplace_back(ty, docString);
 		}
 	}
 
@@ -72,22 +75,28 @@ Result GraphFunction::fromJSON(
 		return res;
 	}
 
+	std::vector<std::pair<llvm::Type*, std::string>> outputs;
 	for (auto param : data["outputs"]) {
 		for (auto iter = param.begin(); iter != param.end(); ++iter) {
 			std::string qualifiedType = iter.value();
 			std::string docString = iter.key();
 
-			std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
-			std::string name = qualifiedType.substr(qualifiedType.find(':') + 1);
+			std::string module, name;
+			std::tie(module, name) = parseColonPair(qualifiedType);
 
 			llvm::Type* ty;
 			res += context.getType(module.c_str(), name.c_str(), &ty);
 
 			if (!res) return res;
 
-			ret->outputs.emplace_back(ty, docString);
+			outputs.emplace_back(ty, docString);
 		}
 	}
+
+	// construct it
+	*ret_ptr =
+		std::make_unique<GraphFunction>(context, name, std::move(inputs), std::move(outputs));
+	auto& ret = *ret_ptr;
 
 	ret->source = data;
 
@@ -103,6 +112,20 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 
 	jsonData["type"] = "function";
 	jsonData["name"] = graphName;
+
+	auto& inputsjson = jsonData["inputs"];
+	inputsjson = nlohmann::json::array();
+
+	for (auto& in : inputs) {
+		inputsjson.push_back({{in.second, "lang:" + context->stringifyType(in.first)}});
+	}
+
+	auto& outputsjson = jsonData["outputs"];
+	outputsjson = nlohmann::json::array();
+
+	for (auto& out : outputs) {
+		outputsjson.push_back({{out.second, "lang:" + context->stringifyType(out.first)}});
+	}
 
 	res += graph.toJson(toFill);
 
@@ -200,17 +223,29 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 	// create output blocks
 	std::vector<llvm::BasicBlock*> outputBlocks;
+	std::vector<llvm::BasicBlock*> unusedBlocks;
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto outBlock = llvm::BasicBlock::Create(f->getContext(), node->type->execOutputs[idx], f);
 		outputBlocks.push_back(outBlock);
-
-		outBlock->setName("node_" + node->outputExecConnections[idx].first->id);
+		if (node->outputExecConnections[idx].first != nullptr) {
+			outBlock->setName("node_" + node->outputExecConnections[idx].first->id);
+		} else {
+			unusedBlocks.push_back(outBlock);
+		}
 	}
 
 	// codegen
 	res += node->type->codegen(execInputID, mod, f, io, block, outputBlocks);
 	if (!res) {
 		return;
+	}
+
+	// TODO: sequence nodes
+	for (auto& bb : unusedBlocks) {
+		llvm::IRBuilder<> builder(bb);
+
+		builder.CreateRet(
+			llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(mod->getContext()), 0, true));
 	}
 
 	// recurse!
@@ -232,20 +267,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		return res;
 	}
 
-	llvm::Function* f = llvm::cast<llvm::Function>(
-		mod->getOrInsertFunction(graphName, getFunctionType()));  // TODO: name mangling
-	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
-	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), graphName + "_entry", f);
-	auto blockcpy = block;
-
-	// follow "linked list"
-	NodeInstance* node = getEntryNode();
-	unsigned execInputID =
-		node->outputExecConnections[0].second;  // the exec connection to codegen from
-
-	std::unordered_map<NodeInstance*, cache> nodeCache;
-
-	NodeInstance* outputNode;
+	NodeInstance* exitNode;
 	// get output node
 	{
 		auto outputNodes = graph.getNodesWithType("lang", "exit");
@@ -255,21 +277,72 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 			return res;
 		}
 
-		outputNode = outputNodes[0];
+		exitNode = outputNodes[0];
 	}
+
+	// make sure that the entry node has the functiontype
+	if (!std::equal(inputs.begin(), inputs.end(), entry->type->dataOutputs.begin())) {
+		nlohmann::json inFunc = nlohmann::json::array();
+		for (auto& in : inputs) {
+			inFunc.push_back({{in.second, "lang:" + context->stringifyType(in.first)}});
+		}
+
+		nlohmann::json inEntry = nlohmann::json::array();
+		for (auto& in : entry->type->dataOutputs) {  // outputs to entry are inputs to the function
+			inEntry.push_back({{in.second, "lang:" + context->stringifyType(in.first)}});
+		}
+
+		res.add_entry("EUKN", "Inputs to function doesn't match function inputs",
+			{{"Function Inputs", inFunc}, {"Entry Inputs", inEntry}});
+		return res;
+	}
+
+	// make sure that the entry node has the functiontype
+	if (!std::equal(outputs.begin(), outputs.end(), exitNode->type->dataInputs.begin())) {
+		nlohmann::json outFunc = nlohmann::json::array();
+		for (auto& out : outputs) {
+			outFunc.push_back({{out.second, "lang:" + context->stringifyType(out.first)}});
+		}
+
+		nlohmann::json outEntry = nlohmann::json::array();
+		for (auto& out :
+			exitNode->type->dataInputs) {  // inputs to the exit are outputs to the function
+			outEntry.push_back({{out.second, "lang:" + context->stringifyType(out.first)}});
+		}
+
+		res.add_entry("EUKN", "Outputs to function doesn't match function exit",
+			{{"Function Outputs", outFunc}, {"Entry Outputs", outEntry}});
+		return res;
+	}
+
+	llvm::Function* f = llvm::cast<llvm::Function>(
+		mod->getOrInsertFunction(graphName, getFunctionType()));  // TODO: name mangling
+	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
+	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), graphName + "_entry", f);
+	auto blockcpy = block;
+
+	// follow "linked list"
+	NodeInstance* entryNode = getEntryNode();
+	unsigned execInputID =
+		entryNode->outputExecConnections[0].second;  // the exec connection to codegen from
+
+	std::unordered_map<NodeInstance*, cache> nodeCache;
 
 	// set argument names
 	auto idx = 0ull;
 	for (auto& arg : f->getArgumentList()) {
-		if (idx < node->type->dataOutputs.size()) {
-			arg.setName(node->type->dataOutputs[idx].second);
+		if (idx < entryNode->type->dataOutputs
+					  .size()) {  // dataOutputs to entry are inputs to the function
+			arg.setName(entryNode->type->dataOutputs[idx]
+							.second);  // it starts with inputs, which are outputs to entry
 		} else {
-			arg.setName(outputNode->type->dataInputs[idx - node->type->dataOutputs.size()].second);
+			arg.setName(exitNode->type->dataInputs[idx - entryNode->type->dataOutputs.size()]
+							.second);  // then the outputs, which are inputs to exit
 		}
 		++idx;
 	}
 
-	codegenHelper(node, execInputID, block, allocblock, mod, f, nodeCache, res);
+	codegenHelper(entryNode, execInputID, block, allocblock, mod, f, nodeCache, res);
 
 	llvm::IRBuilder<> allocbuilder(allocblock);
 	allocbuilder.CreateBr(blockcpy);

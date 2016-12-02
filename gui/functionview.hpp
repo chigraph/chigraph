@@ -10,30 +10,38 @@
 #include <chig/JsonModule.hpp>
 #include <chig/NodeInstance.hpp>
 
-#include <unordered_map>
 #include <memory>
+#include <unordered_map>
 
-class FunctionView : public QWidget {
-	
+class FunctionView : public QWidget
+{
 	Q_OBJECT
 public:
-	
 	FlowScene* scene;
 	FlowView* view;
-	
-	FunctionView(chig::JsonModule* module, chig::GraphFunction* func_, std::shared_ptr< DataModelRegistry > reg, QWidget* parent = nullptr);
-	
+
+	FunctionView(chig::JsonModule* module, chig::GraphFunction* func_,
+		std::shared_ptr<DataModelRegistry> reg, QWidget* parent = nullptr);
+
 	chig::GraphFunction* func;
-	
+
 	std::unordered_map<chig::NodeInstance*, std::weak_ptr<Node>> assoc;
-    
+
+	// this contains absolute port ids
+	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
+		conns;
+
 public slots:
-    void nodeAdded(Node& n);
-    void nodeDeleted(Node& n);
-    
-    void connectionAdded(Connection& c);
-    void connectionDeleted(Connection& c);
-	
+	void nodeAdded(Node& n);
+	void nodeDeleted(Node& n);
+
+	void connectionAdded(const Connection& c);
+	void connectionDeleted(Connection& c);
+
+	void connectionUpdated(const Connection& c);
+
+private:
+	bool creating = true;
 };
 
-#endif // CHIGGUI_FUNCTIONVIEW_HPP
+#endif  // CHIGGUI_FUNCTIONVIEW_HPP

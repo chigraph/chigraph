@@ -16,7 +16,7 @@ TEST_CASE("JsonSerializer", "[json]")
 		Context c;
 		c.addModule(std::make_unique<LangModule>(c));
 
-		GraphFunction func(c, "hello");
+		GraphFunction func(c, "hello", {}, {});
 
 		auto requireWorks = [&](nlohmann::json expected) {
 			nlohmann::json ret;
@@ -35,7 +35,9 @@ TEST_CASE("JsonSerializer", "[json]")
 					"type": "function",
 					"name": "hello",
 					"nodes": {},
-					"connections": []
+					"connections": [],
+                    "inputs": [],
+                    "outputs": []
 				}
 			)ENDJSON"_json;
 
@@ -64,7 +66,9 @@ TEST_CASE("JsonSerializer", "[json]")
 								]
 							}
 						},
-						"connections": []
+						"connections": [],
+                        "inputs": [],
+                        "outputs": []
 					}
 					)ENDJSON"_json;
 
@@ -98,7 +102,9 @@ TEST_CASE("JsonSerializer", "[json]")
 									"data": null
 								}
 							},
-							"connections": []
+							"connections": [],
+                            "inputs": [],
+                            "outputs": []
 						}
 						)ENDJSON"_json;
 
@@ -135,7 +141,9 @@ TEST_CASE("JsonSerializer", "[json]")
 										"input": ["entry",0],
 										"output": ["if",0]
 									}
-								]
+								],
+                                "inputs": [],
+                                "outputs": []
 							}
 						)ENDJSON"_json;
 
@@ -179,7 +187,10 @@ TEST_CASE("JsonSerializer", "[json]")
 										"input": ["entry",0],
 										"output": ["if",0]
 									}
-								]
+								],
+								
+                                "inputs": [],
+                                "outputs": []
 								})ENDJSON"_json;
 
 							requireWorks(correctJSON);
