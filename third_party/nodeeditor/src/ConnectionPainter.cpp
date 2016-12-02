@@ -25,8 +25,7 @@ cubicPath(ConnectionGeometry const& geom)
   // cubic spline
   QPainterPath cubic(source);
 
-  //cubic.cubicTo(c1c2.first, c1c2.second, sink);
-  cubic.lineTo(sink);
+  cubic.cubicTo(c1c2.first, c1c2.second, sink);
   
   return cubic;
 }

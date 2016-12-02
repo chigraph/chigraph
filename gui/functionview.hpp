@@ -31,6 +31,8 @@ public:
 	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
 		conns;
 
+    void updatePositions();
+        
 public slots:
 	void nodeAdded(Node& n);
 	void nodeDeleted(Node& n);

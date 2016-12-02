@@ -93,6 +93,10 @@ int run(std::vector<std::string> opts)
 	std::unique_ptr<llvm::Module> llmod;
 	res += module->compile(&llmod);
 
+    if(!res) {
+      std::cerr << "Error compiling module: " << res.result_json.dump(2) << std::endl;
+    }
+    
 	// run it!
 
 	llvm::Function* entry = llmod->getFunction("main");
