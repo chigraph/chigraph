@@ -48,7 +48,9 @@ FunctionView::FunctionView(chig::JsonModule* /*module*/, chig::GraphFunction* fu
 
 		size_t connId = 0;
 		for (auto& conn : node.second->inputDataConnections) {
-			if (conn.first == nullptr){ continue; }
+			if (conn.first == nullptr) {
+				continue;
+			}
 			auto inData = assoc[conn.first].lock();
 
 			auto guiconn =
@@ -82,11 +84,15 @@ FunctionView::FunctionView(chig::JsonModule* /*module*/, chig::GraphFunction* fu
 
 void FunctionView::nodeAdded(Node& n)
 {
-	if (creating) {return;}
+	if (creating) {
+		return;
+	}
 
 	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel().get());
 
-	if (ptr == nullptr) {return;}
+	if (ptr == nullptr) {
+		return;
+	}
 
 	func->graph.nodes[ptr->inst->id] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
 }
@@ -94,14 +100,18 @@ void FunctionView::nodeDeleted(Node& n)
 {
 	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel().get());
 
-	if (ptr == nullptr) {return;}
+	if (ptr == nullptr) {
+		return;
+	}
 
 	func->graph.nodes.erase(ptr->inst->id);
 }
 
 void FunctionView::connectionAdded(const Connection& c)
 {
-	if (creating) { return; }
+	if (creating) {
+		return;
+	}
 
 	std::shared_ptr<Node> lguinode, rguinode;
 	lguinode = c.getNode(PortType::Out).lock();
@@ -109,13 +119,17 @@ void FunctionView::connectionAdded(const Connection& c)
 
 	connect(&c, &Connection::updated, this, &FunctionView::connectionUpdated);
 
-	if (!lguinode || !rguinode) {return;}
+	if (!lguinode || !rguinode) {
+		return;
+	}
 
 	// here, in and out mean input and output to the connection (like in chigraph)
 	auto outptr = dynamic_cast<ChigNodeGui*>(rguinode->nodeDataModel().get());
 	auto inptr = dynamic_cast<ChigNodeGui*>(lguinode->nodeDataModel().get());
 
-	if (outptr == nullptr || inptr == nullptr) {return;}
+	if (outptr == nullptr || inptr == nullptr) {
+		return;
+	}
 
 	size_t inconnid = c.getPortIndex(PortType::Out);
 	size_t outconnid = c.getPortIndex(PortType::In);
@@ -135,7 +149,9 @@ void FunctionView::connectionAdded(const Connection& c)
 void FunctionView::connectionDeleted(Connection& c)
 {
 	auto conniter = conns.find(&c);
-	if (conniter == conns.end()) { return; }
+	if (conniter == conns.end()) {
+		return;
+	}
 
 	auto conn = conniter->second;
 
@@ -177,7 +193,9 @@ void FunctionView::connectionUpdated(const Connection& c)
 
 	// find in assoc
 	auto iter = conns.find(&c);
-	if (iter == conns.end()) {return connectionAdded(c);}
+	if (iter == conns.end()) {
+		return connectionAdded(c);
+	}
 
 	// remove the existing connection
 }

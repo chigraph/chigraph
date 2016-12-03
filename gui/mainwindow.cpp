@@ -77,12 +77,11 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 
 void MainWindow::setupActions()
 {
-    auto actColl = this->KXmlGuiWindow::actionCollection();
-  
+	auto actColl = this->KXmlGuiWindow::actionCollection();
+
 	KStandardAction::quit(qApp, SLOT(quit()), actColl);
 
-	QAction* openAction =
-		actColl->addAction(KStandardAction::Open, QStringLiteral("open"));
+	QAction* openAction = actColl->addAction(KStandardAction::Open, QStringLiteral("open"));
 	openAction->setWhatsThis(QStringLiteral("Open a chigraph module"));
 	connect(openAction, &QAction::triggered, this, &MainWindow::openFile);
 
@@ -98,8 +97,7 @@ void MainWindow::setupActions()
 	QAction* newAction = actColl->addAction(KStandardAction::New, QStringLiteral("new"));
 	newAction->setWhatsThis(QStringLiteral("Create a new chigraph module"));
 
-	QAction* saveAction =
-		actColl->addAction(KStandardAction::Save, QStringLiteral("save"));
+	QAction* saveAction = actColl->addAction(KStandardAction::Save, QStringLiteral("save"));
 	saveAction->setWhatsThis(QStringLiteral("Save the chigraph module"));
 	connect(saveAction, &QAction::triggered, this, &MainWindow::save);
 
@@ -136,16 +134,15 @@ inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> toAdd)
 
 void MainWindow::save()
 {
-    for(size_t idx = 0; idx < functabs->count(); ++idx) {
-      auto func = functabs->widget(idx);
-      if (func != nullptr) {
-          auto castedFunc = dynamic_cast<FunctionView*>(func);
-          if(castedFunc != nullptr) {
-            castedFunc->updatePositions();
-          }
-      }  
-    }
-	
+	for (size_t idx = 0; idx < functabs->count(); ++idx) {
+		auto func = functabs->widget(idx);
+		if (func != nullptr) {
+			auto castedFunc = dynamic_cast<FunctionView*>(func);
+			if (castedFunc != nullptr) {
+				castedFunc->updatePositions();
+			}
+		}
+	}
 
 	if (module != nullptr) {
 		std::ofstream stream(filename.toStdString());
@@ -162,7 +159,9 @@ void MainWindow::openFile()
 	filename = QFileDialog::getOpenFileName(
 		this, i18n("Chig Module"), QDir::homePath(), tr("Chigraph Modules (*.chigmod)"));
 
-	if (filename == "") {return;}
+	if (filename == "") {
+		return;
+	}
 
 	QUrl url = QUrl::fromLocalFile(filename);
 
@@ -199,7 +198,8 @@ void MainWindow::openUrl(const QUrl& url)
 
 	if (!mod) {
 		KMessageBox::error(this,
-			R"(Unknown error in loading JsonModule from file ")" + filename + R"(")", "Error Loading");
+			R"(Unknown error in loading JsonModule from file ")" + filename + R"(")",
+			"Error Loading");
 		return;
 	}
 
@@ -209,7 +209,8 @@ void MainWindow::openUrl(const QUrl& url)
 	res += module->loadGraphs();
 
 	if (!res) {
-		KMessageBox::detailedError(this, R"(Failed to load graphs in JsonModule ")" + filename + R"(")",
+		KMessageBox::detailedError(this,
+			R"(Failed to load graphs in JsonModule ")" + filename + R"(")",
 			QString::fromStdString(res.result_json.dump(2)), "Error Loading");
 
 		return;
@@ -253,7 +254,9 @@ void MainWindow::closeTab(int idx)
 
 void MainWindow::run()
 {
-	if (module == nullptr) {return;}
+	if (module == nullptr) {
+		return;
+	}
 
 	// compile!
 	std::unique_ptr<llvm::Module> llmod;

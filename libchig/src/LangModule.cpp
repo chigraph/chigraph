@@ -210,7 +210,8 @@ Result EntryNodeType::codegen(size_t /*inputConnId*/, llvm::Module* /*mod*/, llv
 	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
-	Expects(f != nullptr && io.size() == dataOutputs.size() && codegenInto != nullptr && outputBlocks.size() == 1);
+	Expects(f != nullptr && io.size() == dataOutputs.size() && codegenInto != nullptr &&
+			outputBlocks.size() == 1);
 
 	llvm::IRBuilder<> builder(codegenInto);
 
