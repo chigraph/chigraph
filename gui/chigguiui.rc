@@ -10,7 +10,12 @@
     <Menu name="file" >
 	  <Action name="new" />
 	  <Action name="open" />
+      <Action name="open-recent" />
 	  <Action name="save" />
+    </Menu>
+    <Menu name="process" >
+	  <Action name="run" />
+      <text>&amp;Process</text>
     </Menu>
   </MenuBar>
  
@@ -18,6 +23,7 @@
     <text>Main Toolbar</text>
 	  <Action name="open" />
 	  <Action name="save" />
+	  <Action name="run" />
   </ToolBar>
  
 </gui>

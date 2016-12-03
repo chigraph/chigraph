@@ -40,7 +40,7 @@ struct Port
 
 //using PortAddress = std::pair<QUuid, PortIndex>;
 
-static
+static inline
 PortType
 oppositePort(PortType port)
 {

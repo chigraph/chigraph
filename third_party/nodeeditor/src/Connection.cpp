@@ -274,6 +274,7 @@ getNode(PortType portType) const
       // not possible
       break;
   }
+
 }
 
 
@@ -336,6 +337,8 @@ dataType() const
 
     return model->dataType(portType, index);
   }
+  
+  return {};
 }
 
 

@@ -178,12 +178,12 @@ TEST_CASE("JsonSerializer", "[json]")
 								},
 								"connections": [
 									{
-										"type": "exec",
+										"type": "data",
 										"input": ["entry",0],
 										"output": ["if",0]
 									},
 									{
-										"type": "data",
+										"type": "exec",
 										"input": ["entry",0],
 										"output": ["if",0]
 									}

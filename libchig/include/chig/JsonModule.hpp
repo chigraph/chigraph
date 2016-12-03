@@ -26,7 +26,7 @@ struct JsonModule : public ChigModule {
 
 	Result createNodeType(const char* name, const nlohmann::json& json_data,
 		std::unique_ptr<NodeType>* toFill) const override;
-	llvm::Type* getType(const char* name) const override { return nullptr; }
+	llvm::Type* getType(const char* /*name*/) const override { return nullptr; }
 	virtual std::vector<std::string> getNodeTypeNames() const override;  // TODO: implement
 	virtual std::vector<std::string> getTypeNames() const override
 	{

@@ -4,9 +4,11 @@
 #define CHIGGUI_MAINWINDOW_H
 
 #include <KXmlGuiWindow>
+#include <KStandardAction>
 
 #include <QListView>
 #include <QTabWidget>
+#include <QUrl>
 
 #include <nodes/FlowScene>
 #include <nodes/FlowView>
@@ -17,12 +19,14 @@
 
 #include "functionspane.hpp"
 #include "functionview.hpp"
+#include <QProcess>
 
 class MainWindow : public KXmlGuiWindow
 {
 	Q_OBJECT
 public:
 	MainWindow(QWidget* parent = nullptr);
+    ~MainWindow();
 
 	void setupActions();
 
@@ -41,12 +45,18 @@ public:
 
 public slots:
 	void openFile();
+    void openUrl(QUrl url);
 	void newFunctionSelected(QString name);
 	void save();
 	void closeTab(int idx);
+    void run();
+    void onSubprocessStdIn(QProcess* process);
 
 signals:
 	void openJsonModule(chig::JsonModule* mod);
+    
+private:
+    KRecentFilesAction* openRecentAction;
 };
 
 #endif  // CHIGGUI_MAINWINDOW_H
