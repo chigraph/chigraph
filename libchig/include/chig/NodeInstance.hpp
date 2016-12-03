@@ -10,7 +10,13 @@
 namespace chig
 {
 struct NodeInstance {
-	NodeInstance(std::unique_ptr<NodeType> nodeType, float x, float y, std::string id);
+  
+    /// Construct a nodeinstace with a type location and an ID
+    /// \param nodeType The type that the node is
+    /// \param posX The X location of the node
+    /// \param posY The Y location of the node
+    /// \param nodeID The unique ID for the node
+	NodeInstance(std::unique_ptr<NodeType> nodeType, float posX, float posY, std::string nodeID);
 
 	NodeInstance(NodeInstance&&) = default;
 	NodeInstance(const NodeInstance& other);

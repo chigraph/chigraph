@@ -8,6 +8,9 @@
 namespace chig
 {
 struct Result {
+  
+    Result() : result_json{nlohmann::json::array()}, success{true} {}
+  
 	void add_entry(const char* ec, const char* overview, nlohmann::json data)
 	{
 		assert(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
@@ -17,8 +20,8 @@ struct Result {
 		if (ec[0] == 'E') success = false;
 	}
 
-	nlohmann::json result_json = nlohmann::json::array();
-	bool success = true;
+	nlohmann::json result_json;
+	bool success;
 
 	operator bool() { return success; }
 	bool operator!() { return !success; }

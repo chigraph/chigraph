@@ -3,10 +3,10 @@
 using namespace chig;
 
 NodeInstance::NodeInstance(
-	std::unique_ptr<NodeType> nodeType, float arg_x, float arg_y, std::string id_)
-	: type{std::move(nodeType)}, x{arg_x}, y{arg_y}, id{std::move(id_)}
+	std::unique_ptr<NodeType> nodeType, float posX, float posY, std::string nodeID)
+	: type{std::move(nodeType)}, x{posX}, y{posY}, id{std::move(nodeID)}
 {
-	assert(type);
+	assert(type != nullptr);
 
 	inputDataConnections.resize(type->dataInputs.size(), {nullptr, ~0});
 	outputDataConnections.resize(type->dataOutputs.size(), {});
@@ -35,7 +35,7 @@ namespace chig
 Result connectData(
 	NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID)
 {
-	Result res;
+	Result res = {};
 
 	// make sure the connection exists
 	// the input to the connection is the output to the node
@@ -64,8 +64,9 @@ Result connectData(
 	}
 
 	// if there are errors, back out
-	if (!res) return res;
-
+	if (!res) {
+      return res;
+    }
 	// make sure the connection is of the right type
 	if (lhs.type->dataOutputs[connectionInputID].first !=
 		rhs.type->dataInputs[connectionOutputID].first) {
@@ -98,7 +99,7 @@ Result connectData(
 Result connectExec(
 	NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID)
 {
-	Result res;
+	Result res = {};
 
 	// make sure the connection exists
 	if (connectionInputID >= lhs.outputExecConnections.size()) {
@@ -126,8 +127,9 @@ Result connectExec(
 			});
 	}
 
-	if (!res) return res;
-
+	if (!res) {
+      return res;
+    }
 	// if we are replacing a connection, disconnect it
 	if (lhs.outputExecConnections[connectionInputID].first != nullptr) {
 		auto& extconnvec =
@@ -147,7 +149,7 @@ Result connectExec(
 
 Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs)
 {
-	Result res;
+	Result res = {};
 
 	if (connectionInputID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
@@ -206,7 +208,7 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 
 Result disconnectExec(NodeInstance& lhs, size_t connectionInputID)
 {
-	Result res;
+	Result res = {};
 
 	if (connectionInputID >= lhs.outputExecConnections.size()) {
 		auto execOutputs = nlohmann::json::array();

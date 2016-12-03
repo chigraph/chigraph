@@ -10,22 +10,23 @@
 
 using namespace chig;
 
-GraphFunction::GraphFunction(Context& context_, std::string name,
-	std::vector<std::pair<llvm::Type*, std::string>> inputs_,
-	std::vector<std::pair<llvm::Type*, std::string>> outputs_)
-	: graphName{std::move(name)},
-	  context{&context_},
-	  inputs(std::move(inputs_)),
-	  outputs(std::move(outputs_))
+GraphFunction::GraphFunction(Context& ctx, std::string name,
+	std::vector<std::pair<llvm::Type*, std::string>> ins,
+	std::vector<std::pair<llvm::Type*, std::string>> outs)
+	: context{&ctx},
+      graphName{std::move(name)},
+	  inputs(std::move(ins)),
+	  outputs(std::move(outs)),
+	  source{{}}
 {
 }
 
 GraphFunction::~GraphFunction() = default;
 
 Result GraphFunction::fromJSON(
-	Context& context, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_ptr)
+	Context& context, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_func)
 {
-	Result res;
+	Result res = {};
 
 	if (!data.is_object()) {
 		res.add_entry("E1", "Graph json isn't a JSON object", {});
@@ -33,7 +34,7 @@ Result GraphFunction::fromJSON(
 	}
 	// make sure it has a type element
 	if (data.find("type") == data.end()) {
-		res.add_entry("E2", "JSON in graph doesn't have a \"type\" element", {});
+		res.add_entry("E2", R"(JSON in graph doesn't have a "type" element)", {});
 		return res;
 	}
 	if (data["type"] != "function") {
@@ -64,8 +65,10 @@ Result GraphFunction::fromJSON(
 			llvm::Type* ty;
 			res += context.getType(module.c_str(), name.c_str(), &ty);
 
-			if (!res) return res;
-
+			if (!res) {
+              return res;
+            }
+            
 			inputs.emplace_back(ty, docString);
 		}
 	}
@@ -87,16 +90,18 @@ Result GraphFunction::fromJSON(
 			llvm::Type* ty;
 			res += context.getType(module.c_str(), name.c_str(), &ty);
 
-			if (!res) return res;
-
+			if (!res) {
+              return res;
+            }
+            
 			outputs.emplace_back(ty, docString);
 		}
 	}
 
 	// construct it
-	*ret_ptr =
+	*ret_func =
 		std::make_unique<GraphFunction>(context, name, std::move(inputs), std::move(outputs));
-	auto& ret = *ret_ptr;
+	auto& ret = *ret_func;
 
 	ret->source = data;
 
@@ -347,6 +352,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	llvm::IRBuilder<> allocbuilder(allocblock);
 	allocbuilder.CreateBr(blockcpy);
 
+    *ret_func = f;
 	return res;
 }
 

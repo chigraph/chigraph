@@ -41,16 +41,17 @@ struct Context {
 	/// Gets a llvm::Type from a module
 	/// \param module The name of the module, "lang" if nullptr
 	/// \param name The name of the type, required
-	/// \param ret_type The return type
+	/// \param toFill The \c llvm::Type to fill
 	/// \return The result
-	Result getType(const char* module, const char* name, llvm::Type** ret_type) noexcept;
+	Result getType(const char* module, const char* name, llvm::Type** toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
-	/// \param module The module name.
-	/// \param name The name of the node type
+	/// \param moduleName The module name.
+	/// \param typeName The name of the node type
 	/// \param data The JSON data that is used to construct the NodeType.
-	Result getNodeType(const char* module, const char* name, const nlohmann::json& data,
-		std::unique_ptr<NodeType>* ret_nodetype) noexcept;
+	/// \param toFill The point to fill
+	Result getNodeType(const char* moduleName, const char* typeName, const nlohmann::json& data,
+		std::unique_ptr<NodeType>* toFill) noexcept;
 
 	/// Turns a type into a string
 	/// \param ty The type to stringify

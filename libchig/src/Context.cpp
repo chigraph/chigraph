@@ -27,7 +27,7 @@ Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 {
 	Result res;
 
-	assert(modToAdd);
+	assert(modToAdd != nullptr);
 
 	// make sure it's unique
 	auto ptr = getModuleByName(modToAdd->name.c_str());
@@ -47,31 +47,31 @@ Result Context::getType(const char* module, const char* name, llvm::Type** toFil
 	Result res;
 
 	ChigModule* mod = getModuleByName(module);
-	if (!mod) {
+	if (mod == nullptr) {
 		res.add_entry("E36", "Could not find module", {{"module", module}});
 		return res;
 	}
 
 	*toFill = mod->getType(name);
-	if (!*toFill) {
+	if (*toFill == nullptr) {
 		res.add_entry("E37", "Could not find type in module", {{"type", name}, {"module", module}});
 	}
 
 	return res;
 }
 
-Result Context::getNodeType(const char* moduleName, const char* name, const nlohmann::json& data,
+Result Context::getNodeType(const char* moduleName, const char* typeName, const nlohmann::json& data,
 	std::unique_ptr<NodeType>* toFill) noexcept
 {
 	Result res;
 
 	auto module = getModuleByName(moduleName);
-	if (!module) {
+	if (module == nullptr) {
 		res.add_entry("E36", "Could not find module", {{"module", moduleName}});
 		return res;
 	}
 
-	res += module->createNodeType(name, data, toFill);
+	res += module->createNodeType(typeName, data, toFill);
 
 	return res;
 }

@@ -26,20 +26,20 @@ struct GraphFunction {
 	/// Also constructs a input node
 	/// \param context The context
 	/// \param name The name of the function
-	GraphFunction(Context& context, std::string name,
-		std::vector<std::pair<llvm::Type*, std::string>> inputs,
-		std::vector<std::pair<llvm::Type*, std::string>> outputs);
+	GraphFunction(Context& ctx, std::string name,
+		std::vector<std::pair<llvm::Type*, std::string>> ins,
+		std::vector<std::pair<llvm::Type*, std::string>> outs);
 
 	/// Destructor
 	~GraphFunction();
 
 	/// Constructs a GraphFunction from a JOSN object
-	/// \param j The JSON object to read from
-	/// \context The context to create the GraphFunction with
+	/// \param data The JSON object to read from
+	/// \param context The context to create the GraphFunction with
 	/// \param ret_func The GraphFunction that has been produced
 	/// \return The result
 	static Result fromJSON(
-		Context& context, const nlohmann::json& j, std::unique_ptr<GraphFunction>* ret_func);
+		Context& context, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_func);
 
 	/// Serialize the GraphFunction to JSON
 	/// \param toFill The JSON object representing the graph
@@ -48,10 +48,10 @@ struct GraphFunction {
 
 	/// Compile the graph to an \c llvm::Function
 	/// Throws on error
-	/// \param module The module to codgen into
-	/// \param ret The \c llvm::Function that it was compiled to
+	/// \param mod The module to codgen into
+	/// \param ret_func The \c llvm::Function that it was compiled to
 	/// \ret The result
-	Result compile(llvm::Module* module, llvm::Function** ret) const;
+	Result compile(llvm::Module* mod, llvm::Function** ret_func) const;
 
 	/// Gets the node with type lang:entry
 	/// returns {nullptr, ~0} on failure
@@ -78,13 +78,13 @@ struct GraphFunction {
 	/// \return The result
 	Result loadGraph();
 
+	Context* context;
 	std::string graphName;  /// the name of the function
 
 	std::vector<std::pair<llvm::Type*, std::string>> inputs;
 	std::vector<std::pair<llvm::Type*, std::string>> outputs;
 
 	nlohmann::json source;
-	Context* context;
 	Graph graph;
 };
 
