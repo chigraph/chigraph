@@ -18,9 +18,9 @@ struct CModule : ChigModule {
 	CModule(Context& context);
 	~CModule() = default;
 
-	virtual Result createNodeType(const char* name, const nlohmann::json& json_data,
+	virtual Result createNodeType(gsl::cstring_span<> name, const nlohmann::json& json_data,
 		std::unique_ptr<NodeType>* toFill) const override;
-	virtual llvm::Type* getType(const char* name) const override;
+	virtual llvm::Type* getType(gsl::cstring_span<> name) const override;
 
 	virtual std::vector<std::string> getNodeTypeNames() const override { return {"func"}; };
 	virtual std::vector<std::string> getTypeNames() const override { return {}; };
@@ -30,12 +30,12 @@ struct CModule : ChigModule {
 
 struct CFuncNode : NodeType {
 	CFuncNode(
-		Context& con, const std::string& modulecode, const std::string& functocall, Result& res);
+		Context& con, gsl::cstring_span<> modulecode, gsl::cstring_span<> functocall, Result& res);
 
 	// the function doesn't have to do anything...this class just holds metadata
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
-		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-		const std::vector<llvm::BasicBlock*>& outputBlocks) const override;
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const override;
 
 	virtual std::unique_ptr<NodeType> clone() const override;
 

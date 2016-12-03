@@ -16,6 +16,8 @@
 #include <llvm/IR/Type.h>
 #include <llvm/Support/raw_os_ostream.h>
 
+#include <gsl/gsl>
+
 namespace chig
 {
 /// The class that handles modules
@@ -32,7 +34,7 @@ struct Context {
 	/// Gets the module by the name
 	/// \param moduleName The name of the module to find
 	/// \return ret_module The module that has the name \c moduleName, nullptr if none were found
-	ChigModule* getModuleByName(const char* moduleName) noexcept;
+	ChigModule* getModuleByName(gsl::cstring_span<> moduleName) noexcept;
 
 	/// Adds a custom module to the Context
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
@@ -43,14 +45,14 @@ struct Context {
 	/// \param name The name of the type, required
 	/// \param toFill The \c llvm::Type to fill
 	/// \return The result
-	Result getType(const char* module, const char* name, llvm::Type** toFill) noexcept;
+	Result getType(gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::Type** toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
 	/// \param moduleName The module name.
 	/// \param typeName The name of the node type
 	/// \param data The JSON data that is used to construct the NodeType.
 	/// \param toFill The point to fill
-	Result getNodeType(const char* moduleName, const char* typeName, const nlohmann::json& data,
+	Result getNodeType(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName, const nlohmann::json& data,
 		std::unique_ptr<NodeType>* toFill) noexcept;
 
 	/// Turns a type into a string
@@ -64,7 +66,7 @@ struct Context {
 	std::vector<std::string> searchPaths;			   /// The places to search for modules
 
 private:
-	std::string resolveModulePath(const char* path);
+	std::string resolveModulePath(gsl::cstring_span<> path);
 };
 }
 

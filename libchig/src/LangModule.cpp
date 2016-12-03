@@ -1,9 +1,11 @@
+
 #include "chig/LangModule.hpp"
 #include "chig/Context.hpp"
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/Support/SourceMgr.h>
+#include <gsl/gsl_assert>
 
 using namespace chig;
 
@@ -36,7 +38,7 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 
 						llvm::Type* llty;
 						// TODO: maybe not discard res
-						res += context->getType(module.c_str(), type.c_str(), &llty);
+						res += context->getType(module, type, &llty);
 
 						if (!res) continue;
 
@@ -74,7 +76,7 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 
 						llvm::Type* llty;
 						// TODO: maybe not discard res
-						context->getType(module.c_str(), type.c_str(), &llty);
+						context->getType(module, type, &llty);
 
 						outputs.emplace_back(llty, docString);
 					}
@@ -129,29 +131,29 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 }
 
 Result LangModule::createNodeType(
-	const char* name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const
+	gsl::cstring_span<> name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const
 {
 	Result res;
 
-	auto iter = nodes.find(name);
+	auto iter = nodes.find(gsl::to_string(name));
 	if (iter != nodes.end()) {
 		*toFill = iter->second(json_data, res);
 		return res;
 	}
 
 	res.add_entry("E37", "Failed to find node in module",
-		{{"Module", "lang"}, {"Requested Node Type", name}});
+		{{"Module", "lang"}, {"Requested Node Type", gsl::to_string(name)}});
 
 	return res;
 }
 
 // the lang module just has the basic llvm types.
-llvm::Type* LangModule::getType(const char* name) const
+llvm::Type* LangModule::getType(gsl::cstring_span<> name) const
 {
 	using namespace std::string_literals;
 
 	// just parse the type
-	auto IR = "@G = external global "s + name;
+	auto IR = "@G = external global "s + gsl::to_string(name);
 	auto err = llvm::SMDiagnostic();
 	auto tmpModule = llvm::parseAssemblyString(IR, err, context->llcontext);
 	if (!tmpModule) return nullptr;
@@ -161,8 +163,8 @@ llvm::Type* LangModule::getType(const char* name) const
 }
 
 Result IfNodeType::codegen(size_t, llvm::Module* mod, llvm::Function*,
-	const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	const std::vector<llvm::BasicBlock*>& outputBlocks) const
+	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+    const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
 	llvm::IRBuilder<> builder(codegenInto);
 	builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
@@ -188,7 +190,7 @@ std::unique_ptr<chig::NodeType, std::default_delete<chig::NodeType>> IfNodeType:
 }
 
 EntryNodeType::EntryNodeType(
-	Context& con, const std::vector<std::pair<llvm::Type*, std::string>>& funInputs)
+	Context& con, const gsl::span<std::pair<llvm::Type*, std::string>> funInputs)
 	: NodeType{con}
 {
 	module = "lang";
@@ -197,13 +199,12 @@ EntryNodeType::EntryNodeType(
 
 	execOutputs = {""};
 
-	dataOutputs = funInputs;
+    dataOutputs = {funInputs.begin(), funInputs.end()};
 }
 
 Result EntryNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f,
-	const std::vector<llvm::Value*, std::allocator<llvm::Value*>>& io,
-	llvm::BasicBlock* codegenInto,
-	const std::vector<llvm::BasicBlock*, std::allocator<llvm::BasicBlock*>>& outputBlocks) const
+	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
 	llvm::IRBuilder<> builder(codegenInto);
 
@@ -250,12 +251,13 @@ ConstIntNodeType::ConstIntNodeType(Context& con, int num) : NodeType{con}, numbe
 }
 
 Result ConstIntNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f,
-	const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	const std::vector<llvm::BasicBlock*, std::allocator<llvm::BasicBlock*>>& outputBlocks) const
+	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
+    Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+  
 	llvm::IRBuilder<> builder(codegenInto);
 	// just go to the block
-	assert(io.size() == 1);
 
 	builder.CreateStore(
 		llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->llcontext), number), io[0],
@@ -284,12 +286,13 @@ ConstBoolNodeType::ConstBoolNodeType(Context& con, bool num) : NodeType{con}, va
 }
 
 Result ConstBoolNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f,
-	const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	const std::vector<llvm::BasicBlock*, std::allocator<llvm::BasicBlock*>>& outputBlocks) const
+	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
+    Expects(io.size() == 1 &&  codegenInto != nullptr && outputBlocks.size() == 1);
+  
 	llvm::IRBuilder<> builder(codegenInto);
 	// just go to the block
-	assert(io.size() == 1);
 
 	builder.CreateStore(
 		llvm::ConstantInt::get(llvm::IntegerType::getInt1Ty(context->llcontext), value), io[0],
@@ -306,7 +309,7 @@ std::unique_ptr<chig::NodeType> ConstBoolNodeType::clone() const
 
 nlohmann::json ConstBoolNodeType::toJSON() const { return value; }
 ExitNodeType::ExitNodeType(
-	Context& con, const std::vector<std::pair<llvm::Type*, std::string>>& funOutputs)
+	Context& con, const gsl::span<std::pair<llvm::Type*, std::string>> funOutputs)
 	: NodeType{con}
 {
 	execInputs = {""};
@@ -315,12 +318,12 @@ ExitNodeType::ExitNodeType(
 	name = "exit";
 	description = "exit from a function; think return";
 
-	dataInputs = funOutputs;
+	dataInputs = {funOutputs.begin(), funOutputs.end()};
 }
 
 Result ExitNodeType::codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
-	const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	const std::vector<llvm::BasicBlock*>&) const
+	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
 	// assign the return types
 	llvm::IRBuilder<> builder(codegenInto);
@@ -371,8 +374,8 @@ StringLiteralNodeType::StringLiteralNodeType(Context& con, std::string str)
 }
 
 Result StringLiteralNodeType::codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
-	const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	const std::vector<llvm::BasicBlock*>& outputBlocks) const
+	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
 	llvm::IRBuilder<> builder(codegenInto);
 

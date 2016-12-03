@@ -63,7 +63,7 @@ Result GraphFunction::fromJSON(
 			std::tie(module, name) = parseColonPair(qualifiedType);
 
 			llvm::Type* ty;
-			res += context.getType(module.c_str(), name.c_str(), &ty);
+			res += context.getType(module, name, &ty);
 
 			if (!res) {
               return res;
@@ -88,7 +88,7 @@ Result GraphFunction::fromJSON(
 			std::tie(module, name) = parseColonPair(qualifiedType);
 
 			llvm::Type* ty;
-			res += context.getType(module.c_str(), name.c_str(), &ty);
+			res += context.getType(module, name, &ty);
 
 			if (!res) {
               return res;

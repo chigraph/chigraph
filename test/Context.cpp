@@ -67,7 +67,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 
 			THEN("getType should work for basic types")
 			{
-				auto checkTy = [&](const char* ty) {
+				auto checkTy = [&](gsl::cstring_span<> ty) {
 					llvm::Type* llty;
 					res = c.getType("lang", ty, &llty);
 					REQUIRE(c.stringifyType(llty) == ty);

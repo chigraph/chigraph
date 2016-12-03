@@ -38,6 +38,7 @@ target_include_directories(chigcore
     ${Boost_INCLUDE_DIR}
 	include/
 	${CMAKE_BINARY_DIR}/
+	../third_party/GSL
 )
 
 target_compile_features(chigcore PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)

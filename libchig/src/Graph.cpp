@@ -34,7 +34,7 @@ Graph::Graph(Context& context_, const nlohmann::json& data, Result& res) : conte
 		}
 
 		std::unique_ptr<NodeType> nodeType;
-		res += context->getNodeType(moduleName.c_str(), typeName.c_str(), node["data"], &nodeType);
+		res += context->getNodeType(moduleName, typeName, node["data"], &nodeType);
 		if (!res) {
 			continue;
 		}

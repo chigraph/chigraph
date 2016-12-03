@@ -1,12 +1,14 @@
 #include "chig/NodeInstance.hpp"
 
+#include <gsl/gsl>
+
 using namespace chig;
 
 NodeInstance::NodeInstance(
 	std::unique_ptr<NodeType> nodeType, float posX, float posY, std::string nodeID)
 	: type{std::move(nodeType)}, x{posX}, y{posY}, id{std::move(nodeID)}
 {
-	assert(type != nullptr);
+	Expects(type != nullptr);
 
 	inputDataConnections.resize(type->dataInputs.size(), {nullptr, ~0});
 	outputDataConnections.resize(type->dataOutputs.size(), {});

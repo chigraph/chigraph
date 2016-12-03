@@ -13,7 +13,7 @@
 using namespace chig;
 
 CModule::CModule(Context& cont) : ChigModule(cont) { name = "c"; }
-llvm::Type* CModule::getType(const char* name) const
+llvm::Type* CModule::getType(gsl::cstring_span<>) const
 {
 	// TODO: implement
 
@@ -21,11 +21,11 @@ llvm::Type* CModule::getType(const char* name) const
 }
 
 Result CModule::createNodeType(
-	const char* name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const
+	gsl::cstring_span<> typeName, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const
 {
 	Result res;
 
-	if (strcmp(name, "func") == 0) {
+	if (typeName == "func") {
 		if (!json_data.is_object()) {
 			res.add_entry("WUKN", "Data for c:func must be an object", {{"Given Data"}, json_data});
 		}
@@ -62,8 +62,8 @@ Result CModule::createNodeType(
 }
 
 CFuncNode::CFuncNode(
-	chig::Context& con, const std::string& Ccode, const std::string& functocall_, Result& res)
-	: NodeType{con}, functocall{functocall_}, ccode(Ccode)
+	chig::Context& con, gsl::cstring_span<> Ccode, gsl::cstring_span<> functocall_, Result& res)
+	: NodeType{con}, functocall{gsl::to_string(functocall_)}, ccode(gsl::to_string(Ccode))
 {
 	module = "c";
 	name = "func";
@@ -80,7 +80,7 @@ CFuncNode::CFuncNode(
 		clangexe.set_wait_timeout(exec_stream_t::s_out, 100000);
 		std::vector<std::string> arguments = {"-xc", "-", "-c", "-emit-llvm", "-O0", "-o-"};
 		clangexe.start(CHIG_CLANG_EXE, arguments.begin(), arguments.end());
-		clangexe.in() << Ccode;
+		clangexe.in() << Ccode.data();
 		clangexe.close_in();
 
 		bitcode = std::string{
@@ -147,8 +147,8 @@ std::unique_ptr<NodeType> CFuncNode::clone() const
 }
 
 Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f,
-	const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	const std::vector<llvm::BasicBlock*>& outputBlocks) const
+	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
 	// create a copy of the module
 	auto copymod = llvm::CloneModule(llcompiledmod.get());
@@ -157,21 +157,21 @@ Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f,
 	llvm::Linker::linkModules(*mod, std::move(copymod));
 
 	auto llfunc = mod->getFunction(functocall);
-	assert(llfunc);
+	Expects(llfunc != nullptr);
 
 	llvm::IRBuilder<> builder(codegenInto);
 
-	std::vector<llvm::Value*> inputs = io;
+	gsl::span<llvm::Value*> inputs = io;
 
 	std::string outputName;
 
 	// remove the return type if there is one
 	if (dataOutputs.size()) {
-		inputs.pop_back();
+		inputs = inputs.subspan(0, inputs.size() -1 );
 		outputName = dataOutputs[0].second;
 	}
 
-	auto callinst = builder.CreateCall(llfunc, inputs, outputName);
+	auto callinst = builder.CreateCall(llfunc, {inputs.data(), (size_t)inputs.size()}, outputName);
 
 	// store theoutput if there are any
 	if (dataOutputs.size()) {

@@ -5,6 +5,8 @@
 
 #include "chig/json.hpp"
 
+#include <gsl/gsl>
+
 namespace chig
 {
 struct Result {
@@ -13,7 +15,7 @@ struct Result {
   
 	void add_entry(const char* ec, const char* overview, nlohmann::json data)
 	{
-		assert(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
+		Expects(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
 
 		result_json.push_back(
 			nlohmann::json({{"errorcode", ec}, {"overview", overview}, {"data", data}}));

@@ -49,8 +49,8 @@ struct NodeType {
 	/// numOutputExecs.
 	/// \return The Result
 	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
-		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-		const std::vector<llvm::BasicBlock*>& outputBlocks) const = 0;
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
 
 	/// Create the JSON necessary to store the object.
 	/// \ret The json obejct

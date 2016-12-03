@@ -4,6 +4,8 @@
 
 #include <chig/GraphFunction.hpp>
 
+#include <gsl/gsl_assert>
+
 FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(parent)
 {
 	connect(win, &MainWindow::openJsonModule, this, &FunctionsPane::updateModule);
@@ -13,7 +15,7 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 
 void FunctionsPane::updateModule(chig::JsonModule* mod)
 {
-	assert(mod);
+    Expects(mod != nullptr);
 
 	clear();
 

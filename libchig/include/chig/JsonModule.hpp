@@ -10,6 +10,8 @@
 #include "chig/ChigModule.hpp"
 #include "chig/NodeType.hpp"
 
+#include <gsl/gsl>
+
 #include <vector>
 
 namespace chig
@@ -24,9 +26,9 @@ struct JsonModule : public ChigModule {
 	JsonModule& operator=(const JsonModule&) = delete;
 	JsonModule& operator=(JsonModule&&) = delete;
 
-	Result createNodeType(const char* name, const nlohmann::json& jsonData,
+	Result createNodeType(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) const override;
-	llvm::Type* getType(const char* /*name*/) const override { return nullptr; }
+	llvm::Type* getType(gsl::cstring_span<> /*name*/) const override { return nullptr; }
 	virtual std::vector<std::string> getNodeTypeNames() const override;  // TODO: implement
 	virtual std::vector<std::string> getTypeNames() const override
 	{
@@ -43,15 +45,15 @@ struct JsonModule : public ChigModule {
 
 	std::vector<std::string> dependencies;
 
-	GraphFunction* graphFuncFromName(const char* str) const;
+	GraphFunction* graphFuncFromName(gsl::cstring_span<> name) const;
 };
 
 struct JsonFuncCallNodeType : public NodeType {
-	JsonFuncCallNodeType(Context* c, const JsonModule* json_module, const char* funcname, Result* resPtr);
+	JsonFuncCallNodeType(Context* c, const JsonModule* json_module, gsl::cstring_span<> funcname, Result* resPtr);
 
 	Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
-		const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-		const std::vector<llvm::BasicBlock*>& outputBlocks) const override;
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const override;
 
 	nlohmann::json toJSON() const override;
 

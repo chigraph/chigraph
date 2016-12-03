@@ -7,11 +7,13 @@
 
 #include <boost/filesystem.hpp>
 
+#include <gsl/gsl>
+
 using namespace chig;
 using namespace llvm;
 
 Context::Context() {}
-ChigModule* Context::getModuleByName(const char* moduleName) noexcept
+ChigModule* Context::getModuleByName(gsl::cstring_span<> moduleName) noexcept
 {
 	Result res;
 
@@ -25,12 +27,12 @@ ChigModule* Context::getModuleByName(const char* moduleName) noexcept
 
 Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 {
+    Expects(modToAdd != nullptr);
+  
 	Result res;
 
-	assert(modToAdd != nullptr);
-
 	// make sure it's unique
-	auto ptr = getModuleByName(modToAdd->name.c_str());
+	auto ptr = getModuleByName(modToAdd->name);
 	if (ptr != nullptr) {
 		res.add_entry(
 			"E24", "Cannot add already existing module again", {{"moduleName", modToAdd->name}});
@@ -42,32 +44,32 @@ Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 	return res;
 }
 
-Result Context::getType(const char* module, const char* name, llvm::Type** toFill) noexcept
+Result Context::getType(gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::Type** toFill) noexcept
 {
 	Result res;
 
 	ChigModule* mod = getModuleByName(module);
 	if (mod == nullptr) {
-		res.add_entry("E36", "Could not find module", {{"module", module}});
+		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(module)}});
 		return res;
 	}
 
 	*toFill = mod->getType(name);
 	if (*toFill == nullptr) {
-		res.add_entry("E37", "Could not find type in module", {{"type", name}, {"module", module}});
+		res.add_entry("E37", "Could not find type in module", {{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
 	}
 
 	return res;
 }
 
-Result Context::getNodeType(const char* moduleName, const char* typeName, const nlohmann::json& data,
+Result Context::getNodeType(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName, const nlohmann::json& data,
 	std::unique_ptr<NodeType>* toFill) noexcept
 {
 	Result res;
 
 	auto module = getModuleByName(moduleName);
 	if (module == nullptr) {
-		res.add_entry("E36", "Could not find module", {{"module", moduleName}});
+		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(moduleName)}});
 		return res;
 	}
 

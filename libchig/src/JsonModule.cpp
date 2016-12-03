@@ -105,10 +105,10 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const
 	return res;
 }
 
-GraphFunction* JsonModule::graphFuncFromName(const char* str) const
+GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const
 {
 	auto iter = std::find_if(
-		functions.begin(), functions.end(), [&](auto& ptr) { return ptr->graphName == str; });
+		functions.begin(), functions.end(), [&](auto& ptr) { return ptr->graphName == name; });
 
 	if (iter != functions.end()) { 
       return iter->get();
@@ -117,7 +117,7 @@ GraphFunction* JsonModule::graphFuncFromName(const char* str) const
 }
 
 Result JsonModule::createNodeType(
-	const char* name, const nlohmann::json& /*jsonData*/, std::unique_ptr<NodeType>* toFill) const
+	gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/, std::unique_ptr<NodeType>* toFill) const
 {
 	Result res = {};
 
@@ -125,11 +125,11 @@ Result JsonModule::createNodeType(
 
 	if (graph == nullptr) {
 		res.add_entry("EUKN", "Graph not found in module",
-			{{"Module Name", name}, {"Requested Graph", name}});
+			{{"Module Name", gsl::to_string(name)}, {"Requested Graph", gsl::to_string(name)}});
 	}
 
 	*toFill = std::make_unique<JsonFuncCallNodeType>(context, this, name, &res);
-	return {};
+	return res;
 }
 
 std::vector<std::string> JsonModule::getNodeTypeNames() const
@@ -153,7 +153,7 @@ Result JsonModule::loadGraphs()
 }
 
 JsonFuncCallNodeType::JsonFuncCallNodeType(
-	Context* c, const JsonModule* json_module, const char* funcname, Result* resPtr)
+	Context* c, const JsonModule* json_module, gsl::cstring_span<> funcname, Result* resPtr)
 	: NodeType(*c), JModule{json_module}
 {
   Result& res = *resPtr;
@@ -161,7 +161,7 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 	auto* mygraph = JModule->graphFuncFromName(funcname);
 
     if(mygraph == nullptr) {
-      res.add_entry("EUKN", "Graph doesn't exist in module", {{"Module Name", JModule->name}, {"Requested Name", funcname}});
+      res.add_entry("EUKN", "Graph doesn't exist in module", {{"Module Name", JModule->name}, {"Requested Name", gsl::to_string(funcname)}});
       return;
     }
 
@@ -169,7 +169,7 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 
 	dataInputs = mygraph->inputs;
 
-	name = funcname;
+	name = gsl::to_string(funcname);
 	module = JModule->name;
 	// TODO: description
 
@@ -178,8 +178,8 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 }
 
 Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod, llvm::Function* /*f*/,
-	const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	const std::vector<llvm::BasicBlock*>& outputBlocks) const
+	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
   
 	Result res = {};
@@ -197,7 +197,7 @@ Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod, 
 	}
 
 	// TODO: output blocks
-	builder.CreateCall(mod->getFunction(name), io);
+	builder.CreateCall(mod->getFunction(name), {io.data(), (size_t)io.size()});
 
 	builder.CreateBr(outputBlocks[0]);
 
@@ -208,5 +208,5 @@ nlohmann::json JsonFuncCallNodeType::toJSON() const { return {}; }
 std::unique_ptr<NodeType> JsonFuncCallNodeType::clone() const
 {
     Result res = {}; // there shouldn't be an error but check anywayss
-	return std::make_unique<JsonFuncCallNodeType>(context, JModule, name.c_str(), &res);
+	return std::make_unique<JsonFuncCallNodeType>(context, JModule, name, &res);
 }
