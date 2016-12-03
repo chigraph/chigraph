@@ -173,14 +173,13 @@ Result Graph::toJson(nlohmann::json* toFill) const
 		}
 
 		// add the data outputs
-		for (auto conn_id = 0ull; conn_id < node->outputDataConnections.size(); ++conn_id) {
-			auto& connsforid = node->outputDataConnections[conn_id];
-			for (auto& conn : connsforid) {
-				// if there is actually a connection
-				if (conn.first) {
-					jsonConnections.push_back({{"type", "data"}, {"input", {nodeID, conn_id}},
-						{"output", {conn.first->id, conn.second}}});
-				}
+		for (auto conn_id = 0ull; conn_id < node->inputDataConnections.size(); ++conn_id) {
+			// if there is actually a connection
+			auto& connpair = node->inputDataConnections[conn_id];
+			if (connpair.first) {
+				jsonConnections.push_back(
+					{{"type", "data"}, {"input", {connpair.first->id, connpair.second}},
+						{"output", {nodeID, conn_id}}});
 			}
 		}
 	}

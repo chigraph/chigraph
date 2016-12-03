@@ -48,6 +48,7 @@ FunctionView::FunctionView(chig::JsonModule* module, chig::GraphFunction* func_,
 
 		size_t connId = 0;
 		for (auto& conn : node.second->inputDataConnections) {
+			if (!conn.first) continue;
 			auto inData = assoc[conn.first].lock();
 
 			auto guiconn =
@@ -107,13 +108,12 @@ void FunctionView::connectionAdded(const Connection& c)
 	rguinode = c.getNode(PortType::In).lock();
 
 	connect(&c, &Connection::updated, this, &FunctionView::connectionUpdated);
-    
+
 	if (!lguinode || !rguinode) return;
 
 	// here, in and out mean input and output to the connection (like in chigraph)
 	auto outptr = dynamic_cast<ChigNodeGui*>(rguinode->nodeDataModel().get());
 	auto inptr = dynamic_cast<ChigNodeGui*>(lguinode->nodeDataModel().get());
-
 
 	if (!outptr || !inptr) return;
 
@@ -142,34 +142,34 @@ void FunctionView::connectionDeleted(Connection& c)
 	// see if it's data or exec
 	bool isExec = conn[0].second < conn[0].first->outputExecConnections.size();
 
-    chig::Result res;
-    
+	chig::Result res;
+
 	if (isExec) {
-		res  += chig::disconnectExec(*conn[0].first, conn[0].second);
+		res += chig::disconnectExec(*conn[0].first, conn[0].second);
 	} else {
 		res += chig::disconnectData(*conn[0].first,
 			conn[0].second - conn[0].first->outputExecConnections.size(), *conn[1].first);
 	}
-	
-	if(!res) {
-      KMessageBox::detailedError(this, "Internal error deleting connection", QString::fromStdString(res.result_json.dump(2)));
-    }
+
+	if (!res) {
+		KMessageBox::detailedError(this, "Internal error deleting connection",
+			QString::fromStdString(res.result_json.dump(2)));
+	}
 
 	conns.erase(&c);
 }
 
 void FunctionView::updatePositions()
 {
-  for(auto& inst : assoc) {
-    auto sptr = inst.second.lock();
-    if(sptr) {
-      QPointF pos = sptr->nodeGraphicsObject()->pos();
-      inst.first->x = pos.x();
-      inst.first->y = pos.y();
-    }
-  }
+	for (auto& inst : assoc) {
+		auto sptr = inst.second.lock();
+		if (sptr) {
+			QPointF pos = sptr->nodeGraphicsObject()->pos();
+			inst.first->x = pos.x();
+			inst.first->y = pos.y();
+		}
+	}
 }
-
 
 void FunctionView::connectionUpdated(const Connection& c)
 {

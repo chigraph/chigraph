@@ -105,11 +105,11 @@ inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> module)
 
 void MainWindow::save()
 {
-    auto func = functabs->currentWidget();
-    if(func) {
-      static_cast<FunctionView*>(func)->updatePositions();
-    }
-    
+	auto func = functabs->currentWidget();
+	if (func) {
+		static_cast<FunctionView*>(func)->updatePositions();
+	}
+
 	if (module) {
 		std::ofstream stream(filename.toStdString());
 
@@ -204,6 +204,4 @@ void MainWindow::closeTab(int idx)
 	openFunctions.erase(std::find_if(openFunctions.begin(), openFunctions.end(),
 		[&](auto& p) { return p.second == functabs->widget(idx); }));
 	functabs->removeTab(idx);
-    
-    
 }
