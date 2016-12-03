@@ -18,6 +18,8 @@ set(GUI_SRCS
 	chignodegui.cpp
 	functionspane.cpp
 	functionview.cpp
+	outputview.cpp
+	detailspanel.cpp
 )
 
 set(GUI_HEADERS
@@ -25,6 +27,8 @@ set(GUI_HEADERS
 	chignodegui.hpp
 	functionspane.hpp
 	functionview.hpp
+	outputview.hpp
+	detailspanel.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS})

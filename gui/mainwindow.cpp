@@ -1,35 +1,36 @@
 #include "mainwindow.hpp"
 
 #include <KActionCollection>
+#include <KConfigGroup>
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <KStandardAction>
-#include <KConfigGroup>
 
 #include <QAction>
 #include <QApplication>
 #include <QDebug>
 #include <QFileDialog>
 #include <QHBoxLayout>
+#include <QPlainTextEdit>
 #include <QProcess>
 #include <QSplitter>
 #include <QTextStream>
 
 #include <chig/CModule.hpp>
+#include <chig/Config.hpp>
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
 #include <chig/JsonModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/json.hpp>
-#include <chig/Config.hpp>
 
 #include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/Support/raw_ostream.h>
 
 #include <fstream>
 
-#include "chignodegui.hpp"
 #include <KSharedConfig>
+#include "chignodegui.hpp"
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
@@ -55,11 +56,19 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	functabs->setTabsClosable(true);
 	connect(functabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
 
+	outputView = new OutputView;
+
+	QSplitter* middlesplitter = new QSplitter;
+	middlesplitter->setOrientation(Qt::Vertical);
+	middlesplitter->addWidget(functabs);
+	middlesplitter->addWidget(outputView);
+	middlesplitter->setSizes({1000, 200});
+
 	splitter->addWidget(functionpane);
-	splitter->addWidget(functabs);
+	splitter->addWidget(middlesplitter);
 	splitter->setSizes({200, 1000});
-    splitter->setCollapsible(0, false);
-    splitter->setCollapsible(1, false);
+	splitter->setCollapsible(0, false);
+	splitter->setCollapsible(1, false);
 
 	hlayout->addWidget(splitter);
 
@@ -74,16 +83,15 @@ void MainWindow::setupActions()
 		actionCollection()->addAction(KStandardAction::Open, QStringLiteral("open"));
 	openAction->setWhatsThis(QStringLiteral("Open a chigraph module"));
 	connect(openAction, &QAction::triggered, this, &MainWindow::openFile);
-    
-    openRecentAction = KStandardAction::openRecent(this, &MainWindow::openUrl, nullptr);
-    actionCollection()->addAction(QStringLiteral("open-recent"), openRecentAction);
-    
-    openRecentAction->setToolBarMode(KRecentFilesAction::MenuMode);
-    openRecentAction->setToolButtonPopupMode(QToolButton::DelayedPopup);
-    openRecentAction->setIconText(i18nc("action, to open an archive", "Open"));
-    openRecentAction->setToolTip(i18n("Open an archive"));
-    openRecentAction->loadEntries(KSharedConfig::openConfig()->group("Recent Files"));
 
+	openRecentAction = KStandardAction::openRecent(this, &MainWindow::openUrl, nullptr);
+	actionCollection()->addAction(QStringLiteral("open-recent"), openRecentAction);
+
+	openRecentAction->setToolBarMode(KRecentFilesAction::MenuMode);
+	openRecentAction->setToolButtonPopupMode(QToolButton::DelayedPopup);
+	openRecentAction->setIconText(i18nc("action, to open an archive", "Open"));
+	openRecentAction->setToolTip(i18n("Open an archive"));
+	openRecentAction->loadEntries(KSharedConfig::openConfig()->group("Recent Files"));
 
 	QAction* newAction = actionCollection()->addAction(KStandardAction::New, QStringLiteral("new"));
 	newAction->setWhatsThis(QStringLiteral("Create a new chigraph module"));
@@ -92,20 +100,20 @@ void MainWindow::setupActions()
 		actionCollection()->addAction(KStandardAction::Save, QStringLiteral("save"));
 	saveAction->setWhatsThis(QStringLiteral("Save the chigraph module"));
 	connect(saveAction, &QAction::triggered, this, &MainWindow::save);
-    
-    QAction* runAction = new QAction;
-    runAction->setText(i18n("&Run"));
-    runAction->setIcon(QIcon::fromTheme("system-run"));
-    actionCollection()->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
-    actionCollection()->addAction(QStringLiteral("run"), runAction);
-    connect(runAction, &QAction::triggered, this, &MainWindow::run);
 
-    
+	QAction* runAction = new QAction;
+	runAction->setText(i18n("&Run"));
+	runAction->setIcon(QIcon::fromTheme("system-run"));
+	actionCollection()->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
+	actionCollection()->addAction(QStringLiteral("run"), runAction);
+	connect(runAction, &QAction::triggered, this, &MainWindow::run);
+
 	setupGUI(Default, "chigguiui.rc");
 }
 
-MainWindow::~MainWindow() {
-  openRecentAction->saveEntries(KSharedConfig::openConfig()->group("Recent Files"));
+MainWindow::~MainWindow()
+{
+	openRecentAction->saveEntries(KSharedConfig::openConfig()->group("Recent Files"));
 }
 
 inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> module)
@@ -147,15 +155,16 @@ void MainWindow::openFile()
 		this, i18n("Chig Module"), QDir::homePath(), tr("Chigraph Modules (*.chigmod)"));
 
 	if (filename == "") return;
-    
-    QUrl url = QUrl::fromLocalFile(filename);
-    
-    openRecentAction->addUrl(url);
-    openUrl(url);
+
+	QUrl url = QUrl::fromLocalFile(filename);
+
+	openRecentAction->addUrl(url);
+	openUrl(url);
 }
 
-void MainWindow::openUrl(QUrl url) {
-  	std::ifstream stream(url.toLocalFile().toStdString());
+void MainWindow::openUrl(QUrl url)
+{
+	std::ifstream stream(url.toLocalFile().toStdString());
 
 	chig::Result res;
 
@@ -234,38 +243,34 @@ void MainWindow::closeTab(int idx)
 	functabs->removeTab(idx);
 }
 
-void MainWindow::run() {
-
-  if(!module) return;
-  
-  // compile!
-  std::unique_ptr<llvm::Module> llmod;
-  chig::Result res = module->compile(&llmod);
-  
-  if(!res) {
-    KMessageBox::detailedError(this, "Failed to compile module", QString::fromStdString(res.result_json.dump(2)));
-  }
-  
-  std::string str;
-  llvm::raw_string_ostream os(str);
-  
-  llvm::WriteBitcodeToFile(llmod.get(), os);
-  
-  
-  // run in lli
-  auto lliproc = new QProcess(this);
-  lliproc->setProgram(QStringLiteral(CHIG_LLI_EXE));
-  lliproc->start();
-  lliproc->write(str.c_str(), str.length());
-  
-  connect(lliproc, &QProcess::readyReadStandardOutput, this, [this, lliproc](){
-    onSubprocessStdIn(lliproc);
-  });
-  
-}
-
-void MainWindow::onSubprocessStdIn(QProcess* process)
+void MainWindow::run()
 {
-  std::cout << process->readAllStandardOutput().constData();
-}
+	if (!module) return;
 
+	// compile!
+	std::unique_ptr<llvm::Module> llmod;
+	chig::Result res = module->compile(&llmod);
+
+	if (!res) {
+		KMessageBox::detailedError(
+			this, "Failed to compile module", QString::fromStdString(res.result_json.dump(2)));
+
+		return;
+	}
+
+	std::string str;
+	{
+		llvm::raw_string_ostream os(str);
+
+		llvm::WriteBitcodeToFile(llmod.get(), os);
+	}
+
+	// run in lli
+	auto lliproc = new QProcess(this);
+	lliproc->setProgram(QStringLiteral(CHIG_LLI_EXE));
+	lliproc->start();
+	lliproc->write(str.c_str(), str.length());
+	lliproc->closeWriteChannel();
+
+	outputView->setProcess(lliproc);
+}

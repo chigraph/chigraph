@@ -3,10 +3,11 @@
 #ifndef CHIGGUI_MAINWINDOW_H
 #define CHIGGUI_MAINWINDOW_H
 
-#include <KXmlGuiWindow>
 #include <KStandardAction>
+#include <KXmlGuiWindow>
 
 #include <QListView>
+#include <QPlainTextEdit>
 #include <QTabWidget>
 #include <QUrl>
 
@@ -17,22 +18,24 @@
 #include <chig/Context.hpp>
 #include <chig/JsonModule.hpp>
 
+#include <QProcess>
 #include "functionspane.hpp"
 #include "functionview.hpp"
-#include <QProcess>
+#include "outputview.hpp"
 
 class MainWindow : public KXmlGuiWindow
 {
 	Q_OBJECT
 public:
 	MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
+	~MainWindow();
 
 	void setupActions();
 
 	std::unordered_map<QString, QWidget*> openFunctions;
 	QTabWidget* functabs;
 	std::shared_ptr<DataModelRegistry> reg;
+	OutputView* outputView;
 
 	FunctionsPane* functionpane;
 
@@ -45,18 +48,17 @@ public:
 
 public slots:
 	void openFile();
-    void openUrl(QUrl url);
+	void openUrl(QUrl url);
 	void newFunctionSelected(QString name);
 	void save();
 	void closeTab(int idx);
-    void run();
-    void onSubprocessStdIn(QProcess* process);
+	void run();
 
 signals:
 	void openJsonModule(chig::JsonModule* mod);
-    
+
 private:
-    KRecentFilesAction* openRecentAction;
+	KRecentFilesAction* openRecentAction;
 };
 
 #endif  // CHIGGUI_MAINWINDOW_H

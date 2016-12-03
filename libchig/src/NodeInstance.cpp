@@ -149,7 +149,7 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 {
 	Result res;
 
-	if (lhs.outputDataConnections.size() <= connectionInputID) {
+	if (connectionInputID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
 		for (auto& output : lhs.type->dataOutputs) {
 			dataOutputs.push_back(
@@ -208,7 +208,7 @@ Result disconnectExec(NodeInstance& lhs, size_t connectionInputID)
 {
 	Result res;
 
-	if (connectionInputID <= lhs.outputExecConnections.size()) {
+	if (connectionInputID >= lhs.outputExecConnections.size()) {
 		auto execOutputs = nlohmann::json::array();
 		for (auto& output : lhs.type->execOutputs) {
 			execOutputs.push_back(output);

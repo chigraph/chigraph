@@ -77,7 +77,7 @@ public:
 	}
 
 	virtual void setInData(std::shared_ptr<NodeData>, PortIndex) override {}
-	virtual std::shared_ptr<NodeData> outData(PortIndex port) override { return nullptr; }
+	virtual std::shared_ptr<NodeData> outData(PortIndex /*port*/) override { return nullptr; }
 	virtual QWidget* embeddedWidget() override { return nullptr; };
 	// We don't need saving...chigraph has its own serialization
 	void save(Properties&) const override {}
