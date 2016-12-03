@@ -24,7 +24,7 @@ using namespace chig;
 namespace fs = boost::filesystem;
 namespace po = boost::program_options;
 
-int compile(const std::vector<std::string> opts)
+int compile(const std::vector<std::string>& opts)
 {
 	po::options_description compile_opts("compile options");
 	compile_opts.add_options()("input-file", po::value<std::string>(), "Input file, - for stdin")(
@@ -46,7 +46,7 @@ int compile(const std::vector<std::string> opts)
 
 	std::string infile = vm["input-file"].as<std::string>();
 
-	nlohmann::json read_json;
+	nlohmann::json read_json = {};
 
 	if (infile == "-") {
 		std::cin >> read_json;
@@ -98,7 +98,7 @@ int compile(const std::vector<std::string> opts)
 	}
 
 	fs::path outpath;
-	if (vm.count("output")) {
+	if (vm.count("output") != 0) {
 		outpath = vm["output"].as<std::string>();
 	} else {
 		outpath = "-";
@@ -115,7 +115,7 @@ int compile(const std::vector<std::string> opts)
 					  outpath.string(), ec, llvm::sys::fs::F_None));
 
 		std::string outtype;
-		if (vm.count("output-type")) {
+		if (vm.count("output-type") != 0) {
 			outtype = vm["output-type"].as<std::string>();
 
 		} else {

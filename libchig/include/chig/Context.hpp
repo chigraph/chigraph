@@ -45,15 +45,16 @@ struct Context {
 	/// \param name The name of the type, required
 	/// \param toFill The \c llvm::Type to fill
 	/// \return The result
-	Result getType(gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::Type** toFill) noexcept;
+	Result getType(
+		gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::Type** toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
 	/// \param moduleName The module name.
 	/// \param typeName The name of the node type
 	/// \param data The JSON data that is used to construct the NodeType.
 	/// \param toFill The point to fill
-	Result getNodeType(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName, const nlohmann::json& data,
-		std::unique_ptr<NodeType>* toFill) noexcept;
+	Result getNodeType(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+		const nlohmann::json& data, std::unique_ptr<NodeType>* toFill) noexcept;
 
 	/// Turns a type into a string
 	/// \param ty The type to stringify

@@ -92,7 +92,7 @@ struct StringLiteralNodeType : NodeType {
 };
 
 struct LangModule : ChigModule {
-	LangModule(Context& context);
+	LangModule(Context& ctx);
 	~LangModule() = default;
 
 	virtual Result createNodeType(gsl::cstring_span<> name, const nlohmann::json& json_data,

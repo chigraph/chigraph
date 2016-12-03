@@ -14,7 +14,7 @@ GraphFunction::GraphFunction(Context& ctx, std::string name,
 	std::vector<std::pair<llvm::Type*, std::string>> ins,
 	std::vector<std::pair<llvm::Type*, std::string>> outs)
 	: context{&ctx},
-      graphName{std::move(name)},
+	  graphName{std::move(name)},
 	  inputs(std::move(ins)),
 	  outputs(std::move(outs)),
 	  source{{}}
@@ -66,9 +66,9 @@ Result GraphFunction::fromJSON(
 			res += context.getType(module, name, &ty);
 
 			if (!res) {
-              return res;
-            }
-            
+				return res;
+			}
+
 			inputs.emplace_back(ty, docString);
 		}
 	}
@@ -91,9 +91,9 @@ Result GraphFunction::fromJSON(
 			res += context.getType(module, name, &ty);
 
 			if (!res) {
-              return res;
-            }
-            
+				return res;
+			}
+
 			outputs.emplace_back(ty, docString);
 		}
 	}
@@ -156,7 +156,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		size_t inputID = 0;
 		for (auto& param : node->inputDataConnections) {
 			// make sure everything is A-OK
-			if (!param.first) {
+			if (param.first == nullptr) {
 				res.add_entry(
 					"EUKN", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
 
@@ -256,9 +256,10 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	// recurse!
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
-		if (output.first)
+		if (output.first != nullptr) {
 			codegenHelper(
 				output.first, output.second, outputBlocks[idx], allocblock, mod, f, nodeCache, res);
+		}
 	}
 }
 
@@ -267,7 +268,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	Result res;
 
 	auto entry = getEntryNode();
-	if (!entry) {
+	if (entry == nullptr) {
 		res.add_entry("EUKN", "No entry node", {});
 		return res;
 	}
@@ -352,7 +353,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	llvm::IRBuilder<> allocbuilder(allocblock);
 	allocbuilder.CreateBr(blockcpy);
 
-    *ret_func = f;
+	*ret_func = f;
 	return res;
 }
 

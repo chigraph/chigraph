@@ -14,8 +14,8 @@
 #include <string>
 #include <vector>
 
-extern int compile(const std::vector<std::string> opts);
-extern int run(const std::vector<std::string> opts);
+extern int compile(const std::vector<std::string>& opts);
+extern int run(const std::vector<std::string>& opts);
 
 using namespace chig;
 

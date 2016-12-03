@@ -15,12 +15,12 @@
 namespace chig
 {
 struct CModule : ChigModule {
-	CModule(Context& context);
+	CModule(Context& ctx);
 	~CModule() = default;
 
-	virtual Result createNodeType(gsl::cstring_span<> name, const nlohmann::json& json_data,
+	virtual Result createNodeType(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
 		std::unique_ptr<NodeType>* toFill) const override;
-	virtual llvm::Type* getType(gsl::cstring_span<> name) const override;
+	virtual llvm::Type* getType(gsl::cstring_span<> typeName) const override;
 
 	virtual std::vector<std::string> getNodeTypeNames() const override { return {"func"}; };
 	virtual std::vector<std::string> getTypeNames() const override { return {}; };
@@ -30,7 +30,7 @@ struct CModule : ChigModule {
 
 struct CFuncNode : NodeType {
 	CFuncNode(
-		Context& con, gsl::cstring_span<> modulecode, gsl::cstring_span<> functocall, Result& res);
+		Context& con, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res);
 
 	// the function doesn't have to do anything...this class just holds metadata
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,

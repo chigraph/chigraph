@@ -49,7 +49,8 @@ struct JsonModule : public ChigModule {
 };
 
 struct JsonFuncCallNodeType : public NodeType {
-	JsonFuncCallNodeType(Context* c, const JsonModule* json_module, gsl::cstring_span<> funcname, Result* resPtr);
+	JsonFuncCallNodeType(
+		Context* c, const JsonModule* json_module, gsl::cstring_span<> funcname, Result* resPtr);
 
 	Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,

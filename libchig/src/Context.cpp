@@ -27,8 +27,8 @@ ChigModule* Context::getModuleByName(gsl::cstring_span<> moduleName) noexcept
 
 Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 {
-    Expects(modToAdd != nullptr);
-  
+	Expects(modToAdd != nullptr);
+
 	Result res;
 
 	// make sure it's unique
@@ -44,7 +44,8 @@ Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 	return res;
 }
 
-Result Context::getType(gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::Type** toFill) noexcept
+Result Context::getType(
+	gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::Type** toFill) noexcept
 {
 	Result res;
 
@@ -56,14 +57,15 @@ Result Context::getType(gsl::cstring_span<> module, gsl::cstring_span<> name, ll
 
 	*toFill = mod->getType(name);
 	if (*toFill == nullptr) {
-		res.add_entry("E37", "Could not find type in module", {{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
+		res.add_entry("E37", "Could not find type in module",
+			{{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
 	}
 
 	return res;
 }
 
-Result Context::getNodeType(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName, const nlohmann::json& data,
-	std::unique_ptr<NodeType>* toFill) noexcept
+Result Context::getNodeType(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+	const nlohmann::json& data, std::unique_ptr<NodeType>* toFill) noexcept
 {
 	Result res;
 

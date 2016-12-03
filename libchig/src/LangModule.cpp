@@ -9,7 +9,7 @@
 
 using namespace chig;
 
-LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
+LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 {
 	using namespace std::string_literals;
 
@@ -40,7 +40,9 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 						// TODO: maybe not discard res
 						res += context->getType(module, type, &llty);
 
-						if (!res) continue;
+						if (!res) {
+							continue;
+						}
 
 						inputs.emplace_back(llty, docString);
 					}
@@ -52,10 +54,8 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 
 				if (res) {
 					return std::make_unique<EntryNodeType>(*context, inputs);
-
-				} else {
-					return std::unique_ptr<EntryNodeType>();
 				}
+				return std::unique_ptr<EntryNodeType>();
 			}},
 		{"exit"s,
 			[this](const nlohmann::json& data, Result& res) {
@@ -130,8 +130,8 @@ LangModule::LangModule(Context& contextArg) : ChigModule(contextArg)
 		 }}};
 }
 
-Result LangModule::createNodeType(
-	gsl::cstring_span<> name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const
+Result LangModule::createNodeType(gsl::cstring_span<> name, const nlohmann::json& json_data,
+	std::unique_ptr<NodeType>* toFill) const
 {
 	Result res;
 
@@ -156,16 +156,20 @@ llvm::Type* LangModule::getType(gsl::cstring_span<> name) const
 	auto IR = "@G = external global "s + gsl::to_string(name);
 	auto err = llvm::SMDiagnostic();
 	auto tmpModule = llvm::parseAssemblyString(IR, err, context->llcontext);
-	if (!tmpModule) return nullptr;
+	if (!tmpModule) {
+		return nullptr;
+	}
 
 	// returns the pointer type, so get the contained type
 	return tmpModule->getNamedValue("G")->getType()->getContainedType(0);
 }
 
-Result IfNodeType::codegen(size_t, llvm::Module* mod, llvm::Function*,
+Result IfNodeType::codegen(size_t /*inExecID*/, llvm::Module* /*mod*/, llvm::Function* /*f*/,
 	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-    const gsl::span<llvm::BasicBlock*> outputBlocks) const
+	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
+	Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 2);
+
 	llvm::IRBuilder<> builder(codegenInto);
 	builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
 
@@ -199,19 +203,21 @@ EntryNodeType::EntryNodeType(
 
 	execOutputs = {""};
 
-    dataOutputs = {funInputs.begin(), funInputs.end()};
+	dataOutputs = {funInputs.begin(), funInputs.end()};
 }
 
-Result EntryNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f,
+Result EntryNodeType::codegen(size_t /*inputConnId*/, llvm::Module* /*mod*/, llvm::Function* f,
 	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const
+	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
+	Expects(f != nullptr && io.size() == dataOutputs.size() && codegenInto != nullptr && outputBlocks.size() == 1);
+
 	llvm::IRBuilder<> builder(codegenInto);
 
 	// store the arguments
 	auto arg_iter = f->arg_begin();
-	for (size_t id = 0; id < io.size(); ++id) {
-		builder.CreateStore(&*arg_iter, io[id]);
+	for (const auto& iovalue : io) {
+		builder.CreateStore(&*arg_iter, iovalue);
 
 		++arg_iter;
 	}
@@ -250,12 +256,12 @@ ConstIntNodeType::ConstIntNodeType(Context& con, int num) : NodeType{con}, numbe
 	dataOutputs = {{llvm::IntegerType::getInt32Ty(con.llcontext), "out"}};
 }
 
-Result ConstIntNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f,
-	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const
+Result ConstIntNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
+	llvm::Function* /*f*/, const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
-    Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
-  
+	Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+
 	llvm::IRBuilder<> builder(codegenInto);
 	// just go to the block
 
@@ -285,18 +291,18 @@ ConstBoolNodeType::ConstBoolNodeType(Context& con, bool num) : NodeType{con}, va
 	dataOutputs = {{llvm::IntegerType::getInt1Ty(con.llcontext), "out"}};
 }
 
-Result ConstBoolNodeType::codegen(size_t, llvm::Module* mod, llvm::Function* f,
-	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const
+Result ConstBoolNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
+	llvm::Function* /*f*/, const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
-    Expects(io.size() == 1 &&  codegenInto != nullptr && outputBlocks.size() == 1);
-  
+	Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+
 	llvm::IRBuilder<> builder(codegenInto);
 	// just go to the block
 
-	builder.CreateStore(
-		llvm::ConstantInt::get(llvm::IntegerType::getInt1Ty(context->llcontext), value), io[0],
-		false);
+	builder.CreateStore(llvm::ConstantInt::get(llvm::IntegerType::getInt1Ty(context->llcontext),
+							static_cast<uint64_t>(value)),
+		io[0], false);
 	builder.CreateBr(outputBlocks[0]);
 
 	return {};
@@ -321,18 +327,21 @@ ExitNodeType::ExitNodeType(
 	dataInputs = {funOutputs.begin(), funOutputs.end()};
 }
 
-Result ExitNodeType::codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
+Result ExitNodeType::codegen(size_t execInputID, llvm::Module* /*mod*/, llvm::Function* f,
 	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const
+	const gsl::span<llvm::BasicBlock*> /*outputBlocks*/) const
 {
+	Expects(execInputID < execInputs.size() && f != nullptr && io.size() == dataInputs.size() &&
+			codegenInto != nullptr);
+
 	// assign the return types
 	llvm::IRBuilder<> builder(codegenInto);
 	size_t ret_start =
 		f->arg_size() - io.size();  // returns are after args, find where returns start
 	auto arg_iter = f->arg_begin();
 	std::advance(arg_iter, ret_start);
-	for (int idx = 0; idx < io.size(); ++idx) {
-		builder.CreateStore(io[idx], &*arg_iter, false);  // TODO: volitility?
+	for (auto& value : io) {
+		builder.CreateStore(value, &*arg_iter, false);  // TODO: volitility?
 		++arg_iter;
 	}
 
@@ -373,10 +382,12 @@ StringLiteralNodeType::StringLiteralNodeType(Context& con, std::string str)
 	dataOutputs = {{llvm::PointerType::getInt8PtrTy(con.llcontext, 0), "string"}};
 }
 
-Result StringLiteralNodeType::codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
-	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const
+Result StringLiteralNodeType::codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
+	llvm::Function* /*f*/, const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
+	Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+
 	llvm::IRBuilder<> builder(codegenInto);
 
 	auto global = builder.CreateGlobalString(literalString);

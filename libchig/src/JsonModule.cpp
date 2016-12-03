@@ -9,7 +9,8 @@
 
 using namespace chig;
 
-JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* res) : ChigModule(cont)
+JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* res)
+	: ChigModule(cont)
 {
 	// load name
 	{
@@ -110,14 +111,14 @@ GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const
 	auto iter = std::find_if(
 		functions.begin(), functions.end(), [&](auto& ptr) { return ptr->graphName == name; });
 
-	if (iter != functions.end()) { 
-      return iter->get();
-    }
+	if (iter != functions.end()) {
+		return iter->get();
+	}
 	return nullptr;
 }
 
-Result JsonModule::createNodeType(
-	gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/, std::unique_ptr<NodeType>* toFill) const
+Result JsonModule::createNodeType(gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/,
+	std::unique_ptr<NodeType>* toFill) const
 {
 	Result res = {};
 
@@ -156,14 +157,15 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 	Context* c, const JsonModule* json_module, gsl::cstring_span<> funcname, Result* resPtr)
 	: NodeType(*c), JModule{json_module}
 {
-  Result& res = *resPtr;
-  
+	Result& res = *resPtr;
+
 	auto* mygraph = JModule->graphFuncFromName(funcname);
 
-    if(mygraph == nullptr) {
-      res.add_entry("EUKN", "Graph doesn't exist in module", {{"Module Name", JModule->name}, {"Requested Name", gsl::to_string(funcname)}});
-      return;
-    }
+	if (mygraph == nullptr) {
+		res.add_entry("EUKN", "Graph doesn't exist in module",
+			{{"Module Name", JModule->name}, {"Requested Name", gsl::to_string(funcname)}});
+		return;
+	}
 
 	dataOutputs = mygraph->outputs;
 
@@ -177,11 +179,10 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 	execOutputs = {""};
 }
 
-Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod, llvm::Function* /*f*/,
-	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const
+Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod,
+	llvm::Function* /*f*/, const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
-  
 	Result res = {};
 
 	llvm::IRBuilder<> builder(codegenInto);
@@ -207,6 +208,6 @@ Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod, 
 nlohmann::json JsonFuncCallNodeType::toJSON() const { return {}; }
 std::unique_ptr<NodeType> JsonFuncCallNodeType::clone() const
 {
-    Result res = {}; // there shouldn't be an error but check anywayss
+	Result res = {};  // there shouldn't be an error but check anywayss
 	return std::make_unique<JsonFuncCallNodeType>(context, JModule, name, &res);
 }

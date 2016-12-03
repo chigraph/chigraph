@@ -2,7 +2,7 @@
 
 using namespace chig;
 
-Graph::Graph(Context& context_, const nlohmann::json& data, Result& res) : context{&context_}
+Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : context{&con}
 {
 	// read the nodes
 	if (data.find("nodes") == data.end() || !data["nodes"].is_object()) {
@@ -14,7 +14,7 @@ Graph::Graph(Context& context_, const nlohmann::json& data, Result& res) : conte
 		auto node = nodeiter.value();
 		std::string nodeid = nodeiter.key();
 		if (node.find("type") == node.end() || !node.find("type")->is_string()) {
-			res.add_entry("E6", "Node doesn't have a \"type\" string", {{"nodeid", nodeid}});
+			res.add_entry("E6", R"(Node doesn't have a "type" string)", {{"nodeid", nodeid}});
 			return;
 		}
 		std::string fullType = node["type"];
@@ -22,7 +22,7 @@ Graph::Graph(Context& context_, const nlohmann::json& data, Result& res) : conte
 		std::string moduleName = fullType.substr(0, colonId);
 		std::string typeName = fullType.substr(colonId + 1);
 
-		if (colonId == std::string::npos || moduleName.size() == 0 || typeName.size() == 0) {
+		if (colonId == std::string::npos || moduleName.empty() || typeName.empty()) {
 			res.add_entry("E7", "Incorrect qualified module name (should be module:type)",
 				{{"nodeid", nodeid}, {"Requested Qualified Name", fullType}});
 			return;
@@ -153,9 +153,9 @@ Result Graph::toJson(nlohmann::json* toFill) const
 	auto& jsonConnections = jsonData["connections"];
 	jsonConnections = nlohmann::json::array();  // make sure even if it's empty it's an aray
 
-	for (auto nodeIter = nodes.begin(); nodeIter != nodes.end(); ++nodeIter) {
-		auto& node = nodeIter->second;
-		std::string nodeID = nodeIter->first;
+	for (const auto& nodepair : nodes) {
+		auto& node = nodepair.second;
+		std::string nodeID = nodepair.first;
 
 		nlohmann::json nodeJson = node->type->toJSON();
 		jsonNodes[nodeID] = {{"type", node->type->module + ':' + node->type->name},
@@ -166,7 +166,7 @@ Result Graph::toJson(nlohmann::json* toFill) const
 		for (auto conn_id = 0ull; conn_id < node->outputExecConnections.size(); ++conn_id) {
 			auto& conn = node->outputExecConnections[conn_id];
 			// if there is actually a connection
-			if (conn.first) {
+			if (conn.first != nullptr) {
 				jsonConnections.push_back({{"type", "exec"}, {"input", {nodeID, conn_id}},
 					{"output", {conn.first->id, conn.second}}});
 			}
@@ -176,7 +176,7 @@ Result Graph::toJson(nlohmann::json* toFill) const
 		for (auto conn_id = 0ull; conn_id < node->inputDataConnections.size(); ++conn_id) {
 			// if there is actually a connection
 			auto& connpair = node->inputDataConnections[conn_id];
-			if (connpair.first) {
+			if (connpair.first != nullptr) {
 				jsonConnections.push_back(
 					{{"type", "data"}, {"input", {connpair.first->id, connpair.second}},
 						{"output", {nodeID, conn_id}}});

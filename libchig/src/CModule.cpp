@@ -12,16 +12,16 @@
 
 using namespace chig;
 
-CModule::CModule(Context& cont) : ChigModule(cont) { name = "c"; }
-llvm::Type* CModule::getType(gsl::cstring_span<>) const
+CModule::CModule(Context& ctx) : ChigModule(ctx) { name = "c"; }
+llvm::Type* CModule::getType(gsl::cstring_span<> /*typeName*/) const
 {
 	// TODO: implement
 
 	return nullptr;
 }
 
-Result CModule::createNodeType(
-	gsl::cstring_span<> typeName, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill) const
+Result CModule::createNodeType(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
+	std::unique_ptr<NodeType>* toFill) const
 {
 	Result res;
 
@@ -62,8 +62,8 @@ Result CModule::createNodeType(
 }
 
 CFuncNode::CFuncNode(
-	chig::Context& con, gsl::cstring_span<> Ccode, gsl::cstring_span<> functocall_, Result& res)
-	: NodeType{con}, functocall{gsl::to_string(functocall_)}, ccode(gsl::to_string(Ccode))
+	chig::Context& con, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res)
+	: NodeType{con}, functocall{gsl::to_string(functionName)}, ccode(gsl::to_string(cCode))
 {
 	module = "c";
 	name = "func";
@@ -80,7 +80,7 @@ CFuncNode::CFuncNode(
 		clangexe.set_wait_timeout(exec_stream_t::s_out, 100000);
 		std::vector<std::string> arguments = {"-xc", "-", "-c", "-emit-llvm", "-O0", "-o-"};
 		clangexe.start(CHIG_CLANG_EXE, arguments.begin(), arguments.end());
-		clangexe.in() << Ccode.data();
+		clangexe.in() << cCode.data();
 		clangexe.close_in();
 
 		bitcode = std::string{
@@ -120,7 +120,7 @@ CFuncNode::CFuncNode(
 
 	auto llfunc = llcompiledmod->getFunction(functocall);
 
-	if (!llfunc) {
+	if (llfunc == nullptr) {
 		res.add_entry("EUKN", "Failed to get function in clang-compiled module",
 			{{"Requested Function", functocall}});
 		return;
@@ -146,10 +146,13 @@ std::unique_ptr<NodeType> CFuncNode::clone() const
 	return nullptr;
 }
 
-Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f,
+Result CFuncNode::codegen(size_t /*inID*/, llvm::Module* mod, llvm::Function* /*f*/,
 	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const
+	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
+	Expects(io.size() == dataInputs.size() + dataOutputs.size() && mod != nullptr &&
+			codegenInto != nullptr && outputBlocks.size() == 1);
+
 	// create a copy of the module
 	auto copymod = llvm::CloneModule(llcompiledmod.get());
 
@@ -166,15 +169,15 @@ Result CFuncNode::codegen(size_t, llvm::Module* mod, llvm::Function* f,
 	std::string outputName;
 
 	// remove the return type if there is one
-	if (dataOutputs.size()) {
-		inputs = inputs.subspan(0, inputs.size() -1 );
+	if (!dataOutputs.empty()) {
+		inputs = inputs.subspan(0, inputs.size() - 1);
 		outputName = dataOutputs[0].second;
 	}
 
 	auto callinst = builder.CreateCall(llfunc, {inputs.data(), (size_t)inputs.size()}, outputName);
 
 	// store theoutput if there are any
-	if (dataOutputs.size()) {
+	if (!dataOutputs.empty()) {
 		builder.CreateStore(callinst, io[dataInputs.size()]);
 	}
 

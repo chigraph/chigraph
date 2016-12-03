@@ -33,22 +33,22 @@ public:
 	void setupActions();
 
 	std::unordered_map<QString, QWidget*> openFunctions;
-	QTabWidget* functabs;
+	QTabWidget* functabs = nullptr;
 	std::shared_ptr<DataModelRegistry> reg;
-	OutputView* outputView;
+	OutputView* outputView = nullptr;
 
-	FunctionsPane* functionpane;
+	FunctionsPane* functionpane = nullptr;
 
 	chig::Context ccontext;
 
-	void addModule(std::unique_ptr<chig::ChigModule> c);
+	void addModule(std::unique_ptr<chig::ChigModule> toAdd);
 
 	chig::JsonModule* module = nullptr;
 	QString filename;
 
 public slots:
 	void openFile();
-	void openUrl(QUrl url);
+	void openUrl(const QUrl& url);
 	void newFunctionSelected(QString name);
 	void save();
 	void closeTab(int idx);

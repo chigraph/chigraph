@@ -15,7 +15,7 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 
 void FunctionsPane::updateModule(chig::JsonModule* mod)
 {
-    Expects(mod != nullptr);
+	Expects(mod != nullptr);
 
 	clear();
 
@@ -26,4 +26,4 @@ void FunctionsPane::updateModule(chig::JsonModule* mod)
 	}
 }
 
-void FunctionsPane::selectItem(QListWidgetItem* item) { functionSelected(item->text()); }
+void FunctionsPane::selectItem(QListWidgetItem* newitem) { functionSelected(newitem->text()); }

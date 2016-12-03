@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 
 	aboutData.processCommandLine(&parser);
 
-	MainWindow* win = new MainWindow();
+	auto win = new MainWindow();
 	win->show();
 
 	return app.exec();

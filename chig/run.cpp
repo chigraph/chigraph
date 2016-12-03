@@ -14,7 +14,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 
-#include <llvm/CodeGen/LinkAllCodegenComponents.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/ExecutionEngine/Interpreter.h>
 #include <llvm/ExecutionEngine/JITEventListener.h>
@@ -23,6 +22,9 @@
 #include <llvm/ExecutionEngine/Orc/OrcRemoteTargetClient.h>
 #include <llvm/ExecutionEngine/OrcMCJITReplacement.h>
 #include <llvm/ExecutionEngine/SectionMemoryManager.h>
+
+#include <llvm/CodeGen/LinkAllCodegenComponents.h>
+
 #include <llvm/Support/TargetSelect.h>
 
 namespace po = boost::program_options;
@@ -30,7 +32,7 @@ namespace fs = boost::filesystem;
 
 using namespace chig;
 
-int run(std::vector<std::string> opts)
+int run(const std::vector<std::string>& opts)
 {
 	llvm::InitializeNativeTarget();
 	llvm::InitializeNativeTargetAsmPrinter();
@@ -53,7 +55,7 @@ int run(std::vector<std::string> opts)
 
 	std::string infile = vm["input-file"].as<std::string>();
 
-	nlohmann::json read_json;
+	nlohmann::json read_json = {};
 
 	if (infile == "-") {
 		std::cin >> read_json;
@@ -101,7 +103,7 @@ int run(std::vector<std::string> opts)
 
 	llvm::Function* entry = llmod->getFunction("main");
 
-	if (!entry) {
+	if (entry == nullptr) {
 		std::cerr << "No main function in module: " << std::endl;
 		return 1;
 	}
@@ -123,7 +125,7 @@ int run(std::vector<std::string> opts)
 		return 1;
 	}
 
-	auto ret = EE->runFunctionAsMain(entry, {}, nullptr);
+	EE->runFunctionAsMain(entry, {}, nullptr);
 
 	return 0;
 }

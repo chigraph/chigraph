@@ -34,7 +34,7 @@ struct ChigModule {
 
 	Context* context;
 
-	llvm::Module* llmodule;
+	llvm::Module* llmodule = nullptr;
 };
 }
 

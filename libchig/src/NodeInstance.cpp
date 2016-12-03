@@ -67,8 +67,8 @@ Result connectData(
 
 	// if there are errors, back out
 	if (!res) {
-      return res;
-    }
+		return res;
+	}
 	// make sure the connection is of the right type
 	if (lhs.type->dataOutputs[connectionInputID].first !=
 		rhs.type->dataInputs[connectionOutputID].first) {
@@ -130,8 +130,8 @@ Result connectExec(
 	}
 
 	if (!res) {
-      return res;
-    }
+		return res;
+	}
 	// if we are replacing a connection, disconnect it
 	if (lhs.outputExecConnections[connectionInputID].first != nullptr) {
 		auto& extconnvec =
