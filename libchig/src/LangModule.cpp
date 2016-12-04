@@ -7,7 +7,266 @@
 #include <llvm/Support/SourceMgr.h>
 #include <gsl/gsl_assert>
 
-using namespace chig;
+namespace chig
+{
+struct IfNodeType : NodeType {
+	IfNodeType(LangModule& mod) : NodeType(mod)
+	{
+		name = "if";
+		description = "branch on a bool";
+
+		execInputs = {""};
+		execOutputs = {"True", "False"};
+
+		dataInputs = {{mod.typeFromName("i1"), "condition"}};
+	}
+
+	virtual Result codegen(size_t /*execInputID*/, llvm::Module* mod, llvm::Function*,
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
+	{
+		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 2);
+
+		llvm::IRBuilder<> builder(codegenInto);
+		builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
+
+		return {};
+	}
+
+	virtual std::unique_ptr<NodeType> clone() const override
+	{
+		return std::make_unique<IfNodeType>(*this);
+	}
+};
+
+struct EntryNodeType : NodeType {
+	EntryNodeType(LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funInputs) : NodeType(mod)
+	{
+		name = "entry";
+		description = "entry to a function";
+
+		execOutputs = {""};
+
+		dataOutputs = {funInputs.begin(), funInputs.end()};
+	}
+
+	// the function doesn't have to do anything...this class just holds metadata
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
+	{
+		Expects(f != nullptr && io.size() == dataOutputs.size() && codegenInto != nullptr &&
+				outputBlocks.size() == 1);
+
+		llvm::IRBuilder<> builder(codegenInto);
+
+		// store the arguments
+		auto arg_iter = f->arg_begin();
+		for (const auto& iovalue : io) {
+			builder.CreateStore(&*arg_iter, iovalue);
+
+			++arg_iter;
+		}
+
+		builder.CreateBr(outputBlocks[0]);
+
+		return {};
+	}
+
+	virtual std::unique_ptr<NodeType> clone() const override
+	{
+		return std::make_unique<EntryNodeType>(*this);
+	}
+
+	nlohmann::json toJSON() const override
+	{
+		nlohmann::json ret = nlohmann::json::array();
+
+		for (auto& pair : dataOutputs) {
+			ret.push_back({{pair.second, pair.first.qualifiedName()}});
+		}
+
+		return ret;
+	}
+};
+
+struct ConstIntNodeType : NodeType {
+	ConstIntNodeType(LangModule& mod, int num) : NodeType(mod), number(num)
+	{
+		name = "const-int";
+		description = "constant int value";
+
+		execInputs = {""};
+		execOutputs = {""};
+
+		dataOutputs = {{mod.typeFromName("i32"), "out"}};
+	}
+
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
+	{
+		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+
+		llvm::IRBuilder<> builder(codegenInto);
+		// just go to the block
+
+		builder.CreateStore(
+			llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->llvmContext()), number),
+			io[0], false);
+		builder.CreateBr(outputBlocks[0]);
+
+		return {};
+	}
+
+	virtual std::unique_ptr<NodeType> clone() const override
+	{
+		return std::make_unique<ConstIntNodeType>(*this);
+	}
+
+	nlohmann::json toJSON() const override
+	{
+      return number;
+	}
+
+	int number;
+};
+
+struct ConstBoolNodeType : NodeType {
+	ConstBoolNodeType(LangModule& mod, bool num) : NodeType{mod}, value{num}
+{
+	name = "const-bool";
+	description = "constant boolean value";
+
+	execInputs = {""};
+	execOutputs = {""};
+
+	dataOutputs = {{mod.typeFromName("i1"), "out"}};
+}
+
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
+	{
+		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+
+		llvm::IRBuilder<> builder(codegenInto);
+		// just go to the block
+
+		builder.CreateStore(
+			llvm::ConstantInt::get(
+				llvm::IntegerType::getInt1Ty(context->llvmContext()), static_cast<uint64_t>(value)),
+			io[0], false);
+		builder.CreateBr(outputBlocks[0]);
+
+		return {};
+	}
+
+	virtual std::unique_ptr<NodeType> clone() const override
+	{
+		return std::make_unique<ConstBoolNodeType>(*this);
+	}
+
+	nlohmann::json toJSON() const override
+	{
+      return value;
+	}
+
+	bool value;
+};
+
+struct ExitNodeType : NodeType {
+	ExitNodeType(LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funOutputs) : NodeType{mod}
+{
+	execInputs = {""};
+
+	name = "exit";
+	description = "exit from a function; think return";
+
+	dataInputs = {funOutputs.begin(), funOutputs.end()};
+}
+
+	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
+	{
+		Expects(execInputID < execInputs.size() && f != nullptr && io.size() == dataInputs.size() &&
+				codegenInto != nullptr);
+
+		// assign the return types
+		llvm::IRBuilder<> builder(codegenInto);
+		size_t ret_start =
+			f->arg_size() - io.size();  // returns are after args, find where returns start
+		auto arg_iter = f->arg_begin();
+		std::advance(arg_iter, ret_start);
+		for (auto& value : io) {
+			builder.CreateStore(value, &*arg_iter, false);  // TODO: volitility?
+			++arg_iter;
+		}
+
+		builder.CreateRet(
+			llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->llvmContext()), execInputID));
+
+		return {};
+	}
+
+	virtual std::unique_ptr<NodeType> clone() const override
+	{
+		return std::make_unique<ExitNodeType>(*this);
+	}
+
+	nlohmann::json toJSON() const override
+	{
+		nlohmann::json ret = nlohmann::json::array();
+
+		for (auto& pair : dataInputs) {
+			ret.push_back({{pair.second, pair.first.qualifiedName()}});
+		}
+
+		return ret;
+	}
+};
+
+struct StringLiteralNodeType : NodeType {
+	StringLiteralNodeType(LangModule& mod, std::string str) : NodeType(mod), literalString(str)
+	{
+		execInputs = {""};
+		execOutputs = {""};
+
+		name = "strliteral";
+		description = "exit from a function; think return";
+
+		// TODO: research address types
+		dataOutputs = {{mod.typeFromName("i8*"), "string"}};
+	}
+
+	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
+	{
+		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+
+		llvm::IRBuilder<> builder(codegenInto);
+
+		auto global = builder.CreateGlobalString(literalString);
+
+		auto const0ID = llvm::ConstantInt::get(context->llvmContext(), llvm::APInt(32, 0, false));
+		auto gep = builder.CreateGEP(global, {const0ID, const0ID});
+		builder.CreateStore(gep, io[0], false);
+
+		builder.CreateBr(outputBlocks[0]);
+
+		return {};
+	}
+
+	virtual std::unique_ptr<NodeType> clone() const override
+	{
+		return std::make_unique<StringLiteralNodeType>(*this);
+	}
+
+	nlohmann::json toJSON() const override { return literalString; }
+	std::string literalString;
+};
 
 LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 {
@@ -165,239 +424,4 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name)
 	return {this, gsl::to_string(name), lltype};
 }
 
-Result IfNodeType::codegen(size_t /*inExecID*/, llvm::Module* /*mod*/, llvm::Function* /*f*/,
-	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	const gsl::span<llvm::BasicBlock*> outputBlocks) const
-{
-	Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 2);
-
-	llvm::IRBuilder<> builder(codegenInto);
-	builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
-
-	return {};
-}
-
-IfNodeType::IfNodeType(LangModule& mod) : NodeType(mod)
-{
-	name = "if";
-	description = "branch on a bool";
-
-	execInputs = {""};
-	execOutputs = {"True", "False"};
-
-	dataInputs = {{mod.typeFromName("i1"), "condition"}};
-}
-
-std::unique_ptr<chig::NodeType, std::default_delete<chig::NodeType>> IfNodeType::clone() const
-{
-	return std::make_unique<IfNodeType>(*this);
-}
-
-EntryNodeType::EntryNodeType(
-	LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funInputs)
-	: NodeType{mod}
-{
-	name = "entry";
-	description = "entry to a function";
-
-	execOutputs = {""};
-
-	dataOutputs = {funInputs.begin(), funInputs.end()};
-}
-
-Result EntryNodeType::codegen(size_t /*inputConnId*/, llvm::Module* /*mod*/, llvm::Function* f,
-	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	const gsl::span<llvm::BasicBlock*> outputBlocks) const
-{
-	Expects(f != nullptr && io.size() == dataOutputs.size() && codegenInto != nullptr &&
-			outputBlocks.size() == 1);
-
-	llvm::IRBuilder<> builder(codegenInto);
-
-	// store the arguments
-	auto arg_iter = f->arg_begin();
-	for (const auto& iovalue : io) {
-		builder.CreateStore(&*arg_iter, iovalue);
-
-		++arg_iter;
-	}
-
-	builder.CreateBr(outputBlocks[0]);
-
-	return {};
-}
-
-std::unique_ptr<NodeType> EntryNodeType::clone() const
-{
-	return std::make_unique<EntryNodeType>(*this);
-}
-
-nlohmann::json EntryNodeType::toJSON() const
-{
-	nlohmann::json ret = nlohmann::json::array();
-
-	for (auto& pair : dataOutputs) {
-		ret.push_back({{pair.second, pair.first.qualifiedName()}});
-	}
-
-	return ret;
-}
-
-ConstIntNodeType::ConstIntNodeType(LangModule& mod, int num) : NodeType{mod}, number{num}
-{
-	name = "const-int";
-	description = "constant int value";
-
-	execInputs = {""};
-	execOutputs = {""};
-
-	dataOutputs = {{mod.typeFromName("i32"), "out"}};
-}
-
-Result ConstIntNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
-	llvm::Function* /*f*/, const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	const gsl::span<llvm::BasicBlock*> outputBlocks) const
-{
-	Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
-
-	llvm::IRBuilder<> builder(codegenInto);
-	// just go to the block
-
-	builder.CreateStore(
-		llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->llvmContext()), number),
-		io[0], false);
-	builder.CreateBr(outputBlocks[0]);
-
-	return {};
-}
-
-std::unique_ptr<chig::NodeType> ConstIntNodeType::clone() const
-{
-	return std::make_unique<ConstIntNodeType>(*this);
-}
-
-nlohmann::json ConstIntNodeType::toJSON() const { return number; }
-ConstBoolNodeType::ConstBoolNodeType(LangModule& mod, bool num) : NodeType{mod}, value{num}
-{
-	name = "const-bool";
-	description = "constant boolean value";
-
-	execInputs = {""};
-	execOutputs = {""};
-
-	dataOutputs = {{mod.typeFromName("i1"), "out"}};
-}
-
-Result ConstBoolNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
-	llvm::Function* /*f*/, const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	const gsl::span<llvm::BasicBlock*> outputBlocks) const
-{
-	Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
-
-	llvm::IRBuilder<> builder(codegenInto);
-	// just go to the block
-
-	builder.CreateStore(llvm::ConstantInt::get(llvm::IntegerType::getInt1Ty(context->llvmContext()),
-							static_cast<uint64_t>(value)),
-		io[0], false);
-	builder.CreateBr(outputBlocks[0]);
-
-	return {};
-}
-
-std::unique_ptr<chig::NodeType> ConstBoolNodeType::clone() const
-{
-	return std::make_unique<ConstBoolNodeType>(*this);
-}
-
-nlohmann::json ConstBoolNodeType::toJSON() const { return value; }
-ExitNodeType::ExitNodeType(
-	LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funOutputs)
-	: NodeType{mod}
-{
-	execInputs = {""};
-
-	name = "exit";
-	description = "exit from a function; think return";
-
-	dataInputs = {funOutputs.begin(), funOutputs.end()};
-}
-
-Result ExitNodeType::codegen(size_t execInputID, llvm::Module* /*mod*/, llvm::Function* f,
-	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	const gsl::span<llvm::BasicBlock*> /*outputBlocks*/) const
-{
-	Expects(execInputID < execInputs.size() && f != nullptr && io.size() == dataInputs.size() &&
-			codegenInto != nullptr);
-
-	// assign the return types
-	llvm::IRBuilder<> builder(codegenInto);
-	size_t ret_start =
-		f->arg_size() - io.size();  // returns are after args, find where returns start
-	auto arg_iter = f->arg_begin();
-	std::advance(arg_iter, ret_start);
-	for (auto& value : io) {
-		builder.CreateStore(value, &*arg_iter, false);  // TODO: volitility?
-		++arg_iter;
-	}
-
-	builder.CreateRet(
-		llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->llvmContext()), execInputID));
-
-	return {};
-}
-
-std::unique_ptr<NodeType> ExitNodeType::clone() const
-{
-	return std::make_unique<ExitNodeType>(*this);
-}
-
-nlohmann::json ExitNodeType::toJSON() const
-{
-	nlohmann::json ret = nlohmann::json::array();
-
-	for (auto& pair : dataInputs) {
-		ret.push_back({{pair.second, pair.first.qualifiedName()}});
-	}
-
-	return ret;
-}
-
-StringLiteralNodeType::StringLiteralNodeType(LangModule& mod, std::string str)
-	: NodeType{mod}, literalString(std::move(str))
-{
-	execInputs = {""};
-	execOutputs = {""};
-
-	name = "strliteral";
-	description = "exit from a function; think return";
-
-	// TODO: research address types
-	dataOutputs = {{mod.typeFromName("i8*"), "string"}};
-}
-
-Result StringLiteralNodeType::codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-	llvm::Function* /*f*/, const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	const gsl::span<llvm::BasicBlock*> outputBlocks) const
-{
-	Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
-
-	llvm::IRBuilder<> builder(codegenInto);
-
-	auto global = builder.CreateGlobalString(literalString);
-
-	auto const0ID = llvm::ConstantInt::get(context->llvmContext(), llvm::APInt(32, 0, false));
-	auto gep = builder.CreateGEP(global, {const0ID, const0ID});
-	builder.CreateStore(gep, io[0], false);
-
-	builder.CreateBr(outputBlocks[0]);
-
-	return {};
-}
-
-std::unique_ptr<NodeType> StringLiteralNodeType::clone() const
-{
-	return std::make_unique<StringLiteralNodeType>(*this);
-}
-
-nlohmann::json StringLiteralNodeType::toJSON() const { return literalString; }
+} // namespace chig

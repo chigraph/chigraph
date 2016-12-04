@@ -124,13 +124,14 @@ CFuncNode::CFuncNode(
 			{{"Requested Function", functocall}});
 		return;
 	}
-	
+
 	// get arguments
-	for(const auto& argument : llfunc->args()) {
-      dataInputs.emplace_back(DataType(context->moduleByName("lang"), context->stringifyType(argument.getType()),
-					argument.getType()), argument.getName());
-    }
-	
+	for (const auto& argument : llfunc->args()) {
+		dataInputs.emplace_back(DataType(context->moduleByName("lang"),
+									context->stringifyType(argument.getType()), argument.getType()),
+			argument.getName());
+	}
+
 	// get return type
 	auto ret = llfunc->getReturnType();
 

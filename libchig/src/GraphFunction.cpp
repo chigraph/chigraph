@@ -337,8 +337,8 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	// set argument names
 	auto idx = 0ull;
 	for (auto& arg : f->getArgumentList()) {
-		if (idx < entry->type->dataOutputs
-					  .size()) {  // dataOutputs to entry are inputs to the function
+		if (idx <
+			entry->type->dataOutputs.size()) {  // dataOutputs to entry are inputs to the function
 			arg.setName(entry->type->dataOutputs[idx]
 							.second);  // it starts with inputs, which are outputs to entry
 		} else {
@@ -362,10 +362,11 @@ NodeInstance* GraphFunction::entryNode() const noexcept
 	auto matching = graph().nodesWithType("lang", "entry");
 
 	if (matching.size() == 1) {
-        // make sure it has the same signature as the method
-        if(!std::equal(inputs().begin(), inputs().end(), matching[0]->type->dataOutputs.begin(), matching[0]->type->dataOutputs.end())) {
-          return nullptr;
-        }
+		// make sure it has the same signature as the method
+		if (!std::equal(inputs().begin(), inputs().end(), matching[0]->type->dataOutputs.begin(),
+				matching[0]->type->dataOutputs.end())) {
+			return nullptr;
+		}
 		return matching[0];
 	}
 	return nullptr;

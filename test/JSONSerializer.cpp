@@ -50,7 +50,10 @@ TEST_CASE("JsonSerializer", "[json]")
 			std::vector<std::pair<DataType, std::string>> inputs = {
 				{lmod->typeFromName("i1"), "in1"}};
 
-			auto entry = func.insertNode(std::make_unique<EntryNodeType>(*lmod, inputs), 32, 32, "entry");
+            std::unique_ptr<NodeType> toFill;
+            Result res = c.nodeTypeFromModule("lang", "entry", R"([{"in1": "lang:i1"}])"_json, &toFill);
+            REQUIRE(!!res);
+			auto entry = func.insertNode(std::move(toFill), 32, 32, "entry");
 
 			THEN("The JSON should be correct")
 			{

@@ -25,61 +25,53 @@ struct JsonModule : public ChigModule {
 	/// \param res The result to fill if there are errors
 	JsonModule(const nlohmann::json& json_data, Context& cont, Result* res);
 
-    // No copy or move -- pointer only
+	// No copy or move -- pointer only
 	JsonModule(const JsonModule&) = delete;
 	JsonModule(JsonModule&&) = delete;
 	JsonModule& operator=(const JsonModule&) = delete;
 	JsonModule& operator=(JsonModule&&) = delete;
 
-    // ChigModule interface
-    ///////////////////////
-    
-    /// \copydoc ChigModule::nodeTypeFromName()
+	// ChigModule interface
+	///////////////////////
+
+	/// \copydoc ChigModule::nodeTypeFromName()
 	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
-        
-    /// \copydoc ChigModule::typeFromName
+
+	/// \copydoc ChigModule::typeFromName
 	DataType typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
-	
 	/// \copydoc ChigModule::nodeTypeNames
-	virtual std::vector<std::string> nodeTypeNames() const override;			// TODO: implement
-	
+	virtual std::vector<std::string> nodeTypeNames() const override;  // TODO: implement
+
 	/// \copydoc ChigModule::typeNames
 	virtual std::vector<std::string> typeNames() const override { return {}; }  // TODO: implement
-	
-    /// \copydoc ChigModule::generateModule
+	/// \copydoc ChigModule::generateModule
 	Result generateModule(std::unique_ptr<llvm::Module>* mod) override;
-    
-    
-    /////////////////////
-    
+
+	/////////////////////
+
 	/// Load the graphs (usually called by Context::addModule)
 	Result loadGraphs();
 
-    /// Serialize to JSON
-    /// \param to_fill The JSON to fill
-    /// \return The result
+	/// Serialize to JSON
+	/// \param to_fill The JSON to fill
+	/// \return The result
 	Result toJSON(nlohmann::json* to_fill) const;
 
-    /// Get a function from the name
-    /// \param name The name to get
-    /// \return The GraphFunction or nullptr if it doesn't exist
+	/// Get a function from the name
+	/// \param name The name to get
+	/// \return The GraphFunction or nullptr if it doesn't exist
 	GraphFunction* graphFuncFromName(gsl::cstring_span<> name) const;
-    
-    
-    /// Get the dependencies
-    /// \return The dependencies
-    const std::vector<std::string>& dependencies() const { return mDependencies; }
-    
-    /// Get functions
-    /// \return The functions
-    const std::vector<std::unique_ptr<GraphFunction>>& functions() const { return mFunctions; }
-    
+
+	/// Get the dependencies
+	/// \return The dependencies
+	const std::vector<std::string>& dependencies() const { return mDependencies; }
+	/// Get functions
+	/// \return The functions
+	const std::vector<std::unique_ptr<GraphFunction>>& functions() const { return mFunctions; }
 private:
-  
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
 	std::vector<std::string> mDependencies;
-
 };
 
 struct JsonFuncCallNodeType : public NodeType {

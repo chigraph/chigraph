@@ -86,7 +86,7 @@ TEST_CASE("LangModule", "[module]")
 				REQUIRE(ifNode->dataOutputs.size() == 0);
 
 				// make sure it is actually a if
-				REQUIRE(dynamic_cast<IfNodeType*>(ifNode.get()) != nullptr);
+				REQUIRE(ifNode->name == "if");
 			}
 
 			WHEN("We clone it")
@@ -102,7 +102,7 @@ TEST_CASE("LangModule", "[module]")
 					REQUIRE(ifNode->dataOutputs.size() == 0);
 
 					// make sure it is actually a if
-					REQUIRE(dynamic_cast<IfNodeType*>(ifNode.get()) != nullptr);
+                    REQUIRE(ifNode->name == "if");
 				}
 			}
 		}
@@ -127,7 +127,7 @@ TEST_CASE("LangModule", "[module]")
 				REQUIRE(entryNode->dataOutputs.size() == 2);
 
 				// make sure it is actually an entry
-				REQUIRE(dynamic_cast<EntryNodeType*>(entryNode.get()) != nullptr);
+					REQUIRE(entryNode->name == "entry");
 			}
 
 			WHEN("We clone it")
@@ -136,14 +136,14 @@ TEST_CASE("LangModule", "[module]")
 
 				THEN("The clone will be valid")
 				{
-					REQUIRE(entryNode != nullptr);
-					REQUIRE(entryNode->execInputs.size() == 0);
-					REQUIRE(entryNode->execOutputs.size() == 1);
-					REQUIRE(entryNode->dataInputs.size() == 0);
-					REQUIRE(entryNode->dataOutputs.size() == 2);
+					REQUIRE(clone != nullptr);
+					REQUIRE(clone->execInputs.size() == 0);
+					REQUIRE(clone->execOutputs.size() == 1);
+					REQUIRE(clone->dataInputs.size() == 0);
+					REQUIRE(clone->dataOutputs.size() == 2);
 
 					// make sure it is actually an entry
-					REQUIRE(dynamic_cast<EntryNodeType*>(entryNode.get()) != nullptr);
+					REQUIRE(clone->name == "entry");
 				}
 			}
 		}

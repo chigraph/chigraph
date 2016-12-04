@@ -92,7 +92,8 @@ struct Context {
 private:
 	boost::filesystem::path mWorkspacePath;
 
-	std::unique_ptr<llvm::LLVMContext> mLLVMContext;  /// The LLVM context to use with everything under the context
+	std::unique_ptr<llvm::LLVMContext>
+		mLLVMContext;  /// The LLVM context to use with everything under the context
 	std::vector<std::unique_ptr<ChigModule>> mModules;  /// The modules that have been loaded.
 };
 }

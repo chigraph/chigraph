@@ -77,33 +77,26 @@ struct GraphFunction {
 	/// \return The result
 	Result loadGraph();
 
-    /// Get the context
+	/// Get the context
 	/// \return The context
 	const Context& context() const { return *mContext; }
 	/// \copydoc chig::GraphFunction::context() const
 	Context& context() { return *mContext; }
-
 	/// Get the name of the function
 	/// \return The name of the function
 	std::string name() const { return mName; }
-	
 	/// Get the function inputs in the format {type, docstring}
 	/// \return The inputs
 	const std::vector<std::pair<DataType, std::string>>& inputs() const { return mInputs; }
-	
 	/// Get the function outputs in the format {type, docstring}
 	/// \return The outputs
 	const std::vector<std::pair<DataType, std::string>>& outputs() const { return mOutputs; }
-	
 	/// Get the graph
 	/// \return The graph
 	const Graph& graph() const { return mGraph; }
-	
 	/// \copydoc chig::GraphFunction::graph() const
 	Graph& graph() { return mGraph; }
-	
 private:
-    
 	Context* mContext;
 	std::string mName;  /// the name of the function
 
@@ -112,7 +105,6 @@ private:
 
 	nlohmann::json mSource;
 	Graph mGraph;
-    
 };
 
 inline std::pair<std::string, std::string> parseColonPair(const std::string& in)
