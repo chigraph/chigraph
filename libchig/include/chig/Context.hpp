@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "chig/Fwd.hpp"
 #include "chig/ToString.hpp"
@@ -18,14 +19,16 @@
 
 #include <gsl/gsl>
 
+#include <boost/filesystem.hpp>
+
 namespace chig
 {
 /// The class that handles modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 struct Context {
 	/// Creates a context with just the lang module
-	///
-	Context();
+	/// \param workspacePath Path to the workspace
+	Context(const boost::filesystem::path& workPath = {});
 
 	// no move or copy, doesn't make sense
 	Context(const Context& context) = delete;
@@ -36,7 +39,17 @@ struct Context {
 	/// \return ret_module The module that has the name \c moduleName, nullptr if none were found
 	ChigModule* getModuleByName(gsl::cstring_span<> moduleName) noexcept;
 
+    /// Load a module from disk
+    /// \param name The name of the moudle
+    Result addModule(const gsl::cstring_span<> name);
+    
+    /// Load a module from JSON -- avoid this use the string overload
+    /// \param json The JSON data
+    /// \param name The name of the module, returned. Optional.
+    Result addModuleFromJson(const nlohmann::json& json, std::string* name = nullptr);
+    
 	/// Adds a custom module to the Context
+	/// This usually doesn't get called, use the \c gsl::string_span<> overload instead
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
 	Result addModule(std::unique_ptr<ChigModule> modToAdd) noexcept;
 
@@ -62,12 +75,20 @@ struct Context {
 	std::string stringifyType(llvm::Type* ty);
 
 	llvm::LLVMContext llcontext;  /// The LLVM context to use with everything under the context
-
-	std::vector<std::unique_ptr<ChigModule>> modules;  /// The modules that have been loaded.
-	std::vector<std::string> searchPaths;			   /// The places to search for modules
-
+	
+	boost::filesystem::path getWorkspacePath() { return workspacePath; }
+	
+	Result compileModule(gsl::cstring_span<> name, llvm::Module** toFill);
+	
+    size_t getNumModules() const {
+      return modules.size();
+    }
+    
 private:
-	std::string resolveModulePath(gsl::cstring_span<> path);
+  
+    boost::filesystem::path workspacePath;
+    
+	std::vector<std::unique_ptr<ChigModule>> modules;  /// The modules that have been loaded.
 };
 }
 

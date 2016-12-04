@@ -29,6 +29,8 @@ struct ChigModule {
 
 	virtual std::vector<std::string> getNodeTypeNames() const = 0;
 	virtual std::vector<std::string> getTypeNames() const = 0;
+    
+    virtual Result generateModule(std::unique_ptr<llvm::Module>* module) const = 0;
 
 	std::string name;
 

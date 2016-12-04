@@ -45,11 +45,13 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	Context c;
-	c.addModule(std::make_unique<LangModule>(c));
 	Result res;
 	
 	if(strcmp(mode, "mod") == 0) {
+      
+      
 		auto mod = std::make_unique<JsonModule>(newData, c, &res);
+        std::string moduleName = mod->name;
 
 		int ret = checkForErrors(res, expectedErr);
 		if(ret != 1) return ret;
@@ -60,8 +62,9 @@ int main(int argc, char** argv) {
 		ret = checkForErrors(res, expectedErr);
 		if(ret != 1) return ret;
 
-		auto llmod = std::make_unique<llvm::Module>("main", c.llcontext);
-		res += mod->compile(&llmod);
+        c.addModule(std::move(mod));
+		llvm::Module* llmod = nullptr;
+		res += c.compileModule(moduleName, &llmod);
 
 		ret = checkForErrors(res, expectedErr);
 		if(ret != 1) return ret;
@@ -70,6 +73,8 @@ int main(int argc, char** argv) {
 
 	} else if(strcmp(mode, "func") == 0) {
 
+        c.addModule("lang"); // assume basic dependencies for functions
+        c.addModule("c");
 		std::unique_ptr<GraphFunction> graphFunc;
 		res = GraphFunction::fromJSON(c, newData, &graphFunc);
 		

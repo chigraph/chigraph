@@ -260,7 +260,7 @@ void MainWindow::run()
 
 	// compile!
 	std::unique_ptr<llvm::Module> llmod;
-	chig::Result res = module->compile(&llmod);
+	chig::Result res = module->generateModule(&llmod);
 
 	if (!res) {
 		KMessageBox::detailedError(

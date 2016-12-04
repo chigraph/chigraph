@@ -41,8 +41,8 @@ struct JsonModule : public ChigModule {
 
 	std::vector<std::unique_ptr<GraphFunction>> functions;
 
-	Result compile(std::unique_ptr<llvm::Module>* mod) const;
-
+	Result generateModule(std::unique_ptr<llvm::Module>* mod) const override;
+    
 	std::vector<std::string> dependencies;
 
 	GraphFunction* graphFuncFromName(gsl::cstring_span<> name) const;

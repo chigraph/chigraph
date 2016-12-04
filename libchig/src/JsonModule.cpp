@@ -45,6 +45,12 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 			dependencies.push_back(dep);
 		}
 	}
+	// load the dependencies from the context
+	for(const auto& dep : dependencies) {
+      context->addModule(dep);
+    }
+	
+	
 	// load graphs
 	{
 		auto iter = json_data.find("graphs");
@@ -65,7 +71,7 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 	}
 }
 
-Result JsonModule::compile(std::unique_ptr<llvm::Module>* mod) const
+Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod) const
 {
 	// create llvm module
 	*mod = std::make_unique<llvm::Module>(name, context->llcontext);

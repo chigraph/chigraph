@@ -107,6 +107,12 @@ struct LangModule : ChigModule {
 	{
 		return {"i32", "i1", "double"};  // TODO: do i need more?
 	}
+	Result generateModule(std::unique_ptr<llvm::Module>* module) const override {
+      
+      *module = std::make_unique<llvm::Module>("lang", context->llcontext);
+      
+      return {};
+    };
 
 	std::unordered_map<std::string,
 		std::function<std::unique_ptr<NodeType>(const nlohmann::json&, Result&)>>

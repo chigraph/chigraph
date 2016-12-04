@@ -14,7 +14,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		Context c;
 		Result res;
 
-		THEN("There will be no modules in it") { REQUIRE(c.modules.size() == 0); }
+		THEN("There will be no modules in it") { REQUIRE(c.getNumModules() == 0); }
 		THEN("stringifyType return proper strings")
 		{
 			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32Ty(c.llcontext)) == "i32");
@@ -39,7 +39,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
                 }
             }
             
-			THEN("There should be 1 module in c") { REQUIRE(c.modules.size() == 1); }
+			THEN("There should be 1 module in c") { REQUIRE(c.getNumModules() == 1); }
 			THEN("Getting the lang module from c should work")
 			{
 				REQUIRE(c.getModuleByName("lang") != nullptr);

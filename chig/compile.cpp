@@ -70,27 +70,16 @@ int compile(const std::vector<std::string>& opts)
 
 	Result res;
 	Context c;
-	c.addModule(std::make_unique<LangModule>(c));
-	c.addModule(std::make_unique<CModule>(c));
-	// load it as a module
-	auto Umodule = std::make_unique<JsonModule>(read_json, c, &res);
+    std::string modName;
+	res += c.addModuleFromJson(read_json, &modName);
 
 	if (!res) {
 		std::cerr << res.result_json.dump(2) << std::endl;
 		return 1;
 	}
-
-	auto module = Umodule.get();
-	c.addModule(std::move(Umodule));
-	res += module->loadGraphs();
-
-	if (!res) {
-		std::cerr << res.result_json.dump(2) << std::endl;
-		return 1;
-	}
-
-	std::unique_ptr<llvm::Module> llmod;
-	res += module->compile(&llmod);
+	
+	llvm::Module* llmod;
+	res += c.compileModule(modName, &llmod);
 
 	if (!res) {
 		std::cerr << res.result_json.dump(2) << std::endl;
@@ -124,7 +113,7 @@ int compile(const std::vector<std::string>& opts)
 		}
 
 		if (outtype == "bc") {
-			llvm::WriteBitcodeToFile(llmod.get(), *lloutstream);
+			llvm::WriteBitcodeToFile(llmod, *lloutstream);
 		} else if (outtype == "ll") {
 			llmod->print(*lloutstream, nullptr);
 		} else {
