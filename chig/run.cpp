@@ -80,8 +80,8 @@ int run(const std::vector<std::string>& opts)
 	Result res;
 	Context c;
 	// load it as a module
-	c.addModuleFromJson(read_json);
-    
+	std::string modName;
+	c.addModuleFromJson(read_json, &modName);
 
 	if (!res) {
 		std::cerr << res.result_json.dump(2) << std::endl;
@@ -89,6 +89,7 @@ int run(const std::vector<std::string>& opts)
 	}
 
 	std::unique_ptr<llvm::Module> llmod;
+	res += c.compileModule(modName, &llmod);
 
 	if (!res) {
 		std::cerr << "Error compiling module: " << res.result_json.dump(2) << std::endl;

@@ -5,8 +5,8 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 #include "chig/Fwd.hpp"
 #include "chig/ToString.hpp"
@@ -39,15 +39,15 @@ struct Context {
 	/// \return ret_module The module that has the name \c moduleName, nullptr if none were found
 	ChigModule* getModuleByName(gsl::cstring_span<> moduleName) noexcept;
 
-    /// Load a module from disk
-    /// \param name The name of the moudle
-    Result addModule(const gsl::cstring_span<> name);
-    
-    /// Load a module from JSON -- avoid this use the string overload
-    /// \param json The JSON data
-    /// \param name The name of the module, returned. Optional.
-    Result addModuleFromJson(const nlohmann::json& json, std::string* name = nullptr);
-    
+	/// Load a module from disk
+	/// \param name The name of the moudle
+	Result addModule(const gsl::cstring_span<> name);
+
+	/// Load a module from JSON -- avoid this use the string overload
+	/// \param json The JSON data
+	/// \param name The name of the module, returned. Optional.
+	Result addModuleFromJson(const nlohmann::json& json, std::string* name = nullptr);
+
 	/// Adds a custom module to the Context
 	/// This usually doesn't get called, use the \c gsl::string_span<> overload instead
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
@@ -75,19 +75,14 @@ struct Context {
 	std::string stringifyType(llvm::Type* ty);
 
 	llvm::LLVMContext llcontext;  /// The LLVM context to use with everything under the context
-	
+
 	boost::filesystem::path getWorkspacePath() { return workspacePath; }
-	
-	Result compileModule(gsl::cstring_span<> name, llvm::Module** toFill);
-	
-    size_t getNumModules() const {
-      return modules.size();
-    }
-    
+	Result compileModule(gsl::cstring_span<> name, std::unique_ptr<llvm::Module>* toFill);
+
+	size_t getNumModules() const { return modules.size(); }
 private:
-  
-    boost::filesystem::path workspacePath;
-    
+	boost::filesystem::path workspacePath;
+
 	std::vector<std::unique_ptr<ChigModule>> modules;  /// The modules that have been loaded.
 };
 }

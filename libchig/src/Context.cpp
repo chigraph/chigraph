@@ -1,17 +1,17 @@
 #include "chig/Context.hpp"
+#include "chig/GraphFunction.hpp"
+#include "chig/JsonModule.hpp"
 #include "chig/LangModule.hpp"
 #include "chig/NodeType.hpp"
-#include "chig/JsonModule.hpp"
-#include "chig/GraphFunction.hpp"
 
 #include <llvm/Bitcode/ReaderWriter.h>
-#include <llvm/Support/raw_ostream.h>
 #include <llvm/IR/Verifier.h>
+#include <llvm/Support/raw_ostream.h>
 
 #include <boost/filesystem.hpp>
 
-#include <gsl/gsl>
 #include <chig/CModule.hpp>
+#include <gsl/gsl>
 
 using namespace chig;
 using namespace llvm;
@@ -31,57 +31,63 @@ ChigModule* Context::getModuleByName(gsl::cstring_span<> moduleName) noexcept
 	return nullptr;
 }
 
-
 chig::Result chig::Context::addModule(const gsl::cstring_span<> name)
 {
-  Result res;
-  
-  // check for built-in modules
-  if(name == "lang") {
-    return addModule(std::make_unique<LangModule>(*this));
-  }else if(name =="c") {
-    return addModule(std::make_unique<CModule>(*this));
-  }
-  
-  // find it in the workspace
-  fs::path fullPath = getWorkspacePath() / "src" / (gsl::to_string(name) + ".chigmod");
-  
-  if(!fs::is_regular_file(fullPath)) {
-    res.add_entry("EUKN", "Failed to find module", {{"Module Name", gsl::to_string(name)}, {"Workspace Path", getWorkspacePath().string()}});
-    return res;
-  }
-  
-  // load the JSON
-  nlohmann::json readJson = {};
-  {
-    fs::ifstream inFile{fullPath};
-    
-    inFile >> readJson;
-  }
-  
-  res += addModuleFromJson(readJson);
-  return res;
+	Result res;
+
+	// check for built-in modules
+	if (name == "lang") {
+		return addModule(std::make_unique<LangModule>(*this));
+	} else if (name == "c") {
+		return addModule(std::make_unique<CModule>(*this));
+	}
+
+	// find it in the workspace
+	fs::path fullPath = getWorkspacePath() / "src" / (gsl::to_string(name) + ".chigmod");
+
+	if (!fs::is_regular_file(fullPath)) {
+		res.add_entry(
+			"EUKN", "Failed to find module", {{"Module Name", gsl::to_string(name)},
+												 {"Workspace Path", getWorkspacePath().string()}});
+		return res;
+	}
+
+	// load the JSON
+	nlohmann::json readJson = {};
+	{
+		fs::ifstream inFile{fullPath};
+
+		inFile >> readJson;
+	}
+
+	res += addModuleFromJson(readJson);
+	return res;
 }
 
 Result Context::addModuleFromJson(const nlohmann::json& json, std::string* name)
 {
-  Result res;
-  
-  // parse module
-  auto jmod = std::make_unique<JsonModule>(json, *this, &res);
-  if(!res) { return res; }
-  if(name != nullptr) { *name = jmod->name; }
-  
-  auto cPtr = jmod.get();
-  res += addModule(std::move(jmod));
-  if(!res) { return res; }
-  
-  // load graphs
-  res += cPtr->loadGraphs();
-  
-  return res;
-}
+	Result res;
 
+	// parse module
+	auto jmod = std::make_unique<JsonModule>(json, *this, &res);
+	if (!res) {
+		return res;
+	}
+	if (name != nullptr) {
+		*name = jmod->name;
+	}
+
+	auto cPtr = jmod.get();
+	res += addModule(std::move(jmod));
+	if (!res) {
+		return res;
+	}
+
+	// load graphs
+	res += cPtr->loadGraphs();
+
+	return res;
+}
 
 Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 {
@@ -140,41 +146,41 @@ Result Context::getNodeType(gsl::cstring_span<> moduleName, gsl::cstring_span<> 
 
 std::string Context::stringifyType(llvm::Type* ty)
 {
-    Expects(ty != nullptr);
-  
+	Expects(ty != nullptr);
+
 	std::string data;
 	llvm::raw_string_ostream stream{data};
 	ty->print(stream);
 	return stream.str();
 }
 
-Result Context::compileModule(gsl::cstring_span<> name, llvm::Module** toFill)
+Result Context::compileModule(gsl::cstring_span<> name, std::unique_ptr<llvm::Module>* toFill)
 {
-    Expects(toFill != nullptr);
-  
-    Result res;
-    
-    auto chigmod = getModuleByName(name);
-    
-    if(chigmod == nullptr) {
-		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(name)}});
-        return res;
-    }
-    
-    std::unique_ptr<llvm::Module> llmod;
-    res += chigmod->generateModule(&llmod);
-    
-    *toFill = llmod.get();
-    
-    // verify the created module
-    if(res) {
-      std::string err;
-      llvm::raw_string_ostream os(err);
-      if(llvm::verifyModule(**toFill, &os)) {
-        res.add_entry("EUKN", "Internal compiler error: Invalid module created", {{"Error", err}});
-      }
-    }
+	Expects(toFill != nullptr);
 
-    return res;
-    
+	Result res;
+
+	auto chigmod = getModuleByName(name);
+
+	if (chigmod == nullptr) {
+		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(name)}});
+		return res;
+	}
+
+	std::unique_ptr<llvm::Module> llmod;
+	res += chigmod->generateModule(&llmod);
+
+	// verify the created module
+	if (res) {
+		std::string err;
+		llvm::raw_string_ostream os(err);
+		if (llvm::verifyModule(*llmod, &os)) {
+			res.add_entry(
+				"EUKN", "Internal compiler error: Invalid module created", {{"Error", err}});
+		}
+	}
+
+	*toFill = std::move(llmod);
+
+	return res;
 }
