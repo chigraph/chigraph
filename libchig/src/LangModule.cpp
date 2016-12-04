@@ -38,7 +38,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 
 						DataType cty;
 						// TODO: maybe not discard res
-						res += context->getType(module, type, &cty);
+						res += context->typeFromModule(module, type, &cty);
 
 						if (!res) {
 							continue;
@@ -76,7 +76,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 
 						DataType cty;
 						// TODO: maybe not discard res
-						context->getType(module, type, &cty);
+						context->typeFromModule(module, type, &cty);
 
 						outputs.emplace_back(cty, docString);
 					}
@@ -157,7 +157,7 @@ DataType LangModule::getType(gsl::cstring_span<> name)
 	auto err = llvm::SMDiagnostic();
 
 	auto lltype = llvm::parseType(
-		gsl::to_string(name), err, llvm::Module("tmp", context->llcontext), nullptr);
+		gsl::to_string(name), err, llvm::Module("tmp", context->llvmContext()), nullptr);
 	if (!lltype) {
 		return {};
 	}
@@ -264,7 +264,7 @@ Result ConstIntNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
 	// just go to the block
 
 	builder.CreateStore(
-		llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->llcontext), number), io[0],
+		llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->llvmContext()), number), io[0],
 		false);
 	builder.CreateBr(outputBlocks[0]);
 
@@ -297,7 +297,7 @@ Result ConstBoolNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
 	llvm::IRBuilder<> builder(codegenInto);
 	// just go to the block
 
-	builder.CreateStore(llvm::ConstantInt::get(llvm::IntegerType::getInt1Ty(context->llcontext),
+	builder.CreateStore(llvm::ConstantInt::get(llvm::IntegerType::getInt1Ty(context->llvmContext()),
 							static_cast<uint64_t>(value)),
 		io[0], false);
 	builder.CreateBr(outputBlocks[0]);
@@ -342,7 +342,7 @@ Result ExitNodeType::codegen(size_t execInputID, llvm::Module* /*mod*/, llvm::Fu
 	}
 
 	builder.CreateRet(
-		llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->llcontext), execInputID));
+		llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->llvmContext()), execInputID));
 
 	return {};
 }
@@ -386,7 +386,7 @@ Result StringLiteralNodeType::codegen(size_t /*execInputID*/, llvm::Module* /*mo
 
 	auto global = builder.CreateGlobalString(literalString);
 
-	auto const0ID = llvm::ConstantInt::get(context->llcontext, llvm::APInt(32, 0, false));
+	auto const0ID = llvm::ConstantInt::get(context->llvmContext(), llvm::APInt(32, 0, false));
 	auto gep = builder.CreateGEP(global, {const0ID, const0ID});
 	builder.CreateStore(gep, io[0], false);
 

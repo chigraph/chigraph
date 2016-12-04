@@ -73,7 +73,7 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod) const
 {
 	// create llvm module
-	*mod = std::make_unique<llvm::Module>(name, context->llcontext);
+	*mod = std::make_unique<llvm::Module>(name, context->llvmContext());
 
 	Result res = {};
 

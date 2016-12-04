@@ -14,13 +14,13 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		Context c;
 		Result res;
 
-		THEN("There will be no modules in it") { REQUIRE(c.getNumModules() == 0); }
+		THEN("There will be no modules in it") { REQUIRE(c.numModules() == 0); }
 		THEN("stringifyType return proper strings")
 		{
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32Ty(c.llcontext)) == "i32");
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt1Ty(c.llcontext)) == "i1");
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32PtrTy(c.llcontext)) == "i32*");
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt8Ty(c.llcontext)) == "i8");
+			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32Ty(c.llvmContext())) == "i32");
+			REQUIRE(c.stringifyType(llvm::IntegerType::getInt1Ty(c.llvmContext())) == "i1");
+			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32PtrTy(c.llvmContext())) == "i32*");
+			REQUIRE(c.stringifyType(llvm::IntegerType::getInt8Ty(c.llvmContext())) == "i8");
 		}
 
 		WHEN("A LangModule is created and added")
@@ -39,28 +39,28 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
                 }
             }
             
-			THEN("There should be 1 module in c") { REQUIRE(c.getNumModules() == 1); }
+			THEN("There should be 1 module in c") { REQUIRE(c.numModules() == 1); }
 			THEN("Getting the lang module from c should work")
 			{
-				REQUIRE(c.getModuleByName("lang") != nullptr);
-				REQUIRE(c.getModuleByName("lang")->name == "lang");
+				REQUIRE(c.moduleByName("lang") != nullptr);
+				REQUIRE(c.moduleByName("lang")->name == "lang");
 			}
 
 			THEN("getNodeType should work for basic types")
 			{
 				std::unique_ptr<NodeType> ty;
-				res = c.getNodeType("lang", "if", {}, &ty);
+				res = c.nodeTypeFromModule("lang", "if", {}, &ty);
 				REQUIRE(!!res);
 			}
 
 			THEN("getNodeType should fail for unknown modules and types with correct ec")
 			{
 				std::unique_ptr<NodeType> ty;
-				res = c.getNodeType("lan", "if", {}, &ty);
+				res = c.nodeTypeFromModule("lan", "if", {}, &ty);
 				REQUIRE(!res);
 				REQUIRE(res.result_json[0]["errorcode"] == "E36");
 
-				res = c.getNodeType("lang", "eef", {}, &ty);
+				res = c.nodeTypeFromModule("lang", "eef", {}, &ty);
 				REQUIRE(!res);
 				REQUIRE(res.result_json[0]["errorcode"] == "E37");
 			}
@@ -69,7 +69,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 			{
 				auto checkTy = [&](gsl::cstring_span<> ty) {
 					DataType chigty;
-					res = c.getType("lang", ty, &chigty);
+					res = c.typeFromModule("lang", ty, &chigty);
 					REQUIRE(c.stringifyType(chigty.getLLVMType()) == ty);
 				};
 
@@ -83,11 +83,11 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 			THEN("getType should fail for incorrect modules and types")
 			{
 				DataType ty;
-				res = c.getType("lang", "iiint", &ty);
+				res = c.typeFromModule("lang", "iiint", &ty);
 				REQUIRE(!res);
 				REQUIRE(res.result_json[0]["errorcode"] == "E37");
 
-				res = c.getType("lag", "i8", &ty);
+				res = c.typeFromModule("lag", "i8", &ty);
 				REQUIRE(!res);
 				REQUIRE(res.result_json[0]["errorcode"] == "E36");
 			}

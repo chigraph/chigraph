@@ -15,7 +15,7 @@ TEST_CASE("JsonSerializer", "[json]")
 		Result res;
 		Context c;
 		c.addModule("lang");
-        LangModule* lmod = static_cast<LangModule*>(c.getModuleByName("lang"));
+        LangModule* lmod = static_cast<LangModule*>(c.moduleByName("lang"));
 
 		GraphFunction func(c, "hello", {}, {});
 
@@ -79,7 +79,7 @@ TEST_CASE("JsonSerializer", "[json]")
 			WHEN("A lang:if is added")
 			{
 				std::unique_ptr<NodeType> ifType;
-				res = c.getNodeType("lang", "if", {}, &ifType);
+				res = c.nodeTypeFromModule("lang", "if", {}, &ifType);
 				REQUIRE(!!res);
 				auto ifNode = func.insertNode(std::move(ifType), 44.f, 23.f, "if");
 

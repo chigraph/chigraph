@@ -88,7 +88,7 @@ int main(int argc, char** argv) {
 		if(ret != 1) return ret;
 
 	// create module for the functions
-		auto llmod = std::make_unique<llvm::Module>("main", c.llcontext);
+		auto llmod = std::make_unique<llvm::Module>("main", c.llvmContext());
 		
 			
 		llvm::Function* func;

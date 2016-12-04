@@ -63,7 +63,7 @@ Result GraphFunction::fromJSON(
 			std::tie(module, name) = parseColonPair(qualifiedType);
 
 			DataType ty;
-			res += context.getType(module, name, &ty);
+			res += context.typeFromModule(module, name, &ty);
 
 			if (!res) {
 				return res;
@@ -88,7 +88,7 @@ Result GraphFunction::fromJSON(
 			std::tie(module, name) = parseColonPair(qualifiedType);
 
 			DataType ty;
-			res += context.getType(module, name, &ty);
+			res += context.typeFromModule(module, name, &ty);
 
 			if (!res) {
 				return res;
@@ -390,5 +390,5 @@ llvm::FunctionType* GraphFunction::getFunctionType() const
 		[](auto& tyanddoc) { return llvm::PointerType::get(tyanddoc.first.getLLVMType(), 0); });
 
 	return llvm::FunctionType::get(
-		llvm::IntegerType::getInt32Ty(context->llcontext), arguments, false);
+		llvm::IntegerType::getInt32Ty(context->llvmContext()), arguments, false);
 }

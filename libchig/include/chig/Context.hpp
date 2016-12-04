@@ -26,8 +26,9 @@ namespace chig
 /// The class that handles modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 struct Context {
+  
 	/// Creates a context with just the lang module
-	/// \param workspacePath Path to the workspace
+	/// \param workPath Path to the workspace
 	Context(const boost::filesystem::path& workPath = {});
 
 	// no move or copy, doesn't make sense
@@ -37,7 +38,7 @@ struct Context {
 	/// Gets the module by the name
 	/// \param moduleName The name of the module to find
 	/// \return ret_module The module that has the name \c moduleName, nullptr if none were found
-	ChigModule* getModuleByName(gsl::cstring_span<> moduleName) noexcept;
+	ChigModule* moduleByName(gsl::cstring_span<> moduleName) noexcept;
 
 	/// Load a module from disk
 	/// \param name The name of the moudle
@@ -58,14 +59,14 @@ struct Context {
 	/// \param name The name of the type, required
 	/// \param toFill The type to fill
 	/// \return The result
-	Result getType(gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept;
+	Result typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
 	/// \param moduleName The module name.
 	/// \param typeName The name of the node type
 	/// \param data The JSON data that is used to construct the NodeType.
 	/// \param toFill The point to fill
-	Result getNodeType(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+	Result nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
 		const nlohmann::json& data, std::unique_ptr<NodeType>* toFill) noexcept;
 
 	/// Turns a type into a string
@@ -73,16 +74,33 @@ struct Context {
 	/// \return The return string
 	std::string stringifyType(llvm::Type* ty);
 
-	llvm::LLVMContext llcontext;  /// The LLVM context to use with everything under the context
 
-	boost::filesystem::path getWorkspacePath() { return workspacePath; }
+    /// Get the workspace path of the Context
+    /// \return The workspace path
+	boost::filesystem::path workspacePath() const { return mWorkspacePath; }
+	
+	/// Compile a module to a \c llvm::Module
+	/// \param name The name of the moudle to compile
+	/// \param toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
+	/// \return The result
 	Result compileModule(gsl::cstring_span<> name, std::unique_ptr<llvm::Module>* toFill);
 
-	size_t getNumModules() const { return modules.size(); }
+    /// Get the number of modules this Context has
+    /// \return The module count
+	size_t numModules() const { return mModules.size(); }
+	
+	/// Get the associated LLVMContext
+	/// \return The LLVMContext
+	llvm::LLVMContext& llvmContext() { return mLLVMContext; }
+	
+	/// \copydoc chig::Context::llvmContext() const
+	const llvm::LLVMContext& llvmContext() const { return mLLVMContext; }
+	
 private:
-	boost::filesystem::path workspacePath;
+	boost::filesystem::path mWorkspacePath;
 
-	std::vector<std::unique_ptr<ChigModule>> modules;  /// The modules that have been loaded.
+	llvm::LLVMContext mLLVMContext;  /// The LLVM context to use with everything under the context
+	std::vector<std::unique_ptr<ChigModule>> mModules;  /// The modules that have been loaded.
 };
 }
 

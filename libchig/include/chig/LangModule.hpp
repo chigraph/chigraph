@@ -110,7 +110,7 @@ struct LangModule : ChigModule {
 	}
 	Result generateModule(std::unique_ptr<llvm::Module>* module) const override
 	{
-		*module = std::make_unique<llvm::Module>("lang", context->llcontext);
+		*module = std::make_unique<llvm::Module>("lang", context->llvmContext());
 
 		return {};
 	};

@@ -11,35 +11,35 @@ TEST_CASE("LangModule", "[module]")
 	{
 		Context c;
 		c.addModule("lang");
-        ChigModule* mod = c.getModuleByName("lang");
+        ChigModule* mod = c.moduleByName("lang");
 		
 		THEN("We try to get associated types with correct parameters, it works")
 		{
 			DataType test;
 			Result res;
 
-			res = c.getType("lang", "i32", &test);
+			res = c.typeFromModule("lang", "i32", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "i32", llvm::IntegerType::getInt32Ty(c.llcontext)));
+			REQUIRE(test == DataType(mod, "i32", llvm::IntegerType::getInt32Ty(c.llvmContext())));
 
-			res = c.getType("lang", "i32*", &test);
+			res = c.typeFromModule("lang", "i32*", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llcontext)));
+			REQUIRE(test == DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llvmContext())));
 
-			res = c.getType("lang", "i32**", &test);
+			res = c.typeFromModule("lang", "i32**", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "i32**", llvm::PointerType::get(llvm::IntegerType::getInt32PtrTy(c.llcontext), 0)));
+			REQUIRE(test == DataType(mod, "i32**", llvm::PointerType::get(llvm::IntegerType::getInt32PtrTy(c.llvmContext()), 0)));
 
-			res = c.getType("lang", "i8", &test);
+			res = c.typeFromModule("lang", "i8", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "i8", llvm::IntegerType::getInt8Ty(c.llcontext)));
+			REQUIRE(test == DataType(mod, "i8", llvm::IntegerType::getInt8Ty(c.llvmContext())));
 
-			res = c.getType("lang", "double", &test);
+			res = c.typeFromModule("lang", "double", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "double", llvm::Type::getDoubleTy(c.llcontext)));
+			REQUIRE(test == DataType(mod, "double", llvm::Type::getDoubleTy(c.llvmContext())));
 			
-			REQUIRE(c.getModuleByName("lang")->getNodeTypeNames() == std::vector<std::string>({"if", "entry", "exit", "const-int", "strliteral", "const-bool"}));
-			REQUIRE(c.getModuleByName("lang")->getTypeNames() == std::vector<std::string>({"i32", "i1", "double"}));
+			REQUIRE(c.moduleByName("lang")->getNodeTypeNames() == std::vector<std::string>({"if", "entry", "exit", "const-int", "strliteral", "const-bool"}));
+			REQUIRE(c.moduleByName("lang")->getTypeNames() == std::vector<std::string>({"i32", "i1", "double"}));
 		}
 
 		THEN(
@@ -49,23 +49,23 @@ TEST_CASE("LangModule", "[module]")
 			DataType test;
 			Result res;
 
-			res = c.getType("lang", "i32a", &test);
+			res = c.typeFromModule("lang", "i32a", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E37");
 
-			res = c.getType("lang", "i32*a", &test);
+			res = c.typeFromModule("lang", "i32*a", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E37");
 
-			res = c.getType("lang", "*i32**", &test);
+			res = c.typeFromModule("lang", "*i32**", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E37");
 
-			res = c.getType("lang", "&i8", &test);
+			res = c.typeFromModule("lang", "&i8", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E37");
 
-			res = c.getType("lang", "pq", &test);
+			res = c.typeFromModule("lang", "pq", &test);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E37");
 		}
@@ -74,7 +74,7 @@ TEST_CASE("LangModule", "[module]")
 		{
 			Result res;
 			std::unique_ptr<NodeType> ifNode = nullptr;
-			res = c.getNodeType("lang", "if", {}, &ifNode);
+			res = c.nodeTypeFromModule("lang", "if", {}, &ifNode);
 			REQUIRE(!!res);
 
 			THEN("It should be totally valid")
@@ -113,7 +113,7 @@ TEST_CASE("LangModule", "[module]")
 
 			std::unique_ptr<NodeType> entryNode = nullptr;
 
-			res = c.getNodeType("lang", "entry",
+			res = c.nodeTypeFromModule("lang", "entry",
 				nlohmann::json::parse(R"end(   [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}]   )end"),
 				&entryNode);
 			REQUIRE(!!res);

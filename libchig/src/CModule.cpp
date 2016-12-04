@@ -104,7 +104,7 @@ CFuncNode::CFuncNode(
 
 	llvm::SMDiagnostic diag;
 	auto modorerror = llvm::parseBitcodeFile(
-		llvm::MemoryBufferRef(bitcode, "clang-generated"), context->llcontext);
+		llvm::MemoryBufferRef(bitcode, "clang-generated"), context->llvmContext());
 
 	if (!modorerror) {
 		std::string errorString;
@@ -129,7 +129,7 @@ CFuncNode::CFuncNode(
 	std::transform(llfunc->arg_begin(), llfunc->arg_end(), std::back_inserter(dataInputs),
 		[this](const llvm::Argument& argument) {
 			return std::make_pair(
-				DataType(context->getModuleByName("lang"),
+				DataType(context->moduleByName("lang"),
 					context->stringifyType(argument.getType()), argument.getType()),
 				argument.getName());
 		});
@@ -138,7 +138,7 @@ CFuncNode::CFuncNode(
 	auto ret = llfunc->getReturnType();
 
 	if (!ret->isVoidTy()) {
-		dataOutputs = {{{context->getModuleByName("lang"), context->stringifyType(ret), ret}, ""}};
+		dataOutputs = {{{context->moduleByName("lang"), context->stringifyType(ret), ret}, ""}};
 	}
 }
 

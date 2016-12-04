@@ -18,12 +18,12 @@ using namespace llvm;
 
 namespace fs = boost::filesystem;
 
-Context::Context(const fs::path& workPath) : workspacePath(workPath) {}
-ChigModule* Context::getModuleByName(gsl::cstring_span<> moduleName) noexcept
+Context::Context(const fs::path& workPath) : mWorkspacePath(workPath) {}
+ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) noexcept
 {
 	Result res;
 
-	for (auto& module : modules) {
+	for (auto& module : mModules) {
 		if (module->name == moduleName) {
 			return module.get();
 		}
@@ -43,12 +43,12 @@ chig::Result chig::Context::addModule(const gsl::cstring_span<> name)
 	}
 
 	// find it in the workspace
-	fs::path fullPath = getWorkspacePath() / "src" / (gsl::to_string(name) + ".chigmod");
+	fs::path fullPath = workspacePath() / "src" / (gsl::to_string(name) + ".chigmod");
 
 	if (!fs::is_regular_file(fullPath)) {
 		res.add_entry(
 			"EUKN", "Failed to find module", {{"Module Name", gsl::to_string(name)},
-												 {"Workspace Path", getWorkspacePath().string()}});
+												 {"Workspace Path", workspacePath().string()}});
 		return res;
 	}
 
@@ -96,24 +96,24 @@ Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 	Result res;
 
 	// make sure it's unique
-	auto ptr = getModuleByName(modToAdd->name);
+	auto ptr = moduleByName(modToAdd->name);
 	if (ptr != nullptr) {
 		res.add_entry(
 			"E24", "Cannot add already existing module again", {{"moduleName", modToAdd->name}});
 		return res;
 	}
 
-	modules.emplace_back(std::move(modToAdd));
+	mModules.emplace_back(std::move(modToAdd));
 
 	return res;
 }
 
-Result Context::getType(
+Result Context::typeFromModule(
 	gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept
 {
 	Result res;
 
-	ChigModule* mod = getModuleByName(module);
+	ChigModule* mod = moduleByName(module);
 	if (mod == nullptr) {
 		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(module)}});
 		return res;
@@ -128,12 +128,12 @@ Result Context::getType(
 	return res;
 }
 
-Result Context::getNodeType(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
 	const nlohmann::json& data, std::unique_ptr<NodeType>* toFill) noexcept
 {
 	Result res;
 
-	auto module = getModuleByName(moduleName);
+	auto module = moduleByName(moduleName);
 	if (module == nullptr) {
 		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(moduleName)}});
 		return res;
@@ -160,7 +160,7 @@ Result Context::compileModule(gsl::cstring_span<> name, std::unique_ptr<llvm::Mo
 
 	Result res;
 
-	auto chigmod = getModuleByName(name);
+	auto chigmod = moduleByName(name);
 
 	if (chigmod == nullptr) {
 		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(name)}});
