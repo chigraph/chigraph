@@ -10,7 +10,7 @@
 namespace chig
 {
 struct Result {
-	Result() : result_json{nlohmann::json::array()}, success{true} {}
+	Result() : result_json(nlohmann::json::array()), success{true} {}
 	void add_entry(const char* ec, const char* overview, nlohmann::json data)
 	{
 		Expects(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
