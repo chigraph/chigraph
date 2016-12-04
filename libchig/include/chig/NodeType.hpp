@@ -39,7 +39,7 @@ struct NodeType {
 	std::vector<std::string> execInputs;
 	std::vector<std::string> execOutputs;
 
-	std::string getQualifiedName() const { return module->name() + ":" + name; }
+	std::string qualifiedName() const { return module->name() + ":" + name; }
 	/// A virtual function that is called when this node needs to be called
 	/// \param execInputID The ID of the exec input
 	/// \param io This has the values that are the inputs and outputs of the function.

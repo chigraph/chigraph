@@ -70,7 +70,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 				auto checkTy = [&](gsl::cstring_span<> ty) {
 					DataType chigty;
 					res = c.typeFromModule("lang", ty, &chigty);
-					REQUIRE(c.stringifyType(chigty.getLLVMType()) == ty);
+					REQUIRE(c.stringifyType(chigty.llvmType()) == ty);
 				};
 
 				checkTy("i32");

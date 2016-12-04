@@ -33,7 +33,7 @@ FunctionView::FunctionView(chig::JsonModule* /*module*/, chig::GraphFunction* fu
 	hlayout->addWidget(view);
 
 	// create nodes
-	for (auto& node : func->graph.nodes) {
+	for (auto& node : func->graph.nodes()) {
 		std::shared_ptr<Node> guinode =
 			scene->createNode(std::make_unique<ChigNodeGui>(node.second.get()));
 
@@ -43,7 +43,7 @@ FunctionView::FunctionView(chig::JsonModule* /*module*/, chig::GraphFunction* fu
 	}
 
 	// create connections
-	for (auto& node : func->graph.nodes) {
+	for (auto& node : func->graph.nodes()) {
 		auto thisNode = assoc[node.second.get()].lock();
 
 		size_t connId = 0;
@@ -94,7 +94,7 @@ void FunctionView::nodeAdded(Node& n)
 		return;
 	}
 
-	func->graph.nodes[ptr->inst->id] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
+	func->graph.nodes()[ptr->inst->id] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
 }
 void FunctionView::nodeDeleted(Node& n)
 {
@@ -104,7 +104,7 @@ void FunctionView::nodeDeleted(Node& n)
 		return;
 	}
 
-	func->graph.nodes.erase(ptr->inst->id);
+	func->graph.nodes().erase(ptr->inst->id);
 }
 
 void FunctionView::connectionAdded(const Connection& c)

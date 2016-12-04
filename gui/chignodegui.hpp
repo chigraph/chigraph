@@ -19,7 +19,7 @@ public:
 	chig::NodeInstance* inst;
 
 	QString caption() const override { return QString::fromStdString(inst->id); }
-	QString name() const override { return QString::fromStdString(inst->type->getQualifiedName()); }
+	QString name() const override { return QString::fromStdString(inst->type->qualifiedName()); }
 	std::unique_ptr<NodeDataModel> clone() const override
 	{
 		return std::unique_ptr<ChigNodeGui>(new ChigNodeGui(inst));
@@ -45,7 +45,7 @@ public:
 					return {};
 
 				idandname = {inst->type->dataInputs[pIndex - inst->type->execInputs.size()]
-								 .first.getQualifiedName(),
+								 .first.qualifiedName(),
 					inst->type->dataInputs[pIndex - inst->type->execInputs.size()].second};
 
 			} else {
@@ -57,7 +57,7 @@ public:
 			std::pair<std::string, std::string> idandname;
 			if (pIndex >= int(inst->type->execOutputs.size())) {
 				idandname = {inst->type->dataOutputs[pIndex - inst->type->execOutputs.size()]
-								 .first.getQualifiedName(),
+								 .first.qualifiedName(),
 					inst->type->dataOutputs[pIndex - inst->type->execOutputs.size()].second};
 
 			} else {

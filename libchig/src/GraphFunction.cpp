@@ -122,14 +122,14 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 	inputsjson = nlohmann::json::array();
 
 	for (auto& in : inputs) {
-		inputsjson.push_back({{in.second, in.first.getQualifiedName()}});
+		inputsjson.push_back({{in.second, in.first.qualifiedName()}});
 	}
 
 	auto& outputsjson = jsonData["outputs"];
 	outputsjson = nlohmann::json::array();
 
 	for (auto& out : outputs) {
-		outputsjson.push_back({{out.second, out.first.getQualifiedName()}});
+		outputsjson.push_back({{out.second, out.first.qualifiedName()}});
 	}
 
 	res += graph.toJson(toFill);
@@ -186,12 +186,10 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 				value, node->type->dataInputs[inputID].second));  // TODO: pass ptr to value
 
 			// make sure it's the right type
-			if (io[io.size() - 1]->getType() !=
-				node->type->dataInputs[inputID].first.getLLVMType()) {
+			if (io[io.size() - 1]->getType() != node->type->dataInputs[inputID].first.llvmType()) {
 				res.add_entry("EINT", "Internal codegen error: unexpected type in cache.",
-					{{"Expected LLVM type",
-						 node->type->context->stringifyType(
-							 node->type->dataInputs[inputID].first.getLLVMType())},
+					{{"Expected LLVM type", node->type->context->stringifyType(
+												node->type->dataInputs[inputID].first.llvmType())},
 						{"Found type",
 							node->type->context->stringifyType(io[io.size() - 1]->getType())},
 						{"Node ID", node->id}, {"Input ID", inputID}});
@@ -211,18 +209,18 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		for (auto& output : node->type->dataOutputs) {
 			// TODO: research address spaces
 			llvm::AllocaInst* alloc =
-				allocBuilder.CreateAlloca(output.first.getLLVMType(), nullptr, output.second);
+				allocBuilder.CreateAlloca(output.first.llvmType(), nullptr, output.second);
 			alloc->setName(output.second);
 			outputCache.push_back(alloc);
 			io.push_back(alloc);
 
 			// make sure the type is right
-			if (llvm::PointerType::get(output.first.getLLVMType(), 0) != alloc->getType()) {
+			if (llvm::PointerType::get(output.first.llvmType(), 0) != alloc->getType()) {
 				res.add_entry("EINT",
 					"Internal codegen error: unexpected type returned from alloca.",
 					{{"Expected LLVM type",
 						 node->type->context->stringifyType(
-							 llvm::PointerType::get(output.first.getLLVMType(), 0))},
+							 llvm::PointerType::get(output.first.llvmType(), 0))},
 						{"Yielded type", node->type->context->stringifyType(alloc->getType())},
 						{"Node ID", node->id}});
 			}
@@ -279,7 +277,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	NodeInstance* exitNode;
 	// get output node
 	{
-		auto outputNodes = graph.getNodesWithType("lang", "exit");
+		auto outputNodes = graph.nodesWithType("lang", "exit");
 
 		if (outputNodes.empty()) {
 			res.add_entry("EUKN", "No output nodes in graph", {{"Graph Name", graphName}});
@@ -293,12 +291,12 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	if (!std::equal(inputs.begin(), inputs.end(), entry->type->dataOutputs.begin())) {
 		nlohmann::json inFunc = nlohmann::json::array();
 		for (auto& in : inputs) {
-			inFunc.push_back({{in.second, in.first.getQualifiedName()}});
+			inFunc.push_back({{in.second, in.first.qualifiedName()}});
 		}
 
 		nlohmann::json inEntry = nlohmann::json::array();
 		for (auto& in : entry->type->dataOutputs) {  // outputs to entry are inputs to the function
-			inEntry.push_back({{in.second, in.first.getQualifiedName()}});
+			inEntry.push_back({{in.second, in.first.qualifiedName()}});
 		}
 
 		res.add_entry("EUKN", "Inputs to function doesn't match function inputs",
@@ -310,13 +308,13 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	if (!std::equal(outputs.begin(), outputs.end(), exitNode->type->dataInputs.begin())) {
 		nlohmann::json outFunc = nlohmann::json::array();
 		for (auto& out : outputs) {
-			outFunc.push_back({{out.second, out.first.getQualifiedName()}});
+			outFunc.push_back({{out.second, out.first.qualifiedName()}});
 		}
 
 		nlohmann::json outEntry = nlohmann::json::array();
 		for (auto& out :
 			exitNode->type->dataInputs) {  // inputs to the exit are outputs to the function
-			outEntry.push_back({{out.second, out.first.getQualifiedName()}});
+			outEntry.push_back({{out.second, out.first.qualifiedName()}});
 		}
 
 		res.add_entry("EUKN", "Outputs to function doesn't match function exit",
@@ -362,7 +360,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 
 NodeInstance* GraphFunction::getEntryNode() const noexcept
 {
-	auto matching = graph.getNodesWithType("lang", "entry");
+	auto matching = graph.nodesWithType("lang", "entry");
 
 	if (matching.size() == 1) {
 		return matching[0];
@@ -383,11 +381,11 @@ llvm::FunctionType* GraphFunction::getFunctionType() const
 	std::vector<llvm::Type*> arguments;
 	arguments.reserve(inputs.size());
 	std::transform(inputs.begin(), inputs.end(), std::back_inserter(arguments),
-		[](const std::pair<DataType, std::string>& p) { return p.first.getLLVMType(); });
+		[](const std::pair<DataType, std::string>& p) { return p.first.llvmType(); });
 
 	// make these pointers
 	std::transform(outputs.begin(), outputs.end(), std::back_inserter(arguments),
-		[](auto& tyanddoc) { return llvm::PointerType::get(tyanddoc.first.getLLVMType(), 0); });
+		[](auto& tyanddoc) { return llvm::PointerType::get(tyanddoc.first.llvmType(), 0); });
 
 	return llvm::FunctionType::get(
 		llvm::IntegerType::getInt32Ty(context->llvmContext()), arguments, false);

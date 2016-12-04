@@ -30,13 +30,8 @@ struct JsonModule : public ChigModule {
 	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
 	DataType typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
-	virtual std::vector<std::string> 
-  nodeTypeNames() const override;  // TODO: implement
-	virtual std::vector<std::string> typeNames() const override
-	{
-		return {};
-	}  // TODO: implement
-
+	virtual std::vector<std::string> nodeTypeNames() const override;			// TODO: implement
+	virtual std::vector<std::string> typeNames() const override { return {}; }  // TODO: implement
 	Result loadGraphs();
 
 	Result toJSON(nlohmann::json* to_fill) const;

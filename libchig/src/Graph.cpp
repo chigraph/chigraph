@@ -3,7 +3,7 @@
 
 using namespace chig;
 
-Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : context{&con}
+Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&con}
 {
 	// read the nodes
 	if (data.find("nodes") == data.end() || !data["nodes"].is_object()) {
@@ -34,7 +34,7 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : context{&c
 		}
 
 		std::unique_ptr<NodeType> nodeType;
-		res += context->nodeTypeFromModule(moduleName, typeName, node["data"], &nodeType);
+		res += context().nodeTypeFromModule(moduleName, typeName, node["data"], &nodeType);
 		if (!res) {
 			continue;
 		}
@@ -117,12 +117,12 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : context{&c
 			int OutputConnectionID = connection["output"][1];
 
 			// make sure the nodes exist
-			if (nodes.find(InputNodeID) == nodes.end()) {
+			if (mNodes.find(InputNodeID) == mNodes.end()) {
 				res.add_entry("E20", "Input node for connection doesn't exist",
 					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
 				continue;
 			}
-			if (nodes.find(OutputNodeID) == nodes.end()) {
+			if (mNodes.find(OutputNodeID) == mNodes.end()) {
 				res.add_entry("E21", "Output node for connection doesn't exist",
 					{{"connectionid", connID}, {"Requested Node", OutputNodeID}});
 				continue;
@@ -131,10 +131,10 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : context{&c
 			// connect
 			// these functions do bounds checking, it's okay
 			if (isData) {
-				res += connectData(*nodes[InputNodeID], InputConnectionID, *nodes[OutputNodeID],
+				res += connectData(*mNodes[InputNodeID], InputConnectionID, *mNodes[OutputNodeID],
 					OutputConnectionID);
 			} else {
-				res += connectExec(*nodes[InputNodeID], InputConnectionID, *nodes[OutputNodeID],
+				res += connectExec(*mNodes[InputNodeID], InputConnectionID, *mNodes[OutputNodeID],
 					OutputConnectionID);
 			}
 
@@ -153,12 +153,12 @@ Result Graph::toJson(nlohmann::json* toFill) const
 	auto& jsonConnections = jsonData["connections"];
 	jsonConnections = nlohmann::json::array();  // make sure even if it's empty it's an aray
 
-	for (const auto& nodepair : nodes) {
+	for (const auto& nodepair : mNodes) {
 		auto& node = nodepair.second;
 		std::string nodeID = nodepair.first;
 
 		nlohmann::json nodeJson = node->type->toJSON();
-		jsonNodes[nodeID] = {{"type", node->type->getQualifiedName()},
+		jsonNodes[nodeID] = {{"type", node->type->qualifiedName()},
 			{"location", {node->x, node->y}}, {"data", nodeJson}};
 		// add its connections. Just out the outputs to avoid duplicates
 
@@ -192,25 +192,24 @@ NodeInstance* Graph::insertNode(
 {
 	auto ptr = std::make_unique<NodeInstance>(std::move(type), x, y, id);
 
-	auto emplaced = nodes.emplace(id, std::move(ptr)).first;
+	auto emplaced = mNodes.emplace(id, std::move(ptr)).first;
 
 	return emplaced->second.get();
 }
 
-std::vector<NodeInstance*> Graph::getNodesWithType(const char* module, const char* name) const
-	noexcept
+std::vector<NodeInstance*> Graph::nodesWithType(const char* module, const char* name) const noexcept
 {
 	auto typeFinder = [&](auto& pair) {
 		return pair.second->type->module->name() == module && pair.second->type->name == name;
 	};
 
 	std::vector<NodeInstance*> ret;
-	auto iter = std::find_if(nodes.begin(), nodes.end(), typeFinder);
-	while (iter != nodes.end()) {
+	auto iter = std::find_if(mNodes.begin(), mNodes.end(), typeFinder);
+	while (iter != mNodes.end()) {
 		ret.emplace_back(iter->second.get());
 
 		std::advance(iter, 1);  // don't process the same one twice!
-		iter = std::find_if(iter, nodes.end(), typeFinder);
+		iter = std::find_if(iter, mNodes.end(), typeFinder);
 	}
 
 	return ret;

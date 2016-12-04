@@ -129,8 +129,8 @@ CFuncNode::CFuncNode(
 	std::transform(llfunc->arg_begin(), llfunc->arg_end(), std::back_inserter(dataInputs),
 		[this](const llvm::Argument& argument) {
 			return std::make_pair(
-				DataType(context->moduleByName("lang"),
-					context->stringifyType(argument.getType()), argument.getType()),
+				DataType(context->moduleByName("lang"), context->stringifyType(argument.getType()),
+					argument.getType()),
 				argument.getName());
 		});
 

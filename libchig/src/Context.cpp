@@ -34,7 +34,7 @@ ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) noexcept
 chig::Result chig::Context::addModule(const gsl::cstring_span<> name)
 {
 	Result res;
-    
+
 	// check for built-in modules
 	if (name == "lang") {
 		return addModule(std::make_unique<LangModule>(*this));
@@ -46,9 +46,8 @@ chig::Result chig::Context::addModule(const gsl::cstring_span<> name)
 	fs::path fullPath = workspacePath() / "src" / (gsl::to_string(name) + ".chigmod");
 
 	if (!fs::is_regular_file(fullPath)) {
-		res.add_entry(
-			"EUKN", "Failed to find module", {{"Module Name", gsl::to_string(name)},
-												 {"Workspace Path", workspacePath().string()}});
+		res.add_entry("EUKN", "Failed to find module",
+			{{"Module Name", gsl::to_string(name)}, {"Workspace Path", workspacePath().string()}});
 		return res;
 	}
 
@@ -120,7 +119,7 @@ Result Context::typeFromModule(
 	}
 
 	*toFill = mod->typeFromName(name);
-	if (!toFill->isValid()) {
+	if (!toFill->valid()) {
 		res.add_entry("E37", "Could not find type in module",
 			{{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
 	}

@@ -237,7 +237,7 @@ nlohmann::json EntryNodeType::toJSON() const
 	nlohmann::json ret = nlohmann::json::array();
 
 	for (auto& pair : dataOutputs) {
-		ret.push_back({{pair.second, pair.first.getQualifiedName()}});
+		ret.push_back({{pair.second, pair.first.qualifiedName()}});
 	}
 
 	return ret;
@@ -264,8 +264,8 @@ Result ConstIntNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
 	// just go to the block
 
 	builder.CreateStore(
-		llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->llvmContext()), number), io[0],
-		false);
+		llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->llvmContext()), number),
+		io[0], false);
 	builder.CreateBr(outputBlocks[0]);
 
 	return {};
@@ -357,7 +357,7 @@ nlohmann::json ExitNodeType::toJSON() const
 	nlohmann::json ret = nlohmann::json::array();
 
 	for (auto& pair : dataInputs) {
-		ret.push_back({{pair.second, pair.first.getQualifiedName()}});
+		ret.push_back({{pair.second, pair.first.qualifiedName()}});
 	}
 
 	return ret;

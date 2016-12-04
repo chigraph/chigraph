@@ -44,21 +44,21 @@ Result connectData(
 	if (connectionInputID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
 		for (auto& output : lhs.type->dataOutputs) {
-			dataOutputs.push_back({{output.second, output.first.getQualifiedName()}});
+			dataOutputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
 		res.add_entry("E22", "Output Data connection doesn't exist in node",
-			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type->getQualifiedName()},
+			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type->qualifiedName()},
 				{"Node JSON", rhs.type->toJSON()}, {"Node Output Data Connections", dataOutputs}});
 	}
 	if (connectionOutputID >= rhs.inputDataConnections.size()) {
 		auto dataInputs = nlohmann::json::array();
 		for (auto& output : rhs.type->dataInputs) {
-			dataInputs.push_back({{output.second, output.first.getQualifiedName()}});
+			dataInputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
 		res.add_entry("E23", "Input Data connection doesn't exist in node",
-			{{"Requested ID", connectionOutputID}, {"Node Type", rhs.type->getQualifiedName()},
+			{{"Requested ID", connectionOutputID}, {"Node Type", rhs.type->qualifiedName()},
 				{"Node JSON", rhs.type->toJSON()}, {"Node Input Data Connections", dataInputs}});
 	}
 
@@ -70,9 +70,8 @@ Result connectData(
 	if (lhs.type->dataOutputs[connectionInputID].first !=
 		rhs.type->dataInputs[connectionOutputID].first) {
 		res.add_entry("E24", "Connecting data nodes with different types is invalid",
-			{{"Left Hand Type", lhs.type->dataOutputs[connectionInputID].first.getQualifiedName()},
-				{"Right Hand Type",
-					rhs.type->dataInputs[connectionOutputID].first.getQualifiedName()},
+			{{"Left Hand Type", lhs.type->dataOutputs[connectionInputID].first.qualifiedName()},
+				{"Right Hand Type", rhs.type->dataInputs[connectionOutputID].first.qualifiedName()},
 				{"Left Node JSON", rhs.type->toJSON()}, {"Right Node JSON", rhs.type->toJSON()}});
 		return res;
 	}
@@ -107,7 +106,7 @@ Result connectExec(
 		}
 
 		res.add_entry("E22", "Output exec connection doesn't exist in node",
-			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type->getQualifiedName()},
+			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type->qualifiedName()},
 				{"Node Output Exec Connections", execOutputs}});
 	}
 	if (connectionOutputID >= rhs.inputExecConnections.size()) {
@@ -117,7 +116,7 @@ Result connectExec(
 		}
 
 		res.add_entry("E23", "Input exec connection doesn't exist in node",
-			{{"Requested ID", connectionInputID}, {"Node Type", rhs.type->getQualifiedName()},
+			{{"Requested ID", connectionInputID}, {"Node Type", rhs.type->qualifiedName()},
 				{"Node Input Exec Connections", execInputs}
 
 			});
@@ -150,11 +149,11 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 	if (connectionInputID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
 		for (auto& output : lhs.type->dataOutputs) {
-			dataOutputs.push_back({{output.second, output.first.getQualifiedName()}});
+			dataOutputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
 		res.add_entry("E22", "Output data connection in node doesn't exist",
-			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type->getQualifiedName()},
+			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type->qualifiedName()},
 				{"Node JSON", rhs.type->toJSON()}, {"Node Output Data Connections", dataOutputs}});
 
 		return res;
@@ -176,11 +175,11 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 	if (rhs.inputDataConnections.size() <= iter->second) {
 		auto dataInputs = nlohmann::json::array();
 		for (auto& output : rhs.type->dataInputs) {
-			dataInputs.push_back({{output.second, output.first.getQualifiedName()}});
+			dataInputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
 		res.add_entry("E23", "Input Data connection doesn't exist in node",
-			{{"Requested ID", iter->second}, {"Node Type", rhs.type->getQualifiedName()},
+			{{"Requested ID", iter->second}, {"Node Type", rhs.type->qualifiedName()},
 				{"Node JSON", rhs.type->toJSON()}, {"Node Input Data Connections", dataInputs}});
 
 		return res;
@@ -211,7 +210,7 @@ Result disconnectExec(NodeInstance& lhs, size_t connectionInputID)
 		}
 
 		res.add_entry("E22", "Output exec connection doesn't exist in node",
-			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type->getQualifiedName()},
+			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type->qualifiedName()},
 				{"Node Output Exec Connections", execOutputs}});
 	}
 
