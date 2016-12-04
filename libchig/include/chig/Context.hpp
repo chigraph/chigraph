@@ -88,13 +88,11 @@ struct Context {
 	size_t numModules() const { return mModules.size(); }
 	/// Get the associated LLVMContext
 	/// \return The LLVMContext
-	llvm::LLVMContext& llvmContext() { return mLLVMContext; }
-	/// \copydoc chig::Context::llvmContext() const
-	const llvm::LLVMContext& llvmContext() const { return mLLVMContext; }
+	llvm::LLVMContext& llvmContext() const { return *mLLVMContext; }
 private:
 	boost::filesystem::path mWorkspacePath;
 
-	llvm::LLVMContext mLLVMContext;  /// The LLVM context to use with everything under the context
+	std::unique_ptr<llvm::LLVMContext> mLLVMContext;  /// The LLVM context to use with everything under the context
 	std::vector<std::unique_ptr<ChigModule>> mModules;  /// The modules that have been loaded.
 };
 }

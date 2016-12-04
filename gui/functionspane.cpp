@@ -22,7 +22,7 @@ void FunctionsPane::updateModule(chig::JsonModule* mod)
 	// go through functions
 	for (auto& fun : mod->functions) {
 		new QListWidgetItem(QIcon::fromTheme(QStringLiteral("code-class")),
-			QString::fromStdString(fun->graphName), this);
+			QString::fromStdString(fun->name()), this);
 	}
 }
 

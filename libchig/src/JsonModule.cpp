@@ -79,7 +79,7 @@ Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod)
 
 	// create prototypes
 	for (auto& graph : functions) {
-		(*mod)->getOrInsertFunction(graph->graphName, graph->getFunctionType());
+		(*mod)->getOrInsertFunction(graph->name(), graph->functionType());
 	}
 
 	for (auto& graph : functions) {
@@ -114,7 +114,7 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const
 GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const
 {
 	auto iter = std::find_if(
-		functions.begin(), functions.end(), [&](auto& ptr) { return ptr->graphName == name; });
+		functions.begin(), functions.end(), [&](auto& ptr) { return ptr->name() == name; });
 
 	if (iter != functions.end()) {
 		return iter->get();
@@ -142,7 +142,7 @@ std::vector<std::string> JsonModule::nodeTypeNames() const
 {
 	std::vector<std::string> ret;
 	std::transform(functions.begin(), functions.end(), std::back_inserter(ret),
-		[](auto& gPtr) { return gPtr->graphName; });
+		[](auto& gPtr) { return gPtr->name(); });
 
 	return ret;
 }
@@ -172,9 +172,9 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 		return;
 	}
 
-	dataOutputs = mygraph->outputs;
+	dataOutputs = mygraph->outputs();
 
-	dataInputs = mygraph->inputs;
+	dataInputs = mygraph->inputs();
 
 	name = gsl::to_string(funcname);
 	// TODO: description

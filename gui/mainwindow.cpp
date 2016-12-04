@@ -224,7 +224,7 @@ void MainWindow::newFunctionSelected(QString name)
 {
 	// load graph
 	auto graphfunciter = std::find_if(module->functions.begin(), module->functions.end(),
-		[&](auto& graphptr) { return name == QString::fromStdString(graphptr->graphName); });
+		[&](auto& graphptr) { return name == QString::fromStdString(graphptr->name()); });
 
 	if (graphfunciter == module->functions.end()) {
 		KMessageBox::error(

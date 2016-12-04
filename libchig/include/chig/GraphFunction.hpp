@@ -24,7 +24,7 @@ namespace chig
 struct GraphFunction {
 	/// Construct the graph
 	/// Also constructs a input node
-	/// \param context The context
+	/// \param ctx The context
 	/// \param name The name of the function
 	GraphFunction(Context& ctx, std::string name, std::vector<std::pair<DataType, std::string>> ins,
 		std::vector<std::pair<DataType, std::string>> outs);
@@ -40,23 +40,23 @@ struct GraphFunction {
 	static Result fromJSON(
 		Context& context, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_func);
 
-	/// Serialize the GraphFunction to JSON
+	/// Serialize the GraphFunction to JSON (usually called from JsonModule::toJson)
 	/// \param toFill The JSON object representing the graph
 	/// \return The result
 	Result toJSON(nlohmann::json* toFill) const;
 
-	/// Compile the graph to an \c llvm::Function
+	/// Compile the graph to an \c llvm::Function (usually called from JsonModule::generateModule)
 	/// Throws on error
-	/// \param mod The module to codgen into
+	/// \param mod The module to codgen into, should already be a valid module
 	/// \param ret_func The \c llvm::Function that it was compiled to
 	/// \ret The result
 	Result compile(llvm::Module* mod, llvm::Function** ret_func) const;
 
 	/// Gets the node with type lang:entry
-	/// returns {nullptr, ~0} on failure
-	/// Also returns {nullptr, ~0} if there are two entry nodes, which is illegal
-	/// \return Entry node
-	NodeInstance* getEntryNode() const noexcept;
+	/// returns nullptr on failure
+	/// Also returns nullptr if there are two entry nodes, which is illegal
+	/// \return the entry node
+	NodeInstance* entryNode() const noexcept;
 
 	/// Add a node to the graph
 	/// \param type The type of the node
@@ -66,25 +66,53 @@ struct GraphFunction {
 	NodeInstance* insertNode(
 		std::unique_ptr<NodeType> type, float x, float y, const std::string& id)
 	{
-		return graph.insertNode(std::move(type), x, y, id);
+		return graph().insertNode(std::move(type), x, y, id);
 	}
 
 	/// Get the LLVM function type for the function
 	/// \return The function type
-	llvm::FunctionType* getFunctionType() const;
+	llvm::FunctionType* functionType() const;
 
 	/// Load the graph from the source json
 	/// \return The result
 	Result loadGraph();
 
-	Context* context;
-	std::string graphName;  /// the name of the function
+    /// Get the context
+	/// \return The context
+	const Context& context() const { return *mContext; }
+	/// \copydoc chig::GraphFunction::context() const
+	Context& context() { return *mContext; }
 
-	std::vector<std::pair<DataType, std::string>> inputs;
-	std::vector<std::pair<DataType, std::string>> outputs;
+	/// Get the name of the function
+	/// \return The name of the function
+	std::string name() const { return mName; }
+	
+	/// Get the function inputs in the format {type, docstring}
+	/// \return The inputs
+	const std::vector<std::pair<DataType, std::string>>& inputs() const { return mInputs; }
+	
+	/// Get the function outputs in the format {type, docstring}
+	/// \return The outputs
+	const std::vector<std::pair<DataType, std::string>>& outputs() const { return mOutputs; }
+	
+	/// Get the graph
+	/// \return The graph
+	const Graph& graph() const { return mGraph; }
+	
+	/// \copydoc chig::GraphFunction::graph() const
+	Graph& graph() { return mGraph; }
+	
+private:
+    
+	Context* mContext;
+	std::string mName;  /// the name of the function
 
-	nlohmann::json source;
-	Graph graph;
+	std::vector<std::pair<DataType, std::string>> mInputs;
+	std::vector<std::pair<DataType, std::string>> mOutputs;
+
+	nlohmann::json mSource;
+	Graph mGraph;
+    
 };
 
 inline std::pair<std::string, std::string> parseColonPair(const std::string& in)

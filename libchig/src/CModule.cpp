@@ -124,16 +124,13 @@ CFuncNode::CFuncNode(
 			{{"Requested Function", functocall}});
 		return;
 	}
-
+	
 	// get arguments
-	std::transform(llfunc->arg_begin(), llfunc->arg_end(), std::back_inserter(dataInputs),
-		[this](const llvm::Argument& argument) {
-			return std::make_pair(
-				DataType(context->moduleByName("lang"), context->stringifyType(argument.getType()),
-					argument.getType()),
-				argument.getName());
-		});
-
+	for(const auto& argument : llfunc->args()) {
+      dataInputs.emplace_back(DataType(context->moduleByName("lang"), context->stringifyType(argument.getType()),
+					argument.getType()), argument.getName());
+    }
+	
 	// get return type
 	auto ret = llfunc->getReturnType();
 

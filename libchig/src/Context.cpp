@@ -18,7 +18,11 @@ using namespace llvm;
 
 namespace fs = boost::filesystem;
 
-Context::Context(const fs::path& workPath) : mWorkspacePath(workPath) {}
+Context::Context(const fs::path& workPath) : mWorkspacePath(workPath) {
+  
+    mLLVMContext = std::make_unique<llvm::LLVMContext>();
+    
+}
 ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) noexcept
 {
 	Result res;
@@ -148,9 +152,11 @@ std::string Context::stringifyType(llvm::Type* ty)
 	Expects(ty != nullptr);
 
 	std::string data;
-	llvm::raw_string_ostream stream{data};
-	ty->print(stream);
-	return stream.str();
+    {
+      llvm::raw_string_ostream stream{data};
+      ty->print(stream);
+    }
+	return data;
 }
 
 Result Context::compileModule(gsl::cstring_span<> name, std::unique_ptr<llvm::Module>* toFill)
