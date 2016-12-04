@@ -13,7 +13,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 {
 	using namespace std::string_literals;
 
-	name = "lang";
+	setName("lang");
 
 	// populate them
 	nodes = {{"if"s, [this](const nlohmann::json&,
@@ -38,7 +38,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 
 						DataType cty;
 						// TODO: maybe not discard res
-						res += context->typeFromModule(module, type, &cty);
+						res += context().typeFromModule(module, type, &cty);
 
 						if (!res) {
 							continue;
@@ -76,7 +76,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 
 						DataType cty;
 						// TODO: maybe not discard res
-						context->typeFromModule(module, type, &cty);
+						context().typeFromModule(module, type, &cty);
 
 						outputs.emplace_back(cty, docString);
 					}
@@ -130,7 +130,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 		 }}};
 }
 
-Result LangModule::createNodeType(
+Result LangModule::nodeTypeFromName(
 	gsl::cstring_span<> name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill)
 {
 	Result res;
@@ -148,7 +148,7 @@ Result LangModule::createNodeType(
 }
 
 // the lang module just has the basic llvm types.
-DataType LangModule::getType(gsl::cstring_span<> name)
+DataType LangModule::typeFromName(gsl::cstring_span<> name)
 {
 	using namespace std::string_literals;
 
@@ -157,7 +157,7 @@ DataType LangModule::getType(gsl::cstring_span<> name)
 	auto err = llvm::SMDiagnostic();
 
 	auto lltype = llvm::parseType(
-		gsl::to_string(name), err, llvm::Module("tmp", context->llvmContext()), nullptr);
+		gsl::to_string(name), err, llvm::Module("tmp", context().llvmContext()), nullptr);
 	if (!lltype) {
 		return {};
 	}
@@ -185,7 +185,7 @@ IfNodeType::IfNodeType(LangModule& mod) : NodeType(mod)
 	execInputs = {""};
 	execOutputs = {"True", "False"};
 
-	dataInputs = {{mod.getType("i1"), "condition"}};
+	dataInputs = {{mod.typeFromName("i1"), "condition"}};
 }
 
 std::unique_ptr<chig::NodeType, std::default_delete<chig::NodeType>> IfNodeType::clone() const
@@ -251,7 +251,7 @@ ConstIntNodeType::ConstIntNodeType(LangModule& mod, int num) : NodeType{mod}, nu
 	execInputs = {""};
 	execOutputs = {""};
 
-	dataOutputs = {{mod.getType("i32"), "out"}};
+	dataOutputs = {{mod.typeFromName("i32"), "out"}};
 }
 
 Result ConstIntNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
@@ -285,7 +285,7 @@ ConstBoolNodeType::ConstBoolNodeType(LangModule& mod, bool num) : NodeType{mod},
 	execInputs = {""};
 	execOutputs = {""};
 
-	dataOutputs = {{mod.getType("i1"), "out"}};
+	dataOutputs = {{mod.typeFromName("i1"), "out"}};
 }
 
 Result ConstBoolNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
@@ -373,7 +373,7 @@ StringLiteralNodeType::StringLiteralNodeType(LangModule& mod, std::string str)
 	description = "exit from a function; think return";
 
 	// TODO: research address types
-	dataOutputs = {{mod.getType("i8*"), "string"}};
+	dataOutputs = {{mod.typeFromName("i8*"), "string"}};
 }
 
 Result StringLiteralNodeType::codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,

@@ -48,7 +48,7 @@ TEST_CASE("JsonSerializer", "[json]")
 		WHEN("We create some nodes and try to dump json")
 		{
 			std::vector<std::pair<DataType, std::string>> inputs = {
-				{lmod->getType("i1"), "in1"}};
+				{lmod->typeFromName("i1"), "in1"}};
 
 			auto entry = func.insertNode(std::make_unique<EntryNodeType>(*lmod, inputs), 32, 32, "entry");
 

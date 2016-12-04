@@ -96,21 +96,21 @@ struct LangModule : ChigModule {
 	LangModule(Context& ctx);
 	~LangModule() = default;
 
-	virtual Result createNodeType(gsl::cstring_span<> name, const nlohmann::json& json_data,
+	virtual Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& json_data,
 		std::unique_ptr<NodeType>* toFill) override;
-	virtual DataType getType(gsl::cstring_span<> name) override;
+	virtual DataType typeFromName(gsl::cstring_span<> name) override;
 
-	virtual std::vector<std::string> getNodeTypeNames() const override
+	virtual std::vector<std::string> nodeTypeNames() const override
 	{
 		return {"if", "entry", "exit", "const-int", "strliteral", "const-bool"};
 	}
-	virtual std::vector<std::string> getTypeNames() const override
+	virtual std::vector<std::string> typeNames() const override
 	{
 		return {"i32", "i1", "double"};  // TODO: do i need more?
 	}
-	Result generateModule(std::unique_ptr<llvm::Module>* module) const override
+	Result generateModule(std::unique_ptr<llvm::Module>* module) override
 	{
-		*module = std::make_unique<llvm::Module>("lang", context->llvmContext());
+		*module = std::make_unique<llvm::Module>("lang", context().llvmContext());
 
 		return {};
 	};

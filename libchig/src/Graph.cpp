@@ -201,7 +201,7 @@ std::vector<NodeInstance*> Graph::getNodesWithType(const char* module, const cha
 	noexcept
 {
 	auto typeFinder = [&](auto& pair) {
-		return pair.second->type->module->name == module && pair.second->type->name == name;
+		return pair.second->type->module->name() == module && pair.second->type->name == name;
 	};
 
 	std::vector<NodeInstance*> ret;

@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
       
       
 		auto mod = std::make_unique<JsonModule>(newData, c, &res);
-        std::string moduleName = mod->name;
+        std::string moduleName = mod->name();
 
 		int ret = checkForErrors(res, expectedErr);
 		if(ret != 1) return ret;

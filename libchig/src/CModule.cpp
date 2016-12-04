@@ -12,15 +12,15 @@
 
 using namespace chig;
 
-CModule::CModule(Context& ctx) : ChigModule(ctx) { name = "c"; }
-DataType CModule::getType(gsl::cstring_span<> /*typeName*/)
+CModule::CModule(Context& ctx) : ChigModule(ctx) { setName("c"); }
+DataType CModule::typeFromName(gsl::cstring_span<> /*typeName*/)
 {
 	// TODO: implement
 
 	return {};
 }
 
-Result CModule::createNodeType(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
+Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
 	std::unique_ptr<NodeType>* toFill)
 {
 	Result res;
@@ -57,7 +57,7 @@ Result CModule::createNodeType(gsl::cstring_span<> typeName, const nlohmann::jso
 	}
 
 	res.add_entry(
-		"E37", "Unrecognized node type in module", {{"Module", "c"}, {"Requested Type", name}});
+		"E37", "Unrecognized node type in module", {{"Module", "c"}, {"Requested Type", name()}});
 	return res;
 }
 

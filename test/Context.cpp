@@ -43,7 +43,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 			THEN("Getting the lang module from c should work")
 			{
 				REQUIRE(c.moduleByName("lang") != nullptr);
-				REQUIRE(c.moduleByName("lang")->name == "lang");
+				REQUIRE(c.moduleByName("lang")->name() == "lang");
 			}
 
 			THEN("getNodeType should work for basic types")

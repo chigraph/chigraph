@@ -120,11 +120,11 @@ inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> toAdd)
 {
 	Expects(toAdd != nullptr);
 
-	auto nodetypes = toAdd->getNodeTypeNames();
+	auto nodetypes = toAdd->nodeTypeNames();
 
 	for (auto& nodetype : nodetypes) {
 		std::unique_ptr<chig::NodeType> ty;
-		toAdd->createNodeType(nodetype, {}, &ty);
+		toAdd->nodeTypeFromName(nodetype, {}, &ty);
 		auto inst = new chig::NodeInstance(std::move(ty), 0, 0, nodetype);
 		reg->registerModel(std::make_unique<ChigNodeGui>(inst));
 	}

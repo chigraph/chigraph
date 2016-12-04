@@ -24,7 +24,7 @@ ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) noexcept
 	Result res;
 
 	for (auto& module : mModules) {
-		if (module->name == moduleName) {
+		if (module->name() == moduleName) {
 			return module.get();
 		}
 	}
@@ -34,7 +34,7 @@ ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) noexcept
 chig::Result chig::Context::addModule(const gsl::cstring_span<> name)
 {
 	Result res;
-
+    
 	// check for built-in modules
 	if (name == "lang") {
 		return addModule(std::make_unique<LangModule>(*this));
@@ -74,7 +74,7 @@ Result Context::addModuleFromJson(const nlohmann::json& json, std::string* name)
 		return res;
 	}
 	if (name != nullptr) {
-		*name = jmod->name;
+		*name = jmod->name();
 	}
 
 	auto cPtr = jmod.get();
@@ -96,10 +96,10 @@ Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 	Result res;
 
 	// make sure it's unique
-	auto ptr = moduleByName(modToAdd->name);
+	auto ptr = moduleByName(modToAdd->name());
 	if (ptr != nullptr) {
 		res.add_entry(
-			"E24", "Cannot add already existing module again", {{"moduleName", modToAdd->name}});
+			"E24", "Cannot add already existing module again", {{"moduleName", modToAdd->name()}});
 		return res;
 	}
 
@@ -119,7 +119,7 @@ Result Context::typeFromModule(
 		return res;
 	}
 
-	*toFill = mod->getType(name);
+	*toFill = mod->typeFromName(name);
 	if (!toFill->isValid()) {
 		res.add_entry("E37", "Could not find type in module",
 			{{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
@@ -139,7 +139,7 @@ Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_
 		return res;
 	}
 
-	res += module->createNodeType(typeName, data, toFill);
+	res += module->nodeTypeFromName(typeName, data, toFill);
 
 	return res;
 }

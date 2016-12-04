@@ -23,7 +23,7 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 			res->add_entry("E35", "name element in module isn't a string", {});
 			return;
 		}
-		name = *iter;
+		setName(*iter);
 	}
 	// load dependencies
 	{
@@ -47,7 +47,7 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 	}
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) {
-		context->addModule(dep);
+		context().addModule(dep);
 	}
 
 	// load graphs
@@ -64,16 +64,16 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 		functions.reserve(iter->size());
 		for (const auto& graph : *iter) {
 			std::unique_ptr<GraphFunction> newf;
-			*res += GraphFunction::fromJSON(*context, graph, &newf);
+			*res += GraphFunction::fromJSON(context(), graph, &newf);
 			functions.push_back(std::move(newf));
 		}
 	}
 }
 
-Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod) const
+Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod)
 {
 	// create llvm module
-	*mod = std::make_unique<llvm::Module>(name, context->llvmContext());
+	*mod = std::make_unique<llvm::Module>(name(), context().llvmContext());
 
 	Result res = {};
 
@@ -97,7 +97,7 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const
 
 	Result res = {};
 
-	ret["name"] = name;
+	ret["name"] = name();
 	ret["dependencies"] = dependencies;
 
 	auto& graphsjson = ret["graphs"];
@@ -122,7 +122,7 @@ GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const
 	return nullptr;
 }
 
-Result JsonModule::createNodeType(
+Result JsonModule::nodeTypeFromName(
 	gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/, std::unique_ptr<NodeType>* toFill)
 {
 	Result res = {};
@@ -138,7 +138,7 @@ Result JsonModule::createNodeType(
 	return res;
 }
 
-std::vector<std::string> JsonModule::getNodeTypeNames() const
+std::vector<std::string> JsonModule::nodeTypeNames() const
 {
 	std::vector<std::string> ret;
 	std::transform(functions.begin(), functions.end(), std::back_inserter(ret),
@@ -168,7 +168,7 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 
 	if (mygraph == nullptr) {
 		res.add_entry("EUKN", "Graph doesn't exist in module",
-			{{"Module Name", JModule->name}, {"Requested Name", gsl::to_string(funcname)}});
+			{{"Module Name", JModule->name()}, {"Requested Name", gsl::to_string(funcname)}});
 		return;
 	}
 

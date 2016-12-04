@@ -27,11 +27,12 @@ struct JsonModule : public ChigModule {
 	JsonModule& operator=(const JsonModule&) = delete;
 	JsonModule& operator=(JsonModule&&) = delete;
 
-	Result createNodeType(gsl::cstring_span<> name, const nlohmann::json& jsonData,
+	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
-	DataType getType(gsl::cstring_span<> /*name*/) override { return {}; }
-	virtual std::vector<std::string> getNodeTypeNames() const override;  // TODO: implement
-	virtual std::vector<std::string> getTypeNames() const override
+	DataType typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
+	virtual std::vector<std::string> 
+  nodeTypeNames() const override;  // TODO: implement
+	virtual std::vector<std::string> typeNames() const override
 	{
 		return {};
 	}  // TODO: implement
@@ -42,7 +43,7 @@ struct JsonModule : public ChigModule {
 
 	std::vector<std::unique_ptr<GraphFunction>> functions;
 
-	Result generateModule(std::unique_ptr<llvm::Module>* mod) const override;
+	Result generateModule(std::unique_ptr<llvm::Module>* mod) override;
 
 	std::vector<std::string> dependencies;
 

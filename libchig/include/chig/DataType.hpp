@@ -19,7 +19,7 @@ struct DataType {
 
 	const ChigModule* getModule() const { return module; }
 	std::string getUnqualifiedName() const { return name; }
-	std::string getQualifiedName() const { return module->name + ":" + name; }
+	std::string getQualifiedName() const { return module->name() + ":" + name; }
 	llvm::Type* getLLVMType() const { return lltype; }
 	bool isValid() const { return module != nullptr && name != "" && lltype != nullptr; }
 	bool operator==(const DataType& other) const

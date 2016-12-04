@@ -19,18 +19,18 @@ struct CModule : ChigModule {
 	CModule(Context& ctx);
 	~CModule() = default;
 
-	virtual Result createNodeType(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
+	virtual Result nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
 		std::unique_ptr<NodeType>* toFill) override;
-	virtual DataType getType(gsl::cstring_span<> typeName) override;
+	virtual DataType typeFromName(gsl::cstring_span<> typeName) override;
 
-	virtual std::vector<std::string> getNodeTypeNames() const override { return {"func"}; };
-	virtual std::vector<std::string> getTypeNames() const override { return {}; };
+	virtual std::vector<std::string> nodeTypeNames() const override { return {"func"}; };
+	virtual std::vector<std::string> typeNames() const override { return {}; };
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
 		nodes;
 
-	Result generateModule(std::unique_ptr<llvm::Module>* module) const override
+	Result generateModule(std::unique_ptr<llvm::Module>* module) override
 	{
-		*module = std::make_unique<llvm::Module>("lang", context->llvmContext());
+		*module = std::make_unique<llvm::Module>("lang", context().llvmContext());
 
 		return {};
 	};
