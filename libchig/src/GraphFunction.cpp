@@ -11,8 +11,8 @@
 using namespace chig;
 
 GraphFunction::GraphFunction(Context& ctx, std::string name,
-	std::vector<std::pair<llvm::Type*, std::string>> ins,
-	std::vector<std::pair<llvm::Type*, std::string>> outs)
+	std::vector<std::pair<DataType, std::string>> ins,
+	std::vector<std::pair<DataType, std::string>> outs)
 	: context{&ctx},
 	  graphName{std::move(name)},
 	  inputs(std::move(ins)),
@@ -53,7 +53,7 @@ Result GraphFunction::fromJSON(
 		return res;
 	}
 
-	std::vector<std::pair<llvm::Type*, std::string>> inputs;
+	std::vector<std::pair<DataType, std::string>> inputs;
 	for (auto param : data["inputs"]) {
 		for (auto iter = param.begin(); iter != param.end(); ++iter) {
 			std::string qualifiedType = iter.value();
@@ -62,7 +62,7 @@ Result GraphFunction::fromJSON(
 			std::string module, name;
 			std::tie(module, name) = parseColonPair(qualifiedType);
 
-			llvm::Type* ty;
+			DataType ty;
 			res += context.getType(module, name, &ty);
 
 			if (!res) {
@@ -78,7 +78,7 @@ Result GraphFunction::fromJSON(
 		return res;
 	}
 
-	std::vector<std::pair<llvm::Type*, std::string>> outputs;
+	std::vector<std::pair<DataType, std::string>> outputs;
 	for (auto param : data["outputs"]) {
 		for (auto iter = param.begin(); iter != param.end(); ++iter) {
 			std::string qualifiedType = iter.value();
@@ -87,7 +87,7 @@ Result GraphFunction::fromJSON(
 			std::string module, name;
 			std::tie(module, name) = parseColonPair(qualifiedType);
 
-			llvm::Type* ty;
+			DataType ty;
 			res += context.getType(module, name, &ty);
 
 			if (!res) {
@@ -122,14 +122,14 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 	inputsjson = nlohmann::json::array();
 
 	for (auto& in : inputs) {
-		inputsjson.push_back({{in.second, "lang:" + context->stringifyType(in.first)}});
+		inputsjson.push_back({{in.second, in.first.getQualifiedName()}});
 	}
 
 	auto& outputsjson = jsonData["outputs"];
 	outputsjson = nlohmann::json::array();
 
 	for (auto& out : outputs) {
-		outputsjson.push_back({{out.second, "lang:" + context->stringifyType(out.first)}});
+		outputsjson.push_back({{out.second, out.first.getQualifiedName()}});
 	}
 
 	res += graph.toJson(toFill);
@@ -186,10 +186,12 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 				value, node->type->dataInputs[inputID].second));  // TODO: pass ptr to value
 
 			// make sure it's the right type
-			if (io[io.size() - 1]->getType() != node->type->dataInputs[inputID].first) {
+			if (io[io.size() - 1]->getType() !=
+				node->type->dataInputs[inputID].first.getLLVMType()) {
 				res.add_entry("EINT", "Internal codegen error: unexpected type in cache.",
 					{{"Expected LLVM type",
-						 node->type->context->stringifyType(node->type->dataInputs[inputID].first)},
+						 node->type->context->stringifyType(
+							 node->type->dataInputs[inputID].first.getLLVMType())},
 						{"Found type",
 							node->type->context->stringifyType(io[io.size() - 1]->getType())},
 						{"Node ID", node->id}, {"Input ID", inputID}});
@@ -209,17 +211,18 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		for (auto& output : node->type->dataOutputs) {
 			// TODO: research address spaces
 			llvm::AllocaInst* alloc =
-				allocBuilder.CreateAlloca(output.first, nullptr, output.second);
+				allocBuilder.CreateAlloca(output.first.getLLVMType(), nullptr, output.second);
 			alloc->setName(output.second);
 			outputCache.push_back(alloc);
 			io.push_back(alloc);
 
 			// make sure the type is right
-			if (llvm::PointerType::get(output.first, 0) != alloc->getType()) {
+			if (llvm::PointerType::get(output.first.getLLVMType(), 0) != alloc->getType()) {
 				res.add_entry("EINT",
 					"Internal codegen error: unexpected type returned from alloca.",
-					{{"Expected LLVM type", node->type->context->stringifyType(
-												llvm::PointerType::get(output.first, 0))},
+					{{"Expected LLVM type",
+						 node->type->context->stringifyType(
+							 llvm::PointerType::get(output.first.getLLVMType(), 0))},
 						{"Yielded type", node->type->context->stringifyType(alloc->getType())},
 						{"Node ID", node->id}});
 			}
@@ -290,12 +293,12 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	if (!std::equal(inputs.begin(), inputs.end(), entry->type->dataOutputs.begin())) {
 		nlohmann::json inFunc = nlohmann::json::array();
 		for (auto& in : inputs) {
-			inFunc.push_back({{in.second, "lang:" + context->stringifyType(in.first)}});
+			inFunc.push_back({{in.second, in.first.getQualifiedName()}});
 		}
 
 		nlohmann::json inEntry = nlohmann::json::array();
 		for (auto& in : entry->type->dataOutputs) {  // outputs to entry are inputs to the function
-			inEntry.push_back({{in.second, "lang:" + context->stringifyType(in.first)}});
+			inEntry.push_back({{in.second, in.first.getQualifiedName()}});
 		}
 
 		res.add_entry("EUKN", "Inputs to function doesn't match function inputs",
@@ -307,13 +310,13 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	if (!std::equal(outputs.begin(), outputs.end(), exitNode->type->dataInputs.begin())) {
 		nlohmann::json outFunc = nlohmann::json::array();
 		for (auto& out : outputs) {
-			outFunc.push_back({{out.second, "lang:" + context->stringifyType(out.first)}});
+			outFunc.push_back({{out.second, out.first.getQualifiedName()}});
 		}
 
 		nlohmann::json outEntry = nlohmann::json::array();
 		for (auto& out :
 			exitNode->type->dataInputs) {  // inputs to the exit are outputs to the function
-			outEntry.push_back({{out.second, "lang:" + context->stringifyType(out.first)}});
+			outEntry.push_back({{out.second, out.first.getQualifiedName()}});
 		}
 
 		res.add_entry("EUKN", "Outputs to function doesn't match function exit",
@@ -380,11 +383,11 @@ llvm::FunctionType* GraphFunction::getFunctionType() const
 	std::vector<llvm::Type*> arguments;
 	arguments.reserve(inputs.size());
 	std::transform(inputs.begin(), inputs.end(), std::back_inserter(arguments),
-		[](const std::pair<llvm::Type*, std::string>& p) { return p.first; });
+		[](const std::pair<DataType, std::string>& p) { return p.first.getLLVMType(); });
 
 	// make these pointers
 	std::transform(outputs.begin(), outputs.end(), std::back_inserter(arguments),
-		[](auto& tyanddoc) { return llvm::PointerType::get(tyanddoc.first, 0); });
+		[](auto& tyanddoc) { return llvm::PointerType::get(tyanddoc.first.getLLVMType(), 0); });
 
 	return llvm::FunctionType::get(
 		llvm::IntegerType::getInt32Ty(context->llcontext), arguments, false);

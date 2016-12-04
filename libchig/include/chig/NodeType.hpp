@@ -4,6 +4,7 @@
 #pragma once
 
 #include "chig/Context.hpp"
+#include "chig/DataType.hpp"
 #include "chig/Result.hpp"
 #include "chig/json.hpp"
 
@@ -21,23 +22,24 @@ namespace chig
 {
 // generic type
 struct NodeType {
-	NodeType(Context& con) : context{&con} {}
+	NodeType(ChigModule& mod) : module{&mod}, context{mod.context} {}
 	virtual ~NodeType() = default;
 
 	std::string name;
-	std::string module;
 	std::string description;
 
+	ChigModule* module;
 	Context* context;
 
 	// inputs and outputs
-	std::vector<std::pair<llvm::Type*, std::string>> dataInputs;
+	std::vector<std::pair<DataType, std::string>> dataInputs;
 
-	std::vector<std::pair<llvm::Type*, std::string>> dataOutputs;
+	std::vector<std::pair<DataType, std::string>> dataOutputs;
 
 	std::vector<std::string> execInputs;
 	std::vector<std::string> execOutputs;
 
+	std::string getQualifiedName() const { return module->name + ":" + name; }
 	/// A virtual function that is called when this node needs to be called
 	/// \param execInputID The ID of the exec input
 	/// \param io This has the values that are the inputs and outputs of the function.

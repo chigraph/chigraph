@@ -14,7 +14,8 @@ TEST_CASE("JsonSerializer", "[json]")
 	{
 		Result res;
 		Context c;
-		c.addModule(std::make_unique<LangModule>(c));
+		c.addModule("lang");
+        LangModule* lmod = static_cast<LangModule*>(c.getModuleByName("lang"));
 
 		GraphFunction func(c, "hello", {}, {});
 
@@ -46,10 +47,10 @@ TEST_CASE("JsonSerializer", "[json]")
 
 		WHEN("We create some nodes and try to dump json")
 		{
-			std::vector<std::pair<llvm::Type*, std::string>> inputs = {
-				{llvm::Type::getInt1Ty(c.llcontext), "in1"}};
+			std::vector<std::pair<DataType, std::string>> inputs = {
+				{lmod->getType("i1"), "in1"}};
 
-			auto entry = func.insertNode(std::make_unique<EntryNodeType>(c, inputs), 32, 32, "entry");
+			auto entry = func.insertNode(std::make_unique<EntryNodeType>(*lmod, inputs), 32, 32, "entry");
 
 			THEN("The JSON should be correct")
 			{

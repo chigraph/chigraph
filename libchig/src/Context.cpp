@@ -109,7 +109,7 @@ Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 }
 
 Result Context::getType(
-	gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::Type** toFill) noexcept
+	gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept
 {
 	Result res;
 
@@ -120,7 +120,7 @@ Result Context::getType(
 	}
 
 	*toFill = mod->getType(name);
-	if (*toFill == nullptr) {
+	if (!toFill->isValid()) {
 		res.add_entry("E37", "Could not find type in module",
 			{{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
 	}

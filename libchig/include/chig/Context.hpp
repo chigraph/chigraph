@@ -56,10 +56,9 @@ struct Context {
 	/// Gets a llvm::Type from a module
 	/// \param module The name of the module, "lang" if nullptr
 	/// \param name The name of the type, required
-	/// \param toFill The \c llvm::Type to fill
+	/// \param toFill The type to fill
 	/// \return The result
-	Result getType(
-		gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::Type** toFill) noexcept;
+	Result getType(gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
 	/// \param moduleName The module name.

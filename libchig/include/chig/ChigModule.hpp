@@ -24,8 +24,8 @@ struct ChigModule {
 	virtual ~ChigModule() = default;
 
 	virtual Result createNodeType(gsl::cstring_span<> name, const nlohmann::json& json_data,
-		std::unique_ptr<NodeType>* retType) const = 0;
-	virtual llvm::Type* getType(gsl::cstring_span<> name) const = 0;
+		std::unique_ptr<NodeType>* retType) = 0;
+	virtual DataType getType(gsl::cstring_span<> name) = 0;
 
 	virtual std::vector<std::string> getNodeTypeNames() const = 0;
 	virtual std::vector<std::string> getTypeNames() const = 0;

@@ -8,4 +8,5 @@ struct LangModule;
 struct NodeInstance;
 struct NodeType;
 struct Result;
+struct DataType;
 }

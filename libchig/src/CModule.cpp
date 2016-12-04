@@ -13,15 +13,15 @@
 using namespace chig;
 
 CModule::CModule(Context& ctx) : ChigModule(ctx) { name = "c"; }
-llvm::Type* CModule::getType(gsl::cstring_span<> /*typeName*/) const
+DataType CModule::getType(gsl::cstring_span<> /*typeName*/)
 {
 	// TODO: implement
 
-	return nullptr;
+	return {};
 }
 
 Result CModule::createNodeType(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
-	std::unique_ptr<NodeType>* toFill) const
+	std::unique_ptr<NodeType>* toFill)
 {
 	Result res;
 
@@ -52,7 +52,7 @@ Result CModule::createNodeType(gsl::cstring_span<> typeName, const nlohmann::jso
 				{{"Given Data"}, json_data});
 		}
 
-		*toFill = std::make_unique<CFuncNode>(*context, code, function, res);
+		*toFill = std::make_unique<CFuncNode>(*this, code, function, res);
 		return res;
 	}
 
@@ -62,10 +62,9 @@ Result CModule::createNodeType(gsl::cstring_span<> typeName, const nlohmann::jso
 }
 
 CFuncNode::CFuncNode(
-	chig::Context& con, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res)
-	: NodeType{con}, functocall{gsl::to_string(functionName)}, ccode(gsl::to_string(cCode))
+	ChigModule& mod, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res)
+	: NodeType{mod}, functocall{gsl::to_string(functionName)}, ccode(gsl::to_string(cCode))
 {
-	module = "c";
 	name = "func";
 	description = "call C code";
 
@@ -104,8 +103,8 @@ CFuncNode::CFuncNode(
 	}
 
 	llvm::SMDiagnostic diag;
-	auto modorerror =
-		llvm::parseBitcodeFile(llvm::MemoryBufferRef(bitcode, "clang-generated"), con.llcontext);
+	auto modorerror = llvm::parseBitcodeFile(
+		llvm::MemoryBufferRef(bitcode, "clang-generated"), context->llcontext);
 
 	if (!modorerror) {
 		std::string errorString;
@@ -128,15 +127,18 @@ CFuncNode::CFuncNode(
 
 	// get arguments
 	std::transform(llfunc->arg_begin(), llfunc->arg_end(), std::back_inserter(dataInputs),
-		[](const llvm::Argument& argument) {
-			return std::make_pair(argument.getType(), argument.getName());
+		[this](const llvm::Argument& argument) {
+			return std::make_pair(
+				DataType(context->getModuleByName("lang"),
+					context->stringifyType(argument.getType()), argument.getType()),
+				argument.getName());
 		});
 
 	// get return type
 	auto ret = llfunc->getReturnType();
 
 	if (!ret->isVoidTy()) {
-		dataOutputs = {{ret, ""}};
+		dataOutputs = {{{context->getModuleByName("lang"), context->stringifyType(ret), ret}, ""}};
 	}
 }
 

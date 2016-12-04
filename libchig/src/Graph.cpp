@@ -1,4 +1,5 @@
 #include "chig/Graph.hpp"
+#include <chig/GraphFunction.hpp>
 
 using namespace chig;
 
@@ -18,11 +19,10 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : context{&c
 			return;
 		}
 		std::string fullType = node["type"];
-		size_t colonId = fullType.find(':');
-		std::string moduleName = fullType.substr(0, colonId);
-		std::string typeName = fullType.substr(colonId + 1);
+		std::string moduleName, typeName;
+		std::tie(moduleName, typeName) = parseColonPair(fullType);
 
-		if (colonId == std::string::npos || moduleName.empty() || typeName.empty()) {
+		if (moduleName.empty() || typeName.empty()) {
 			res.add_entry("E7", "Incorrect qualified module name (should be module:type)",
 				{{"nodeid", nodeid}, {"Requested Qualified Name", fullType}});
 			return;
@@ -158,7 +158,7 @@ Result Graph::toJson(nlohmann::json* toFill) const
 		std::string nodeID = nodepair.first;
 
 		nlohmann::json nodeJson = node->type->toJSON();
-		jsonNodes[nodeID] = {{"type", node->type->module + ':' + node->type->name},
+		jsonNodes[nodeID] = {{"type", node->type->getQualifiedName()},
 			{"location", {node->x, node->y}}, {"data", nodeJson}};
 		// add its connections. Just out the outputs to avoid duplicates
 
@@ -201,7 +201,7 @@ std::vector<NodeInstance*> Graph::getNodesWithType(const char* module, const cha
 	noexcept
 {
 	auto typeFinder = [&](auto& pair) {
-		return pair.second->type->module == module && pair.second->type->name == name;
+		return pair.second->type->module->name == module && pair.second->type->name == name;
 	};
 
 	std::vector<NodeInstance*> ret;

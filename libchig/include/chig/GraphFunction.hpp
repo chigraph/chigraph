@@ -26,9 +26,8 @@ struct GraphFunction {
 	/// Also constructs a input node
 	/// \param context The context
 	/// \param name The name of the function
-	GraphFunction(Context& ctx, std::string name,
-		std::vector<std::pair<llvm::Type*, std::string>> ins,
-		std::vector<std::pair<llvm::Type*, std::string>> outs);
+	GraphFunction(Context& ctx, std::string name, std::vector<std::pair<DataType, std::string>> ins,
+		std::vector<std::pair<DataType, std::string>> outs);
 
 	/// Destructor
 	~GraphFunction();
@@ -81,8 +80,8 @@ struct GraphFunction {
 	Context* context;
 	std::string graphName;  /// the name of the function
 
-	std::vector<std::pair<llvm::Type*, std::string>> inputs;
-	std::vector<std::pair<llvm::Type*, std::string>> outputs;
+	std::vector<std::pair<DataType, std::string>> inputs;
+	std::vector<std::pair<DataType, std::string>> outputs;
 
 	nlohmann::json source;
 	Graph graph;
@@ -90,6 +89,10 @@ struct GraphFunction {
 
 inline std::pair<std::string, std::string> parseColonPair(const std::string& in)
 {
+	size_t colonID = in.find(':');
+	if (colonID == std::string::npos) {
+		return {};
+	}
 	std::string module = in.substr(0, in.find(':'));
 	std::string name = in.substr(in.find(':') + 1);
 

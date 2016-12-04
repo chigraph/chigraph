@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "chig/DataType.hpp"
 #include "chig/Fwd.hpp"
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
@@ -27,8 +28,8 @@ struct JsonModule : public ChigModule {
 	JsonModule& operator=(JsonModule&&) = delete;
 
 	Result createNodeType(gsl::cstring_span<> name, const nlohmann::json& jsonData,
-		std::unique_ptr<NodeType>* toFill) const override;
-	llvm::Type* getType(gsl::cstring_span<> /*name*/) const override { return nullptr; }
+		std::unique_ptr<NodeType>* toFill) override;
+	DataType getType(gsl::cstring_span<> /*name*/) override { return {}; }
 	virtual std::vector<std::string> getNodeTypeNames() const override;  // TODO: implement
 	virtual std::vector<std::string> getTypeNames() const override
 	{
@@ -49,8 +50,7 @@ struct JsonModule : public ChigModule {
 };
 
 struct JsonFuncCallNodeType : public NodeType {
-	JsonFuncCallNodeType(
-		Context* c, const JsonModule* json_module, gsl::cstring_span<> funcname, Result* resPtr);
+	JsonFuncCallNodeType(JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr);
 
 	Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,

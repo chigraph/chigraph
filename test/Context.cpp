@@ -68,9 +68,9 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 			THEN("getType should work for basic types")
 			{
 				auto checkTy = [&](gsl::cstring_span<> ty) {
-					llvm::Type* llty;
-					res = c.getType("lang", ty, &llty);
-					REQUIRE(c.stringifyType(llty) == ty);
+					DataType chigty;
+					res = c.getType("lang", ty, &chigty);
+					REQUIRE(c.stringifyType(chigty.getLLVMType()) == ty);
 				};
 
 				checkTy("i32");
@@ -82,7 +82,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 
 			THEN("getType should fail for incorrect modules and types")
 			{
-				llvm::Type* ty;
+				DataType ty;
 				res = c.getType("lang", "iiint", &ty);
 				REQUIRE(!res);
 				REQUIRE(res.result_json[0]["errorcode"] == "E37");

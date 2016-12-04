@@ -17,12 +17,12 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 
 	// populate them
 	nodes = {{"if"s, [this](const nlohmann::json&,
-						 Result& res) { return std::make_unique<IfNodeType>(*context); }},
+						 Result& res) { return std::make_unique<IfNodeType>(*this); }},
 		{"entry"s,
 			[this](const nlohmann::json& data, Result& res) {
 
 				// transform the JSON data into this data structure
-				std::vector<std::pair<llvm::Type*, std::string>> inputs;
+				std::vector<std::pair<DataType, std::string>> inputs;
 
 				if (data.is_array()) {
 					for (const auto& input : data) {
@@ -36,15 +36,15 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 						std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
 						std::string type = qualifiedType.substr(qualifiedType.find(':') + 1);
 
-						llvm::Type* llty;
+						DataType cty;
 						// TODO: maybe not discard res
-						res += context->getType(module, type, &llty);
+						res += context->getType(module, type, &cty);
 
 						if (!res) {
 							continue;
 						}
 
-						inputs.emplace_back(llty, docString);
+						inputs.emplace_back(cty, docString);
 					}
 
 				} else {
@@ -53,14 +53,14 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 				}
 
 				if (res) {
-					return std::make_unique<EntryNodeType>(*context, inputs);
+					return std::make_unique<EntryNodeType>(*this, inputs);
 				}
 				return std::unique_ptr<EntryNodeType>();
 			}},
 		{"exit"s,
 			[this](const nlohmann::json& data, Result& res) {
 				// transform the JSON data into this data structure
-				std::vector<std::pair<llvm::Type*, std::string>> outputs;
+				std::vector<std::pair<DataType, std::string>> outputs;
 
 				if (data.is_array()) {
 					for (const auto& output : data) {
@@ -74,11 +74,11 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 						std::string module = qualifiedType.substr(0, qualifiedType.find(':'));
 						std::string type = qualifiedType.substr(qualifiedType.find(':') + 1);
 
-						llvm::Type* llty;
+						DataType cty;
 						// TODO: maybe not discard res
-						context->getType(module, type, &llty);
+						context->getType(module, type, &cty);
 
-						outputs.emplace_back(llty, docString);
+						outputs.emplace_back(cty, docString);
 					}
 
 				} else {
@@ -86,7 +86,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 						"WUKN", "Data for lang:exit must be an array", {{"Given Data", data}});
 				}
 
-				return std::make_unique<ExitNodeType>(*context, outputs);
+				return std::make_unique<ExitNodeType>(*this, outputs);
 
 			}},
 		{"const-int"s,
@@ -101,7 +101,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 						{{"Given Data", data}});
 				}
 
-				return std::make_unique<ConstIntNodeType>(*context, num);
+				return std::make_unique<ConstIntNodeType>(*this, num);
 			}},
 		{"const-bool"s,
 			[this](const nlohmann::json& data, Result& res) {
@@ -115,7 +115,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 						{{"Given Data", data}});
 				}
 
-				return std::make_unique<ConstBoolNodeType>(*context, val);
+				return std::make_unique<ConstBoolNodeType>(*this, val);
 			}},
 		{"strliteral"s, [this](const nlohmann::json& data, Result& res) {
 			 std::string str;
@@ -126,12 +126,12 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx)
 					 "WUKN", "Data for lang:strliteral must be a string", {{"Given Data", data}});
 			 }
 
-			 return std::make_unique<StringLiteralNodeType>(*context, str);
+			 return std::make_unique<StringLiteralNodeType>(*this, str);
 		 }}};
 }
 
-Result LangModule::createNodeType(gsl::cstring_span<> name, const nlohmann::json& json_data,
-	std::unique_ptr<NodeType>* toFill) const
+Result LangModule::createNodeType(
+	gsl::cstring_span<> name, const nlohmann::json& json_data, std::unique_ptr<NodeType>* toFill)
 {
 	Result res;
 
@@ -148,20 +148,21 @@ Result LangModule::createNodeType(gsl::cstring_span<> name, const nlohmann::json
 }
 
 // the lang module just has the basic llvm types.
-llvm::Type* LangModule::getType(gsl::cstring_span<> name) const
+DataType LangModule::getType(gsl::cstring_span<> name)
 {
 	using namespace std::string_literals;
 
 	// just parse the type
 	auto IR = "@G = external global "s + gsl::to_string(name);
 	auto err = llvm::SMDiagnostic();
-	auto tmpModule = llvm::parseAssemblyString(IR, err, context->llcontext);
-	if (!tmpModule) {
-		return nullptr;
+
+	auto lltype = llvm::parseType(
+		gsl::to_string(name), err, llvm::Module("tmp", context->llcontext), nullptr);
+	if (!lltype) {
+		return {};
 	}
 
-	// returns the pointer type, so get the contained type
-	return tmpModule->getNamedValue("G")->getType()->getContainedType(0);
+	return {this, gsl::to_string(name), lltype};
 }
 
 Result IfNodeType::codegen(size_t /*inExecID*/, llvm::Module* /*mod*/, llvm::Function* /*f*/,
@@ -176,16 +177,15 @@ Result IfNodeType::codegen(size_t /*inExecID*/, llvm::Module* /*mod*/, llvm::Fun
 	return {};
 }
 
-IfNodeType::IfNodeType(Context& con) : NodeType(con)
+IfNodeType::IfNodeType(LangModule& mod) : NodeType(mod)
 {
-	module = "lang";
 	name = "if";
 	description = "branch on a bool";
 
 	execInputs = {""};
 	execOutputs = {"True", "False"};
 
-	dataInputs = {{llvm::Type::getInt1Ty(context->llcontext), "condition"}};
+	dataInputs = {{mod.getType("i1"), "condition"}};
 }
 
 std::unique_ptr<chig::NodeType, std::default_delete<chig::NodeType>> IfNodeType::clone() const
@@ -194,10 +194,9 @@ std::unique_ptr<chig::NodeType, std::default_delete<chig::NodeType>> IfNodeType:
 }
 
 EntryNodeType::EntryNodeType(
-	Context& con, const gsl::span<std::pair<llvm::Type*, std::string>> funInputs)
-	: NodeType{con}
+	LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funInputs)
+	: NodeType{mod}
 {
-	module = "lang";
 	name = "entry";
 	description = "entry to a function";
 
@@ -238,23 +237,21 @@ nlohmann::json EntryNodeType::toJSON() const
 	nlohmann::json ret = nlohmann::json::array();
 
 	for (auto& pair : dataOutputs) {
-		// TODO: user made types
-		ret.push_back({{pair.second, "lang:" + context->stringifyType(pair.first)}});
+		ret.push_back({{pair.second, pair.first.getQualifiedName()}});
 	}
 
 	return ret;
 }
 
-ConstIntNodeType::ConstIntNodeType(Context& con, int num) : NodeType{con}, number{num}
+ConstIntNodeType::ConstIntNodeType(LangModule& mod, int num) : NodeType{mod}, number{num}
 {
-	module = "lang";
 	name = "const-int";
 	description = "constant int value";
 
 	execInputs = {""};
 	execOutputs = {""};
 
-	dataOutputs = {{llvm::IntegerType::getInt32Ty(con.llcontext), "out"}};
+	dataOutputs = {{mod.getType("i32"), "out"}};
 }
 
 Result ConstIntNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
@@ -280,16 +277,15 @@ std::unique_ptr<chig::NodeType> ConstIntNodeType::clone() const
 }
 
 nlohmann::json ConstIntNodeType::toJSON() const { return number; }
-ConstBoolNodeType::ConstBoolNodeType(Context& con, bool num) : NodeType{con}, value{num}
+ConstBoolNodeType::ConstBoolNodeType(LangModule& mod, bool num) : NodeType{mod}, value{num}
 {
-	module = "lang";
 	name = "const-bool";
 	description = "constant boolean value";
 
 	execInputs = {""};
 	execOutputs = {""};
 
-	dataOutputs = {{llvm::IntegerType::getInt1Ty(con.llcontext), "out"}};
+	dataOutputs = {{mod.getType("i1"), "out"}};
 }
 
 Result ConstBoolNodeType::codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
@@ -316,12 +312,11 @@ std::unique_ptr<chig::NodeType> ConstBoolNodeType::clone() const
 
 nlohmann::json ConstBoolNodeType::toJSON() const { return value; }
 ExitNodeType::ExitNodeType(
-	Context& con, const gsl::span<std::pair<llvm::Type*, std::string>> funOutputs)
-	: NodeType{con}
+	LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funOutputs)
+	: NodeType{mod}
 {
 	execInputs = {""};
 
-	module = "lang";
 	name = "exit";
 	description = "exit from a function; think return";
 
@@ -362,25 +357,23 @@ nlohmann::json ExitNodeType::toJSON() const
 	nlohmann::json ret = nlohmann::json::array();
 
 	for (auto& pair : dataInputs) {
-		// TODO: use made types
-		ret.push_back({{pair.second, "lang:" + context->stringifyType(pair.first)}});
+		ret.push_back({{pair.second, pair.first.getQualifiedName()}});
 	}
 
 	return ret;
 }
 
-StringLiteralNodeType::StringLiteralNodeType(Context& con, std::string str)
-	: NodeType{con}, literalString(std::move(str))
+StringLiteralNodeType::StringLiteralNodeType(LangModule& mod, std::string str)
+	: NodeType{mod}, literalString(std::move(str))
 {
 	execInputs = {""};
 	execOutputs = {""};
 
-	module = "lang";
 	name = "strliteral";
 	description = "exit from a function; think return";
 
 	// TODO: research address types
-	dataOutputs = {{llvm::PointerType::getInt8PtrTy(con.llcontext, 0), "string"}};
+	dataOutputs = {{mod.getType("i8*"), "string"}};
 }
 
 Result StringLiteralNodeType::codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,

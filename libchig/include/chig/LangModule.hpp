@@ -5,6 +5,7 @@
 
 #include "chig/ChigModule.hpp"
 #include "chig/Context.hpp"
+#include "chig/DataType.hpp"
 #include "chig/NodeType.hpp"
 
 #include <functional>
@@ -15,7 +16,7 @@
 namespace chig
 {
 struct IfNodeType : NodeType {
-	IfNodeType(Context& con);
+	IfNodeType(LangModule& con);
 
 	virtual Result codegen(size_t /*execInputID*/, llvm::Module* mod, llvm::Function*,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
@@ -25,7 +26,7 @@ struct IfNodeType : NodeType {
 };
 
 struct EntryNodeType : NodeType {
-	EntryNodeType(Context& con, const gsl::span<std::pair<llvm::Type*, std::string>> funInputs);
+	EntryNodeType(LangModule& con, const gsl::span<std::pair<DataType, std::string>> funInputs);
 
 	// the function doesn't have to do anything...this class just holds metadata
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
@@ -38,7 +39,7 @@ struct EntryNodeType : NodeType {
 };
 
 struct ConstIntNodeType : NodeType {
-	ConstIntNodeType(Context& con, int num);
+	ConstIntNodeType(LangModule& con, int num);
 
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
@@ -52,7 +53,7 @@ struct ConstIntNodeType : NodeType {
 };
 
 struct ConstBoolNodeType : NodeType {
-	ConstBoolNodeType(Context& con, bool num);
+	ConstBoolNodeType(LangModule& con, bool num);
 
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
@@ -66,7 +67,7 @@ struct ConstBoolNodeType : NodeType {
 };
 
 struct ExitNodeType : NodeType {
-	ExitNodeType(Context& con, const gsl::span<std::pair<llvm::Type*, std::string>> funOutputs);
+	ExitNodeType(LangModule& con, const gsl::span<std::pair<DataType, std::string>> funOutputs);
 
 	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
@@ -78,7 +79,7 @@ struct ExitNodeType : NodeType {
 };
 
 struct StringLiteralNodeType : NodeType {
-	StringLiteralNodeType(Context& con, std::string str);
+	StringLiteralNodeType(LangModule& con, std::string str);
 
 	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
@@ -96,8 +97,8 @@ struct LangModule : ChigModule {
 	~LangModule() = default;
 
 	virtual Result createNodeType(gsl::cstring_span<> name, const nlohmann::json& json_data,
-		std::unique_ptr<NodeType>* toFill) const override;
-	virtual llvm::Type* getType(gsl::cstring_span<> name) const override;
+		std::unique_ptr<NodeType>* toFill) override;
+	virtual DataType getType(gsl::cstring_span<> name) override;
 
 	virtual std::vector<std::string> getNodeTypeNames() const override
 	{

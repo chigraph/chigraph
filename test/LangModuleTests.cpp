@@ -10,33 +10,33 @@ TEST_CASE("LangModule", "[module]")
 	GIVEN("A context with LangModule in it")
 	{
 		Context c;
-		c.addModule(std::make_unique<LangModule>(c));
-
+		c.addModule("lang");
+        ChigModule* mod = c.getModuleByName("lang");
 		
 		THEN("We try to get associated types with correct parameters, it works")
 		{
-			llvm::Type* test;
+			DataType test;
 			Result res;
 
 			res = c.getType("lang", "i32", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::IntegerType::getInt32Ty(c.llcontext));
+			REQUIRE(test == DataType(mod, "i32", llvm::IntegerType::getInt32Ty(c.llcontext)));
 
 			res = c.getType("lang", "i32*", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::IntegerType::getInt32PtrTy(c.llcontext));
+			REQUIRE(test == DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llcontext)));
 
 			res = c.getType("lang", "i32**", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::PointerType::get(llvm::IntegerType::getInt32PtrTy(c.llcontext), 0));
+			REQUIRE(test == DataType(mod, "i32**", llvm::PointerType::get(llvm::IntegerType::getInt32PtrTy(c.llcontext), 0)));
 
 			res = c.getType("lang", "i8", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::IntegerType::getInt8Ty(c.llcontext));
+			REQUIRE(test == DataType(mod, "i8", llvm::IntegerType::getInt8Ty(c.llcontext)));
 
 			res = c.getType("lang", "double", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == llvm::Type::getDoubleTy(c.llcontext));
+			REQUIRE(test == DataType(mod, "double", llvm::Type::getDoubleTy(c.llcontext)));
 			
 			REQUIRE(c.getModuleByName("lang")->getNodeTypeNames() == std::vector<std::string>({"if", "entry", "exit", "const-int", "strliteral", "const-bool"}));
 			REQUIRE(c.getModuleByName("lang")->getTypeNames() == std::vector<std::string>({"i32", "i1", "double"}));
@@ -46,7 +46,7 @@ TEST_CASE("LangModule", "[module]")
 			"We try to get associated types with incorrect parameters, it returns the correct "
 			"errors")
 		{
-			llvm::Type* test;
+			DataType test;
 			Result res;
 
 			res = c.getType("lang", "i32a", &test);

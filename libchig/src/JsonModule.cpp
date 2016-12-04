@@ -122,8 +122,8 @@ GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const
 	return nullptr;
 }
 
-Result JsonModule::createNodeType(gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/,
-	std::unique_ptr<NodeType>* toFill) const
+Result JsonModule::createNodeType(
+	gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/, std::unique_ptr<NodeType>* toFill)
 {
 	Result res = {};
 
@@ -134,7 +134,7 @@ Result JsonModule::createNodeType(gsl::cstring_span<> name, const nlohmann::json
 			{{"Module Name", gsl::to_string(name)}, {"Requested Graph", gsl::to_string(name)}});
 	}
 
-	*toFill = std::make_unique<JsonFuncCallNodeType>(context, this, name, &res);
+	*toFill = std::make_unique<JsonFuncCallNodeType>(*this, name, &res);
 	return res;
 }
 
@@ -159,8 +159,8 @@ Result JsonModule::loadGraphs()
 }
 
 JsonFuncCallNodeType::JsonFuncCallNodeType(
-	Context* c, const JsonModule* json_module, gsl::cstring_span<> funcname, Result* resPtr)
-	: NodeType(*c), JModule{json_module}
+	JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
+	: NodeType(json_module), JModule(&json_module)
 {
 	Result& res = *resPtr;
 
@@ -177,7 +177,6 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 	dataInputs = mygraph->inputs;
 
 	name = gsl::to_string(funcname);
-	module = JModule->name;
 	// TODO: description
 
 	execInputs = {""};
@@ -214,5 +213,6 @@ nlohmann::json JsonFuncCallNodeType::toJSON() const { return {}; }
 std::unique_ptr<NodeType> JsonFuncCallNodeType::clone() const
 {
 	Result res = {};  // there shouldn't be an error but check anywayss
-	return std::make_unique<JsonFuncCallNodeType>(context, JModule, name, &res);
+	// TODO: better way to do this?
+	return std::make_unique<JsonFuncCallNodeType>(*const_cast<JsonModule*>(JModule), name, &res);
 }
