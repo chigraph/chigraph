@@ -12,13 +12,13 @@ namespace chig
 struct IfNodeType : NodeType {
 	IfNodeType(LangModule& mod) : NodeType(mod)
 	{
-		name = "if";
-		description = "branch on a bool";
+		setName("if");
+		setDescription("branch on a bool");
 
-		execInputs = {""};
-		execOutputs = {"True", "False"};
+		setExecInputs({""});
+		setExecOutputs({"True", "False"});
 
-		dataInputs = {{mod.typeFromName("i1"), "condition"}};
+		setDataInputs({{mod.typeFromName("i1"), "condition"}});
 	}
 
 	virtual Result codegen(size_t /*execInputID*/, llvm::Module* mod, llvm::Function*,
@@ -42,12 +42,12 @@ struct IfNodeType : NodeType {
 struct EntryNodeType : NodeType {
 	EntryNodeType(LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funInputs) : NodeType(mod)
 	{
-		name = "entry";
-		description = "entry to a function";
+		setName("entry");
+		setDescription("entry to a function");
 
-		execOutputs = {""};
+		setExecOutputs({""});
 
-		dataOutputs = {funInputs.begin(), funInputs.end()};
+		setDataOutputs({funInputs.begin(), funInputs.end()});
 	}
 
 	// the function doesn't have to do anything...this class just holds metadata
@@ -55,7 +55,7 @@ struct EntryNodeType : NodeType {
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
-		Expects(f != nullptr && io.size() == dataOutputs.size() && codegenInto != nullptr &&
+		Expects(f != nullptr && io.size() == dataOutputs().size() && codegenInto != nullptr &&
 				outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -82,7 +82,7 @@ struct EntryNodeType : NodeType {
 	{
 		nlohmann::json ret = nlohmann::json::array();
 
-		for (auto& pair : dataOutputs) {
+		for (auto& pair : dataOutputs()) {
 			ret.push_back({{pair.second, pair.first.qualifiedName()}});
 		}
 
@@ -93,13 +93,13 @@ struct EntryNodeType : NodeType {
 struct ConstIntNodeType : NodeType {
 	ConstIntNodeType(LangModule& mod, int num) : NodeType(mod), number(num)
 	{
-		name = "const-int";
-		description = "constant int value";
+		setName("const-int");
+		setDescription("constant int value");
 
-		execInputs = {""};
-		execOutputs = {""};
+		setExecInputs({""});
+		setExecOutputs({""});
 
-		dataOutputs = {{mod.typeFromName("i32"), "out"}};
+		setDataOutputs({{mod.typeFromName("i32"), "out"}});
 	}
 
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
@@ -112,7 +112,7 @@ struct ConstIntNodeType : NodeType {
 		// just go to the block
 
 		builder.CreateStore(
-			llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context->llvmContext()), number),
+			llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), number),
 			io[0], false);
 		builder.CreateBr(outputBlocks[0]);
 
@@ -135,13 +135,13 @@ struct ConstIntNodeType : NodeType {
 struct ConstBoolNodeType : NodeType {
 	ConstBoolNodeType(LangModule& mod, bool num) : NodeType{mod}, value{num}
 {
-	name = "const-bool";
-	description = "constant boolean value";
+	setName("const-bool");
+	setDescription("constant boolean value");
 
-	execInputs = {""};
-	execOutputs = {""};
+	setExecInputs({""});
+	setExecOutputs({""});
 
-	dataOutputs = {{mod.typeFromName("i1"), "out"}};
+	setDataOutputs({{mod.typeFromName("i1"), "out"}});
 }
 
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
@@ -155,7 +155,7 @@ struct ConstBoolNodeType : NodeType {
 
 		builder.CreateStore(
 			llvm::ConstantInt::get(
-				llvm::IntegerType::getInt1Ty(context->llvmContext()), static_cast<uint64_t>(value)),
+				llvm::IntegerType::getInt1Ty(context().llvmContext()), static_cast<uint64_t>(value)),
 			io[0], false);
 		builder.CreateBr(outputBlocks[0]);
 
@@ -178,19 +178,19 @@ struct ConstBoolNodeType : NodeType {
 struct ExitNodeType : NodeType {
 	ExitNodeType(LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funOutputs) : NodeType{mod}
 {
-	execInputs = {""};
+	setExecInputs({""});
 
-	name = "exit";
-	description = "exit from a function; think return";
+	setName("exit");
+	setDescription("exit from a function; think return");
 
-	dataInputs = {funOutputs.begin(), funOutputs.end()};
+	setDataInputs({funOutputs.begin(), funOutputs.end()});
 }
 
 	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
-		Expects(execInputID < execInputs.size() && f != nullptr && io.size() == dataInputs.size() &&
+		Expects(execInputID < execInputs().size() && f != nullptr && io.size() == dataInputs().size() &&
 				codegenInto != nullptr);
 
 		// assign the return types
@@ -205,7 +205,7 @@ struct ExitNodeType : NodeType {
 		}
 
 		builder.CreateRet(
-			llvm::ConstantInt::get(llvm::Type::getInt32Ty(context->llvmContext()), execInputID));
+			llvm::ConstantInt::get(llvm::Type::getInt32Ty(context().llvmContext()), execInputID));
 
 		return {};
 	}
@@ -219,7 +219,7 @@ struct ExitNodeType : NodeType {
 	{
 		nlohmann::json ret = nlohmann::json::array();
 
-		for (auto& pair : dataInputs) {
+		for (auto& pair : dataInputs()) {
 			ret.push_back({{pair.second, pair.first.qualifiedName()}});
 		}
 
@@ -230,14 +230,14 @@ struct ExitNodeType : NodeType {
 struct StringLiteralNodeType : NodeType {
 	StringLiteralNodeType(LangModule& mod, std::string str) : NodeType(mod), literalString(str)
 	{
-		execInputs = {""};
-		execOutputs = {""};
+		setExecInputs({""});
+		setExecOutputs({""});
 
-		name = "strliteral";
-		description = "exit from a function; think return";
+		setName("strliteral");
+		setDescription("exit from a function; think return");
 
 		// TODO: research address types
-		dataOutputs = {{mod.typeFromName("i8*"), "string"}};
+		setDataOutputs({{mod.typeFromName("i8*"), "string"}});
 	}
 
 	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
@@ -250,7 +250,7 @@ struct StringLiteralNodeType : NodeType {
 
 		auto global = builder.CreateGlobalString(literalString);
 
-		auto const0ID = llvm::ConstantInt::get(context->llvmContext(), llvm::APInt(32, 0, false));
+		auto const0ID = llvm::ConstantInt::get(context().llvmContext(), llvm::APInt(32, 0, false));
 		auto gep = builder.CreateGEP(global, {const0ID, const0ID});
 		builder.CreateStore(gep, io[0], false);
 

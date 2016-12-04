@@ -22,24 +22,10 @@ namespace chig
 {
 // generic type
 struct NodeType {
-	NodeType(ChigModule& mod) : module{&mod}, context{&mod.context()} {}
+	NodeType(ChigModule& mod) : mModule{&mod}, mContext{&mod.context()} {}
 	virtual ~NodeType() = default;
 
-	std::string name;
-	std::string description;
-
-	ChigModule* module;
-	Context* context;
-
-	// inputs and outputs
-	std::vector<std::pair<DataType, std::string>> dataInputs;
-
-	std::vector<std::pair<DataType, std::string>> dataOutputs;
-
-	std::vector<std::string> execInputs;
-	std::vector<std::string> execOutputs;
-
-	std::string qualifiedName() const { return module->name() + ":" + name; }
+	std::string qualifiedName() const { return module().name() + ":" + name(); }
 	/// A virtual function that is called when this node needs to be called
 	/// \param execInputID The ID of the exec input
 	/// \param io This has the values that are the inputs and outputs of the function.
@@ -60,6 +46,53 @@ struct NodeType {
 	/// Clones the type
 	/// \return The clone
 	virtual std::unique_ptr<NodeType> clone() const = 0;
+    
+    std::string name() const { return mName; }
+	std::string description() const { return mDescription; }
+
+	ChigModule& module() { return *mModule; }
+	const ChigModule& module() const { return *mModule; }
+	
+	Context& context() { return *mContext; }
+	const Context& context() const { return *mContext; }
+
+    const std::vector<std::pair<DataType, std::string>>& dataInputs() const { return mDataInputs; }
+	const std::vector<std::pair<DataType, std::string>>& dataOutputs() const { return mDataOutputs; }
+  
+	const std::vector<std::string>& execInputs() const { return mExecInputs; }
+	const std::vector<std::string>& execOutputs() const {return mExecOutputs; }
+
+    
+protected:
+  
+    void setName(std::string name) { mName = std::move(name); }
+    void setDescription(std::string desc) { mDescription = std::move(desc); }
+    
+    void setDataInputs(std::vector<std::pair<DataType, std::string>> newInputs) {
+      mDataInputs = std::move(newInputs);
+    }
+    void setDataOutputs(std::vector<std::pair<DataType, std::string>> newOutputs) {
+      mDataOutputs = std::move(newOutputs);
+    }
+    void setExecInputs(std::vector<std::string> newInputs) {
+      mExecInputs = std::move(newInputs);
+    }
+    void setExecOutputs(std::vector<std::string> newOutputs) {
+      mExecOutputs = std::move(newOutputs);
+    }
+    
+private:
+  
+    std::string mName, mDescription;
+    ChigModule* mModule;
+	Context* mContext;
+    
+    
+	std::vector<std::pair<DataType, std::string>> mDataInputs;
+	std::vector<std::pair<DataType, std::string>> mDataOutputs;
+  
+	std::vector<std::string> mExecInputs;
+	std::vector<std::string> mExecOutputs;
 };
 }
 

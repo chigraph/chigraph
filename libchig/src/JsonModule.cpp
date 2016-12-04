@@ -172,15 +172,15 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 		return;
 	}
 
-	dataOutputs = mygraph->outputs();
+	setDataOutputs(mygraph->outputs());
 
-	dataInputs = mygraph->inputs();
+	setDataInputs(mygraph->inputs());
 
-	name = gsl::to_string(funcname);
+	setName(gsl::to_string(funcname));
 	// TODO: description
 
-	execInputs = {""};
-	execOutputs = {""};
+	setExecInputs({""});
+	setExecOutputs({""});
 }
 
 Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod,
@@ -193,16 +193,16 @@ Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod,
 
 	// TODO: intermodule calls
 
-	auto func = mod->getFunction(name);
+	auto func = mod->getFunction(name());
 
 	if (func == nullptr) {
 		res.add_entry(
-			"EUKN", "Could not find function in llvm module", {{"Requested Function", name}});
+			"EUKN", "Could not find function in llvm module", {{"Requested Function", name()}});
 		return res;
 	}
 
 	// TODO: output blocks
-	builder.CreateCall(mod->getFunction(name), {io.data(), (size_t)io.size()});
+	builder.CreateCall(mod->getFunction(name()), {io.data(), (size_t)io.size()});
 
 	builder.CreateBr(outputBlocks[0]);
 
@@ -214,5 +214,5 @@ std::unique_ptr<NodeType> JsonFuncCallNodeType::clone() const
 {
 	Result res = {};  // there shouldn't be an error but check anywayss
 	// TODO: better way to do this?
-	return std::make_unique<JsonFuncCallNodeType>(*const_cast<JsonModule*>(JModule), name, &res);
+	return std::make_unique<JsonFuncCallNodeType>(*const_cast<JsonModule*>(JModule), name(), &res);
 }

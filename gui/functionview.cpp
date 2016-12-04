@@ -137,13 +137,13 @@ void FunctionView::connectionAdded(const Connection& c)
 	conns[&c] = std::array<std::pair<chig::NodeInstance*, size_t>, 2>{
 		{std::make_pair(inptr->inst, inconnid), std::make_pair(outptr->inst, outconnid)}};
 
-	bool isExec = inconnid < inptr->inst->type().execOutputs.size();
+	bool isExec = inconnid < inptr->inst->type().execOutputs().size();
 
 	if (isExec) {
 		chig::connectExec(*inptr->inst, inconnid, *outptr->inst, outconnid);
 	} else {
-		chig::connectData(*inptr->inst, inconnid - inptr->inst->type().execOutputs.size(),
-			*outptr->inst, outconnid - outptr->inst->type().execInputs.size());
+		chig::connectData(*inptr->inst, inconnid - inptr->inst->type().execOutputs().size(),
+			*outptr->inst, outconnid - outptr->inst->type().execInputs().size());
 	}
 }
 void FunctionView::connectionDeleted(Connection& c)

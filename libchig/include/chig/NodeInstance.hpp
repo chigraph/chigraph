@@ -40,6 +40,10 @@ struct NodeInstance {
 	std::vector<std::pair<NodeInstance*, size_t>> outputExecConnections;
 	std::vector<std::vector<std::pair<NodeInstance*, size_t>>> outputDataConnections;
     
+    
+	Context& context() { return *mContext; }
+	const Context& context() const { return *mContext; }
+    
 private:
     
 	// general data
@@ -50,6 +54,8 @@ private:
 
 
 	std::string mId;
+    
+    Context* mContext;
 };
 
 /// Connects two nodes' data connections

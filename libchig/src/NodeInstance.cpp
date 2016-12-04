@@ -10,11 +10,11 @@ NodeInstance::NodeInstance(
 {
 	Expects(mType != nullptr);
 
-	inputDataConnections.resize(type().dataInputs.size(), {nullptr, ~0});
-	outputDataConnections.resize(type().dataOutputs.size(), {});
+	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
+	outputDataConnections.resize(type().dataOutputs().size(), {});
 
-	inputExecConnections.resize(type().execInputs.size(), {});
-	outputExecConnections.resize(type().execOutputs.size(), {nullptr, ~0});
+	inputExecConnections.resize(type().execInputs().size(), {});
+	outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0});
 }
 
 NodeInstance::NodeInstance(const NodeInstance& other)
@@ -43,7 +43,7 @@ Result connectData(
 	// the input to the connection is the output to the node
 	if (connectionInputID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
-		for (auto& output : lhs.type().dataOutputs) {
+		for (auto& output : lhs.type().dataOutputs()) {
 			dataOutputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
@@ -53,7 +53,7 @@ Result connectData(
 	}
 	if (connectionOutputID >= rhs.inputDataConnections.size()) {
 		auto dataInputs = nlohmann::json::array();
-		for (auto& output : rhs.type().dataInputs) {
+		for (auto& output : rhs.type().dataInputs()) {
 			dataInputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
@@ -67,11 +67,11 @@ Result connectData(
 		return res;
 	}
 	// make sure the connection is of the right type
-	if (lhs.type().dataOutputs[connectionInputID].first !=
-		rhs.type().dataInputs[connectionOutputID].first) {
+	if (lhs.type().dataOutputs()[connectionInputID].first !=
+		rhs.type().dataInputs()[connectionOutputID].first) {
 		res.add_entry("E24", "Connecting data nodes with different types is invalid",
-			{{"Left Hand Type", lhs.type().dataOutputs[connectionInputID].first.qualifiedName()},
-				{"Right Hand Type", rhs.type().dataInputs[connectionOutputID].first.qualifiedName()},
+			{{"Left Hand Type", lhs.type().dataOutputs()[connectionInputID].first.qualifiedName()},
+				{"Right Hand Type", rhs.type().dataInputs()[connectionOutputID].first.qualifiedName()},
 				{"Left Node JSON", rhs.type().toJSON()}, {"Right Node JSON", rhs.type().toJSON()}});
 		return res;
 	}
@@ -101,7 +101,7 @@ Result connectExec(
 	// make sure the connection exists
 	if (connectionInputID >= lhs.outputExecConnections.size()) {
 		auto execOutputs = nlohmann::json::array();
-		for (auto& output : lhs.type().execOutputs) {
+		for (auto& output : lhs.type().execOutputs()) {
 			execOutputs.push_back(output);
 		}
 
@@ -111,7 +111,7 @@ Result connectExec(
 	}
 	if (connectionOutputID >= rhs.inputExecConnections.size()) {
 		auto execInputs = nlohmann::json::array();
-		for (auto& output : rhs.type().execInputs) {
+		for (auto& output : rhs.type().execInputs()) {
 			execInputs.push_back(output);
 		}
 
@@ -148,7 +148,7 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 
 	if (connectionInputID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
-		for (auto& output : lhs.type().dataOutputs) {
+		for (auto& output : lhs.type().dataOutputs()) {
 			dataOutputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
@@ -174,7 +174,7 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 
 	if (rhs.inputDataConnections.size() <= iter->second) {
 		auto dataInputs = nlohmann::json::array();
-		for (auto& output : rhs.type().dataInputs) {
+		for (auto& output : rhs.type().dataInputs()) {
 			dataInputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
@@ -205,7 +205,7 @@ Result disconnectExec(NodeInstance& lhs, size_t connectionInputID)
 
 	if (connectionInputID >= lhs.outputExecConnections.size()) {
 		auto execOutputs = nlohmann::json::array();
-		for (auto& output : lhs.type().execOutputs) {
+		for (auto& output : lhs.type().execOutputs()) {
 			execOutputs.push_back(output);
 		}
 

@@ -65,11 +65,11 @@ CFuncNode::CFuncNode(
 	ChigModule& mod, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res)
 	: NodeType{mod}, functocall{gsl::to_string(functionName)}, ccode(gsl::to_string(cCode))
 {
-	name = "func";
-	description = "call C code";
+	setName("func");
+	setDescription("call C code");
 
-	execInputs = {""};
-	execOutputs = {""};
+	setExecInputs({""});
+	setExecOutputs({""});
 
 	std::string bitcode;
 	std::string error;
@@ -104,7 +104,7 @@ CFuncNode::CFuncNode(
 
 	llvm::SMDiagnostic diag;
 	auto modorerror = llvm::parseBitcodeFile(
-		llvm::MemoryBufferRef(bitcode, "clang-generated"), context->llvmContext());
+		llvm::MemoryBufferRef(bitcode, "clang-generated"), context().llvmContext());
 
 	if (!modorerror) {
 		std::string errorString;
@@ -126,17 +126,19 @@ CFuncNode::CFuncNode(
 	}
 
 	// get arguments
+	std::vector<std::pair<DataType, std::string>> dInputs;
 	for (const auto& argument : llfunc->args()) {
-		dataInputs.emplace_back(DataType(context->moduleByName("lang"),
-									context->stringifyType(argument.getType()), argument.getType()),
+		dInputs.emplace_back(DataType(context().moduleByName("lang"),
+									context().stringifyType(argument.getType()), argument.getType()),
 			argument.getName());
 	}
+	setDataInputs(std::move(dInputs));
 
 	// get return type
 	auto ret = llfunc->getReturnType();
 
 	if (!ret->isVoidTy()) {
-		dataOutputs = {{{context->moduleByName("lang"), context->stringifyType(ret), ret}, ""}};
+		setDataOutputs({{{context().moduleByName("lang"), context().stringifyType(ret), ret}, ""}});
 	}
 }
 
@@ -150,7 +152,7 @@ Result CFuncNode::codegen(size_t /*inID*/, llvm::Module* mod, llvm::Function* /*
 	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
-	Expects(io.size() == dataInputs.size() + dataOutputs.size() && mod != nullptr &&
+	Expects(io.size() == dataInputs().size() + dataOutputs().size() && mod != nullptr &&
 			codegenInto != nullptr && outputBlocks.size() == 1);
 
 	// create a copy of the module
@@ -169,16 +171,16 @@ Result CFuncNode::codegen(size_t /*inID*/, llvm::Module* mod, llvm::Function* /*
 	std::string outputName;
 
 	// remove the return type if there is one
-	if (!dataOutputs.empty()) {
+	if (!dataOutputs().empty()) {
 		inputs = inputs.subspan(0, inputs.size() - 1);
-		outputName = dataOutputs[0].second;
+		outputName = dataOutputs()[0].second;
 	}
 
 	auto callinst = builder.CreateCall(llfunc, {inputs.data(), (size_t)inputs.size()}, outputName);
 
 	// store theoutput if there are any
-	if (!dataOutputs.empty()) {
-		builder.CreateStore(callinst, io[dataInputs.size()]);
+	if (!dataOutputs().empty()) {
+		builder.CreateStore(callinst, io[dataInputs().size()]);
 	}
 
 	builder.CreateBr(outputBlocks[0]);
