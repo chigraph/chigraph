@@ -223,10 +223,10 @@ void MainWindow::openUrl(const QUrl& url)
 void MainWindow::newFunctionSelected(QString name)
 {
 	// load graph
-	auto graphfunciter = std::find_if(module->functions.begin(), module->functions.end(),
+	auto graphfunciter = std::find_if(module->functions().begin(), module->functions().end(),
 		[&](auto& graphptr) { return name == QString::fromStdString(graphptr->name()); });
 
-	if (graphfunciter == module->functions.end()) {
+	if (graphfunciter == module->functions().end()) {
 		KMessageBox::error(
 			this, "Unable to find function" + name + " in module", "Wrong function name");
 		return;

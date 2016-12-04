@@ -20,7 +20,7 @@ void FunctionsPane::updateModule(chig::JsonModule* mod)
 	clear();
 
 	// go through functions
-	for (auto& fun : mod->functions) {
+	for (auto& fun : mod->functions()) {
 		new QListWidgetItem(QIcon::fromTheme(QStringLiteral("code-class")),
 			QString::fromStdString(fun->name()), this);
 	}

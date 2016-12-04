@@ -36,17 +36,17 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 			res->add_entry("E39", "dependencies element isn't an array", {});
 			return;
 		}
-		dependencies.reserve(iter->size());
+		mDependencies.reserve(iter->size());
 		for (const auto& dep : *iter) {
 			if (!dep.is_string()) {
 				res->add_entry("E40", "dependency isn't a string", {{"Actual Data", dep}});
 				continue;
 			}
-			dependencies.push_back(dep);
+			mDependencies.push_back(dep);
 		}
 	}
 	// load the dependencies from the context
-	for (const auto& dep : dependencies) {
+	for (const auto& dep : mDependencies) {
 		context().addModule(dep);
 	}
 
@@ -61,11 +61,11 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 			res->add_entry("E42", "graph element isn't an array", {{"Actual Data", *iter}});
 			return;
 		}
-		functions.reserve(iter->size());
+		mFunctions.reserve(iter->size());
 		for (const auto& graph : *iter) {
 			std::unique_ptr<GraphFunction> newf;
 			*res += GraphFunction::fromJSON(context(), graph, &newf);
-			functions.push_back(std::move(newf));
+			mFunctions.push_back(std::move(newf));
 		}
 	}
 }
@@ -78,11 +78,11 @@ Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod)
 	Result res = {};
 
 	// create prototypes
-	for (auto& graph : functions) {
+	for (auto& graph : mFunctions) {
 		(*mod)->getOrInsertFunction(graph->name(), graph->functionType());
 	}
 
-	for (auto& graph : functions) {
+	for (auto& graph : mFunctions) {
 		llvm::Function* f;
 		res += graph->compile(mod->get(), &f);
 	}
@@ -98,11 +98,11 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const
 	Result res = {};
 
 	ret["name"] = name();
-	ret["dependencies"] = dependencies;
+	ret["dependencies"] = mDependencies;
 
 	auto& graphsjson = ret["graphs"];
 	graphsjson = nlohmann::json::array();
-	for (auto& graph : functions) {
+	for (auto& graph : mFunctions) {
 		nlohmann::json to_fill = {};
 		res += graph->toJSON(&to_fill);
 		graphsjson.push_back(to_fill);
@@ -114,9 +114,9 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const
 GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const
 {
 	auto iter = std::find_if(
-		functions.begin(), functions.end(), [&](auto& ptr) { return ptr->name() == name; });
+		mFunctions.begin(), mFunctions.end(), [&](auto& ptr) { return ptr->name() == name; });
 
-	if (iter != functions.end()) {
+	if (iter != mFunctions.end()) {
 		return iter->get();
 	}
 	return nullptr;
@@ -141,7 +141,7 @@ Result JsonModule::nodeTypeFromName(
 std::vector<std::string> JsonModule::nodeTypeNames() const
 {
 	std::vector<std::string> ret;
-	std::transform(functions.begin(), functions.end(), std::back_inserter(ret),
+	std::transform(mFunctions.begin(), mFunctions.end(), std::back_inserter(ret),
 		[](auto& gPtr) { return gPtr->name(); });
 
 	return ret;
@@ -151,7 +151,7 @@ Result JsonModule::loadGraphs()
 {
 	Result res = {};
 
-	for (auto& graph : functions) {
+	for (auto& graph : mFunctions) {
 		res += graph->loadGraph();
 	}
 
