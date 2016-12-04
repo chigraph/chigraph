@@ -158,7 +158,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			// make sure everything is A-OK
 			if (param.first == nullptr) {
 				res.add_entry(
-					"EUKN", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+					"EUKN", "No data input to node", {{"nodeid", node->id()}, {"input ID", inputID}});
 
 				return;
 			}
@@ -166,7 +166,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			auto cacheiter = nodeCache.find(param.first);
 
 			if (cacheiter == nodeCache.end()) {
-				res.add_entry("EUKN", "Failed to find in cache", {{"nodeid", param.first->id}});
+				res.add_entry("EUKN", "Failed to find in cache", {{"nodeid", param.first->id()}});
 
 				return;
 			}
@@ -174,7 +174,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			auto& cacheObject = cacheiter->second;
 			if (param.second >= cacheObject.outputs.size()) {
 				res.add_entry(
-					"EUKN", "No data input to node", {{"nodeid", node->id}, {"input ID", inputID}});
+					"EUKN", "No data input to node", {{"nodeid", node->id()}, {"input ID", inputID}});
 
 				return;
 			}
@@ -183,16 +183,16 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			auto value = cacheObject.outputs[param.second];
 			// dereference
 			io.push_back(builder.CreateLoad(
-				value, node->type->dataInputs[inputID].second));  // TODO: pass ptr to value
+				value, node->type().dataInputs[inputID].second));  // TODO: pass ptr to value
 
 			// make sure it's the right type
-			if (io[io.size() - 1]->getType() != node->type->dataInputs[inputID].first.llvmType()) {
+			if (io[io.size() - 1]->getType() != node->type().dataInputs[inputID].first.llvmType()) {
 				res.add_entry("EINT", "Internal codegen error: unexpected type in cache.",
-					{{"Expected LLVM type", node->type->context->stringifyType(
-												node->type->dataInputs[inputID].first.llvmType())},
+					{{"Expected LLVM type", node->type().context->stringifyType(
+												node->type().dataInputs[inputID].first.llvmType())},
 						{"Found type",
-							node->type->context->stringifyType(io[io.size() - 1]->getType())},
-						{"Node ID", node->id}, {"Input ID", inputID}});
+							node->type().context->stringifyType(io[io.size() - 1]->getType())},
+						{"Node ID", node->id()}, {"Input ID", inputID}});
 			}
 
 			++inputID;
@@ -206,7 +206,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		// create outputs
 		auto& outputCache = nodeCache[node].outputs;
 
-		for (auto& output : node->type->dataOutputs) {
+		for (auto& output : node->type().dataOutputs) {
 			// TODO: research address spaces
 			llvm::AllocaInst* alloc =
 				allocBuilder.CreateAlloca(output.first.llvmType(), nullptr, output.second);
@@ -219,10 +219,10 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 				res.add_entry("EINT",
 					"Internal codegen error: unexpected type returned from alloca.",
 					{{"Expected LLVM type",
-						 node->type->context->stringifyType(
+						 node->type().context->stringifyType(
 							 llvm::PointerType::get(output.first.llvmType(), 0))},
-						{"Yielded type", node->type->context->stringifyType(alloc->getType())},
-						{"Node ID", node->id}});
+						{"Yielded type", node->type().context->stringifyType(alloc->getType())},
+						{"Node ID", node->id()}});
 			}
 		}
 	}
@@ -231,17 +231,17 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	std::vector<llvm::BasicBlock*> outputBlocks;
 	std::vector<llvm::BasicBlock*> unusedBlocks;
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
-		auto outBlock = llvm::BasicBlock::Create(f->getContext(), node->type->execOutputs[idx], f);
+		auto outBlock = llvm::BasicBlock::Create(f->getContext(), node->type().execOutputs[idx], f);
 		outputBlocks.push_back(outBlock);
 		if (node->outputExecConnections[idx].first != nullptr) {
-			outBlock->setName("node_" + node->outputExecConnections[idx].first->id);
+			outBlock->setName("node_" + node->outputExecConnections[idx].first->id());
 		} else {
 			unusedBlocks.push_back(outBlock);
 		}
 	}
 
 	// codegen
-	res += node->type->codegen(execInputID, mod, f, io, block, outputBlocks);
+	res += node->type().codegen(execInputID, mod, f, io, block, outputBlocks);
 	if (!res) {
 		return;
 	}
@@ -288,14 +288,14 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	}
 
 	// make sure that the entry node has the functiontype
-	if (!std::equal(inputs().begin(), inputs().end(), entry->type->dataOutputs.begin())) {
+	if (!std::equal(inputs().begin(), inputs().end(), entry->type().dataOutputs.begin())) {
 		nlohmann::json inFunc = nlohmann::json::array();
 		for (auto& in : inputs()) {
 			inFunc.push_back({{in.second, in.first.qualifiedName()}});
 		}
 
 		nlohmann::json inEntry = nlohmann::json::array();
-		for (auto& in : entry->type->dataOutputs) {  // outputs to entry are inputs to the function
+		for (auto& in : entry->type().dataOutputs) {  // outputs to entry are inputs to the function
 			inEntry.push_back({{in.second, in.first.qualifiedName()}});
 		}
 
@@ -305,7 +305,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	}
 
 	// make sure that the entry node has the functiontype
-	if (!std::equal(outputs().begin(), outputs().end(), exitNode->type->dataInputs.begin())) {
+	if (!std::equal(outputs().begin(), outputs().end(), exitNode->type().dataInputs.begin())) {
 		nlohmann::json outFunc = nlohmann::json::array();
 		for (auto& out : outputs()) {
 			outFunc.push_back({{out.second, out.first.qualifiedName()}});
@@ -313,7 +313,8 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 
 		nlohmann::json outEntry = nlohmann::json::array();
 		for (auto& out :
-			exitNode->type->dataInputs) {  // inputs to the exit are outputs to the function
+			exitNode->type().dataInputs) {  
+            // inputs to the exit are outputs to the function
 			outEntry.push_back({{out.second, out.first.qualifiedName()}});
 		}
 
@@ -338,11 +339,12 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	auto idx = 0ull;
 	for (auto& arg : f->getArgumentList()) {
 		if (idx <
-			entry->type->dataOutputs.size()) {  // dataOutputs to entry are inputs to the function
-			arg.setName(entry->type->dataOutputs[idx]
+			entry->type().dataOutputs.size()) { 
+          // dataOutputs to entry are inputs to the function
+			arg.setName(entry->type().dataOutputs[idx]
 							.second);  // it starts with inputs, which are outputs to entry
 		} else {
-			arg.setName(exitNode->type->dataInputs[idx - entry->type->dataOutputs.size()]
+			arg.setName(exitNode->type().dataInputs[idx - entry->type().dataOutputs.size()]
 							.second);  // then the outputs, which are inputs to exit
 		}
 		++idx;
@@ -363,8 +365,8 @@ NodeInstance* GraphFunction::entryNode() const noexcept
 
 	if (matching.size() == 1) {
 		// make sure it has the same signature as the method
-		if (!std::equal(inputs().begin(), inputs().end(), matching[0]->type->dataOutputs.begin(),
-				matching[0]->type->dataOutputs.end())) {
+		if (!std::equal(inputs().begin(), inputs().end(), matching[0]->type().dataOutputs.begin(),
+				matching[0]->type().dataOutputs.end())) {
 			return nullptr;
 		}
 		return matching[0];

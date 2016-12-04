@@ -157,9 +157,9 @@ Result Graph::toJson(nlohmann::json* toFill) const
 		auto& node = nodepair.second;
 		std::string nodeID = nodepair.first;
 
-		nlohmann::json nodeJson = node->type->toJSON();
-		jsonNodes[nodeID] = {{"type", node->type->qualifiedName()},
-			{"location", {node->x, node->y}}, {"data", nodeJson}};
+		nlohmann::json nodeJson = node->type().toJSON();
+		jsonNodes[nodeID] = {{"type", node->type().qualifiedName()},
+			{"location", {node->x(), node->y()}}, {"data", nodeJson}};
 		// add its connections. Just out the outputs to avoid duplicates
 
 		// add the exec outputs
@@ -168,7 +168,7 @@ Result Graph::toJson(nlohmann::json* toFill) const
 			// if there is actually a connection
 			if (conn.first != nullptr) {
 				jsonConnections.push_back({{"type", "exec"}, {"input", {nodeID, conn_id}},
-					{"output", {conn.first->id, conn.second}}});
+					{"output", {conn.first->id(), conn.second}}});
 			}
 		}
 
@@ -178,7 +178,7 @@ Result Graph::toJson(nlohmann::json* toFill) const
 			auto& connpair = node->inputDataConnections[conn_id];
 			if (connpair.first != nullptr) {
 				jsonConnections.push_back(
-					{{"type", "data"}, {"input", {connpair.first->id, connpair.second}},
+					{{"type", "data"}, {"input", {connpair.first->id(), connpair.second}},
 						{"output", {nodeID, conn_id}}});
 			}
 		}
@@ -200,7 +200,7 @@ NodeInstance* Graph::insertNode(
 std::vector<NodeInstance*> Graph::nodesWithType(const char* module, const char* name) const noexcept
 {
 	auto typeFinder = [&](auto& pair) {
-		return pair.second->type->module->name() == module && pair.second->type->name == name;
+		return pair.second->type().module->name() == module && pair.second->type().name == name;
 	};
 
 	std::vector<NodeInstance*> ret;

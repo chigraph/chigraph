@@ -23,19 +23,33 @@ struct NodeInstance {
 	NodeInstance& operator=(NodeInstance&&) = default;
 	NodeInstance& operator=(const NodeInstance&);
 
-	// general data
-	std::unique_ptr<NodeType> type = nullptr;
-
-	float x = 0.f;
-	float y = 0.0;
-
+    NodeType& type() { return *mType; }
+    const NodeType& type() const { return *mType; }
+    
+    float x() const { return mX; }
+    float y() const { return mY; }
+    
+    void setX(float newX) { mX = newX; }
+    void setY(float newY) { mY = newY; }
+    
+    std::string id() const { return mId; }
+    
 	// connections
 	std::vector<std::vector<std::pair<NodeInstance*, size_t>>> inputExecConnections;
 	std::vector<std::pair<NodeInstance*, size_t>> inputDataConnections;
 	std::vector<std::pair<NodeInstance*, size_t>> outputExecConnections;
 	std::vector<std::vector<std::pair<NodeInstance*, size_t>>> outputDataConnections;
+    
+private:
+    
+	// general data
+	std::unique_ptr<NodeType> mType = nullptr;
 
-	std::string id;
+	float mX = 0.f;
+	float mY = 0.0;
+
+
+	std::string mId;
 };
 
 /// Connects two nodes' data connections

@@ -18,8 +18,8 @@ public:
 	ChigNodeGui(chig::NodeInstance* inst_) : inst{inst_} {}
 	chig::NodeInstance* inst;
 
-	QString caption() const override { return QString::fromStdString(inst->id); }
-	QString name() const override { return QString::fromStdString(inst->type->qualifiedName()); }
+	QString caption() const override { return QString::fromStdString(inst->id()); }
+	QString name() const override { return QString::fromStdString(inst->type().qualifiedName()); }
 	std::unique_ptr<NodeDataModel> clone() const override
 	{
 		return std::unique_ptr<ChigNodeGui>(new ChigNodeGui(inst));
@@ -28,9 +28,9 @@ public:
 	virtual unsigned int nPorts(PortType portType) const override
 	{
 		if (portType == PortType::In) {
-			return inst->type->execInputs.size() + inst->type->dataInputs.size();
+			return inst->type().execInputs.size() + inst->type().dataInputs.size();
 		} else if (portType == PortType::Out) {
-			return inst->type->execOutputs.size() + inst->type->dataOutputs.size();
+			return inst->type().execOutputs.size() + inst->type().dataOutputs.size();
 		}
 
 		return 1;  // ?
@@ -40,28 +40,28 @@ public:
 	{
 		if (pType == PortType::In) {
 			std::pair<std::string, std::string> idandname;
-			if (pIndex >= int(inst->type->execInputs.size())) {
-				if (pIndex - inst->type->execInputs.size() >= inst->type->dataInputs.size())
+			if (pIndex >= int(inst->type().execInputs.size())) {
+				if (pIndex - inst->type().execInputs.size() >= inst->type().dataInputs.size())
 					return {};
 
-				idandname = {inst->type->dataInputs[pIndex - inst->type->execInputs.size()]
+				idandname = {inst->type().dataInputs[pIndex - inst->type().execInputs.size()]
 								 .first.qualifiedName(),
-					inst->type->dataInputs[pIndex - inst->type->execInputs.size()].second};
+					inst->type().dataInputs[pIndex - inst->type().execInputs.size()].second};
 
 			} else {
-				idandname = {"exec", inst->type->execInputs[pIndex]};
+				idandname = {"exec", inst->type().execInputs[pIndex]};
 			}
 			return {
 				QString::fromStdString(idandname.first), QString::fromStdString(idandname.second)};
 		} else if (pType == PortType::Out) {
 			std::pair<std::string, std::string> idandname;
-			if (pIndex >= int(inst->type->execOutputs.size())) {
-				idandname = {inst->type->dataOutputs[pIndex - inst->type->execOutputs.size()]
+			if (pIndex >= int(inst->type().execOutputs.size())) {
+				idandname = {inst->type().dataOutputs[pIndex - inst->type().execOutputs.size()]
 								 .first.qualifiedName(),
-					inst->type->dataOutputs[pIndex - inst->type->execOutputs.size()].second};
+					inst->type().dataOutputs[pIndex - inst->type().execOutputs.size()].second};
 
 			} else {
-				idandname = {"exec", inst->type->execOutputs[pIndex]};
+				idandname = {"exec", inst->type().execOutputs[pIndex]};
 			}
 			return {
 				QString::fromStdString(idandname.first), QString::fromStdString(idandname.second)};

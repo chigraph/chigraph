@@ -37,7 +37,7 @@ FunctionView::FunctionView(chig::JsonModule* /*module*/, chig::GraphFunction* fu
 		std::shared_ptr<Node> guinode =
 			scene->createNode(std::make_unique<ChigNodeGui>(node.second.get()));
 
-		guinode->nodeGraphicsObject()->setPos({node.second->x, node.second->y});
+		guinode->nodeGraphicsObject()->setPos({node.second->x(), node.second->y()});
 
 		assoc[node.second.get()] = guinode;
 	}
@@ -94,7 +94,7 @@ void FunctionView::nodeAdded(Node& n)
 		return;
 	}
 
-	func->graph().nodes()[ptr->inst->id] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
+	func->graph().nodes()[ptr->inst->id()] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
 }
 void FunctionView::nodeDeleted(Node& n)
 {
@@ -104,7 +104,7 @@ void FunctionView::nodeDeleted(Node& n)
 		return;
 	}
 
-	func->graph().nodes().erase(ptr->inst->id);
+	func->graph().nodes().erase(ptr->inst->id());
 }
 
 void FunctionView::connectionAdded(const Connection& c)
@@ -137,13 +137,13 @@ void FunctionView::connectionAdded(const Connection& c)
 	conns[&c] = std::array<std::pair<chig::NodeInstance*, size_t>, 2>{
 		{std::make_pair(inptr->inst, inconnid), std::make_pair(outptr->inst, outconnid)}};
 
-	bool isExec = inconnid < inptr->inst->type->execOutputs.size();
+	bool isExec = inconnid < inptr->inst->type().execOutputs.size();
 
 	if (isExec) {
 		chig::connectExec(*inptr->inst, inconnid, *outptr->inst, outconnid);
 	} else {
-		chig::connectData(*inptr->inst, inconnid - inptr->inst->type->execOutputs.size(),
-			*outptr->inst, outconnid - outptr->inst->type->execInputs.size());
+		chig::connectData(*inptr->inst, inconnid - inptr->inst->type().execOutputs.size(),
+			*outptr->inst, outconnid - outptr->inst->type().execInputs.size());
 	}
 }
 void FunctionView::connectionDeleted(Connection& c)
@@ -181,8 +181,8 @@ void FunctionView::updatePositions()
 		auto sptr = inst.second.lock();
 		if (sptr) {
 			QPointF pos = sptr->nodeGraphicsObject()->pos();
-			inst.first->x = pos.x();
-			inst.first->y = pos.y();
+			inst.first->setX(pos.x());
+			inst.first->setY(pos.y());
 		}
 	}
 }
