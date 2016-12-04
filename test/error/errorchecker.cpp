@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
 		if(ret != 1) return ret;
 
         c.addModule(std::move(mod));
-		llvm::Module* llmod = nullptr;
+		std::unique_ptr<llvm::Module> llmod = nullptr;
 		res += c.compileModule(moduleName, &llmod);
 
 		ret = checkForErrors(res, expectedErr);

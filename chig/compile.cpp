@@ -70,16 +70,17 @@ int compile(const std::vector<std::string>& opts)
 
 	Result res;
 	Context c;
-    std::string modName;
-	res += c.addModuleFromJson(read_json, &modName);
+	// load it as a module
+	std::string name;
+	res += c.addModuleFromJson(read_json, &name);
 
 	if (!res) {
 		std::cerr << res.result_json.dump(2) << std::endl;
 		return 1;
 	}
-	
-	llvm::Module* llmod;
-	res += c.compileModule(modName, &llmod);
+
+	std::unique_ptr<llvm::Module> llmod;
+	res += c.compileModule(name, &llmod);
 
 	if (!res) {
 		std::cerr << res.result_json.dump(2) << std::endl;
@@ -113,7 +114,7 @@ int compile(const std::vector<std::string>& opts)
 		}
 
 		if (outtype == "bc") {
-			llvm::WriteBitcodeToFile(llmod, *lloutstream);
+			llvm::WriteBitcodeToFile(llmod.get(), *lloutstream);
 		} else if (outtype == "ll") {
 			llmod->print(*lloutstream, nullptr);
 		} else {

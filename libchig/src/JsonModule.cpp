@@ -46,11 +46,10 @@ JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* r
 		}
 	}
 	// load the dependencies from the context
-	for(const auto& dep : dependencies) {
-      context->addModule(dep);
-    }
-	
-	
+	for (const auto& dep : dependencies) {
+		context->addModule(dep);
+	}
+
 	// load graphs
 	{
 		auto iter = json_data.find("graphs");

@@ -26,13 +26,13 @@ struct CModule : ChigModule {
 	virtual std::vector<std::string> getTypeNames() const override { return {}; };
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
 		nodes;
-        
-	Result generateModule(std::unique_ptr<llvm::Module>* module) const override {
-      
-      *module = std::make_unique<llvm::Module>("lang", context->llcontext);
-      
-      return {};
-    };
+
+	Result generateModule(std::unique_ptr<llvm::Module>* module) const override
+	{
+		*module = std::make_unique<llvm::Module>("lang", context->llcontext);
+
+		return {};
+	};
 };
 
 struct CFuncNode : NodeType {
