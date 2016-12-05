@@ -188,7 +188,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			// make sure it's the right type
 			if (io[io.size() - 1]->getType() != node->type().dataInputs()[inputID].first.llvmType()) {
 				res.add_entry("EINT", "Internal codegen error: unexpected type in cache.",
-					{{"Expected LLVM type", node->type().context().stringifyType(
+					{{"Expected LLVM type", node->context().stringifyType(
 												node->type().dataInputs()[inputID].first.llvmType())},
 						{"Found type",
 							node->context().stringifyType(io[io.size() - 1]->getType())},

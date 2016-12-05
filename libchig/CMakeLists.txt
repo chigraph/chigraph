@@ -13,6 +13,7 @@ set(CHIG_PUBLIC_FILES
 	include/chig/NodeType.hpp
 	include/chig/Result.hpp
 	include/chig/Graph.hpp
+	include/chig/NameMangler.hpp
 )
 
 set(CHIG_PRIVATE_FILES
@@ -24,6 +25,7 @@ set(CHIG_PRIVATE_FILES
 	src/ChigModule.cpp
 	src/CModule.cpp
 	src/Graph.cpp
+	src/NameMangler.cpp
 )
 
 add_definitions("-D__STDC_LIMIT_MACROS")
