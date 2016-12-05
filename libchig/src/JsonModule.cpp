@@ -9,22 +9,9 @@
 
 using namespace chig;
 
-JsonModule::JsonModule(const nlohmann::json& json_data, Context& cont, Result* res)
-	: ChigModule(cont)
+JsonModule::JsonModule(std::string fullName, const nlohmann::json& json_data, Context& cont, Result* res)
+	: ChigModule(cont, fullName)
 {
-	// load name
-	{
-		auto iter = json_data.find("name");
-		if (iter == json_data.end()) {
-			res->add_entry("E34", "No name element in module", {});
-			return;
-		}
-		if (!iter->is_string()) {
-			res->add_entry("E35", "name element in module isn't a string", {});
-			return;
-		}
-		setName(*iter);
-	}
 	// load dependencies
 	{
 		auto iter = json_data.find("dependencies");

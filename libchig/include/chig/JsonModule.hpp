@@ -20,10 +20,11 @@ namespace chig
 /// Module that holds JSON code
 struct JsonModule : public ChigModule {
 	/// Constructor for a json module
+	/// \param fullName Full path for the module
 	/// \param json_data The JSON
 	/// \param cont The context
 	/// \param res The result to fill if there are errors
-	JsonModule(const nlohmann::json& json_data, Context& cont, Result* res);
+	JsonModule(std::string fullName, const nlohmann::json& json_data, Context& cont, Result* res);
 
 	// No copy or move -- pointer only
 	JsonModule(const JsonModule&) = delete;

@@ -8,12 +8,12 @@
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
-#include <llvm/IR/Type.h>
-
 #include <cstdlib>
 #include <functional>
 #include <string>
 #include <vector>
+
+#include <llvm/IR/Module.h>
 
 #include <gsl/gsl>
 
@@ -24,7 +24,7 @@ namespace chig
 struct ChigModule {
 	/// Default constructor. This is usually run by Context::addModule
 	/// \param contextArg The context to create the module insides
-	ChigModule(Context& contextArg);
+	ChigModule(Context& contextArg, std::string fullName);
 
 	/// Destructor
 	virtual ~ChigModule() = default;
@@ -49,9 +49,14 @@ struct ChigModule {
 	/// Get the possible DataType names
 	virtual std::vector<std::string> typeNames() const = 0;
 
-	/// Get the name of the module
+	/// Get the short name of the module (the last bit)
 	/// \return The name
 	std::string name() const { return mName; }
+	
+	/// Get the full name of the module
+	/// \return The name
+	std::string fullName() const { return mFullName; }
+	
 	/// Get the Context that this module belongs to
 	/// \return The context
 	const Context& context() const { return *mContext; }
@@ -61,13 +66,10 @@ struct ChigModule {
 	/// \param module The llvm::Module to fill
 	/// \return The result
 	virtual Result generateModule(std::unique_ptr<llvm::Module>* module) = 0;
-
-protected:
-	/// Change the name of the module.
-	/// \param newName the new name for the module
-	void setName(std::string newName) { mName = std::move(newName); }
+	
 private:
-	std::string mName;
+	std::string mFullName;
+    std::string mName;
 	Context* mContext;
 };
 }

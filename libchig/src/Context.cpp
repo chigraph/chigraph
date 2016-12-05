@@ -62,21 +62,21 @@ chig::Result chig::Context::addModule(const gsl::cstring_span<> name)
 		inFile >> readJson;
 	}
 
-	res += addModuleFromJson(readJson);
+	res += addModuleFromJson(name, readJson);
 	return res;
 }
 
-Result Context::addModuleFromJson(const nlohmann::json& json, std::string* name)
+Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json, JsonModule** toFill)
 {
 	Result res;
 
 	// parse module
-	auto jmod = std::make_unique<JsonModule>(json, *this, &res);
+	auto jmod = std::make_unique<JsonModule>(gsl::to_string(fullName), json, *this, &res);
 	if (!res) {
 		return res;
 	}
-	if (name != nullptr) {
-		*name = jmod->name();
+	if (toFill != nullptr) {
+		*toFill = jmod.get();
 	}
 
 	auto cPtr = jmod.get();

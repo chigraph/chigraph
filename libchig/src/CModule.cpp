@@ -12,7 +12,7 @@
 
 using namespace chig;
 
-CModule::CModule(Context& ctx) : ChigModule(ctx) { setName("c"); }
+CModule::CModule(Context& ctx) : ChigModule(ctx, "c") { }
 DataType CModule::typeFromName(gsl::cstring_span<> /*typeName*/)
 {
 	// TODO: implement

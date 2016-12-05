@@ -268,11 +268,9 @@ struct StringLiteralNodeType : NodeType {
 	std::string literalString;
 };
 
-LangModule::LangModule(Context& ctx) : ChigModule(ctx)
+LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 {
 	using namespace std::string_literals;
-
-	setName("lang");
 
 	// populate them
 	nodes = {{"if"s, [this](const nlohmann::json&,

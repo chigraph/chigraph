@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
 	if(strcmp(mode, "mod") == 0) {
       
       
-		auto mod = std::make_unique<JsonModule>(newData, c, &res);
+		auto mod = std::make_unique<JsonModule>("main", newData, c, &res);
         std::string moduleName = mod->name();
 
 		int ret = checkForErrors(res, expectedErr);

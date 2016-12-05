@@ -44,9 +44,10 @@ struct Context {
 	Result addModule(const gsl::cstring_span<> name);
 
 	/// Load a module from JSON -- avoid this use the string overload
+	/// \param fullName The full path of the module, including URL
 	/// \param json The JSON data
 	/// \param name The name of the module, returned. Optional.
-	Result addModuleFromJson(const nlohmann::json& json, std::string* name = nullptr);
+	Result addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json, JsonModule** toFill = nullptr);
 
 	/// Adds a custom module to the Context
 	/// This usually doesn't get called, use the \c gsl::string_span<> overload instead

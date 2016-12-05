@@ -192,7 +192,7 @@ int main(int argc, char** argv) {
 		
 		// test serialization and deserialization
 		Result r;
-		auto Udeserialized = std::make_unique<JsonModule>(chigmodule, c, &r);
+		auto Udeserialized = std::make_unique<JsonModule>("main", chigmodule, c, &r);
         auto deserialized = Udeserialized.get();
         c.addModule(std::move(Udeserialized));
         deserialized->loadGraphs();
