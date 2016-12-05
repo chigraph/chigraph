@@ -14,6 +14,8 @@ find_package(Boost REQUIRED system filesystem program_options)
 
 
 include(cotire)
+
+add_subdirectory(third_party/libgit2)
 add_subdirectory(third_party/libexecstream)
 
 add_subdirectory(libchig)

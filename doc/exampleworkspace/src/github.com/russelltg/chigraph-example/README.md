@@ -1,2 +1,0 @@
-# chigraph-example
-Chigraph Examples
