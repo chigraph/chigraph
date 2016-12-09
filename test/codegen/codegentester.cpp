@@ -69,9 +69,7 @@ std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
 	
 	errstring = areArrayEqualUnordered(lhs["dependencies"], rhs["dependencies"]);
 	if(!errstring.empty()) return "dependencies not equal: " + errstring;
-	
-	if(lhs["name"] != rhs["name"]) return "names not equal: serialized: " + lhs["name"].dump(-1) + " original: " + rhs["name"].dump(-1);
-	
+		
 	auto& lgraphs = lhs["graphs"];
 	auto& rgraphs = rhs["graphs"];
 	
@@ -130,10 +128,13 @@ int main(int argc, char** argv) {
 	std::string expectedcout = j["expectedstdout"];
 	std::string expectedcerr = j["expectedstderr"];
 	
-	const json chigmodule = j["module"];
-	
 	int expectedreturncode = j["expectedret"];
 	
+    auto modfile = JSONfile.replace_extension(".chigmod");
+    fs::ifstream inmodfile(modfile);
+    json chigmodule;
+    inmodfile >> chigmodule;
+    
 	// chig run
 	{
 	
