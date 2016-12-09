@@ -15,6 +15,8 @@ find_package(Boost REQUIRED system filesystem program_options)
 
 include(cotire)
 
+# disable tests
+set(BUILD_CLAR OFF CACHE BOOL "")
 add_subdirectory(third_party/libgit2)
 add_subdirectory(third_party/libexecstream)
 
