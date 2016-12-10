@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
 	if(strcmp(mode, "mod") == 0) {
       
       
-		auto mod = std::make_unique<JsonModule>("main", newData, c, &res);
+		auto mod = std::make_unique<JsonModule>(c, "main", newData, &res);
         std::string moduleName = mod->name();
 
 		int ret = checkForErrors(res, expectedErr);
@@ -73,10 +73,12 @@ int main(int argc, char** argv) {
 
 	} else if(strcmp(mode, "func") == 0) {
 
-        c.addModule("lang"); // assume basic dependencies for functions
-        c.addModule("c");
+        auto deps = std::vector<std::string>{"lang", "c"};
+        auto uMod = std::make_unique<JsonModule>(c, "main", gsl::span<std::string>(deps.data(), deps.size()));
+        auto modPtr = uMod.get();
+        c.addModule(std::move(uMod));
 		std::unique_ptr<GraphFunction> graphFunc;
-		res = GraphFunction::fromJSON(c, newData, &graphFunc);
+		res = GraphFunction::fromJSON(*modPtr, newData, &graphFunc);
 		
 		int ret = checkForErrors(res, expectedErr);
 		if(ret != 1) return ret;

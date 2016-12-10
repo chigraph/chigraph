@@ -13,16 +13,17 @@
 #include <chig/CModule.hpp>
 #include <gsl/gsl>
 
-using namespace chig;
 using namespace llvm;
 
 namespace fs = boost::filesystem;
+
+namespace chig {
 
 Context::Context(const fs::path& workPath) : mWorkspacePath(workPath)
 {
 	mLLVMContext = std::make_unique<llvm::LLVMContext>();
 }
-ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) noexcept
+ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) const noexcept
 {
 	Result res;
 
@@ -71,7 +72,7 @@ Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::
 	Result res;
 
 	// parse module
-	auto jmod = std::make_unique<JsonModule>(gsl::to_string(fullName), json, *this, &res);
+	auto jmod = std::make_unique<JsonModule>(*this, gsl::to_string(fullName), json, &res);
 	if (!res) {
 		return res;
 	}
@@ -109,6 +110,8 @@ Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 
 	return res;
 }
+
+
 
 Result Context::typeFromModule(
 	gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept
@@ -188,3 +191,15 @@ Result Context::compileModule(gsl::cstring_span<> name, std::unique_ptr<llvm::Mo
 
 	return res;
 }
+
+boost::optional<std::string> Context::fullModuleName(gsl::cstring_span<> shortName) const {
+  auto mod = moduleByName(shortName);
+  
+  if(mod != nullptr) {
+    return mod->fullName();
+  } 
+  
+  return {};
+}
+
+} // namespace chig

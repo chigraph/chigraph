@@ -1,6 +1,8 @@
 #include "chig/GraphFunction.hpp"
 #include "chig/NodeInstance.hpp"
 #include "chig/NodeType.hpp"
+#include "chig/JsonModule.hpp"
+#include "chig/NameMangler.hpp"
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/Type.h>
@@ -10,10 +12,11 @@
 
 using namespace chig;
 
-GraphFunction::GraphFunction(Context& ctx, std::string name,
+GraphFunction::GraphFunction(JsonModule& mod, std::string name,
 	std::vector<std::pair<DataType, std::string>> ins,
 	std::vector<std::pair<DataType, std::string>> outs)
-	: mContext{&ctx},
+	: mModule{&mod},
+	  mContext{&mod.context()},
 	  mName{std::move(name)},
 	  mInputs(std::move(ins)),
 	  mOutputs(std::move(outs)),
@@ -24,7 +27,7 @@ GraphFunction::GraphFunction(Context& ctx, std::string name,
 GraphFunction::~GraphFunction() = default;
 
 Result GraphFunction::fromJSON(
-	Context& context, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_func)
+	JsonModule& module, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_func)
 {
 	Result res = {};
 
@@ -59,11 +62,11 @@ Result GraphFunction::fromJSON(
 			std::string qualifiedType = iter.value();
 			std::string docString = iter.key();
 
-			std::string module, name;
-			std::tie(module, name) = parseColonPair(qualifiedType);
+			std::string moduleName, name;
+			std::tie(moduleName, name) = parseColonPair(qualifiedType);
 
 			DataType ty;
-			res += context.typeFromModule(module, name, &ty);
+			res += module.context().typeFromModule(moduleName, name, &ty);
 
 			if (!res) {
 				return res;
@@ -84,11 +87,11 @@ Result GraphFunction::fromJSON(
 			std::string qualifiedType = iter.value();
 			std::string docString = iter.key();
 
-			std::string module, name;
-			std::tie(module, name) = parseColonPair(qualifiedType);
+			std::string moduleName, name;
+			std::tie(moduleName, name) = parseColonPair(qualifiedType);
 
 			DataType ty;
-			res += context.typeFromModule(module, name, &ty);
+			res += module.context().typeFromModule(moduleName, name, &ty);
 
 			if (!res) {
 				return res;
@@ -100,7 +103,7 @@ Result GraphFunction::fromJSON(
 
 	// construct it
 	*ret_func =
-		std::make_unique<GraphFunction>(context, name, std::move(inputs), std::move(outputs));
+		std::make_unique<GraphFunction>(module, name, std::move(inputs), std::move(outputs));
 	auto& ret = *ret_func;
 
 	ret->mSource = data;
@@ -324,7 +327,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	}
 
 	llvm::Function* f = llvm::cast<llvm::Function>(
-		mod->getOrInsertFunction(name(), functionType()));  // TODO: name mangling
+		mod->getOrInsertFunction(mangleFunctionName(module().fullName(), name()), functionType()));  // TODO: name mangling
 	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
 	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), name() + "_entry", f);
 	auto blockcpy = block;

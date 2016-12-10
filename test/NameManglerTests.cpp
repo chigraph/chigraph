@@ -11,6 +11,12 @@ TEST_CASE("Name Mangler", "") {
   REQUIRE(mangleFunctionName("github.com/russelltg/test/lib", "docall") == 
     "github_dcom_srusselltg_stest_slib_mdocall");
   
+  REQUIRE(mangleFunctionName("github.com/russelltg/test/main", "main") == 
+    "main");
+  
+  REQUIRE(mangleFunctionName("github.com/russelltg/test/main", "maina") == 
+    "github_dcom_srusselltg_stest_smain_mmaina");
+  
   REQUIRE(mangleFunctionName("github.com/rus__selltg/test/lib", "docall") == 
     "github_dcom_srus____selltg_stest_slib_mdocall");
   
@@ -29,6 +35,10 @@ TEST_CASE("Name Mangler", "") {
   auto pair = unmangleFunctionName("github_dcom_srusselltg_stest_slib_mdocall");
   REQUIRE(pair.first == "github.com/russelltg/test/lib"s);
   REQUIRE(pair.second == "docall"s);
+  
+  pair = unmangleFunctionName("main");
+  REQUIRE(pair.first == "main"s);
+  REQUIRE(pair.second == "main"s);
   
   
   pair = unmangleFunctionName("github_dcom_srus____selltg_stest_slib_mdocall");

@@ -24,9 +24,9 @@ namespace chig
 struct GraphFunction {
 	/// Construct the graph
 	/// Also constructs a input node
-	/// \param ctx The context
+	/// \param mod The owning module
 	/// \param name The name of the function
-	GraphFunction(Context& ctx, std::string name, std::vector<std::pair<DataType, std::string>> ins,
+	GraphFunction(JsonModule& mod, std::string name, std::vector<std::pair<DataType, std::string>> ins,
 		std::vector<std::pair<DataType, std::string>> outs);
 
 	/// Destructor
@@ -34,11 +34,11 @@ struct GraphFunction {
 
 	/// Constructs a GraphFunction from a JOSN object
 	/// \param data The JSON object to read from
-	/// \param context The context to create the GraphFunction with
+	/// \param module The module to create the GraphFunction with
 	/// \param ret_func The GraphFunction that has been produced
 	/// \return The result
 	static Result fromJSON(
-		Context& context, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_func);
+		JsonModule& module, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_func);
 
 	/// Serialize the GraphFunction to JSON (usually called from JsonModule::toJson)
 	/// \param toFill The JSON object representing the graph
@@ -96,7 +96,11 @@ struct GraphFunction {
 	const Graph& graph() const { return mGraph; }
 	/// \copydoc chig::GraphFunction::graph() const
 	Graph& graph() { return mGraph; }
+	
+	const JsonModule& module() const { return *mModule; }
+	JsonModule& module() { return *mModule; }
 private:
+    JsonModule* mModule;
 	Context* mContext;
 	std::string mName;  /// the name of the function
 
@@ -105,6 +109,7 @@ private:
 
 	nlohmann::json mSource;
 	Graph mGraph;
+    
 };
 
 inline std::pair<std::string, std::string> parseColonPair(const std::string& in)

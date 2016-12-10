@@ -9,6 +9,10 @@ namespace chig {
     std::string modName = gsl::to_string(fullModuleName);
     // escape characters
     
+    // if it is the special main module, then just return main
+    if(modName.substr(modName.rfind('/') + 1, modName.rfind('.')) == "main" && name == "main") {
+      return "main";
+    }
     
     // escape _
     size_t id = modName.find('_');
@@ -42,6 +46,10 @@ namespace chig {
   }
 
   std::pair<std::string, std::string> unmangleFunctionName(gsl::cstring_span<> mangledName) {
+    
+    if(mangledName == "main") {
+      return {"main", "main"};
+    }
     
     std::string mangled = gsl::to_string(mangledName);
     

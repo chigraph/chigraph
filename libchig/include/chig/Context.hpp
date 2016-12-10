@@ -20,6 +20,7 @@
 #include <gsl/gsl>
 
 #include <boost/filesystem.hpp>
+#include <boost/optional.hpp>
 
 namespace chig
 {
@@ -37,7 +38,7 @@ struct Context {
 	/// Gets the module by the name
 	/// \param moduleName The name of the module to find
 	/// \return ret_module The module that has the name \c moduleName, nullptr if none were found
-	ChigModule* moduleByName(gsl::cstring_span<> moduleName) noexcept;
+	ChigModule* moduleByName(gsl::cstring_span<> moduleName) const noexcept;
 
 	/// Load a module from disk
 	/// \param name The name of the moudle
@@ -83,6 +84,11 @@ struct Context {
 	/// \param toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \return The result
 	Result compileModule(gsl::cstring_span<> name, std::unique_ptr<llvm::Module>* toFill);
+    
+    /// Get the full module name from a short one
+    /// \param shortName The short name of the module
+    /// \return The long name. If there was an error getting the module then {}
+    boost::optional<std::string> fullModuleName(gsl::cstring_span<> shortName) const;
 
 	/// Get the number of modules this Context has
 	/// \return The module count

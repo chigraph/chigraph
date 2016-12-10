@@ -4,6 +4,7 @@
 #include <chig/GraphFunction.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/NodeInstance.hpp>
+#include <chig/JsonModule.hpp>
 
 using namespace chig;
 using namespace nlohmann;
@@ -17,7 +18,9 @@ TEST_CASE("JsonSerializer", "[json]")
 		c.addModule("lang");
         LangModule* lmod = static_cast<LangModule*>(c.moduleByName("lang"));
 
-		GraphFunction func(c, "hello", {}, {});
+        auto deps = std::vector<std::string>{"lang"};
+        auto jmod = std::make_unique<JsonModule>(c, "main", gsl::span<std::string>{deps.data(), deps.size()});
+		GraphFunction func(*jmod, "hello", {}, {});
 
 		auto requireWorks = [&](nlohmann::json expected) {
 			nlohmann::json ret;

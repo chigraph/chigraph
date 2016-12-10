@@ -188,7 +188,7 @@ void MainWindow::openUrl(const QUrl& url)
 	}
 
 	// TODO: fix
-	auto mod = std::make_unique<chig::JsonModule>("main", j, ccontext, &res);
+	auto mod = std::make_unique<chig::JsonModule>(ccontext, "main", j, &res);
 
 	if (!res) {
 		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + filename + "\"",
