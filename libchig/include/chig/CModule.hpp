@@ -30,25 +30,6 @@ struct CModule : ChigModule {
 
 	Result generateModule(std::unique_ptr<llvm::Module>* module) override { return {}; };
 };
-
-struct CFuncNode : NodeType {
-	CFuncNode(
-		ChigModule& con, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res);
-
-	// the function doesn't have to do anything...this class just holds metadata
-	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
-		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const override;
-
-	virtual std::unique_ptr<NodeType> clone() const override;
-
-	nlohmann::json toJSON() const override;
-
-	std::string functocall;
-	std::string ccode;
-
-	std::unique_ptr<llvm::Module> llcompiledmod;
-};
 }
 
 #endif  // CHIG_CMODULE_HPP

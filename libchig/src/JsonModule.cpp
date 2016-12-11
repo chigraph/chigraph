@@ -57,7 +57,7 @@ JsonModule::JsonModule(
 			std::unique_ptr<GraphFunction> newf;
 			*res += GraphFunction::fromJSON(*this, graph, &newf);
 
-			if (!res) {
+			if (!*res) {
 				continue;
 			}
 
@@ -218,5 +218,5 @@ std::unique_ptr<NodeType> JsonFuncCallNodeType::clone() const
 {
 	Result res = {};  // there shouldn't be an error but check anywayss
 	// TODO: better way to do this?
-	return std::make_unique<JsonFuncCallNodeType>(*const_cast<JsonModule*>(JModule), name(), &res);
+	return std::make_unique<JsonFuncCallNodeType>(*JModule, name(), &res);
 }

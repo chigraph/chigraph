@@ -40,8 +40,9 @@ int run(const std::vector<std::string>& opts)
 
 	po::options_description run_opts;
 	run_opts.add_options()("input-file", po::value<std::string>(),
-		"The input file, - for stdin. Should be a chig module")
-            ("workspace,w", po::value<std::string>(), "The workspace path. Leave blank to inferr from the working directory");
+		"The input file, - for stdin. Should be a chig module")("workspace,w",
+		po::value<std::string>(),
+		"The workspace path. Leave blank to inferr from the working directory");
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1);
@@ -79,15 +80,14 @@ int run(const std::vector<std::string>& opts)
 	}
 
 	Result res;
-    
-    
-    fs::path workspacePath;
-    if(vm.count("workspace") != 0) {
-      workspacePath = vm["workspace"].as<std::string>();
-    } else {
-      workspacePath = fs::current_path();
-    }
-    
+
+	fs::path workspacePath;
+	if (vm.count("workspace") != 0) {
+		workspacePath = vm["workspace"].as<std::string>();
+	} else {
+		workspacePath = fs::current_path();
+	}
+
 	Context c{workspacePath};
 	// load it as a module
 	JsonModule* jmod = nullptr;

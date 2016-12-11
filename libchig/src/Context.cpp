@@ -65,7 +65,8 @@ chig::Result chig::Context::addModule(const gsl::cstring_span<> name)
 	// check for built-in modules
 	if (name == "lang") {
 		return addModule(std::make_unique<LangModule>(*this));
-	} else if (name == "c") {
+    }
+	if (name == "c") {
 		return addModule(std::make_unique<CModule>(*this));
 	}
 
@@ -90,7 +91,7 @@ chig::Result chig::Context::addModule(const gsl::cstring_span<> name)
 	return res;
 }
 
-Result Context::addModuleFromJson(
+Result Context::addModuleFromJson (
 	gsl::cstring_span<> fullName, const nlohmann::json& json, JsonModule** toFill)
 {
 	Result res;

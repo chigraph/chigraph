@@ -21,7 +21,7 @@ struct IfNodeType : NodeType {
 		setDataInputs({{mod.typeFromName("i1"), "condition"}});
 	}
 
-	virtual Result codegen(size_t /*execInputID*/, llvm::Module* mod, llvm::Function*,
+	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, llvm::Function* /*f*/,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -33,7 +33,7 @@ struct IfNodeType : NodeType {
 		return {};
 	}
 
-	virtual std::unique_ptr<NodeType> clone() const override
+	std::unique_ptr<NodeType> clone() const override
 	{
 		return std::make_unique<IfNodeType>(*this);
 	}
@@ -52,7 +52,7 @@ struct EntryNodeType : NodeType {
 	}
 
 	// the function doesn't have to do anything...this class just holds metadata
-	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
+	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -74,7 +74,7 @@ struct EntryNodeType : NodeType {
 		return {};
 	}
 
-	virtual std::unique_ptr<NodeType> clone() const override
+	std::unique_ptr<NodeType> clone() const override
 	{
 		return std::make_unique<EntryNodeType>(*this);
 	}
@@ -103,7 +103,7 @@ struct ConstIntNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i32"), "out"}});
 	}
 
-	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
+	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, llvm::Function* /*f*/,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -120,7 +120,7 @@ struct ConstIntNodeType : NodeType {
 		return {};
 	}
 
-	virtual std::unique_ptr<NodeType> clone() const override
+	std::unique_ptr<NodeType> clone() const override
 	{
 		return std::make_unique<ConstIntNodeType>(*this);
 	}
@@ -141,7 +141,7 @@ struct ConstBoolNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i1"), "out"}});
 	}
 
-	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
+	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, llvm::Function* /*f*/,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -159,7 +159,7 @@ struct ConstBoolNodeType : NodeType {
 		return {};
 	}
 
-	virtual std::unique_ptr<NodeType> clone() const override
+	std::unique_ptr<NodeType> clone() const override
 	{
 		return std::make_unique<ConstBoolNodeType>(*this);
 	}
@@ -180,9 +180,9 @@ struct ExitNodeType : NodeType {
 		setDataInputs({funOutputs.begin(), funOutputs.end()});
 	}
 
-	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
+	Result codegen(size_t execInputID, llvm::Module* /*mod*/, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
+		const gsl::span<llvm::BasicBlock*> /*outputBlocks*/) const override
 	{
 		Expects(execInputID < execInputs().size() && f != nullptr &&
 				io.size() == dataInputs().size() && codegenInto != nullptr);
@@ -204,7 +204,7 @@ struct ExitNodeType : NodeType {
 		return {};
 	}
 
-	virtual std::unique_ptr<NodeType> clone() const override
+	std::unique_ptr<NodeType> clone() const override
 	{
 		return std::make_unique<ExitNodeType>(*this);
 	}
@@ -222,7 +222,7 @@ struct ExitNodeType : NodeType {
 };
 
 struct StringLiteralNodeType : NodeType {
-	StringLiteralNodeType(LangModule& mod, std::string str) : NodeType(mod), literalString(str)
+	StringLiteralNodeType(LangModule& mod, std::string str) : NodeType(mod), literalString(std::move(str))
 	{
 		setExecInputs({""});
 		setExecOutputs({""});
@@ -234,7 +234,7 @@ struct StringLiteralNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i8*"), "string"}});
 	}
 
-	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
+	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, llvm::Function* /*f*/,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -253,7 +253,7 @@ struct StringLiteralNodeType : NodeType {
 		return {};
 	}
 
-	virtual std::unique_ptr<NodeType> clone() const override
+	std::unique_ptr<NodeType> clone() const override
 	{
 		return std::make_unique<StringLiteralNodeType>(*this);
 	}
@@ -409,7 +409,7 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name)
 
 	auto lltype = llvm::parseType(
 		gsl::to_string(name), err, llvm::Module("tmp", context().llvmContext()), nullptr);
-	if (!lltype) {
+	if (lltype == nullptr) {
 		return {};
 	}
 

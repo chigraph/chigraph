@@ -89,7 +89,7 @@ struct JsonFuncCallNodeType : public NodeType {
 
 	std::unique_ptr<NodeType> clone() const override;
 
-	const JsonModule* JModule;
+	JsonModule* JModule;
 };
 }
 

@@ -36,8 +36,7 @@ struct NodeInstance {
 	std::vector<std::pair<NodeInstance*, size_t>> outputExecConnections;
 	std::vector<std::vector<std::pair<NodeInstance*, size_t>>> outputDataConnections;
 
-	Context& context() { return *mContext; }
-	const Context& context() const { return *mContext; }
+	Context& context() const { return *mContext; }
 private:
 	// general data
 	std::unique_ptr<NodeType> mType = nullptr;
@@ -80,6 +79,6 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 /// \param connectionInputID The ID of the connection on lhs
 /// \return The result
 Result disconnectExec(NodeInstance& lhs, size_t connectionInputID);
-}
+} // namespace chig
 
 #endif  // CHIG_NODE_INSTANCE_HPP

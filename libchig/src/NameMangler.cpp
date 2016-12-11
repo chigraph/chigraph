@@ -53,17 +53,19 @@ std::pair<std::string, std::string> unmangleFunctionName(gsl::cstring_span<> man
 	std::string modName = mangled.substr(0, splitter);
 	std::string typeName = mangled.substr(splitter + 2);
 
-	int id = -1;
-	while ((id = modName.find('_', id + 1)) != std::string::npos && modName.size() >= id) {
-		switch (modName[id + 1]) {
+	size_t id = 0;
+	while ((id = modName.find('_', static_cast<size_t>(id))) != std::string::npos && modName.size() >= id) {
+		switch (modName[static_cast<size_t>(id + 1)]) {
 		case '_': modName.replace(id, 2, "_"); break;
 		case 's': modName.replace(id, 2, "/"); break;
 		case 'd': modName.replace(id, 2, "."); break;
 		default:
-			assert(false);  // TODO: error handling
+			Expects(false);  // TODO: error handling
 		}
+		
+		++id;
 	}
 
 	return {modName, typeName};
 }
-}
+} // namespace chig

@@ -60,9 +60,7 @@ struct ChigModule {
 	std::string fullName() const { return mFullName; }
 	/// Get the Context that this module belongs to
 	/// \return The context
-	const Context& context() const { return *mContext; }
-	/// \copydoc chig::ChigModule::context() const
-	Context& context() { return *mContext; }
+	Context& context() const { return *mContext; }
 	/// Generate a llvm::Module from the module. Usually called by Context::compileModule
 	/// \param module The llvm::Module to fill -- must be already filled with dependencies
 	/// \return The result

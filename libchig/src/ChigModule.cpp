@@ -16,9 +16,9 @@ Result ChigModule::addDependency(std::string newDepFullPath)
 {
 	Result res = context().addModule(newDepFullPath);
 	if (res) {
-		mDependencies.emplace(std::move(newDepFullPath)).second;
+		mDependencies.emplace(std::move(newDepFullPath));
 	}
 
 	return res;
 }
-}
+}  // namespace chig

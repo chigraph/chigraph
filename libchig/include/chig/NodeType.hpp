@@ -53,10 +53,8 @@ struct NodeType {
 
 	std::string name() const { return mName; }
 	std::string description() const { return mDescription; }
-	ChigModule& module() { return *mModule; }
-	const ChigModule& module() const { return *mModule; }
-	Context& context() { return *mContext; }
-	const Context& context() const { return *mContext; }
+	ChigModule& module() const { return *mModule; }
+	Context& context() const { return *mContext; }
 	const std::vector<std::pair<DataType, std::string>>& dataInputs() const { return mDataInputs; }
 	const std::vector<std::pair<DataType, std::string>>& dataOutputs() const
 	{
