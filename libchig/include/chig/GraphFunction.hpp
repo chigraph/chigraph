@@ -47,7 +47,6 @@ struct GraphFunction {
 	Result toJSON(nlohmann::json* toFill) const;
 
 	/// Compile the graph to an \c llvm::Function (usually called from JsonModule::generateModule)
-	/// Throws on error
 	/// \param mod The module to codgen into, should already be a valid module
 	/// \param ret_func The \c llvm::Function that it was compiled to
 	/// \ret The result

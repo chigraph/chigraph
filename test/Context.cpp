@@ -32,10 +32,10 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
                 Result res;
                 res += c.addModule(std::make_unique<LangModule>(c));
                 
-                THEN("It should emit E24") 
+                THEN("It should emit W24") 
                 {
                     // TODO: different E number
-                    REQUIRE(res.result_json[0]["errorcode"] == "E24");
+                    REQUIRE(res.result_json[0]["errorcode"] == "W24");
                 }
             }
             

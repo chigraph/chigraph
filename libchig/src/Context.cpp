@@ -7,6 +7,7 @@
 #include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Linker/Linker.h>
 
 #include <boost/filesystem.hpp>
 
@@ -19,9 +20,19 @@ namespace fs = boost::filesystem;
 
 namespace chig
 {
-Context::Context(const fs::path& workPath) : mWorkspacePath(workPath)
+Context::Context(const fs::path& workPath)
 {
 	mLLVMContext = std::make_unique<llvm::LLVMContext>();
+    
+    fs::path workspaceDir = workPath;
+    
+    // initialize workspace directory
+    // go up until it is a workspace
+    while (!workspaceDir.empty() && !fs::is_regular_file(workspaceDir / ".chigraphworkspace")) {
+      workspaceDir = workspaceDir.parent_path();
+    }
+    
+    mWorkspacePath = workspaceDir; // it's ok if it's empty
 }
 ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) const noexcept
 {
@@ -29,6 +40,18 @@ ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) const noexcept
 
 	for (auto& module : mModules) {
 		if (module->name() == moduleName) {
+			return module.get();
+		}
+	}
+	return nullptr;
+}
+
+ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept
+{
+	Result res;
+
+	for (auto& module : mModules) {
+		if (module->fullName() == fullModuleName) {
 			return module.get();
 		}
 	}
@@ -103,7 +126,7 @@ Result Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 	auto ptr = moduleByName(modToAdd->name());
 	if (ptr != nullptr) {
 		res.add_entry(
-			"E24", "Cannot add already existing module again", {{"moduleName", modToAdd->name()}});
+			"W24", "Cannot add already existing module again", {{"moduleName", modToAdd->name()}});
 		return res;
 	}
 
@@ -160,22 +183,39 @@ std::string Context::stringifyType(llvm::Type* ty)
 	return data;
 }
 
-Result Context::compileModule(gsl::cstring_span<> name, std::unique_ptr<llvm::Module>* toFill)
+Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill)
 {
 	Expects(toFill != nullptr);
 
 	Result res;
 
-	auto chigmod = moduleByName(name);
+	auto chigmod = moduleByFullName(fullName);
 
 	if (chigmod == nullptr) {
-		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(name)}});
+		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(fullName)}});
 		return res;
 	}
-
-	std::unique_ptr<llvm::Module> llmod;
+	
+	
+	auto llmod = std::make_unique<llvm::Module>(gsl::to_string(fullName), llvmContext());
+	 
+	// generate dependencies
+    for(const auto& depName : chigmod->dependencies()) {
+      
+      std::unique_ptr<llvm::Module> compiledDep;
+      res += compileModule(depName, &compiledDep); // TODO: detect circular dependencies
+      
+      if(!res) {
+        return res;
+      }
+      
+      // link it in
+      llvm::Linker::linkModules(*llmod, std::move(compiledDep));
+      
+    }
+    
 	res += chigmod->generateModule(&llmod);
-
+    
 	// verify the created module
 	if (res) {
 		std::string err;

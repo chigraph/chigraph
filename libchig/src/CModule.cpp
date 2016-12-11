@@ -148,7 +148,7 @@ std::unique_ptr<NodeType> CFuncNode::clone() const
 	return nullptr;
 }
 
-Result CFuncNode::codegen(size_t /*inID*/, llvm::Module* mod, llvm::Function* /*f*/,
+Result CFuncNode::codegen(size_t /*inID*/, llvm::Module* mod,llvm::Function* /*f*/,
 	const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
@@ -160,6 +160,7 @@ Result CFuncNode::codegen(size_t /*inID*/, llvm::Module* mod, llvm::Function* /*
 
 	// link it in
 	llvm::Linker::linkModules(*mod, std::move(copymod));
+    mod->setDataLayout("");
 
 	auto llfunc = mod->getFunction(functocall);
 	Expects(llfunc != nullptr);

@@ -14,6 +14,8 @@ JsonModule::JsonModule(
 	Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res)
 	: ChigModule(cont, fullName)
 {
+    Expects(res != nullptr);
+  
 	// load dependencies
 	{
 		auto iter = json_data.find("dependencies");
@@ -25,20 +27,20 @@ JsonModule::JsonModule(
 			res->add_entry("E39", "dependencies element isn't an array", {});
 			return;
 		}
-		mDependencies.reserve(iter->size());
+		
 		for (const auto& dep : *iter) {
 			if (!dep.is_string()) {
 				res->add_entry("E40", "dependency isn't a string", {{"Actual Data", dep}});
 				continue;
 			}
-			addDependency(dep);
+			*res += addDependency(dep);
+            
+            if(!*res) {
+              return;
+            }
 		}
 	}
-	// load the dependencies from the context
-	for (const auto& dep : mDependencies) {
-		context().addModule(dep);
-	}
-
+	
 	// load graphs
 	{
 		auto iter = json_data.find("graphs");
@@ -54,24 +56,31 @@ JsonModule::JsonModule(
 		for (const auto& graph : *iter) {
 			std::unique_ptr<GraphFunction> newf;
 			*res += GraphFunction::fromJSON(*this, graph, &newf);
+            
+            if(!res) {
+              continue;
+            }
+            
+            Expects(newf != nullptr);
+            
 			mFunctions.push_back(std::move(newf));
 		}
 	}
 }
 
 JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies)
-	: ChigModule(cont, fullName), mDependencies(dependencies.begin(), dependencies.end())
+	: ChigModule(cont, fullName)
 {
+    
+  
 	// load the dependencies from the context
-	for (const auto& dep : mDependencies) {
-		context().addModule(dep);
+	for (const auto& dep : dependencies) {
+		addDependency(dep);
 	}
 }
 
 Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod)
 {
-	// create llvm module
-	*mod = std::make_unique<llvm::Module>(name(), context().llvmContext());
 
 	Result res = {};
 
@@ -97,7 +106,7 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const
 	Result res = {};
 
 	ret["name"] = name();
-	ret["dependencies"] = mDependencies;
+	ret["dependencies"] = dependencies();
 
 	auto& graphsjson = ret["graphs"];
 	graphsjson = nlohmann::json::array();
@@ -151,6 +160,7 @@ Result JsonModule::loadGraphs()
 	Result res = {};
 
 	for (auto& graph : mFunctions) {
+        Expects(graph != nullptr);
 		res += graph->loadGraph();
 	}
 
@@ -189,8 +199,6 @@ Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod,
 	Result res = {};
 
 	llvm::IRBuilder<> builder(codegenInto);
-
-	// TODO: intermodule calls
 
 	auto func = mod->getFunction(mangleFunctionName(module().fullName(), name()));
 

@@ -12,6 +12,8 @@
 #include <functional>
 #include <string>
 #include <vector>
+#include <unordered_set>
+#include <unordered_map>
 
 #include <llvm/IR/Module.h>
 
@@ -24,6 +26,7 @@ namespace chig
 struct ChigModule {
 	/// Default constructor. This is usually run by Context::addModule
 	/// \param contextArg The context to create the module insides
+	/// \param fullName The full name of the module
 	ChigModule(Context& contextArg, std::string fullName);
 
 	/// Destructor
@@ -60,15 +63,37 @@ struct ChigModule {
 	const Context& context() const { return *mContext; }
 	/// \copydoc chig::ChigModule::context() const
 	Context& context() { return *mContext; }
-	/// Generate a llvm::Module from the moudle
-	/// \param module The llvm::Module to fill
+	
+	/// Generate a llvm::Module from the module. Usually called by Context::compileModule
+	/// \param module The llvm::Module to fill -- must be already filled with dependencies
 	/// \return The result
 	virtual Result generateModule(std::unique_ptr<llvm::Module>* module) = 0;
 
+    
+	/// Get the dependencies
+	/// \return The dependencies
+	const std::unordered_set<std::string>& dependencies() const { return mDependencies; }
+	
+	/// Add a dependency to the module
+	/// \param newDepFullPath The dependency
+	/// \return The result
+	Result addDependency(std::string newDepFullPath);
+
+	/// Remove a dependency
+	/// \param depName The name of the dependency to remove
+	/// \return If one was removed
+	bool removeDependency(gsl::cstring_span<> depName)
+	{
+		return mDependencies.erase(gsl::to_string(depName)) == 1;
+	}
+    
 private:
 	std::string mFullName;
 	std::string mName;
 	Context* mContext;
+    
+    
+	std::unordered_set<std::string> mDependencies;
 };
 }
 

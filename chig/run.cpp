@@ -78,7 +78,7 @@ int run(const std::vector<std::string>& opts)
 	}
 
 	Result res;
-	Context c;
+	Context c{fs::current_path()};
 	// load it as a module
 	JsonModule* jmod = nullptr;
 	c.addModuleFromJson("main", read_json, &jmod);

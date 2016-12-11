@@ -28,7 +28,7 @@ namespace chig
 /// It also stores a \c LLVMContext object to be used everywhere.
 struct Context {
 	/// Creates a context with just the lang module
-	/// \param workPath Path to the workspace
+	/// \param workPath Path to the workspace, or a subdirectory of the workspace
 	Context(const boost::filesystem::path& workPath = {});
 
 	// no move or copy, doesn't make sense
@@ -39,6 +39,11 @@ struct Context {
 	/// \param moduleName The name of the module to find
 	/// \return ret_module The module that has the name \c moduleName, nullptr if none were found
 	ChigModule* moduleByName(gsl::cstring_span<> moduleName) const noexcept;
+    
+	/// Gets the module by the full name
+	/// \param fullModuleName The name of the module to find
+	/// \return ret_module The module that has the full name \c fullModuleName, nullptr if none were found
+	ChigModule* moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept;
 
 	/// Load a module from disk
 	/// \param name The name of the moudle
@@ -81,10 +86,10 @@ struct Context {
 	/// \return The workspace path
 	boost::filesystem::path workspacePath() const { return mWorkspacePath; }
 	/// Compile a module to a \c llvm::Module
-	/// \param name The name of the moudle to compile
+	/// \param name The full name of the moudle to compile
 	/// \param toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \return The result
-	Result compileModule(gsl::cstring_span<> name, std::unique_ptr<llvm::Module>* toFill);
+	Result compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill);
 
 	/// Get the full module name from a short one
 	/// \param shortName The short name of the module
@@ -103,6 +108,9 @@ private:
 	std::unique_ptr<llvm::LLVMContext>
 		mLLVMContext;  /// The LLVM context to use with everything under the context
 	std::vector<std::unique_ptr<ChigModule>> mModules;  /// The modules that have been loaded.
+	
+	// This cache is only for use during compilation to not duplicate modules
+	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/> mCompileCache;
 };
 }
 

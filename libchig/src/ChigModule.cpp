@@ -2,7 +2,8 @@
 
 #include "chig/Context.hpp"
 
-using namespace chig;
+
+namespace chig {
 
 ChigModule::ChigModule(Context& contextArg, std::string fullName) : mContext{&contextArg}
 {
@@ -10,4 +11,13 @@ ChigModule::ChigModule(Context& contextArg, std::string fullName) : mContext{&co
 
 	// everything after the last / and before the . so russelltg/test/lib.chigmod turns into lib
 	mName = mFullName.substr(mFullName.rfind('/') + 1, mFullName.rfind('.'));
+}
+
+Result ChigModule::addDependency(std::string newDepFullPath) {
+  Result res = context().addModule(newDepFullPath);
+  if(res) {mDependencies.emplace(std::move(newDepFullPath)).second; }
+  
+  return res;
+}
+
 }

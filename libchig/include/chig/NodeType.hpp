@@ -28,6 +28,9 @@ struct NodeType {
 	std::string qualifiedName() const { return module().name() + ":" + name(); }
 	/// A virtual function that is called when this node needs to be called
 	/// \param execInputID The ID of the exec input
+	/// \param modToCodegenInto The module that is being generated
+	/// \param owningModule The module that has been generated from the ChigModule that this node type is a part of
+	/// \param f The function that is being generated
 	/// \param io This has the values that are the inputs and outputs of the function.
 	/// This vector will always have the size of `inputs.size() + outputs.size()` and starts with
 	/// the inputs.
@@ -36,7 +39,7 @@ struct NodeType {
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
 	/// numOutputExecs.
 	/// \return The Result
-	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
+	virtual Result codegen(size_t execInputID, llvm::Module* modToCodegenInto, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
 

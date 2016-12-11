@@ -90,11 +90,10 @@ int main(int argc, char** argv) {
 		if(ret != 1) return ret;
 
 	// create module for the functions
-		auto llmod = std::make_unique<llvm::Module>("main", c.llvmContext());
+		std::unique_ptr<llvm::Module> llmod;
 		
-			
-		llvm::Function* func;
-		res += graphFunc->compile(llmod.get(), &func);
+        
+		res += c.compileModule("main", &llmod);
 		
 		ret = checkForErrors(res, expectedErr);
 		if(ret != 1) return ret;

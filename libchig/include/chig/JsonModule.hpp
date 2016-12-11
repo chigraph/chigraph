@@ -71,38 +71,17 @@ struct JsonModule : public ChigModule {
 	/// \return The GraphFunction or nullptr if it doesn't exist
 	GraphFunction* graphFuncFromName(gsl::cstring_span<> name) const;
 
-	/// Get the dependencies
-	/// \return The dependencies
-	const std::unordered_set<std::string>& dependencies() const { return mDependencies; }
-	/// Add a dependency to the module
-	/// \param newDep The dependency
-	/// \return True if the dependency was new, false if it already had it
-	bool addDependency(std::string newDepFullPath)
-	{
-		context().addModule(newDepFullPath);
-		return mDependencies.emplace(std::move(newDepFullPath)).second;
-	}
-
-	/// Remove a dependency
-	/// \param depName The name of the dependency to remove
-	/// \return If one was removed
-	bool removeDependency(gsl::cstring_span<> depName)
-	{
-		return mDependencies.erase(gsl::to_string(depName)) == 1;
-	}
-
 	/// Get functions
 	/// \return The functions
 	const std::vector<std::unique_ptr<GraphFunction>>& functions() const { return mFunctions; }
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
-	std::unordered_set<std::string> mDependencies;
 };
 
 struct JsonFuncCallNodeType : public NodeType {
 	JsonFuncCallNodeType(JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr);
 
-	Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
+	Result codegen(size_t execInputID, llvm::Module* mod,llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override;
 
