@@ -1,17 +1,26 @@
 add_executable(codegen_tester codegentester.cpp)
 target_link_libraries(codegen_tester PUBLIC chigcore execstream)
 
-# These don't follow chigfn or chigmod specs, so don't use that extension
-file(GLOB CODEGEN_TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.json") 
+set(srcdir ${CMAKE_CURRENT_SOURCE_DIR}/workspace/src)
+file(GLOB children RELATIVE  ${srcdir} ./workspace/src/*)
+set(CODEGEN_TESTS "")
+message("Children: ${children}")
+foreach(child ${children})
+  if(IS_DIRECTORY ${srcdir}/${child})
+    list(APPEND CODEGEN_TESTS ${child})
+  endif()
+endforeach()
 
-foreach(JSON_FILE ${CODEGEN_TESTS})
+
+foreach(MODULEPATH ${CODEGEN_TESTS})
 	
+	message("Found codegen test: ${MODULEPATH}")
 	# get error code
 	
-	set(FULL_JSON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${JSON_FILE})
+	set(FULLMODULEPATH ${srcdir}/${MODULEPATH})
 	
-	add_test(NAME ${JSON_FILE}_test
-		COMMAND codegen_tester ${FULL_JSON_FILE}
+	add_test(NAME ${MODULEPATH}_test
+		COMMAND codegen_tester ${FULLMODULEPATH}
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../../chig
 	)
 	

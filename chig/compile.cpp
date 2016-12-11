@@ -31,7 +31,8 @@ int compile(const std::vector<std::string>& opts)
 		"output,o", po::value<std::string>(), "Output file, - for stdout")("output-type,t",
 		po::value<std::string>(),
 		"The output type, either bc or ll. If an output file is defined, then this can be "
-		"inferred");
+		"inferred")
+        ("workspace,w", po::value<std::string>(), "The workspace path. Leave blank to inferr from the working directory");
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1);
@@ -70,7 +71,14 @@ int compile(const std::vector<std::string>& opts)
 
 	Result res;
 
-	Context c{fs::current_path()};
+    fs::path workspacePath;
+    if(vm.count("workspace") != 0) {
+      workspacePath = vm["workspace"].as<std::string>();
+    } else {
+      workspacePath = fs::current_path();
+    }
+    
+	Context c{workspacePath};
 	// load it as a module
 	JsonModule* cmodule;
 	res += c.addModuleFromJson("main", read_json, &cmodule);

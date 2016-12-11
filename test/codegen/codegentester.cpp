@@ -99,11 +99,18 @@ int main(int argc, char** argv) {
 	
 	
 	if(argc != 2) {
-		std::cerr << "Usage: codegen_tester JSONFILE" << std::endl;
+		std::cerr << "Usage: codegen_tester <path to module>" << std::endl;
 		return 1;
 	}
 	
-	fs::path JSONfile = argv[1];
+	fs::path moduleDir = argv[1];
+    if(!fs::is_directory(moduleDir)) {
+      std::cerr << moduleDir << " is not a directory" << std::endl;
+      return 1;
+    }
+	std::string testName = moduleDir.filename().string();
+	
+	fs::path JSONfile = moduleDir / (testName + ".json");
 	// load the file
 	
 	if(!fs::is_regular_file(JSONfile)) {
@@ -130,88 +137,12 @@ int main(int argc, char** argv) {
 	
 	int expectedreturncode = j["expectedret"];
 	
-    auto modfile = JSONfile.replace_extension(".chigmod");
+    auto modfile = moduleDir / "main.chigmod";
     fs::ifstream inmodfile(modfile);
     json chigmodule;
     inmodfile >> chigmodule;
     
-	// chig run
-	{
-	
-		// this program is to be started where chigc is
-		exec_stream_t chigexe;
-		chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
-		chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
-		
-		std::vector<std::string> args = {"run", "-"};
-		chigexe.start("./chig", args.begin(), args.end());
-		chigexe.in() << chigmodule;
-		chigexe.close_in();
-		
-		// get the output streams
-		std::string generatedstdout = std::string{std::istreambuf_iterator<char>(chigexe.out()),
-			std::istreambuf_iterator<char>()};
-		
-		std::string generatedstderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
-			std::istreambuf_iterator<char>()};
-		
-		chigexe.close();
-		int retcode = chigexe.exit_code();
-		
-		if(retcode != expectedreturncode) {
-			std::cerr << "(chig run) Unexpected retcode: " << retcode << " expected was " << expectedreturncode << std::endl << 
-				"stdout: \"" << generatedstdout << "\"" << std::endl <<
-				"stderr: \"" << generatedstderr << "\"" << std::endl;
-				
-			return 1;
-		}
-		
-		if(generatedstdout != expectedcout) {
-			std::cerr << "(chig run) Unexpected stdout: " << generatedstdout << " expected was " << expectedcout << std::endl << 
-				"retcode: \"" << retcode << "\"" << std::endl <<
-				"stderr: \"" << generatedstderr << "\"" << std::endl;
-				
-			return 1;
-		}
-		
-		if(generatedstderr != expectedcerr) {
-			std::cerr << "(chig run) Unexpected stderr: " << generatedstderr << " expected was " << expectedcerr << std::endl << 
-				"retcode: \"" << retcode << "\"" << std::endl <<
-				"stdout: \"" << generatedstdout << "\"" << std::endl;
-				
-			return 1;
-		}
-	
-	}
-	
-	// serialize deserialize
-	{
-			
-		Context c;
-		c.addModule(std::make_unique<LangModule>(c));
-		c.addModule(std::make_unique<CModule>(c));
-		
-		// test serialization and deserialization
-		Result r;
-		auto Udeserialized = std::make_unique<JsonModule>(c, "main", chigmodule, &r);
-        auto deserialized = Udeserialized.get();
-        c.addModule(std::move(Udeserialized));
-        deserialized->loadGraphs();
-
-		nlohmann::json serializedmodule;
-		r += deserialized->toJSON(&serializedmodule);
-
-		if(!r) {
-			std::cerr << "Error deserializing module: \n\n" << r.result_json.dump(2) << std::endl;
-			return 1;
-		}
-		
-		std::string err = areJsonEqual(serializedmodule, chigmodule);
-		if(!err.empty())  {
-			std::cerr << "Serialization and deserialization failed. error: " + err + "\n\noriginal: \n\n\n" << chigmodule.dump(-1) << "\n\n\n\n======SERIALIZED=====\n\n\n\n" << serializedmodule.dump(-1) << std::endl;
-			return 1;
-		}
-	}
+    
 
 	// chig compile + lli
 	{
@@ -220,7 +151,7 @@ int main(int argc, char** argv) {
 		chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
 		chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
 		
-		std::vector<std::string> args2 = {"compile", "-"};
+		std::vector<std::string> args2 = {"compile", "-", "-w", moduleDir.string()};
 		chigexe.start("./chig", args2.begin(), args2.end());
 		chigexe.in() << chigmodule;
 		chigexe.close_in();
@@ -228,7 +159,19 @@ int main(int argc, char** argv) {
 		// get the output streams
 		std::string generatedir = std::string{std::istreambuf_iterator<char>(chigexe.out()),
 			std::istreambuf_iterator<char>()};
-		
+            
+        
+        std::string chigstderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
+			std::istreambuf_iterator<char>()};
+        
+        chigexe.close();
+        
+        // check stderr and return code
+        if(chigexe.exit_code() != 0) {
+          std::cerr << "Failed to generate module with chig compile: \n" << chigstderr << std::endl;
+          return 1;
+        }
+            
 		// now go through lli
 		exec_stream_t lliexe;
 		lliexe.set_wait_timeout(exec_stream_t::s_out, 100000);
@@ -273,6 +216,85 @@ int main(int argc, char** argv) {
 	
 	}
 	
+	
+	// chig run
+	{
+	
+		// this program is to be started where chigc is
+		exec_stream_t chigexe;
+		chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
+		chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
+		
+		std::vector<std::string> args = {"run", "-", "-w", moduleDir.string()};
+		chigexe.start("./chig", args.begin(), args.end());
+		chigexe.in() << chigmodule;
+		chigexe.close_in();
+		
+		// get the output streams
+		std::string generatedstdout = std::string{std::istreambuf_iterator<char>(chigexe.out()),
+			std::istreambuf_iterator<char>()};
+		
+		std::string generatedstderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
+			std::istreambuf_iterator<char>()};
+		
+		chigexe.close();
+		int retcode = chigexe.exit_code();
+		
+		if(retcode != expectedreturncode) {
+			std::cerr << "(chig run) Unexpected retcode: " << retcode << " expected was " << expectedreturncode << std::endl << 
+				"stdout: \"" << generatedstdout << "\"" << std::endl <<
+				"stderr: \"" << generatedstderr << "\"" << std::endl;
+				
+			return 1;
+		}
+		
+		if(generatedstdout != expectedcout) {
+			std::cerr << "(chig run) Unexpected stdout: " << generatedstdout << " expected was " << expectedcout << std::endl << 
+				"retcode: \"" << retcode << "\"" << std::endl <<
+				"stderr: \"" << generatedstderr << "\"" << std::endl;
+				
+			return 1;
+		}
+		
+		if(generatedstderr != expectedcerr) {
+			std::cerr << "(chig run) Unexpected stderr: " << generatedstderr << " expected was " << expectedcerr << std::endl << 
+				"retcode: \"" << retcode << "\"" << std::endl <<
+				"stdout: \"" << generatedstdout << "\"" << std::endl;
+				
+			return 1;
+		}
+	
+	}
+	
+	// serialize deserialize
+	{
+			
+		Context c{moduleDir};
+		c.addModule(std::make_unique<LangModule>(c));
+		c.addModule(std::make_unique<CModule>(c));
+		
+		// test serialization and deserialization
+		Result r;
+		auto Udeserialized = std::make_unique<JsonModule>(c, "main", chigmodule, &r);
+        auto deserialized = Udeserialized.get();
+        c.addModule(std::move(Udeserialized));
+        deserialized->loadGraphs();
+
+		nlohmann::json serializedmodule;
+		r += deserialized->toJSON(&serializedmodule);
+
+		if(!r) {
+			std::cerr << "Error deserializing module: \n\n" << r.result_json.dump(2) << std::endl;
+			return 1;
+		}
+		
+		std::string err = areJsonEqual(serializedmodule, chigmodule);
+		if(!err.empty())  {
+			std::cerr << "Serialization and deserialization failed. error: " + err + "\n\noriginal: \n\n\n" << chigmodule.dump(-1) << "\n\n\n\n======SERIALIZED=====\n\n\n\n" << serializedmodule.dump(-1) << std::endl;
+			return 1;
+		}
+	}
+
 	// chig compile -tbc + lli
 	{
 		// go through chig compile
@@ -280,7 +302,7 @@ int main(int argc, char** argv) {
 		chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
 		chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
 		
-		std::vector<std::string> args2 = {"compile", "-", "-tbc"};
+		std::vector<std::string> args2 = {"compile", "-", "-tbc", "-w", moduleDir.string()};
 		chigexe.start("./chig", args2.begin(), args2.end());
 		chigexe.in() << chigmodule;
 		chigexe.close_in();
