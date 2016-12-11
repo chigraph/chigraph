@@ -12,7 +12,7 @@
 
 using namespace chig;
 
-CModule::CModule(Context& ctx) : ChigModule(ctx, "c") { }
+CModule::CModule(Context& ctx) : ChigModule(ctx, "c") {}
 DataType CModule::typeFromName(gsl::cstring_span<> /*typeName*/)
 {
 	// TODO: implement
@@ -129,7 +129,7 @@ CFuncNode::CFuncNode(
 	std::vector<std::pair<DataType, std::string>> dInputs;
 	for (const auto& argument : llfunc->args()) {
 		dInputs.emplace_back(DataType(context().moduleByName("lang"),
-									context().stringifyType(argument.getType()), argument.getType()),
+								 context().stringifyType(argument.getType()), argument.getType()),
 			argument.getName());
 	}
 	setDataInputs(std::move(dInputs));

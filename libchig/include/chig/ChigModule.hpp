@@ -52,11 +52,9 @@ struct ChigModule {
 	/// Get the short name of the module (the last bit)
 	/// \return The name
 	std::string name() const { return mName; }
-	
 	/// Get the full name of the module
 	/// \return The name
 	std::string fullName() const { return mFullName; }
-	
 	/// Get the Context that this module belongs to
 	/// \return The context
 	const Context& context() const { return *mContext; }
@@ -66,10 +64,10 @@ struct ChigModule {
 	/// \param module The llvm::Module to fill
 	/// \return The result
 	virtual Result generateModule(std::unique_ptr<llvm::Module>* module) = 0;
-	
+
 private:
 	std::string mFullName;
-    std::string mName;
+	std::string mName;
 	Context* mContext;
 };
 }

@@ -69,8 +69,8 @@ int main(int argc, char** argv)
 	} else if (cmd == "run") {
 		return run(opts);
 	} else if (cmd == "get") {
-        return get(opts);
-    }
+		return get(opts);
+	}
 	// TODO: write other ones
 
 	std::cerr << "Unrecognized command: " << cmd << std::endl;

@@ -44,7 +44,8 @@ public:
 				if (pIndex - inst->type().execInputs().size() >= inst->type().dataInputs().size())
 					return {};
 
-				idandname = {inst->type().dataInputs()[pIndex - inst->type().execInputs().size()]
+				idandname = {inst->type()
+								 .dataInputs()[pIndex - inst->type().execInputs().size()]
 								 .first.qualifiedName(),
 					inst->type().dataInputs()[pIndex - inst->type().execInputs().size()].second};
 
@@ -56,7 +57,8 @@ public:
 		} else if (pType == PortType::Out) {
 			std::pair<std::string, std::string> idandname;
 			if (pIndex >= int(inst->type().execOutputs().size())) {
-				idandname = {inst->type().dataOutputs()[pIndex - inst->type().execOutputs().size()]
+				idandname = {inst->type()
+								 .dataOutputs()[pIndex - inst->type().execOutputs().size()]
 								 .first.qualifiedName(),
 					inst->type().dataOutputs()[pIndex - inst->type().execOutputs().size()].second};
 

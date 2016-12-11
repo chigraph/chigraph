@@ -2,15 +2,16 @@
 
 #include <chig/NodeInstance.hpp>
 #include "chig/GraphFunction.hpp"
+#include "chig/NameMangler.hpp"
 #include "chig/NodeType.hpp"
 #include "chig/Result.hpp"
-#include "chig/NameMangler.hpp"
 
 #include <llvm/IR/Module.h>
 
 using namespace chig;
 
-JsonModule::JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res)
+JsonModule::JsonModule(
+	Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res)
 	: ChigModule(cont, fullName)
 {
 	// load dependencies
@@ -58,15 +59,14 @@ JsonModule::JsonModule(Context& cont, std::string fullName, const nlohmann::json
 	}
 }
 
-JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies) 
-  : ChigModule(cont, fullName),
-  mDependencies(dependencies.begin(), dependencies.end()) {
-  	// load the dependencies from the context
+JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies)
+	: ChigModule(cont, fullName), mDependencies(dependencies.begin(), dependencies.end())
+{
+	// load the dependencies from the context
 	for (const auto& dep : mDependencies) {
 		context().addModule(dep);
 	}
 }
-
 
 Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod)
 {
@@ -77,8 +77,8 @@ Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod)
 
 	// create prototypes
 	for (auto& graph : mFunctions) {
-      
-		(*mod)->getOrInsertFunction(mangleFunctionName(fullName(), graph->name()), graph->functionType());
+		(*mod)->getOrInsertFunction(
+			mangleFunctionName(fullName(), graph->name()), graph->functionType());
 	}
 
 	for (auto& graph : mFunctions) {

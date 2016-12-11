@@ -13,8 +13,8 @@
 
 #include <gsl/gsl>
 
-#include <vector>
 #include <unordered_set>
+#include <vector>
 
 namespace chig
 {
@@ -26,12 +26,12 @@ struct JsonModule : public ChigModule {
 	/// \param cont The context
 	/// \param res The result to fill if there are errors
 	JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res);
-    
-    /// Construct a JsonModule from scratch, no json
-    /// \param const The context
-    /// \param fullName The full name of the module
-    /// \param dependencies The dependencies
-    JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies);
+
+	/// Construct a JsonModule from scratch, no json
+	/// \param const The context
+	/// \param fullName The full name of the module
+	/// \param dependencies The dependencies
+	JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies);
 
 	// No copy or move -- pointer only
 	JsonModule(const JsonModule&) = delete;
@@ -74,22 +74,23 @@ struct JsonModule : public ChigModule {
 	/// Get the dependencies
 	/// \return The dependencies
 	const std::unordered_set<std::string>& dependencies() const { return mDependencies; }
-	
 	/// Add a dependency to the module
 	/// \param newDep The dependency
 	/// \return True if the dependency was new, false if it already had it
-	bool addDependency(std::string newDepFullPath) {
-      context().addModule(newDepFullPath);
-      return mDependencies.emplace(std::move(newDepFullPath)).second;
-    }
-    
-    /// Remove a dependency
-    /// \param depName The name of the dependency to remove
-    /// \return If one was removed 
-    bool removeDependency(gsl::cstring_span<> depName) {
-      return mDependencies.erase(gsl::to_string(depName)) == 1;
-    }
-	
+	bool addDependency(std::string newDepFullPath)
+	{
+		context().addModule(newDepFullPath);
+		return mDependencies.emplace(std::move(newDepFullPath)).second;
+	}
+
+	/// Remove a dependency
+	/// \param depName The name of the dependency to remove
+	/// \return If one was removed
+	bool removeDependency(gsl::cstring_span<> depName)
+	{
+		return mDependencies.erase(gsl::to_string(depName)) == 1;
+	}
+
 	/// Get functions
 	/// \return The functions
 	const std::vector<std::unique_ptr<GraphFunction>>& functions() const { return mFunctions; }

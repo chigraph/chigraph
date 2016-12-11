@@ -71,7 +71,8 @@ Result connectData(
 		rhs.type().dataInputs()[connectionOutputID].first) {
 		res.add_entry("E24", "Connecting data nodes with different types is invalid",
 			{{"Left Hand Type", lhs.type().dataOutputs()[connectionInputID].first.qualifiedName()},
-				{"Right Hand Type", rhs.type().dataInputs()[connectionOutputID].first.qualifiedName()},
+				{"Right Hand Type",
+					rhs.type().dataInputs()[connectionOutputID].first.qualifiedName()},
 				{"Left Node JSON", rhs.type().toJSON()}, {"Right Node JSON", rhs.type().toJSON()}});
 		return res;
 	}

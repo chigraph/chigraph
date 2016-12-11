@@ -1,8 +1,8 @@
 #include "chig/GraphFunction.hpp"
-#include "chig/NodeInstance.hpp"
-#include "chig/NodeType.hpp"
 #include "chig/JsonModule.hpp"
 #include "chig/NameMangler.hpp"
+#include "chig/NodeInstance.hpp"
+#include "chig/NodeType.hpp"
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/Type.h>
@@ -160,8 +160,8 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		for (auto& param : node->inputDataConnections) {
 			// make sure everything is A-OK
 			if (param.first == nullptr) {
-				res.add_entry(
-					"EUKN", "No data input to node", {{"nodeid", node->id()}, {"input ID", inputID}});
+				res.add_entry("EUKN", "No data input to node",
+					{{"nodeid", node->id()}, {"input ID", inputID}});
 
 				return;
 			}
@@ -176,8 +176,8 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 			auto& cacheObject = cacheiter->second;
 			if (param.second >= cacheObject.outputs.size()) {
-				res.add_entry(
-					"EUKN", "No data input to node", {{"nodeid", node->id()}, {"input ID", inputID}});
+				res.add_entry("EUKN", "No data input to node",
+					{{"nodeid", node->id()}, {"input ID", inputID}});
 
 				return;
 			}
@@ -189,12 +189,13 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 				value, node->type().dataInputs()[inputID].second));  // TODO: pass ptr to value
 
 			// make sure it's the right type
-			if (io[io.size() - 1]->getType() != node->type().dataInputs()[inputID].first.llvmType()) {
+			if (io[io.size() - 1]->getType() !=
+				node->type().dataInputs()[inputID].first.llvmType()) {
 				res.add_entry("EINT", "Internal codegen error: unexpected type in cache.",
-					{{"Expected LLVM type", node->context().stringifyType(
-												node->type().dataInputs()[inputID].first.llvmType())},
-						{"Found type",
-							node->context().stringifyType(io[io.size() - 1]->getType())},
+					{{"Expected LLVM type",
+						 node->context().stringifyType(
+							 node->type().dataInputs()[inputID].first.llvmType())},
+						{"Found type", node->context().stringifyType(io[io.size() - 1]->getType())},
 						{"Node ID", node->id()}, {"Input ID", inputID}});
 			}
 
@@ -221,9 +222,8 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			if (llvm::PointerType::get(output.first.llvmType(), 0) != alloc->getType()) {
 				res.add_entry("EINT",
 					"Internal codegen error: unexpected type returned from alloca.",
-					{{"Expected LLVM type",
-						 node->context().stringifyType(
-							 llvm::PointerType::get(output.first.llvmType(), 0))},
+					{{"Expected LLVM type", node->context().stringifyType(llvm::PointerType::get(
+												output.first.llvmType(), 0))},
 						{"Yielded type", node->context().stringifyType(alloc->getType())},
 						{"Node ID", node->id()}});
 			}
@@ -234,7 +234,8 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	std::vector<llvm::BasicBlock*> outputBlocks;
 	std::vector<llvm::BasicBlock*> unusedBlocks;
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
-		auto outBlock = llvm::BasicBlock::Create(f->getContext(), node->type().execOutputs()[idx], f);
+		auto outBlock =
+			llvm::BasicBlock::Create(f->getContext(), node->type().execOutputs()[idx], f);
 		outputBlocks.push_back(outBlock);
 		if (node->outputExecConnections[idx].first != nullptr) {
 			outBlock->setName("node_" + node->outputExecConnections[idx].first->id());
@@ -298,7 +299,8 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		}
 
 		nlohmann::json inEntry = nlohmann::json::array();
-		for (auto& in : entry->type().dataOutputs()) {  // outputs to entry are inputs to the function
+		for (auto& in :
+			entry->type().dataOutputs()) {  // outputs to entry are inputs to the function
 			inEntry.push_back({{in.second, in.first.qualifiedName()}});
 		}
 
@@ -315,9 +317,8 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		}
 
 		nlohmann::json outEntry = nlohmann::json::array();
-		for (auto& out :
-			exitNode->type().dataInputs()) {  
-            // inputs to the exit are outputs to the function
+		for (auto& out : exitNode->type().dataInputs()) {
+			// inputs to the exit are outputs to the function
 			outEntry.push_back({{out.second, out.first.qualifiedName()}});
 		}
 
@@ -326,8 +327,8 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		return res;
 	}
 
-	llvm::Function* f = llvm::cast<llvm::Function>(
-		mod->getOrInsertFunction(mangleFunctionName(module().fullName(), name()), functionType()));  // TODO: name mangling
+	llvm::Function* f = llvm::cast<llvm::Function>(mod->getOrInsertFunction(
+		mangleFunctionName(module().fullName(), name()), functionType()));  // TODO: name mangling
 	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
 	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), name() + "_entry", f);
 	auto blockcpy = block;
@@ -341,13 +342,14 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	// set argument names
 	auto idx = 0ull;
 	for (auto& arg : f->getArgumentList()) {
-		if (idx <
-			entry->type().dataOutputs().size()) { 
-          // dataOutputs to entry are inputs to the function
-			arg.setName(entry->type().dataOutputs()[idx]
+		if (idx < entry->type().dataOutputs().size()) {
+			// dataOutputs to entry are inputs to the function
+			arg.setName(entry->type()
+							.dataOutputs()[idx]
 							.second);  // it starts with inputs, which are outputs to entry
 		} else {
-			arg.setName(exitNode->type().dataInputs()[idx - entry->type().dataOutputs().size()]
+			arg.setName(exitNode->type()
+							.dataInputs()[idx - entry->type().dataOutputs().size()]
 							.second);  // then the outputs, which are inputs to exit
 		}
 		++idx;

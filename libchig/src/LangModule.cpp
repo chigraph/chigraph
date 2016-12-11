@@ -40,7 +40,8 @@ struct IfNodeType : NodeType {
 };
 
 struct EntryNodeType : NodeType {
-	EntryNodeType(LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funInputs) : NodeType(mod)
+	EntryNodeType(LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funInputs)
+		: NodeType(mod)
 	{
 		setName("entry");
 		setDescription("entry to a function");
@@ -124,25 +125,21 @@ struct ConstIntNodeType : NodeType {
 		return std::make_unique<ConstIntNodeType>(*this);
 	}
 
-	nlohmann::json toJSON() const override
-	{
-      return number;
-	}
-
+	nlohmann::json toJSON() const override { return number; }
 	int number;
 };
 
 struct ConstBoolNodeType : NodeType {
 	ConstBoolNodeType(LangModule& mod, bool num) : NodeType{mod}, value{num}
-{
-	setName("const-bool");
-	setDescription("constant boolean value");
+	{
+		setName("const-bool");
+		setDescription("constant boolean value");
 
-	setExecInputs({""});
-	setExecOutputs({""});
+		setExecInputs({""});
+		setExecOutputs({""});
 
-	setDataOutputs({{mod.typeFromName("i1"), "out"}});
-}
+		setDataOutputs({{mod.typeFromName("i1"), "out"}});
+	}
 
 	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
@@ -154,8 +151,8 @@ struct ConstBoolNodeType : NodeType {
 		// just go to the block
 
 		builder.CreateStore(
-			llvm::ConstantInt::get(
-				llvm::IntegerType::getInt1Ty(context().llvmContext()), static_cast<uint64_t>(value)),
+			llvm::ConstantInt::get(llvm::IntegerType::getInt1Ty(context().llvmContext()),
+				static_cast<uint64_t>(value)),
 			io[0], false);
 		builder.CreateBr(outputBlocks[0]);
 
@@ -167,31 +164,28 @@ struct ConstBoolNodeType : NodeType {
 		return std::make_unique<ConstBoolNodeType>(*this);
 	}
 
-	nlohmann::json toJSON() const override
-	{
-      return value;
-	}
-
+	nlohmann::json toJSON() const override { return value; }
 	bool value;
 };
 
 struct ExitNodeType : NodeType {
-	ExitNodeType(LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funOutputs) : NodeType{mod}
-{
-	setExecInputs({""});
+	ExitNodeType(LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funOutputs)
+		: NodeType{mod}
+	{
+		setExecInputs({""});
 
-	setName("exit");
-	setDescription("exit from a function; think return");
+		setName("exit");
+		setDescription("exit from a function; think return");
 
-	setDataInputs({funOutputs.begin(), funOutputs.end()});
-}
+		setDataInputs({funOutputs.begin(), funOutputs.end()});
+	}
 
 	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
-		Expects(execInputID < execInputs().size() && f != nullptr && io.size() == dataInputs().size() &&
-				codegenInto != nullptr);
+		Expects(execInputID < execInputs().size() && f != nullptr &&
+				io.size() == dataInputs().size() && codegenInto != nullptr);
 
 		// assign the return types
 		llvm::IRBuilder<> builder(codegenInto);
@@ -422,4 +416,4 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name)
 	return {this, gsl::to_string(name), lltype};
 }
 
-} // namespace chig
+}  // namespace chig

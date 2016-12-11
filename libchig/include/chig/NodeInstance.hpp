@@ -23,39 +23,31 @@ struct NodeInstance {
 	NodeInstance& operator=(NodeInstance&&) = default;
 	NodeInstance& operator=(const NodeInstance&);
 
-    NodeType& type() { return *mType; }
-    const NodeType& type() const { return *mType; }
-    
-    float x() const { return mX; }
-    float y() const { return mY; }
-    
-    void setX(float newX) { mX = newX; }
-    void setY(float newY) { mY = newY; }
-    
-    std::string id() const { return mId; }
-    
+	NodeType& type() { return *mType; }
+	const NodeType& type() const { return *mType; }
+	float x() const { return mX; }
+	float y() const { return mY; }
+	void setX(float newX) { mX = newX; }
+	void setY(float newY) { mY = newY; }
+	std::string id() const { return mId; }
 	// connections
 	std::vector<std::vector<std::pair<NodeInstance*, size_t>>> inputExecConnections;
 	std::vector<std::pair<NodeInstance*, size_t>> inputDataConnections;
 	std::vector<std::pair<NodeInstance*, size_t>> outputExecConnections;
 	std::vector<std::vector<std::pair<NodeInstance*, size_t>>> outputDataConnections;
-    
-    
+
 	Context& context() { return *mContext; }
 	const Context& context() const { return *mContext; }
-    
 private:
-    
 	// general data
 	std::unique_ptr<NodeType> mType = nullptr;
 
 	float mX = 0.f;
 	float mY = 0.0;
 
-
 	std::string mId;
-    
-    Context* mContext;
+
+	Context* mContext;
 };
 
 /// Connects two nodes' data connections

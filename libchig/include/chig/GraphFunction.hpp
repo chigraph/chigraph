@@ -26,7 +26,8 @@ struct GraphFunction {
 	/// Also constructs a input node
 	/// \param mod The owning module
 	/// \param name The name of the function
-	GraphFunction(JsonModule& mod, std::string name, std::vector<std::pair<DataType, std::string>> ins,
+	GraphFunction(JsonModule& mod, std::string name,
+		std::vector<std::pair<DataType, std::string>> ins,
 		std::vector<std::pair<DataType, std::string>> outs);
 
 	/// Destructor
@@ -96,11 +97,10 @@ struct GraphFunction {
 	const Graph& graph() const { return mGraph; }
 	/// \copydoc chig::GraphFunction::graph() const
 	Graph& graph() { return mGraph; }
-	
 	const JsonModule& module() const { return *mModule; }
 	JsonModule& module() { return *mModule; }
 private:
-    JsonModule* mModule;
+	JsonModule* mModule;
 	Context* mContext;
 	std::string mName;  /// the name of the function
 
@@ -109,7 +109,6 @@ private:
 
 	nlohmann::json mSource;
 	Graph mGraph;
-    
 };
 
 inline std::pair<std::string, std::string> parseColonPair(const std::string& in)

@@ -15,7 +15,6 @@
 
 namespace chig
 {
-
 struct LangModule : ChigModule {
 	LangModule(Context& ctx);
 	~LangModule() = default;
