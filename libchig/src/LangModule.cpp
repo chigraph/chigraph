@@ -21,7 +21,7 @@ struct IfNodeType : NodeType {
 		setDataInputs({{mod.typeFromName("i1"), "condition"}});
 	}
 
-	virtual Result codegen(size_t /*execInputID*/, llvm::Module* mod,  llvm::Function*,
+	virtual Result codegen(size_t /*execInputID*/, llvm::Module* mod, llvm::Function*,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -103,7 +103,7 @@ struct ConstIntNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i32"), "out"}});
 	}
 
-	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod,  llvm::Function* f,
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -234,7 +234,7 @@ struct StringLiteralNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i8*"), "string"}});
 	}
 
-	virtual Result codegen(size_t execInputID, llvm::Module* mod,  llvm::Function* f,
+	virtual Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{

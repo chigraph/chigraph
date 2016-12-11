@@ -81,7 +81,7 @@ private:
 struct JsonFuncCallNodeType : public NodeType {
 	JsonFuncCallNodeType(JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr);
 
-	Result codegen(size_t execInputID, llvm::Module* mod,llvm::Function* f,
+	Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override;
 

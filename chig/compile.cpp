@@ -69,7 +69,7 @@ int compile(const std::vector<std::string>& opts)
 	}
 
 	Result res;
-    
+
 	Context c{fs::current_path()};
 	// load it as a module
 	JsonModule* cmodule;

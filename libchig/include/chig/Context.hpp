@@ -39,10 +39,11 @@ struct Context {
 	/// \param moduleName The name of the module to find
 	/// \return ret_module The module that has the name \c moduleName, nullptr if none were found
 	ChigModule* moduleByName(gsl::cstring_span<> moduleName) const noexcept;
-    
+
 	/// Gets the module by the full name
 	/// \param fullModuleName The name of the module to find
-	/// \return ret_module The module that has the full name \c fullModuleName, nullptr if none were found
+	/// \return ret_module The module that has the full name \c fullModuleName, nullptr if none were
+	/// found
 	ChigModule* moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept;
 
 	/// Load a module from disk
@@ -108,9 +109,10 @@ private:
 	std::unique_ptr<llvm::LLVMContext>
 		mLLVMContext;  /// The LLVM context to use with everything under the context
 	std::vector<std::unique_ptr<ChigModule>> mModules;  /// The modules that have been loaded.
-	
+
 	// This cache is only for use during compilation to not duplicate modules
-	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/> mCompileCache;
+	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/>
+		mCompileCache;
 };
 }
 

@@ -14,8 +14,8 @@ JsonModule::JsonModule(
 	Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res)
 	: ChigModule(cont, fullName)
 {
-    Expects(res != nullptr);
-  
+	Expects(res != nullptr);
+
 	// load dependencies
 	{
 		auto iter = json_data.find("dependencies");
@@ -27,20 +27,20 @@ JsonModule::JsonModule(
 			res->add_entry("E39", "dependencies element isn't an array", {});
 			return;
 		}
-		
+
 		for (const auto& dep : *iter) {
 			if (!dep.is_string()) {
 				res->add_entry("E40", "dependency isn't a string", {{"Actual Data", dep}});
 				continue;
 			}
 			*res += addDependency(dep);
-            
-            if(!*res) {
-              return;
-            }
+
+			if (!*res) {
+				return;
+			}
 		}
 	}
-	
+
 	// load graphs
 	{
 		auto iter = json_data.find("graphs");
@@ -56,13 +56,13 @@ JsonModule::JsonModule(
 		for (const auto& graph : *iter) {
 			std::unique_ptr<GraphFunction> newf;
 			*res += GraphFunction::fromJSON(*this, graph, &newf);
-            
-            if(!res) {
-              continue;
-            }
-            
-            Expects(newf != nullptr);
-            
+
+			if (!res) {
+				continue;
+			}
+
+			Expects(newf != nullptr);
+
 			mFunctions.push_back(std::move(newf));
 		}
 	}
@@ -71,8 +71,6 @@ JsonModule::JsonModule(
 JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies)
 	: ChigModule(cont, fullName)
 {
-    
-  
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) {
 		addDependency(dep);
@@ -81,7 +79,6 @@ JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::strin
 
 Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod)
 {
-
 	Result res = {};
 
 	// create prototypes
@@ -160,7 +157,7 @@ Result JsonModule::loadGraphs()
 	Result res = {};
 
 	for (auto& graph : mFunctions) {
-        Expects(graph != nullptr);
+		Expects(graph != nullptr);
 		res += graph->loadGraph();
 	}
 

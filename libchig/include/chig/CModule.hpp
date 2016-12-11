@@ -28,11 +28,7 @@ struct CModule : ChigModule {
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
 		nodes;
 
-	Result generateModule(std::unique_ptr<llvm::Module>* module) override
-	{
-
-		return {};
-	};
+	Result generateModule(std::unique_ptr<llvm::Module>* module) override { return {}; };
 };
 
 struct CFuncNode : NodeType {
@@ -40,7 +36,7 @@ struct CFuncNode : NodeType {
 		ChigModule& con, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res);
 
 	// the function doesn't have to do anything...this class just holds metadata
-	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod,llvm::Function* f,
+	virtual Result codegen(size_t /*inputExecID*/, llvm::Module* mod, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override;
 

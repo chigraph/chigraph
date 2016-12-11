@@ -243,7 +243,6 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			unusedBlocks.push_back(outBlock);
 		}
 	}
-	
 
 	// codegen
 	res += node->type().codegen(execInputID, mod, f, io, block, outputBlocks);

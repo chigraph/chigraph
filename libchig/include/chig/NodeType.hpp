@@ -29,7 +29,8 @@ struct NodeType {
 	/// A virtual function that is called when this node needs to be called
 	/// \param execInputID The ID of the exec input
 	/// \param modToCodegenInto The module that is being generated
-	/// \param owningModule The module that has been generated from the ChigModule that this node type is a part of
+	/// \param owningModule The module that has been generated from the ChigModule that this node
+	/// type is a part of
 	/// \param f The function that is being generated
 	/// \param io This has the values that are the inputs and outputs of the function.
 	/// This vector will always have the size of `inputs.size() + outputs.size()` and starts with

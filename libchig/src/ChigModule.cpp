@@ -2,9 +2,8 @@
 
 #include "chig/Context.hpp"
 
-
-namespace chig {
-
+namespace chig
+{
 ChigModule::ChigModule(Context& contextArg, std::string fullName) : mContext{&contextArg}
 {
 	mFullName = std::move(fullName);
@@ -13,11 +12,13 @@ ChigModule::ChigModule(Context& contextArg, std::string fullName) : mContext{&co
 	mName = mFullName.substr(mFullName.rfind('/') + 1, mFullName.rfind('.'));
 }
 
-Result ChigModule::addDependency(std::string newDepFullPath) {
-  Result res = context().addModule(newDepFullPath);
-  if(res) {mDependencies.emplace(std::move(newDepFullPath)).second; }
-  
-  return res;
-}
+Result ChigModule::addDependency(std::string newDepFullPath)
+{
+	Result res = context().addModule(newDepFullPath);
+	if (res) {
+		mDependencies.emplace(std::move(newDepFullPath)).second;
+	}
 
+	return res;
+}
 }
