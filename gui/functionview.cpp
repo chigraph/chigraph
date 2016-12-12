@@ -4,8 +4,8 @@
 
 #include <KMessageBox>
 
-#include <nodes/Node>
-#include <nodes/NodeGraphicsObject>
+#include "../src/Node.hpp"
+#include "../src/NodeGraphicsObject.hpp"
 
 #include <chig/JsonModule.hpp>
 #include <chig/NodeInstance.hpp>
@@ -37,7 +37,7 @@ FunctionView::FunctionView(chig::JsonModule* /*module*/, chig::GraphFunction* fu
 		std::shared_ptr<Node> guinode =
 			scene->createNode(std::make_unique<ChigNodeGui>(node.second.get()));
 
-		guinode->nodeGraphicsObject()->setPos({node.second->x(), node.second->y()});
+		guinode->nodeGraphicsObject().setPos({node.second->x(), node.second->y()});
 
 		assoc[node.second.get()] = guinode;
 	}
@@ -88,7 +88,7 @@ void FunctionView::nodeAdded(Node& n)
 		return;
 	}
 
-	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel().get());
+	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
 
 	if (ptr == nullptr) {
 		return;
@@ -98,7 +98,7 @@ void FunctionView::nodeAdded(Node& n)
 }
 void FunctionView::nodeDeleted(Node& n)
 {
-	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel().get());
+	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
 
 	if (ptr == nullptr) {
 		return;
@@ -124,8 +124,8 @@ void FunctionView::connectionAdded(const Connection& c)
 	}
 
 	// here, in and out mean input and output to the connection (like in chigraph)
-	auto outptr = dynamic_cast<ChigNodeGui*>(rguinode->nodeDataModel().get());
-	auto inptr = dynamic_cast<ChigNodeGui*>(lguinode->nodeDataModel().get());
+	auto outptr = dynamic_cast<ChigNodeGui*>(rguinode->nodeDataModel());
+	auto inptr = dynamic_cast<ChigNodeGui*>(lguinode->nodeDataModel());
 
 	if (outptr == nullptr || inptr == nullptr) {
 		return;
@@ -180,7 +180,7 @@ void FunctionView::updatePositions()
 	for (auto& inst : assoc) {
 		auto sptr = inst.second.lock();
 		if (sptr) {
-			QPointF pos = sptr->nodeGraphicsObject()->pos();
+			QPointF pos = sptr->nodeGraphicsObject().pos();
 			inst.first->setX(pos.x());
 			inst.first->setY(pos.y());
 		}
