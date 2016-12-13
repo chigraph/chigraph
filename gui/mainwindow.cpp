@@ -34,6 +34,8 @@
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
+    Q_INIT_RESOURCE(chiggui);
+    
 	reg = std::make_shared<DataModelRegistry>();
 
 	addModule(std::make_unique<chig::LangModule>(ccontext));
@@ -108,7 +110,7 @@ void MainWindow::setupActions()
 	actColl->addAction(QStringLiteral("run"), runAction);
 	connect(runAction, &QAction::triggered, this, &MainWindow::run);
 
-	setupGUI(Default, "chigguiui.rc");
+	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
 }
 
 MainWindow::~MainWindow()

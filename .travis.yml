@@ -1,5 +1,13 @@
 sudo: required
 
+deploy:
+    provider: releases
+    api_key: "f59a8b33035a8aebd828256e80fd59dc8b362e03"
+    file: "/Chigraph-x86_64-$(git describe --tags --always).AppImage"
+    skip_cleanup: true
+    on:
+        tags: true
+
 arch:
     packages:
         - llvm
@@ -15,6 +23,14 @@ arch:
         - make
         - CTEST_OUTPUT_ON_FAILURE=1 make test
         - coveralls --exclude /usr/ --exclude test/ --exclude third_party --exclude libchig/include/chig/json.hpp --include libchig/ --include chig/
+        - mkdir build
+        - "wget https://github.com/probonopd/linuxdeployqt/releases/download/2/linuxdeployqt-2-x86_64.AppImage"
+        - chmod a+x ./linuxdeployqt-2-x86_64.AppImage
+        - "cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && make && LD_LIBRARY_PATH=`pwd`/lib:`pwd`/libchig ../linuxdeployqt-2-x86_64.AppImage gui/chiggui -appimage"
+        - mkdir root
+        - sudo mount --bind / root
+        - sudo cp Application-x86_64.AppImage ./root/Chigraph-x86_64-$(git describe --tags --always).AppImage
         
 script:
   - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
+  - ls /
