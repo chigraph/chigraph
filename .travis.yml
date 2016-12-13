@@ -25,7 +25,7 @@ arch:
         - mkdir build
         - "wget https://github.com/probonopd/linuxdeployqt/releases/download/2/linuxdeployqt-2-x86_64.AppImage"
         - chmod a+x ./linuxdeployqt-2-x86_64.AppImage
-        - "cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && make && LD_LIBRARY_PATH=`pwd`/lib:`pwd`/libchig ../linuxdeployqt-2-x86_64.AppImage gui/chiggui -appimage 
+        - "cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && make && LD_LIBRARY_PATH=`pwd`/lib:`pwd`/libchig ../linuxdeployqt-2-x86_64.AppImage gui/chiggui -appimage "
         - sudo cp build/Application-x86_64.AppImage Chigraph-x86_64-$(git describe --tags --always).AppImage
         
 script:
