@@ -404,13 +404,13 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name)
 	// just parse the type
 	auto IR = "@G = external global "s + gsl::to_string(name);
 	auto err = llvm::SMDiagnostic();
-	auto tmpModule = llvm::parseAssemblyString(IR, err, context->llcontext);
+	auto tmpModule = llvm::parseAssemblyString(IR, err, context().llvmContext());
 	if (!tmpModule) {
 		return nullptr;
 	}
 
 	// returns the pointer type, so get the contained type
-	return tmpModule->getNamedValue("G")->getType()->getContainedType(0);
+	return {this, gsl::to_string(name), tmpModule->getNamedValue("G")->getType()->getContainedType(0) };
 }
 
 }  // namespace chig
