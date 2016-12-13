@@ -28,7 +28,7 @@ arch:
         - "cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && make && LD_LIBRARY_PATH=`pwd`/lib:`pwd`/libchig ../linuxdeployqt-2-x86_64.AppImage gui/chiggui -appimage"
         - mkdir root
         - sudo mount --bind / root
-        - sudo cp ../Application-x86_64.AppImage ./root/Chigraph-x86_64-$(git describe --tags --always).AppImage
+        - sudo cp build/Application-x86_64.AppImage ./root/Chigraph-x86_64-$(git describe --tags --always).AppImage
         
 script:
   - "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
