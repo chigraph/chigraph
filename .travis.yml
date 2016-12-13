@@ -17,12 +17,10 @@ arch:
         - python-pip
         - kf5
         - extra-cmake-modules
+        - wget
     script:
         - sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
-        - cmake . -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -std=c++11 -lstdc++"
-        - make
-        - CTEST_OUTPUT_ON_FAILURE=1 make test
-        - coveralls --exclude /usr/ --exclude test/ --exclude third_party --exclude libchig/include/chig/json.hpp --include libchig/ --include chig/
+        - mkdir testbuild && cd testbuild && cmake .. -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -std=c++11 -lstdc++" && make &&  CTEST_OUTPUT_ON_FAILURE=1 make test &&  coveralls --exclude /usr/ --exclude ../test/ --exclude ../third_party --exclude ../libchig/include/chig/json.hpp --include ../libchig/ --include ../chig/
         - mkdir build
         - "wget https://github.com/probonopd/linuxdeployqt/releases/download/2/linuxdeployqt-2-x86_64.AppImage"
         - chmod a+x ./linuxdeployqt-2-x86_64.AppImage
