@@ -6,7 +6,8 @@ deploy:
     api_key: "f59a8b33035a8aebd828256e80fd59dc8b362e03"
     file: "Chigraph-x86_64-$(git describe --tags --always).AppImage"
     skip_cleanup: true
-    on: true
+    on: 
+        condition: true
 arch:
     packages:
         - llvm
