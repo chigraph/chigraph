@@ -33,10 +33,7 @@ struct IfNodeType : NodeType {
 		return {};
 	}
 
-	std::unique_ptr<NodeType> clone() const override
-	{
-		return std::make_unique<IfNodeType>(*this);
-	}
+	std::unique_ptr<NodeType> clone() const override { return std::make_unique<IfNodeType>(*this); }
 };
 
 struct EntryNodeType : NodeType {
@@ -222,7 +219,8 @@ struct ExitNodeType : NodeType {
 };
 
 struct StringLiteralNodeType : NodeType {
-	StringLiteralNodeType(LangModule& mod, std::string str) : NodeType(mod), literalString(std::move(str))
+	StringLiteralNodeType(LangModule& mod, std::string str)
+		: NodeType(mod), literalString(std::move(str))
 	{
 		setExecInputs({""});
 		setExecOutputs({""});
@@ -406,14 +404,13 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name)
 	// just parse the type
 	auto IR = "@G = external global "s + gsl::to_string(name);
 	auto err = llvm::SMDiagnostic();
-
-	auto lltype = llvm::parseType(
-		gsl::to_string(name), err, llvm::Module("tmp", context().llvmContext()), nullptr);
-	if (lltype == nullptr) {
-		return {};
+	auto tmpModule = llvm::parseAssemblyString(IR, err, context->llcontext);
+	if (!tmpModule) {
+		return nullptr;
 	}
 
-	return {this, gsl::to_string(name), lltype};
+	// returns the pointer type, so get the contained type
+	return tmpModule->getNamedValue("G")->getType()->getContainedType(0);
 }
 
 }  // namespace chig

@@ -12,7 +12,6 @@
 
 using namespace chig;
 
-
 struct CFuncNode : NodeType {
 	CFuncNode(
 		ChigModule& mod, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res)
@@ -162,7 +161,6 @@ struct CFuncNode : NodeType {
 
 	std::unique_ptr<llvm::Module> llcompiledmod;
 };
-
 
 CModule::CModule(Context& ctx) : ChigModule(ctx, "c") {}
 DataType CModule::typeFromName(gsl::cstring_span<> /*typeName*/)

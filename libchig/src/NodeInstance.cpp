@@ -6,7 +6,11 @@ using namespace chig;
 
 NodeInstance::NodeInstance(
 	std::unique_ptr<NodeType> nodeType, float posX, float posY, std::string nodeID)
-	: mType{std::move(nodeType)}, mX{posX}, mY{posY}, mId{std::move(nodeID)}, mContext{&mType->context()}
+	: mType{std::move(nodeType)},
+	  mX{posX},
+	  mY{posY},
+	  mId{std::move(nodeID)},
+	  mContext{&mType->context()}
 {
 	Expects(mType != nullptr);
 
@@ -18,7 +22,11 @@ NodeInstance::NodeInstance(
 }
 
 NodeInstance::NodeInstance(const NodeInstance& other)
-	: mType(other.type().clone()), mX{other.x()}, mY{other.y()}, mId{other.id() + "_"}, mContext{&other.context()}
+	: mType(other.type().clone()),
+	  mX{other.x()},
+	  mY{other.y()},
+	  mId{other.id() + "_"},
+	  mContext{&other.context()}
 {
 }
 

@@ -79,6 +79,6 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 /// \param connectionInputID The ID of the connection on lhs
 /// \return The result
 Result disconnectExec(NodeInstance& lhs, size_t connectionInputID);
-} // namespace chig
+}  // namespace chig
 
 #endif  // CHIG_NODE_INSTANCE_HPP
