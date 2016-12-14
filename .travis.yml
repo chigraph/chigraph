@@ -12,11 +12,11 @@ addons:
 matrix: 
   include: 
     - compiler: gcc
-      env: CXX=g++5 CC=gcc5 QT_BASE=57
-    - compiler: clang
-      env: CXX=clang++-3.7 CC=clang-3.7 QT_BASE=57
-    - compiler: gcc
       env: CXX=g++5 CC=gcc5 QT_BASE=57 BUILD_TYPE=Debug
+    - compiler: clang
+      env: CXX=clang++-3.7 CC=clang-3.7 QT_BASE=57 BUILD_TYPE=Debug
+    - compiler: gcc
+      env: CXX=g++5 CC=gcc5 QT_BASE=57 BUILD_TYPE=Release
     - compiler: clang
       env: CXX=clang++-3.7 CC=clang-3.7 QT_BASE=57 BUILD_TYPE=Release
 
