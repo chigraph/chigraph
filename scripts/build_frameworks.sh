@@ -24,35 +24,35 @@ build_framework() {
     cmake --build . --target install
 }
 
-build_framework extra-cmake-modules
-build_framework kconfig
-build_framework kguiaddons
-build_framework ki18n
-build_framework kitemviews
-build_framework sonnet
-build_framework kwidgetsaddons
-build_framework kcompletion
-build_framework kdbusaddons
-build_framework karchive
-build_framework kcoreaddons
+build_framework extra-cmake-modules > kf5.log || cat kf5.log
+build_framework kconfig > kf5.log || cat kf5.log
+build_framework kguiaddons > kf5.log || cat kf5.log
+build_framework ki18n > kf5.log || cat kf5.log
+build_framework kitemviews > kf5.log || cat kf5.log
+build_framework sonnet > kf5.log || cat kf5.log
+build_framework kwidgetsaddons > kf5.log || cat kf5.log
+build_framework kcompletion > kf5.log || cat kf5.log
+build_framework kdbusaddons > kf5.log || cat kf5.log
+build_framework karchive > kf5.log || cat kf5.log
+build_framework kcoreaddons > kf5.log || cat kf5.log
 #build_framework kjobwidgets
-build_framework kwindowsystem
-build_framework kcrash
-build_framework kservice
-build_framework kcodecs
-build_framework kauth
-build_framework kconfigwidgets
-build_framework kiconthemes
-build_framework ktextwidgets
-build_framework kglobalaccel
-build_framework kxmlgui
+build_framework kwindowsystem > kf5.log || cat kf5.log
+build_framework kcrash > kf5.log || cat kf5.log
+build_framework kservice > kf5.log || cat kf5.log
+build_framework kcodecs > kf5.log || cat kf5.log
+build_framework kauth > kf5.log || cat kf5.log
+build_framework kconfigwidgets > kf5.log || cat kf5.log
+build_framework kiconthemes > kf5.log || cat kf5.log
+build_framework ktextwidgets > kf5.log || cat kf5.log
+build_framework kglobalaccel > kf5.log || cat kf5.log
+build_framework kxmlgui > kf5.log || cat kf5.log
 #build_framework kbookmarks
 #build_framework solid
 #build_framework kio
 #build_framework kparts
 #build_framework kitemmodels
 #build_framework threadweaver
-build_framework attica
+build_framework attica > kf5.log || cat kf5.log
 #build_framework knewstuff
 #build_framework ktexteditor
 #build_framework kpackage
@@ -62,7 +62,7 @@ build_framework attica
 #build_framework knotifyconfig
 #build_framework libkomparediff2
 #build_framework kdoctools
-build_framework breeze-icons -DBINARY_ICONS_RESOURCE=1
+build_framework breeze-icons -DBINARY_ICONS_RESOURCE=1 > kf5.log || cat kf5.log
 #build_framework kpty
 #build_framework kinit 
 #build_framework konsole
