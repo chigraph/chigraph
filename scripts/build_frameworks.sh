@@ -30,13 +30,13 @@ build_framework kguiaddons
 build_framework ki18n
 build_framework kitemviews
 build_framework sonnet
-#build_framework kwindowsystem
 build_framework kwidgetsaddons
 #build_framework kcompletion
 build_framework kdbusaddons
 build_framework karchive
 build_framework kcoreaddons
 #build_framework kjobwidgets
+build_framework kwindowsystem
 build_framework kcrash
 build_framework kservice
 build_framework kcodecs
