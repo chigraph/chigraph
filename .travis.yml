@@ -25,7 +25,7 @@ before_install:
   - sudo apt-get update
 
 install: 
-  - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras ninja-build 
+  - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras ninja-build libxcb-keysyms1-dev
   - source /opt/qt57/bin/qt57-env.sh
   - ./scripts/build_frameworks.sh $BUILD_TYPE Ninja
 
