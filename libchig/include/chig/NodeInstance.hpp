@@ -23,6 +23,7 @@ struct NodeInstance {
 	NodeInstance& operator=(NodeInstance&&) = default;
 	NodeInstance& operator=(const NodeInstance&);
 
+    void setType(std::unique_ptr<NodeType> newType) { mType = std::move(newType); }
 	NodeType& type() { return *mType; }
 	const NodeType& type() const { return *mType; }
 	float x() const { return mX; }

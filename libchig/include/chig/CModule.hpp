@@ -28,7 +28,7 @@ struct CModule : ChigModule {
 	std::unordered_map<std::string, std::function<std::unique_ptr<NodeType>(const nlohmann::json&)>>
 		nodes;
 
-	Result generateModule(std::unique_ptr<llvm::Module>* module) override { return {}; };
+	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; };
 };
 }
 
