@@ -25,9 +25,9 @@ before_install:
   - sudo apt-get update
 
 install: 
-  - sudo apt-get install -qq qt57base qt57script qt57declarative qt57tools
+  - sudo apt-get install qt57base qt57script qt57declarative qt57tools ninja-build
   - source /opt/qt57/bin/qt57-env.sh
-  - ./scripts/build_frameworks.sh $BUILD_TYPE "Unix Makefiles"
+  - ./scripts/build_frameworks.sh $BUILD_TYPE Ninja
 
 script:
   - mkdir build
