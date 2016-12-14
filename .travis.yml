@@ -2,35 +2,6 @@ sudo: required
 language: cpp
 dist: trusty
 
-#arch:
-  #packages:
-  #- llvm
-  #- clang
-  #- cmake
-  #- boost
-  #- python-pip
-  #- kf5
-  #- fuse2
-  #- extra-cmake-modules
-  #- wget
-  #script:
-  #- sudo pip install git+git://github.com/eddyxu/cpp-coveralls.git
-  #- mkdir testbuild && cd testbuild && cmake .. -DCMAKE_CXX_FLAGS="-fprofile-arcs
-    #-ftest-coverage -std=c++11 -lstdc++" && make &&  CTEST_OUTPUT_ON_FAILURE=1 make
-    #test &&  coveralls --exclude /usr/ --exclude ../test/ --exclude ../third_party
-    #--exclude ../libchig/include/chig/json.hpp --include ../libchig/ --include ../chig/
-  #- mkdir build
-  #- wget https://github.com/probonopd/linuxdeployqt/releases/download/2/linuxdeployqt-2-x86_64.AppImage
-  #- chmod a+x ./linuxdeployqt-2-x86_64.AppImage
-  #- 'cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && make && LD_LIBRARY_PATH=`pwd`/lib:`pwd`/libchig
-    #../linuxdeployqt-2-x86_64.AppImage gui/chiggui -appimage '
-  #- mv build/Application-x86_64.AppImage Chigraph-x86_64-$(git describe --tags
-    #--always).AppImage
-#script:
-#- curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh
-  #| bash
-  
-
 addons: 
   apt: 
     sources:

@@ -1,5 +1,6 @@
 #/bin/bash
 
+set -xe
 
 SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPTSDIR/..
@@ -18,7 +19,7 @@ build_framework() {
     mkdir $framework/build
     cd $framework/build
     
-    cmake .. -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$SCRIPTSDIR/../third_party/kf5 -G$generator
+    cmake .. -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$SCRIPTSDIR/../third_party/kf5 -G"$generator"
     cmake --build . 
     cmake --build . --target install
 }
