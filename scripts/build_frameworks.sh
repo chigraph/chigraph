@@ -37,7 +37,7 @@ build_framework kdbusaddons
 build_framework karchive
 build_framework kcoreaddons
 #build_framework kjobwidgets
-#build_framework kcrash
+build_framework kcrash
 build_framework kservice
 build_framework kcodecs
 build_framework kauth
