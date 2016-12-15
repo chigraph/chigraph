@@ -23,14 +23,13 @@ before_install:
 install: 
   - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras qt57svg ninja-build libxcb-keysyms1-dev libxml2-utils libboost-all-dev llvm-3.8-dev clang-3.8 gcc-5 gcc-6 g++-5 g++-6 build-essential
   - source /opt/qt57/bin/qt57-env.sh
-  - sudo ln -s /usr/share/llvm-3.8 /usr/share/llvm
   - ./scripts/build_frameworks.sh $BUILD_TYPE Ninja
   - sudo rm /usr/local/clang-3.5.0/share/llvm/cmake/LLVMConfig.cmake
 
 script:
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_ROOT=/usr/
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_ROOT=/usr/lib/llvm-3.8/
   - make -j`nproc`
   - make test
 
