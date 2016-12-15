@@ -82,7 +82,7 @@ struct CFuncNode : NodeType {
 		for (const auto& argument : llfunc->args()) {
 			dInputs.emplace_back(
 				DataType(context().moduleByName("lang"),
-					context().stringifyType(argument.getType()), argument.getType()),
+					stringifyLLVMType(argument.getType()), argument.getType()),
 				argument.getName());
 		}
 		setDataInputs(std::move(dInputs));
@@ -92,7 +92,7 @@ struct CFuncNode : NodeType {
 
 		if (!ret->isVoidTy()) {
 			setDataOutputs(
-				{{{context().moduleByName("lang"), context().stringifyType(ret), ret}, ""}});
+				{{{context().moduleByName("lang"), stringifyLLVMType(ret), ret}, ""}});
 		}
 	}
 

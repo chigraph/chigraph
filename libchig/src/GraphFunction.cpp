@@ -193,9 +193,9 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 				node->type().dataInputs()[inputID].first.llvmType()) {
 				res.add_entry("EINT", "Internal codegen error: unexpected type in cache.",
 					{{"Expected LLVM type",
-						 node->context().stringifyType(
+						 stringifyLLVMType(
 							 node->type().dataInputs()[inputID].first.llvmType())},
-						{"Found type", node->context().stringifyType(io[io.size() - 1]->getType())},
+						{"Found type", stringifyLLVMType(io[io.size() - 1]->getType())},
 						{"Node ID", node->id()}, {"Input ID", inputID}});
 			}
 
@@ -222,9 +222,9 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			if (llvm::PointerType::get(output.first.llvmType(), 0) != alloc->getType()) {
 				res.add_entry("EINT",
 					"Internal codegen error: unexpected type returned from alloca.",
-					{{"Expected LLVM type", node->context().stringifyType(llvm::PointerType::get(
+					{{"Expected LLVM type", stringifyLLVMType(llvm::PointerType::get(
 												output.first.llvmType(), 0))},
-						{"Yielded type", node->context().stringifyType(alloc->getType())},
+						{"Yielded type", stringifyLLVMType(alloc->getType())},
 						{"Node ID", node->id()}});
 			}
 		}

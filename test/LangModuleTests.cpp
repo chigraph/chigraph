@@ -10,7 +10,7 @@ TEST_CASE("LangModule", "[module]")
 	GIVEN("A context with LangModule in it")
 	{
 		Context c;
-		c.addModule("lang");
+		c.loadModule("lang");
         ChigModule* mod = c.moduleByName("lang");
 		
 		THEN("We try to get associated types with correct parameters, it works")

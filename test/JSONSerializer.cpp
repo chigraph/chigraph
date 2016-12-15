@@ -15,7 +15,7 @@ TEST_CASE("JsonSerializer", "[json]")
 	{
 		Result res;
 		Context c;
-		c.addModule("lang");
+		c.loadModule("lang");
         LangModule* lmod = static_cast<LangModule*>(c.moduleByName("lang"));
 
         auto deps = std::vector<std::string>{"lang"};

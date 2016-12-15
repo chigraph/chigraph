@@ -31,10 +31,10 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		THEN("There will be no modules in it") { REQUIRE(c.numModules() == 0); }
 		THEN("stringifyType return proper strings")
 		{
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32Ty(c.llvmContext())) == "i32");
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt1Ty(c.llvmContext())) == "i1");
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt32PtrTy(c.llvmContext())) == "i32*");
-			REQUIRE(c.stringifyType(llvm::IntegerType::getInt8Ty(c.llvmContext())) == "i8");
+			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt32Ty(c.llvmContext())) == "i32");
+			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt1Ty(c.llvmContext())) == "i1");
+			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt32PtrTy(c.llvmContext())) == "i32*");
+			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt8Ty(c.llvmContext())) == "i8");
 		}
 
 		WHEN("A LangModule is created and added")
@@ -84,7 +84,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 				auto checkTy = [&](gsl::cstring_span<> ty) {
 					DataType chigty;
 					res = c.typeFromModule("lang", ty, &chigty);
-					REQUIRE(c.stringifyType(chigty.llvmType()) == ty);
+					REQUIRE(stringifyLLVMType(chigty.llvmType()) == ty);
 				};
 
 				checkTy("i32");

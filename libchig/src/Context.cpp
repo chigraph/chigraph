@@ -50,7 +50,7 @@ ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const 
 	return nullptr;
 }
 
-chig::Result chig::Context::addModule(const gsl::cstring_span<> name)
+chig::Result chig::Context::loadModule(const gsl::cstring_span<> name)
 {
 	Result res;
 
@@ -164,18 +164,6 @@ Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_
 	return res;
 }
 
-std::string Context::stringifyType(llvm::Type* ty)
-{
-	Expects(ty != nullptr);
-
-	std::string data;
-	{
-		llvm::raw_string_ostream stream{data};
-		ty->print(stream);
-	}
-	return data;
-}
-
 Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill)
 {
 	Expects(toFill != nullptr);
@@ -221,7 +209,7 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 	return res;
 }
 
-boost::optional<std::string> Context::fullModuleName(gsl::cstring_span<> shortName) const
+std::string Context::fullModuleName(gsl::cstring_span<> shortName) const
 {
 	auto mod = moduleByName(shortName);
 
@@ -229,7 +217,7 @@ boost::optional<std::string> Context::fullModuleName(gsl::cstring_span<> shortNa
 		return mod->fullName();
 	}
 
-	return {};
+	return "";
 }
 fs::path workspaceFromChildPath(const fs::path& path) {
 
@@ -242,6 +230,20 @@ fs::path workspaceFromChildPath(const fs::path& path) {
 	}
 	
 	return ret;  // it's ok if it's empty
+}
+
+
+
+std::string stringifyLLVMType(llvm::Type* ty)
+{
+	Expects(ty != nullptr);
+
+	std::string data;
+	{
+		llvm::raw_string_ostream stream{data};
+		ty->print(stream);
+	}
+	return data;
 }
 
 }  // namespace chig

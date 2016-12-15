@@ -14,7 +14,7 @@ ChigModule::ChigModule(Context& contextArg, std::string fullName) : mContext{&co
 
 Result ChigModule::addDependency(std::string newDepFullPath)
 {
-	Result res = context().addModule(newDepFullPath);
+	Result res = context().loadModule(newDepFullPath);
 	if (res) {
 		mDependencies.emplace(std::move(newDepFullPath));
 	}

@@ -48,7 +48,7 @@ struct Context {
 
 	/// Load a module from disk
 	/// \param name The name of the moudle
-	Result addModule(const gsl::cstring_span<> name);
+	Result loadModule(const gsl::cstring_span<> name);
 
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param fullName The full path of the module, including URL
@@ -78,14 +78,11 @@ struct Context {
 	Result nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
 		const nlohmann::json& data, std::unique_ptr<NodeType>* toFill) noexcept;
 
-	/// Turns a type into a string
-	/// \param ty The type to stringify
-	/// \return The return string
-	std::string stringifyType(llvm::Type* ty);
 
 	/// Get the workspace path of the Context
 	/// \return The workspace path
 	boost::filesystem::path workspacePath() const { return mWorkspacePath; }
+	
 	/// Compile a module to a \c llvm::Module
 	/// \param name The full name of the moudle to compile
 	/// \param toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
@@ -94,21 +91,27 @@ struct Context {
 
 	/// Get the full module name from a short one
 	/// \param shortName The short name of the module
-	/// \return The long name. If there was an error getting the module then {}
-	boost::optional<std::string> fullModuleName(gsl::cstring_span<> shortName) const;
+	/// \return The long name. If there was an error getting the module then an empty string.
+	std::string fullModuleName(gsl::cstring_span<> shortName) const;
 
 	/// Get the number of modules this Context has
 	/// \return The module count
 	size_t numModules() const { return mModules.size(); }
+	
 	/// Get the associated LLVMContext
 	/// \return The LLVMContext
 	llvm::LLVMContext& llvmContext() const { return *mLLVMContext; }
 private:
+    
+    /// The workspace path for the module
 	boost::filesystem::path mWorkspacePath;
 
+    /// The LLVM context to use with everything under the context
 	std::unique_ptr<llvm::LLVMContext>
-		mLLVMContext;  /// The LLVM context to use with everything under the context
-	std::vector<std::unique_ptr<ChigModule>> mModules;  /// The modules that have been loaded.
+		mLLVMContext;  
+        
+    /// The modules that have been loaded.
+	std::vector<std::unique_ptr<ChigModule>> mModules;  
 
 	// This cache is only for use during compilation to not duplicate modules
 	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/>
@@ -121,6 +124,12 @@ private:
 /// \param path The child path
 /// \return The workspace path, or an empty path if it wasn't found 
 boost::filesystem::path workspaceFromChildPath(const boost::filesystem::path& path);
+
+
+/// Turns a type into a string
+/// \param ty The type to stringify
+/// \return The return string
+std::string stringifyLLVMType(llvm::Type* ty);
 
 }
 
