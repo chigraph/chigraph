@@ -24,15 +24,7 @@ Context::Context(const fs::path& workPath)
 {
 	mLLVMContext = std::make_unique<llvm::LLVMContext>();
 
-	fs::path workspaceDir = workPath;
-
-	// initialize workspace directory
-	// go up until it is a workspace
-	while (!workspaceDir.empty() && !fs::is_regular_file(workspaceDir / ".chigraphworkspace")) {
-		workspaceDir = workspaceDir.parent_path();
-	}
-
-	mWorkspacePath = workspaceDir;  // it's ok if it's empty
+	mWorkspacePath = workspaceFromChildPath(workPath);
 }
 ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) const noexcept
 {
@@ -238,6 +230,18 @@ boost::optional<std::string> Context::fullModuleName(gsl::cstring_span<> shortNa
 	}
 
 	return {};
+}
+fs::path workspaceFromChildPath(const fs::path& path) {
+
+	fs::path ret = path;
+
+	// initialize workspace directory
+	// go up until it is a workspace
+	while (!ret.empty() && !fs::is_regular_file(ret / ".chigraphworkspace")) {
+		ret = ret.parent_path();
+	}
+	
+	return ret;  // it's ok if it's empty
 }
 
 }  // namespace chig

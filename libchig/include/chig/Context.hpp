@@ -114,6 +114,14 @@ private:
 	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/>
 		mCompileCache;
 };
+
+/// Get the workspace directory from a child of the workspace directory
+/// Example: say you have a workspace at ~/chig/
+/// If you used this with ~/chig/src/ it would return ~/chig/
+/// \param path The child path
+/// \return The workspace path, or an empty path if it wasn't found 
+boost::filesystem::path workspaceFromChildPath(const boost::filesystem::path& path);
+
 }
 
 #endif  // CHIG_CONTEXT_HPP

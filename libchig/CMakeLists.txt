@@ -32,6 +32,8 @@ add_definitions("-D__STDC_LIMIT_MACROS")
 add_definitions("-D__STDC_CONSTANT_MACROS")
 
 add_library(chigcore ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
+
+set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../test)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.hpp.in ${CMAKE_BINARY_DIR}/chig/Config.hpp)
 
 target_include_directories(chigcore

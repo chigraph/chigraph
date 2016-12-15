@@ -11,15 +11,9 @@ OutputView::OutputView()
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 
-	// create label
-	auto label = new QLabel;
-	label->setText(i18n("Output"));
-
 	// create text view
 	textarea = new QPlainTextEdit;
 	textarea->setReadOnly(true);
-
-	layout->addWidget(label);
 	layout->addWidget(textarea);
 }
 

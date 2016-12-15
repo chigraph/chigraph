@@ -5,7 +5,10 @@
 
 #include <llvm/IR/DerivedTypes.h>
 
+#include <chig/Config.hpp>
+
 using namespace chig;
+namespace fs = boost::filesystem;
 
 TEST_CASE("Contexts can be created and modules can be added to them", "[Context]")
 {
@@ -14,6 +17,17 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		Context c;
 		Result res;
 
+        THEN("It resolves workspace paths correctly") {
+            
+            fs::path workspaceDir = fs::path(CHIG_TEST_DIR) / "codegen" / "workspace";
+            
+            REQUIRE(workspaceFromChildPath(workspaceDir) == workspaceDir);
+            REQUIRE(workspaceFromChildPath(workspaceDir / "src") == workspaceDir);
+            REQUIRE(workspaceFromChildPath(workspaceDir / "src" / "github.com") == workspaceDir);
+            REQUIRE(workspaceFromChildPath("/").empty());
+            
+        }
+        
 		THEN("There will be no modules in it") { REQUIRE(c.numModules() == 0); }
 		THEN("stringifyType return proper strings")
 		{

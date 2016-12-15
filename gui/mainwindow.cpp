@@ -14,6 +14,7 @@
 #include <QPlainTextEdit>
 #include <QProcess>
 #include <QSplitter>
+#include <QDockWidget>
 #include <QTextStream>
 
 #include <chig/CModule.hpp>
@@ -41,15 +42,10 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	addModule(std::make_unique<chig::LangModule>(ccontext));
 	addModule(std::make_unique<chig::CModule>(ccontext));
 
-	auto hb = new QFrame(this);
-	auto hlayout = new QHBoxLayout(hb);
-	hlayout->setMargin(0);
-	hlayout->setSpacing(0);
-
-	setCentralWidget(hb);
-
-	auto splitter = new QSplitter;
-	functionpane = new FunctionsPane(splitter, this);
+    QDockWidget* docker = new QDockWidget(i18n("Functions"), this);
+	functionpane = new FunctionsPane(this, this);
+    docker->setWidget(functionpane);
+    addDockWidget(Qt::LeftDockWidgetArea, docker);
 
 	connect(functionpane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
 
@@ -57,22 +53,12 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	functabs->setMovable(true);
 	functabs->setTabsClosable(true);
 	connect(functabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
+	setCentralWidget(functabs);
 
+    docker = new QDockWidget(i18n("Output"), this);
 	outputView = new OutputView;
-
-	auto middlesplitter = new QSplitter;
-	middlesplitter->setOrientation(Qt::Vertical);
-	middlesplitter->addWidget(functabs);
-	middlesplitter->addWidget(outputView);
-	middlesplitter->setSizes({1000, 200});
-
-	splitter->addWidget(functionpane);
-	splitter->addWidget(middlesplitter);
-	splitter->setSizes({200, 1000});
-	splitter->setCollapsible(0, false);
-	splitter->setCollapsible(1, false);
-
-	hlayout->addWidget(splitter);
+    docker->setWidget(outputView);
+    addDockWidget(Qt::BottomDockWidgetArea, docker);
 
 	setupActions();
 }
