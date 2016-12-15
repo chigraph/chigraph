@@ -23,46 +23,51 @@ build_framework() {
     cmake --build . 
     cmake --build . --target install
 }
+cd /tmp
 
-build_framework extra-cmake-modules > kf5.log || cat kf5.log
-build_framework kconfig > kf5.log || cat kf5.log
-build_framework kguiaddons > kf5.log || cat kf5.log
-build_framework ki18n > kf5.log || cat kf5.log
-build_framework kitemviews > kf5.log || cat kf5.log
-build_framework sonnet > kf5.log || cat kf5.log
-build_framework kwidgetsaddons > kf5.log || cat kf5.log
-build_framework kcompletion > kf5.log || cat kf5.log
-build_framework kdbusaddons > kf5.log || cat kf5.log
-build_framework karchive > kf5.log || cat kf5.log
-build_framework kcoreaddons > kf5.log || cat kf5.log
-#build_framework kjobwidgets
-build_framework kwindowsystem > kf5.log || cat kf5.log
-build_framework kcrash > kf5.log || cat kf5.log
-build_framework kservice > kf5.log || cat kf5.log
-build_framework kcodecs > kf5.log || cat kf5.log
-build_framework kauth > kf5.log || cat kf5.log
-build_framework kconfigwidgets > kf5.log || cat kf5.log
-build_framework kiconthemes > kf5.log || cat kf5.log
-build_framework ktextwidgets > kf5.log || cat kf5.log
-build_framework kglobalaccel > kf5.log || cat kf5.log
-build_framework kxmlgui > kf5.log || cat kf5.log
-#build_framework kbookmarks
-#build_framework solid
-#build_framework kio
-#build_framework kparts
-#build_framework kitemmodels
-#build_framework threadweaver
-build_framework attica > kf5.log || cat kf5.log
-#build_framework knewstuff
-#build_framework ktexteditor
-#build_framework kpackage
-#build_framework kdeclarative
-#build_framework kcmutils
-#build_framework knotifications
-#build_framework knotifyconfig
-#build_framework libkomparediff2
-#build_framework kdoctools
-build_framework breeze-icons -DBINARY_ICONS_RESOURCE=1 > kf5.log || cat kf5.log
-#build_framework kpty
-#build_framework kinit 
-#build_framework konsole
+build_helper() {
+    ( (build_framework $1)  &> kf5.log) || cat kf5.log
+}
+
+build_helper extra-cmake-modules
+build_helper kconfig
+build_helper kguiaddons
+build_helper ki18n
+build_helper kitemviews
+build_helper sonnet
+build_helper kwidgetsaddons
+build_helper kcompletion
+build_helper kdbusaddons
+build_helper karchive
+build_helper kcoreaddons
+#build_helper kjobwidgets
+build_helper kwindowsystem
+build_helper kcrash
+build_helper kservice
+build_helper kcodecs
+build_helper kauth
+build_helper kconfigwidgets
+build_helper kiconthemes
+build_helper ktextwidgets
+build_helper kglobalaccel
+build_helper kxmlgui
+#build_helper kbookmarks
+#build_helper solid
+#build_helper kio
+#build_helper kparts
+#build_helper kitemmodels
+#build_helper threadweaver
+build_helper attica
+#build_helper knewstuff
+#build_helper ktexteditor
+#build_helper kpackage
+#build_helper kdeclarative
+#build_helper kcmutils
+#build_helper knotifications
+#build_helper knotifyconfig
+#build_helper libkomparediff2
+#build_helper kdoctools
+build_helper breeze-icons -DBINARY_ICONS_RESOURCE=1
+#build_helper kpty
+#build_helper kinit 
+#build_helper konsole
