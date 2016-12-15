@@ -9,17 +9,19 @@ addons:
       - llvm-toolchain-precise-3.8
 matrix: 
   include: 
-    - env: CXX_COMPILER=g++5         C_COMPILER=gcc5       QT_BASE=57 BUILD_TYPE=Debug
-    - env: CXX_COMPILER=clang++-3.8  C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug
-    - env: CXX_COMPILER=g++5         C_COMPILER=gcc5       QT_BASE=57 BUILD_TYPE=Release
-    - env: CXX_COMPILER=clang++-3.8  C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release
 
 before_install:
   - 'sudo add-apt-repository ppa:beineri/opt-qt57-trusty -y'
   - sudo apt-get update
 
 install: 
-  - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras qt57svg ninja-build libxcb-keysyms1-dev libxml2-utils libboost-all-dev llvm-3.8-dev clang-3.8
+  - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras qt57svg ninja-build libxcb-keysyms1-dev libxml2-utils libboost-all-dev llvm-3.8-dev clang-3.8 gcc-5 gcc-6
   - source /opt/qt57/bin/qt57-env.sh
   - ./scripts/build_frameworks.sh $BUILD_TYPE Ninja
 
