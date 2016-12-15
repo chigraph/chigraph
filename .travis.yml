@@ -26,7 +26,7 @@ install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_COMPILER=$CC -DLLVM_ROOT=/usr/
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_ROOT=/usr/
   - make -j`nproc`
   - make test
 
