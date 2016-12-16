@@ -58,7 +58,7 @@ JsonModule::JsonModule(
 			*res += GraphFunction::fromJSON(*this, graph, &newf);
 
 			if (!*res) {
-				continue;
+				return;
 			}
 
 			Expects(newf != nullptr);
@@ -129,8 +129,10 @@ Result JsonModule::createFunction(gsl::cstring_span<> name,
 	}
 
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, ins, outs));
-	*toFill = mFunctions[mFunctions.size() - 1].get();
-
+    if(toFill) {
+        *toFill = mFunctions[mFunctions.size() - 1].get();
+    }
+    
 	return res;
 }
 

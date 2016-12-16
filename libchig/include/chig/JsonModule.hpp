@@ -74,7 +74,7 @@ struct JsonModule : public ChigModule {
 	/// \return The Result
 	Result createFunction(gsl::cstring_span<> name,
 		std::vector<std::pair<DataType, std::string>> ins,
-		std::vector<std::pair<DataType, std::string>> outs, GraphFunction** toFill);
+		std::vector<std::pair<DataType, std::string>> outs, GraphFunction** toFill = nullptr);
 
 	/// Get a function from the name
 	/// \param name The name to get

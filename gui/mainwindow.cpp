@@ -12,6 +12,7 @@
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QHBoxLayout>
+#include <QInputDialog>
 #include <QPlainTextEdit>
 #include <QProcess>
 #include <QSplitter>
@@ -100,6 +101,12 @@ void MainWindow::setupActions()
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
 	actColl->addAction(QStringLiteral("run"), runAction);
 	connect(runAction, &QAction::triggered, this, &MainWindow::run);
+    
+    QAction* newFunctionAction = new QAction;
+    newFunctionAction->setText(i18n("New Function"));
+    newFunctionAction->setIcon(QIcon::fromTheme("list-add"));
+    actColl->addAction(QStringLiteral("new-function"), newFunctionAction);
+    connect(newFunctionAction, &QAction::trigger, this, &MainWindow::newFunction);
 
 	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
 }
@@ -251,4 +258,18 @@ void MainWindow::run()
 	lliproc->closeWriteChannel();
 
 	outputView->setProcess(lliproc);
+}
+
+void MainWindow::newFunction() {
+    
+    if(module == nullptr) {
+        KMessageBox::error(this, "Load a module before creating a new function");
+        return;
+    }
+    
+    QString newName = QInputDialog::getText(this, i18n("New Function Name"), i18n("Function Name"));
+    
+    if(newName == "") { return; }
+    
+    module->createFunction(newName.toStdString(), {}, {}); // TODO: inputs
 }
