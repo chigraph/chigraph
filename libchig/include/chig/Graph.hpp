@@ -34,21 +34,22 @@ struct Graph {
 	/// \param module The module the type is in
 	/// \param name THe name of the type
 	/// \return A vector of NodeInstance
-	std::vector<NodeInstance*> nodesWithType(const char* module, const char* name) const noexcept;
+	std::vector<NodeInstance*> nodesWithType(
+		gsl::cstring_span<> module, gsl::cstring_span<> name) const noexcept;
 
 	/// Add a node to the graph
 	/// \param type The type of the node
 	/// \param x The x location of the node
 	/// \param y The y location of the node
 	/// \param id The node ID
-	NodeInstance* insertNode(
-		std::unique_ptr<NodeType> type, float x, float y, const std::string& id);
+	/// \param toFill The NodeInstance object to fill into, optional
+	/// \return The Result.
+	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
+		NodeInstance** toFill = nullptr);
 
 	/// Get the context
 	/// \return The context
-	const Context& context() const { return *mContext; }
-	/// \copydoc chig::Graph::context() const
-	Context& context() { return *mContext; }
+	Context& context() const { return *mContext; }
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() { return mNodes; }
 private:
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>

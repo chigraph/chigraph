@@ -12,12 +12,12 @@
 
 using namespace chig;
 
-GraphFunction::GraphFunction(JsonModule& mod, std::string name,
+GraphFunction::GraphFunction(JsonModule& mod, gsl::cstring_span<> name,
 	std::vector<std::pair<DataType, std::string>> ins,
 	std::vector<std::pair<DataType, std::string>> outs)
 	: mModule{&mod},
 	  mContext{&mod.context()},
-	  mName{std::move(name)},
+	  mName{gsl::to_string(name)},
 	  mInputs(std::move(ins)),
 	  mOutputs(std::move(outs)),
 	  mSource()
@@ -193,8 +193,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 				node->type().dataInputs()[inputID].first.llvmType()) {
 				res.add_entry("EINT", "Internal codegen error: unexpected type in cache.",
 					{{"Expected LLVM type",
-						 stringifyLLVMType(
-							 node->type().dataInputs()[inputID].first.llvmType())},
+						 stringifyLLVMType(node->type().dataInputs()[inputID].first.llvmType())},
 						{"Found type", stringifyLLVMType(io[io.size() - 1]->getType())},
 						{"Node ID", node->id()}, {"Input ID", inputID}});
 			}
@@ -222,8 +221,8 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			if (llvm::PointerType::get(output.first.llvmType(), 0) != alloc->getType()) {
 				res.add_entry("EINT",
 					"Internal codegen error: unexpected type returned from alloca.",
-					{{"Expected LLVM type", stringifyLLVMType(llvm::PointerType::get(
-												output.first.llvmType(), 0))},
+					{{"Expected LLVM type",
+						 stringifyLLVMType(llvm::PointerType::get(output.first.llvmType(), 0))},
 						{"Yielded type", stringifyLLVMType(alloc->getType())},
 						{"Node ID", node->id()}});
 			}

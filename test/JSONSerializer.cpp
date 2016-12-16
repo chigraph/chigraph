@@ -19,7 +19,7 @@ TEST_CASE("JsonSerializer", "[json]")
         LangModule* lmod = static_cast<LangModule*>(c.moduleByName("lang"));
 
         auto deps = std::vector<std::string>{"lang"};
-        auto jmod = std::make_unique<JsonModule>(c, "main", gsl::span<std::string>{deps.data(), deps.size()});
+        auto jmod = std::make_unique<JsonModule>(c, "main", gsl::span<std::string>{deps.data(), static_cast<gsl::span<std::string>::index_type>(deps.size())});
 		GraphFunction func(*jmod, "hello", {}, {});
 
 		auto requireWorks = [&](nlohmann::json expected) {
@@ -56,8 +56,10 @@ TEST_CASE("JsonSerializer", "[json]")
             std::unique_ptr<NodeType> toFill;
             Result res = c.nodeTypeFromModule("lang", "entry", R"([{"in1": "lang:i1"}])"_json, &toFill);
             REQUIRE(!!res);
-			auto entry = func.insertNode(std::move(toFill), 32, 32, "entry");
-
+            NodeInstance* entry;
+			res += func.insertNode(std::move(toFill), 32, 32, "entry", &entry);
+            REQUIRE(!!res);
+            
 			THEN("The JSON should be correct")
 			{
 				auto correctJSON = R"ENDJSON(
@@ -87,8 +89,10 @@ TEST_CASE("JsonSerializer", "[json]")
 				std::unique_ptr<NodeType> ifType;
 				res = c.nodeTypeFromModule("lang", "if", {}, &ifType);
 				REQUIRE(!!res);
-				auto ifNode = func.insertNode(std::move(ifType), 44.f, 23.f, "if");
-
+                NodeInstance* ifNode;
+				res += func.insertNode(std::move(ifType), 44.f, 23.f, "if", &ifNode);
+                REQUIRE(!!res);
+                
 				THEN("The JSON should be correct")
 				{
 					auto correctJSON = R"ENDJSON(

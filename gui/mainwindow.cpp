@@ -9,12 +9,12 @@
 #include <QAction>
 #include <QApplication>
 #include <QDebug>
+#include <QDockWidget>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QPlainTextEdit>
 #include <QProcess>
 #include <QSplitter>
-#include <QDockWidget>
 #include <QTextStream>
 
 #include <chig/CModule.hpp>
@@ -35,19 +35,24 @@
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
-    Q_INIT_RESOURCE(chiggui);
-    
+	Q_INIT_RESOURCE(chiggui);
+
 	reg = std::make_shared<DataModelRegistry>();
 
-	addModule(std::make_unique<chig::LangModule>(ccontext));
-	addModule(std::make_unique<chig::CModule>(ccontext));
+	ccontext = std::make_unique<chig::Context>();
 
-    QDockWidget* docker = new QDockWidget(i18n("Functions"), this);
+	QDockWidget* docker = new QDockWidget(i18n("Functions"), this);
 	functionpane = new FunctionsPane(this, this);
-    docker->setWidget(functionpane);
-    addDockWidget(Qt::LeftDockWidgetArea, docker);
-
+	docker->setWidget(functionpane);
+	addDockWidget(Qt::LeftDockWidgetArea, docker);
 	connect(functionpane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
+
+	docker = new QDockWidget(i18n("Modules"), this);
+	moduleBrowser = new ModuleBrowser(this);
+	docker->setWidget(moduleBrowser);
+	addDockWidget(Qt::LeftDockWidgetArea, docker);
+	connect(this, &MainWindow::workspaceOpened, moduleBrowser, &ModuleBrowser::loadWorkspace);
+	connect(moduleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
 
 	functabs = new QTabWidget(this);
 	functabs->setMovable(true);
@@ -55,10 +60,10 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	connect(functabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
 	setCentralWidget(functabs);
 
-    docker = new QDockWidget(i18n("Output"), this);
+	docker = new QDockWidget(i18n("Output"), this);
 	outputView = new OutputView;
-    docker->setWidget(outputView);
-    addDockWidget(Qt::BottomDockWidgetArea, docker);
+	docker->setWidget(outputView);
+	addDockWidget(Qt::BottomDockWidgetArea, docker);
 
 	setupActions();
 }
@@ -70,10 +75,10 @@ void MainWindow::setupActions()
 	KStandardAction::quit(qApp, SLOT(quit()), actColl);
 
 	QAction* openAction = actColl->addAction(KStandardAction::Open, QStringLiteral("open"));
-	openAction->setWhatsThis(QStringLiteral("Open a chigraph module"));
-	connect(openAction, &QAction::triggered, this, &MainWindow::openFile);
+	openAction->setWhatsThis(QStringLiteral("Open a chigraph workspace"));
+	connect(openAction, &QAction::triggered, this, &MainWindow::openWorkspaceDialog);
 
-	openRecentAction = KStandardAction::openRecent(this, &MainWindow::openUrl, nullptr);
+	openRecentAction = KStandardAction::openRecent(this, &MainWindow::openWorkspace, nullptr);
 	actColl->addAction(QStringLiteral("open-recent"), openRecentAction);
 
 	openRecentAction->setToolBarMode(KRecentFilesAction::MenuMode);
@@ -117,12 +122,12 @@ inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> toAdd)
 		reg->registerModel(std::make_unique<ChigNodeGui>(inst));
 	}
 
-	ccontext.addModule(std::move(toAdd));
+	ccontext->addModule(std::move(toAdd));
 }
 
 void MainWindow::save()
 {
-	for (size_t idx = 0; idx < functabs->count(); ++idx) {
+	for (int idx = 0; idx < functabs->count(); ++idx) {
 		auto func = functabs->widget(idx);
 		if (func != nullptr) {
 			auto castedFunc = dynamic_cast<FunctionView*>(func);
@@ -133,7 +138,7 @@ void MainWindow::save()
 	}
 
 	if (module != nullptr) {
-		std::ofstream stream(filename.toStdString());
+		std::ofstream stream((ccontext->workspacePath() / "src" / (module->fullName() + ".chigmod")).string());
 
 		nlohmann::json j = {};
 		chig::Result r = module->toJSON(&j);
@@ -142,68 +147,41 @@ void MainWindow::save()
 	}
 }
 
-void MainWindow::openFile()
+void MainWindow::openWorkspaceDialog()
 {
-	filename = QFileDialog::getOpenFileName(
-		this, i18n("Chig Module"), QDir::homePath(), tr("Chigraph Modules (*.chigmod)"));
+	QString workspace = QFileDialog::getOpenFileName(
+		this, i18n("Chigraph Workspace"), QDir::homePath(), {}, nullptr, QFileDialog::ShowDirsOnly);
 
-	if (filename == "") {
+	if (workspace == "") {
 		return;
 	}
 
-	QUrl url = QUrl::fromLocalFile(filename);
+	QUrl url = QUrl::fromLocalFile(workspace);
 
 	openRecentAction->addUrl(url);
-	openUrl(url);
+
+	openWorkspace(url);
 }
 
-void MainWindow::openUrl(const QUrl& url)
+void MainWindow::openWorkspace(QUrl url)
 {
-	std::ifstream stream(url.toLocalFile().toStdString());
+	ccontext = std::make_unique<chig::Context>(url.toLocalFile().toStdString());
+	workspaceOpened(url.toLocalFile());
+}
 
-	chig::Result res;
-
-	// read the JSON
-	nlohmann::json j = {};
-
-	try {
-		stream >> j;
-	} catch (std::exception& e) {
-		KMessageBox::detailedError(
-			this, R"(Invalid JSON file \")" + filename + R"(")", e.what(), "Error Loading");
-
-		return;
-	}
-
-	// TODO: fix
-	auto mod = std::make_unique<chig::JsonModule>(ccontext, "main", j, &res);
+void MainWindow::openModule(QString path)
+{
+	chig::ChigModule* cmod;
+	chig::Result res = ccontext->loadModule(path.toStdString(), &cmod);
 
 	if (!res) {
-		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + filename + "\"",
+		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + path + "\"",
 			QString::fromStdString(res.result_json.dump(2)), "Error Loading");
 
 		return;
 	}
 
-	if (!mod) {
-		KMessageBox::error(this,
-			R"(Unknown error in loading JsonModule from file ")" + filename + R"(")",
-			"Error Loading");
-		return;
-	}
-
-	module = mod.get();
-	addModule(std::move(mod));
-
-	res += module->loadGraphs();
-
-	if (!res) {
-		KMessageBox::detailedError(this,
-			R"(Failed to load graphs in JsonModule ")" + filename + R"(")",
-			QString::fromStdString(res.result_json.dump(2)), "Error Loading");
-
-		return;
-	}
+	module = static_cast<chig::JsonModule*>(cmod);
 
 	// call signal
 	openJsonModule(module);
@@ -249,7 +227,7 @@ void MainWindow::run()
 
 	// compile!
 	std::unique_ptr<llvm::Module> llmod;
-	chig::Result res = ccontext.compileModule(module->fullName(), &llmod);
+	chig::Result res = ccontext->compileModule(module->fullName(), &llmod);
 
 	if (!res) {
 		KMessageBox::detailedError(

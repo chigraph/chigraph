@@ -410,7 +410,8 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name)
 	}
 
 	// returns the pointer type, so get the contained type
-	return {this, gsl::to_string(name), tmpModule->getNamedValue("G")->getType()->getContainedType(0) };
+	return {
+		this, gsl::to_string(name), tmpModule->getNamedValue("G")->getType()->getContainedType(0)};
 }
 
 }  // namespace chig

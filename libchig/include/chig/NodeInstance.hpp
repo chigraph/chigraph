@@ -15,7 +15,8 @@ struct NodeInstance {
 	/// \param posX The X location of the node
 	/// \param posY The Y location of the node
 	/// \param nodeID The unique ID for the node
-	NodeInstance(std::unique_ptr<NodeType> nodeType, float posX, float posY, std::string nodeID);
+	NodeInstance(
+		std::unique_ptr<NodeType> nodeType, float posX, float posY, gsl::cstring_span<> nodeID);
 
 	NodeInstance(NodeInstance&&) = default;
 	NodeInstance(const NodeInstance& other);
@@ -23,7 +24,7 @@ struct NodeInstance {
 	NodeInstance& operator=(NodeInstance&&) = default;
 	NodeInstance& operator=(const NodeInstance&);
 
-    void setType(std::unique_ptr<NodeType> newType) { mType = std::move(newType); }
+	void setType(std::unique_ptr<NodeType> newType) { mType = std::move(newType); }
 	NodeType& type() { return *mType; }
 	const NodeType& type() const { return *mType; }
 	float x() const { return mX; }

@@ -187,17 +187,31 @@ Result Graph::toJson(nlohmann::json* toFill) const
 	return {};
 }
 
-NodeInstance* Graph::insertNode(
-	std::unique_ptr<NodeType> type, float x, float y, const std::string& id)
+Result Graph::insertNode(
+	std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id, NodeInstance** toFill)
 {
+	Result res;
+
+	// make sure the ID doesn't exist
+	if (nodes().find(gsl::to_string(id)) != nodes().end()) {
+		res.add_entry("EUKN", "Cannot have two nodes with the same ID",
+			{{"Requested ID", gsl::to_string(id)}});
+		return res;
+	}
+
 	auto ptr = std::make_unique<NodeInstance>(std::move(type), x, y, id);
 
-	auto emplaced = mNodes.emplace(id, std::move(ptr)).first;
+	auto emplaced = mNodes.emplace(gsl::to_string(id), std::move(ptr)).first;
 
-	return emplaced->second.get();
+	if (toFill) {
+		*toFill = emplaced->second.get();
+	}
+
+	return res;
 }
 
-std::vector<NodeInstance*> Graph::nodesWithType(const char* module, const char* name) const noexcept
+std::vector<NodeInstance*> Graph::nodesWithType(
+	gsl::cstring_span<> module, gsl::cstring_span<> name) const noexcept
 {
 	auto typeFinder = [&](auto& pair) {
 		return pair.second->type().module().name() == module && pair.second->type().name() == name;

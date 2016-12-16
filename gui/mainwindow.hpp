@@ -21,6 +21,7 @@
 #include <QProcess>
 #include "functionspane.hpp"
 #include "functionview.hpp"
+#include "modulebrowser.hpp"
 #include "outputview.hpp"
 
 class MainWindow : public KXmlGuiWindow
@@ -33,28 +34,31 @@ public:
 	void setupActions();
 
 	std::unordered_map<QString, QWidget*> openFunctions;
+
 	QTabWidget* functabs = nullptr;
 	std::shared_ptr<DataModelRegistry> reg;
 	OutputView* outputView = nullptr;
+	ModuleBrowser* moduleBrowser = nullptr;
 
 	FunctionsPane* functionpane = nullptr;
 
-	chig::Context ccontext;
+	std::unique_ptr<chig::Context> ccontext = nullptr;
 
 	void addModule(std::unique_ptr<chig::ChigModule> toAdd);
 
 	chig::JsonModule* module = nullptr;
-	QString filename;
 
 public slots:
-	void openFile();
-	void openUrl(const QUrl& url);
+	void openWorkspaceDialog();
+	void openWorkspace(QUrl url);
+	void openModule(QString path);
 	void newFunctionSelected(QString name);
 	void save();
 	void closeTab(int idx);
 	void run();
 
 signals:
+	void workspaceOpened(QString workspace);
 	void openJsonModule(chig::JsonModule* mod);
 
 private:

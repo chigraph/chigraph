@@ -8,8 +8,8 @@
 
 #include <llvm/IR/Module.h>
 
-using namespace chig;
-
+namespace chig
+{
 JsonModule::JsonModule(
 	Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res)
 	: ChigModule(cont, fullName)
@@ -112,6 +112,24 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const
 		res += graph->toJSON(&to_fill);
 		graphsjson.push_back(to_fill);
 	}
+
+	return res;
+}
+
+Result JsonModule::createFunction(gsl::cstring_span<> name,
+	std::vector<std::pair<DataType, std::string> > ins,
+	std::vector<std::pair<DataType, std::string> > outs, GraphFunction** toFill)
+{
+	Result res;
+	// make sure there already isn't one by this name
+	if (graphFuncFromName(name) != nullptr) {
+		res.add_entry(
+			"EUKN", "Function already exists", {{"Requested Name", gsl::to_string(name)}});
+		return res;
+	}
+
+	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, ins, outs));
+	*toFill = mFunctions[mFunctions.size() - 1].get();
 
 	return res;
 }
@@ -220,3 +238,5 @@ std::unique_ptr<NodeType> JsonFuncCallNodeType::clone() const
 	// TODO: better way to do this?
 	return std::make_unique<JsonFuncCallNodeType>(*JModule, name(), &res);
 }
+
+}  // namespace chig

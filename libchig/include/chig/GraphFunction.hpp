@@ -22,11 +22,10 @@ namespace chig
 /// this is an AST-like representation of a function in a graph
 /// It is used for IDE-like behavior, codegen, and JSON generation.
 struct GraphFunction {
-	/// Construct the graph
-	/// Also constructs a input node
+	/// Construct a graph
 	/// \param mod The owning module
 	/// \param name The name of the function
-	GraphFunction(JsonModule& mod, std::string name,
+	GraphFunction(JsonModule& mod, gsl::cstring_span<> name,
 		std::vector<std::pair<DataType, std::string>> ins,
 		std::vector<std::pair<DataType, std::string>> outs);
 
@@ -63,10 +62,51 @@ struct GraphFunction {
 	/// \param x The x location of the node
 	/// \param y The y location of the node
 	/// \param id The node ID
-	NodeInstance* insertNode(
-		std::unique_ptr<NodeType> type, float x, float y, const std::string& id)
+	/// \param toFill The nodeInstance to fill to, optional.
+	/// \return The result
+	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
+		NodeInstance** toFill = nullptr)
 	{
-		return graph().insertNode(std::move(type), x, y, id);
+		return graph().insertNode(std::move(type), x, y, id, toFill);
+	}
+
+	/// Add a node to the graph using module, type, and json
+	/// \param moduleName The name of the module that typeName is in
+	/// \param typeName The name of the node type in the module with the name moduleName
+	/// \param typeJSON The JSON to be passed to create the type
+	/// \param x The x location of the node
+	/// \param y The y location of the node
+	/// \param id The node ID
+	/// \param toFill The NodeInstance to fill to, optional
+	Result insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+		const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
+		NodeInstance** toFill = nullptr)
+	{
+		std::unique_ptr<NodeType> nodeType;
+		Result res = context().nodeTypeFromModule(moduleName, typeName, typeJSON, &nodeType);
+
+		if (!res) {
+			return res;
+		}
+		res += insertNode(std::move(nodeType), x, y, id, toFill);
+		return res;
+	}
+
+	Result getOrInsertEntryNode(
+		float x, float y, gsl::cstring_span<> id, NodeInstance** toFill = nullptr)
+	{
+		if (auto ent = entryNode()) {
+			if (toFill) {
+				*toFill = ent;
+			}
+			return {};
+		}
+
+		nlohmann::json entry = nlohmann::json::array();
+		for (auto in : inputs()) {
+			entry.push_back({{in.second, in.first.qualifiedName()}});
+		}
+		return insertNode("lang", "entry", entry, x, y, id, toFill);
 	}
 
 	/// Get the LLVM function type for the function
@@ -79,9 +119,7 @@ struct GraphFunction {
 
 	/// Get the context
 	/// \return The context
-	const Context& context() const { return *mContext; }
-	/// \copydoc chig::GraphFunction::context() const
-	Context& context() { return *mContext; }
+	Context& context() const { return *mContext; }
 	/// Get the name of the function
 	/// \return The name of the function
 	std::string name() const { return mName; }
@@ -96,8 +134,9 @@ struct GraphFunction {
 	const Graph& graph() const { return mGraph; }
 	/// \copydoc chig::GraphFunction::graph() const
 	Graph& graph() { return mGraph; }
-	const JsonModule& module() const { return *mModule; }
-	JsonModule& module() { return *mModule; }
+	/// Get the JsonModule that contains this GraphFunction
+	/// \return The JsonModule.
+	JsonModule& module() const { return *mModule; }
 private:
 	JsonModule* mModule;
 	Context* mContext;

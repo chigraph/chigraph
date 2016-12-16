@@ -5,11 +5,11 @@
 using namespace chig;
 
 NodeInstance::NodeInstance(
-	std::unique_ptr<NodeType> nodeType, float posX, float posY, std::string nodeID)
+	std::unique_ptr<NodeType> nodeType, float posX, float posY, gsl::cstring_span<> nodeID)
 	: mType{std::move(nodeType)},
 	  mX{posX},
 	  mY{posY},
-	  mId{std::move(nodeID)},
+	  mId{gsl::to_string(nodeID)},
 	  mContext{&mType->context()}
 {
 	Expects(mType != nullptr);

@@ -50,16 +50,24 @@ ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const 
 	return nullptr;
 }
 
-chig::Result chig::Context::loadModule(const gsl::cstring_span<> name)
+chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModule** toFill)
 {
 	Result res;
 
 	// check for built-in modules
 	if (name == "lang") {
-		return addModule(std::make_unique<LangModule>(*this));
+		auto mod = std::make_unique<LangModule>(*this);
+		if (toFill) {
+			*toFill = mod.get();
+		}
+		return addModule(std::move(mod));
 	}
 	if (name == "c") {
-		return addModule(std::make_unique<CModule>(*this));
+		auto mod = std::make_unique<CModule>(*this);
+		if (toFill) {
+			*toFill = mod.get();
+		}
+		return addModule(std::move(mod));
 	}
 
 	// find it in the workspace
@@ -79,7 +87,12 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name)
 		inFile >> readJson;
 	}
 
-	res += addModuleFromJson(name, readJson);
+	JsonModule* toFillJson;
+	res += addModuleFromJson(name, readJson, &toFillJson);
+	if (toFill) {
+		*toFill = toFillJson;
+	}
+
 	return res;
 }
 
@@ -219,8 +232,8 @@ std::string Context::fullModuleName(gsl::cstring_span<> shortName) const
 
 	return "";
 }
-fs::path workspaceFromChildPath(const fs::path& path) {
-
+fs::path workspaceFromChildPath(const fs::path& path)
+{
 	fs::path ret = path;
 
 	// initialize workspace directory
@@ -228,11 +241,9 @@ fs::path workspaceFromChildPath(const fs::path& path) {
 	while (!ret.empty() && !fs::is_regular_file(ret / ".chigraphworkspace")) {
 		ret = ret.parent_path();
 	}
-	
+
 	return ret;  // it's ok if it's empty
 }
-
-
 
 std::string stringifyLLVMType(llvm::Type* ty)
 {

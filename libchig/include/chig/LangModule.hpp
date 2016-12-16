@@ -15,7 +15,6 @@
 
 namespace chig
 {
-
 struct LangModule : ChigModule {
 	LangModule(Context& ctx);
 	~LangModule() = default;
@@ -32,7 +31,7 @@ struct LangModule : ChigModule {
 	{
 		return {"i32", "i1", "double"};  // TODO: do i need more?
 	}
-	Result generateModule(std::unique_ptr<llvm::Module>* module) override { return {}; };
+	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; };
 	std::unordered_map<std::string,
 		std::function<std::unique_ptr<NodeType>(const nlohmann::json&, Result&)>>
 		nodes;

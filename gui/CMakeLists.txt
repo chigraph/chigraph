@@ -23,6 +23,7 @@ set(GUI_SRCS
 	outputview.cpp
 	detailspanel.cpp
 	chiggui.qrc
+	modulebrowser.cpp
 )
 
 set(GUI_HEADERS
@@ -32,6 +33,7 @@ set(GUI_HEADERS
 	functionview.hpp
 	outputview.hpp
 	detailspanel.hpp
+	modulebrowser.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS})

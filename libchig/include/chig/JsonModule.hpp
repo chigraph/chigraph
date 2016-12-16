@@ -66,6 +66,16 @@ struct JsonModule : public ChigModule {
 	/// \return The result
 	Result toJSON(nlohmann::json* to_fill) const;
 
+	/// Create a new function
+	/// \param name The name of the new function
+	/// \param ins The inputs to the function
+	/// \param outs The outputs to the function
+	/// \param toFill The new GraphFunction, optional
+	/// \return The Result
+	Result createFunction(gsl::cstring_span<> name,
+		std::vector<std::pair<DataType, std::string>> ins,
+		std::vector<std::pair<DataType, std::string>> outs, GraphFunction** toFill);
+
 	/// Get a function from the name
 	/// \param name The name to get
 	/// \return The GraphFunction or nullptr if it doesn't exist
