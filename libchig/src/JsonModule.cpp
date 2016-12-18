@@ -174,14 +174,14 @@ std::vector<std::string> JsonModule::nodeTypeNames() const
 
 Result JsonModule::loadGraphs()
 {
-	Result res = {};
+	//Result res = {};
 
 	for (auto& graph : mFunctions) {
 		Expects(graph != nullptr);
-		res += graph->loadGraph();
+		//res += graph->loadGraph();
 	}
 
-	return res;
+	return {}; //res;
 }
 
 JsonFuncCallNodeType::JsonFuncCallNodeType(

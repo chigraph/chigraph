@@ -18,11 +18,14 @@ public:
 public slots:
 
 	void updateModule(chig::JsonModule* mod);
+    
+private slots:
+    
 	void selectItem(QListWidgetItem* newitem);
 
 signals:
 
-	void functionSelected(QString name);
+	void functionSelected(chig::GraphFunction* funcs);
 };
 
 #endif  // CHIGGUI_FUNCTIONS_PANE_HPP

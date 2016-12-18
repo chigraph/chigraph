@@ -12,7 +12,7 @@
 
 #include "chignodegui.hpp"
 
-FunctionView::FunctionView(chig::JsonModule* /*module*/, chig::GraphFunction* func_,
+FunctionView::FunctionView(chig::GraphFunction* func_,
 	std::shared_ptr<DataModelRegistry> reg, QWidget* parent)
 	: QWidget(parent), func{func_}
 {

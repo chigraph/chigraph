@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 
 	KAboutData aboutData(QStringLiteral("chiggui"), i18n("Chigraph GUI"), QStringLiteral("1.0"),
 		i18n("Chigraph Graphical User Interface"), KAboutLicense::GPL,
-		i18n("(c) 2016 Russell Greene"), i18n(""),
+		i18n("(c) 2016 Russell Greene"), QStringLiteral(""),
 		QStringLiteral("https://github.com/russelltg/chigraph"),
 		QStringLiteral("https://github.com/russelltg/chigraph/issues"));
 

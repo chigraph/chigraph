@@ -43,12 +43,14 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	ccontext = std::make_unique<chig::Context>();
 
 	QDockWidget* docker = new QDockWidget(i18n("Functions"), this);
+    docker->setObjectName("Functions");
 	functionpane = new FunctionsPane(this, this);
 	docker->setWidget(functionpane);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
 	connect(functionpane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
 
 	docker = new QDockWidget(i18n("Modules"), this);
+    docker->setObjectName("Modules");
 	moduleBrowser = new ModuleBrowser(this);
 	docker->setWidget(moduleBrowser);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
@@ -62,6 +64,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	setCentralWidget(functabs);
 
 	docker = new QDockWidget(i18n("Output"), this);
+    docker->setObjectName("Output");
 	outputView = new OutputView;
 	docker->setWidget(outputView);
 	addDockWidget(Qt::BottomDockWidgetArea, docker);
@@ -194,28 +197,22 @@ void MainWindow::openModule(QString path)
 	openJsonModule(module);
 }
 
-void MainWindow::newFunctionSelected(QString name)
+void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 {
-	// load graph
-	auto graphfunciter = std::find_if(module->functions().begin(), module->functions().end(),
-		[&](auto& graphptr) { return name == QString::fromStdString(graphptr->name()); });
+    Expects(func);
+    
+    QString qualifiedFunctionName = QString::fromStdString(func->module().fullName() + ":" + func->name());
 
-	if (graphfunciter == module->functions().end()) {
-		KMessageBox::error(
-			this, "Unable to find function" + name + " in module", "Wrong function name");
-		return;
-	}
-
-	auto iter = openFunctions.find(name);
+	auto iter = openFunctions.find(qualifiedFunctionName);
 	if (iter != openFunctions.end()) {
 		functabs->setCurrentWidget(iter->second);
 		return;
 	}
 
-	auto view = new FunctionView(module, graphfunciter->get(), reg, functabs);
-	int idx = functabs->addTab(view, name);
-	openFunctions[name] = view;
-	functabs->setTabText(idx, name);
+	auto view = new FunctionView(func, reg, functabs);
+	int idx = functabs->addTab(view, qualifiedFunctionName);
+	openFunctions[qualifiedFunctionName] = view;
+	functabs->setTabText(idx, qualifiedFunctionName);
 	functabs->setCurrentWidget(view);
 }
 
