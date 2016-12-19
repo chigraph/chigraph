@@ -129,10 +129,10 @@ Result JsonModule::createFunction(gsl::cstring_span<> name,
 	}
 
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, ins, outs));
-    if(toFill) {
-        *toFill = mFunctions[mFunctions.size() - 1].get();
-    }
-    
+	if (toFill) {
+		*toFill = mFunctions[mFunctions.size() - 1].get();
+	}
+
 	return res;
 }
 
@@ -174,14 +174,14 @@ std::vector<std::string> JsonModule::nodeTypeNames() const
 
 Result JsonModule::loadGraphs()
 {
-	//Result res = {};
+	Result res = {};
 
 	for (auto& graph : mFunctions) {
 		Expects(graph != nullptr);
-		//res += graph->loadGraph();
+		res += graph->loadGraph();
 	}
 
-	return {}; //res;
+	return {};  // res;
 }
 
 JsonFuncCallNodeType::JsonFuncCallNodeType(

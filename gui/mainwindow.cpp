@@ -43,14 +43,14 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	ccontext = std::make_unique<chig::Context>();
 
 	QDockWidget* docker = new QDockWidget(i18n("Functions"), this);
-    docker->setObjectName("Functions");
+	docker->setObjectName("Functions");
 	functionpane = new FunctionsPane(this, this);
 	docker->setWidget(functionpane);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
 	connect(functionpane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
 
 	docker = new QDockWidget(i18n("Modules"), this);
-    docker->setObjectName("Modules");
+	docker->setObjectName("Modules");
 	moduleBrowser = new ModuleBrowser(this);
 	docker->setWidget(moduleBrowser);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	setCentralWidget(functabs);
 
 	docker = new QDockWidget(i18n("Output"), this);
-    docker->setObjectName("Output");
+	docker->setObjectName("Output");
 	outputView = new OutputView;
 	docker->setWidget(outputView);
 	addDockWidget(Qt::BottomDockWidgetArea, docker);
@@ -104,12 +104,12 @@ void MainWindow::setupActions()
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
 	actColl->addAction(QStringLiteral("run"), runAction);
 	connect(runAction, &QAction::triggered, this, &MainWindow::run);
-    
-    QAction* newFunctionAction = new QAction;
-    newFunctionAction->setText(i18n("New Function"));
-    newFunctionAction->setIcon(QIcon::fromTheme("list-add"));
-    actColl->addAction(QStringLiteral("new-function"), newFunctionAction);
-    connect(newFunctionAction, &QAction::trigger, this, &MainWindow::newFunction);
+
+	QAction* newFunctionAction = new QAction;
+	newFunctionAction->setText(i18n("New Function"));
+	newFunctionAction->setIcon(QIcon::fromTheme("list-add"));
+	actColl->addAction(QStringLiteral("new-function"), newFunctionAction);
+	connect(newFunctionAction, &QAction::trigger, this, &MainWindow::newFunction);
 
 	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
 }
@@ -148,7 +148,8 @@ void MainWindow::save()
 	}
 
 	if (module != nullptr) {
-		std::ofstream stream((ccontext->workspacePath() / "src" / (module->fullName() + ".chigmod")).string());
+		std::ofstream stream(
+			(ccontext->workspacePath() / "src" / (module->fullName() + ".chigmod")).string());
 
 		nlohmann::json j = {};
 		chig::Result r = module->toJSON(&j);
@@ -199,9 +200,10 @@ void MainWindow::openModule(QString path)
 
 void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 {
-    Expects(func);
-    
-    QString qualifiedFunctionName = QString::fromStdString(func->module().fullName() + ":" + func->name());
+	Expects(func);
+
+	QString qualifiedFunctionName =
+		QString::fromStdString(func->module().fullName() + ":" + func->name());
 
 	auto iter = openFunctions.find(qualifiedFunctionName);
 	if (iter != openFunctions.end()) {
@@ -257,16 +259,18 @@ void MainWindow::run()
 	outputView->setProcess(lliproc);
 }
 
-void MainWindow::newFunction() {
-    
-    if(module == nullptr) {
-        KMessageBox::error(this, "Load a module before creating a new function");
-        return;
-    }
-    
-    QString newName = QInputDialog::getText(this, i18n("New Function Name"), i18n("Function Name"));
-    
-    if(newName == "") { return; }
-    
-    module->createFunction(newName.toStdString(), {}, {}); // TODO: inputs
+void MainWindow::newFunction()
+{
+	if (module == nullptr) {
+		KMessageBox::error(this, "Load a module before creating a new function");
+		return;
+	}
+
+	QString newName = QInputDialog::getText(this, i18n("New Function Name"), i18n("Function Name"));
+
+	if (newName == "") {
+		return;
+	}
+
+	module->createFunction(newName.toStdString(), {}, {});  // TODO: inputs
 }

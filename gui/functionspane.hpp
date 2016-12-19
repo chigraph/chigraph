@@ -18,9 +18,9 @@ public:
 public slots:
 
 	void updateModule(chig::JsonModule* mod);
-    
+
 private slots:
-    
+
 	void selectItem(QListWidgetItem* newitem);
 
 signals:

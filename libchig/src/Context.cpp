@@ -61,15 +61,15 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 			*toFill = mod.get();
 		}
 		addModule(std::move(mod));
-        return {};
+		return {};
 	}
 	if (name == "c") {
 		auto mod = std::make_unique<CModule>(*this);
 		if (toFill) {
 			*toFill = mod.get();
 		}
-		addModule(std::move(mod)); // we don't care if it's actually added
-        return {};
+		addModule(std::move(mod));  // we don't care if it's actually added
+		return {};
 	}
 
 	// find it in the workspace
@@ -102,38 +102,37 @@ Result Context::addModuleFromJson(
 	gsl::cstring_span<> fullName, const nlohmann::json& json, JsonModule** toFill)
 {
 	Result res;
-    
-    // make sure it's not already added
-    {
-        auto mod = moduleByFullName(fullName);
-        if(mod != nullptr) {
-            if(toFill) {
-                auto casted = dynamic_cast<JsonModule*>(mod);
-                if(casted) {
-                    *toFill = casted;
-                }
-            }
-            return {};
-        }
-    }
 
-    // Create the module
-    JsonModule* cPtr = nullptr;
-    {
-        // parse module
-        auto jmod = std::make_unique<JsonModule>(*this, gsl::to_string(fullName), json, &res);
-        if (!res) {
-            return res;
-        }
-        if (toFill != nullptr) {
-            *toFill = jmod.get();
-        }
+	// make sure it's not already added
+	{
+		auto mod = moduleByFullName(fullName);
+		if (mod != nullptr) {
+			if (toFill) {
+				auto casted = dynamic_cast<JsonModule*>(mod);
+				if (casted) {
+					*toFill = casted;
+				}
+			}
+			return {};
+		}
+	}
 
-        cPtr = jmod.get();
-        bool added = addModule(std::move(jmod));
-        Expects(added); // it really should be added
-        
-    }
+	// Create the module
+	JsonModule* cPtr = nullptr;
+	{
+		// parse module
+		auto jmod = std::make_unique<JsonModule>(*this, gsl::to_string(fullName), json, &res);
+		if (!res) {
+			return res;
+		}
+		if (toFill != nullptr) {
+			*toFill = jmod.get();
+		}
+
+		cPtr = jmod.get();
+		bool added = addModule(std::move(jmod));
+		Expects(added);  // it really should be added
+	}
 	if (!res) {
 		return res;
 	}
@@ -148,20 +147,20 @@ bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 {
 	Expects(modToAdd != nullptr);
 
-    std::cout << "Adding " << modToAdd->name() << std::endl;
+	std::cout << "Adding " << modToAdd->name() << std::endl;
 	Result res;
 
 	// make sure it's unique
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) {
-		res.add_entry(
-			"W24", "Cannot add already existing module again", {{"moduleName", modToAdd->fullName()}});
+		res.add_entry("W24", "Cannot add already existing module again",
+			{{"moduleName", modToAdd->fullName()}});
 		return res;
 	}
 
 	mModules.push_back(std::move(modToAdd));
-    
-    Expects(modToAdd == nullptr);
+
+	Expects(modToAdd == nullptr);
 
 	return res;
 }
