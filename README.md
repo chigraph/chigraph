@@ -8,7 +8,7 @@ Task board: [![Task Board](https://img.shields.io/badge/task%20board-online-brig
 
 # chigraph
 
-![Chigraph Logo](https://raw.githubusercontent.com/russelltg/chigraph/master/doc/images/chigraph.svg)
+![Chigraph Logo](doc/images/chigraph.png)
 
 A systems language that is not in text--it is a flowgraph.
 
