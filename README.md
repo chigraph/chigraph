@@ -7,6 +7,9 @@ Test coverage: [![Coverage Status](https://coveralls.io/repos/github/russelltg/c
 Task board: [![Task Board](https://img.shields.io/badge/task%20board-online-brightgreen.svg?style=flat)](https://huboard.com/russelltg/chigraph) 
 
 # chigraph
+
+![Chigraph Logo](doc/images/chigraph.svg)
+
 A systems language that is not in text--it is a flowgraph.
 
 ## Motivation
