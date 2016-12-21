@@ -23,7 +23,8 @@ public:
 
 	QString caption() const override
 	{
-		return QString::fromStdString(inst->type().qualifiedName());
+		auto str = QString::fromStdString(inst->type().qualifiedName());
+		return "somelongstring";
 	}
 	QString name() const override { return QString::fromStdString(inst->type().qualifiedName()); }
 	std::unique_ptr<NodeDataModel> clone() const override
@@ -63,10 +64,9 @@ public:
 		} else if (pType == PortType::Out) {
 			std::pair<std::string, std::string> idandname;
 			if (pIndex >= int(inst->type().execOutputs().size())) {
-				idandname = {inst->type()
-								 .dataOutputs()[pIndex - inst->type().execOutputs().size()]
-								 .first.qualifiedName(),
-					inst->type().dataOutputs()[pIndex - inst->type().execOutputs().size()].second};
+				auto dataOutput =
+					inst->type().dataOutputs()[pIndex - inst->type().execOutputs().size()];
+				idandname = {dataOutput.first.qualifiedName(), dataOutput.second};
 
 			} else {
 				idandname = {"exec", inst->type().execOutputs()[pIndex]};

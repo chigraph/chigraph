@@ -12,8 +12,8 @@
 
 #include "chignodegui.hpp"
 
-FunctionView::FunctionView(chig::JsonModule* /*module*/, chig::GraphFunction* func_,
-	std::shared_ptr<DataModelRegistry> reg, QWidget* parent)
+FunctionView::FunctionView(
+	chig::GraphFunction* func_, std::shared_ptr<DataModelRegistry> reg, QWidget* parent)
 	: QWidget(parent), func{func_}
 {
 	auto hlayout = new QHBoxLayout(this);

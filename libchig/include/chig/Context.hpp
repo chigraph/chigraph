@@ -62,7 +62,8 @@ struct Context {
 	/// Adds a custom module to the Context
 	/// This usually doesn't get called, use the \c gsl::string_span<> overload instead
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
-	Result addModule(std::unique_ptr<ChigModule> modToAdd) noexcept;
+	/// \return True if the module was added (it didn't exist before)
+	bool addModule(std::unique_ptr<ChigModule> modToAdd) noexcept;
 
 	/// Gets a llvm::Type from a module
 	/// \param module The name of the module, "lang" if nullptr

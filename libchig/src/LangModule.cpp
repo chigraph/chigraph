@@ -228,7 +228,6 @@ struct StringLiteralNodeType : NodeType {
 		setName("strliteral");
 		setDescription("exit from a function; think return");
 
-		// TODO: research address types
 		setDataOutputs({{mod.typeFromName("i8*"), "string"}});
 	}
 

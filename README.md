@@ -1,3 +1,7 @@
+
+![Chigraph Logo](doc/images/chigraph.png)
+
+
 Linux build: [![Build Status](https://travis-ci.org/russelltg/chigraph.svg?branch=master)](https://travis-ci.org/russelltg/chigraph) 
 
 Documentation: [![Documentation](https://img.shields.io/badge/documentation-online-brightgreen.svg?style=flat)](https://russelltg.github.io/chigraph/)
@@ -6,7 +10,6 @@ Test coverage: [![Coverage Status](https://coveralls.io/repos/github/russelltg/c
 
 Task board: [![Task Board](https://img.shields.io/badge/task%20board-online-brightgreen.svg?style=flat)](https://huboard.com/russelltg/chigraph) 
 
-# chigraph
 A systems language that is not in text--it is a flowgraph.
 
 ## Motivation

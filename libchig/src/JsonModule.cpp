@@ -181,7 +181,7 @@ Result JsonModule::loadGraphs()
 		res += graph->loadGraph();
 	}
 
-	return res;
+	return {};  // res;
 }
 
 JsonFuncCallNodeType::JsonFuncCallNodeType(

@@ -52,7 +52,7 @@ public slots:
 	void openWorkspaceDialog();
 	void openWorkspace(QUrl url);
 	void openModule(QString path);
-	void newFunctionSelected(QString name);
+	void newFunctionSelected(chig::GraphFunction* name);
 	void save();
 	void closeTab(int idx);
 	void run();

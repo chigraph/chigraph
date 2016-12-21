@@ -6,6 +6,20 @@
 
 #include <gsl/gsl_assert>
 
+class FunctionListItem : public QListWidgetItem
+{
+public:
+	FunctionListItem(chig::GraphFunction* func)
+		: QListWidgetItem(QIcon::fromTheme(QStringLiteral("code-class")),
+			  QString::fromStdString(func->module().fullName() + ":" + func->name()), nullptr,
+			  QListWidgetItem::UserType),
+		  mFunc{func}
+	{
+	}
+
+	chig::GraphFunction* mFunc;
+};
+
 FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(parent)
 {
 	connect(win, &MainWindow::openJsonModule, this, &FunctionsPane::updateModule);
@@ -21,9 +35,13 @@ void FunctionsPane::updateModule(chig::JsonModule* mod)
 
 	// go through functions
 	for (auto& fun : mod->functions()) {
-		new QListWidgetItem(QIcon::fromTheme(QStringLiteral("code-class")),
-			QString::fromStdString(fun->name()), this);
+		addItem(new FunctionListItem(fun.get()));
 	}
 }
 
-void FunctionsPane::selectItem(QListWidgetItem* newitem) { functionSelected(newitem->text()); }
+void FunctionsPane::selectItem(QListWidgetItem* newitem)
+{
+	Expects(newitem->type() == QListWidgetItem::UserType);
+
+	functionSelected(static_cast<FunctionListItem*>(newitem)->mFunc);
+}
