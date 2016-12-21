@@ -24,9 +24,7 @@ struct DataType {
 
 	/// Get the module this is a part of
 	/// \return The module
-	const ChigModule& module() const { return *mModule; }
-	/// \copydoc chig::ChigModule::module() const
-	ChigModule& module() { return *mModule; }
+	ChigModule& module() const { return *mModule; }
 	/// Get the unqualified name of the type
 	/// \return The unqualified name
 	std::string unqualifiedName() const { return mName; }
@@ -45,6 +43,7 @@ struct DataType {
 	{
 		return mModule == other.mModule && mName == other.mName && mLLVMType == other.mLLVMType;
 	}
+
 	/// Inequality check
 	/// \param other The DataType to check equality against
 	/// \return If they are inequal

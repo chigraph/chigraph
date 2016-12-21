@@ -7,6 +7,8 @@
 
 #include <git2.h>
 
+#include <chig/Context.hpp>
+
 namespace fs = boost::filesystem;
 namespace po = boost::program_options;
 
@@ -15,7 +17,9 @@ int get(const std::vector<std::string>& opts)
 	git_libgit2_init();
 
 	po::options_description get_opts("get options");
-	get_opts.add_options()("module", po::value<std::vector<std::string>>(), "Modules to get");
+	get_opts.add_options()("module", po::value<std::vector<std::string>>(), "Modules to get")(
+		"workspace,w", po::value<std::string>(),
+		"The workspace to use, use working directory if omitted");
 
 	po::positional_options_description pos;
 	pos.add("module", -1);
@@ -25,16 +29,20 @@ int get(const std::vector<std::string>& opts)
 
 	if (vm.count("module") == 0) {
 		std::cerr << "Nothing to get!" << std::endl;
-		return 1;
+		return 0;
 	}
 
 	// get workspace dir
-	fs::path workspaceDir = fs::current_path();
-	while (!workspaceDir.empty() && !fs::is_regular_file(workspaceDir / ".chigraphworkspace")) {
-		workspaceDir = workspaceDir.parent_path();
+	fs::path workspaceDir;
+	if (vm.count("workspace") != 0) {
+		workspaceDir = vm["workspace"].as<std::string>();
+	} else {
+		workspaceDir = fs::current_path();
 	}
+	workspaceDir = chig::workspaceFromChildPath(workspaceDir);
 	if (workspaceDir.empty()) {
-		std::cerr << "Could not find workspace" << std::endl;
+		std::cerr << "Directory \"" << workspaceDir
+				  << "\" isn't in a workspace (ie. no .chigraphworkspace file found" << std::endl;
 		return 1;
 	}
 	std::cout << "Workspace: " << workspaceDir << std::endl;
@@ -42,6 +50,12 @@ int get(const std::vector<std::string>& opts)
 	auto mods = vm["module"].as<std::vector<std::string>>();
 
 	for (auto& mod : mods) {
+		fs::path modulePath = workspaceDir / "src" / (mod + ".chigmod");
+
+		// if it already exists, then just git pull
+		if (fs::is_regular_file(modulePath)) {
+		}
+
 		std::string repoName = mod;
 		std::string repoUrl = "https://" + repoName;
 

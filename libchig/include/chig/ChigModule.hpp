@@ -4,8 +4,8 @@
 #pragma once
 
 #include "chig/Fwd.hpp"
-#include "chig/Result.hpp"
 #include "chig/ToString.hpp"
+#include "chig/Result.hpp"
 #include "chig/json.hpp"
 
 #include <cstdlib>

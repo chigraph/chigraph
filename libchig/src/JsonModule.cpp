@@ -129,10 +129,10 @@ Result JsonModule::createFunction(gsl::cstring_span<> name,
 	}
 
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, ins, outs));
-    if(toFill) {
-        *toFill = mFunctions[mFunctions.size() - 1].get();
-    }
-    
+	if (toFill) {
+		*toFill = mFunctions[mFunctions.size() - 1].get();
+	}
+
 	return res;
 }
 

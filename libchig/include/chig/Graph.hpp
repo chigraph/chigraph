@@ -50,6 +50,10 @@ struct Graph {
 	/// Get the context
 	/// \return The context
 	Context& context() const { return *mContext; }
+
+	/// Get the nodes in the function
+	/// Usually called by connectData or connectExec or GraphFunction
+	/// \return The nodes, mapped by id, value
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() { return mNodes; }
 private:
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>
