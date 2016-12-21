@@ -15,11 +15,8 @@ using namespace chig;
 struct CFuncNode : NodeType {
 	CFuncNode(
 		ChigModule& mod, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res)
-		: NodeType{mod}, functocall{gsl::to_string(functionName)}, ccode(gsl::to_string(cCode))
+		: NodeType{mod, "func", "call C code"}, functocall{gsl::to_string(functionName)}, ccode(gsl::to_string(cCode))
 	{
-		setName("func");
-		setDescription("call C code");
-
 		setExecInputs({""});
 		setExecOutputs({""});
 

@@ -107,9 +107,9 @@ protected:
 	}
 
 private:
-	std::string mName, mDescription;
 	ChigModule* mModule;
 	Context* mContext;
+	std::string mName, mDescription;
 
 	std::vector<std::pair<DataType, std::string>> mDataInputs;
 	std::vector<std::pair<DataType, std::string>> mDataOutputs;

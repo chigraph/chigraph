@@ -186,8 +186,8 @@ Result JsonModule::loadGraphs()
 
 JsonFuncCallNodeType::JsonFuncCallNodeType(
 	JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
-	: NodeType(json_module), JModule(&json_module)
-{
+	: NodeType(json_module, funcname, ""), JModule(&json_module) // TODO: description
+{ 
 	Result& res = *resPtr;
 
 	auto* mygraph = JModule->graphFuncFromName(funcname);
@@ -201,9 +201,6 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 	setDataOutputs(mygraph->outputs());
 
 	setDataInputs(mygraph->inputs());
-
-	setName(gsl::to_string(funcname));
-	// TODO: description
 
 	setExecInputs({""});
 	setExecOutputs({""});
