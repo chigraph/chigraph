@@ -70,11 +70,13 @@ struct ChigModule {
 	/// \return The dependencies
 	const std::unordered_set<std::string>& dependencies() const { return mDependencies; }
 	/// Add a dependency to the module
-	/// \param newDepFullPath The dependency
+	/// Loads the module from context() if it isn't already loaded
+	/// \param newDepFullPath The dependency, full path
 	/// \return The result
 	Result addDependency(std::string newDepFullPath);
 
 	/// Remove a dependency
+	/// Does not unload from context
 	/// \param depName The name of the dependency to remove
 	/// \return If one was removed
 	bool removeDependency(gsl::cstring_span<> depName)

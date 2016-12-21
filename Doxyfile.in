@@ -1,11 +1,11 @@
 PROJECT_NAME           = "chigraph"
 PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
 STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@
-INPUT                  = @PROJECT_SOURCE_DIR@/chig/include \
-                         @PROJECT_SOURCE_DIR@/chig/src
+INPUT                  = @PROJECT_SOURCE_DIR@/libchig/include \
+                         @PROJECT_SOURCE_DIR@/libchig/src
 FILE_PATTERNS          = *.hpp \
                          *.cpp
-EXCLUDE                = @PROJECT_SOURCE_DIR@/chig/include/json.hpp
+EXCLUDE                = @PROJECT_SOURCE_DIR@/libchig/include/chig/json.hpp
 RECURSIVE              = YES
 OUTPUT_DIRECTORY       = doc
 JAVADOC_AUTOBRIEF      = YES

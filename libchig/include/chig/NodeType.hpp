@@ -20,10 +20,16 @@
 
 namespace chig
 {
-// generic type
+/// A generic node type. All user made types are of JsonNodeType type, which is defined in JsonModule.cpp. This allows for easy extension of the language.
 struct NodeType {
-	NodeType(ChigModule& mod) : mModule{&mod}, mContext{&mod.context()} {}
+	/// Constructor
+	/// \param mod The module to create the NodeType in
+	/// \param name The name of the NodeType
+	/// \param description The description of the NodeType
+	NodeType(ChigModule& mod, gsl::cstring_span<> name, gsl::cstring_span<> description) : mModule{&mod}, mContext{&mod.context()}, mName{gsl::to_string(name)}, mDescription{gsl::to_string(description)} {}
+	/// Destructor
 	virtual ~NodeType() = default;
+
 
 	std::string qualifiedName() const { return module().name() + ":" + name(); }
 	/// A virtual function that is called when this node needs to be called
@@ -45,27 +51,47 @@ struct NodeType {
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
 
 	/// Create the JSON necessary to store the object.
-	/// \ret The json obejct
+	/// \return The json obejct
 	virtual nlohmann::json toJSON() const { return {}; }
 	/// Clones the type
 	/// \return The clone
 	virtual std::unique_ptr<NodeType> clone() const = 0;
 
+	/// Get the name of the NodeType in the ChigModule.
+	/// \return The name
 	std::string name() const { return mName; }
+
+	/// Get the description of the NodeType 
+	/// \return The description
 	std::string description() const { return mDescription; }
+
+	/// Get the ChigModule this NodeType belongs to
+	/// \return The ChigModule
 	ChigModule& module() const { return *mModule; }
+
+	/// Get the Context this NodeType belongs to
+	/// \return The Context
 	Context& context() const { return *mContext; }
+
+	/// Get the data inputs for the node
+	/// \return The data inputs in the format of {{DataType, description}, ...}
 	const std::vector<std::pair<DataType, std::string>>& dataInputs() const { return mDataInputs; }
+	/// Get the data outputs for the node
+	/// \return The data outputs in the format of {{DataType, description}, ...}
 	const std::vector<std::pair<DataType, std::string>>& dataOutputs() const
 	{
 		return mDataOutputs;
 	}
 
+	/// Get the execution inputs for the node
+	/// \return The names of the inputs. The size of this vector is the size of inputs.
 	const std::vector<std::string>& execInputs() const { return mExecInputs; }
+
+	/// Get the execution outputs for the node
+	/// \return The names of the outputs. The size is the input count.
 	const std::vector<std::string>& execOutputs() const { return mExecOutputs; }
 protected:
-	void setName(std::string name) { mName = std::move(name); }
-	void setDescription(std::string desc) { mDescription = std::move(desc); }
+
 	void setDataInputs(std::vector<std::pair<DataType, std::string>> newInputs)
 	{
 		mDataInputs = std::move(newInputs);
