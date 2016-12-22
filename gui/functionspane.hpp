@@ -21,7 +21,7 @@ public slots:
 
 private slots:
 
-	void selectItem(QListWidgetItem* newitem);
+    void selectItem(QListWidgetItem* newitem);
 
 signals:
 

@@ -109,7 +109,7 @@ void MainWindow::setupActions()
 	newFunctionAction->setText(i18n("New Function"));
 	newFunctionAction->setIcon(QIcon::fromTheme("list-add"));
 	actColl->addAction(QStringLiteral("new-function"), newFunctionAction);
-	connect(newFunctionAction, &QAction::trigger, this, &MainWindow::newFunction);
+	connect(newFunctionAction, &QAction::triggered, this, &MainWindow::newFunction);
 
 	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
 }
@@ -273,4 +273,5 @@ void MainWindow::newFunction()
 	}
 
 	module->createFunction(newName.toStdString(), {}, {});  // TODO: inputs
+    functionpane->updateModule(module);
 }

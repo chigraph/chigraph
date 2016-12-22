@@ -133,8 +133,35 @@ Result JsonModule::createFunction(gsl::cstring_span<> name,
 		*toFill = mFunctions[mFunctions.size() - 1].get();
 	}
 
-	return res;
+    return res;
 }
+
+bool JsonModule::removeFunction(gsl::cstring_span<> name)
+{
+    auto funcPtr = graphFuncFromName(name);
+
+    if(funcPtr == nullptr ) {
+        return false;
+    }
+
+    removeFunction(funcPtr);
+}
+
+void JsonModule::removeFunction(GraphFunction *func)
+{
+    Expects(func != nullptr);
+
+    auto iter = std::find_if(mFunctions.begin(), mFunctions.end(), [func](auto& uPtr) {
+        return uPtr.get() == func;
+    });
+    if(iter == mFunctions.end()) {
+        return;
+    }
+
+    mFunctions.erase(iter);
+}
+
+
 
 GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const
 {

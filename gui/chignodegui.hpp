@@ -24,7 +24,7 @@ public:
 	QString caption() const override
 	{
 		auto str = QString::fromStdString(inst->type().qualifiedName());
-		return "somelongstring";
+		return str;
 	}
 	QString name() const override { return QString::fromStdString(inst->type().qualifiedName()); }
 	std::unique_ptr<NodeDataModel> clone() const override

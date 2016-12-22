@@ -77,6 +77,15 @@ struct JsonModule : public ChigModule {
 		std::vector<std::pair<DataType, std::string>> ins,
 		std::vector<std::pair<DataType, std::string>> outs, GraphFunction** toFill = nullptr);
 
+    /// Remove a function from the module
+    /// \param name The name of the function to remove
+    /// \return True if there was a function matching name that was removed
+    bool removeFunction(gsl::cstring_span<> name);
+
+    /// Remove a function from the module
+    /// \param func The function to remove
+    void removeFunction(GraphFunction* func);
+
 	/// Get a function from the name
 	/// \param name The name to get
 	/// \return The GraphFunction or nullptr if it doesn't exist
