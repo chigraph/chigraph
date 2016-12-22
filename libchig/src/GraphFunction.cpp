@@ -32,27 +32,27 @@ Result GraphFunction::fromJSON(
 	Result res = {};
 
 	if (!data.is_object()) {
-		res.add_entry("E1", "Graph json isn't a JSON object", {});
+		res.addEntry("E1", "Graph json isn't a JSON object", {});
 		return res;
 	}
 	// make sure it has a type element
 	if (data.find("type") == data.end()) {
-		res.add_entry("E2", R"(JSON in graph doesn't have a "type" element)", {});
+		res.addEntry("E2", R"(JSON in graph doesn't have a "type" element)", {});
 		return res;
 	}
 	if (data["type"] != "function") {
-		res.add_entry("E3", "JSON in graph doesn't have a function type", {});
+		res.addEntry("E3", "JSON in graph doesn't have a function type", {});
 		return res;
 	}
 	// make sure there is a name
 	if (data.find("name") == data.end()) {
-		res.add_entry("E4", "JSON in graph doesn't have a name parameter", {});
+		res.addEntry("E4", "JSON in graph doesn't have a name parameter", {});
 		return res;
 	}
 	std::string name = data["name"];
 
 	if (data.find("inputs") == data.end() || !data["inputs"].is_array()) {
-		res.add_entry("E43", "JSON in graph doesn't have an inputs array", {});
+		res.addEntry("E43", "JSON in graph doesn't have an inputs array", {});
 		return res;
 	}
 
@@ -77,7 +77,7 @@ Result GraphFunction::fromJSON(
 	}
 
 	if (data.find("outputs") == data.end() || !data["outputs"].is_array()) {
-		res.add_entry("E44", "JSON in graph doesn't have an outputs array", {});
+		res.addEntry("E44", "JSON in graph doesn't have an outputs array", {});
 		return res;
 	}
 
@@ -160,7 +160,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		for (auto& param : node->inputDataConnections) {
 			// make sure everything is A-OK
 			if (param.first == nullptr) {
-				res.add_entry("EUKN", "No data input to node",
+				res.addEntry("EUKN", "No data input to node",
 					{{"nodeid", node->id()}, {"input ID", inputID}});
 
 				return;
@@ -169,14 +169,14 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			auto cacheiter = nodeCache.find(param.first);
 
 			if (cacheiter == nodeCache.end()) {
-				res.add_entry("EUKN", "Failed to find in cache", {{"nodeid", param.first->id()}});
+				res.addEntry("EUKN", "Failed to find in cache", {{"nodeid", param.first->id()}});
 
 				return;
 			}
 
 			auto& cacheObject = cacheiter->second;
 			if (param.second >= cacheObject.outputs.size()) {
-				res.add_entry("EUKN", "No data input to node",
+				res.addEntry("EUKN", "No data input to node",
 					{{"nodeid", node->id()}, {"input ID", inputID}});
 
 				return;
@@ -191,7 +191,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			// make sure it's the right type
 			if (io[io.size() - 1]->getType() !=
 				node->type().dataInputs()[inputID].first.llvmType()) {
-				res.add_entry("EINT", "Internal codegen error: unexpected type in cache.",
+				res.addEntry("EINT", "Internal codegen error: unexpected type in cache.",
 					{{"Expected LLVM type",
 						 stringifyLLVMType(node->type().dataInputs()[inputID].first.llvmType())},
 						{"Found type", stringifyLLVMType(io[io.size() - 1]->getType())},
@@ -219,7 +219,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 			// make sure the type is right
 			if (llvm::PointerType::get(output.first.llvmType(), 0) != alloc->getType()) {
-				res.add_entry("EINT",
+				res.addEntry("EINT",
 					"Internal codegen error: unexpected type returned from alloca.",
 					{{"Expected LLVM type",
 						 stringifyLLVMType(llvm::PointerType::get(output.first.llvmType(), 0))},
@@ -273,7 +273,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 
 	auto entry = entryNode();
 	if (entry == nullptr) {
-		res.add_entry("EUKN", "No entry node", {});
+		res.addEntry("EUKN", "No entry node", {});
 		return res;
 	}
 
@@ -283,7 +283,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		auto outputNodes = graph().nodesWithType("lang", "exit");
 
 		if (outputNodes.empty()) {
-			res.add_entry("EUKN", "No output nodes in graph", {{"Graph Name", name()}});
+			res.addEntry("EUKN", "No output nodes in graph", {{"Graph Name", name()}});
 			return res;
 		}
 
@@ -303,7 +303,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 			inEntry.push_back({{in.second, in.first.qualifiedName()}});
 		}
 
-		res.add_entry("EUKN", "Inputs to function doesn't match function inputs",
+		res.addEntry("EUKN", "Inputs to function doesn't match function inputs",
 			{{"Function Inputs", inFunc}, {"Entry Inputs", inEntry}});
 		return res;
 	}
@@ -321,7 +321,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 			outEntry.push_back({{out.second, out.first.qualifiedName()}});
 		}
 
-		res.add_entry("EUKN", "Outputs to function doesn't match function exit",
+		res.addEntry("EUKN", "Outputs to function doesn't match function exit",
 			{{"Function Outputs", outFunc}, {"Entry Outputs", outEntry}});
 		return res;
 	}

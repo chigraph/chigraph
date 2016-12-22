@@ -37,7 +37,6 @@ struct JsonModule : public ChigModule {
 	// No copy or move -- pointer only
 	JsonModule(const JsonModule&) = delete;
 	JsonModule(JsonModule&&) = delete;
-	~JsonModule() { std::cout << "Deleted " << name() << std::endl; }  // delete this
 	JsonModule& operator=(const JsonModule&) = delete;
 	JsonModule& operator=(JsonModule&&) = delete;
 

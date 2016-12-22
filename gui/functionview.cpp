@@ -169,7 +169,7 @@ void FunctionView::connectionDeleted(Connection& c)
 
 	if (!res) {
 		KMessageBox::detailedError(this, "Internal error deleting connection",
-			QString::fromStdString(res.result_json.dump(2)));
+			QString::fromStdString(res.dump()));
 	}
 
 	conns.erase(&c);

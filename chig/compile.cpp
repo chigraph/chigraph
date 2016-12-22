@@ -84,7 +84,7 @@ int compile(const std::vector<std::string>& opts)
 	res += c.addModuleFromJson("main", read_json, &cmodule);
 
 	if (!res) {
-		std::cerr << res.result_json.dump(2) << std::endl;
+		std::cerr << res << std::endl;
 		return 1;
 	}
 
@@ -92,7 +92,7 @@ int compile(const std::vector<std::string>& opts)
 	res += c.compileModule(cmodule->name(), &llmod);
 
 	if (!res) {
-		std::cerr << res.result_json.dump(2) << std::endl;
+		std::cerr << res << std::endl;
 		return 1;
 	}
 

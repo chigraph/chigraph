@@ -54,6 +54,7 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 {
 	Result res;
 
+
 	// check for built-in modules
 	if (name == "lang") {
 		auto mod = std::make_unique<LangModule>(*this);
@@ -71,12 +72,18 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 		addModule(std::move(mod));  // we don't care if it's actually added
 		return {};
 	}
+	
+	
+	if (workspacePath().empty()) {
+        res.addEntry("EUKN", "Cannot load module without a workspace path", {{"Requested Module"}, gsl::to_string(name)});
+		return res; 
+	}
 
 	// find it in the workspace
 	fs::path fullPath = workspacePath() / "src" / (gsl::to_string(name) + ".chigmod");
 
 	if (!fs::is_regular_file(fullPath)) {
-		res.add_entry("EUKN", "Failed to find module",
+		res.addEntry("EUKN", "Failed to find module",
 			{{"Module Name", gsl::to_string(name)}, {"Workspace Path", workspacePath().string()}});
 		return res;
 	}
@@ -146,23 +153,18 @@ Result Context::addModuleFromJson(
 bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 {
 	Expects(modToAdd != nullptr);
-
-	std::cout << "Adding " << modToAdd->name() << std::endl;
-	Result res;
-
+    
 	// make sure it's unique
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) {
-		res.add_entry("W24", "Cannot add already existing module again",
-			{{"moduleName", modToAdd->fullName()}});
-		return res;
+        return false;
 	}
 
 	mModules.push_back(std::move(modToAdd));
 
 	Expects(modToAdd == nullptr);
 
-	return res;
+	return true;
 }
 
 Result Context::typeFromModule(
@@ -172,13 +174,13 @@ Result Context::typeFromModule(
 
 	ChigModule* mod = moduleByName(module);
 	if (mod == nullptr) {
-		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(module)}});
+		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(module)}});
 		return res;
 	}
 
 	*toFill = mod->typeFromName(name);
 	if (!toFill->valid()) {
-		res.add_entry("E37", "Could not find type in module",
+		res.addEntry("E37", "Could not find type in module",
 			{{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
 	}
 
@@ -192,7 +194,7 @@ Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_
 
 	auto module = moduleByName(moduleName);
 	if (module == nullptr) {
-		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(moduleName)}});
+		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(moduleName)}});
 		return res;
 	}
 
@@ -210,7 +212,7 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 	auto chigmod = moduleByFullName(fullName);
 
 	if (chigmod == nullptr) {
-		res.add_entry("E36", "Could not find module", {{"module", gsl::to_string(fullName)}});
+		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(fullName)}});
 		return res;
 	}
 
@@ -236,7 +238,7 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 		std::string err;
 		llvm::raw_string_ostream os(err);
 		if (llvm::verifyModule(*llmod, &os)) {
-			res.add_entry(
+			res.addEntry(
 				"EUKN", "Internal compiler error: Invalid module created", {{"Error", err}});
 		}
 	}

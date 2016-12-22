@@ -15,7 +15,9 @@ using namespace chig;
 struct CFuncNode : NodeType {
 	CFuncNode(
 		ChigModule& mod, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res)
-		: NodeType{mod, "func", "call C code"}, functocall{gsl::to_string(functionName)}, ccode(gsl::to_string(cCode))
+		: NodeType{mod, "func", "call C code"},
+		  functocall{gsl::to_string(functionName)},
+		  ccode(gsl::to_string(cCode))
 	{
 		setExecInputs({""});
 		setExecOutputs({""});
@@ -42,12 +44,12 @@ struct CFuncNode : NodeType {
 		}
 
 		if (!error.empty()) {
-			res.add_entry("EUKN", "Error encountered while generating IR", {{"Error Text", error}});
+			res.addEntry("EUKN", "Error encountered while generating IR", {{"Error Text", error}});
 			return;
 		}
 
 		if (bitcode.empty()) {
-			res.add_entry("EUKN", "Unknown error encountered while generating IR", {});
+			res.addEntry("EUKN", "Unknown error encountered while generating IR", {});
 			return;
 		}
 
@@ -60,7 +62,7 @@ struct CFuncNode : NodeType {
 			llvm::raw_string_ostream errorStream(errorString);
 			diag.print("chig compile", errorStream);
 
-			res.add_entry("EUKN", "Error parsing clang-generated bitcode module",
+			res.addEntry("EUKN", "Error parsing clang-generated bitcode module",
 				{{"Error Code", modorerror.getError().value()}, {"Error Text", errorString}});
 			return;
 		}
@@ -69,7 +71,7 @@ struct CFuncNode : NodeType {
 		auto llfunc = llcompiledmod->getFunction(functocall);
 
 		if (llfunc == nullptr) {
-			res.add_entry("EUKN", "Failed to get function in clang-compiled module",
+			res.addEntry("EUKN", "Failed to get function in clang-compiled module",
 				{{"Requested Function", functocall}});
 			return;
 		}
@@ -172,7 +174,7 @@ Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::j
 
 	if (typeName == "func") {
 		if (!json_data.is_object()) {
-			res.add_entry("WUKN", "Data for c:func must be an object", {{"Given Data"}, json_data});
+			res.addEntry("WUKN", "Data for c:func must be an object", {{"Given Data"}, json_data});
 		}
 
 		std::string code;
@@ -180,7 +182,7 @@ Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::j
 			json_data["code"].is_string()) {
 			code = json_data["code"];
 		} else {
-			res.add_entry("WUKN",
+			res.addEntry("WUKN",
 				"Data for c:func must have a pair with the key of code and that the data is a "
 				"string",
 				{{"Given Data"}, json_data});
@@ -191,7 +193,7 @@ Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::j
 			json_data["function"].is_string()) {
 			function = json_data["function"];
 		} else {
-			res.add_entry("WUKN",
+			res.addEntry("WUKN",
 				"Data for c:func must have a pair with the key of function and that the data is a "
 				"string",
 				{{"Given Data"}, json_data});
@@ -201,7 +203,7 @@ Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::j
 		return res;
 	}
 
-	res.add_entry(
+	res.addEntry(
 		"E37", "Unrecognized node type in module", {{"Module", "c"}, {"Requested Type", name()}});
 	return res;
 }

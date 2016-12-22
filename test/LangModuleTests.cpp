@@ -11,8 +11,8 @@ TEST_CASE("LangModule", "[module]")
 	{
 		Context c;
 		c.loadModule("lang");
-        ChigModule* mod = c.moduleByName("lang");
-		
+		ChigModule* mod = c.moduleByName("lang");
+
 		THEN("We try to get associated types with correct parameters, it works")
 		{
 			DataType test;
@@ -24,11 +24,14 @@ TEST_CASE("LangModule", "[module]")
 
 			res = c.typeFromModule("lang", "i32*", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llvmContext())));
+			REQUIRE(
+				test == DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llvmContext())));
 
 			res = c.typeFromModule("lang", "i32**", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "i32**", llvm::PointerType::get(llvm::IntegerType::getInt32PtrTy(c.llvmContext()), 0)));
+			REQUIRE(test == DataType(mod, "i32**",
+								llvm::PointerType::get(
+									llvm::IntegerType::getInt32PtrTy(c.llvmContext()), 0)));
 
 			res = c.typeFromModule("lang", "i8", &test);
 			REQUIRE(!!res);
@@ -37,9 +40,12 @@ TEST_CASE("LangModule", "[module]")
 			res = c.typeFromModule("lang", "double", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == DataType(mod, "double", llvm::Type::getDoubleTy(c.llvmContext())));
-			
-			REQUIRE(c.moduleByName("lang")->nodeTypeNames() == std::vector<std::string>({"if", "entry", "exit", "const-int", "strliteral", "const-bool"}));
-			REQUIRE(c.moduleByName("lang")->typeNames() == std::vector<std::string>({"i32", "i1", "double"}));
+
+			REQUIRE(c.moduleByName("lang")->nodeTypeNames() ==
+					std::vector<std::string>(
+						{"if", "entry", "exit", "const-int", "strliteral", "const-bool"}));
+			REQUIRE(c.moduleByName("lang")->typeNames() ==
+					std::vector<std::string>({"i32", "i1", "double"}));
 		}
 
 		THEN(
@@ -102,7 +108,7 @@ TEST_CASE("LangModule", "[module]")
 					REQUIRE(ifNode->dataOutputs().size() == 0);
 
 					// make sure it is actually a if
-                    REQUIRE(ifNode->name() == "if");
+					REQUIRE(ifNode->name() == "if");
 				}
 			}
 		}
@@ -114,7 +120,8 @@ TEST_CASE("LangModule", "[module]")
 			std::unique_ptr<NodeType> entryNode = nullptr;
 
 			res = c.nodeTypeFromModule("lang", "entry",
-				nlohmann::json::parse(R"end(   [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}]   )end"),
+				nlohmann::json::parse(
+					R"end(   [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}]   )end"),
 				&entryNode);
 			REQUIRE(!!res);
 
@@ -127,7 +134,7 @@ TEST_CASE("LangModule", "[module]")
 				REQUIRE(entryNode->dataOutputs().size() == 2);
 
 				// make sure it is actually an entry
-					REQUIRE(entryNode->name() == "entry");
+				REQUIRE(entryNode->name() == "entry");
 			}
 
 			WHEN("We clone it")

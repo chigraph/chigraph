@@ -187,7 +187,7 @@ void MainWindow::openModule(QString path)
 
 	if (!res) {
 		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + path + "\"",
-			QString::fromStdString(res.result_json.dump(2)), "Error Loading");
+			QString::fromStdString(res.dump()), "Error Loading");
 
 		return;
 	}
@@ -237,7 +237,7 @@ void MainWindow::run()
 
 	if (!res) {
 		KMessageBox::detailedError(
-			this, "Failed to compile module", QString::fromStdString(res.result_json.dump(2)));
+			this, "Failed to compile module", QString::fromStdString(res.dump()));
 
 		return;
 	}

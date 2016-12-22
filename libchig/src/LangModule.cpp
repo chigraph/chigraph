@@ -12,7 +12,6 @@ namespace chig
 struct IfNodeType : NodeType {
 	IfNodeType(LangModule& mod) : NodeType(mod, "if", "branch on a bools")
 	{
-
 		setExecInputs({""});
 		setExecOutputs({"True", "False"});
 
@@ -38,7 +37,6 @@ struct EntryNodeType : NodeType {
 	EntryNodeType(LangModule& mod, const gsl::span<std::pair<DataType, std::string>> funInputs)
 		: NodeType(mod, "entry", "entry to a function")
 	{
-
 		setExecOutputs({""});
 
 		setDataOutputs({funInputs.begin(), funInputs.end()});
@@ -85,9 +83,9 @@ struct EntryNodeType : NodeType {
 };
 
 struct ConstIntNodeType : NodeType {
-	ConstIntNodeType(LangModule& mod, int num) : NodeType(mod, "const-int", "Int literal"), number(num)
+	ConstIntNodeType(LangModule& mod, int num)
+		: NodeType(mod, "const-int", "Int literal"), number(num)
 	{
-
 		setExecInputs({""});
 		setExecOutputs({""});
 
@@ -121,7 +119,8 @@ struct ConstIntNodeType : NodeType {
 };
 
 struct ConstBoolNodeType : NodeType {
-	ConstBoolNodeType(LangModule& mod, bool num) : NodeType{mod, "const-bool", "Boolean literal"}, value{num}
+	ConstBoolNodeType(LangModule& mod, bool num)
+		: NodeType{mod, "const-bool", "Boolean literal"}, value{num}
 	{
 		setExecInputs({""});
 		setExecOutputs({""});
@@ -208,7 +207,8 @@ struct ExitNodeType : NodeType {
 
 struct StringLiteralNodeType : NodeType {
 	StringLiteralNodeType(LangModule& mod, std::string str)
-		: NodeType(mod, "strliteral", "exit from a function; think return"), literalString(std::move(str))
+		: NodeType(mod, "strliteral", "exit from a function; think return"),
+		  literalString(std::move(str))
 	{
 		setExecInputs({""});
 		setExecOutputs({""});
@@ -281,7 +281,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 					}
 
 				} else {
-					res.add_entry(
+					res.addEntry(
 						"WUKN", "Data for lang:entry must be an array", {{"Given Data", data}});
 				}
 
@@ -315,7 +315,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 					}
 
 				} else {
-					res.add_entry(
+					res.addEntry(
 						"WUKN", "Data for lang:exit must be an array", {{"Given Data", data}});
 				}
 
@@ -330,7 +330,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 				if (data.is_number_integer()) {
 					num = data;
 				} else {
-					res.add_entry("WUKN", "Data for lang:const-int must be an integer",
+					res.addEntry("WUKN", "Data for lang:const-int must be an integer",
 						{{"Given Data", data}});
 				}
 
@@ -344,7 +344,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 				if (data.is_boolean()) {
 					val = data;
 				} else {
-					res.add_entry("WUKN", "Data for lang:const-bool must be a boolean",
+					res.addEntry("WUKN", "Data for lang:const-bool must be a boolean",
 						{{"Given Data", data}});
 				}
 
@@ -355,7 +355,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 			 if (data.is_string()) {
 				 str = data;
 			 } else {
-				 res.add_entry(
+				 res.addEntry(
 					 "WUKN", "Data for lang:strliteral must be a string", {{"Given Data", data}});
 			 }
 
@@ -374,7 +374,7 @@ Result LangModule::nodeTypeFromName(
 		return res;
 	}
 
-	res.add_entry("E37", "Failed to find node in module",
+	res.addEntry("E37", "Failed to find node in module",
 		{{"Module", "lang"}, {"Requested Node Type", gsl::to_string(name)}});
 
 	return res;

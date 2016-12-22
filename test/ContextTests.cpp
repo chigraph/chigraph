@@ -14,20 +14,19 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 {
 	GIVEN("A default constructed context")
 	{
-		Context c;
+		Context c{};
 		Result res;
 
-        THEN("It resolves workspace paths correctly") {
-            
-            fs::path workspaceDir = fs::path(CHIG_TEST_DIR) / "codegen" / "workspace";
-            
-            REQUIRE(workspaceFromChildPath(workspaceDir) == workspaceDir);
-            REQUIRE(workspaceFromChildPath(workspaceDir / "src") == workspaceDir);
-            REQUIRE(workspaceFromChildPath(workspaceDir / "src" / "github.com") == workspaceDir);
-            REQUIRE(workspaceFromChildPath("/").empty());
-            
-        }
-        
+		THEN("It resolves workspace paths correctly")
+		{
+			fs::path workspaceDir = fs::path(CHIG_TEST_DIR) / "codegen" / "workspace";
+
+			REQUIRE(workspaceFromChildPath(workspaceDir) == workspaceDir);
+			REQUIRE(workspaceFromChildPath(workspaceDir / "src") == workspaceDir);
+			REQUIRE(workspaceFromChildPath(workspaceDir / "src" / "github.com") == workspaceDir);
+			REQUIRE(workspaceFromChildPath("/").empty());
+		}
+
 		THEN("There will be no modules in it") { REQUIRE(c.numModules() == 0); }
 		THEN("stringifyType return proper strings")
 		{
@@ -41,22 +40,42 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		{
 			c.addModule(std::make_unique<LangModule>(c));
 
-            WHEN("Lang module is added again") 
-            {
-                bool added = c.addModule(std::make_unique<LangModule>(c));
-                
-                THEN("It have not been added") 
-                {
-                    // TODO: different E number
-                    REQUIRE(added == false);
-                }
-            }
-            
+			WHEN("Lang module is added again")
+			{
+				bool added = c.addModule(std::make_unique<LangModule>(c));
+
+				THEN("It have not been added")
+				{
+					// TODO: different E number
+					REQUIRE(added == false);
+				}
+			}
+
 			THEN("There should be 1 module in c") { REQUIRE(c.numModules() == 1); }
 			THEN("Getting the lang module from c should work")
 			{
 				REQUIRE(c.moduleByName("lang") != nullptr);
 				REQUIRE(c.moduleByName("lang")->name() == "lang");
+			}
+
+			THEN("Getting other modules should fail")
+			{
+				REQUIRE(c.moduleByName("qwerty") == nullptr);
+				REQUIRE(c.moduleByName("") == nullptr);
+				REQUIRE(c.moduleByName("lang/hello") == nullptr);
+			}
+
+			THEN("Getting the lang module from c should work via moduleByFullName")
+			{
+				REQUIRE(c.moduleByFullName("lang") != nullptr);
+				REQUIRE(c.moduleByFullName("lang")->name() == "lang");
+			}
+
+			THEN("Getting other modules should fail via moduleByFullName")
+			{
+				REQUIRE(c.moduleByFullName("qwerty") == nullptr);
+				REQUIRE(c.moduleByFullName("") == nullptr);
+				REQUIRE(c.moduleByFullName("lang/hello") == nullptr);
 			}
 
 			THEN("getNodeType should work for basic types")
@@ -105,5 +124,12 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 				REQUIRE(res.result_json[0]["errorcode"] == "E36");
 			}
 		}
+
+		THEN("Load module should fail") { 
+            REQUIRE(!c.loadModule("github.com/hello")); 
+            REQUIRE(!c.loadModule(""));
+        }
 	}
+
+	GIVEN("A context constructed with a workspace") {}
 }

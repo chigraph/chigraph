@@ -17,7 +17,6 @@ namespace chig
 {
 /// The CModule is the module that supplies functionality to create C bindings.
 struct CModule : ChigModule {
-	
 	/// Contstructor--construct with a context. This is usually called by Context
 	CModule(Context& ctx);
 
@@ -34,7 +33,6 @@ struct CModule : ChigModule {
 	virtual std::vector<std::string> nodeTypeNames() const override { return {"func"}; };
 	/// \copydoc  chig::ChigModule::typeNames
 	virtual std::vector<std::string> typeNames() const override { return {}; };
-		
 	/// \copydoc chig::ChigModule::generateModule
 	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; };
 };

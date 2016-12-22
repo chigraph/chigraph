@@ -93,10 +93,12 @@ struct GraphFunction {
 	}
 
 	/// Creates an entry node if it doesn't already exist, else just return it
-	/// \param x The x coordinate of the new entry, or changes the existing entry node to be at this X location
-	/// \param y The y coordinate of the new entry, or changes the existing entry node to be at this Y location
+	/// \param x The x coordinate of the new entry, or changes the existing entry node to be at this
+	/// X location
+	/// \param y The y coordinate of the new entry, or changes the existing entry node to be at this
+	/// Y location
 	/// \param id The ID of the node, disregarded if there is already an entry
-	/// \param toFill The NodeInstance* to fill, optional 
+	/// \param toFill The NodeInstance* to fill, optional
 	/// \return The Result
 	Result getOrInsertEntryNode(
 		float x, float y, gsl::cstring_span<> id, NodeInstance** toFill = nullptr)

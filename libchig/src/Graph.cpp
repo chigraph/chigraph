@@ -7,7 +7,7 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&
 {
 	// read the nodes
 	if (data.find("nodes") == data.end() || !data["nodes"].is_object()) {
-		res.add_entry("E5", "JSON in graph doesn't have nodes object", {});
+		res.addEntry("E5", "JSON in graph doesn't have nodes object", {});
 		return;
 	}
 
@@ -15,7 +15,7 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&
 		auto node = nodeiter.value();
 		std::string nodeid = nodeiter.key();
 		if (node.find("type") == node.end() || !node.find("type")->is_string()) {
-			res.add_entry("E6", R"(Node doesn't have a "type" string)", {{"nodeid", nodeid}});
+			res.addEntry("E6", R"(Node doesn't have a "type" string)", {{"nodeid", nodeid}});
 			return;
 		}
 		std::string fullType = node["type"];
@@ -23,13 +23,13 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&
 		std::tie(moduleName, typeName) = parseColonPair(fullType);
 
 		if (moduleName.empty() || typeName.empty()) {
-			res.add_entry("E7", "Incorrect qualified module name (should be module:type)",
+			res.addEntry("E7", "Incorrect qualified module name (should be module:type)",
 				{{"nodeid", nodeid}, {"Requested Qualified Name", fullType}});
 			return;
 		}
 
 		if (node.find("data") == node.end()) {
-			res.add_entry("E9", "Node doens't have a data section", {"nodeid", nodeid});
+			res.addEntry("E9", "Node doens't have a data section", {"nodeid", nodeid});
 			return;
 		}
 
@@ -43,18 +43,18 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&
 		if (testIter != node.end()) {
 			// make sure it is the right size
 			if (!testIter.value().is_array()) {
-				res.add_entry(
+				res.addEntry(
 					"E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeid}});
 				continue;
 			}
 
 			if (testIter.value().size() != 2) {
-				res.add_entry("E11", "Node doesn't have a location that is an array of size 2.",
+				res.addEntry("E11", "Node doesn't have a location that is an array of size 2.",
 					{{"nodeid", nodeid}});
 				continue;
 			}
 		} else {
-			res.add_entry("E12", "Node doesn't have a location.", {{"nodeid", nodeid}});
+			res.addEntry("E12", "Node doesn't have a location.", {{"nodeid", nodeid}});
 			continue;
 		}
 
@@ -66,32 +66,32 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&
 	{
 		auto connIter = data.find("connections");
 		if (connIter == data.end() || !connIter->is_array()) {
-			res.add_entry("E13", "No connections array in function", {});
+			res.addEntry("E13", "No connections array in function", {});
 			return;
 		}
 		for (auto& connection : data["connections"]) {
 			if (connection.find("type") == connection.end() ||
 				!connection.find("type")->is_string()) {
-				res.add_entry("E14", "No type string in connection", {"connectionid", connID});
+				res.addEntry("E14", "No type string in connection", {"connectionid", connID});
 				continue;
 			}
 			std::string type = connection["type"];
 			bool isData = type == "data";
 			// it either has to be "data" or "exec"
 			if (!isData && type != "exec") {
-				res.add_entry("E15", "Unrecognized connection type",
+				res.addEntry("E15", "Unrecognized connection type",
 					{{"connectionid", connID}, {"Found Type", type}});
 				continue;
 			}
 
 			if (connection.find("input") == connection.end()) {
-				res.add_entry("E16", "No input element in connection", {{"connectionid", connID}});
+				res.addEntry("E16", "No input element in connection", {{"connectionid", connID}});
 				continue;
 			}
 			if (!connection.find("input")->is_array() || connection.find("input")->size() != 2 ||
 				!connection.find("input")->operator[](0).is_string() ||
 				!connection.find("input")->operator[](1).is_number_integer()) {
-				res.add_entry("E17",
+				res.addEntry("E17",
 					"Incorrect connection input format, must be an array of of a string (node id) "
 					"and int (connection id)",
 					{{"connectionid", connID}, {"Requested Type", *connection.find("input")}});
@@ -101,13 +101,13 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&
 			int InputConnectionID = connection["input"][1];
 
 			if (connection.find("output") == connection.end()) {
-				res.add_entry("E18", "No output element in connection", {{"connectionid", connID}});
+				res.addEntry("E18", "No output element in connection", {{"connectionid", connID}});
 				continue;
 			}
 			if (!connection.find("output")->is_array() || connection.find("output")->size() != 2 ||
 				!connection.find("output")->operator[](0).is_string() ||
 				!connection.find("output")->operator[](1).is_number_integer()) {
-				res.add_entry("E19",
+				res.addEntry("E19",
 					"Incorrect connection output format, must be an array of a string (node id) "
 					"and int (connection id)",
 					{{"connectionid", connID}, {"Requested Type", *connection.find("output")}});
@@ -118,12 +118,12 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&
 
 			// make sure the nodes exist
 			if (mNodes.find(InputNodeID) == mNodes.end()) {
-				res.add_entry("E20", "Input node for connection doesn't exist",
+				res.addEntry("E20", "Input node for connection doesn't exist",
 					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
 				continue;
 			}
 			if (mNodes.find(OutputNodeID) == mNodes.end()) {
-				res.add_entry("E21", "Output node for connection doesn't exist",
+				res.addEntry("E21", "Output node for connection doesn't exist",
 					{{"connectionid", connID}, {"Requested Node", OutputNodeID}});
 				continue;
 			}
@@ -194,7 +194,7 @@ Result Graph::insertNode(
 
 	// make sure the ID doesn't exist
 	if (nodes().find(gsl::to_string(id)) != nodes().end()) {
-		res.add_entry("EUKN", "Cannot have two nodes with the same ID",
+		res.addEntry("EUKN", "Cannot have two nodes with the same ID",
 			{{"Requested ID", gsl::to_string(id)}});
 		return res;
 	}

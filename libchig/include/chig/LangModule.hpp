@@ -15,10 +15,8 @@
 
 namespace chig
 {
-
 /// The module that provides built-in operations like literals, math operations, etc
 struct LangModule : ChigModule {
-
 	/// Default constructor, usually called from Context::loadModule("lang")
 	LangModule(Context& ctx);
 
@@ -46,7 +44,6 @@ struct LangModule : ChigModule {
 
 	/// \copydoc chig::ChigModule::generateModule
 	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; };
-
 private:
 	std::unordered_map<std::string,
 		std::function<std::unique_ptr<NodeType>(const nlohmann::json&, Result&)>>

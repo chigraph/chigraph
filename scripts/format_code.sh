@@ -6,5 +6,5 @@ cd $SCRIPTSDIR/..
 
 
 
-clang-format -style=file -i $(find libchig chig gui -name "*.cpp") $(find libchig chig gui -name "*.hpp")
+clang-format -style=file -i $(find libchig chig gui test -name "*.cpp") $(find test libchig chig gui -name "*.hpp")
 

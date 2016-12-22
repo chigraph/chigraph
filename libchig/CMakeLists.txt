@@ -25,6 +25,7 @@ set(CHIG_PRIVATE_FILES
 	src/ChigModule.cpp
 	src/CModule.cpp
 	src/Graph.cpp
+	src/Result.cpp
 	src/NameMangler.cpp
 )
 

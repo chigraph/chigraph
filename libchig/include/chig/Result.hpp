@@ -11,7 +11,7 @@ namespace chig
 {
 struct Result {
 	Result() : result_json(nlohmann::json::array()), success{true} {}
-	void add_entry(const char* ec, const char* overview, nlohmann::json data)
+	void addEntry(const char* ec, const char* overview, nlohmann::json data)
 	{
 		Expects(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
 
@@ -25,6 +25,8 @@ struct Result {
 
 	operator bool() { return success; }
 	bool operator!() { return !success; }
+	
+	std::string dump() const;
 };
 
 inline Result operator+(const Result& lhs, const Result& rhs)
@@ -47,6 +49,12 @@ inline Result& operator+=(Result& lhs, const Result& rhs)
 	std::copy(rhs.result_json.begin(), rhs.result_json.end(), std::back_inserter(lhs.result_json));
 
 	return lhs;
+}
+
+inline std::ostream& operator<<(std::ostream& lhs, const Result& rhs) {
+    lhs << rhs.dump();
+
+    return lhs;
 }
 }
 

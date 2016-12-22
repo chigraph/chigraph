@@ -94,7 +94,7 @@ int run(const std::vector<std::string>& opts)
 	c.addModuleFromJson("main", read_json, &jmod);
 
 	if (!res) {
-		std::cerr << res.result_json.dump(2) << std::endl;
+		std::cerr << res << std::endl;
 		return 1;
 	}
 
@@ -102,7 +102,7 @@ int run(const std::vector<std::string>& opts)
 	res += c.compileModule(jmod->name(), &llmod);
 
 	if (!res) {
-		std::cerr << "Error compiling module: " << res.result_json.dump(2) << std::endl;
+		std::cerr << "Error compiling module: " << res << std::endl;
 	}
 
 	// run it!

@@ -20,17 +20,17 @@ JsonModule::JsonModule(
 	{
 		auto iter = json_data.find("dependencies");
 		if (iter == json_data.end()) {
-			res->add_entry("E38", "No dependencies element in module", {});
+			res->addEntry("E38", "No dependencies element in module", {});
 			return;
 		}
 		if (!iter->is_array()) {
-			res->add_entry("E39", "dependencies element isn't an array", {});
+			res->addEntry("E39", "dependencies element isn't an array", {});
 			return;
 		}
 
 		for (const auto& dep : *iter) {
 			if (!dep.is_string()) {
-				res->add_entry("E40", "dependency isn't a string", {{"Actual Data", dep}});
+				res->addEntry("E40", "dependency isn't a string", {{"Actual Data", dep}});
 				continue;
 			}
 			*res += addDependency(dep);
@@ -45,11 +45,11 @@ JsonModule::JsonModule(
 	{
 		auto iter = json_data.find("graphs");
 		if (iter == json_data.end()) {
-			res->add_entry("E41", "no graphs element in module", {});
+			res->addEntry("E41", "no graphs element in module", {});
 			return;
 		}
 		if (!iter->is_array()) {
-			res->add_entry("E42", "graph element isn't an array", {{"Actual Data", *iter}});
+			res->addEntry("E42", "graph element isn't an array", {{"Actual Data", *iter}});
 			return;
 		}
 		mFunctions.reserve(iter->size());
@@ -123,7 +123,7 @@ Result JsonModule::createFunction(gsl::cstring_span<> name,
 	Result res;
 	// make sure there already isn't one by this name
 	if (graphFuncFromName(name) != nullptr) {
-		res.add_entry(
+		res.addEntry(
 			"EUKN", "Function already exists", {{"Requested Name", gsl::to_string(name)}});
 		return res;
 	}
@@ -155,7 +155,7 @@ Result JsonModule::nodeTypeFromName(
 	auto graph = graphFuncFromName(name);
 
 	if (graph == nullptr) {
-		res.add_entry("EUKN", "Graph not found in module",
+		res.addEntry("EUKN", "Graph not found in module",
 			{{"Module Name", gsl::to_string(name)}, {"Requested Graph", gsl::to_string(name)}});
 	}
 
@@ -186,14 +186,14 @@ Result JsonModule::loadGraphs()
 
 JsonFuncCallNodeType::JsonFuncCallNodeType(
 	JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
-	: NodeType(json_module, funcname, ""), JModule(&json_module) // TODO: description
-{ 
+	: NodeType(json_module, funcname, ""), JModule(&json_module)  // TODO: description
+{
 	Result& res = *resPtr;
 
 	auto* mygraph = JModule->graphFuncFromName(funcname);
 
 	if (mygraph == nullptr) {
-		res.add_entry("EUKN", "Graph doesn't exist in module",
+		res.addEntry("EUKN", "Graph doesn't exist in module",
 			{{"Module Name", JModule->name()}, {"Requested Name", gsl::to_string(funcname)}});
 		return;
 	}
@@ -217,7 +217,7 @@ Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod,
 	auto func = mod->getFunction(mangleFunctionName(module().fullName(), name()));
 
 	if (func == nullptr) {
-		res.add_entry(
+		res.addEntry(
 			"EUKN", "Could not find function in llvm module", {{"Requested Function", name()}});
 		return res;
 	}

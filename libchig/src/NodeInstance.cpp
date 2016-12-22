@@ -55,7 +55,7 @@ Result connectData(
 			dataOutputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
-		res.add_entry("E22", "Output Data connection doesn't exist in node",
+		res.addEntry("E22", "Output Data connection doesn't exist in node",
 			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type().qualifiedName()},
 				{"Node JSON", rhs.type().toJSON()}, {"Node Output Data Connections", dataOutputs}});
 	}
@@ -65,7 +65,7 @@ Result connectData(
 			dataInputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
-		res.add_entry("E23", "Input Data connection doesn't exist in node",
+		res.addEntry("E23", "Input Data connection doesn't exist in node",
 			{{"Requested ID", connectionOutputID}, {"Node Type", rhs.type().qualifiedName()},
 				{"Node JSON", rhs.type().toJSON()}, {"Node Input Data Connections", dataInputs}});
 	}
@@ -77,7 +77,7 @@ Result connectData(
 	// make sure the connection is of the right type
 	if (lhs.type().dataOutputs()[connectionInputID].first !=
 		rhs.type().dataInputs()[connectionOutputID].first) {
-		res.add_entry("E24", "Connecting data nodes with different types is invalid",
+		res.addEntry("E24", "Connecting data nodes with different types is invalid",
 			{{"Left Hand Type", lhs.type().dataOutputs()[connectionInputID].first.qualifiedName()},
 				{"Right Hand Type",
 					rhs.type().dataInputs()[connectionOutputID].first.qualifiedName()},
@@ -114,7 +114,7 @@ Result connectExec(
 			execOutputs.push_back(output);
 		}
 
-		res.add_entry("E22", "Output exec connection doesn't exist in node",
+		res.addEntry("E22", "Output exec connection doesn't exist in node",
 			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type().qualifiedName()},
 				{"Node Output Exec Connections", execOutputs}});
 	}
@@ -124,7 +124,7 @@ Result connectExec(
 			execInputs.push_back(output);
 		}
 
-		res.add_entry("E23", "Input exec connection doesn't exist in node",
+		res.addEntry("E23", "Input exec connection doesn't exist in node",
 			{{"Requested ID", connectionInputID}, {"Node Type", rhs.type().qualifiedName()},
 				{"Node Input Exec Connections", execInputs}
 
@@ -161,7 +161,7 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 			dataOutputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
-		res.add_entry("E22", "Output data connection in node doesn't exist",
+		res.addEntry("E22", "Output data connection in node doesn't exist",
 			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type().qualifiedName()},
 				{"Node JSON", rhs.type().toJSON()}, {"Node Output Data Connections", dataOutputs}});
 
@@ -174,7 +174,7 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 		[&](auto& pair) { return pair.first == &rhs; });
 
 	if (iter == lhs.outputDataConnections[connectionInputID].end()) {
-		res.add_entry("EUKN", "Cannot disconnect from connection that doesn't exist",
+		res.addEntry("EUKN", "Cannot disconnect from connection that doesn't exist",
 			{{"Left node ID", lhs.id()}, {"Right node ID", rhs.id()},
 				{"Left dock ID", connectionInputID}});
 
@@ -187,7 +187,7 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 			dataInputs.push_back({{output.second, output.first.qualifiedName()}});
 		}
 
-		res.add_entry("E23", "Input Data connection doesn't exist in node",
+		res.addEntry("E23", "Input Data connection doesn't exist in node",
 			{{"Requested ID", iter->second}, {"Node Type", rhs.type().qualifiedName()},
 				{"Node JSON", rhs.type().toJSON()}, {"Node Input Data Connections", dataInputs}});
 
@@ -195,7 +195,7 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 	}
 
 	if (rhs.inputDataConnections[iter->second] != std::make_pair(&lhs, connectionInputID)) {
-		res.add_entry("EUKN", "Cannot disconnect from connection that doesn't exist",
+		res.addEntry("EUKN", "Cannot disconnect from connection that doesn't exist",
 			{{"Left node ID", lhs.id()}, {"Right node ID", rhs.id()}});
 
 		return res;
@@ -218,7 +218,7 @@ Result disconnectExec(NodeInstance& lhs, size_t connectionInputID)
 			execOutputs.push_back(output);
 		}
 
-		res.add_entry("E22", "Output exec connection doesn't exist in node",
+		res.addEntry("E22", "Output exec connection doesn't exist in node",
 			{{"Requested ID", connectionInputID}, {"Node Type", lhs.type().qualifiedName()},
 				{"Node Output Exec Connections", execOutputs}});
 	}
@@ -230,7 +230,7 @@ Result disconnectExec(NodeInstance& lhs, size_t connectionInputID)
 		[&](auto pair) { return pair == std::make_pair(&lhs, connectionInputID); });
 
 	if (iter == rhsconns.end()) {
-		res.add_entry("EUKN", "Cannot disconnect an exec connection that doesn't connect back",
+		res.addEntry("EUKN", "Cannot disconnect an exec connection that doesn't connect back",
 			{{"Left node ID", lhs.id()}, {"Left node dock id", connectionInputID}});
 		return res;
 	}
