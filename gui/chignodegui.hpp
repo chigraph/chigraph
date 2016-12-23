@@ -13,7 +13,53 @@
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QValidator>
+#include <QPushButton>
+#include <QTextEdit>
+#include <QHBoxLayout>
+#include <QDialog>
+
+
+#include <KTextEdit>
+#include <KLocalizedString>
+
 #include <memory>
+
+class EditCodeDialog : public QDialog {
+public:
+    EditCodeDialog(chig::NodeInstance* inst) {
+        setWindowTitle(i18n("Edit C Call Node"));
+
+        auto layout = new QVBoxLayout;
+        setLayout(layout);
+
+        auto lineEdit = new QLineEdit;
+        layout->addWidget(lineEdit);
+        lineEdit->setText(QString::fromStdString(inst->type().toJSON()["function"]));
+
+
+        auto textEdit = new KTextEdit;
+        textEdit->setFontFamily("sourcecodepro");
+        layout->addWidget(textEdit);
+        textEdit->setText(QString::fromStdString(inst->type().toJSON()["code"]));
+
+        auto okButton = new QPushButton;
+        layout->addWidget(okButton);
+        okButton->setText(i18n("Ok"));
+        connect(okButton, &QPushButton::clicked, this, [this, textEdit, lineEdit, inst] {
+            std::string function = lineEdit->text().toStdString();
+            std::string code = textEdit->toPlainText().toStdString();
+
+            std::unique_ptr<chig::NodeType> ty;
+            chig::Result res = inst->context().nodeTypeFromModule("c", "func", {{"code", code}, {"function", function}}, &ty);
+            if(!res) {
+                return; // TODO: error handling
+            }
+            inst->setType(std::move(ty));
+
+            close();
+        });
+    }
+};
 
 class ChigNodeGui : public NodeDataModel
 {
@@ -137,9 +183,21 @@ public:
 
 			return edit;
 		}
+        if (inst->type().name() == "func") {
+            QPushButton* butt = new QPushButton(i18n("Edit code"));
+            connect(butt, &QPushButton::clicked, this, [this]{
+                auto dialog = new EditCodeDialog(inst);
+
+                dialog->exec();
+            });
+
+            butt->setMaximumSize(butt->sizeHint());
+
+            return butt;
+        }
 
 		return nullptr;
-	};
+    }
 	// We don't need saving...chigraph has its own serialization
 	void save(Properties&) const override {}
 };

@@ -17,6 +17,9 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent)
 	setAnimated(true);
 	connect(
 		this, &QTreeWidget::itemDoubleClicked, this, [this](QTreeWidgetItem* item, int /*column*/) {
+            if (item->childCount() != 0) { // don't do module folders
+                return;
+            }
 			QString text = item->text(0);
 			while (item->parent()) {
 				item = item->parent();

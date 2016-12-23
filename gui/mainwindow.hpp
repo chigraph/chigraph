@@ -23,6 +23,7 @@
 #include "functionview.hpp"
 #include "modulebrowser.hpp"
 #include "outputview.hpp"
+#include "functiondetails.hpp"
 
 class MainWindow : public KXmlGuiWindow
 {
@@ -39,6 +40,7 @@ public:
 	std::shared_ptr<DataModelRegistry> reg;
 	OutputView* outputView = nullptr;
 	ModuleBrowser* moduleBrowser = nullptr;
+    FunctionDetails* funcDetails = nullptr;
 
 	FunctionsPane* functionpane = nullptr;
 
@@ -61,6 +63,7 @@ public slots:
 signals:
 	void workspaceOpened(QString workspace);
 	void openJsonModule(chig::JsonModule* mod);
+    void newFunctionOpened(chig::GraphFunction* func);
 
 private:
 	KRecentFilesAction* openRecentAction;

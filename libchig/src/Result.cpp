@@ -28,8 +28,14 @@ std::string Result::dump() const  {
     std::string ret;
     if(result_json.size() != 0) {
         for(auto error : result_json) {
+            if(error.find("errorcode") == error.end()
+                    || !error["errorcode"].is_string()
+                    || error.find("overview") == error.end()
+                    || !error["overview"].is_string()){
+                return "";
+            }
             std::string ec = error["errorcode"];
-            std::string desc = error["description"];
+            std::string desc = error["overview"];
             ret += ec + ": " + desc;
             // recursively display children
             auto& data = error["data"];

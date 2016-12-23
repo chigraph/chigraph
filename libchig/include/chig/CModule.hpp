@@ -24,17 +24,17 @@ struct CModule : ChigModule {
 	~CModule() = default;
 
 	/// \copydoc chig::ChigModule::nodeTypeFromName
-	virtual Result nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
+    Result nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
 		std::unique_ptr<NodeType>* toFill) override;
 	/// \copydoc chig::ChigModule::typeFromName
-	virtual DataType typeFromName(gsl::cstring_span<> typeName) override;
+    DataType typeFromName(gsl::cstring_span<> typeName) override;
 
 	/// \copydoc chig::ChigModule::nodeTypeNames
-	virtual std::vector<std::string> nodeTypeNames() const override { return {"func"}; };
-	/// \copydoc  chig::ChigModule::typeNames
-	virtual std::vector<std::string> typeNames() const override { return {}; };
+    std::vector<std::string> nodeTypeNames() const override { return {"func"}; }
+    /// \copydoc  chig::ChigModule::typeNames
+    std::vector<std::string> typeNames() const override { return {}; }
 	/// \copydoc chig::ChigModule::generateModule
-	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; };
+    Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; }
 };
 }
 

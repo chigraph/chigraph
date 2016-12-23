@@ -14,6 +14,7 @@ set(CHIG_PUBLIC_FILES
 	include/chig/Result.hpp
 	include/chig/Graph.hpp
 	include/chig/NameMangler.hpp
+        include/chig/CModule.hpp
 )
 
 set(CHIG_PRIVATE_FILES
