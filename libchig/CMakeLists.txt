@@ -3,6 +3,13 @@ find_package(LLVM REQUIRED CONFIG)
 find_program(CLANG_EXE clang)
 find_program(LLI_EXE lli)
 
+find_library(Clang REQUIRED)
+
+set(CLANG_LIBS clang clangFrontend clangDriver clangSerialization clangParse
+    clangCodeGen  clangSema clangAnalysis clangEdit clangAST clangLex
+    clangBasic)
+
+
 set(CHIG_PUBLIC_FILES
 	include/chig/ChigModule.hpp
 	include/chig/Context.hpp
@@ -56,7 +63,12 @@ llvm_map_components_to_libnames(llvm_libs core irreader support bitwriter execut
 target_link_libraries(chigcore
 PUBLIC
 	${llvm_libs} 
+<<<<<<< HEAD
 	tiny-process-library
+=======
+	${CLANG_LIBS} 
+	execstream
+>>>>>>> 9e78e56... Use clang for C code generation
 )
 
 target_link_libraries(chigcore
