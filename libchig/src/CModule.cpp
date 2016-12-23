@@ -9,6 +9,62 @@
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Transforms/Utils/Cloning.h>
+#include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/raw_os_ostream.h>
+#include <llvm/Support/MemoryBuffer.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/IR/Module.h>
+
+#include <clang/Driver/Driver.h>
+#include <clang/Frontend/CompilerInvocation.h>
+#include <clang/Frontend/TextDiagnosticPrinter.h>
+#include <clang/Frontend/CompilerInstance.h>
+#include <clang/Basic/TargetInfo.h>
+#include <clang/CodeGen/CodeGenAction.h>
+
+
+std::unique_ptr<llvm::Module> CToLLVM(gsl::cstring_span<> code, gsl::cstring_span<> fakeName,  llvm::LLVMContext& context) {
+    
+    using namespace std;
+    using namespace clang;
+    using namespace llvm;
+
+    // Prepare compilation arguments
+    vector<const char *> args;
+    args.push_back(fakeName.data());
+
+    // Prepare DiagnosticEngine 
+    DiagnosticOptions DiagOpts;
+    TextDiagnosticPrinter *textDiagPrinter =
+            new clang::TextDiagnosticPrinter(errs(),
+                                         &DiagOpts);
+    IntrusiveRefCntPtr<clang::DiagnosticIDs> pDiagIDs;
+    DiagnosticsEngine *pDiagnosticsEngine =
+            new DiagnosticsEngine(pDiagIDs,
+                                         &DiagOpts,
+                                         textDiagPrinter);
+
+    // Initialize CompilerInvocation
+    CompilerInvocation *CI = new CompilerInvocation();
+    CompilerInvocation::CreateFromArgs(*CI, &args[0], &args[0] +     args.size(), *pDiagnosticsEngine);
+
+    // Map code filename to a memoryBuffer
+    StringRef testCodeData(code.data(), code.length());
+    unique_ptr<MemoryBuffer> buffer = MemoryBuffer::getMemBufferCopy(testCodeData);
+    CI->getPreprocessorOpts().addRemappedFile(fakeName.data(), buffer.get());
+
+
+    // Create and initialize CompilerInstance
+    CompilerInstance Clang;
+    Clang.setInvocation(CI);
+    Clang.createDiagnostics();
+
+    // Create and execute action
+    CodeGenAction *compilerAction = new EmitLLVMOnlyAction(&context);
+    Clang.ExecuteAction(*compilerAction);
+
+    return compilerAction->takeModule();
+}
 
 using namespace chig;
 
@@ -21,52 +77,8 @@ struct CFuncNode : NodeType {
 	{
 		setExecInputs({""});
 		setExecOutputs({""});
-
-		std::string bitcode;
-		std::string error;
-		try {
-			// compile the C code
-			exec_stream_t clangexe;
-			clangexe.set_wait_timeout(exec_stream_t::s_out, 100000);
-			std::vector<std::string> arguments = {"-xc", "-", "-c", "-emit-llvm", "-O0", "-o-"};
-			clangexe.start(CHIG_CLANG_EXE, arguments.begin(), arguments.end());
-			clangexe.in() << cCode.data();
-			clangexe.close_in();
-
-			bitcode = std::string{
-				std::istreambuf_iterator<char>(clangexe.out()), std::istreambuf_iterator<char>()};
-
-			error = std::string{
-				std::istreambuf_iterator<char>(clangexe.err()), std::istreambuf_iterator<char>()};
-		} catch (std::exception& e) {
-			std::cerr << e.what() << std::endl;
-			return;
-		}
-
-		if (!error.empty()) {
-			res.addEntry("EUKN", "Error encountered while generating IR", {{"Error Text", error}});
-			return;
-		}
-
-		if (bitcode.empty()) {
-			res.addEntry("EUKN", "Unknown error encountered while generating IR", {});
-			return;
-		}
-
-		llvm::SMDiagnostic diag;
-		auto modorerror = llvm::parseBitcodeFile(
-			llvm::MemoryBufferRef(bitcode, "clang-generated"), context().llvmContext());
-
-		if (!modorerror) {
-			std::string errorString;
-			llvm::raw_string_ostream errorStream(errorString);
-			diag.print("chig compile", errorStream);
-
-			res.addEntry("EUKN", "Error parsing clang-generated bitcode module",
-				{{"Error Code", modorerror.getError().value()}, {"Error Text", errorString}});
-			return;
-		}
-		llcompiledmod = std::move(*modorerror);
+        
+		llcompiledmod = CToLLVM(cCode, functionName, context().llvmContext());
 
 		auto llfunc = llcompiledmod->getFunction(functocall);
 
