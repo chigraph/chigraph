@@ -59,6 +59,7 @@ public slots:
 	void closeTab(int idx);
 	void run();
 	void newFunction();
+    void newModule();
 
 signals:
 	void workspaceOpened(QString workspace);

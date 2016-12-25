@@ -26,7 +26,7 @@ struct JsonModule : public ChigModule {
 	/// \param json_data The JSON
 	/// \param cont The context
 	/// \param res The result to fill if there are errors
-	JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res);
+    JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res);
 
 	/// Construct a JsonModule from scratch, no json
 	/// \param const The context

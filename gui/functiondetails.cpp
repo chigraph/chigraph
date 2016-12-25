@@ -26,10 +26,10 @@ void FunctionDetails::loadFunction(chig::GraphFunction *func)
     outs->clear();
 
     for(auto in : func->inputs()) {
-        ins->addParam(in.first, QString::fromStdString(in.second));
+        ins->addParam(in.first, QString::fromStdString(in.second), ins->paramCount() - 1);
     }
 
     for(auto out : func->outputs()) {
-        outs->addParam(out.first, QString::fromStdString(out.second));
+        outs->addParam(out.first, QString::fromStdString(out.second), ins->paramCount() - 1);
     }
 }

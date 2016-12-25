@@ -386,15 +386,72 @@ Result GraphFunction::loadGraph()
 	return res;
 }
 
+void GraphFunction::addInput(DataType type, std::string name, int addAfter) {
+    if(addAfter < mInputs.size()) {
+
+        // +1 because emplace adds before
+        mInputs.emplace(mInputs.cbegin() + addAfter + 1, type, name);
+    } else {
+        mInputs.emplace_back(type, name);
+    }
+}
+
+void GraphFunction::removeInput(int idx) {
+    if(idx < mInputs.size()) {
+        mInputs.erase(mInputs.begin() + idx);
+    }
+}
+
+void GraphFunction::modifyInput(int idx, DataType type, boost::optional<std::string> name) {
+    if(idx < mInputs.size()) {
+        if(type.valid()) {
+            mInputs[idx].first = type;
+        }
+        if(name) {
+            mInputs[idx].second = *name;
+        }
+    }
+}
+
+void GraphFunction::addOutput(DataType type, std::string name, int addAfter)
+{
+    if(addAfter < mOutputs.size()) {
+
+        // +1 because emplace adds before
+        mOutputs.emplace(mOutputs.cbegin() + addAfter + 1, type, name);
+    } else {
+        mOutputs.emplace_back(type, name);
+    }
+}
+
+void GraphFunction::removeOutput(int idx)
+{
+    if(idx < mOutputs.size()) {
+        mOutputs.erase(mOutputs.begin() + idx);
+    }
+}
+
+void GraphFunction::modifyOutput(int idx, DataType type, boost::optional<std::string> name)
+{
+    if(idx < mOutputs.size()) {
+        if(type.valid()) {
+            mOutputs[idx].first = type;
+        }
+        if(name) {
+            mOutputs[idx].second = *name;
+        }
+    }
+}
+
 llvm::FunctionType* GraphFunction::functionType() const
 {
-	std::vector<llvm::Type*> arguments;
-	arguments.reserve(inputs().size());
-	std::transform(inputs().begin(), inputs().end(), std::back_inserter(arguments),
-		[](const std::pair<DataType, std::string>& p) { return p.first.llvmType(); });
+    std::vector<llvm::Type*> arguments;
+    arguments.reserve(inputs().size());
+    std::transform(inputs().begin(), inputs().end(), std::back_inserter(arguments),
+                   [](const std::pair<DataType, std::string>& p) { return p.first.llvmType(); });
 
-	// make these pointers
-	std::transform(outputs().begin(), outputs().end(), std::back_inserter(arguments),
+    // make these pointers
+    std::transform(outputs().begin(), outputs().end(), std::back_inserter(arguments),
 		[](auto& tyanddoc) { return llvm::PointerType::get(tyanddoc.first.llvmType(), 0); });
 
 	return llvm::FunctionType::get(

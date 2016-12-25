@@ -47,7 +47,56 @@ ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const 
 			return module.get();
 		}
 	}
-	return nullptr;
+    return nullptr;
+}
+
+JsonModule *Context::newJsonModule(gsl::cstring_span<> fullName)
+{
+    // create the module
+    JsonModule* mod = nullptr;
+    {
+
+        auto uMod = std::make_unique<JsonModule>(*this, gsl::to_string(fullName), gsl::span<std::string>());
+
+        mod = uMod.get();
+        addModule(std::move(uMod));
+    }
+
+    // save it so it can be found on disk
+    {
+        auto path = workspacePath() / (gsl::to_string(fullName) + ".chigmod");
+        fs::ofstream ostr(path);
+        nlohmann::json toFill;
+        Result res = mod->toJSON(&toFill);
+        Expects(res.success); // this should really never fail--it's just default constructed...
+        ostr << toFill;
+    }
+
+    return mod;
+}
+
+std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept
+{
+    std::unordered_set<std::string> moduleList;
+
+    fs::path srcDir = workspacePath() / "src";
+
+    fs::recursive_directory_iterator iter(srcDir, fs::symlink_option::recurse);
+    fs::recursive_directory_iterator end;
+
+    for(; iter != end; ++iter) {
+        fs::path p = *iter;
+
+        // see if it's a chigraph module
+        if(fs::is_regular_file(p) && p.extension() == ".chigmod") {
+            fs::path relPath = fs::relative(p, srcDir);
+
+            moduleList.insert(relPath.string());
+        }
+    }
+
+    return moduleList;
+
 }
 
 chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModule** toFill)

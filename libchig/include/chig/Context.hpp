@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "chig/Fwd.hpp"
@@ -45,6 +46,14 @@ struct Context {
 	/// \return ret_module The module that has the full name \c fullModuleName, nullptr if none were
 	/// found
 	ChigModule* moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept;
+
+    /// Create a new JSONModule with the given full name
+    /// \param fullName The new name
+    JsonModule* newJsonModule(gsl::cstring_span<> fullName);
+
+    /// Get the list of modules in the workspace
+    /// \return The module list
+    std::unordered_set<std::string> listModulesInWorkspace() const noexcept;
 
 	/// Load a module from disk
 	/// \param name The name of the moudle

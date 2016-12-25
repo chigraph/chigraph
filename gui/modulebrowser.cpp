@@ -17,7 +17,7 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent)
 	setAnimated(true);
 	connect(
 		this, &QTreeWidget::itemDoubleClicked, this, [this](QTreeWidgetItem* item, int /*column*/) {
-            if (item->childCount() != 0) { // don't do module folders
+            if (item->childCount() != 0) { // don't do module folders or modules
                 return;
             }
 			QString text = item->text(0);
@@ -32,6 +32,9 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent)
 
 void ModuleBrowser::loadWorkspace(QString path)
 {
+    // clear existing entries
+    clear();
+
 	fs::path srcDir = fs::path(path.toStdString()) / "src";
 	QDirIterator srcIter(path + "/src", QStringList("*.chigmod"), QDir::Files,
 		QDirIterator::Subdirectories | QDirIterator::FollowSymlinks);
@@ -60,10 +63,15 @@ void ModuleBrowser::loadWorkspace(QString path)
 		++iter;
 		for (; iter != relpath.end(); ++iter) {
 			if (children[topLevel].find(iter->string()) == children[topLevel].end()) {
+                bool isChigraphMoodule = fs::path(*iter).extension() == ".chigmod";
 				std::string name = fs::path(*iter).replace_extension("").string();
 				auto newTopLevel =
 					new QTreeWidgetItem(topLevel, QStringList() << QString::fromStdString(name));
+                if(isChigraphMoodule) {
+                    newTopLevel->setIcon(0, QIcon::fromTheme(QStringLiteral("package-available")));
+                } 
 				children[topLevel][name] = newTopLevel;
+                
 				topLevel = newTopLevel;
 			}
 		}

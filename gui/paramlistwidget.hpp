@@ -7,6 +7,7 @@
 #include <QListWidget>
 
 #include <chig/DataType.hpp>
+#include <chig/JsonModule.hpp>
 
 class ParamListWidget : public QWidget {
     Q_OBJECT
@@ -19,8 +20,10 @@ public:
     chig::DataType typeForIdx(int idx) const;
     QString nameForIdx(int idx) const;
 
-    void addParam(chig::DataType type, QString name);
+    void addParam(chig::DataType type, QString name, int after);
     void deleteParam(int idx);
+
+    void modifyParam(int idx, chig::DataType type, QString name);
 
     int paramCount() const;
 
@@ -28,16 +31,20 @@ public:
         mParamList->clear();
     }
 
+    void setModule(chig::JsonModule* mod) {
+        mMod = mod;
+    }
+
 signals:
 
-    void paramTypeChanged(int idx, chig::DataType newType);
-    void paramNameChanged(int idx, QString newName);
+    void paramChanged(int idx, chig::DataType newType, QString newName);
 
     void paramAdded(chig::DataType type, QString name);
     void paramDeleted(int idx);
 
 private:
     QListWidget* mParamList;
+    chig::JsonModule* mMod = nullptr;
 
 
 };
