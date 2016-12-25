@@ -62,7 +62,7 @@ public slots:
     void newModule();
 
 signals:
-	void workspaceOpened(QString workspace);
+	void workspaceOpened(chig::Context& workspace);
 	void openJsonModule(chig::JsonModule* mod);
     void newFunctionOpened(chig::GraphFunction* func);
 

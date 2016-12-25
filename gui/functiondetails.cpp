@@ -24,6 +24,9 @@ void FunctionDetails::loadFunction(chig::GraphFunction *func)
 
     ins->clear();
     outs->clear();
+    
+    ins->setModule(&func->module());
+    outs->setModule(&func->module());
 
     for(auto in : func->inputs()) {
         ins->addParam(in.first, QString::fromStdString(in.second), ins->paramCount() - 1);

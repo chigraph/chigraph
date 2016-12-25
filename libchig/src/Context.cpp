@@ -64,7 +64,8 @@ JsonModule *Context::newJsonModule(gsl::cstring_span<> fullName)
 
     // save it so it can be found on disk
     {
-        auto path = workspacePath() / (gsl::to_string(fullName) + ".chigmod");
+        auto path = workspacePath() / "src" / (gsl::to_string(fullName) + ".chigmod");
+        fs::create_directories(path.parent_path());
         fs::ofstream ostr(path);
         nlohmann::json toFill;
         Result res = mod->toJSON(&toFill);
@@ -91,6 +92,7 @@ std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept
         if(fs::is_regular_file(p) && p.extension() == ".chigmod") {
             fs::path relPath = fs::relative(p, srcDir);
 
+            relPath.replace_extension(""); // remove .chigmod
             moduleList.insert(relPath.string());
         }
     }

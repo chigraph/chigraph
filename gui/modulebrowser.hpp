@@ -7,6 +7,9 @@
 
 class MainWindow;
 
+#include <chig/JsonModule.hpp>
+#include <chig/Context.hpp>
+
 class ModuleBrowser : public QTreeWidget
 {
 	Q_OBJECT
@@ -18,10 +21,12 @@ signals:
 	void moduleSelected(QString name);
 
 public slots:
-	void loadWorkspace(QString path);
-
+	void loadWorkspace(chig::Context& path);
+    
 private:
-	MainWindow* mMainWindow;
+  
+  chig::Context* mContext = nullptr;
+
 };
 
 #endif  // CHIG_GUI_MODULE_BROWSER_HPP

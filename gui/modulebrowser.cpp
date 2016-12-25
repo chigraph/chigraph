@@ -11,47 +11,60 @@
 
 namespace fs = boost::filesystem;
 
+constexpr static int ModuleTreeItemType = 1001;
+
+class ModuleTreeItem : public QTreeWidgetItem  {
+public:
+  ModuleTreeItem(QTreeWidgetItem* parent, const fs::path& path) : QTreeWidgetItem(parent, ModuleTreeItemType), 
+    mName{path} {
+    
+      setText(0, QString::fromStdString(mName.filename().string()));
+      
+  }
+  
+  fs::path mName;
+  
+};
+
 ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent)
 {
 	setColumnCount(1);
 	setAnimated(true);
 	connect(
 		this, &QTreeWidget::itemDoubleClicked, this, [this](QTreeWidgetItem* item, int /*column*/) {
-            if (item->childCount() != 0) { // don't do module folders or modules
+            if (item->type() != ModuleTreeItemType) { // don't do module folders or modules
                 return;
             }
-			QString text = item->text(0);
-			while (item->parent()) {
-				item = item->parent();
-				text = item->text(0) + "/" + text;
-			}
-
-			moduleSelected(text);
+            ModuleTreeItem* casted = static_cast<ModuleTreeItem*>(item);
+            
+            moduleSelected(QString::fromStdString(casted->mName.string()));
 		});
 }
 
-void ModuleBrowser::loadWorkspace(QString path)
+void ModuleBrowser::loadWorkspace(chig::Context& context)
 {
+    mContext = &context;
+    
     // clear existing entries
     clear();
 
-	fs::path srcDir = fs::path(path.toStdString()) / "src";
-	QDirIterator srcIter(path + "/src", QStringList("*.chigmod"), QDir::Files,
-		QDirIterator::Subdirectories | QDirIterator::FollowSymlinks);
+    auto modules = context.listModulesInWorkspace();
 
 	std::unordered_map<std::string, QTreeWidgetItem*> topLevels;
 	std::unordered_map<QTreeWidgetItem*, std::unordered_map<std::string, QTreeWidgetItem*>>
 		children;
 
-	while (srcIter.hasNext()) {
-		fs::path module = srcIter.next().toStdString();
-
-		fs::path relpath = fs::relative(module, srcDir);
-
-		std::string topLevelName = relpath.begin()->string();
+    for(auto moduleName : modules) {
+		fs::path module = moduleName;
+        
+        
+		auto iter = module.begin();
+        
+        // consume the first
+		std::string topLevelName = module.begin()->string();
 		QTreeWidgetItem* topLevel = nullptr;
 		if (topLevels.find(topLevelName) != topLevels.end()) {
-			topLevel = topLevels["topLevelName"];
+			topLevel = topLevels[topLevelName];
 		} else {
 			topLevel = new QTreeWidgetItem(QStringList() << QString::fromStdString(topLevelName));
 			addTopLevelItem(topLevel);
@@ -59,21 +72,35 @@ void ModuleBrowser::loadWorkspace(QString path)
 		}
 
 		// in each path, make sure it exists
-		auto iter = relpath.begin();
 		++iter;
-		for (; iter != relpath.end(); ++iter) {
+		for (; iter != module.end(); ++iter) {
 			if (children[topLevel].find(iter->string()) == children[topLevel].end()) {
-                bool isChigraphMoodule = fs::path(*iter).extension() == ".chigmod";
-				std::string name = fs::path(*iter).replace_extension("").string();
-				auto newTopLevel =
-					new QTreeWidgetItem(topLevel, QStringList() << QString::fromStdString(name));
-                if(isChigraphMoodule) {
+              
+                // see if it's a module
+                bool isChigraphModule;
+                {
+                  auto iterCpy = iter;
+                  std::advance(iterCpy, 1);
+                  isChigraphModule = iterCpy == module.end();
+                }
+                
+                // convert to string
+				std::string name = fs::path(*iter).string();
+                
+				QTreeWidgetItem* newTopLevel;
+                if(isChigraphModule) {
+                    newTopLevel = new ModuleTreeItem(topLevel, module);
                     newTopLevel->setIcon(0, QIcon::fromTheme(QStringLiteral("package-available")));
-                } 
+                } else {
+					newTopLevel = new QTreeWidgetItem(topLevel, QStringList() << QString::fromStdString(name));
+                }
+                // store in cache
 				children[topLevel][name] = newTopLevel;
                 
 				topLevel = newTopLevel;
-			}
+			} else {
+                topLevel = children[topLevel][iter->string()];
+            }
 		}
 	}
 }

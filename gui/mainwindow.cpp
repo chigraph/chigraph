@@ -193,7 +193,7 @@ void MainWindow::openWorkspaceDialog()
 void MainWindow::openWorkspace(QUrl url)
 {
 	ccontext = std::make_unique<chig::Context>(url.toLocalFile().toStdString());
-	workspaceOpened(url.toLocalFile());
+	workspaceOpened(*ccontext);
 }
 
 void MainWindow::openModule(QString path)
@@ -307,5 +307,5 @@ void MainWindow::newModule()
 
     ccontext->newJsonModule(fullName.toStdString());
 
-    moduleBrowser->loadWorkspace(QString::fromStdString(ccontext->workspacePath().string()));
+    moduleBrowser->loadWorkspace(*ccontext);
 }
