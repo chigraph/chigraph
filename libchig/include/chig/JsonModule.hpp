@@ -67,6 +67,10 @@ struct JsonModule : public ChigModule {
 	/// \return The result
 	Result toJSON(nlohmann::json* to_fill) const;
 
+	/// Serialize to disk in the context
+	/// \return The Result
+	Result saveToDisk() const;
+
 	/// Create a new function
 	/// \param name The name of the new function
 	/// \param ins The inputs to the function

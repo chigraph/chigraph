@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
 #include <gsl/gsl>

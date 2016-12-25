@@ -1,12 +1,16 @@
 #include "chig/JsonModule.hpp"
 
-#include <chig/NodeInstance.hpp>
+#include "chig/NodeInstance.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/NameMangler.hpp"
 #include "chig/NodeType.hpp"
 #include "chig/Result.hpp"
 
 #include <llvm/IR/Module.h>
+
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
 
 namespace chig
 {
@@ -116,6 +120,42 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const
 	return res;
 }
 
+Result JsonModule::saveToDisk() const {
+	
+	Result res;
+
+	// can't serialize without a workspace...
+	if(!context().hasWorkspace()) {
+		res.addEntry("EUKN", "Cannot serialize without a worksapce", {});
+		return res;
+	}
+
+	auto modulePath = context().workspacePath() / "src" / (fullName() + ".chigmod");
+
+	try {
+	// create directories that conatain the path
+    fs::create_directories(modulePath.parent_path());
+
+	} catch (std::exception& e) {
+		res.addEntry("EUKN", "Failed to create directoires in workspace", {{"Module File", modulePath.string()}});
+		return res;
+	}
+
+	// serialize
+    nlohmann::json toFill;
+    res += toJSON(&toFill);
+	
+	if(!res) {
+		return res;
+	}
+
+	// save
+    fs::ofstream ostr(modulePath);
+    ostr << toFill;
+    
+	return res;
+}
+
 Result JsonModule::createFunction(gsl::cstring_span<> name,
 	std::vector<std::pair<DataType, std::string> > ins,
 	std::vector<std::pair<DataType, std::string> > outs, GraphFunction** toFill)
@@ -145,6 +185,8 @@ bool JsonModule::removeFunction(gsl::cstring_span<> name)
     }
 
     removeFunction(funcPtr);
+	
+	return true;
 }
 
 void JsonModule::removeFunction(GraphFunction *func)

@@ -62,16 +62,8 @@ JsonModule *Context::newJsonModule(gsl::cstring_span<> fullName)
         addModule(std::move(uMod));
     }
 
-    // save it so it can be found on disk
-    {
-        auto path = workspacePath() / "src" / (gsl::to_string(fullName) + ".chigmod");
-        fs::create_directories(path.parent_path());
-        fs::ofstream ostr(path);
-        nlohmann::json toFill;
-        Result res = mod->toJSON(&toFill);
-        Expects(res.success); // this should really never fail--it's just default constructed...
-        ostr << toFill;
-    }
+	Result r = mod->saveToDisk();
+	Expects(r.success); // It's default constructed, so it really shoudln't fail.
 
     return mod;
 }
