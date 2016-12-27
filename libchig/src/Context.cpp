@@ -10,6 +10,7 @@
 #include <llvm/Support/raw_ostream.h>
 
 #include <boost/filesystem.hpp>
+#include <boost/range.hpp>
 
 #include <chig/CModule.hpp>
 #include <gsl/gsl>
@@ -74,11 +75,11 @@ std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept
 
     fs::path srcDir = workspacePath() / "src";
 
-    fs::recursive_directory_iterator iter(srcDir, fs::symlink_option::recurse);
+    ;
     fs::recursive_directory_iterator end;
 
-    for(; iter != end; ++iter) {
-        fs::path p = *iter;
+    for(const auto& dirEntry : boost::make_iterator_range(fs::recursive_directory_iterator{srcDir, fs::symlink_option::recurse}, {})) {
+        fs::path p = dirEntry;
 
         // see if it's a chigraph module
         if(fs::is_regular_file(p) && p.extension() == ".chigmod") {
@@ -101,7 +102,7 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 	// check for built-in modules
 	if (name == "lang") {
 		auto mod = std::make_unique<LangModule>(*this);
-		if (toFill) {
+		if (toFill != nullptr) {
 			*toFill = mod.get();
 		}
 		addModule(std::move(mod));
@@ -109,7 +110,7 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 	}
 	if (name == "c") {
 		auto mod = std::make_unique<CModule>(*this);
-		if (toFill) {
+		if (toFill != nullptr) {
 			*toFill = mod.get();
 		}
 		addModule(std::move(mod));  // we don't care if it's actually added
@@ -141,7 +142,7 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 
 	JsonModule* toFillJson;
 	res += addModuleFromJson(name, readJson, &toFillJson);
-	if (toFill) {
+	if (toFill != nullptr) {
 		*toFill = toFillJson;
 	}
 
@@ -157,9 +158,9 @@ Result Context::addModuleFromJson(
 	{
 		auto mod = moduleByFullName(fullName);
 		if (mod != nullptr) {
-			if (toFill) {
+			if (toFill != nullptr) {
 				auto casted = dynamic_cast<JsonModule*>(mod);
-				if (casted) {
+				if (casted != nullptr) {
 					*toFill = casted;
 				}
 			}
@@ -182,9 +183,6 @@ Result Context::addModuleFromJson(
 		cPtr = jmod.get();
 		bool added = addModule(std::move(jmod));
 		Expects(added);  // it really should be added
-	}
-	if (!res) {
-		return res;
 	}
 
 	// load graphs

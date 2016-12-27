@@ -39,7 +39,7 @@ struct CFuncNode : NodeType {
 			error = std::string{
 				std::istreambuf_iterator<char>(clangexe.err()), std::istreambuf_iterator<char>()};
 		} catch (std::exception& e) {
-			std::cerr << e.what() << std::endl;
+            res.addEntry("EUKN", "Failed to run clang and generate bitcode", {{"Error", e.what()}});
 			return;
 		}
 

@@ -383,10 +383,16 @@ Result GraphFunction::loadGraph()
 	Result res;
 	mGraph = Graph(context(), mSource, res);
 
-	return res;
+    return res;
 }
 
-void GraphFunction::addInput(DataType type, std::string name, int addAfter) {
+Result GraphFunction::validateGraph() const
+{
+    // make sure all connections connect back
+    
+}
+
+void GraphFunction::addInput(const DataType& type, std::string name, int addAfter) {
     if(addAfter < mInputs.size()) {
 
         // +1 because emplace adds before
@@ -402,7 +408,7 @@ void GraphFunction::removeInput(int idx) {
     }
 }
 
-void GraphFunction::modifyInput(int idx, DataType type, boost::optional<std::string> name) {
+void GraphFunction::modifyInput(int idx, const DataType& type, boost::optional<std::string> name) {
     if(idx < mInputs.size()) {
         if(type.valid()) {
             mInputs[idx].first = type;
@@ -413,14 +419,14 @@ void GraphFunction::modifyInput(int idx, DataType type, boost::optional<std::str
     }
 }
 
-void GraphFunction::addOutput(DataType type, std::string name, int addAfter)
+void GraphFunction::addOutput(const DataType& type, std::string name, int addAfter)
 {
     if(addAfter < mOutputs.size()) {
 
         // +1 because emplace adds before
-        mOutputs.emplace(mOutputs.cbegin() + addAfter + 1, type, name);
+        mOutputs.emplace(mOutputs.cbegin() + addAfter + 1, type, std::move(name));
     } else {
-        mOutputs.emplace_back(type, name);
+        mOutputs.emplace_back(type, std::move(name));
     }
 }
 
@@ -431,7 +437,7 @@ void GraphFunction::removeOutput(int idx)
     }
 }
 
-void GraphFunction::modifyOutput(int idx, DataType type, boost::optional<std::string> name)
+void GraphFunction::modifyOutput(int idx, const DataType& type, boost::optional<std::string> name)
 {
     if(idx < mOutputs.size()) {
         if(type.valid()) {
@@ -446,14 +452,16 @@ void GraphFunction::modifyOutput(int idx, DataType type, boost::optional<std::st
 llvm::FunctionType* GraphFunction::functionType() const
 {
     std::vector<llvm::Type*> arguments;
-    arguments.reserve(inputs().size());
-    std::transform(inputs().begin(), inputs().end(), std::back_inserter(arguments),
-                   [](const std::pair<DataType, std::string>& p) { return p.first.llvmType(); });
-
+    arguments.reserve(inputs().size() + outputs().size());
+    for(const auto& p : inputs()) {
+        arguments.push_back(p.first.llvmType());
+    }
+    
     // make these pointers
-    std::transform(outputs().begin(), outputs().end(), std::back_inserter(arguments),
-		[](auto& tyanddoc) { return llvm::PointerType::get(tyanddoc.first.llvmType(), 0); });
-
+    for (const auto& p : outputs()) {
+        arguments.push_back(llvm::PointerType::get(p.first.llvmType(), 0));
+    }
+    
 	return llvm::FunctionType::get(
 		llvm::IntegerType::getInt32Ty(context().llvmContext()), arguments, false);
 }

@@ -94,10 +94,10 @@ struct Context {
 	/// \return The workspace path
 	boost::filesystem::path workspacePath() const { return mWorkspacePath; }
 
-	/// Check if this context has a workspace bound to it -- same as workspacePath().empty()
+    /// Check if this context has a workspace bound to it -- same as !workspacePath().empty()
 	/// \return If it has a workspace
 	bool hasWorkspace() const noexcept {
-		return workspacePath().empty();
+        return !workspacePath().empty();
 	} 
 
 	/// Compile a module to a \c llvm::Module
