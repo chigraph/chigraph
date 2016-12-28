@@ -35,14 +35,17 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 	connect(this, &QWidget::customContextMenuRequested, this, [this](QPoint p) {
 		QPoint global = mapToGlobal(p);
 
+		
+		QListWidgetItem* funcItem = item(indexAt(p).row());
+		
+		// if we didn't right click on an item, then don't do anything
+		if(funcItem == nullptr) {
+			return;
+		}
+		
 		QMenu contextMenu;
 		contextMenu.addAction(
-			QIcon::fromTheme(QStringLiteral("edit-delete")), i18n("Delete"), [this, p] {
-				QListWidgetItem* funcItem = item(indexAt(p).row());
-
-				if (!funcItem) {
-					return;
-				}
+			QIcon::fromTheme(QStringLiteral("edit-delete")), i18n("Delete"), [this, p, funcItem] {
 
 				Expects(funcItem->type() == QListWidgetItem::UserType);
 

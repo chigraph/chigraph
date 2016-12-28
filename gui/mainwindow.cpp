@@ -304,7 +304,12 @@ void MainWindow::newModule()
 	// TODO: validator
 	auto fullName = QInputDialog::getText(this, i18n("New Module"), i18n("Full Module Name"));
 
-	ccontext->newJsonModule(fullName.toStdString());
+	auto mod = ccontext->newJsonModule(fullName.toStdString());
+	
+	// add lang and c
+	mod->addDependency("lang");
+	mod->addDependency("c");
 
+	// refresh modules
 	moduleBrowser->loadWorkspace(*ccontext);
 }

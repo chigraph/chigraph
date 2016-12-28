@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QListWidgetItem>
+#include <QLineEdit>
 #include <QPushButton>
 
 #include <KLocalizedString>
@@ -79,11 +80,21 @@ QStringList createTypeOptions(chig::JsonModule* mod)
 	return ret;
 }
 
-std::pair<chig::DataType, QString> getDataNamePair(QWidget* parent, chig::JsonModule* mod)
+boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(QWidget* parent, chig::JsonModule* mod)
 {
+	bool ok;
 	auto qualtype =
-		QInputDialog::getItem(parent, i18n("Select Type"), i18n("Type"), createTypeOptions(mod));
-	auto name = QInputDialog::getText(parent, i18n("Parameter Name"), i18n("Name"));
+		QInputDialog::getItem(parent, i18n("Select Type"), i18n("Type"), createTypeOptions(mod), 0, true, &ok);
+		
+	// if the user pressed cancel then just return
+	if(!ok) {
+		return {};
+	}
+		
+	auto name = QInputDialog::getText(parent, i18n("Parameter Name"), i18n("Name"), QLineEdit::Normal, {}, &ok);
+	if(!ok) {
+		return {};
+	}
 
 	std::string module, type;
 	std::tie(module, type) = chig::parseColonPair(qualtype.toStdString());
@@ -95,7 +106,7 @@ std::pair<chig::DataType, QString> getDataNamePair(QWidget* parent, chig::JsonMo
 		return {};
 	}
 
-	return {dtype, name};
+	return std::make_pair(dtype, name);
 }
 
 ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(parent)
@@ -115,8 +126,13 @@ ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(paren
 
 			chig::DataType type;
 			QString name;
-			std::tie(type, name) = getDataNamePair(this, mMod);
-
+			auto opt = getDataNamePair(this, mMod);
+			if(!opt) {
+				return;
+			}
+			
+			std::tie(type, name) = *opt;
+			
 			auto selected = mParamList->selectedItems();
 
 			if (selected.size() != 0) {
@@ -150,8 +166,14 @@ ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(paren
 
 		chig::DataType type;
 		QString name;
-		std::tie(type, name) = getDataNamePair(this, mMod);
-
+		auto opt = getDataNamePair(this, mMod);
+		
+		if(!opt) {
+			return;
+		}
+		
+		std::tie(type, name) = *opt;
+		
 		modifyParam(row, type, name);
 
 	});
