@@ -90,19 +90,27 @@ std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs)
 		}
 		if (lgraph["nodes"].dump(-1) != rgraph["nodes"].dump(-1)) {
 			return "graph nodes in graph #" + std::to_string(iter) +
-				   " not equal; \nserialized: \n" + lgraph["nodes"].dump(-1) + "\n\noriginal:\n " +
+				   " not equal; \nserialized: \n" + lgraph["nodes"].dump(-1) + "\n\noriginal:\n" +
 				   rgraph["nodes"].dump(-1);
 		}
 		if (lgraph["type"] != rgraph["type"]) {
 			return "graph name in graph #" + std::to_string(iter) + "not equal; serialized: " +
 				   lgraph["type"].dump(-1) + "  original: " + rgraph["type"].dump(-1);
 		}
-		if (lgraph["inputs"] != rgraph["inputs"]) {
-			return "graph inputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
+		if (lgraph["data_inputs"] != rgraph["data_inputs"]) {
+			return "graph data inputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
 				   lgraph["inputs"].dump(-1) + "  original: " + rgraph["inputs"].dump(-1);
 		}
-		if (lgraph["outputs"] != rgraph["outputs"]) {
-			return "graph outputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
+		if (lgraph["data_outputs"] != rgraph["data_outputs"]) {
+			return "graph data outputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
+				   lgraph["outputs"].dump(-1) + "  original: " + rgraph["outputs"].dump(-1);
+		}
+		if (lgraph["exec_inputs"] != rgraph["exec_inputs"]) {
+			return "graph exec inputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
+				   lgraph["inputs"].dump(-1) + "  original: " + rgraph["inputs"].dump(-1);
+		}
+		if (lgraph["exec_outputs"] != rgraph["exec_outputs"]) {
+			return "graph exec outputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
 				   lgraph["outputs"].dump(-1) + "  original: " + rgraph["outputs"].dump(-1);
 		}
 	}
@@ -282,16 +290,26 @@ int main(int argc, char** argv)
 
 	// serialize deserialize
 	{
+		Result r;
+		
 		Context c{moduleDir};
-		c.addModule(std::make_unique<LangModule>(c));
-		c.addModule(std::make_unique<CModule>(c));
+		std::string fullName = (fs::relative(moduleDir, c.workspacePath() / "src") / "main").string();
 
 		// test serialization and deserialization
-		Result r;
-		auto Udeserialized = std::make_unique<JsonModule>(c, "main", chigmodule, &r);
-		auto deserialized = Udeserialized.get();
-		c.addModule(std::move(Udeserialized));
-		deserialized->loadGraphs();
+		JsonModule* deserialized;
+		{
+			ChigModule* cMod = nullptr;
+			r += c.loadModule(fullName, &cMod);
+			
+			if(!r) {
+				std::cerr << "Error loading module \n\n" << r << std::endl;
+				return 1;
+			}
+			
+			
+			deserialized = dynamic_cast<JsonModule*>(cMod);
+		}
+		
 
 		nlohmann::json serializedmodule;
 		r += deserialized->toJSON(&serializedmodule);

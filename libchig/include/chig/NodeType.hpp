@@ -87,10 +87,10 @@ struct NodeType {
 
 	/// Get the execution inputs for the node
 	/// \return The names of the inputs. The size of this vector is the size of inputs.
-	const std::vector<std::string>& execInputs() const { return mExecInputs; }
+    gsl::span<const std::string> execInputs() const { return mExecInputs; }
 	/// Get the execution outputs for the node
 	/// \return The names of the outputs. The size is the input count.
-	const std::vector<std::string>& execOutputs() const { return mExecOutputs; }
+    gsl::span<const std::string> execOutputs() const { return mExecOutputs; }
 protected:
 	void setDataInputs(std::vector<std::pair<DataType, std::string>> newInputs)
 	{

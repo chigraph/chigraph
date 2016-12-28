@@ -29,7 +29,9 @@ struct GraphFunction {
 	/// \param name The name of the function
 	GraphFunction(JsonModule& mod, gsl::cstring_span<> name,
 		std::vector<std::pair<DataType, std::string>> ins,
-		std::vector<std::pair<DataType, std::string>> outs);
+        std::vector<std::pair<DataType, std::string>> outs,
+                  std::vector<std::string> execIns,
+                  std::vector<std::string> execOuts);
 
 	/// Destructor
 	~GraphFunction();
@@ -80,19 +82,20 @@ struct GraphFunction {
 	/// \param y The y location of the node
 	/// \param id The node ID
 	/// \param toFill The NodeInstance to fill to, optional
-	Result insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
-		const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
-		NodeInstance** toFill = nullptr)
-	{
-		std::unique_ptr<NodeType> nodeType;
-		Result res = context().nodeTypeFromModule(moduleName, typeName, typeJSON, &nodeType);
+    Result insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+        const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
+        NodeInstance** toFill = nullptr);
 
-		if (!res) {
-			return res;
-		}
-		res += insertNode(std::move(nodeType), x, y, id, toFill);
-		return res;
-	}
+    /// Create a fresh NodeType for an entry
+    /// \param toFill The NodeType pointer to fill
+    /// \return The result
+    Result createEntryNodeType(std::unique_ptr<NodeType>* toFill);
+
+
+    /// Create a fresh NodeType for an exit
+    /// \param toFill The NodeType pointer to fill
+    /// \return The result
+    Result createExitNodeType(std::unique_ptr<NodeType>* toFill);
 
 	/// Creates an entry node if it doesn't already exist, else just return it
 	/// \param x The x coordinate of the new entry, or changes the existing entry node to be at this
@@ -103,21 +106,7 @@ struct GraphFunction {
 	/// \param toFill The NodeInstance* to fill, optional
 	/// \return The Result
 	Result getOrInsertEntryNode(
-		float x, float y, gsl::cstring_span<> id, NodeInstance** toFill = nullptr)
-	{
-		if (auto ent = entryNode()) {
-			if (toFill) {
-				*toFill = ent;
-			}
-			return {};
-		}
-
-		nlohmann::json entry = nlohmann::json::array();
-		for (auto in : inputs()) {
-			entry.push_back({{in.second, in.first.qualifiedName()}});
-		}
-		return insertNode("lang", "entry", entry, x, y, id, toFill);
-	}
+		float x, float y, gsl::cstring_span<> id, NodeInstance** toFill = nullptr);
 
 	/// Get the LLVM function type for the function
 	/// \return The function type
@@ -131,45 +120,108 @@ struct GraphFunction {
 	/// \return The result
 	Result validateGraph() const;
 
-	/// Get the context
-	/// \return The context
-	Context& context() const { return *mContext; }
-	/// Get the name of the function
-	/// \return The name of the function
-	std::string name() const { return mName; }
-	/// Get the function inputs in the format {type, docstring}
+
+
+    // Data I/O modifiers
+    /////////////////////
+
+    // Data input modifiers
+
+    /// Get the function data inputs in the format {type, docstring}
 	/// \return The inputs
-	gsl::span<const std::pair<DataType, std::string>> inputs() const { return mInputs; }
+    const std::vector<std::pair<DataType, std::string>>& dataInputs() const { return mDataInputs; }
 	/// Add an input to the end of the argument list
 	/// \param type The new input type
 	/// \param name The name of the input (just for documentation)
-	void addInput(const DataType& type, std::string name, int addAfter);
+    void addDataInput(const DataType& type, std::string name, int addAfter);
 
 	/// Remove an input from the argument list
 	/// \param idx The index to delete
-	void removeInput(int idx);
+    void removeDataInput(int idx);
 	/// Modify an input (change it's type and docstring)
 	/// \param idx The index to change
 	/// \param type The new type. Use {} to keep it's current type
 	/// \param name The new name. Use {} to keep it's current name
-	void modifyInput(int idx, const DataType& type, boost::optional<std::string> name);
+    void modifyDataInput(int idx, const DataType& type, boost::optional<std::string> name);
 
-	/// Get the function outputs in the format {type, docstring}
+    // Data output modifiers
+
+
+    /// Get the function data outputs in the format {type, docstring}
 	/// \return The outputs
-	gsl::span<const std::pair<DataType, std::string>> outputs() const { return {mOutputs}; }
-	/// Add an output to the end of the argument list
+    const std::vector<std::pair<DataType, std::string>>& dataOutputs() const { return mDataOutputs; }
+    /// Add an data output to the end of the argument list
 	/// \param type The new output type
 	/// \param name The name of the output (just for documentation)
-	void addOutput(const DataType& type, std::string name, int addAfter);
+    void addDataOutput(const DataType& type, std::string name, int addAfter);
 
-	/// Remove an output from the argument list
+    /// Remove an data output from the argument list
 	/// \param idx The index to delete
-	void removeOutput(int idx);
-	/// Modify an output (change it's type and docstring)
+    void removeDataOutput(int idx);
+    /// Modify an data output (change it's type and docstring)
 	/// \param idx The index to change
 	/// \param type The new type. Use {} to keep it's current type
 	/// \param name The new name. Use {} to keep it's current name
-	void modifyOutput(int idx, const DataType& type, boost::optional<std::string> name);
+    void modifyDataOutput(int idx, const DataType& type, boost::optional<std::string> name);
+
+
+
+    // Exec I/O modifiers
+    /////////////////////
+
+
+    // Exec input modifiers
+
+
+    /// Get the function exec inputs
+    /// \return The exec outputs
+    const std::vector<std::string>& execInputs() const { return mExecInputs; }
+
+    /// Add an exec input to the end of the argument list
+    /// \param name The name of the input (just for documentation)
+    void addExecInput(gsl::cstring_span<> name, int addAfter);
+
+    /// Remove an exec input from the argument list
+    /// \param idx The index to delete
+    void removeExecInput(int idx);
+
+    /// Modify an exec input (change docstring)
+    /// \param idx The index to change
+    /// \param name The new name.
+    void modifyExecInput(int idx, gsl::cstring_span<> name);
+
+
+
+    // Exec output modifiers
+
+
+    /// Get the function exec outputs
+    /// \return The exec outputs
+    const std::vector<std::string>& execOutputs() const { return mExecOutputs; }
+
+    /// Add an exec output to the end of the argument list
+    /// \param name The name of the output (just for documentation)
+    void addExecOutput(gsl::cstring_span<> name, int addAfter);
+
+    /// Remove an exec output from the argument list
+    /// \param idx The index to delete
+    void removeExecOutput(int idx);
+
+    /// Modify an exec output (change docstring)
+    /// \param idx The index to change
+    /// \param name The new name.
+    void modifyExecOutput(int idx, gsl::cstring_span<> name);
+
+    // Various getters
+    //////////////////
+
+
+    /// Get the context
+    /// \return The context
+    Context& context() const { return *mContext; }
+    /// Get the name of the function
+    /// \return The name of the function
+    std::string name() const { return mName; }
 
 	/// Get the graph
 	/// \return The graph
@@ -179,15 +231,21 @@ struct GraphFunction {
 	/// Get the JsonModule that contains this GraphFunction
 	/// \return The JsonModule.
 	JsonModule& module() const { return *mModule; }
+
 private:
+    void updateEntriesAndExits(); // update the entry node to work with
+
 	JsonModule* mModule;
 	Context* mContext;
 	std::string mName;  /// the name of the function
 
-	std::vector<std::pair<DataType, std::string>> mInputs;
-	std::vector<std::pair<DataType, std::string>> mOutputs;
+    std::vector<std::pair<DataType, std::string>> mDataInputs;
+    std::vector<std::pair<DataType, std::string>> mDataOutputs;
 
-	nlohmann::json mSource;
+    std::vector<std::string> mExecInputs;
+    std::vector<std::string> mExecOutputs;
+
+    nlohmann::json mSource = {};
 	Graph mGraph;
 };
 

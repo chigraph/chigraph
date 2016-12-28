@@ -121,7 +121,7 @@ TEST_CASE("LangModule", "[module]")
 
 			res = c.nodeTypeFromModule("lang", "entry",
 				nlohmann::json::parse(
-					R"end(   [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}]   )end"),
+					R"end( { "data": [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}], "exec": [""]  } )end"),
 				&entryNode);
 			REQUIRE(!!res);
 

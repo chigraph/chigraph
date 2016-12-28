@@ -23,8 +23,8 @@
 						"type": "string",
 						"pattern": "function"
 					},
-					"inputs": {
-						"description": "The input types",
+					"data_inputs": {
+						"description": "The input data types",
 						"type": "array",
 						"items": {
 							"type": "object",
@@ -37,8 +37,8 @@
 							"minProperties": 1
 						}
 					},
-					"inputs": {
-						"description": "The input types",
+					"data_outputs": {
+						"description": "The output data types",
 						"type": "array",
 						"items": {
 							"type": "object",
@@ -49,6 +49,20 @@
 							},
 							"maxProperties": 1,
 							"minProperties": 1
+						}
+					},
+					"exec_inputs": {
+						"description": "The input exec names",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"exec_outputs": {
+						"description": "The input exec names",
+						"type": "array",
+						"items": {
+							"type": "string"
 						}
 					},
 					"name": {

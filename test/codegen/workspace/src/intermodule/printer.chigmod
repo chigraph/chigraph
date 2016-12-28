@@ -1,1 +1,108 @@
-{"dependencies":["c","lang"],"graphs":[{"connections":[{"input":["puts",0],"output":["exit",0],"type":"exec"},{"input":["entry",0],"output":["puts",0],"type":"data"},{"input":["puts",0],"output":["exit",0],"type":"data"},{"input":["entry",0],"output":["puts",0],"type":"exec"}],"inputs":[{"str":"lang:i8*"}],"name":"docall","nodes":{"entry":{"data":[{"str":"lang:i8*"}],"location":[-269,-10],"type":"lang:entry"},"exit":{"data":[{"out":"lang:i32"}],"location":[321,28],"type":"lang:exit"},"puts":{"data":{"code":"#include <stdio.h> \n int doputs(const char* mystr) { return puts(mystr); }","function":"doputs"},"location":[12,13],"type":"c:func"}},"outputs":[{"out":"lang:i32"}],"type":"function"}],"name":"printer"}
+{
+  "dependencies":[
+    "c",
+    "lang"
+  ],
+  "graphs":[
+    {
+      "connections":[
+        {
+          "input":[
+            "puts",
+            0
+          ],
+          "output":[
+            "exit",
+            0
+          ],
+          "type":"exec"
+        },
+        {
+          "input":[
+            "entry",
+            0
+          ],
+          "output":[
+            "puts",
+            0
+          ],
+          "type":"data"
+        },
+        {
+          "input":[
+            "puts",
+            0
+          ],
+          "output":[
+            "exit",
+            0
+          ],
+          "type":"data"
+        },
+        {
+          "input":[
+            "entry",
+            0
+          ],
+          "output":[
+            "puts",
+            0
+          ],
+          "type":"exec"
+        }
+      ],
+      "data_inputs":[
+        {
+          "str":"lang:i8*"
+        }
+      ],
+      "name":"docall",
+      "nodes":{
+        "entry":{
+          "data":{"data": [
+            {
+              "str":"lang:i8*"
+            }
+          ], "exec": [""]},
+          "location":[
+            -269,
+            -10
+          ],
+          "type":"lang:entry"
+        },
+        "exit":{
+          "data":{"data": [
+            {
+              "out":"lang:i32"
+            }
+          ], "exec": [""]},
+          "location":[
+            321,
+            28
+          ],
+          "type":"lang:exit"
+        },
+        "puts":{
+          "data":{
+            "code":"#include <stdio.h> \n int doputs(const char* mystr) { return puts(mystr); }",
+            "function":"doputs"
+          },
+          "location":[
+            12,
+            13
+          ],
+          "type":"c:func"
+        }
+      },
+      "data_outputs":[
+        {
+          "out":"lang:i32"
+        }
+      ],
+      "exec_inputs": [""],
+      "exec_outputs": [""],
+      "type":"function"
+    }
+  ],
+  "name":"printer"
+}

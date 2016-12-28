@@ -18,17 +18,20 @@ TEST_CASE("JsonSerializer", "[json]")
 		REQUIRE(!!c.loadModule("lang"));
 		LangModule* lmod = static_cast<LangModule*>(c.moduleByName("lang"));
 		REQUIRE(lmod != nullptr);
-
-		auto deps = std::vector<std::string>{"lang"};
-		auto jmod = std::make_unique<JsonModule>(
-			c, "main", gsl::span<std::string>{deps.data(),
-						   static_cast<gsl::span<std::string>::index_type>(deps.size())});
-		GraphFunction func(*jmod, "hello", {}, {});
-
+		
+		auto jmod = c.newJsonModule("main/main");
+		jmod->addDependency("lang");
+		REQUIRE(jmod != nullptr);
+		
+		GraphFunction* func;
+		bool created = jmod->createFunction("hello", {}, {}, {""}, {""}, &func);
+		REQUIRE(created == true);
+		REQUIRE(func != nullptr);
+		
 		auto requireWorks = [&](nlohmann::json expected) {
 			nlohmann::json ret;
 
-			res = func.toJSON(&ret);
+			res = func->toJSON(&ret);
 
 			REQUIRE(!!res);
 			REQUIRE(ret == expected);
@@ -43,8 +46,10 @@ TEST_CASE("JsonSerializer", "[json]")
 					"name": "hello",
 					"nodes": {},
 					"connections": [],
-                    "inputs": [],
-                    "outputs": []
+                    "data_inputs": [],
+                    "data_outputs": [],
+					"exec_inputs": [""],
+					"exec_outputs": [""]
 				}
 			)ENDJSON"_json;
 
@@ -58,10 +63,10 @@ TEST_CASE("JsonSerializer", "[json]")
 
 			std::unique_ptr<NodeType> toFill;
 			Result res =
-				c.nodeTypeFromModule("lang", "entry", R"([{"in1": "lang:i1"}])"_json, &toFill);
+				c.nodeTypeFromModule("lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
 			REQUIRE(!!res);
 			NodeInstance* entry;
-			res += func.insertNode(std::move(toFill), 32, 32, "entry", &entry);
+			res += func->insertNode(std::move(toFill), 32, 32, "entry", &entry);
 			REQUIRE(!!res);
 
 			THEN("The JSON should be correct")
@@ -74,14 +79,17 @@ TEST_CASE("JsonSerializer", "[json]")
 							"entry": {
 								"type": "lang:entry",
 								"location": [32.0,32.0],
-								"data": [
-									{"in1": "lang:i1"}
-								]
+								"data": {
+									"data": [{"in1": "lang:i1"}],
+									"exec": [""]
+								}
 							}
 						},
 						"connections": [],
-                        "inputs": [],
-                        "outputs": []
+                    "data_inputs": [],
+                    "data_outputs": [],
+					"exec_inputs": [""],
+					"exec_outputs": [""]
 					}
 					)ENDJSON"_json;
 
@@ -94,7 +102,7 @@ TEST_CASE("JsonSerializer", "[json]")
 				res = c.nodeTypeFromModule("lang", "if", {}, &ifType);
 				REQUIRE(!!res);
 				NodeInstance* ifNode;
-				res += func.insertNode(std::move(ifType), 44.f, 23.f, "if", &ifNode);
+				res += func->insertNode(std::move(ifType), 44.f, 23.f, "if", &ifNode);
 				REQUIRE(!!res);
 
 				THEN("The JSON should be correct")
@@ -107,9 +115,10 @@ TEST_CASE("JsonSerializer", "[json]")
 								"entry": {
 									"type": "lang:entry",
 									"location": [32.0,32.0],
-									"data": [
-										{"in1": "lang:i1"}
-									]
+									"data": {
+										"data": [{"in1": "lang:i1"}],
+										"exec": [""]
+									}
 								},
 								"if": {
 									"type": "lang:if",
@@ -118,8 +127,10 @@ TEST_CASE("JsonSerializer", "[json]")
 								}
 							},
 							"connections": [],
-                            "inputs": [],
-                            "outputs": []
+                    "data_inputs": [],
+                    "data_outputs": [],
+					"exec_inputs": [""],
+					"exec_outputs": [""]
 						}
 						)ENDJSON"_json;
 
@@ -140,9 +151,10 @@ TEST_CASE("JsonSerializer", "[json]")
 									"entry": {
 										"type": "lang:entry",
 										"location": [32.0,32.0],
-										"data": [
-											{"in1": "lang:i1"}
-										]
+										"data": {
+											"data": [{"in1": "lang:i1"}],
+											"exec": [""]
+										}
 									},
 									"if": {
 										"type": "lang:if",
@@ -157,8 +169,10 @@ TEST_CASE("JsonSerializer", "[json]")
 										"output": ["if",0]
 									}
 								],
-                                "inputs": [],
-                                "outputs": []
+								"data_inputs": [],
+								"data_outputs": [],
+								"exec_inputs": [""],
+								"exec_outputs": [""]
 							}
 						)ENDJSON"_json;
 
@@ -181,9 +195,10 @@ TEST_CASE("JsonSerializer", "[json]")
 									"entry": {
 										"type": "lang:entry",
 										"location": [32.0,32.0],
-										"data": [
-											{"in1": "lang:i1"}
-										]
+										"data": {
+											"data": [{"in1": "lang:i1"}],
+											"exec": [""]
+										}
 									},
 									"if": {
 										"type": "lang:if",
@@ -203,9 +218,10 @@ TEST_CASE("JsonSerializer", "[json]")
 										"output": ["if",0]
 									}
 								],
-								
-                                "inputs": [],
-                                "outputs": []
+								"data_inputs": [],
+								"data_outputs": [],
+								"exec_inputs": [""],
+								"exec_outputs": [""]
 								})ENDJSON"_json;
 
 							requireWorks(correctJSON);

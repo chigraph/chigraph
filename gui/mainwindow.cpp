@@ -191,6 +191,7 @@ void MainWindow::openWorkspaceDialog()
 void MainWindow::openWorkspace(QUrl url)
 {
 	ccontext = std::make_unique<chig::Context>(url.toLocalFile().toStdString());
+	
 	workspaceOpened(*ccontext);
 }
 
@@ -207,6 +208,7 @@ void MainWindow::openModule(QString path)
 	}
 
 	module = static_cast<chig::JsonModule*>(cmod);
+	setWindowTitle(QString::fromStdString(module->fullName()));
 
 	// call signal
 	openJsonModule(module);
@@ -288,7 +290,10 @@ void MainWindow::newFunction()
 		return;
 	}
 
-	module->createFunction(newName.toStdString(), {}, {});  // TODO: inputs
+	chig::GraphFunction* func;
+    module->createFunction(newName.toStdString(), {}, {}, {""}, {""}, &func);
+	func->getOrInsertEntryNode(0, 0, "entry");
+	
 	functionpane->updateModule(module);
 }
 
@@ -309,7 +314,12 @@ void MainWindow::newModule()
 	// add lang and c
 	mod->addDependency("lang");
 	mod->addDependency("c");
+	
+	mod->saveToDisk();
 
 	// refresh modules
 	moduleBrowser->loadWorkspace(*ccontext);
+	
+	// then load the module
+	openModule(QString::fromStdString(mod->fullName()));
 }

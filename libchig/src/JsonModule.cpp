@@ -152,28 +152,32 @@ Result JsonModule::saveToDisk() const
 
 	// save
 	fs::ofstream ostr(modulePath);
-	ostr << toFill;
+	ostr << toFill.dump(2);
 
 	return res;
 }
 
-Result JsonModule::createFunction(gsl::cstring_span<> name,
-	std::vector<std::pair<DataType, std::string> > ins,
-	std::vector<std::pair<DataType, std::string> > outs, GraphFunction** toFill)
+bool JsonModule::createFunction(gsl::cstring_span<> name,
+    std::vector<std::pair<DataType, std::string> > dataIns,
+    std::vector<std::pair<DataType, std::string> > dataOuts,
+                                std::vector<std::string> execIns,
+                                std::vector<std::string> execOuts, GraphFunction** toFill)
 {
-	Result res;
 	// make sure there already isn't one by this name
-	if (graphFuncFromName(name) != nullptr) {
-		res.addEntry("EUKN", "Function already exists", {{"Requested Name", gsl::to_string(name)}});
-		return res;
+	auto foundFunc = graphFuncFromName(name);
+	if (foundFunc != nullptr) {
+		if(toFill != nullptr) {
+			*toFill = foundFunc;
+		}
+		return false;
 	}
 
-	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, ins, outs));
+    mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, std::move(dataIns), std::move(dataOuts), std::move(execIns), std::move(execOuts)));
 	if (toFill != nullptr) {
 		*toFill = mFunctions[mFunctions.size() - 1].get();
 	}
 
-	return res;
+	return true;
 }
 
 bool JsonModule::removeFunction(gsl::cstring_span<> name)
@@ -264,15 +268,16 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 		return;
 	}
 
-	setDataOutputs({mygraph->outputs().begin(), mygraph->outputs().end()});
+	
+    setDataOutputs(mygraph->dataOutputs());
 
-	setDataInputs({mygraph->inputs().begin(), mygraph->inputs().end()});
+    setDataInputs(mygraph->dataInputs());
 
-	setExecInputs({""});
-	setExecOutputs({""});
+    setExecInputs(mygraph->execInputs());
+    setExecOutputs(mygraph->execOutputs());
 }
 
-Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod,
+Result JsonFuncCallNodeType::codegen(size_t execInputID, llvm::Module* mod,
 	llvm::Function* /*f*/, const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	const gsl::span<llvm::BasicBlock*> outputBlocks) const
 {
@@ -287,11 +292,22 @@ Result JsonFuncCallNodeType::codegen(size_t /*execInputID*/, llvm::Module* mod,
 			"EUKN", "Could not find function in llvm module", {{"Requested Function", name()}});
 		return res;
 	}
-
-	// TODO: output blocks
-	builder.CreateCall(func, {io.data(), (size_t)io.size()});
-
-	builder.CreateBr(outputBlocks[0]);
+	
+	// add the execInputID to the argument list
+	std::vector<llvm::Value*> passingIO;
+	passingIO.push_back(llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), execInputID));
+	
+	std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
+	
+	auto ret = builder.CreateCall(func, passingIO, "call_function");
+	
+	// create switch on return
+	auto switchInst = builder.CreateSwitch(ret, outputBlocks[0]); // TODO: better default
+	
+	auto id = 0ull;
+	for(auto out : outputBlocks) {
+		switchInst->addCase(llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id), out);
+	}
 
 	return res;
 }

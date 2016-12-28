@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QTreeWidgetItem>
+#include <QHeaderView>
 
 #include "mainwindow.hpp"
 
@@ -20,6 +21,7 @@ public:
 		: QTreeWidgetItem(parent, ModuleTreeItemType), mName{path}
 	{
 		setText(0, QString::fromStdString(mName.filename().string()));
+		
 	}
 
 	fs::path mName;
@@ -29,6 +31,8 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent)
 {
 	setColumnCount(1);
 	setAnimated(true);
+	setSortingEnabled(true);
+	header()->close();
 	connect(
 		this, &QTreeWidget::itemDoubleClicked, this, [this](QTreeWidgetItem* item, int /*column*/) {
 			if (item->type() != ModuleTreeItemType) {  // don't do module folders or modules
@@ -43,7 +47,7 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent)
 void ModuleBrowser::loadWorkspace(chig::Context& context)
 {
 	mContext = &context;
-
+	
 	// clear existing entries
 	clear();
 
@@ -52,6 +56,7 @@ void ModuleBrowser::loadWorkspace(chig::Context& context)
 	std::unordered_map<std::string, QTreeWidgetItem*> topLevels;
 	std::unordered_map<QTreeWidgetItem*, std::unordered_map<std::string, QTreeWidgetItem*>>
 		children;
+		
 
 	for (auto moduleName : modules) {
 		fs::path module = moduleName;

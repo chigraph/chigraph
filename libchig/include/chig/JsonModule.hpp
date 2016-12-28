@@ -71,15 +71,17 @@ struct JsonModule : public ChigModule {
 	/// \return The Result
 	Result saveToDisk() const;
 
-	/// Create a new function
+	/// Create a new function if it does't already exist
 	/// \param name The name of the new function
 	/// \param ins The inputs to the function
 	/// \param outs The outputs to the function
 	/// \param toFill The new GraphFunction, optional
-	/// \return The Result
-	Result createFunction(gsl::cstring_span<> name,
-		std::vector<std::pair<DataType, std::string>> ins,
-		std::vector<std::pair<DataType, std::string>> outs, GraphFunction** toFill = nullptr);
+	/// \return True if a new function was created, false otherwise
+    bool createFunction(gsl::cstring_span<> name,
+                        std::vector<std::pair<DataType, std::string> > dataIns,
+                        std::vector<std::pair<DataType, std::string> > dataOuts,
+                                                    std::vector<std::string> execIns,
+                                                    std::vector<std::string> execOuts, GraphFunction** toFill = nullptr);
 
 	/// Remove a function from the module
 	/// \param name The name of the function to remove

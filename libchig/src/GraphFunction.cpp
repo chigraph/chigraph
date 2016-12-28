@@ -6,22 +6,27 @@
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/Type.h>
+#include <llvm/IR/Verifier.h>
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Support/raw_ostream.h>
 #include <unordered_map>
 
-using namespace chig;
+namespace chig {
 
 GraphFunction::GraphFunction(JsonModule& mod, gsl::cstring_span<> name,
-	std::vector<std::pair<DataType, std::string>> ins,
-	std::vector<std::pair<DataType, std::string>> outs)
+    std::vector<std::pair<DataType, std::string>> dataIns,
+    std::vector<std::pair<DataType, std::string>> dataOuts,
+    std::vector<std::string> execIns,
+    std::vector<std::string> execOuts)
 	: mModule{&mod},
 	  mContext{&mod.context()},
 	  mName{gsl::to_string(name)},
-	  mInputs(std::move(ins)),
-	  mOutputs(std::move(outs)),
-	  mSource()
+      mDataInputs(std::move(dataIns)),
+      mDataOutputs(std::move(dataOuts)),
+      mExecInputs(std::move(execIns)),
+      mExecOutputs(std::move(execOuts))
 {
+	// TODO: check that it has at least 1 exec input and output
 }
 
 GraphFunction::~GraphFunction() = default;
@@ -51,13 +56,13 @@ Result GraphFunction::fromJSON(
 	}
 	std::string name = data["name"];
 
-	if (data.find("inputs") == data.end() || !data["inputs"].is_array()) {
-		res.addEntry("E43", "JSON in graph doesn't have an inputs array", {});
+    if (data.find("data_inputs") == data.end() || !data["data_inputs"].is_array()) {
+        res.addEntry("E43", "JSON in graph doesn't have an data_inputs array", {});
 		return res;
 	}
 
-	std::vector<std::pair<DataType, std::string>> inputs;
-	for (auto param : data["inputs"]) {
+    std::vector<std::pair<DataType, std::string>> datainputs;
+    for (auto param : data["data_inputs"]) {
 		for (auto iter = param.begin(); iter != param.end(); ++iter) {
 			std::string qualifiedType = iter.value();
 			std::string docString = iter.key();
@@ -72,17 +77,17 @@ Result GraphFunction::fromJSON(
 				return res;
 			}
 
-			inputs.emplace_back(ty, docString);
+            datainputs.emplace_back(ty, docString);
 		}
 	}
 
-	if (data.find("outputs") == data.end() || !data["outputs"].is_array()) {
-		res.addEntry("E44", "JSON in graph doesn't have an outputs array", {});
+    if (data.find("data_outputs") == data.end() || !data["data_outputs"].is_array()) {
+        res.addEntry("E44", "JSON in graph doesn't have an data_outputs array", {});
 		return res;
 	}
 
-	std::vector<std::pair<DataType, std::string>> outputs;
-	for (auto param : data["outputs"]) {
+    std::vector<std::pair<DataType, std::string>> dataoutputs;
+    for (auto param : data["data_outputs"]) {
 		for (auto iter = param.begin(); iter != param.end(); ++iter) {
 			std::string qualifiedType = iter.value();
 			std::string docString = iter.key();
@@ -97,13 +102,41 @@ Result GraphFunction::fromJSON(
 				return res;
 			}
 
-			outputs.emplace_back(ty, docString);
+            dataoutputs.emplace_back(ty, docString);
 		}
 	}
+
+
+    // get exec I/O
+    if (data.find("exec_inputs") == data.end() || !data["exec_inputs"].is_array()) {
+        res.addEntry("EUKN", "JSON in graph doesn't have an exec_inputs array", {});
+        return res;
+    }
+
+    std::vector<std::string> execinputs;
+    for (auto param : data["exec_inputs"]) {
+        std::string name = param;
+
+        execinputs.emplace_back(name);
+
+    }
+
+    if (data.find("exec_outputs") == data.end() || !data["exec_outputs"].is_array()) {
+        res.addEntry("EUKN", "JSON in graph doesn't have an data_outputs array", {});
+        return res;
+    }
+
+    std::vector<std::string> execoutputs;
+    for (auto param : data["exec_outputs"]) {
+        std::string name = param;
+
+        execoutputs.emplace_back(name);
+
+    }
 
 	// construct it
 	*ret_func =
-		std::make_unique<GraphFunction>(module, name, std::move(inputs), std::move(outputs));
+        std::make_unique<GraphFunction>(module, name, std::move(datainputs), std::move(dataoutputs), std::move(execinputs), std::move(execoutputs));
 	auto& ret = *ret_func;
 
 	ret->mSource = data;
@@ -121,19 +154,33 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 	jsonData["type"] = "function";
 	jsonData["name"] = name();
 
-	auto& inputsjson = jsonData["inputs"];
-	inputsjson = nlohmann::json::array();
+    auto& datainputsjson = jsonData["data_inputs"];
+    datainputsjson = nlohmann::json::array();
 
-	for (auto& in : inputs()) {
-		inputsjson.push_back({{in.second, in.first.qualifiedName()}});
+    for (auto& in : dataInputs()) {
+        datainputsjson.push_back({{in.second, in.first.qualifiedName()}});
 	}
 
-	auto& outputsjson = jsonData["outputs"];
-	outputsjson = nlohmann::json::array();
+    auto& dataoutputsjson = jsonData["data_outputs"];
+    dataoutputsjson = nlohmann::json::array();
 
-	for (auto& out : outputs()) {
-		outputsjson.push_back({{out.second, out.first.qualifiedName()}});
+    for (auto& out : dataOutputs()) {
+        dataoutputsjson.push_back({{out.second, out.first.qualifiedName()}});
 	}
+
+    auto& execinputsjson = jsonData["exec_inputs"];
+    execinputsjson = nlohmann::json::array();
+
+    for(auto& in : execInputs()) {
+        execinputsjson.push_back(in);
+    }
+
+    auto& execoutputsjson = jsonData["exec_outputs"];
+    execoutputsjson = nlohmann::json::array();
+
+    for(auto& out : execOutputs()) {
+        execoutputsjson.push_back(out);
+    }
 
 	res += graph().toJson(toFill);
 
@@ -257,6 +304,8 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(mod->getContext()), 0, true));
 	}
 
+
+	
 	// recurse!
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
@@ -266,6 +315,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		}
 	}
 }
+
 
 Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) const
 {
@@ -291,9 +341,9 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	}
 
 	// make sure that the entry node has the functiontype
-	if (!std::equal(inputs().begin(), inputs().end(), entry->type().dataOutputs().begin())) {
+    if (!std::equal(dataInputs().begin(), dataInputs().end(), entry->type().dataOutputs().begin())) {
 		nlohmann::json inFunc = nlohmann::json::array();
-		for (auto& in : inputs()) {
+        for (auto& in : dataInputs()) {
 			inFunc.push_back({{in.second, in.first.qualifiedName()}});
 		}
 
@@ -309,9 +359,9 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	}
 
 	// make sure that the entry node has the functiontype
-	if (!std::equal(outputs().begin(), outputs().end(), exitNode->type().dataInputs().begin())) {
+    if (!std::equal(dataOutputs().begin(), dataOutputs().end(), exitNode->type().dataInputs().begin())) {
 		nlohmann::json outFunc = nlohmann::json::array();
-		for (auto& out : outputs()) {
+        for (auto& out : dataOutputs()) {
 			outFunc.push_back({{out.second, out.first.qualifiedName()}});
 		}
 
@@ -341,14 +391,22 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	// set argument names
 	auto idx = 0ull;
 	for (auto& arg : f->getArgumentList()) {
-		if (idx < entry->type().dataOutputs().size()) {
+		
+		// the first one is the input exec ID
+		if(idx == 0) {
+			arg.setName("inputexec_id");
+			++idx;
+			continue;
+		}
+		// all the - 1's is becaues the first is the inputexec_id
+		if (idx - 1 < entry->type().dataOutputs().size()) {
 			// dataOutputs to entry are inputs to the function
 			arg.setName(entry->type()
-							.dataOutputs()[idx]
+							.dataOutputs()[idx - 1]
 							.second);  // it starts with inputs, which are outputs to entry
 		} else {
 			arg.setName(exitNode->type()
-							.dataInputs()[idx - entry->type().dataOutputs().size()]
+							.dataInputs()[idx - 1 - entry->type().dataOutputs().size()]
 							.second);  // then the outputs, which are inputs to exit
 		}
 		++idx;
@@ -369,13 +427,97 @@ NodeInstance* GraphFunction::entryNode() const noexcept
 
 	if (matching.size() == 1) {
 		// make sure it has the same signature as the method
-		if (!std::equal(inputs().begin(), inputs().end(), matching[0]->type().dataOutputs().begin(),
+        if (!std::equal(dataInputs().begin(), dataInputs().end(), matching[0]->type().dataOutputs().begin(),
 				matching[0]->type().dataOutputs().end())) {
 			return nullptr;
-		}
+        }
+        // make sure it has the same exec names and size
+        if(!std::equal(execInputs().begin(), execInputs().end(), matching[0]->type().execOutputs().begin())) {
+            return nullptr;
+        }
 		return matching[0];
 	}
-	return nullptr;
+    return nullptr;
+}
+
+Result GraphFunction::insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName, const nlohmann::json &typeJSON, float x, float y, gsl::cstring_span<> id, NodeInstance **toFill)
+{
+    std::unique_ptr<NodeType> nodeType;
+    Result res = context().nodeTypeFromModule(moduleName, typeName, typeJSON, &nodeType);
+
+    if (!res) {
+        return res;
+    }
+    res += insertNode(std::move(nodeType), x, y, id, toFill);
+    return res;
+}
+
+Result GraphFunction::createEntryNodeType(std::unique_ptr<NodeType> *toFill)
+{
+    Result res;
+
+    nlohmann::json entry = nlohmann::json::object();
+
+    auto& data = entry["data"];
+    data = nlohmann::json::array();
+    for (auto in : dataInputs()) {
+        data.push_back({{in.second, in.first.qualifiedName()}});
+    }
+
+    auto& exec = entry["exec"];
+    exec = nlohmann::json::array();
+    for(auto in : execInputs()) {
+        exec.push_back(in);
+    }
+
+    res += context().nodeTypeFromModule("lang", "entry", entry, toFill);
+
+    return res;
+}
+
+Result GraphFunction::createExitNodeType(std::unique_ptr<NodeType> *toFill)
+{
+     Result res;
+
+     nlohmann::json exit = nlohmann::json::object();
+
+     auto& data = exit["data"];
+     data = nlohmann::json::array();
+     for (auto out : dataOutputs()) {
+         data.push_back({{out.second, out.first.qualifiedName()}});
+     }
+
+     auto& exec = exit["exec"];
+     exec = nlohmann::json::array();
+     for(auto out : execOutputs()) {
+         exec.push_back(out);
+     }
+
+     res += context().nodeTypeFromModule("lang", "exit", exit, toFill);
+
+     return res;
+
+}
+
+
+Result GraphFunction::getOrInsertEntryNode(
+        float x, float y, gsl::cstring_span<> id, NodeInstance** toFill)
+{
+    Result res;
+
+    if (auto ent = entryNode()) {
+        if (toFill != nullptr) {
+            *toFill = ent;
+        }
+        return {};
+    }
+
+    std::unique_ptr<NodeType> entryNodeType;
+    res += createEntryNodeType(&entryNodeType);
+
+    res += insertNode(std::move(entryNodeType), x, y, id, toFill);
+
+    return res;
 }
 
 Result GraphFunction::loadGraph()
@@ -391,77 +533,105 @@ Result GraphFunction::validateGraph() const
 	// make sure all connections connect back
 }
 
-void GraphFunction::addInput(const DataType& type, std::string name, int addAfter)
+void GraphFunction::addDataInput(const DataType& type, std::string name, int addAfter)
 {
-	if (addAfter < mInputs.size()) {
+    if (addAfter < mDataInputs.size()) {
 		// +1 because emplace adds before
-		mInputs.emplace(mInputs.cbegin() + addAfter + 1, type, name);
+        mDataInputs.emplace(mDataInputs.cbegin() + addAfter + 1, type, name);
 	} else {
-		mInputs.emplace_back(type, name);
+        mDataInputs.emplace_back(type, name);
 	}
 }
 
-void GraphFunction::removeInput(int idx)
+void GraphFunction::removeDataInput(int idx)
 {
-	if (idx < mInputs.size()) {
-		mInputs.erase(mInputs.begin() + idx);
+    if (idx < mDataInputs.size()) {
+        mDataInputs.erase(mDataInputs.begin() + idx);
 	}
 }
 
-void GraphFunction::modifyInput(int idx, const DataType& type, boost::optional<std::string> name)
+void GraphFunction::modifyDataInput(int idx, const DataType& type, boost::optional<std::string> name)
 {
-	if (idx < mInputs.size()) {
+    if (idx < mDataInputs.size()) {
 		if (type.valid()) {
-			mInputs[idx].first = type;
+            mDataInputs[idx].first = type;
 		}
 		if (name) {
-			mInputs[idx].second = *name;
+            mDataInputs[idx].second = *name;
 		}
 	}
 }
 
-void GraphFunction::addOutput(const DataType& type, std::string name, int addAfter)
+void GraphFunction::addDataOutput(const DataType& type, std::string name, int addAfter)
 {
-	if (addAfter < mOutputs.size()) {
+    if (addAfter < mDataOutputs.size()) {
 		// +1 because emplace adds before
-		mOutputs.emplace(mOutputs.cbegin() + addAfter + 1, type, std::move(name));
+        mDataOutputs.emplace(mDataOutputs.cbegin() + addAfter + 1, type, std::move(name));
 	} else {
-		mOutputs.emplace_back(type, std::move(name));
+        mDataOutputs.emplace_back(type, std::move(name));
 	}
 }
 
-void GraphFunction::removeOutput(int idx)
+void GraphFunction::removeDataOutput(int idx)
 {
-	if (idx < mOutputs.size()) {
-		mOutputs.erase(mOutputs.begin() + idx);
+    if (idx < mDataOutputs.size()) {
+        mDataOutputs.erase(mDataOutputs.begin() + idx);
 	}
 }
 
-void GraphFunction::modifyOutput(int idx, const DataType& type, boost::optional<std::string> name)
+void GraphFunction::modifyDataOutput(int idx, const DataType& type, boost::optional<std::string> name)
 {
-	if (idx < mOutputs.size()) {
+    if (idx < mDataOutputs.size()) {
 		if (type.valid()) {
-			mOutputs[idx].first = type;
+            mDataOutputs[idx].first = type;
 		}
 		if (name) {
-			mOutputs[idx].second = *name;
+            mDataOutputs[idx].second = *name;
 		}
-	}
+    }
+}
+
+void GraphFunction::updateEntriesAndExits()
+{
+    auto entry = entryNode();
+    if(entry == nullptr) {
+        return;
+    }
+
+    std::unique_ptr<NodeType> entryNodeType;
+    createEntryNodeType(&entryNodeType);
+
+    entry->setType(std::move(entryNodeType));
+
+    for(const auto& exitNode : graph().nodesWithType("lang", "exit")) {
+
+        std::unique_ptr<NodeType> exitNodeType;
+        createExitNodeType(&exitNodeType);
+
+        exitNode->setType(std::move(exitNodeType));
+    }
+
 }
 
 llvm::FunctionType* GraphFunction::functionType() const
 {
 	std::vector<llvm::Type*> arguments;
-	arguments.reserve(inputs().size() + outputs().size());
-	for (const auto& p : inputs()) {
+    arguments.reserve(1 + dataInputs().size() + dataOutputs().size());
+
+    // this is for which exec input
+    arguments.push_back(llvm::IntegerType::getInt32Ty(context().llvmContext()));
+
+    for (const auto& p : dataInputs()) {
 		arguments.push_back(p.first.llvmType());
 	}
 
 	// make these pointers
-	for (const auto& p : outputs()) {
+    for (const auto& p : dataOutputs()) {
 		arguments.push_back(llvm::PointerType::get(p.first.llvmType(), 0));
 	}
 
 	return llvm::FunctionType::get(
 		llvm::IntegerType::getInt32Ty(context().llvmContext()), arguments, false);
 }
+
+} // namespace chig

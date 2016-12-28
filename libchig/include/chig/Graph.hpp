@@ -32,7 +32,7 @@ struct Graph {
 
 	/// Gets the nodes with a given type
 	/// \param module The module the type is in
-	/// \param name THe name of the type
+    /// \param name The name of the type
 	/// \return A vector of NodeInstance
 	std::vector<NodeInstance*> nodesWithType(
 		gsl::cstring_span<> module, gsl::cstring_span<> name) const noexcept;
