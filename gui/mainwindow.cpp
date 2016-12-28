@@ -163,14 +163,11 @@ void MainWindow::save()
 		}
 	}
 
-	if (module != nullptr) {
-		std::ofstream stream(
-			(ccontext->workspacePath() / "src" / (module->fullName() + ".chigmod")).string());
-
-		nlohmann::json j = {};
-		chig::Result r = module->toJSON(&j);
-
-		stream << j;
+    if (module != nullptr) {
+        chig::Result res = module->saveToDisk();
+        if(!res) {
+            KMessageBox::detailedError(this, i18n("Failed to save module!"), QString::fromStdString(res.dump()));
+        }
 	}
 }
 

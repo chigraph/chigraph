@@ -5,19 +5,19 @@ namespace chig {
 std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
     std::string ret;
     if(j.is_array()) {
-        ret += std::string(indentLevel, '\t') + "[\n";
+        ret += std::string(indentLevel * 2, ' ') + "[\n";
         
         for(auto elem : j) {
             ret += prettyPrintJson(elem, indentLevel + 1);
             ret += ",\n";
         }
-        ret += std::string(indentLevel, '\t') + "]\n";
+        ret += std::string(indentLevel * 2, ' ') + "]\n";
     
     } else if(j.is_string() || j.is_number()) {
-        ret += std::string(indentLevel, '\t') + j.dump();
+        ret += std::string(indentLevel * 2, ' ') + j.dump();
     } else if(j.is_object()) {
         for(auto iter = j.begin(); iter != j.end(); ++iter) {
-            ret += std::string(indentLevel, '\t') + iter.key() + "\n";
+            ret += std::string(indentLevel * 2, ' ') + iter.key() + "\n";
             ret += prettyPrintJson(iter.value(), indentLevel + 1);
         }
     }

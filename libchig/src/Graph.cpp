@@ -203,7 +203,7 @@ Result Graph::insertNode(
 
 	auto emplaced = mNodes.emplace(gsl::to_string(id), std::move(ptr)).first;
 
-	if (toFill) {
+    if (toFill != nullptr) {
 		*toFill = emplaced->second.get();
 	}
 

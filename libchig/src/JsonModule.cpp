@@ -142,7 +142,7 @@ Result JsonModule::saveToDisk() const {
 	}
 
 	// serialize
-    nlohmann::json toFill;
+    nlohmann::json toFill{};
     res += toJSON(&toFill);
 	
 	if(!res) {
@@ -169,7 +169,7 @@ Result JsonModule::createFunction(gsl::cstring_span<> name,
 	}
 
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, ins, outs));
-	if (toFill) {
+    if (toFill != nullptr) {
 		*toFill = mFunctions[mFunctions.size() - 1].get();
 	}
 
@@ -202,8 +202,6 @@ void JsonModule::removeFunction(GraphFunction *func)
 
     mFunctions.erase(iter);
 }
-
-
 
 GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const
 {
@@ -267,9 +265,9 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 		return;
 	}
 
-	setDataOutputs(mygraph->outputs());
+    setDataOutputs({mygraph->outputs().begin(), mygraph->outputs().end()});
 
-	setDataInputs(mygraph->inputs());
+    setDataInputs({mygraph->inputs().begin(), mygraph->inputs().end()});
 
 	setExecInputs({""});
 	setExecOutputs({""});

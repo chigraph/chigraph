@@ -15,6 +15,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include <gsl/gsl>
+
 #include <boost/optional.hpp>
 
 namespace chig
@@ -125,6 +127,10 @@ struct GraphFunction {
 	/// \return The result
 	Result loadGraph();
 
+    /// Validate the graph, makeing sure all connections are two-way etc.
+    /// \return The result
+    Result validateGraph() const;
+
 	/// Get the context
 	/// \return The context
 	Context& context() const { return *mContext; }
@@ -133,12 +139,12 @@ struct GraphFunction {
 	std::string name() const { return mName; }
 	/// Get the function inputs in the format {type, docstring}
 	/// \return The inputs
-	const std::vector<std::pair<DataType, std::string>>& inputs() const { return mInputs; }
+    gsl::span<const std::pair<DataType, std::string>> inputs() const { return mInputs; }
 	
 	/// Add an input to the end of the argument list
 	/// \param type The new input type
 	/// \param name The name of the input (just for documentation)
-    void addInput(DataType type, std::string name, int addAfter);
+    void addInput(const DataType& type, std::string name, int addAfter);
     
     /// Remove an input from the argument list
     /// \param idx The index to delete
@@ -147,17 +153,17 @@ struct GraphFunction {
     /// \param idx The index to change
     /// \param type The new type. Use {} to keep it's current type
     /// \param name The new name. Use {} to keep it's current name
-    void modifyInput(int idx, DataType type, boost::optional<std::string> name);
+    void modifyInput(int idx, const DataType& type, boost::optional<std::string> name);
     
 	/// Get the function outputs in the format {type, docstring}
 	/// \return The outputs
-	const std::vector<std::pair<DataType, std::string>>& outputs() const { return mOutputs; }
+    gsl::span<const std::pair<DataType, std::string>> outputs() const { return {mOutputs}; }
 
 
     /// Add an output to the end of the argument list
     /// \param type The new output type
     /// \param name The name of the output (just for documentation)
-    void addOutput(DataType type, std::string name, int addAfter);
+    void addOutput(const DataType& type, std::string name, int addAfter);
 
     /// Remove an output from the argument list
     /// \param idx The index to delete
@@ -166,7 +172,7 @@ struct GraphFunction {
     /// \param idx The index to change
     /// \param type The new type. Use {} to keep it's current type
     /// \param name The new name. Use {} to keep it's current name
-    void modifyOutput(int idx, DataType type, boost::optional<std::string> name);
+    void modifyOutput(int idx, const DataType& type, boost::optional<std::string> name);
 
 	/// Get the graph
 	/// \return The graph
