@@ -47,56 +47,62 @@ ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const 
 			return module.get();
 		}
 	}
-    return nullptr;
+	return nullptr;
 }
 
-JsonModule *Context::newJsonModule(gsl::cstring_span<> fullName)
+JsonModule* Context::newJsonModule(gsl::cstring_span<> fullName)
 {
-    // create the module
-    JsonModule* mod = nullptr;
-    {
+	// create the module
+	JsonModule* mod = nullptr;
+	{
+		auto uMod =
+			std::make_unique<JsonModule>(*this, gsl::to_string(fullName), gsl::span<std::string>());
 
-        auto uMod = std::make_unique<JsonModule>(*this, gsl::to_string(fullName), gsl::span<std::string>());
+		mod = uMod.get();
+		addModule(std::move(uMod));
+	}
 
-        mod = uMod.get();
-        addModule(std::move(uMod));
-    }
+	// if we have a workspace bound, then serialize
+	if (hasWorkspace()) {
+		Result r = mod->saveToDisk();
+		Expects(r.success);  // It's default constructed, so it really shoudln't fail.
+	}
 
-	Result r = mod->saveToDisk();
-	Expects(r.success); // It's default constructed, so it really shoudln't fail.
-
-    return mod;
+	return mod;
 }
 
 std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept
 {
-    std::unordered_set<std::string> moduleList;
+	std::unordered_set<std::string> moduleList;
 
-    fs::path srcDir = workspacePath() / "src";
+	fs::path srcDir = workspacePath() / "src";
 
-    fs::recursive_directory_iterator iter(srcDir, fs::symlink_option::recurse);
-    fs::recursive_directory_iterator end;
+	// if the src direcotry doesn't exist, then return an empty list
+	if (!fs::is_directory(srcDir)) {
+		return {};
+	}
 
-    for(; iter != end; ++iter) {
-        fs::path p = *iter;
+	fs::recursive_directory_iterator iter(srcDir, fs::symlink_option::recurse);
+	fs::recursive_directory_iterator end;
 
-        // see if it's a chigraph module
-        if(fs::is_regular_file(p) && p.extension() == ".chigmod") {
-            fs::path relPath = fs::relative(p, srcDir);
+	for (; iter != end; ++iter) {
+		fs::path p = *iter;
 
-            relPath.replace_extension(""); // remove .chigmod
-            moduleList.insert(relPath.string());
-        }
-    }
+		// see if it's a chigraph module
+		if (fs::is_regular_file(p) && p.extension() == ".chigmod") {
+			fs::path relPath = fs::relative(p, srcDir);
 
-    return moduleList;
+			relPath.replace_extension("");  // remove .chigmod
+			moduleList.insert(relPath.string());
+		}
+	}
 
+	return moduleList;
 }
 
 chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModule** toFill)
 {
 	Result res;
-
 
 	// check for built-in modules
 	if (name == "lang") {
@@ -115,11 +121,11 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 		addModule(std::move(mod));  // we don't care if it's actually added
 		return {};
 	}
-	
-	
+
 	if (workspacePath().empty()) {
-        res.addEntry("EUKN", "Cannot load module without a workspace path", {{"Requested Module"}, gsl::to_string(name)});
-		return res; 
+		res.addEntry("EUKN", "Cannot load module without a workspace path",
+			{{"Requested Module"}, gsl::to_string(name)});
+		return res;
 	}
 
 	// find it in the workspace
@@ -196,11 +202,11 @@ Result Context::addModuleFromJson(
 bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 {
 	Expects(modToAdd != nullptr);
-    
+
 	// make sure it's unique
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) {
-        return false;
+		return false;
 	}
 
 	mModules.push_back(std::move(modToAdd));
