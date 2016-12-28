@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	Q_INIT_RESOURCE(chiggui);
 
 	// set icon
-	setWindowIcon(QIcon(QPixmap(":/icons/chigraphsmall.png")));
+	setWindowIcon(QIcon(":/icons/chigraphsmall.png"));
 
 	reg = std::make_shared<DataModelRegistry>();
 
