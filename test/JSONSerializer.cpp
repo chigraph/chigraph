@@ -17,7 +17,7 @@ TEST_CASE("JsonSerializer", "[json]")
 		Context c;
 		REQUIRE(!!c.loadModule("lang"));
 		LangModule* lmod = static_cast<LangModule*>(c.moduleByName("lang"));
-        REQUIRE(lmod != nullptr);
+		REQUIRE(lmod != nullptr);
 
 		auto deps = std::vector<std::string>{"lang"};
 		auto jmod = std::make_unique<JsonModule>(

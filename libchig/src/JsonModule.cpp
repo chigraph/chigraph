@@ -1,8 +1,8 @@
 #include "chig/JsonModule.hpp"
 
-#include "chig/NodeInstance.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/NameMangler.hpp"
+#include "chig/NodeInstance.hpp"
 #include "chig/NodeType.hpp"
 #include "chig/Result.hpp"
 
@@ -120,12 +120,12 @@ Result JsonModule::toJSON(nlohmann::json* to_fill) const
 	return res;
 }
 
-Result JsonModule::saveToDisk() const {
-	
+Result JsonModule::saveToDisk() const
+{
 	Result res;
 
 	// can't serialize without a workspace...
-	if(!context().hasWorkspace()) {
+	if (!context().hasWorkspace()) {
 		res.addEntry("EUKN", "Cannot serialize without a worksapce", {});
 		return res;
 	}
@@ -133,26 +133,27 @@ Result JsonModule::saveToDisk() const {
 	auto modulePath = context().workspacePath() / "src" / (fullName() + ".chigmod");
 
 	try {
-	// create directories that conatain the path
-    fs::create_directories(modulePath.parent_path());
+		// create directories that conatain the path
+		fs::create_directories(modulePath.parent_path());
 
 	} catch (std::exception& e) {
-		res.addEntry("EUKN", "Failed to create directoires in workspace", {{"Module File", modulePath.string()}});
+		res.addEntry("EUKN", "Failed to create directoires in workspace",
+			{{"Module File", modulePath.string()}});
 		return res;
 	}
 
 	// serialize
-    nlohmann::json toFill{};
-    res += toJSON(&toFill);
-	
-	if(!res) {
+	nlohmann::json toFill{};
+	res += toJSON(&toFill);
+
+	if (!res) {
 		return res;
 	}
 
 	// save
-    fs::ofstream ostr(modulePath);
-    ostr << toFill;
-    
+	fs::ofstream ostr(modulePath);
+	ostr << toFill;
+
 	return res;
 }
 
@@ -163,44 +164,42 @@ Result JsonModule::createFunction(gsl::cstring_span<> name,
 	Result res;
 	// make sure there already isn't one by this name
 	if (graphFuncFromName(name) != nullptr) {
-		res.addEntry(
-			"EUKN", "Function already exists", {{"Requested Name", gsl::to_string(name)}});
+		res.addEntry("EUKN", "Function already exists", {{"Requested Name", gsl::to_string(name)}});
 		return res;
 	}
 
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, ins, outs));
-    if (toFill != nullptr) {
+	if (toFill != nullptr) {
 		*toFill = mFunctions[mFunctions.size() - 1].get();
 	}
 
-    return res;
+	return res;
 }
 
 bool JsonModule::removeFunction(gsl::cstring_span<> name)
 {
-    auto funcPtr = graphFuncFromName(name);
+	auto funcPtr = graphFuncFromName(name);
 
-    if(funcPtr == nullptr ) {
-        return false;
-    }
+	if (funcPtr == nullptr) {
+		return false;
+	}
 
-    removeFunction(funcPtr);
-	
+	removeFunction(funcPtr);
+
 	return true;
 }
 
-void JsonModule::removeFunction(GraphFunction *func)
+void JsonModule::removeFunction(GraphFunction* func)
 {
-    Expects(func != nullptr);
+	Expects(func != nullptr);
 
-    auto iter = std::find_if(mFunctions.begin(), mFunctions.end(), [func](auto& uPtr) {
-        return uPtr.get() == func;
-    });
-    if(iter == mFunctions.end()) {
-        return;
-    }
+	auto iter = std::find_if(
+		mFunctions.begin(), mFunctions.end(), [func](auto& uPtr) { return uPtr.get() == func; });
+	if (iter == mFunctions.end()) {
+		return;
+	}
 
-    mFunctions.erase(iter);
+	mFunctions.erase(iter);
 }
 
 GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const
@@ -265,9 +264,9 @@ JsonFuncCallNodeType::JsonFuncCallNodeType(
 		return;
 	}
 
-    setDataOutputs({mygraph->outputs().begin(), mygraph->outputs().end()});
+	setDataOutputs({mygraph->outputs().begin(), mygraph->outputs().end()});
 
-    setDataInputs({mygraph->inputs().begin(), mygraph->inputs().end()});
+	setDataInputs({mygraph->inputs().begin(), mygraph->inputs().end()});
 
 	setExecInputs({""});
 	setExecOutputs({""});

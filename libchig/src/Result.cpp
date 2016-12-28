@@ -1,48 +1,48 @@
 #include "chig/Result.hpp"
 
-namespace chig {
+namespace chig
+{
+std::string prettyPrintJson(const nlohmann::json& j, int indentLevel)
+{
+	std::string ret;
+	if (j.is_array()) {
+		ret += std::string(indentLevel * 2, ' ') + "[\n";
 
-std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
-    std::string ret;
-    if(j.is_array()) {
-        ret += std::string(indentLevel * 2, ' ') + "[\n";
-        
-        for(auto elem : j) {
-            ret += prettyPrintJson(elem, indentLevel + 1);
-            ret += ",\n";
-        }
-        ret += std::string(indentLevel * 2, ' ') + "]\n";
-    
-    } else if(j.is_string() || j.is_number()) {
-        ret += std::string(indentLevel * 2, ' ') + j.dump();
-    } else if(j.is_object()) {
-        for(auto iter = j.begin(); iter != j.end(); ++iter) {
-            ret += std::string(indentLevel * 2, ' ') + iter.key() + "\n";
-            ret += prettyPrintJson(iter.value(), indentLevel + 1);
-        }
-    }
-    return ret;
+		for (auto elem : j) {
+			ret += prettyPrintJson(elem, indentLevel + 1);
+			ret += ",\n";
+		}
+		ret += std::string(indentLevel * 2, ' ') + "]\n";
+
+	} else if (j.is_string() || j.is_number()) {
+		ret += std::string(indentLevel * 2, ' ') + j.dump();
+	} else if (j.is_object()) {
+		for (auto iter = j.begin(); iter != j.end(); ++iter) {
+			ret += std::string(indentLevel * 2, ' ') + iter.key() + "\n";
+			ret += prettyPrintJson(iter.value(), indentLevel + 1);
+		}
+	}
+	return ret;
 }
 
-std::string Result::dump() const  {
-    std::string ret;
-    if(result_json.size() != 0) {
-        for(auto error : result_json) {
-            if(error.find("errorcode") == error.end()
-                    || !error["errorcode"].is_string()
-                    || error.find("overview") == error.end()
-                    || !error["overview"].is_string()){
-                return "";
-            }
-            std::string ec = error["errorcode"];
-            std::string desc = error["overview"];
-            ret += ec + ": " + desc;
-            // recursively display children
-            auto& data = error["data"];
-            ret += prettyPrintJson(data, 1);
-        }
-    }
-    return ret;
+std::string Result::dump() const
+{
+	std::string ret;
+	if (result_json.size() != 0) {
+		for (auto error : result_json) {
+			if (error.find("errorcode") == error.end() || !error["errorcode"].is_string() ||
+				error.find("overview") == error.end() || !error["overview"].is_string()) {
+				return "";
+			}
+			std::string ec = error["errorcode"];
+			std::string desc = error["overview"];
+			ret += ec + ": " + desc;
+			// recursively display children
+			auto& data = error["data"];
+			ret += prettyPrintJson(data, 1);
+		}
+	}
+	return ret;
 }
 
-} // namespace chig
+}  // namespace chig

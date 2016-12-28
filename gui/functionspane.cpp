@@ -30,35 +30,35 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 
 	connect(this, &QListWidget::itemDoubleClicked, this, &FunctionsPane::selectItem);
 
-    setContextMenuPolicy(Qt::CustomContextMenu);
+	setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(this, &QWidget::customContextMenuRequested, this, [this](QPoint p) {
-        QPoint global = mapToGlobal(p);
+	connect(this, &QWidget::customContextMenuRequested, this, [this](QPoint p) {
+		QPoint global = mapToGlobal(p);
 
-        QMenu contextMenu;
-        contextMenu.addAction(QIcon::fromTheme(QStringLiteral("edit-delete")), i18n("Delete"), [this, p]{
-            QListWidgetItem* funcItem = item(indexAt(p).row());
+		QMenu contextMenu;
+		contextMenu.addAction(
+			QIcon::fromTheme(QStringLiteral("edit-delete")), i18n("Delete"), [this, p] {
+				QListWidgetItem* funcItem = item(indexAt(p).row());
 
-            if(!funcItem) {
-                return;
-            }
+				if (!funcItem) {
+					return;
+				}
 
-            Expects(funcItem->type() == QListWidgetItem::UserType);
+				Expects(funcItem->type() == QListWidgetItem::UserType);
 
+				auto casted = dynamic_cast<FunctionListItem*>(funcItem);
+				if (!casted) {
+					return;
+				}
 
-            auto casted = dynamic_cast<FunctionListItem*>(funcItem);
-            if(!casted) {
-                return;
-            }
+				chig::JsonModule* mod = &casted->mFunc->module();
+				casted->mFunc->module().removeFunction(casted->mFunc);
 
-            chig::JsonModule* mod = &casted->mFunc->module();
-            casted->mFunc->module().removeFunction(casted->mFunc);
+				updateModule(mod);
 
-            updateModule(mod);
-
-        }); // TODO: shortcut
-        contextMenu.exec(global);
-    });
+			});  // TODO: shortcut
+		contextMenu.exec(global);
+	});
 }
 
 void FunctionsPane::updateModule(chig::JsonModule* mod)

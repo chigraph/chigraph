@@ -19,11 +19,11 @@
 #include <chig/JsonModule.hpp>
 
 #include <QProcess>
+#include "functiondetails.hpp"
 #include "functionspane.hpp"
 #include "functionview.hpp"
 #include "modulebrowser.hpp"
 #include "outputview.hpp"
-#include "functiondetails.hpp"
 
 class MainWindow : public KXmlGuiWindow
 {
@@ -40,7 +40,7 @@ public:
 	std::shared_ptr<DataModelRegistry> reg;
 	OutputView* outputView = nullptr;
 	ModuleBrowser* moduleBrowser = nullptr;
-    FunctionDetails* funcDetails = nullptr;
+	FunctionDetails* funcDetails = nullptr;
 
 	FunctionsPane* functionpane = nullptr;
 
@@ -59,12 +59,12 @@ public slots:
 	void closeTab(int idx);
 	void run();
 	void newFunction();
-    void newModule();
+	void newModule();
 
 signals:
 	void workspaceOpened(chig::Context& workspace);
 	void openJsonModule(chig::JsonModule* mod);
-    void newFunctionOpened(chig::GraphFunction* func);
+	void newFunctionOpened(chig::GraphFunction* func);
 
 private:
 	KRecentFilesAction* openRecentAction;

@@ -78,14 +78,14 @@ std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept
 
 	fs::path srcDir = workspacePath() / "src";
 
-    ;
+	;
 	if (!fs::is_directory(srcDir)) {
 		return {};
 	}
 
-
-    for(const auto& dirEntry : boost::make_iterator_range(fs::recursive_directory_iterator{srcDir, fs::symlink_option::recurse}, {})) {
-        fs::path p = dirEntry;
+	for (const auto& dirEntry : boost::make_iterator_range(
+			 fs::recursive_directory_iterator{srcDir, fs::symlink_option::recurse}, {})) {
+		fs::path p = dirEntry;
 
 		// see if it's a chigraph module
 		if (fs::is_regular_file(p) && p.extension() == ".chigmod") {

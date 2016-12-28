@@ -383,85 +383,85 @@ Result GraphFunction::loadGraph()
 	Result res;
 	mGraph = Graph(context(), mSource, res);
 
-    return res;
+	return res;
 }
 
 Result GraphFunction::validateGraph() const
 {
-    // make sure all connections connect back
-    
+	// make sure all connections connect back
 }
 
-void GraphFunction::addInput(const DataType& type, std::string name, int addAfter) {
-    if(addAfter < mInputs.size()) {
-
-        // +1 because emplace adds before
-        mInputs.emplace(mInputs.cbegin() + addAfter + 1, type, name);
-    } else {
-        mInputs.emplace_back(type, name);
-    }
+void GraphFunction::addInput(const DataType& type, std::string name, int addAfter)
+{
+	if (addAfter < mInputs.size()) {
+		// +1 because emplace adds before
+		mInputs.emplace(mInputs.cbegin() + addAfter + 1, type, name);
+	} else {
+		mInputs.emplace_back(type, name);
+	}
 }
 
-void GraphFunction::removeInput(int idx) {
-    if(idx < mInputs.size()) {
-        mInputs.erase(mInputs.begin() + idx);
-    }
+void GraphFunction::removeInput(int idx)
+{
+	if (idx < mInputs.size()) {
+		mInputs.erase(mInputs.begin() + idx);
+	}
 }
 
-void GraphFunction::modifyInput(int idx, const DataType& type, boost::optional<std::string> name) {
-    if(idx < mInputs.size()) {
-        if(type.valid()) {
-            mInputs[idx].first = type;
-        }
-        if(name) {
-            mInputs[idx].second = *name;
-        }
-    }
+void GraphFunction::modifyInput(int idx, const DataType& type, boost::optional<std::string> name)
+{
+	if (idx < mInputs.size()) {
+		if (type.valid()) {
+			mInputs[idx].first = type;
+		}
+		if (name) {
+			mInputs[idx].second = *name;
+		}
+	}
 }
 
 void GraphFunction::addOutput(const DataType& type, std::string name, int addAfter)
 {
-    if(addAfter < mOutputs.size()) {
-
-        // +1 because emplace adds before
-        mOutputs.emplace(mOutputs.cbegin() + addAfter + 1, type, std::move(name));
-    } else {
-        mOutputs.emplace_back(type, std::move(name));
-    }
+	if (addAfter < mOutputs.size()) {
+		// +1 because emplace adds before
+		mOutputs.emplace(mOutputs.cbegin() + addAfter + 1, type, std::move(name));
+	} else {
+		mOutputs.emplace_back(type, std::move(name));
+	}
 }
 
 void GraphFunction::removeOutput(int idx)
 {
-    if(idx < mOutputs.size()) {
-        mOutputs.erase(mOutputs.begin() + idx);
-    }
+	if (idx < mOutputs.size()) {
+		mOutputs.erase(mOutputs.begin() + idx);
+	}
 }
 
 void GraphFunction::modifyOutput(int idx, const DataType& type, boost::optional<std::string> name)
 {
-    if(idx < mOutputs.size()) {
-        if(type.valid()) {
-            mOutputs[idx].first = type;
-        }
-        if(name) {
-            mOutputs[idx].second = *name;
-        }
-    }
+	if (idx < mOutputs.size()) {
+		if (type.valid()) {
+			mOutputs[idx].first = type;
+		}
+		if (name) {
+			mOutputs[idx].second = *name;
+		}
+	}
 }
 
 llvm::FunctionType* GraphFunction::functionType() const
 {
-    std::vector<llvm::Type*> arguments;
-    arguments.reserve(inputs().size() + outputs().size());
-    for(const auto& p : inputs()) {
-        arguments.push_back(p.first.llvmType());
-    }
-    
-    // make these pointers
-    for (const auto& p : outputs()) {
-        arguments.push_back(llvm::PointerType::get(p.first.llvmType(), 0));
-    }
-    
+	std::vector<llvm::Type*> arguments;
+	arguments.reserve(inputs().size() + outputs().size());
+	for (const auto& p : inputs()) {
+		arguments.push_back(p.first.llvmType());
+	}
+
+	// make these pointers
+	for (const auto& p : outputs()) {
+		arguments.push_back(llvm::PointerType::get(p.first.llvmType(), 0));
+	}
+
 	return llvm::FunctionType::get(
 		llvm::IntegerType::getInt32Ty(context().llvmContext()), arguments, false);
 }

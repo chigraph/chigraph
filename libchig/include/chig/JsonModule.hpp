@@ -26,7 +26,7 @@ struct JsonModule : public ChigModule {
 	/// \param json_data The JSON
 	/// \param cont The context
 	/// \param res The result to fill if there are errors
-    JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res);
+	JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res);
 
 	/// Construct a JsonModule from scratch, no json
 	/// \param const The context
@@ -81,14 +81,14 @@ struct JsonModule : public ChigModule {
 		std::vector<std::pair<DataType, std::string>> ins,
 		std::vector<std::pair<DataType, std::string>> outs, GraphFunction** toFill = nullptr);
 
-    /// Remove a function from the module
-    /// \param name The name of the function to remove
-    /// \return True if there was a function matching name that was removed
-    bool removeFunction(gsl::cstring_span<> name);
+	/// Remove a function from the module
+	/// \param name The name of the function to remove
+	/// \return True if there was a function matching name that was removed
+	bool removeFunction(gsl::cstring_span<> name);
 
-    /// Remove a function from the module
-    /// \param func The function to remove
-    void removeFunction(GraphFunction* func);
+	/// Remove a function from the module
+	/// \param func The function to remove
+	void removeFunction(GraphFunction* func);
 
 	/// Get a function from the name
 	/// \param name The name to get

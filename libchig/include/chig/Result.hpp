@@ -26,7 +26,6 @@ struct Result {
 
 	operator bool() { return success; }
 	bool operator!() { return !success; }
-	
 	std::string dump() const;
 };
 
@@ -52,10 +51,11 @@ inline Result& operator+=(Result& lhs, const Result& rhs)
 	return lhs;
 }
 
-inline std::ostream& operator<<(std::ostream& lhs, const Result& rhs) {
-    lhs << rhs.dump();
+inline std::ostream& operator<<(std::ostream& lhs, const Result& rhs)
+{
+	lhs << rhs.dump();
 
-    return lhs;
+	return lhs;
 }
 }
 

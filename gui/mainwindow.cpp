@@ -37,9 +37,9 @@
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {
 	Q_INIT_RESOURCE(chiggui);
-    
-    // set icon
-    setWindowIcon(QIcon(QPixmap(":/icons/chigraphsmall.png")));
+
+	// set icon
+	setWindowIcon(QIcon(QPixmap(":/icons/chigraphsmall.png")));
 
 	reg = std::make_shared<DataModelRegistry>();
 
@@ -72,12 +72,12 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	docker->setWidget(outputView);
 	addDockWidget(Qt::BottomDockWidgetArea, docker);
 
-    docker = new QDockWidget(i18n("Function Details"), this);
-    docker->setObjectName("Function Details");
-    funcDetails = new FunctionDetails;
-    docker->setWidget(funcDetails);
-    addDockWidget(Qt::RightDockWidgetArea, docker);
-    connect(this, &MainWindow::newFunctionOpened, funcDetails, &FunctionDetails::loadFunction);
+	docker = new QDockWidget(i18n("Function Details"), this);
+	docker->setObjectName("Function Details");
+	funcDetails = new FunctionDetails;
+	docker->setWidget(funcDetails);
+	addDockWidget(Qt::RightDockWidgetArea, docker);
+	connect(this, &MainWindow::newFunctionOpened, funcDetails, &FunctionDetails::loadFunction);
 
 	setupActions();
 }
@@ -121,11 +121,11 @@ void MainWindow::setupActions()
 	actColl->addAction(QStringLiteral("new-function"), newFunctionAction);
 	connect(newFunctionAction, &QAction::triggered, this, &MainWindow::newFunction);
 
-    QAction* newModuleAction = new QAction;
-    newModuleAction->setText(i18n("New Module"));
-    newModuleAction->setIcon(QIcon::fromTheme("package-new"));
-    actColl->addAction(QStringLiteral("new-module"), newModuleAction);
-    connect(newModuleAction, &QAction::triggered, this, &MainWindow::newModule);
+	QAction* newModuleAction = new QAction;
+	newModuleAction->setText(i18n("New Module"));
+	newModuleAction->setIcon(QIcon::fromTheme("package-new"));
+	actColl->addAction(QStringLiteral("new-module"), newModuleAction);
+	connect(newModuleAction, &QAction::triggered, this, &MainWindow::newModule);
 
 	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
 }
@@ -163,11 +163,12 @@ void MainWindow::save()
 		}
 	}
 
-    if (module != nullptr) {
-        chig::Result res = module->saveToDisk();
-        if(!res) {
-            KMessageBox::detailedError(this, i18n("Failed to save module!"), QString::fromStdString(res.dump()));
-        }
+	if (module != nullptr) {
+		chig::Result res = module->saveToDisk();
+		if (!res) {
+			KMessageBox::detailedError(
+				this, i18n("Failed to save module!"), QString::fromStdString(res.dump()));
+		}
 	}
 }
 
@@ -230,7 +231,7 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 	functabs->setTabText(idx, qualifiedFunctionName);
 	functabs->setCurrentWidget(view);
 
-    newFunctionOpened(func);
+	newFunctionOpened(func);
 }
 
 void MainWindow::closeTab(int idx)
@@ -288,21 +289,22 @@ void MainWindow::newFunction()
 	}
 
 	module->createFunction(newName.toStdString(), {}, {});  // TODO: inputs
-    functionpane->updateModule(module);
+	functionpane->updateModule(module);
 }
 
 void MainWindow::newModule()
 {
-    // can't do this without a workspace
-    if(ccontext->workspacePath().empty()) {
-        KMessageBox::error(this, i18n("Cannot create a module without a workspace to place it in"), i18n("Failed to create module"));
-        return;
-    }
+	// can't do this without a workspace
+	if (ccontext->workspacePath().empty()) {
+		KMessageBox::error(this, i18n("Cannot create a module without a workspace to place it in"),
+			i18n("Failed to create module"));
+		return;
+	}
 
-    // TODO: validator
-    auto fullName = QInputDialog::getText(this, i18n("New Module"), i18n("Full Module Name"));
+	// TODO: validator
+	auto fullName = QInputDialog::getText(this, i18n("New Module"), i18n("Full Module Name"));
 
-    ccontext->newJsonModule(fullName.toStdString());
+	ccontext->newJsonModule(fullName.toStdString());
 
-    moduleBrowser->loadWorkspace(*ccontext);
+	moduleBrowser->loadWorkspace(*ccontext);
 }

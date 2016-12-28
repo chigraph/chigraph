@@ -47,13 +47,13 @@ struct Context {
 	/// found
 	ChigModule* moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept;
 
-    /// Create a new JSONModule with the given full name
-    /// \param fullName The new name
-    JsonModule* newJsonModule(gsl::cstring_span<> fullName);
+	/// Create a new JSONModule with the given full name
+	/// \param fullName The new name
+	JsonModule* newJsonModule(gsl::cstring_span<> fullName);
 
-    /// Get the list of modules in the workspace
-    /// \return The module list
-    std::unordered_set<std::string> listModulesInWorkspace() const noexcept;
+	/// Get the list of modules in the workspace
+	/// \return The module list
+	std::unordered_set<std::string> listModulesInWorkspace() const noexcept;
 
 	/// Load a module from disk
 	/// \param name The name of the moudle
@@ -93,13 +93,9 @@ struct Context {
 	/// Get the workspace path of the Context
 	/// \return The workspace path
 	boost::filesystem::path workspacePath() const { return mWorkspacePath; }
-
-    /// Check if this context has a workspace bound to it -- same as !workspacePath().empty()
+	/// Check if this context has a workspace bound to it -- same as !workspacePath().empty()
 	/// \return If it has a workspace
-	bool hasWorkspace() const noexcept {
-        return !workspacePath().empty();
-	} 
-
+	bool hasWorkspace() const noexcept { return !workspacePath().empty(); }
 	/// Compile a module to a \c llvm::Module
 	/// \param name The full name of the moudle to compile
 	/// \param toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced

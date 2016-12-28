@@ -9,22 +9,20 @@
 
 #include "paramlistwidget.hpp"
 
-class FunctionDetails : public QWidget {
-    Q_OBJECT
+class FunctionDetails : public QWidget
+{
+	Q_OBJECT
 public:
-
-    FunctionDetails(QWidget* parent = nullptr);
+	FunctionDetails(QWidget* parent = nullptr);
 
 public slots:
-    void loadFunction(chig::GraphFunction* func);
+	void loadFunction(chig::GraphFunction* func);
 
 private:
+	chig::GraphFunction* mFunc = nullptr;
 
-    chig::GraphFunction* mFunc = nullptr;
-
-    ParamListWidget* ins;
-    ParamListWidget* outs;
-
+	ParamListWidget* ins;
+	ParamListWidget* outs;
 };
 
-#endif // CHIGGUI_FUNCTIONDETAILS_HPP
+#endif  // CHIGGUI_FUNCTIONDETAILS_HPP
