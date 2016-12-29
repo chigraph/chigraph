@@ -327,19 +327,6 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 		return res;
 	}
 
-	NodeInstance* exitNode;
-	// get output node
-	{
-		auto outputNodes = graph().nodesWithType("lang", "exit");
-
-		if (outputNodes.empty()) {
-			res.addEntry("EUKN", "No output nodes in graph", {{"Graph Name", name()}});
-			return res;
-		}
-
-		exitNode = outputNodes[0];
-	}
-
 	// make sure that the entry node has the functiontype
     if (!std::equal(dataInputs().begin(), dataInputs().end(), entry->type().dataOutputs().begin())) {
 		nlohmann::json inFunc = nlohmann::json::array();
@@ -359,14 +346,14 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 	}
 
 	// make sure that the entry node has the functiontype
-    if (!std::equal(dataOutputs().begin(), dataOutputs().end(), exitNode->type().dataInputs().begin())) {
+    if (!std::equal(dataOutputs().begin(), dataOutputs().end(), dataOutputs().begin())) {
 		nlohmann::json outFunc = nlohmann::json::array();
         for (auto& out : dataOutputs()) {
 			outFunc.push_back({{out.second, out.first.qualifiedName()}});
 		}
 
 		nlohmann::json outEntry = nlohmann::json::array();
-		for (auto& out : exitNode->type().dataInputs()) {
+		for (auto& out : dataOutputs()) {
 			// inputs to the exit are outputs to the function
 			outEntry.push_back({{out.second, out.first.qualifiedName()}});
 		}
@@ -405,8 +392,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::Function** ret_func) cons
 							.dataOutputs()[idx - 1]
 							.second);  // it starts with inputs, which are outputs to entry
 		} else {
-			arg.setName(exitNode->type()
-							.dataInputs()[idx - 1 - entry->type().dataOutputs().size()]
+			arg.setName(dataOutputs()[idx - 1 - entry->type().dataOutputs().size()]
 							.second);  // then the outputs, which are inputs to exit
 		}
 		++idx;

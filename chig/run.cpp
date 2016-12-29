@@ -40,9 +40,7 @@ int run(const std::vector<std::string>& opts)
 
 	po::options_description run_opts;
 	run_opts.add_options()("input-file", po::value<std::string>(),
-		"The input file, - for stdin. Should be a chig module")("workspace,w",
-		po::value<std::string>(),
-		"The workspace path. Leave blank to inferr from the working directory");
+		"The input file, - for stdin. Should be a chig module");
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1);
@@ -57,41 +55,32 @@ int run(const std::vector<std::string>& opts)
 
 	std::string infile = vm["input-file"].as<std::string>();
 
-	nlohmann::json read_json = {};
+	Context c{fs::current_path()};
+	
+	// load module
+	JsonModule* jmod = nullptr;
 
+	Result res;
+	
 	if (infile == "-") {
+		nlohmann::json read_json = {};
 		std::cin >> read_json;
+		res += c.addModuleFromJson("main", read_json, &jmod);
+		
 	} else {
 		// make sure it's an actual file
 		fs::path inpath = infile;
-		if (!fs::is_regular_file(inpath)) {
-			std::cerr << "error: Cannot open input file " << inpath;
-			return 1;
-		}
+		// remove extension if the user added it
+		inpath.replace_extension("");
+		
+		fs::path moduleName = fs::relative(fs::current_path(), c.workspacePath() / "src") / inpath;
 
-		fs::ifstream stream(inpath);
-
-		try {
-			stream >> read_json;
-		} catch (std::exception& e) {
-			std::cerr << e.what() << std::endl;
-			return 1;
-		}
+		ChigModule* cMod;
+		res += c.loadModule(moduleName.string(), &cMod);
+		
+		jmod = dynamic_cast<JsonModule*>(cMod);
 	}
 
-	Result res;
-
-	fs::path workspacePath;
-	if (vm.count("workspace") != 0) {
-		workspacePath = vm["workspace"].as<std::string>();
-	} else {
-		workspacePath = fs::current_path();
-	}
-
-	Context c{workspacePath};
-	// load it as a module
-	JsonModule* jmod = nullptr;
-	c.addModuleFromJson("main", read_json, &jmod);
 
 	if (!res) {
 		std::cerr << res << std::endl;

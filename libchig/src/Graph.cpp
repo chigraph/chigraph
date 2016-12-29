@@ -40,21 +40,21 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&
 		}
 
 		auto testIter = node.find("location");
-		if (testIter != node.end()) {
-			// make sure it is the right size
-			if (!testIter.value().is_array()) {
-				res.addEntry(
-					"E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeid}});
-				continue;
-			}
-
-			if (testIter.value().size() != 2) {
-				res.addEntry("E11", "Node doesn't have a location that is an array of size 2.",
-					{{"nodeid", nodeid}});
-				continue;
-			}
-		} else {
+		if (testIter == node.end()) {
 			res.addEntry("E12", "Node doesn't have a location.", {{"nodeid", nodeid}});
+			continue;
+		}
+		
+		// make sure it is the right size
+		if (!testIter.value().is_array()) {
+			res.addEntry(
+				"E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeid}});
+			continue;
+		}
+
+		if (testIter.value().size() != 2) {
+			res.addEntry("E11", "Node doesn't have a location that is an array of size 2.",
+				{{"nodeid", nodeid}});
 			continue;
 		}
 

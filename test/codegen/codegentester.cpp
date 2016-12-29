@@ -171,6 +171,7 @@ int main(int argc, char** argv)
 		chigexe.set_wait_timeout(exec_stream_t::s_out, 100000);
 		chigexe.set_wait_timeout(exec_stream_t::s_err, 100000);
 
+
 		std::vector<std::string> args2 = {"compile", "-", "-w", moduleDir.string()};
 		chigexe.start("./chig", args2.begin(), args2.end());
 		chigexe.in() << chigmodule;
