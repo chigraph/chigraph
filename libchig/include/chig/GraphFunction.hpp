@@ -73,6 +73,7 @@ struct GraphFunction {
 	{
 		return graph().insertNode(std::move(type), x, y, id, toFill);
 	}
+	
 
 	/// Add a node to the graph using module, type, and json
 	/// \param moduleName The name of the module that typeName is in
@@ -86,6 +87,11 @@ struct GraphFunction {
         const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
         NodeInstance** toFill = nullptr);
 
+    /// Remove a node from the function. Also disconnect it's connections.
+    /// \param nodeToRemove The node to remove
+    /// \return The result
+	Result removeNode(NodeInstance* nodeToRemove);
+    
     /// Create a fresh NodeType for an entry
     /// \param toFill The NodeType pointer to fill
     /// \return The result

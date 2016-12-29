@@ -132,6 +132,7 @@ void FunctionView::nodeAdded(Node& n)
 
 	func->graph().nodes()[ptr->inst->id()] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
 }
+
 void FunctionView::nodeDeleted(Node& n)
 {
 	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());

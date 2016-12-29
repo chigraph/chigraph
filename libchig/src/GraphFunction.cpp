@@ -438,6 +438,53 @@ Result GraphFunction::insertNode(gsl::cstring_span<> moduleName, gsl::cstring_sp
     return res;
 }
 
+Result GraphFunction::removeNode(NodeInstance* nodeToRemove) {
+    
+    Result res;
+    
+    // disconnect it's connections
+    
+    // disconnect input exec
+    for(const auto& execSlot : nodeToRemove->inputExecConnections) {
+        for (const auto& pair : execSlot) {
+            if(pair.first) {
+                res += disconnectExec(*pair.first, pair.second);
+            }
+        }
+    }
+    // disconnect output exec
+    auto ID = 0ull;
+    for(const auto& pair : nodeToRemove->outputExecConnections) {
+        if(pair.first) {
+            res += disconnectExec(*nodeToRemove, ID);
+        }
+        ++ID;
+    }
+    
+    // disconnect input data
+    for(const auto& pair : nodeToRemove->inputDataConnections) {
+        if(pair.first) {
+            res += disconnectData(*pair.first, pair.second, *nodeToRemove);
+        }
+    }
+    
+    // disconnect output data
+    ID = 0ull;
+    for(const auto& dataSlot : nodeToRemove->outputDataConnections) {
+        for(const auto& pair : dataSlot) {
+            if(pair.first) {
+                disconnectData(*nodeToRemove, ID, *pair.first);
+            }
+        }
+        ++ID;
+    }
+    // then delete the node
+    graph().nodes().erase(nodeToRemove->id());
+    
+    return res;
+}
+
+
 Result GraphFunction::createEntryNodeType(std::unique_ptr<NodeType> *toFill)
 {
     Result res;
