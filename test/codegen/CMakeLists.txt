@@ -1,5 +1,5 @@
 add_executable(codegen_tester codegentester.cpp)
-target_link_libraries(codegen_tester PUBLIC chigcore execstream)
+target_link_libraries(codegen_tester PUBLIC chigcore tiny-process-library)
 
 set(srcdir ${CMAKE_CURRENT_SOURCE_DIR}/workspace/src)
 file(GLOB children RELATIVE  ${srcdir} ./workspace/src/*)

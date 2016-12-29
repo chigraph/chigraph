@@ -3,7 +3,7 @@
 
 #include <iterator>
 
-#include <exec-stream.h>
+#include <process.hpp>
 
 #include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/Linker/Linker.h>
@@ -26,18 +26,19 @@ struct CFuncNode : NodeType {
 		std::string error;
 		try {
 			// compile the C code
-			exec_stream_t clangexe;
-			clangexe.set_wait_timeout(exec_stream_t::s_out, 100000);
-			std::vector<std::string> arguments = {"-xc", "-", "-c", "-emit-llvm", "-O0", "-o-"};
-			clangexe.start(CHIG_CLANG_EXE, arguments.begin(), arguments.end());
-			clangexe.in() << cCode.data();
-			clangexe.close_in();
+			Process clangexe(std::string(CHIG_CLANG_EXE) + " -xc - -c -emit-llvm -O0 -o -", {}, 
+                [&bitcode](const char* bytes, size_t n) {
+                    // read stdin
+                    bitcode.append(bytes, n);
+                },
+                [&error](const char* bytes, size_t n) {
+                    error.append(bytes, n);
+                },
+                true
+            );
+            clangexe.write(ccode);
+			clangexe.close_stdin();
 
-			bitcode = std::string{
-				std::istreambuf_iterator<char>(clangexe.out()), std::istreambuf_iterator<char>()};
-
-			error = std::string{
-				std::istreambuf_iterator<char>(clangexe.err()), std::istreambuf_iterator<char>()};
 		} catch (std::exception& e) {
 			res.addEntry("EUKN", "Failed to run clang and generate bitcode", {{"Error", e.what()}});
 			return;

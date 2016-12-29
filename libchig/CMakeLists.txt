@@ -14,7 +14,7 @@ set(CHIG_PUBLIC_FILES
 	include/chig/Result.hpp
 	include/chig/Graph.hpp
 	include/chig/NameMangler.hpp
-        include/chig/CModule.hpp
+    include/chig/CModule.hpp
 )
 
 set(CHIG_PRIVATE_FILES
@@ -45,6 +45,7 @@ target_include_directories(chigcore
 	include/
 	${CMAKE_BINARY_DIR}/
 	../third_party/GSL
+	../third_party/tiny-process-library
 )
 
 target_compile_features(chigcore PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
@@ -55,7 +56,7 @@ llvm_map_components_to_libnames(llvm_libs core irreader support bitwriter execut
 target_link_libraries(chigcore
 PUBLIC
 	${llvm_libs} 
-	execstream
+	tiny-process-library
 )
 
 target_link_libraries(chigcore

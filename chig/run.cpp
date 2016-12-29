@@ -88,7 +88,7 @@ int run(const std::vector<std::string>& opts)
 	}
 
 	std::unique_ptr<llvm::Module> llmod;
-	res += c.compileModule(jmod->name(), &llmod);
+	res += c.compileModule(jmod->fullName(), &llmod);
 
 	if (!res) {
 		std::cerr << "Error compiling module: " << res << std::endl;
