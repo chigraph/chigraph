@@ -19,6 +19,7 @@
 #include <QValidator>
 
 #include <KLocalizedString>
+#include <KMessageBox>
 #include <KTextEdit>
 
 #include <memory>
@@ -53,7 +54,9 @@ public:
 			chig::Result res = inst->context().nodeTypeFromModule(
 				"c", "func", {{"code", code}, {"function", function}}, &ty);
 			if (!res) {
-				return;  // TODO: error handling
+                KMessageBox::detailedError(this, "Failed to compile C node", QString::fromStdString(res.dump()));
+                
+                return;
 			}
 			inst->setType(std::move(ty));
 

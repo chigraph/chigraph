@@ -277,6 +277,7 @@ void MainWindow::newFunction()
 	func->getOrInsertEntryNode(0, 0, "entry");
 	
 	functionpane->updateModule(module);
+    newFunctionSelected(func); // open the newly created function
 }
 
 void MainWindow::newModule()
