@@ -21,7 +21,7 @@ public:
 		: QTreeWidgetItem(parent, ModuleTreeItemType), mName{path}
 	{
 		setText(0, QString::fromStdString(mName.filename().string()));
-		
+		setIcon(0, QIcon::fromTheme(QStringLiteral("package-available")));
 	}
 
 	fs::path mName;
@@ -69,7 +69,14 @@ void ModuleBrowser::loadWorkspace(chig::Context& context)
 		if (topLevels.find(topLevelName) != topLevels.end()) {
 			topLevel = topLevels[topLevelName];
 		} else {
-			topLevel = new QTreeWidgetItem(QStringList() << QString::fromStdString(topLevelName));
+			// check if this is a module
+			auto iterCpy = module.begin();
+			++iterCpy;
+			if(iterCpy == module.end()) {
+				topLevel = new ModuleTreeItem(nullptr, module);
+			} else {
+				topLevel = new QTreeWidgetItem(QStringList() << QString::fromStdString(topLevelName));
+			}
 			addTopLevelItem(topLevel);
 			topLevels[topLevelName] = topLevel;
 		}
@@ -92,7 +99,6 @@ void ModuleBrowser::loadWorkspace(chig::Context& context)
 				QTreeWidgetItem* newTopLevel;
 				if (isChigraphModule) {
 					newTopLevel = new ModuleTreeItem(topLevel, module);
-					newTopLevel->setIcon(0, QIcon::fromTheme(QStringLiteral("package-available")));
 				} else {
 					newTopLevel = new QTreeWidgetItem(
 						topLevel, QStringList() << QString::fromStdString(name));

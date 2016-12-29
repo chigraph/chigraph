@@ -13,13 +13,49 @@
 #include "chignodegui.hpp"
 
 FunctionView::FunctionView(
-	chig::GraphFunction* func_, std::shared_ptr<DataModelRegistry> reg, QWidget* parent)
+	chig::GraphFunction* func_, QWidget* parent)
 	: QWidget(parent), func{func_}
 {
 	auto hlayout = new QHBoxLayout(this);
 
 	hlayout->setMargin(0);
 	hlayout->setSpacing(0);
+	
+	// create the registry
+	//////////////////////
+	
+	auto reg = std::make_shared<DataModelRegistry>();
+	
+	// register dependencies + our own mod
+	auto deps =  func->module().dependencies();
+	deps.insert(func->module().fullName());
+	for(auto modName : deps) {
+		auto module = func->context().moduleByFullName(modName);
+		Expects(module != nullptr);
+		
+		for(auto typeName : module->nodeTypeNames()) {
+			
+			// create that node type unless it's entry or exit
+			if(modName == "lang" && (typeName == "entry" || typeName == "exit")) {
+				continue;
+			}
+			
+			std::unique_ptr<chig::NodeType> ty;
+			module->nodeTypeFromName(typeName, {}, &ty);
+			
+			auto name = ty->qualifiedName(); // cache the name because ty is moved from
+			reg->registerModel(std::make_unique<ChigNodeGui>(new chig::NodeInstance(std::move(ty), 0, 0, name)));
+			
+		}
+	}
+	// register functions in this module
+	// register exit -- it has to be the speical kind of exit for this function
+	std::unique_ptr<chig::NodeType> ty;
+	func->createExitNodeType(&ty);
+	
+	reg->registerModel(std::make_unique<ChigNodeGui>(new chig::NodeInstance(std::move(ty), 0, 0, "lang:exit")));
+
+	
 
 	scene = new FlowScene(reg);
 	connect(scene, &FlowScene::nodeCreated, this, &FunctionView::nodeAdded);

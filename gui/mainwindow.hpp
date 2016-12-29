@@ -37,7 +37,6 @@ public:
 	std::unordered_map<QString, QWidget*> openFunctions;
 
 	QTabWidget* functabs = nullptr;
-	std::shared_ptr<DataModelRegistry> reg;
 	OutputView* outputView = nullptr;
 	ModuleBrowser* moduleBrowser = nullptr;
 	FunctionDetails* funcDetails = nullptr;
@@ -45,8 +44,6 @@ public:
 	FunctionsPane* functionpane = nullptr;
 
 	std::unique_ptr<chig::Context> ccontext = nullptr;
-
-	void addModule(std::unique_ptr<chig::ChigModule> toAdd);
 
 	chig::JsonModule* module = nullptr;
 

@@ -20,7 +20,7 @@ public:
 	FlowScene* scene;
 	FlowView* view;
 
-	FunctionView(chig::GraphFunction* func_, std::shared_ptr<DataModelRegistry> reg,
+	FunctionView(chig::GraphFunction* func_,
 		QWidget* parent = nullptr);
 
 	chig::GraphFunction* func;

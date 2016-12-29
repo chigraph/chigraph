@@ -41,8 +41,6 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	// set icon
 	setWindowIcon(QIcon(":/icons/chigraphsmall.png"));
 
-	reg = std::make_shared<DataModelRegistry>();
-
 	ccontext = std::make_unique<chig::Context>();
 
 	QDockWidget* docker = new QDockWidget(i18n("Functions"), this);
@@ -135,22 +133,6 @@ MainWindow::~MainWindow()
 	openRecentAction->saveEntries(KSharedConfig::openConfig()->group("Recent Files"));
 }
 
-inline void MainWindow::addModule(std::unique_ptr<chig::ChigModule> toAdd)
-{
-	Expects(toAdd != nullptr);
-
-	auto nodetypes = toAdd->nodeTypeNames();
-
-	for (auto& nodetype : nodetypes) {
-		std::unique_ptr<chig::NodeType> ty;
-		toAdd->nodeTypeFromName(nodetype, {}, &ty);
-		auto inst = new chig::NodeInstance(std::move(ty), 0, 0, nodetype);
-		reg->registerModel(std::make_unique<ChigNodeGui>(inst));
-	}
-
-	ccontext->addModule(std::move(toAdd));
-}
-
 void MainWindow::save()
 {
 	for (int idx = 0; idx < functabs->count(); ++idx) {
@@ -227,7 +209,7 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 		return;
 	}
 
-	auto view = new FunctionView(func, reg, functabs);
+	auto view = new FunctionView(func, functabs);
 	int idx = functabs->addTab(view, qualifiedFunctionName);
 	openFunctions[qualifiedFunctionName] = view;
 	functabs->setTabText(idx, qualifiedFunctionName);
