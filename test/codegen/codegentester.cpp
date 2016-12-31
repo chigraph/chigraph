@@ -98,20 +98,24 @@ std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs)
 				   lgraph["type"].dump(-1) + "  original: " + rgraph["type"].dump(-1);
 		}
 		if (lgraph["data_inputs"] != rgraph["data_inputs"]) {
-			return "graph data inputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
-				   lgraph["inputs"].dump(-1) + "  original: " + rgraph["inputs"].dump(-1);
+			return "graph data inputs in graph #" + std::to_string(iter) +
+				   "not equal; serialized: " + lgraph["inputs"].dump(-1) + "  original: " +
+				   rgraph["inputs"].dump(-1);
 		}
 		if (lgraph["data_outputs"] != rgraph["data_outputs"]) {
-			return "graph data outputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
-				   lgraph["outputs"].dump(-1) + "  original: " + rgraph["outputs"].dump(-1);
+			return "graph data outputs in graph #" + std::to_string(iter) +
+				   "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " +
+				   rgraph["outputs"].dump(-1);
 		}
 		if (lgraph["exec_inputs"] != rgraph["exec_inputs"]) {
-			return "graph exec inputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
-				   lgraph["inputs"].dump(-1) + "  original: " + rgraph["inputs"].dump(-1);
+			return "graph exec inputs in graph #" + std::to_string(iter) +
+				   "not equal; serialized: " + lgraph["inputs"].dump(-1) + "  original: " +
+				   rgraph["inputs"].dump(-1);
 		}
 		if (lgraph["exec_outputs"] != rgraph["exec_outputs"]) {
-			return "graph exec outputs in graph #" + std::to_string(iter) + "not equal; serialized: " +
-				   lgraph["outputs"].dump(-1) + "  original: " + rgraph["outputs"].dump(-1);
+			return "graph exec outputs in graph #" + std::to_string(iter) +
+				   "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " +
+				   rgraph["outputs"].dump(-1);
 		}
 	}
 
@@ -166,17 +170,13 @@ int main(int argc, char** argv)
 
 	// chig compile + lli
 	{
-        std::string generatedir, chigstderr;
+		std::string generatedir, chigstderr;
 		// go through chig compile
-		Process chigexe((fs::current_path() / "chig compile main.chigmod").string(), moduleDir.string(), 
-            [&generatedir](const char* bytes, size_t n) {
-                generatedir.append(bytes, n);
-            },
-            [&chigstderr](const char* bytes, size_t n) {
-                chigstderr.append(bytes, n);
-            }
-        );
-	
+		Process chigexe((fs::current_path() / "chig compile main.chigmod").string(),
+			moduleDir.string(),
+			[&generatedir](const char* bytes, size_t n) { generatedir.append(bytes, n); },
+			[&chigstderr](const char* bytes, size_t n) { chigstderr.append(bytes, n); });
+
 		// check stderr and return code
 		if (chigexe.get_exit_status() != 0) {
 			std::cerr << "Failed to generate module with chig compile: \n"
@@ -185,17 +185,11 @@ int main(int argc, char** argv)
 		}
 
 		std::string llistdout, llistderr;
-		
+
 		// now go through lli
-		Process lliexe(CHIG_LLI_EXE, "", 
-            [&llistdout](const char* bytes, size_t n) {
-                llistdout.append(bytes, n);
-            },
-            [&llistderr](const char* bytes, size_t n) {
-                llistderr.append(bytes, n);
-            },
-            true
-        );
+		Process lliexe(CHIG_LLI_EXE, "",
+			[&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
+			[&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); }, true);
 		lliexe.write(generatedir);
 		lliexe.close_stdin();
 
@@ -231,17 +225,12 @@ int main(int argc, char** argv)
 
 	// chig run
 	{
-        std::string generatedstdout, generatedstderr;
-        
+		std::string generatedstdout, generatedstderr;
+
 		// this program is to be started where chigc is
-		Process chigexe((fs::current_path() / "chig run main.chigmod").string(), moduleDir.string(), 
-            [&generatedstdout](const char* bytes, size_t n) {
-                generatedstdout.append(bytes, n);
-            },
-            [&generatedstderr](const char* bytes, size_t n) {
-                generatedstderr.append(bytes, n);
-            }
-        );
+		Process chigexe((fs::current_path() / "chig run main.chigmod").string(), moduleDir.string(),
+			[&generatedstdout](const char* bytes, size_t n) { generatedstdout.append(bytes, n); },
+			[&generatedstderr](const char* bytes, size_t n) { generatedstderr.append(bytes, n); });
 
 		int retcode = chigexe.get_exit_status();
 
@@ -276,25 +265,24 @@ int main(int argc, char** argv)
 	// serialize deserialize
 	{
 		Result r;
-		
+
 		Context c{moduleDir};
-		std::string fullName = (fs::relative(moduleDir, c.workspacePath() / "src") / "main").string();
+		std::string fullName =
+			(fs::relative(moduleDir, c.workspacePath() / "src") / "main").string();
 
 		// test serialization and deserialization
 		JsonModule* deserialized;
 		{
 			ChigModule* cMod = nullptr;
 			r += c.loadModule(fullName, &cMod);
-			
-			if(!r) {
+
+			if (!r) {
 				std::cerr << "Error loading module \n\n" << r << std::endl;
 				return 1;
 			}
-			
-			
+
 			deserialized = dynamic_cast<JsonModule*>(cMod);
 		}
-		
 
 		nlohmann::json serializedmodule;
 		r += deserialized->toJSON(&serializedmodule);
@@ -319,15 +307,11 @@ int main(int argc, char** argv)
 		// go through chig compile
 		std::string generatedir, chigstderr;
 		// go through chig compile
-		Process chigexe((fs::current_path() / "chig compile -tbc main.chigmod").string(), moduleDir.string(), 
-            [&generatedir](const char* bytes, size_t n) {
-                generatedir.append(bytes, n);
-            },
-            [&chigstderr](const char* bytes, size_t n) {
-                chigstderr.append(bytes, n);
-            }
-        );
-	
+		Process chigexe((fs::current_path() / "chig compile -tbc main.chigmod").string(),
+			moduleDir.string(),
+			[&generatedir](const char* bytes, size_t n) { generatedir.append(bytes, n); },
+			[&chigstderr](const char* bytes, size_t n) { chigstderr.append(bytes, n); });
+
 		// check stderr and return code
 		if (chigexe.get_exit_status() != 0) {
 			std::cerr << "Failed to generate module with chig compile: \n"
@@ -336,17 +320,11 @@ int main(int argc, char** argv)
 		}
 
 		std::string llistdout, llistderr;
-		
+
 		// now go through lli
-		Process lliexe(CHIG_LLI_EXE, "", 
-            [&llistdout](const char* bytes, size_t n) {
-                llistdout.append(bytes, n);
-            },
-            [&llistderr](const char* bytes, size_t n) {
-                llistderr.append(bytes, n);
-            },
-            true
-        );
+		Process lliexe(CHIG_LLI_EXE, "",
+			[&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
+			[&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); }, true);
 		lliexe.write(generatedir);
 		lliexe.close_stdin();
 

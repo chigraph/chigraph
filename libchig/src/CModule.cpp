@@ -1,8 +1,6 @@
 #include "chig/CModule.hpp"
 #include "chig/Config.hpp"
 
-#include <iterator>
-
 #include <process.hpp>
 
 #include <llvm/Bitcode/ReaderWriter.h>
@@ -12,6 +10,7 @@
 
 using namespace chig;
 
+/// The NodeType for calling C functions
 struct CFuncNode : NodeType {
 	CFuncNode(
 		ChigModule& mod, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res)
@@ -26,17 +25,13 @@ struct CFuncNode : NodeType {
 		std::string error;
 		try {
 			// compile the C code
-			Process clangexe(std::string(CHIG_CLANG_EXE) + " -xc - -c -emit-llvm -O0 -o -", {}, 
-                [&bitcode](const char* bytes, size_t n) {
-                    // read stdin
-                    bitcode.append(bytes, n);
-                },
-                [&error](const char* bytes, size_t n) {
-                    error.append(bytes, n);
-                },
-                true
-            );
-            clangexe.write(ccode);
+			Process clangexe(std::string(CHIG_CLANG_EXE) + " -xc - -c -emit-llvm -O0 -o -", {},
+				[&bitcode](const char* bytes, size_t n) {
+					// read stdin
+					bitcode.append(bytes, n);
+				},
+				[&error](const char* bytes, size_t n) { error.append(bytes, n); }, true);
+			clangexe.write(ccode);
 			clangexe.close_stdin();
 
 		} catch (std::exception& e) {

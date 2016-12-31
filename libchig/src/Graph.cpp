@@ -44,7 +44,7 @@ Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&
 			res.addEntry("E12", "Node doesn't have a location.", {{"nodeid", nodeid}});
 			continue;
 		}
-		
+
 		// make sure it is the right size
 		if (!testIter.value().is_array()) {
 			res.addEntry(

@@ -32,7 +32,7 @@ struct Graph {
 
 	/// Gets the nodes with a given type
 	/// \param module The module the type is in
-    /// \param name The name of the type
+	/// \param name The name of the type
 	/// \return A vector of NodeInstance
 	std::vector<NodeInstance*> nodesWithType(
 		gsl::cstring_span<> module, gsl::cstring_span<> name) const noexcept;
@@ -54,9 +54,12 @@ struct Graph {
 	/// Usually called by connectData or connectExec or GraphFunction
 	/// \return The nodes, mapped by id, value
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() { return mNodes; }
-
 	/// \copydoc Graph::nodes
-	const std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() const { return mNodes; }
+	const std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() const
+	{
+		return mNodes;
+	}
+
 private:
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>
 		mNodes;  /// Storage for the nodes

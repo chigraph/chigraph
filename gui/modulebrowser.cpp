@@ -3,8 +3,8 @@
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
-#include <QTreeWidgetItem>
 #include <QHeaderView>
+#include <QTreeWidgetItem>
 
 #include "mainwindow.hpp"
 
@@ -47,7 +47,7 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent)
 void ModuleBrowser::loadWorkspace(chig::Context& context)
 {
 	mContext = &context;
-	
+
 	// clear existing entries
 	clear();
 
@@ -56,7 +56,6 @@ void ModuleBrowser::loadWorkspace(chig::Context& context)
 	std::unordered_map<std::string, QTreeWidgetItem*> topLevels;
 	std::unordered_map<QTreeWidgetItem*, std::unordered_map<std::string, QTreeWidgetItem*>>
 		children;
-		
 
 	for (auto moduleName : modules) {
 		fs::path module = moduleName;
@@ -72,10 +71,11 @@ void ModuleBrowser::loadWorkspace(chig::Context& context)
 			// check if this is a module
 			auto iterCpy = module.begin();
 			++iterCpy;
-			if(iterCpy == module.end()) {
+			if (iterCpy == module.end()) {
 				topLevel = new ModuleTreeItem(nullptr, module);
 			} else {
-				topLevel = new QTreeWidgetItem(QStringList() << QString::fromStdString(topLevelName));
+				topLevel =
+					new QTreeWidgetItem(QStringList() << QString::fromStdString(topLevelName));
 			}
 			addTopLevelItem(topLevel);
 			topLevels[topLevelName] = topLevel;

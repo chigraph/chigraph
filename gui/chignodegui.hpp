@@ -54,9 +54,10 @@ public:
 			chig::Result res = inst->context().nodeTypeFromModule(
 				"c", "func", {{"code", code}, {"function", function}}, &ty);
 			if (!res) {
-                KMessageBox::detailedError(this, "Failed to compile C node", QString::fromStdString(res.dump()));
-                
-                return;
+				KMessageBox::detailedError(
+					this, "Failed to compile C node", QString::fromStdString(res.dump()));
+
+				return;
 			}
 			inst->setType(std::move(ty));
 
@@ -79,7 +80,7 @@ public:
 	QString name() const override { return QString::fromStdString(inst->type().qualifiedName()); }
 	std::unique_ptr<NodeDataModel> clone() const override
 	{
-        auto newInst = new chig::NodeInstance(*inst);
+		auto newInst = new chig::NodeInstance(*inst);
 		return std::make_unique<ChigNodeGui>(newInst);
 	}
 

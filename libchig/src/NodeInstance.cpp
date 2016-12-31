@@ -4,7 +4,6 @@
 
 namespace chig
 {
-
 NodeInstance::NodeInstance(
 	std::unique_ptr<NodeType> nodeType, float posX, float posY, gsl::cstring_span<> nodeID)
 	: mType{std::move(nodeType)},
@@ -41,15 +40,15 @@ NodeInstance& NodeInstance::operator=(const NodeInstance& other)
 	return *this;
 }
 
-void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
-    // TODO: this can screw stuff up, add checking
+void NodeInstance::setType(std::unique_ptr<NodeType> newType)
+{
+	// TODO: this can screw stuff up, add checking
 
-    mType = std::move(newType);
-
+	mType = std::move(newType);
 }
 
 Result connectData(
-        NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID)
+	NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID)
 {
 	Result res = {};
 

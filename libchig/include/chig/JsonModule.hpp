@@ -29,7 +29,7 @@ struct JsonModule : public ChigModule {
 	JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res);
 
 	/// Construct a JsonModule from scratch, no json
-	/// \param const The context
+	/// \param cont The context
 	/// \param fullName The full name of the module
 	/// \param dependencies The dependencies
 	JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies);
@@ -48,14 +48,14 @@ struct JsonModule : public ChigModule {
 		std::unique_ptr<NodeType>* toFill) override;
 
 	/// \copydoc ChigModule::typeFromName
-	DataType typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
+	DataType typeFromName(gsl::cstring_span<> name) override { return {}; }
 	/// \copydoc ChigModule::nodeTypeNames
 	virtual std::vector<std::string> nodeTypeNames() const override;  // TODO: implement
 
 	/// \copydoc ChigModule::typeNames
 	virtual std::vector<std::string> typeNames() const override { return {}; }  // TODO: implement
 	/// \copydoc ChigModule::generateModule
-	Result generateModule(std::unique_ptr<llvm::Module>* mod) override;
+	Result generateModule(std::unique_ptr<llvm::Module>* module) override;
 
 	/////////////////////
 
@@ -73,15 +73,16 @@ struct JsonModule : public ChigModule {
 
 	/// Create a new function if it does't already exist
 	/// \param name The name of the new function
-	/// \param ins The inputs to the function
-	/// \param outs The outputs to the function
+	/// \param dataIns The data inputs to the function
+	/// \param dataOuts The data outputs to the function
+	/// \param execIns The exec inputs to the function
+	/// \param execOuts The exec outputs to the function
 	/// \param toFill The new GraphFunction, optional
 	/// \return True if a new function was created, false otherwise
-    bool createFunction(gsl::cstring_span<> name,
-                        std::vector<std::pair<DataType, std::string> > dataIns,
-                        std::vector<std::pair<DataType, std::string> > dataOuts,
-                                                    std::vector<std::string> execIns,
-                                                    std::vector<std::string> execOuts, GraphFunction** toFill = nullptr);
+	bool createFunction(gsl::cstring_span<> name,
+		std::vector<std::pair<DataType, std::string>> dataIns,
+		std::vector<std::pair<DataType, std::string>> dataOuts, std::vector<std::string> execIns,
+		std::vector<std::string> execOuts, GraphFunction** toFill = nullptr);
 
 	/// Remove a function from the module
 	/// \param name The name of the function to remove
@@ -102,20 +103,6 @@ struct JsonModule : public ChigModule {
 	const std::vector<std::unique_ptr<GraphFunction>>& functions() const { return mFunctions; }
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
-};
-
-struct JsonFuncCallNodeType : public NodeType {
-	JsonFuncCallNodeType(JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr);
-
-	Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* f,
-		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const override;
-
-	nlohmann::json toJSON() const override;
-
-	std::unique_ptr<NodeType> clone() const override;
-
-	JsonModule* JModule;
 };
 }
 

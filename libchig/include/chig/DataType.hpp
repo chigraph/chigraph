@@ -14,11 +14,12 @@ namespace chig
 /// Loose wrapper around llvm::Type*, except it knows which ChigModule its in
 struct DataType {
 	/// Constructor
-	/// \param mod The module
+	/// \param chigMod The module
 	/// \param typeName The ID of the type in the module
-	/// \param llvmtype The underlying typ
-	DataType(ChigModule* cMod = nullptr, std::string typeName = {}, llvm::Type* llvmtype = nullptr)
-		: mModule(cMod), mName{typeName}, mLLVMType{llvmtype}
+	/// \param llvmtype The underlying type
+	DataType(
+		ChigModule* chigMod = nullptr, std::string typeName = {}, llvm::Type* llvmtype = nullptr)
+		: mModule(chigMod), mName{typeName}, mLLVMType{llvmtype}
 	{
 	}
 

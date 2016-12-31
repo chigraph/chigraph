@@ -56,31 +56,30 @@ int run(const std::vector<std::string>& opts)
 	std::string infile = vm["input-file"].as<std::string>();
 
 	Context c{fs::current_path()};
-	
+
 	// load module
 	JsonModule* jmod = nullptr;
 
 	Result res;
-	
+
 	if (infile == "-") {
 		nlohmann::json read_json = {};
 		std::cin >> read_json;
 		res += c.addModuleFromJson("main", read_json, &jmod);
-		
+
 	} else {
 		// make sure it's an actual file
 		fs::path inpath = infile;
 		// remove extension if the user added it
 		inpath.replace_extension("");
-		
+
 		fs::path moduleName = fs::relative(fs::current_path(), c.workspacePath() / "src") / inpath;
 
 		ChigModule* cMod;
 		res += c.loadModule(moduleName.string(), &cMod);
-		
+
 		jmod = dynamic_cast<JsonModule*>(cMod);
 	}
-
 
 	if (!res) {
 		std::cerr << res << std::endl;

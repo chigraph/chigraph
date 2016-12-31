@@ -1,8 +1,7 @@
 PROJECT_NAME           = "chigraph"
 PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
 STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@
-INPUT                  = @PROJECT_SOURCE_DIR@/libchig/include \
-                         @PROJECT_SOURCE_DIR@/libchig/src
+INPUT                  = @PROJECT_SOURCE_DIR@/libchig/include
 FILE_PATTERNS          = *.hpp \
                          *.cpp
 EXCLUDE                = @PROJECT_SOURCE_DIR@/libchig/include/chig/json.hpp

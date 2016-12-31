@@ -5,7 +5,7 @@ namespace chig
 std::string prettyPrintJson(const nlohmann::json& j, int indentLevel)
 {
 	std::string indentString(indentLevel * 2, ' ');
-	
+
 	std::string ret;
 	if (j.is_array()) {
 		ret += indentString + "[\n";
@@ -18,13 +18,13 @@ std::string prettyPrintJson(const nlohmann::json& j, int indentLevel)
 
 	} else if (j.is_string()) {
 		std::string str = j;
-		
+
 		// replace find and indent them
-		for(auto idx = str.find('\n'); idx < str.length(); idx = str.find('\n', idx + 1)) {
-			str.insert(idx + 1, indentString); // + 1 because it inserts before
+		for (auto idx = str.find('\n'); idx < str.length(); idx = str.find('\n', idx + 1)) {
+			str.insert(idx + 1, indentString);  // + 1 because it inserts before
 		}
 		ret += indentString + str;
-	} else if(j.is_number()) {
+	} else if (j.is_number()) {
 		ret += indentString + j.dump();
 	} else if (j.is_object()) {
 		for (auto iter = j.begin(); iter != j.end(); ++iter) {

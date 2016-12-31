@@ -18,16 +18,16 @@ TEST_CASE("JsonSerializer", "[json]")
 		REQUIRE(!!c.loadModule("lang"));
 		LangModule* lmod = static_cast<LangModule*>(c.moduleByName("lang"));
 		REQUIRE(lmod != nullptr);
-		
+
 		auto jmod = c.newJsonModule("main/main");
 		jmod->addDependency("lang");
 		REQUIRE(jmod != nullptr);
-		
+
 		GraphFunction* func;
 		bool created = jmod->createFunction("hello", {}, {}, {""}, {""}, &func);
 		REQUIRE(created == true);
 		REQUIRE(func != nullptr);
-		
+
 		auto requireWorks = [&](nlohmann::json expected) {
 			nlohmann::json ret;
 
@@ -62,8 +62,8 @@ TEST_CASE("JsonSerializer", "[json]")
 				{lmod->typeFromName("i1"), "in1"}};
 
 			std::unique_ptr<NodeType> toFill;
-			Result res =
-				c.nodeTypeFromModule("lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
+			Result res = c.nodeTypeFromModule(
+				"lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
 			REQUIRE(!!res);
 			NodeInstance* entry;
 			res += func->insertNode(std::move(toFill), 32, 32, "entry", &entry);

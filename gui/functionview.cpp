@@ -12,50 +12,47 @@
 
 #include "chignodegui.hpp"
 
-FunctionView::FunctionView(
-	chig::GraphFunction* func_, QWidget* parent)
+FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	: QWidget(parent), func{func_}
 {
 	auto hlayout = new QHBoxLayout(this);
 
 	hlayout->setMargin(0);
 	hlayout->setSpacing(0);
-	
+
 	// create the registry
 	//////////////////////
-	
+
 	auto reg = std::make_shared<DataModelRegistry>();
-	
+
 	// register dependencies + our own mod
-	auto deps =  func->module().dependencies();
+	auto deps = func->module().dependencies();
 	deps.insert(func->module().fullName());
-	for(auto modName : deps) {
+	for (auto modName : deps) {
 		auto module = func->context().moduleByFullName(modName);
 		Expects(module != nullptr);
-		
-		for(auto typeName : module->nodeTypeNames()) {
-			
+
+		for (auto typeName : module->nodeTypeNames()) {
 			// create that node type unless it's entry or exit
-			if(modName == "lang" && (typeName == "entry" || typeName == "exit")) {
+			if (modName == "lang" && (typeName == "entry" || typeName == "exit")) {
 				continue;
 			}
-			
+
 			std::unique_ptr<chig::NodeType> ty;
 			module->nodeTypeFromName(typeName, {}, &ty);
-			
-			auto name = ty->qualifiedName(); // cache the name because ty is moved from
-			reg->registerModel(std::make_unique<ChigNodeGui>(new chig::NodeInstance(std::move(ty), 0, 0, name)));
-			
+
+			auto name = ty->qualifiedName();  // cache the name because ty is moved from
+			reg->registerModel(
+				std::make_unique<ChigNodeGui>(new chig::NodeInstance(std::move(ty), 0, 0, name)));
 		}
 	}
 	// register functions in this module
 	// register exit -- it has to be the speical kind of exit for this function
 	std::unique_ptr<chig::NodeType> ty;
 	func->createExitNodeType(&ty);
-	
-	reg->registerModel(std::make_unique<ChigNodeGui>(new chig::NodeInstance(std::move(ty), 0, 0, "lang:exit")));
 
-	
+	reg->registerModel(
+		std::make_unique<ChigNodeGui>(new chig::NodeInstance(std::move(ty), 0, 0, "lang:exit")));
 
 	scene = new FlowScene(reg);
 	connect(scene, &FlowScene::nodeCreated, this, &FunctionView::nodeAdded);
@@ -131,8 +128,8 @@ void FunctionView::nodeAdded(const std::shared_ptr<Node>& n)
 	}
 
 	func->graph().nodes()[ptr->inst->id()] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
-    
-    nodes[ptr->inst] = n;
+
+	nodes[ptr->inst] = n;
 }
 
 void FunctionView::nodeDeleted(const std::shared_ptr<Node>& n)
@@ -142,25 +139,27 @@ void FunctionView::nodeDeleted(const std::shared_ptr<Node>& n)
 	if (ptr == nullptr) {
 		return;
 	}
-	
-	// find connections to this in conns and delete them -- removeNode does this in the chigraph model now do that in the nodes model
-	
-	for(auto iter = conns.begin(); iter != conns.end();) {
-        auto& pair = *iter;
-        if(pair.second[0].first == ptr->inst || pair.second[1].first == ptr->inst) {
-            // this doesn't invalidate iterators don't worry 
-            // http://en.cppreference.com/w/cpp/container/unordered_map#Iterator_invalidation
-            conns.erase(iter);
-            
-            iter = conns.begin(); // reset our search so we don't miss anything, because iter was invalidated
-        } else {
-            ++iter; // only go to the next one if we don't go back to the beginning
-        }
-    }
 
-    func->removeNode(ptr->inst);
-    
-    nodes.erase(ptr->inst);
+	// find connections to this in conns and delete them -- removeNode does this in the chigraph
+	// model now do that in the nodes model
+
+	for (auto iter = conns.begin(); iter != conns.end();) {
+		auto& pair = *iter;
+		if (pair.second[0].first == ptr->inst || pair.second[1].first == ptr->inst) {
+			// this doesn't invalidate iterators don't worry
+			// http://en.cppreference.com/w/cpp/container/unordered_map#Iterator_invalidation
+			conns.erase(iter);
+
+			iter = conns.begin();  // reset our search so we don't miss anything, because iter was
+								   // invalidated
+		} else {
+			++iter;  // only go to the next one if we don't go back to the beginning
+		}
+	}
+
+	func->removeNode(ptr->inst);
+
+	nodes.erase(ptr->inst);
 }
 
 void FunctionView::connectionAdded(const Connection& c)
@@ -208,7 +207,7 @@ void FunctionView::connectionDeleted(Connection& c)
 	if (conniter == conns.end()) {
 		return;
 	}
-	
+
 	// don't do anything if
 
 	auto conn = conniter->second;
@@ -256,5 +255,4 @@ void FunctionView::connectionUpdated(const Connection& c)
 	}
 
 	// remove the existing connection
-
 }

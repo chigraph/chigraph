@@ -17,13 +17,13 @@ public:
 
 public slots:
 	void loadFunction(chig::GraphFunction* func);
-	
+
 private slots:
-	
+
 	void inputChanged(int idx, chig::DataType newType, QString newName);
 	void inputAdded(chig::DataType type, QString name);
 	void inputDeleted(int idx);
-	
+
 	void outputChanged(int idx, chig::DataType newType, QString newName);
 	void outputAdded(chig::DataType type, QString name);
 	void outputDeleted(int idx);

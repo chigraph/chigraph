@@ -37,12 +37,12 @@ struct NodeType {
 	/// Destructor
 	virtual ~NodeType() = default;
 
+	/// Get the qualified name of the node type, like module.name():name()
+	/// \return The qualified name
 	std::string qualifiedName() const { return module().name() + ":" + name(); }
 	/// A virtual function that is called when this node needs to be called
 	/// \param execInputID The ID of the exec input
 	/// \param modToCodegenInto The module that is being generated
-	/// \param owningModule The module that has been generated from the ChigModule that this node
-	/// type is a part of
 	/// \param f The function that is being generated
 	/// \param io This has the values that are the inputs and outputs of the function.
 	/// This vector will always have the size of `inputs.size() + outputs.size()` and starts with
@@ -80,27 +80,31 @@ struct NodeType {
 	gsl::span<const std::pair<DataType, std::string>> dataInputs() const { return mDataInputs; }
 	/// Get the data outputs for the node
 	/// \return The data outputs in the format of {{DataType, description}, ...}
-	gsl::span<const std::pair<DataType, std::string>> dataOutputs() const
-	{
-		return mDataOutputs;
-	}
-
+	gsl::span<const std::pair<DataType, std::string>> dataOutputs() const { return mDataOutputs; }
 	/// Get the execution inputs for the node
 	/// \return The names of the inputs. The size of this vector is the size of inputs.
-    gsl::span<const std::string> execInputs() const { return mExecInputs; }
+	gsl::span<const std::string> execInputs() const { return mExecInputs; }
 	/// Get the execution outputs for the node
 	/// \return The names of the outputs. The size is the input count.
-    gsl::span<const std::string> execOutputs() const { return mExecOutputs; }
+	gsl::span<const std::string> execOutputs() const { return mExecOutputs; }
 protected:
+	/// Set the data inputs for the NodeType
+	/// \param newInputs The new inputs
 	void setDataInputs(std::vector<std::pair<DataType, std::string>> newInputs)
 	{
 		mDataInputs = std::move(newInputs);
 	}
+	/// Set the data outputs for the NodeType
+	/// \param newOutputs The new outputs
 	void setDataOutputs(std::vector<std::pair<DataType, std::string>> newOutputs)
 	{
 		mDataOutputs = std::move(newOutputs);
 	}
+	/// Set the exec inputs for the NodeType
+	/// \param newInputs The new inputs
 	void setExecInputs(std::vector<std::string> newInputs) { mExecInputs = std::move(newInputs); }
+	/// Set the exec outputs for the NodeType
+	/// \param newOutputs The new outputs
 	void setExecOutputs(std::vector<std::string> newOutputs)
 	{
 		mExecOutputs = std::move(newOutputs);

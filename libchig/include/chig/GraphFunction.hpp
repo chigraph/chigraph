@@ -27,11 +27,14 @@ struct GraphFunction {
 	/// Construct a graph
 	/// \param mod The owning module
 	/// \param name The name of the function
+	/// \param dataIns The data inputs to the function
+	/// \param dataOuts The data outputs of the function
+	/// \param execIns The exec inputs to the function
+	/// \param execOuts The exec outputs to the function
 	GraphFunction(JsonModule& mod, gsl::cstring_span<> name,
-		std::vector<std::pair<DataType, std::string>> ins,
-        std::vector<std::pair<DataType, std::string>> outs,
-                  std::vector<std::string> execIns,
-                  std::vector<std::string> execOuts);
+		std::vector<std::pair<DataType, std::string>> dataIns,
+		std::vector<std::pair<DataType, std::string>> dataOuts, std::vector<std::string> execIns,
+		std::vector<std::string> execOuts);
 
 	/// Destructor
 	~GraphFunction();
@@ -52,7 +55,7 @@ struct GraphFunction {
 	/// Compile the graph to an \c llvm::Function (usually called from JsonModule::generateModule)
 	/// \param mod The module to codgen into, should already be a valid module
 	/// \param ret_func The \c llvm::Function that it was compiled to
-	/// \ret The result
+	/// \return The result
 	Result compile(llvm::Module* mod, llvm::Function** ret_func) const;
 
 	/// Gets the node with type lang:entry
@@ -73,7 +76,6 @@ struct GraphFunction {
 	{
 		return graph().insertNode(std::move(type), x, y, id, toFill);
 	}
-	
 
 	/// Add a node to the graph using module, type, and json
 	/// \param moduleName The name of the module that typeName is in
@@ -83,25 +85,24 @@ struct GraphFunction {
 	/// \param y The y location of the node
 	/// \param id The node ID
 	/// \param toFill The NodeInstance to fill to, optional
-    Result insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
-        const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
-        NodeInstance** toFill = nullptr);
+	Result insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+		const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
+		NodeInstance** toFill = nullptr);
 
-    /// Remove a node from the function. Also disconnect it's connections.
-    /// \param nodeToRemove The node to remove
-    /// \return The result
+	/// Remove a node from the function. Also disconnect it's connections.
+	/// \param nodeToRemove The node to remove
+	/// \return The result
 	Result removeNode(NodeInstance* nodeToRemove);
-    
-    /// Create a fresh NodeType for an entry
-    /// \param toFill The NodeType pointer to fill
-    /// \return The result
-    Result createEntryNodeType(std::unique_ptr<NodeType>* toFill);
 
+	/// Create a fresh NodeType for an entry
+	/// \param toFill The NodeType pointer to fill
+	/// \return The result
+	Result createEntryNodeType(std::unique_ptr<NodeType>* toFill);
 
-    /// Create a fresh NodeType for an exit
-    /// \param toFill The NodeType pointer to fill
-    /// \return The result
-    Result createExitNodeType(std::unique_ptr<NodeType>* toFill);
+	/// Create a fresh NodeType for an exit
+	/// \param toFill The NodeType pointer to fill
+	/// \return The result
+	Result createExitNodeType(std::unique_ptr<NodeType>* toFill);
 
 	/// Creates an entry node if it doesn't already exist, else just return it
 	/// \param x The x coordinate of the new entry, or changes the existing entry node to be at this
@@ -126,109 +127,102 @@ struct GraphFunction {
 	/// \return The result
 	Result validateGraph() const;
 
+	// Data I/O modifiers
+	/////////////////////
 
+	// Data input modifiers
 
-    // Data I/O modifiers
-    /////////////////////
-
-    // Data input modifiers
-
-    /// Get the function data inputs in the format {type, docstring}
+	/// Get the function data inputs in the format {type, docstring}
 	/// \return The inputs
-    const std::vector<std::pair<DataType, std::string>>& dataInputs() const { return mDataInputs; }
+	const std::vector<std::pair<DataType, std::string>>& dataInputs() const { return mDataInputs; }
 	/// Add an input to the end of the argument list
 	/// \param type The new input type
 	/// \param name The name of the input (just for documentation)
-    void addDataInput(const DataType& type, std::string name, int addAfter);
+	/// \param addAfter The input ID to add after
+	void addDataInput(const DataType& type, std::string name, int addAfter);
 
 	/// Remove an input from the argument list
 	/// \param idx The index to delete
-    void removeDataInput(int idx);
+	void removeDataInput(int idx);
 	/// Modify an input (change it's type and docstring)
 	/// \param idx The index to change
 	/// \param type The new type. Use {} to keep it's current type
 	/// \param name The new name. Use {} to keep it's current name
-    void modifyDataInput(int idx, const DataType& type, boost::optional<std::string> name);
+	void modifyDataInput(int idx, const DataType& type, boost::optional<std::string> name);
 
-    // Data output modifiers
+	// Data output modifiers
 
-
-    /// Get the function data outputs in the format {type, docstring}
+	/// Get the function data outputs in the format {type, docstring}
 	/// \return The outputs
-    const std::vector<std::pair<DataType, std::string>>& dataOutputs() const { return mDataOutputs; }
-    /// Add an data output to the end of the argument list
+	const std::vector<std::pair<DataType, std::string>>& dataOutputs() const
+	{
+		return mDataOutputs;
+	}
+	/// Add an data output to the end of the argument list
 	/// \param type The new output type
 	/// \param name The name of the output (just for documentation)
-    void addDataOutput(const DataType& type, std::string name, int addAfter);
+	/// \param addAfter The output to add after
+	void addDataOutput(const DataType& type, std::string name, int addAfter);
 
-    /// Remove an data output from the argument list
+	/// Remove an data output from the argument list
 	/// \param idx The index to delete
-    void removeDataOutput(int idx);
-    /// Modify an data output (change it's type and docstring)
+	void removeDataOutput(int idx);
+	/// Modify an data output (change it's type and docstring)
 	/// \param idx The index to change
 	/// \param type The new type. Use {} to keep it's current type
 	/// \param name The new name. Use {} to keep it's current name
-    void modifyDataOutput(int idx, const DataType& type, boost::optional<std::string> name);
+	void modifyDataOutput(int idx, const DataType& type, boost::optional<std::string> name);
 
+	// Exec I/O modifiers
+	/////////////////////
 
+	// Exec input modifiers
 
-    // Exec I/O modifiers
-    /////////////////////
+	/// Get the function exec inputs
+	/// \return The exec outputs
+	const std::vector<std::string>& execInputs() const { return mExecInputs; }
+	/// Add an exec input to the end of the argument list
+	/// \param name The name of the input (just for documentation)
+	/// \param addAfter the input to add after
+	void addExecInput(gsl::cstring_span<> name, int addAfter);
 
+	/// Remove an exec input from the argument list
+	/// \param idx The index to delete
+	void removeExecInput(int idx);
 
-    // Exec input modifiers
+	/// Modify an exec input (change docstring)
+	/// \param idx The index to change
+	/// \param name The new name.
+	void modifyExecInput(int idx, gsl::cstring_span<> name);
 
+	// Exec output modifiers
 
-    /// Get the function exec inputs
-    /// \return The exec outputs
-    const std::vector<std::string>& execInputs() const { return mExecInputs; }
+	/// Get the function exec outputs
+	/// \return The exec outputs
+	const std::vector<std::string>& execOutputs() const { return mExecOutputs; }
+	/// Add an exec output to the end of the argument list
+	/// \param name The name of the output (just for documentation)
+	/// \param addAfter The output to add after
+	void addExecOutput(gsl::cstring_span<> name, int addAfter);
 
-    /// Add an exec input to the end of the argument list
-    /// \param name The name of the input (just for documentation)
-    void addExecInput(gsl::cstring_span<> name, int addAfter);
+	/// Remove an exec output from the argument list
+	/// \param idx The index to delete
+	void removeExecOutput(int idx);
 
-    /// Remove an exec input from the argument list
-    /// \param idx The index to delete
-    void removeExecInput(int idx);
+	/// Modify an exec output (change docstring)
+	/// \param idx The index to change
+	/// \param name The new name.
+	void modifyExecOutput(int idx, gsl::cstring_span<> name);
 
-    /// Modify an exec input (change docstring)
-    /// \param idx The index to change
-    /// \param name The new name.
-    void modifyExecInput(int idx, gsl::cstring_span<> name);
+	// Various getters
+	//////////////////
 
-
-
-    // Exec output modifiers
-
-
-    /// Get the function exec outputs
-    /// \return The exec outputs
-    const std::vector<std::string>& execOutputs() const { return mExecOutputs; }
-
-    /// Add an exec output to the end of the argument list
-    /// \param name The name of the output (just for documentation)
-    void addExecOutput(gsl::cstring_span<> name, int addAfter);
-
-    /// Remove an exec output from the argument list
-    /// \param idx The index to delete
-    void removeExecOutput(int idx);
-
-    /// Modify an exec output (change docstring)
-    /// \param idx The index to change
-    /// \param name The new name.
-    void modifyExecOutput(int idx, gsl::cstring_span<> name);
-
-    // Various getters
-    //////////////////
-
-
-    /// Get the context
-    /// \return The context
-    Context& context() const { return *mContext; }
-    /// Get the name of the function
-    /// \return The name of the function
-    std::string name() const { return mName; }
-
+	/// Get the context
+	/// \return The context
+	Context& context() const { return *mContext; }
+	/// Get the name of the function
+	/// \return The name of the function
+	std::string name() const { return mName; }
 	/// Get the graph
 	/// \return The graph
 	const Graph& graph() const { return mGraph; }
@@ -237,21 +231,20 @@ struct GraphFunction {
 	/// Get the JsonModule that contains this GraphFunction
 	/// \return The JsonModule.
 	JsonModule& module() const { return *mModule; }
-
 private:
-    void updateEntriesAndExits(); // update the entry node to work with
+	void updateEntriesAndExits();  // update the entry node to work with
 
 	JsonModule* mModule;
 	Context* mContext;
 	std::string mName;  /// the name of the function
 
-    std::vector<std::pair<DataType, std::string>> mDataInputs;
-    std::vector<std::pair<DataType, std::string>> mDataOutputs;
+	std::vector<std::pair<DataType, std::string>> mDataInputs;
+	std::vector<std::pair<DataType, std::string>> mDataOutputs;
 
-    std::vector<std::string> mExecInputs;
-    std::vector<std::string> mExecOutputs;
+	std::vector<std::string> mExecInputs;
+	std::vector<std::string> mExecOutputs;
 
-    nlohmann::json mSource = {};
+	nlohmann::json mSource = {};
 	Graph mGraph;
 };
 

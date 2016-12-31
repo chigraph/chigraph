@@ -64,7 +64,7 @@ struct Context {
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param fullName The full path of the module, including URL
 	/// \param json The JSON data
-	/// \param name The name of the module, returned. Optional.
+	/// \param toFill The JsonModule* to fill into, optional
 	Result addModuleFromJson(
 		gsl::cstring_span<> fullName, const nlohmann::json& json, JsonModule** toFill = nullptr);
 
@@ -97,7 +97,7 @@ struct Context {
 	/// \return If it has a workspace
 	bool hasWorkspace() const noexcept { return !workspacePath().empty(); }
 	/// Compile a module to a \c llvm::Module
-	/// \param name The full name of the moudle to compile
+	/// \param fullName The full name of the moudle to compile
 	/// \param toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \return The result
 	Result compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill);

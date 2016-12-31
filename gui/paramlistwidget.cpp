@@ -2,8 +2,8 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QListWidgetItem>
 #include <QLineEdit>
+#include <QListWidgetItem>
 #include <QPushButton>
 
 #include <KLocalizedString>
@@ -80,19 +80,21 @@ QStringList createTypeOptions(chig::JsonModule* mod)
 	return ret;
 }
 
-boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(QWidget* parent, chig::JsonModule* mod)
+boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(
+	QWidget* parent, chig::JsonModule* mod)
 {
 	bool ok;
-	auto qualtype =
-		QInputDialog::getItem(parent, i18n("Select Type"), i18n("Type"), createTypeOptions(mod), 0, true, &ok);
-		
+	auto qualtype = QInputDialog::getItem(
+		parent, i18n("Select Type"), i18n("Type"), createTypeOptions(mod), 0, true, &ok);
+
 	// if the user pressed cancel then just return
-	if(!ok) {
+	if (!ok) {
 		return {};
 	}
-		
-	auto name = QInputDialog::getText(parent, i18n("Parameter Name"), i18n("Name"), QLineEdit::Normal, {}, &ok);
-	if(!ok) {
+
+	auto name = QInputDialog::getText(
+		parent, i18n("Parameter Name"), i18n("Name"), QLineEdit::Normal, {}, &ok);
+	if (!ok) {
 		return {};
 	}
 
@@ -127,12 +129,12 @@ ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(paren
 			chig::DataType type;
 			QString name;
 			auto opt = getDataNamePair(this, mMod);
-			if(!opt) {
+			if (!opt) {
 				return;
 			}
-			
+
 			std::tie(type, name) = *opt;
-			
+
 			auto selected = mParamList->selectedItems();
 
 			if (selected.size() != 0) {
@@ -167,13 +169,13 @@ ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(paren
 		chig::DataType type;
 		QString name;
 		auto opt = getDataNamePair(this, mMod);
-		
-		if(!opt) {
+
+		if (!opt) {
 			return;
 		}
-		
+
 		std::tie(type, name) = *opt;
-		
+
 		modifyParam(row, type, name);
 
 	});

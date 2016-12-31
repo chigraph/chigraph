@@ -1,4 +1,3 @@
-
 #include "chig/LangModule.hpp"
 #include "chig/Context.hpp"
 
@@ -9,6 +8,7 @@
 
 namespace chig
 {
+/// NodeType for conditionals
 struct IfNodeType : NodeType {
 	IfNodeType(LangModule& mod) : NodeType(mod, "if", "branch on a bools")
 	{
@@ -34,12 +34,13 @@ struct IfNodeType : NodeType {
 };
 
 struct EntryNodeType : NodeType {
-    EntryNodeType(LangModule& mod, std::vector<std::pair<DataType, std::string>> dataInputs, std::vector<std::string> execInputs)
+	EntryNodeType(LangModule& mod, std::vector<std::pair<DataType, std::string>> dataInputs,
+		std::vector<std::string> execInputs)
 		: NodeType(mod, "entry", "entry to a function")
 	{
-        setExecOutputs(std::move(execInputs));
+		setExecOutputs(std::move(execInputs));
 
-        setDataOutputs(std::move(dataInputs));
+		setDataOutputs(std::move(dataInputs));
 	}
 
 	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, llvm::Function* f,
@@ -53,7 +54,7 @@ struct EntryNodeType : NodeType {
 
 		// store the arguments
 		auto arg_iter = f->arg_begin();
-		++arg_iter; // skip the first argument, which is the input exec ID
+		++arg_iter;  // skip the first argument, which is the input exec ID
 		for (const auto& iovalue : io) {
 			builder.CreateStore(&*arg_iter, iovalue);
 
@@ -72,21 +73,21 @@ struct EntryNodeType : NodeType {
 
 	nlohmann::json toJSON() const override
 	{
-        nlohmann::json ret = nlohmann::json::object();
+		nlohmann::json ret = nlohmann::json::object();
 
-        auto& data = ret["data"];
+		auto& data = ret["data"];
 		data = nlohmann::json::array();
-        for (auto& pair : dataOutputs()) {
-            data.push_back({{pair.second, pair.first.qualifiedName()}});
-        }
+		for (auto& pair : dataOutputs()) {
+			data.push_back({{pair.second, pair.first.qualifiedName()}});
+		}
 
-        auto& exec = ret["exec"];
+		auto& exec = ret["exec"];
 		exec = nlohmann::json::array();
-        for(auto& name : execOutputs()) {
-            exec.push_back(name);
-        }
+		for (auto& name : execOutputs()) {
+			exec.push_back(name);
+		}
 
-        return ret;
+		return ret;
 	}
 };
 
@@ -164,13 +165,14 @@ struct ConstBoolNodeType : NodeType {
 };
 
 struct ExitNodeType : NodeType {
-    ExitNodeType(LangModule& mod, std::vector<std::pair<DataType, std::string>> dataOutputs, std::vector<std::string> execOutputs)
+	ExitNodeType(LangModule& mod, std::vector<std::pair<DataType, std::string>> dataOutputs,
+		std::vector<std::string> execOutputs)
 		: NodeType{mod, "exit", "Return from a function"}
 	{
-        // outputs to the function are inputs to the node
-        setExecInputs(std::move(execOutputs));
+		// outputs to the function are inputs to the node
+		setExecInputs(std::move(execOutputs));
 
-        setDataInputs(std::move(dataOutputs));
+		setDataInputs(std::move(dataOutputs));
 	}
 
 	Result codegen(size_t execInputID, llvm::Module* /*mod*/, llvm::Function* f,
@@ -204,19 +206,19 @@ struct ExitNodeType : NodeType {
 
 	nlohmann::json toJSON() const override
 	{
-        nlohmann::json ret = nlohmann::json::object();
+		nlohmann::json ret = nlohmann::json::object();
 
-        auto& data = ret["data"];
+		auto& data = ret["data"];
 		data = nlohmann::json::array();
 		for (auto& pair : dataInputs()) {
-            data.push_back({{pair.second, pair.first.qualifiedName()}});
+			data.push_back({{pair.second, pair.first.qualifiedName()}});
 		}
 
-        auto& exec = ret["exec"];
+		auto& exec = ret["exec"];
 		exec = nlohmann::json::array();
-        for(auto& name : execInputs()) {
-            exec.push_back(name);
-        }
+		for (auto& name : execInputs()) {
+			exec.push_back(name);
+		}
 
 		return ret;
 	}
@@ -269,13 +271,12 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 	nodes = {{"if"s, [this](const nlohmann::json&,
 						 Result& res) { return std::make_unique<IfNodeType>(*this); }},
 		{"entry"s,
-            [this](const nlohmann::json& injson, Result& res) {
+			[this](const nlohmann::json& injson, Result& res) {
 
 				// transform the JSON data into this data structure
-                std::vector<std::pair<DataType, std::string>> dataInputs;
+				std::vector<std::pair<DataType, std::string>> dataInputs;
 
-				if(injson.find("data") != injson.end()) {
-				
+				if (injson.find("data") != injson.end()) {
 					auto& data = injson["data"];
 
 					if (data.is_array()) {
@@ -307,37 +308,37 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 					}
 
 				} else {
-					res.addEntry("WUKN", "Data for lang:entry must have a data element", {{"Data JSON", injson}});
-
+					res.addEntry("WUKN", "Data for lang:entry must have a data element",
+						{{"Data JSON", injson}});
 				}
 
-                 std::vector<std::string> execInputs;
+				std::vector<std::string> execInputs;
 
-				if(injson.find("exec") != injson.end()) {
-				
+				if (injson.find("exec") != injson.end()) {
 					auto& exec = injson["exec"];
-					if(exec.is_array()) {
-						for(const auto& output : exec) {
+					if (exec.is_array()) {
+						for (const auto& output : exec) {
 							execInputs.push_back(output);
 						}
 					}
 				} else {
-					res.addEntry("WUKN", "Data for lang:entry must have a exec element", {{"Data JSON"}, injson});
+					res.addEntry("WUKN", "Data for lang:entry must have a exec element",
+						{{"Data JSON"}, injson});
 				}
 
 				if (res) {
-                    return std::make_unique<EntryNodeType>(*this, std::move(dataInputs), std::move(execInputs));
+					return std::make_unique<EntryNodeType>(
+						*this, std::move(dataInputs), std::move(execInputs));
 				}
 				return std::unique_ptr<EntryNodeType>();
 			}},
 		{"exit"s,
-            [this](const nlohmann::json& injson, Result& res) {
+			[this](const nlohmann::json& injson, Result& res) {
 				// transform the JSON data into this data structure
-                std::vector<std::pair<DataType, std::string>> dataOutputs;
-				
-				if(injson.find("data") != injson.end()) {
-				
-                auto& data = injson["data"];
+				std::vector<std::pair<DataType, std::string>> dataOutputs;
+
+				if (injson.find("data") != injson.end()) {
+					auto& data = injson["data"];
 
 					if (data.is_array()) {
 						for (const auto& output : data) {
@@ -359,32 +360,34 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 						}
 
 					} else {
-						res.addEntry(
-							"WUKN", "Data element for lang:exit must be an array", {{"Data JSON", injson}});
+						res.addEntry("WUKN", "Data element for lang:exit must be an array",
+							{{"Data JSON", injson}});
 					}
 
 				} else {
-					res.addEntry("WUKN", "Data for lang:exit must have a data element", {{"Data JSON", injson}});
+					res.addEntry("WUKN", "Data for lang:exit must have a data element",
+						{{"Data JSON", injson}});
 				}
-                std::vector<std::string> execOutputs;
+				std::vector<std::string> execOutputs;
 
-				if(injson.find("exec") != injson.end()) {
-				
+				if (injson.find("exec") != injson.end()) {
 					auto& exec = injson["exec"];
-					if(exec.is_array()) {
-						for(const auto& output : exec) {
+					if (exec.is_array()) {
+						for (const auto& output : exec) {
 							execOutputs.push_back(output);
 						}
 					} else {
-						res.addEntry(
-							"WUKN", "Exec element for lang:exit must be an array", {{"Data JSON", injson}});
+						res.addEntry("WUKN", "Exec element for lang:exit must be an array",
+							{{"Data JSON", injson}});
 					}
-					
+
 				} else {
-					res.addEntry("WUKN", "Data for lang:exit must have a exec element", {{"Data JSON"}, injson});
+					res.addEntry("WUKN", "Data for lang:exit must have a exec element",
+						{{"Data JSON"}, injson});
 				}
 
-                return std::make_unique<ExitNodeType>(*this, std::move(dataOutputs), std::move(execOutputs));
+				return std::make_unique<ExitNodeType>(
+					*this, std::move(dataOutputs), std::move(execOutputs));
 
 			}},
 		{"const-int"s,

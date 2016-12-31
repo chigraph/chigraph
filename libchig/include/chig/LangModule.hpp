@@ -24,7 +24,7 @@ struct LangModule : ChigModule {
 	~LangModule() = default;
 
 	/// \copydoc chig::ChigModule::nodeTypeFromName
-	virtual Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& json_data,
+	virtual Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
 
 	/// \copydoc chig::ChigModule::typeFromName
@@ -43,7 +43,7 @@ struct LangModule : ChigModule {
 	}
 
 	/// \copydoc chig::ChigModule::generateModule
-	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; };
+	Result generateModule(std::unique_ptr<llvm::Module>* module) override { return {}; };
 private:
 	std::unordered_map<std::string,
 		std::function<std::unique_ptr<NodeType>(const nlohmann::json&, Result&)>>

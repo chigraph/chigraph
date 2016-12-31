@@ -22,8 +22,7 @@ public:
 	FlowScene* scene;
 	FlowView* view;
 
-	FunctionView(chig::GraphFunction* func_,
-		QWidget* parent = nullptr);
+	FunctionView(chig::GraphFunction* func_, QWidget* parent = nullptr);
 
 	chig::GraphFunction* func;
 

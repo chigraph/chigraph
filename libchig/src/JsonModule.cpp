@@ -14,6 +14,77 @@ namespace fs = boost::filesystem;
 
 namespace chig
 {
+struct JsonFuncCallNodeType : public NodeType {
+	JsonFuncCallNodeType(JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
+		: NodeType(json_module, funcname, ""), JModule(&json_module)  // TODO: description
+	{
+		Result& res = *resPtr;
+
+		auto* mygraph = JModule->graphFuncFromName(funcname);
+
+		if (mygraph == nullptr) {
+			res.addEntry("EUKN", "Graph doesn't exist in module",
+				{{"Module Name", JModule->name()}, {"Requested Name", gsl::to_string(funcname)}});
+			return;
+		}
+
+		setDataOutputs(mygraph->dataOutputs());
+
+		setDataInputs(mygraph->dataInputs());
+
+		setExecInputs(mygraph->execInputs());
+		setExecOutputs(mygraph->execOutputs());
+	}
+
+	Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* /*f*/,
+		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const
+	{
+		Result res = {};
+
+		llvm::IRBuilder<> builder(codegenInto);
+
+		auto func = mod->getFunction(mangleFunctionName(module().fullName(), name()));
+
+		if (func == nullptr) {
+			res.addEntry(
+				"EUKN", "Could not find function in llvm module", {{"Requested Function", name()}});
+			return res;
+		}
+
+		// add the execInputID to the argument list
+		std::vector<llvm::Value*> passingIO;
+		passingIO.push_back(llvm::ConstantInt::get(
+			llvm::IntegerType::getInt32Ty(context().llvmContext()), execInputID));
+
+		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
+
+		auto ret = builder.CreateCall(func, passingIO, "call_function");
+
+		// create switch on return
+		auto switchInst = builder.CreateSwitch(ret, outputBlocks[0]);  // TODO: better default
+
+		auto id = 0ull;
+		for (auto out : outputBlocks) {
+			switchInst->addCase(
+				llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id),
+				out);
+		}
+
+		return res;
+	}
+
+	nlohmann::json toJSON() const override { return {}; }
+	std::unique_ptr<NodeType> clone() const
+	{
+		Result res = {};  // there shouldn't be an error but check anywayss
+		// TODO: better way to do this?
+		return std::make_unique<JsonFuncCallNodeType>(*JModule, name(), &res);
+	}
+
+	JsonModule* JModule;
+};
+
 JsonModule::JsonModule(
 	Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res)
 	: ChigModule(cont, fullName)
@@ -158,21 +229,21 @@ Result JsonModule::saveToDisk() const
 }
 
 bool JsonModule::createFunction(gsl::cstring_span<> name,
-    std::vector<std::pair<DataType, std::string> > dataIns,
-    std::vector<std::pair<DataType, std::string> > dataOuts,
-                                std::vector<std::string> execIns,
-                                std::vector<std::string> execOuts, GraphFunction** toFill)
+	std::vector<std::pair<DataType, std::string> > dataIns,
+	std::vector<std::pair<DataType, std::string> > dataOuts, std::vector<std::string> execIns,
+	std::vector<std::string> execOuts, GraphFunction** toFill)
 {
 	// make sure there already isn't one by this name
 	auto foundFunc = graphFuncFromName(name);
 	if (foundFunc != nullptr) {
-		if(toFill != nullptr) {
+		if (toFill != nullptr) {
 			*toFill = foundFunc;
 		}
 		return false;
 	}
 
-    mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, std::move(dataIns), std::move(dataOuts), std::move(execIns), std::move(execOuts)));
+	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, std::move(dataIns),
+		std::move(dataOuts), std::move(execIns), std::move(execOuts)));
 	if (toFill != nullptr) {
 		*toFill = mFunctions[mFunctions.size() - 1].get();
 	}
@@ -252,72 +323,6 @@ Result JsonModule::loadGraphs()
 	}
 
 	return res;
-}
-
-JsonFuncCallNodeType::JsonFuncCallNodeType(
-	JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
-	: NodeType(json_module, funcname, ""), JModule(&json_module)  // TODO: description
-{
-	Result& res = *resPtr;
-
-	auto* mygraph = JModule->graphFuncFromName(funcname);
-
-	if (mygraph == nullptr) {
-		res.addEntry("EUKN", "Graph doesn't exist in module",
-			{{"Module Name", JModule->name()}, {"Requested Name", gsl::to_string(funcname)}});
-		return;
-	}
-
-	
-    setDataOutputs(mygraph->dataOutputs());
-
-    setDataInputs(mygraph->dataInputs());
-
-    setExecInputs(mygraph->execInputs());
-    setExecOutputs(mygraph->execOutputs());
-}
-
-Result JsonFuncCallNodeType::codegen(size_t execInputID, llvm::Module* mod,
-	llvm::Function* /*f*/, const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	const gsl::span<llvm::BasicBlock*> outputBlocks) const
-{
-	Result res = {};
-
-	llvm::IRBuilder<> builder(codegenInto);
-
-	auto func = mod->getFunction(mangleFunctionName(module().fullName(), name()));
-
-	if (func == nullptr) {
-		res.addEntry(
-			"EUKN", "Could not find function in llvm module", {{"Requested Function", name()}});
-		return res;
-	}
-	
-	// add the execInputID to the argument list
-	std::vector<llvm::Value*> passingIO;
-	passingIO.push_back(llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), execInputID));
-	
-	std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
-	
-	auto ret = builder.CreateCall(func, passingIO, "call_function");
-	
-	// create switch on return
-	auto switchInst = builder.CreateSwitch(ret, outputBlocks[0]); // TODO: better default
-	
-	auto id = 0ull;
-	for(auto out : outputBlocks) {
-		switchInst->addCase(llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id), out);
-	}
-
-	return res;
-}
-
-nlohmann::json JsonFuncCallNodeType::toJSON() const { return {}; }
-std::unique_ptr<NodeType> JsonFuncCallNodeType::clone() const
-{
-	Result res = {};  // there shouldn't be an error but check anywayss
-	// TODO: better way to do this?
-	return std::make_unique<JsonFuncCallNodeType>(*JModule, name(), &res);
 }
 
 }  // namespace chig
