@@ -139,7 +139,7 @@ struct GraphFunction {
 	/// \param type The new input type
 	/// \param name The name of the input (just for documentation)
 	/// \param addAfter The input ID to add after
-	void addDataInput(const DataType& type, std::string name, int addAfter);
+	void addDataInput(const DataType& type, gsl::cstring_span<> name, int addAfter);
 
 	/// Remove an input from the argument list
 	/// \param idx The index to delete
@@ -148,7 +148,7 @@ struct GraphFunction {
 	/// \param idx The index to change
 	/// \param type The new type. Use {} to keep it's current type
 	/// \param name The new name. Use {} to keep it's current name
-	void modifyDataInput(int idx, const DataType& type, boost::optional<std::string> name);
+	void modifyDataInput(int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name);
 
 	// Data output modifiers
 
@@ -162,7 +162,7 @@ struct GraphFunction {
 	/// \param type The new output type
 	/// \param name The name of the output (just for documentation)
 	/// \param addAfter The output to add after
-	void addDataOutput(const DataType& type, std::string name, int addAfter);
+	void addDataOutput(const DataType& type, gsl::cstring_span<> name, int addAfter);
 
 	/// Remove an data output from the argument list
 	/// \param idx The index to delete
@@ -171,7 +171,7 @@ struct GraphFunction {
 	/// \param idx The index to change
 	/// \param type The new type. Use {} to keep it's current type
 	/// \param name The new name. Use {} to keep it's current name
-	void modifyDataOutput(int idx, const DataType& type, boost::optional<std::string> name);
+	void modifyDataOutput(int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name);
 
 	// Exec I/O modifiers
 	/////////////////////

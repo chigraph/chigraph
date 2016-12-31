@@ -629,13 +629,13 @@ Result GraphFunction::validateGraph() const
 	return res;
 }
 
-void GraphFunction::addDataInput(const DataType& type, std::string name, int addAfter)
+void GraphFunction::addDataInput(const DataType& type, gsl::cstring_span<> name, int addAfter)
 {
 	if (addAfter < mDataInputs.size()) {
 		// +1 because emplace adds before
-		mDataInputs.emplace(mDataInputs.cbegin() + addAfter + 1, type, name);
+		mDataInputs.emplace(mDataInputs.cbegin() + addAfter + 1, type, gsl::to_string(name));
 	} else {
-		mDataInputs.emplace_back(type, name);
+		mDataInputs.emplace_back(type, gsl::to_string(name));
 	}
 }
 
@@ -647,25 +647,25 @@ void GraphFunction::removeDataInput(int idx)
 }
 
 void GraphFunction::modifyDataInput(
-	int idx, const DataType& type, boost::optional<std::string> name)
+	int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name)
 {
 	if (idx < mDataInputs.size()) {
 		if (type.valid()) {
 			mDataInputs[idx].first = type;
 		}
 		if (name) {
-			mDataInputs[idx].second = *name;
+			mDataInputs[idx].second = gsl::to_string(*name);
 		}
 	}
 }
 
-void GraphFunction::addDataOutput(const DataType& type, std::string name, int addAfter)
+void GraphFunction::addDataOutput(const DataType& type, gsl::cstring_span<> name, int addAfter)
 {
 	if (addAfter < mDataOutputs.size()) {
 		// +1 because emplace adds before
-		mDataOutputs.emplace(mDataOutputs.cbegin() + addAfter + 1, type, std::move(name));
+		mDataOutputs.emplace(mDataOutputs.cbegin() + addAfter + 1, type, gsl::to_string(name));
 	} else {
-		mDataOutputs.emplace_back(type, std::move(name));
+		mDataOutputs.emplace_back(type, gsl::to_string(name));
 	}
 }
 
@@ -677,14 +677,14 @@ void GraphFunction::removeDataOutput(int idx)
 }
 
 void GraphFunction::modifyDataOutput(
-	int idx, const DataType& type, boost::optional<std::string> name)
+	int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name)
 {
 	if (idx < mDataOutputs.size()) {
 		if (type.valid()) {
 			mDataOutputs[idx].first = type;
 		}
 		if (name) {
-			mDataOutputs[idx].second = *name;
+			mDataOutputs[idx].second = gsl::to_string(*name);
 		}
 	}
 }
@@ -729,5 +729,47 @@ llvm::FunctionType* GraphFunction::functionType() const
 	return llvm::FunctionType::get(
 		llvm::IntegerType::getInt32Ty(context().llvmContext()), arguments, false);
 }
+
+	void GraphFunction::addExecInput(gsl::cstring_span<> name, int addAfter) {
+        if (addAfter < mExecInputs.size()) {
+            // +1 because emplace adds before
+            mExecInputs.emplace(mExecInputs.cbegin() + addAfter + 1, gsl::to_string(name));
+        } else {
+            mExecInputs.emplace_back(gsl::to_string(name));
+        }
+	}
+
+	void GraphFunction::removeExecInput(int idx) {
+		if(idx < mExecOutputs.size()) {
+			mExecOutputs.erase(mExecOutputs.begin() + idx);
+		}
+	}
+
+	void GraphFunction::modifyExecInput(int idx, gsl::cstring_span<> name) {
+		if(idx < mExecInputs.size()) {
+			mExecInputs[idx] = gsl::to_string(name);
+		}
+	}
+
+	void GraphFunction::addExecOutput(gsl::cstring_span<> name, int addAfter) {
+        if (addAfter < mExecOutputs.size()) {
+            // +1 because emplace adds before
+            mExecOutputs.emplace(mExecOutputs.cbegin() + addAfter + 1, gsl::to_string(name));
+        } else {
+            mExecOutputs.emplace_back(gsl::to_string(name));
+        }
+	}
+
+	void GraphFunction::removeExecOutput(int idx) {
+		if(idx < mExecOutputs.size()) {
+			mExecOutputs.erase(mExecOutputs.begin() + idx);
+		}
+	}
+
+	void GraphFunction::modifyExecOutput(int idx, gsl::cstring_span<> name) {
+		if (idx < mExecOutputs.size()) {
+			mExecOutputs[idx] = gsl::to_string(name);
+		}
+	}
 
 }  // namespace chig
