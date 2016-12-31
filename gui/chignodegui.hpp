@@ -79,7 +79,8 @@ public:
 	QString name() const override { return QString::fromStdString(inst->type().qualifiedName()); }
 	std::unique_ptr<NodeDataModel> clone() const override
 	{
-		return std::unique_ptr<ChigNodeGui>(new ChigNodeGui(inst));
+        auto newInst = new chig::NodeInstance(*inst);
+		return std::make_unique<ChigNodeGui>(newInst);
 	}
 
 	virtual unsigned int nPorts(PortType portType) const override

@@ -54,6 +54,9 @@ struct Graph {
 	/// Usually called by connectData or connectExec or GraphFunction
 	/// \return The nodes, mapped by id, value
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() { return mNodes; }
+
+	/// \copydoc Graph::nodes
+	const std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() const { return mNodes; }
 private:
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>
 		mNodes;  /// Storage for the nodes

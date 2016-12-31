@@ -13,6 +13,8 @@
 #include <memory>
 #include <unordered_map>
 
+#include <boost/bimap.hpp>
+
 class FunctionView : public QWidget
 {
 	Q_OBJECT
@@ -25,7 +27,7 @@ public:
 
 	chig::GraphFunction* func;
 
-	std::unordered_map<chig::NodeInstance*, std::weak_ptr<Node>> assoc;
+	std::unordered_map<chig::NodeInstance*, std::weak_ptr<Node>> nodes;
 
 	// this contains absolute port ids
 	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
@@ -34,8 +36,8 @@ public:
 	void updatePositions();
 
 public slots:
-	void nodeAdded(Node& n);
-	void nodeDeleted(Node& n);
+	void nodeAdded(const std::shared_ptr<Node>& n);
+	void nodeDeleted(const std::shared_ptr<Node>& n);
 
 	void connectionAdded(const Connection& c);
 	void connectionDeleted(Connection& c);

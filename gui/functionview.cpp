@@ -75,19 +75,19 @@ FunctionView::FunctionView(
 
 		guinode->nodeGraphicsObject().setPos({node.second->x(), node.second->y()});
 
-		assoc[node.second.get()] = guinode;
+		nodes[node.second.get()] = guinode;
 	}
 
 	// create connections
 	for (auto& node : func->graph().nodes()) {
-		auto thisNode = assoc[node.second.get()].lock();
+		auto thisNode = nodes[node.second.get()].lock();
 
 		size_t connId = 0;
 		for (auto& conn : node.second->inputDataConnections) {
 			if (conn.first == nullptr) {
 				continue;
 			}
-			auto inData = assoc[conn.first].lock();
+			auto inData = nodes[conn.first].lock();
 
 			auto guiconn =
 				scene
@@ -103,7 +103,7 @@ FunctionView::FunctionView(
 
 		connId = 0;
 		for (auto& conn : node.second->outputExecConnections) {
-			auto outExecNode = assoc[conn.first].lock();
+			auto outExecNode = nodes[conn.first].lock();
 
 			if (outExecNode) {
 				auto guiconn =
@@ -118,30 +118,49 @@ FunctionView::FunctionView(
 	creating = false;
 }
 
-void FunctionView::nodeAdded(Node& n)
+void FunctionView::nodeAdded(const std::shared_ptr<Node>& n)
 {
 	if (creating) {
 		return;
 	}
 
-	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
+	auto ptr = dynamic_cast<ChigNodeGui*>(n->nodeDataModel());
 
 	if (ptr == nullptr) {
 		return;
 	}
 
 	func->graph().nodes()[ptr->inst->id()] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
+    
+    nodes[ptr->inst] = n;
 }
 
-void FunctionView::nodeDeleted(Node& n)
+void FunctionView::nodeDeleted(const std::shared_ptr<Node>& n)
 {
-	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
+	auto ptr = dynamic_cast<ChigNodeGui*>(n->nodeDataModel());
 
 	if (ptr == nullptr) {
 		return;
 	}
+	
+	// find connections to this in conns and delete them -- removeNode does this in the chigraph model now do that in the nodes model
+	
+	for(auto iter = conns.begin(); iter != conns.end();) {
+        auto& pair = *iter;
+        if(pair.second[0].first == ptr->inst || pair.second[1].first == ptr->inst) {
+            // this doesn't invalidate iterators don't worry 
+            // http://en.cppreference.com/w/cpp/container/unordered_map#Iterator_invalidation
+            conns.erase(iter);
+            
+            iter = conns.begin(); // reset our search so we don't miss anything, because iter was invalidated
+        } else {
+            ++iter; // only go to the next one if we don't go back to the beginning
+        }
+    }
 
-	func->graph().nodes().erase(ptr->inst->id());
+    func->removeNode(ptr->inst);
+    
+    nodes.erase(ptr->inst);
 }
 
 void FunctionView::connectionAdded(const Connection& c)
@@ -189,6 +208,8 @@ void FunctionView::connectionDeleted(Connection& c)
 	if (conniter == conns.end()) {
 		return;
 	}
+	
+	// don't do anything if
 
 	auto conn = conniter->second;
 
@@ -214,7 +235,7 @@ void FunctionView::connectionDeleted(Connection& c)
 
 void FunctionView::updatePositions()
 {
-	for (auto& inst : assoc) {
+	for (auto& inst : nodes) {
 		auto sptr = inst.second.lock();
 		if (sptr) {
 			QPointF pos = sptr->nodeGraphicsObject().pos();
@@ -235,4 +256,5 @@ void FunctionView::connectionUpdated(const Connection& c)
 	}
 
 	// remove the existing connection
+
 }

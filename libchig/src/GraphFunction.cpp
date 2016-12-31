@@ -1,15 +1,10 @@
 #include "chig/GraphFunction.hpp"
 #include "chig/JsonModule.hpp"
 #include "chig/NameMangler.hpp"
-#include "chig/NodeInstance.hpp"
-#include "chig/NodeType.hpp"
 
 #include <llvm/AsmParser/Parser.h>
-#include <llvm/IR/Type.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Support/SourceMgr.h>
-#include <llvm/Support/raw_ostream.h>
-#include <unordered_map>
 
 namespace chig {
 
@@ -563,7 +558,97 @@ Result GraphFunction::loadGraph()
 
 Result GraphFunction::validateGraph() const
 {
+
+	Result res;
 	// make sure all connections connect back
+
+	for(const auto& node : graph().nodes()) {
+		// go through input data
+		auto id = 0ull;
+		for(const auto& conn : node.second->inputDataConnections) {
+			// make sure it connects  back
+			bool connectsBack = false;
+			for(const auto& remoteConn : conn.first->outputDataConnections[conn.second]) {
+				if(remoteConn.first == node.second.get() && remoteConn.second == id) {
+					connectsBack = true;
+					break;
+				}
+			}
+			if (!connectsBack) {
+				res.addEntry("EUKN", "Data connection doesn't connect back",
+							 {{"Left Node", conn.first->id()}, {"Right Node", node.second->id()},
+							  {"Right input ID", id}});
+			}
+			++id;
+		}
+
+		// output data
+		id = 0ull;
+		for(const auto& outputDataSlot : node.second->outputDataConnections) {
+
+			// this connection type can make multiple connections, so two for loops are needed
+			for(const auto& connection : outputDataSlot) {
+
+				auto& remoteConn = connection.first->inputDataConnections[connection.second];
+				if(remoteConn.first != node.get() || remoteConn.second != id) {
+					res.addEntry("EUKN", "Data connection doesn't connect back",
+								 {{"Left Node", node.second->id()}, {"Right Node", connection.first->id()},
+								  {"Right input ID", connection.second}});
+				}
+
+			}
+			++id;
+
+		}
+
+
+		// input exec
+		id = 0ull;
+		for(const auto& inputExecSlot : node.second->inputExecConnections) {
+
+			// this connection type can make multiple connections, so two for loops are needed
+			for(const auto& connection : inputExecSlot) {
+
+				auto& remoteConn = connection.first->outputExecConnections[connection.second];
+				if(remoteConn.first != node.get() || remoteConn.second != id) {
+					res.addEntry("EUKN", "Exec connection doesn't connect back",
+								 {{"Left Node", connection.first->id()}, {"Right Node", node.second->id()},
+								  {"Left output ID", connection.second}}); // TODO: better diagnostics
+				}
+
+			}
+			++id;
+		}
+
+		// output exec
+		id = 0ull;
+		for(const auto& connection : node.second->outputExecConnections) {
+
+			bool connectsBack = false;
+			for(const auto& remoteConnection : connection.first->inputExecConnections[connection.second]) {
+
+				if(remoteConnection.second == id && remoteConnection.first == node.second.get()) {
+					connectsBack = true;
+					break;
+				}
+
+			}
+
+			if(!connectsBack) {
+				res.addEntry("EUKN", "Exec connection doesn't connect back",
+							 {{"Left Node", node.second->id()}, {"Right Node", connection.first->id()},
+									 {"Left output ID", id}});
+			}
+
+			++id;
+
+		}
+
+	}
+
+	return res;
+
+    
 }
 
 void GraphFunction::addDataInput(const DataType& type, std::string name, int addAfter)

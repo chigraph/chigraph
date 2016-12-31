@@ -77,10 +77,10 @@ struct NodeType {
 	Context& context() const { return *mContext; }
 	/// Get the data inputs for the node
 	/// \return The data inputs in the format of {{DataType, description}, ...}
-	const std::vector<std::pair<DataType, std::string>>& dataInputs() const { return mDataInputs; }
+	gsl::span<const std::pair<DataType, std::string>> dataInputs() const { return mDataInputs; }
 	/// Get the data outputs for the node
 	/// \return The data outputs in the format of {{DataType, description}, ...}
-	const std::vector<std::pair<DataType, std::string>>& dataOutputs() const
+	gsl::span<const std::pair<DataType, std::string>> dataOutputs() const
 	{
 		return mDataOutputs;
 	}
