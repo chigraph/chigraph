@@ -26,7 +26,7 @@ public:
 
 	chig::GraphFunction* func;
 
-	std::unordered_map<chig::NodeInstance*, std::weak_ptr<Node>> nodes;
+	std::unordered_map<chig::NodeInstance*, Node*> nodes;
 
 	// this contains absolute port ids
 	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
@@ -35,13 +35,13 @@ public:
 	void updatePositions();
 
 public slots:
-	void nodeAdded(const std::shared_ptr<Node>& n);
-	void nodeDeleted(const std::shared_ptr<Node>& n);
+	void nodeAdded(Node& n);
+	void nodeDeleted(Node& n);
 
-	void connectionAdded(const Connection& c);
+	void connectionAdded(Connection& c);
 	void connectionDeleted(Connection& c);
 
-	void connectionUpdated(const Connection& c);
+	void connectionUpdated(Connection& c);
 
 private:
 	bool creating = true;

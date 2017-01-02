@@ -67,29 +67,29 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 
 	// create nodes
 	for (auto& node : func->graph().nodes()) {
-		std::shared_ptr<Node> guinode =
+		auto& guinode =
 			scene->createNode(std::make_unique<ChigNodeGui>(node.second.get()));
 
-		guinode->nodeGraphicsObject().setPos({node.second->x(), node.second->y()});
+		guinode.nodeGraphicsObject().setPos({node.second->x(), node.second->y()});
 
-		nodes[node.second.get()] = guinode;
+		nodes[node.second.get()] = &guinode;
 	}
 
 	// create connections
 	for (auto& node : func->graph().nodes()) {
-		auto thisNode = nodes[node.second.get()].lock();
+		auto thisNode = nodes[node.second.get()];
 
 		size_t connId = 0;
 		for (auto& conn : node.second->inputDataConnections) {
 			if (conn.first == nullptr) {
 				continue;
 			}
-			auto inData = nodes[conn.first].lock();
+			auto inData = nodes[conn.first];
 
 			auto guiconn =
 				scene
-					->createConnection(thisNode, connId + node.second->inputExecConnections.size(),
-						inData, conn.second + conn.first->outputExecConnections.size())
+					->createConnection(*thisNode, connId + node.second->inputExecConnections.size(),
+						*inData, conn.second + conn.first->outputExecConnections.size())
 					.get();
 
 			conns[guiconn] = {{{conn.first, conn.second + conn.first->outputExecConnections.size()},
@@ -100,11 +100,11 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 
 		connId = 0;
 		for (auto& conn : node.second->outputExecConnections) {
-			auto outExecNode = nodes[conn.first].lock();
+			auto outExecNode = nodes[conn.first];
 
 			if (outExecNode) {
 				auto guiconn =
-					scene->createConnection(outExecNode, conn.second, thisNode, connId).get();
+					scene->createConnection(*outExecNode, conn.second, *thisNode, connId).get();
 
 				conns[guiconn] = {{{node.second.get(), connId}, {conn.first, conn.second}}};
 			}
@@ -115,13 +115,13 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	creating = false;
 }
 
-void FunctionView::nodeAdded(const std::shared_ptr<Node>& n)
+void FunctionView::nodeAdded(Node& n)
 {
 	if (creating) {
 		return;
 	}
 
-	auto ptr = dynamic_cast<ChigNodeGui*>(n->nodeDataModel());
+	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
 
 	if (ptr == nullptr) {
 		return;
@@ -129,12 +129,12 @@ void FunctionView::nodeAdded(const std::shared_ptr<Node>& n)
 
 	func->graph().nodes()[ptr->inst->id()] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
 
-	nodes[ptr->inst] = n;
+	nodes[ptr->inst] = &n;
 }
 
-void FunctionView::nodeDeleted(const std::shared_ptr<Node>& n)
+void FunctionView::nodeDeleted(Node& n)
 {
-	auto ptr = dynamic_cast<ChigNodeGui*>(n->nodeDataModel());
+	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
 
 	if (ptr == nullptr) {
 		return;
@@ -162,15 +162,15 @@ void FunctionView::nodeDeleted(const std::shared_ptr<Node>& n)
 	nodes.erase(ptr->inst);
 }
 
-void FunctionView::connectionAdded(const Connection& c)
+void FunctionView::connectionAdded(Connection& c)
 {
 	if (creating) {
 		return;
 	}
 
-	std::shared_ptr<Node> lguinode, rguinode;
-	lguinode = c.getNode(PortType::Out).lock();
-	rguinode = c.getNode(PortType::In).lock();
+	Node* lguinode, *rguinode;
+	lguinode = c.getNode(PortType::Out);
+	rguinode = c.getNode(PortType::In);
 
 	connect(&c, &Connection::updated, this, &FunctionView::connectionUpdated);
 
@@ -189,17 +189,27 @@ void FunctionView::connectionAdded(const Connection& c)
 	size_t inconnid = c.getPortIndex(PortType::Out);
 	size_t outconnid = c.getPortIndex(PortType::In);
 
-	conns[&c] = std::array<std::pair<chig::NodeInstance*, size_t>, 2>{
-		{std::make_pair(inptr->inst, inconnid), std::make_pair(outptr->inst, outconnid)}};
 
 	bool isExec = inconnid < inptr->inst->type().execOutputs().size();
 
+	chig::Result res;
 	if (isExec) {
-		chig::connectExec(*inptr->inst, inconnid, *outptr->inst, outconnid);
+		res += chig::connectExec(*inptr->inst, inconnid, *outptr->inst, outconnid);
 	} else {
-		chig::connectData(*inptr->inst, inconnid - inptr->inst->type().execOutputs().size(),
+		res += chig::connectData(*inptr->inst, inconnid - inptr->inst->type().execOutputs().size(),
 			*outptr->inst, outconnid - outptr->inst->type().execInputs().size());
 	}
+	if(!res) {
+		// actually delete that connection
+		scene->deleteConnection(c);
+
+		KMessageBox::detailedError(this, "Failed to connect!", QString::fromStdString(res.dump()));
+
+		return; // don't add to the array
+	}
+
+	conns[&c] = std::array<std::pair<chig::NodeInstance*, size_t>, 2>{
+		{std::make_pair(inptr->inst, inconnid), std::make_pair(outptr->inst, outconnid)}};
 }
 void FunctionView::connectionDeleted(Connection& c)
 {
@@ -235,16 +245,16 @@ void FunctionView::connectionDeleted(Connection& c)
 void FunctionView::updatePositions()
 {
 	for (auto& inst : nodes) {
-		auto sptr = inst.second.lock();
-		if (sptr) {
-			QPointF pos = sptr->nodeGraphicsObject().pos();
+		auto ptr = inst.second;
+		if (ptr) {
+			QPointF pos = ptr->nodeGraphicsObject().pos();
 			inst.first->setX(pos.x());
 			inst.first->setY(pos.y());
 		}
 	}
 }
 
-void FunctionView::connectionUpdated(const Connection& c)
+void FunctionView::connectionUpdated(Connection& c)
 {
 	if (creating) return;
 

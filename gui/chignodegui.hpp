@@ -5,6 +5,7 @@
 
 #include <nodes/DataModelRegistry>
 #include <nodes/NodeDataModel>
+#include <../src/Node.hpp>
 
 #include <chig/ChigModule.hpp>
 #include <chig/NodeInstance.hpp>

@@ -400,10 +400,11 @@ NodeInstance* GraphFunction::entryNode() const noexcept
 	auto matching = graph().nodesWithType("lang", "entry");
 
 	if (matching.size() == 1) {
+        auto span = matching[0]->type().dataOutputs();
 		// make sure it has the same signature as the method
 		if (!std::equal(dataInputs().begin(), dataInputs().end(),
-				matching[0]->type().dataOutputs().begin(),
-				matching[0]->type().dataOutputs().end())) {
+				span.begin(),
+				span.end())) {
 			return nullptr;
 		}
 		// make sure it has the same exec names and size

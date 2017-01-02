@@ -42,7 +42,42 @@ NodeInstance& NodeInstance::operator=(const NodeInstance& other)
 
 void NodeInstance::setType(std::unique_ptr<NodeType> newType)
 {
-	// TODO: this can screw stuff up, add checking
+	// delete exec connections that are out of range
+	// start at one past the end
+	for(size_t id = newType->execInputs().size(); id < inputExecConnections.size(); ++id) {
+		while(inputExecConnections[id].size() != 0) {
+			Expects(inputExecConnections[id][0].first); // should never fail...
+			disconnectExec(*inputExecConnections[id][0].first, inputExecConnections[id][0].second);
+		}
+	}
+	inputExecConnections.resize(newType->execInputs().size());
+
+	for(size_t id = newType->execOutputs().size(); id < outputExecConnections.size(); ++id) {
+		auto& conn = outputExecConnections[id];
+		if(conn.first) {
+			disconnectExec(*this, id);
+		}
+	}
+	outputExecConnections.resize(newType->execOutputs().size(), std::make_pair(nullptr, ~0));
+
+	// trash all data connections TODO: don't actually trash them all keep good ones
+	for(const auto& conn : inputDataConnections) {
+		if(conn.first) {
+			disconnectData(*conn.first, conn.second, *this);
+		}
+	}
+	inputDataConnections.resize(newType->dataInputs().size(), std::make_pair(nullptr, ~0));
+
+	size_t id = 0ull;
+	for(const auto& connSlot : outputDataConnections) {
+		while(connSlot.size() != 0) {
+			Expects(connSlot[0].first);
+
+			disconnectData(*this, id, *connSlot[0].first);
+		}
+		++id;
+	}
+	outputDataConnections.resize(newType->dataOutputs().size());
 
 	mType = std::move(newType);
 }
