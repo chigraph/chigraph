@@ -25,6 +25,7 @@
 
 namespace chig
 {
+
 /// The class that handles the loading, creation, storing, and compilation of modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 struct Context {
