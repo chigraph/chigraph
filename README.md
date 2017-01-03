@@ -4,7 +4,7 @@
 # What is chigraph?
 Chigraph,  pronunced chai-graph, is a new systems programming language. It's fast. It's scalable. And most importantly, it's easy to learn. How does it achieve such goals? By scrapping the age-old standard of text (not entirely though).
 
-![Screenshot](...)
+![Screenshot](doc/screenshots/HelloWorld.png)
 
 # Components
 Chigraph is made up of three components:

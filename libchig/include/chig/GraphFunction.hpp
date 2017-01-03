@@ -36,18 +36,16 @@ struct GraphFunction {
 		std::vector<std::pair<DataType, std::string>> dataOuts, std::vector<std::string> execIns,
 		std::vector<std::string> execOuts);
 
-    /// Constructs a GraphFunction from a JOSN object
+	/// Constructs a GraphFunction from a JOSN object
 	/// \param data The JSON object to read from
 	/// \param module The module to create the GraphFunction with
 	/// \param ret_func The GraphFunction that has been produced
 	/// \return The result
-	GraphFunction(
-		JsonModule& module, const nlohmann::json& data, Result& res);
+	GraphFunction(JsonModule& module, const nlohmann::json& data, Result& res);
 
-    
 	/// Destructor
 	~GraphFunction();
-    
+
 	/// Serialize the GraphFunction to JSON (usually called from JsonModule::toJson)
 	/// \param toFill The JSON object representing the graph
 	/// \return The result
@@ -59,11 +57,10 @@ struct GraphFunction {
 	/// \return The result
 	Result compile(llvm::Module* mod, llvm::Function** ret_func) const;
 
-    
-    /// \name Node Manipulation
-    /// Functions for mainpulating nodes; getting, adding
-    /// \{
-    
+	/// \name Node Manipulation
+	/// Functions for mainpulating nodes; getting, adding
+	/// \{
+
 	/// Gets the node with type lang:entry
 	/// returns nullptr on failure
 	/// Also returns nullptr if there are two entry nodes, which is illegal
@@ -111,8 +108,8 @@ struct GraphFunction {
 	Result getOrInsertEntryNode(
 		float x, float y, gsl::cstring_span<> id, NodeInstance** toFill = nullptr);
 
-    /// \}
-    
+	/// \}
+
 	/// Create a fresh NodeType for an entry
 	/// \param toFill The NodeType pointer to fill
 	/// \return The result
@@ -128,7 +125,7 @@ struct GraphFunction {
 	llvm::FunctionType* functionType() const;
 
 	/// Load the graph from the source json
-	/// This is called from Context::loadModuleFromJson 
+	/// This is called from Context::loadModuleFromJson
 	/// \return The result
 	Result loadGraph();
 
@@ -158,8 +155,8 @@ struct GraphFunction {
 	/// \param name The new name. Use {} to keep it's current name
 	void modifyDataInput(int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name);
 
-    /// \}
-    
+	/// \}
+
 	/// \name Data output modifiers
 	/// \{
 
@@ -184,8 +181,8 @@ struct GraphFunction {
 	/// \param name The new name. Use {} to keep it's current name
 	void modifyDataOutput(int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name);
 
-    /// \}
-    
+	/// \}
+
 	/// \name Exec input modifiers
 	/// \{
 
@@ -206,11 +203,11 @@ struct GraphFunction {
 	/// \param name The new name.
 	void modifyExecInput(int idx, gsl::cstring_span<> name);
 
-    /// \}
-    
+	/// \}
+
 	/// \name Exec output modifiers
-    /// \{
-    /// Getters/modifers for exec output
+	/// \{
+	/// Getters/modifers for exec output
 
 	/// Get the function exec outputs
 	/// \return The exec outputs
@@ -229,8 +226,8 @@ struct GraphFunction {
 	/// \param name The new name.
 	void modifyExecOutput(int idx, gsl::cstring_span<> name);
 
-    /// \}
-    
+	/// \}
+
 	// Various getters
 	//////////////////
 
@@ -249,7 +246,8 @@ struct GraphFunction {
 	/// \return The JsonModule.
 	JsonModule& module() const { return *mModule; }
 private:
-	void updateEntriesAndExits();  // update the entry node to work with
+	void updateEntries();  // update the entry node to work with
+	void updateExits();
 
 	JsonModule* mModule;
 	Context* mContext;

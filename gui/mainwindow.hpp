@@ -24,6 +24,7 @@
 #include "functionview.hpp"
 #include "modulebrowser.hpp"
 #include "outputview.hpp"
+#include "moduledependencies.hpp"
 
 class MainWindow : public KXmlGuiWindow
 {
@@ -40,6 +41,7 @@ public:
 	OutputView* outputView = nullptr;
 	ModuleBrowser* moduleBrowser = nullptr;
 	FunctionDetails* funcDetails = nullptr;
+    ModuleDependencies* modDeps = nullptr;
 
 	FunctionsPane* functionpane = nullptr;
 
@@ -61,7 +63,7 @@ public slots:
 signals:
 	void workspaceOpened(chig::Context& workspace);
 	void openJsonModule(chig::JsonModule* mod);
-	void newFunctionOpened(chig::GraphFunction* func);
+	void newFunctionOpened(FunctionView* func);
 
 private:
 	KRecentFilesAction* openRecentAction;

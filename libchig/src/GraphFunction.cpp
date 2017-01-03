@@ -25,8 +25,7 @@ GraphFunction::GraphFunction(JsonModule& mod, gsl::cstring_span<> name,
 
 GraphFunction::~GraphFunction() = default;
 
-GraphFunction::GraphFunction(
-	JsonModule& module, const nlohmann::json& data, Result& res)
+GraphFunction::GraphFunction(JsonModule& module, const nlohmann::json& data, Result& res)
 {
 	if (!data.is_object()) {
 		res.addEntry("E1", "Graph json isn't a JSON object", {});
@@ -124,13 +123,13 @@ GraphFunction::GraphFunction(
 	}
 
 	// construct it
-    mModule = &module;
-    mContext = &module.context();
-    mName = name;
-    mDataInputs = std::move(datainputs);
-    mDataOutputs = std::move(dataoutputs);
-    mExecInputs = std::move(execinputs);
-    mExecOutputs = std::move(execoutputs);
+	mModule = &module;
+	mContext = &module.context();
+	mName = name;
+	mDataInputs = std::move(datainputs);
+	mDataOutputs = std::move(dataoutputs);
+	mExecInputs = std::move(execinputs);
+	mExecOutputs = std::move(execoutputs);
 
 	mSource = data;
 }
@@ -200,8 +199,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			if (param.first == nullptr) {
 				res.addEntry("EUKN", "No data input to node",
 					{{"nodeid", node->id()}, {"input ID", inputID},
-                    {"nodetype", node->type().qualifiedName()}
-                    });
+						{"nodetype", node->type().qualifiedName()}});
 
 				return;
 			}
@@ -218,8 +216,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			if (param.second >= cacheObject.outputs.size()) {
 				res.addEntry("EUKN", "No data input to node",
 					{{"nodeid", node->id()}, {"input ID", inputID},
-                        {"nodetype", node->type().qualifiedName()}
-                    });
+						{"nodetype", node->type().qualifiedName()}});
 
 				return;
 			}
@@ -404,11 +401,9 @@ NodeInstance* GraphFunction::entryNode() const noexcept
 	auto matching = graph().nodesWithType("lang", "entry");
 
 	if (matching.size() == 1) {
-        auto span = matching[0]->type().dataOutputs();
+		auto span = matching[0]->type().dataOutputs();
 		// make sure it has the same signature as the method
-		if (!std::equal(dataInputs().begin(), dataInputs().end(),
-				span.begin(),
-				span.end())) {
+		if (!std::equal(dataInputs().begin(), dataInputs().end(), span.begin(), span.end())) {
 			return nullptr;
 		}
 		// make sure it has the same exec names and size
@@ -631,6 +626,8 @@ Result GraphFunction::validateGraph() const
 		}
 	}
 
+	// make sure all entires have the right type
+
 	return res;
 }
 
@@ -642,6 +639,7 @@ void GraphFunction::addDataInput(const DataType& type, gsl::cstring_span<> name,
 	} else {
 		mDataInputs.emplace_back(type, gsl::to_string(name));
 	}
+	updateEntries();
 }
 
 void GraphFunction::removeDataInput(int idx)
@@ -649,6 +647,7 @@ void GraphFunction::removeDataInput(int idx)
 	if (idx < mDataInputs.size()) {
 		mDataInputs.erase(mDataInputs.begin() + idx);
 	}
+	updateEntries();
 }
 
 void GraphFunction::modifyDataInput(
@@ -662,6 +661,7 @@ void GraphFunction::modifyDataInput(
 			mDataInputs[idx].second = gsl::to_string(*name);
 		}
 	}
+	updateEntries();
 }
 
 void GraphFunction::addDataOutput(const DataType& type, gsl::cstring_span<> name, int addAfter)
@@ -672,6 +672,7 @@ void GraphFunction::addDataOutput(const DataType& type, gsl::cstring_span<> name
 	} else {
 		mDataOutputs.emplace_back(type, gsl::to_string(name));
 	}
+	updateExits();
 }
 
 void GraphFunction::removeDataOutput(int idx)
@@ -679,6 +680,7 @@ void GraphFunction::removeDataOutput(int idx)
 	if (idx < mDataOutputs.size()) {
 		mDataOutputs.erase(mDataOutputs.begin() + idx);
 	}
+	updateExits();
 }
 
 void GraphFunction::modifyDataOutput(
@@ -692,26 +694,7 @@ void GraphFunction::modifyDataOutput(
 			mDataOutputs[idx].second = gsl::to_string(*name);
 		}
 	}
-}
-
-void GraphFunction::updateEntriesAndExits()
-{
-	auto entry = entryNode();
-	if (entry == nullptr) {
-		return;
-	}
-
-	std::unique_ptr<NodeType> entryNodeType;
-	createEntryNodeType(&entryNodeType);
-
-	entry->setType(std::move(entryNodeType));
-
-	for (const auto& exitNode : graph().nodesWithType("lang", "exit")) {
-		std::unique_ptr<NodeType> exitNodeType;
-		createExitNodeType(&exitNodeType);
-
-		exitNode->setType(std::move(exitNodeType));
-	}
+	updateExits();
 }
 
 llvm::FunctionType* GraphFunction::functionType() const
@@ -735,46 +718,84 @@ llvm::FunctionType* GraphFunction::functionType() const
 		llvm::IntegerType::getInt32Ty(context().llvmContext()), arguments, false);
 }
 
-void GraphFunction::addExecInput(gsl::cstring_span<> name, int addAfter) {
-    if (addAfter < mExecInputs.size()) {
-        // +1 because emplace adds before
-        mExecInputs.emplace(mExecInputs.cbegin() + addAfter + 1, gsl::to_string(name));
-    } else {
-        mExecInputs.emplace_back(gsl::to_string(name));
-    }
+void GraphFunction::addExecInput(gsl::cstring_span<> name, int addAfter)
+{
+	if (addAfter < mExecInputs.size()) {
+		// +1 because emplace adds before
+		mExecInputs.emplace(mExecInputs.cbegin() + addAfter + 1, gsl::to_string(name));
+	} else {
+		mExecInputs.emplace_back(gsl::to_string(name));
+	}
+	updateEntries();
 }
 
-void GraphFunction::removeExecInput(int idx) {
-    if(idx < mExecOutputs.size()) {
-        mExecOutputs.erase(mExecOutputs.begin() + idx);
-    }
+void GraphFunction::removeExecInput(int idx)
+{
+	if (idx < mExecOutputs.size()) {
+		mExecOutputs.erase(mExecOutputs.begin() + idx);
+	}
+	updateEntries();
 }
 
-void GraphFunction::modifyExecInput(int idx, gsl::cstring_span<> name) {
-    if(idx < mExecInputs.size()) {
-        mExecInputs[idx] = gsl::to_string(name);
-    }
+void GraphFunction::modifyExecInput(int idx, gsl::cstring_span<> name)
+{
+	if (idx < mExecInputs.size()) {
+		mExecInputs[idx] = gsl::to_string(name);
+	}
+	updateEntries();
 }
 
-void GraphFunction::addExecOutput(gsl::cstring_span<> name, int addAfter) {
-    if (addAfter < mExecOutputs.size()) {
-        // +1 because emplace adds before
-        mExecOutputs.emplace(mExecOutputs.cbegin() + addAfter + 1, gsl::to_string(name));
-    } else {
-        mExecOutputs.emplace_back(gsl::to_string(name));
-    }
+void GraphFunction::addExecOutput(gsl::cstring_span<> name, int addAfter)
+{
+	if (addAfter < mExecOutputs.size()) {
+		// +1 because emplace adds before
+		mExecOutputs.emplace(mExecOutputs.cbegin() + addAfter + 1, gsl::to_string(name));
+	} else {
+		mExecOutputs.emplace_back(gsl::to_string(name));
+	}
+	updateExits();
 }
 
-void GraphFunction::removeExecOutput(int idx) {
-    if(idx < mExecOutputs.size()) {
-        mExecOutputs.erase(mExecOutputs.begin() + idx);
-    }
+void GraphFunction::removeExecOutput(int idx)
+{
+	if (idx < mExecOutputs.size()) {
+		mExecOutputs.erase(mExecOutputs.begin() + idx);
+	}
+	updateExits();
 }
 
-void GraphFunction::modifyExecOutput(int idx, gsl::cstring_span<> name) {
-    if (idx < mExecOutputs.size()) {
-        mExecOutputs[idx] = gsl::to_string(name);
-    }
+void GraphFunction::modifyExecOutput(int idx, gsl::cstring_span<> name)
+{
+	if (idx < mExecOutputs.size()) {
+		mExecOutputs[idx] = gsl::to_string(name);
+	}
+	updateExits();
+}
+
+void GraphFunction::updateEntries()
+{
+	auto matching = graph().nodesWithType("lang", "entry");
+
+	for (auto entry : matching) {
+		if (entry == nullptr) {
+			return;
+		}
+
+		std::unique_ptr<NodeType> entryNodeType;
+		createEntryNodeType(&entryNodeType);
+
+		entry->setType(std::move(entryNodeType));
+	}
+}
+
+void GraphFunction::updateExits()
+{
+	for (const auto& exitNode : graph().nodesWithType("lang", "exit")) {
+		std::unique_ptr<NodeType> exitNodeType;
+		createExitNodeType(&exitNodeType);
+
+		exitNode->setType(std::move(exitNodeType));
+	}
 }
 
 }  // namespace chig

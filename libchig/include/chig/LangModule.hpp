@@ -39,7 +39,7 @@ struct LangModule : ChigModule {
 	/// \copydoc chig::ChigModule::typeNames
 	virtual std::vector<std::string> typeNames() const override
 	{
-		return {"i32", "i1", "double"};  // TODO: do i need more?
+		return {"i32", "i1", "double", "i8*"};  // TODO: do i need more?
 	}
 
 	/// \copydoc chig::ChigModule::generateModule

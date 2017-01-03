@@ -85,7 +85,8 @@ struct CFuncNode : NodeType {
 		auto ret = llfunc->getReturnType();
 
 		if (!ret->isVoidTy()) {
-			setDataOutputs({{{context().moduleByFullName("lang"), stringifyLLVMType(ret), ret}, ""}});
+			setDataOutputs(
+				{{{context().moduleByFullName("lang"), stringifyLLVMType(ret), ret}, ""}});
 		}
 	}
 

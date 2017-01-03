@@ -126,6 +126,10 @@ ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(paren
 		auto button = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add")), QString());
 		connect(button, &QPushButton::clicked, this, [this] {
 
+            if(mMod == nullptr) {
+                return;
+            }
+            
 			chig::DataType type;
 			QString name;
 			auto opt = getDataNamePair(this, mMod);
@@ -210,8 +214,8 @@ void ParamListWidget::addParam(chig::DataType type, QString name, int after)
 
 void ParamListWidget::deleteParam(int idx)
 {
+	mParamList->takeItem(idx);
 	paramDeleted(idx);
-	mParamList->removeItemWidget(mParamList->item(idx));
 }
 
 void ParamListWidget::modifyParam(int idx, chig::DataType type, QString name)

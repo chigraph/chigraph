@@ -25,6 +25,7 @@ set(GUI_SRCS
     outputview.cpp
 	chiggui.qrc
 	modulebrowser.cpp
+	moduledependencies.cpp
 )
 
 set(GUI_HEADERS
@@ -36,6 +37,7 @@ set(GUI_HEADERS
         paramlistwidget.hpp
         functiondetails.hpp
 	modulebrowser.hpp
+	moduledependencies.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS})

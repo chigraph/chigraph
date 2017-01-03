@@ -34,6 +34,8 @@ public:
 
 	void updatePositions();
 
+	void refreshGuiForNode(Node* node);
+
 public slots:
 	void nodeAdded(Node& n);
 	void nodeDeleted(Node& n);

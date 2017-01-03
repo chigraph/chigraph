@@ -76,6 +76,13 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	docker->setWidget(funcDetails);
 	addDockWidget(Qt::RightDockWidgetArea, docker);
 	connect(this, &MainWindow::newFunctionOpened, funcDetails, &FunctionDetails::loadFunction);
+    
+    docker = new QDockWidget(i18n("Module Dependencies"), this);
+    docker->setObjectName("Module Dependencies");
+    modDeps = new ModuleDependencies;
+    docker->setWidget(modDeps);
+    addDockWidget(Qt::RightDockWidgetArea, docker);
+    connect(this, &MainWindow::openJsonModule, modDeps, &ModuleDependencies::setModule);
 
 	setupActions();
 }
@@ -215,7 +222,7 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 	functabs->setTabText(idx, qualifiedFunctionName);
 	functabs->setCurrentWidget(view);
 
-	newFunctionOpened(func);
+	newFunctionOpened(view);
 }
 
 void MainWindow::closeTab(int idx)

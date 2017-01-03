@@ -9,6 +9,8 @@
 
 #include "paramlistwidget.hpp"
 
+class FunctionView;
+
 class FunctionDetails : public QWidget
 {
 	Q_OBJECT
@@ -16,7 +18,7 @@ public:
 	FunctionDetails(QWidget* parent = nullptr);
 
 public slots:
-	void loadFunction(chig::GraphFunction* func);
+	void loadFunction(FunctionView* func);
 
 private slots:
 
@@ -29,6 +31,7 @@ private slots:
 	void outputDeleted(int idx);
 
 private:
+    FunctionView* mFuncView = nullptr;
 	chig::GraphFunction* mFunc = nullptr;
 
 	ParamListWidget* ins;

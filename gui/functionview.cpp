@@ -42,8 +42,8 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 			module->nodeTypeFromName(typeName, {}, &ty);
 
 			auto name = ty->qualifiedName();  // cache the name because ty is moved from
-			reg->registerModel(
-				std::make_unique<ChigNodeGui>(new chig::NodeInstance(std::move(ty), 0, 0, name)));
+			reg->registerModel(std::make_unique<ChigNodeGui>(
+				new chig::NodeInstance(std::move(ty), 0, 0, name), this));
 		}
 	}
 	// register functions in this module
@@ -51,8 +51,8 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	std::unique_ptr<chig::NodeType> ty;
 	func->createExitNodeType(&ty);
 
-	reg->registerModel(
-		std::make_unique<ChigNodeGui>(new chig::NodeInstance(std::move(ty), 0, 0, "lang:exit")));
+	reg->registerModel(std::make_unique<ChigNodeGui>(
+		new chig::NodeInstance(std::move(ty), 0, 0, "lang:exit"), this));
 
 	scene = new FlowScene(reg);
 	connect(scene, &FlowScene::nodeCreated, this, &FunctionView::nodeAdded);
@@ -67,8 +67,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 
 	// create nodes
 	for (auto& node : func->graph().nodes()) {
-		auto& guinode =
-			scene->createNode(std::make_unique<ChigNodeGui>(node.second.get()));
+		auto& guinode = scene->createNode(std::make_unique<ChigNodeGui>(node.second.get(), this));
 
 		guinode.nodeGraphicsObject().setPos({node.second->x(), node.second->y()});
 
@@ -126,8 +125,10 @@ void FunctionView::nodeAdded(Node& n)
 	if (ptr == nullptr) {
 		return;
 	}
-	
-	// make sure ID is unique
+	// if it already exists then don't
+	if (nodes.find(ptr->inst) != nodes.end()) {
+		return;
+	}
 
 	func->graph().nodes()[ptr->inst->id()] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
 
@@ -139,6 +140,11 @@ void FunctionView::nodeDeleted(Node& n)
 	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
 
 	if (ptr == nullptr) {
+		return;
+	}
+
+	// don't do it if it isn't in nodes
+	if (nodes.find(ptr->inst) == nodes.end()) {
 		return;
 	}
 
@@ -170,7 +176,7 @@ void FunctionView::connectionAdded(Connection& c)
 		return;
 	}
 
-	Node* lguinode, *rguinode;
+	Node *lguinode, *rguinode;
 	lguinode = c.getNode(PortType::Out);
 	rguinode = c.getNode(PortType::In);
 
@@ -191,7 +197,6 @@ void FunctionView::connectionAdded(Connection& c)
 	size_t inconnid = c.getPortIndex(PortType::Out);
 	size_t outconnid = c.getPortIndex(PortType::In);
 
-
 	bool isExec = inconnid < inptr->inst->type().execOutputs().size();
 
 	chig::Result res;
@@ -201,13 +206,13 @@ void FunctionView::connectionAdded(Connection& c)
 		res += chig::connectData(*inptr->inst, inconnid - inptr->inst->type().execOutputs().size(),
 			*outptr->inst, outconnid - outptr->inst->type().execInputs().size());
 	}
-	if(!res) {
+	if (!res) {
 		// actually delete that connection
 		scene->deleteConnection(c);
 
 		KMessageBox::detailedError(this, "Failed to connect!", QString::fromStdString(res.dump()));
 
-		return; // don't add to the array
+		return;  // don't add to the array
 	}
 
 	conns[&c] = std::array<std::pair<chig::NodeInstance*, size_t>, 2>{
@@ -267,4 +272,70 @@ void FunctionView::connectionUpdated(Connection& c)
 	}
 
 	// remove the existing connection
+}
+
+void FunctionView::refreshGuiForNode(Node* node)
+{
+	auto model = dynamic_cast<ChigNodeGui*>(node->nodeDataModel());
+
+	auto inst = model->inst;
+
+	// find connections with this node
+	for (auto iter = conns.begin(); iter != conns.end();) {
+		auto& conn = *iter;
+		if (conn.second[0].first == inst || conn.second[1].first == inst) {
+			conns.erase(iter);
+            iter = conns.begin();
+		} else {
+            ++iter;
+        }
+	}
+
+	QPointF pos = node->nodeGraphicsObject().pos();
+
+	nodes.erase(inst);  // so the signal doesn't do stuff
+	scene->removeNode(*node);
+
+    nodes.emplace(inst, nullptr); // just so the signal doesn't do stuff
+    
+	auto& thisNode = scene->createNode(std::make_unique<ChigNodeGui>(inst, this));
+    nodes[inst] = &thisNode;
+	thisNode.nodeGraphicsObject().setPos(pos);
+
+	// recreate connections
+	auto id = 0ull;
+	for (const auto& connSlot : inst->inputExecConnections) {
+		for (const auto& conn : connSlot) {
+			conns[scene->createConnection(thisNode, id, *nodes[conn.first], conn.second).get()] = {
+				{std::make_pair(conn.first, conn.second), std::make_pair(inst, id)}};
+		}
+		++id;
+	}
+	id = 0;
+	for (const auto& conn : inst->outputExecConnections) {
+		if (conn.first) {
+			conns[scene->createConnection(*nodes[conn.first], conn.second, thisNode, id).get()] = {
+				{std::make_pair(inst, id), std::make_pair(conn.first, conn.second)}};
+		}
+		++id;
+	}
+	id = 0;
+	for (const auto& conn : inst->inputDataConnections) {
+		if (conn.first) {
+			auto remoteID = conn.second + conn.first->outputExecConnections.size();
+			auto localID = id + inst->inputExecConnections.size();
+			conns[scene->createConnection(thisNode, localID, *nodes[conn.first], remoteID).get()] =
+				{{{conn.first, remoteID}, {inst, localID}}};
+		}
+		++id;
+	}
+	id = 0;
+	for (const auto& connSlot : inst->outputDataConnections) {
+		for (const auto& conn : connSlot) {
+			auto remoteID = conn.second + conn.first->inputExecConnections.size();
+			auto localID = id + inst->outputExecConnections.size();
+			conns[scene->createConnection(*nodes[conn.first], remoteID, thisNode, localID).get()] =
+				{{{inst, localID}, {conn.first, remoteID}}};
+		}
+	}
 }
