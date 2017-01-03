@@ -20,10 +20,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="chigraphsmall.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">..</span>
    </div>
+   <div id="projectbrief">SystemsprogramminglanguagewrittenforbeginnersinLLVM</div>
   </td>
  </tr>
  </tbody>
@@ -72,23 +74,23 @@ $(function() {
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#acec829296a8677186fcd6f0beae3d3a1">addDependency</a>(std::string newDepFullPath)</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#a5a851676e44f2e87a2715f0bd6ecd2e5">ChigModule</a>(Context &amp;contextArg, std::string fullName)</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1CModule.html#a092ef06ca6d48bd355289c992e31b45d">CModule</a>(Context &amp;ctx)</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1CModule.html#a1e2ea49f71e2f3152ed747b20d87188c">CModule</a>(Context &amp;ctx)</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385">context</a>() const</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40">dependencies</a>() const</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3">fullName</a>() const</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1CModule.html#a63d9412a4408c43f25d5f68f4d3d7082">generateModule</a>(std::unique_ptr&lt; llvm::Module &gt; *module) override</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2">name</a>() const</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1CModule.html#a4b90060b190df671b4c09676003e0a10">nodeTypeFromName</a>(gsl::cstring_span&lt;&gt; name, const nlohmann::json &amp;jsonData, std::unique_ptr&lt; NodeType &gt; *toFill) override</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1CModule.html#a7e55d5a477ad1f517d17ee4b809b7de7">nodeTypeFromName</a>(gsl::cstring_span&lt;&gt; name, const nlohmann::json &amp;jsonData, std::unique_ptr&lt; NodeType &gt; *toFill) override</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1CModule.html#a31269b0f3d999787f50a10152abd2597">nodeTypeNames</a>() const override</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#a0d896e122a16c304bc465d212f46b9e1">removeDependency</a>(gsl::cstring_span&lt;&gt; depName)</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1CModule.html#a5e8afdbe3ee16e0a06b83513e033d856">typeFromName</a>(gsl::cstring_span&lt;&gt; name) override</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1CModule.html#ab1c1117ae887ae98edfede6347280004">typeFromName</a>(gsl::cstring_span&lt;&gt; name) override</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1CModule.html#a93686f0f5199b7dc81f1ed7d722b00a8">typeNames</a>() const override</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#a4dc72bbee58ddbddad0acb4abba1859a">~ChigModule</a>()=default</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1CModule.html#a98afa304d275f26ee1e69de418a59166">~CModule</a>()=default</td><td class="entry"><a class="el" href="structchig_1_1CModule.html">chig::CModule</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 2 2017 18:47:31 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.12
 </small></address>

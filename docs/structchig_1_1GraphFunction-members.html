@@ -20,10 +20,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="chigraphsmall.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">..</span>
    </div>
+   <div id="projectbrief">SystemsprogramminglanguagewrittenforbeginnersinLLVM</div>
   </td>
  </tr>
  </tbody>
@@ -70,8 +72,8 @@ $(function() {
 
 <p>This is the complete list of members for <a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a469a0232b138aefed8ba96c8caae704f">addDataInput</a>(const DataType &amp;type, std::string name, int addAfter)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#aa9d6d4639641439fef618be0d3ea6e74">addDataOutput</a>(const DataType &amp;type, std::string name, int addAfter)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a58da0f0d53f153a37bb4ba7bdc00df75">addDataInput</a>(const DataType &amp;type, gsl::cstring_span&lt;&gt; name, int addAfter)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#af76e111d051ead319035f83785b932e2">addDataOutput</a>(const DataType &amp;type, gsl::cstring_span&lt;&gt; name, int addAfter)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a61a90781bcdc650d6b2446dd16d8a079">addExecInput</a>(gsl::cstring_span&lt;&gt; name, int addAfter)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#abbe7b69cdd8a02210fd2d5a580f1f80a">addExecOutput</a>(gsl::cstring_span&lt;&gt; name, int addAfter)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ac808aecb5fec9cd3a2a1f59e18c90eee">compile</a>(llvm::Module *mod, llvm::Function **ret_func) const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
@@ -80,11 +82,11 @@ $(function() {
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a1867ac116f5993589b089f57885dbcd2">createExitNodeType</a>(std::unique_ptr&lt; NodeType &gt; *toFill)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ad871a4642c83ead67062eb907b55443f">dataInputs</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ae734c04f29489efeb96227a20e2ada22">dataOutputs</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a8da2838fab69a6416b1acd5584391c80">entryNode</a>() const noexcept</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#aa47e30665a08b671950c4e8411c7a4ba">entryNode</a>() const noexcept</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a217197f9e54f57cd7a8751a335f4710b">execInputs</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ae155f716b072ef5f8e3ba064ae7ef8c0">execOutputs</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a072f3a1f1fcf2e5533c460cfc6d7c3ab">fromJSON</a>(JsonModule &amp;module, const nlohmann::json &amp;data, std::unique_ptr&lt; GraphFunction &gt; *ret_func)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a34911dcacd951cb7babe73fc123531a5">functionType</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#af4417b3cb4bb432656d8d929a81a07f8">fromJSON</a>(JsonModule &amp;module, const nlohmann::json &amp;data, std::unique_ptr&lt; GraphFunction &gt; *ret_func)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848">functionType</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917">getOrInsertEntryNode</a>(float x, float y, gsl::cstring_span&lt;&gt; id, NodeInstance **toFill=nullptr)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a5a5eed54a181b865e7bd842a40f5e1f1">graph</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#acd70a962eb70d049fe278074afe0d136">graph</a>()</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -92,8 +94,8 @@ $(function() {
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5">insertNode</a>(std::unique_ptr&lt; NodeType &gt; type, float x, float y, gsl::cstring_span&lt;&gt; id, NodeInstance **toFill=nullptr)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede">insertNode</a>(gsl::cstring_span&lt;&gt; moduleName, gsl::cstring_span&lt;&gt; typeName, const nlohmann::json &amp;typeJSON, float x, float y, gsl::cstring_span&lt;&gt; id, NodeInstance **toFill=nullptr)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a9d343eff733249e7c3c6115ba4ebe9a4">loadGraph</a>()</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a1ac9ba57c83cafb7517921d49425db5c">modifyDataInput</a>(int idx, const DataType &amp;type, boost::optional&lt; std::string &gt; name)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a4a8166eb973ba7225491a2ec85421f53">modifyDataOutput</a>(int idx, const DataType &amp;type, boost::optional&lt; std::string &gt; name)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a452c6ff0834f1acdb6740267ef468250">modifyDataInput</a>(int idx, const DataType &amp;type, boost::optional&lt; gsl::cstring_span&lt;&gt;&gt; name)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a3765dc838314ff13457ac933b043f711">modifyDataOutput</a>(int idx, const DataType &amp;type, boost::optional&lt; gsl::cstring_span&lt;&gt;&gt; name)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a66359dd63933d9c37b00d3894c979b11">modifyExecInput</a>(int idx, gsl::cstring_span&lt;&gt; name)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ae355b017f2859dabff4fa17791317d77">modifyExecOutput</a>(int idx, gsl::cstring_span&lt;&gt; name)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a1a331d17f2229f78a0b9c9407f500b07">module</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -109,7 +111,7 @@ $(function() {
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 2 2017 18:47:31 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.12
 </small></address>

@@ -20,10 +20,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="chigraphsmall.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">..</span>
    </div>
+   <div id="projectbrief">SystemsprogramminglanguagewrittenforbeginnersinLLVM</div>
   </td>
  </tr>
  </tbody>
@@ -78,7 +80,7 @@ $(function() {
   <tr><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3">fullName</a>() const</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#a79d7c1863342e3f26363d822fe428ac2">functions</a>() const</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#a1973a9c7967a8a8541ec87b81b1c1784">generateModule</a>(std::unique_ptr&lt; llvm::Module &gt; *module) override</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#a36332dde338770381e2a8112bdbf7284">graphFuncFromName</a>(gsl::cstring_span&lt;&gt; name) const</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#aef854b4e838ba98c1d6973c1f4488b10">graphFuncFromName</a>(gsl::cstring_span&lt;&gt; name) const</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#ae9d14a6f432082a9489d3b5ccf5ae338">JsonModule</a>(Context &amp;cont, std::string fullName, const nlohmann::json &amp;json_data, Result *res)</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#a02230b2a77afa77a1a5e83db3bc988f9">JsonModule</a>(Context &amp;cont, std::string fullName, gsl::span&lt; std::string &gt; dependencies)</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>JsonModule</b>(const JsonModule &amp;)=delete (defined in <a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a>)</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"></td></tr>
@@ -86,7 +88,7 @@ $(function() {
   <tr><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#a702a09a3bf4c8cbefa3ed5d83a0ba0e4">loadGraphs</a>()</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2">name</a>() const</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#a8dc03f06db44974d3f3f510bdd98d4b1">nodeTypeFromName</a>(gsl::cstring_span&lt;&gt; name, const nlohmann::json &amp;jsonData, std::unique_ptr&lt; NodeType &gt; *toFill) override</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#a06e76edba447b922003be4b7953d663c">nodeTypeNames</a>() const override</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1JsonModule.html#a5a0e71b625b60849d760217655254945">nodeTypeNames</a>() const override</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>operator=</b>(const JsonModule &amp;)=delete (defined in <a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a>)</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator=</b>(JsonModule &amp;&amp;)=delete (defined in <a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a>)</td><td class="entry"><a class="el" href="structchig_1_1JsonModule.html">chig::JsonModule</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1ChigModule.html#a0d896e122a16c304bc465d212f46b9e1">removeDependency</a>(gsl::cstring_span&lt;&gt; depName)</td><td class="entry"><a class="el" href="structchig_1_1ChigModule.html">chig::ChigModule</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -100,7 +102,7 @@ $(function() {
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 2 2017 18:47:31 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.12
 </small></address>

@@ -20,10 +20,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="chigraphsmall.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">..</span>
    </div>
+   <div id="projectbrief">SystemsprogramminglanguagewrittenforbeginnersinLLVM</div>
   </td>
  </tr>
  </tbody>
@@ -72,75 +74,58 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A generic node type.  
- <a href="structchig_1_1NodeType.html#details">More...</a></p>
+<p><code>#include &lt;<a class="el" href="NodeType_8hpp_source.html">chig/NodeType.hpp</a>&gt;</code></p>
 
-<p><code>#include &lt;<a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>&gt;</code></p>
+<p>Inherited by CFuncNode, chig::ConstBoolNodeType, chig::ConstIntNodeType, chig::EntryNodeType, chig::ExitNodeType, chig::IfNodeType, chig::JsonFuncCallNodeType, and chig::StringLiteralNodeType.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a40819156921b514082c56e7268b73048"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a40819156921b514082c56e7268b73048">NodeType</a> (<a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> &amp;mod, gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53">name</a>, gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1NodeType.html#affd513d7d48eb9e3e8c8aa52f357f4b8">description</a>)</td></tr>
-<tr class="memdesc:a40819156921b514082c56e7268b73048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a40819156921b514082c56e7268b73048">More...</a><br /></td></tr>
 <tr class="separator:a40819156921b514082c56e7268b73048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa1cdaa90d27cd073f5cb86878aaee72"><td class="memItemLeft" align="right" valign="top"><a id="afa1cdaa90d27cd073f5cb86878aaee72"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#afa1cdaa90d27cd073f5cb86878aaee72">~NodeType</a> ()=default</td></tr>
 <tr class="memdesc:afa1cdaa90d27cd073f5cb86878aaee72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
 <tr class="separator:afa1cdaa90d27cd073f5cb86878aaee72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec01c9c30813ec9f0e15dda0f7ae34f3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3">qualifiedName</a> () const</td></tr>
-<tr class="memdesc:aec01c9c30813ec9f0e15dda0f7ae34f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the qualified name of the node type, like module.name():<a class="el" href="structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53" title="Get the name of the NodeType in the ChigModule. ">name()</a>  <a href="#aec01c9c30813ec9f0e15dda0f7ae34f3">More...</a><br /></td></tr>
-<tr class="separator:aec01c9c30813ec9f0e15dda0f7ae34f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad61ce1a20fa6b174027cbbdd43782d9c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ad61ce1a20fa6b174027cbbdd43782d9c">codegen</a> (size_t execInputID, llvm::Module *modToCodegenInto, llvm::Function *f, const gsl::span&lt; llvm::Value *&gt; io, llvm::BasicBlock *codegenInto, const gsl::span&lt; llvm::BasicBlock *&gt; outputBlocks) const =0</td></tr>
-<tr class="memdesc:ad61ce1a20fa6b174027cbbdd43782d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A virtual function that is called when this node needs to be called.  <a href="#ad61ce1a20fa6b174027cbbdd43782d9c">More...</a><br /></td></tr>
-<tr class="separator:ad61ce1a20fa6b174027cbbdd43782d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae32c95d458c85ea3633a3e5cb9fd321c"><td class="memItemLeft" align="right" valign="top">virtual nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c">toJSON</a> () const</td></tr>
-<tr class="memdesc:ae32c95d458c85ea3633a3e5cb9fd321c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the JSON necessary to store the object.  <a href="#ae32c95d458c85ea3633a3e5cb9fd321c">More...</a><br /></td></tr>
-<tr class="separator:ae32c95d458c85ea3633a3e5cb9fd321c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4225c75840cda9382e6f5ff169d59513"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513">clone</a> () const =0</td></tr>
-<tr class="memdesc:a4225c75840cda9382e6f5ff169d59513"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clones the type.  <a href="#a4225c75840cda9382e6f5ff169d59513">More...</a><br /></td></tr>
 <tr class="separator:a4225c75840cda9382e6f5ff169d59513"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeba0c62eaae2a477171d83a65c877f53"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53">name</a> () const</td></tr>
-<tr class="memdesc:aeba0c62eaae2a477171d83a65c877f53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> in the <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a>.  <a href="#aeba0c62eaae2a477171d83a65c877f53">More...</a><br /></td></tr>
-<tr class="separator:aeba0c62eaae2a477171d83a65c877f53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affd513d7d48eb9e3e8c8aa52f357f4b8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#affd513d7d48eb9e3e8c8aa52f357f4b8">description</a> () const</td></tr>
-<tr class="memdesc:affd513d7d48eb9e3e8c8aa52f357f4b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the description of the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#affd513d7d48eb9e3e8c8aa52f357f4b8">More...</a><br /></td></tr>
-<tr class="separator:affd513d7d48eb9e3e8c8aa52f357f4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad18d6f37b20e92bcd580bcf7c7504e64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ad18d6f37b20e92bcd580bcf7c7504e64">module</a> () const</td></tr>
-<tr class="memdesc:ad18d6f37b20e92bcd580bcf7c7504e64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> this <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> belongs to.  <a href="#ad18d6f37b20e92bcd580bcf7c7504e64">More...</a><br /></td></tr>
-<tr class="separator:ad18d6f37b20e92bcd580bcf7c7504e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad61ce1a20fa6b174027cbbdd43782d9c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ad61ce1a20fa6b174027cbbdd43782d9c">codegen</a> (size_t execInputID, llvm::Module *modToCodegenInto, llvm::Function *f, const gsl::span&lt; llvm::Value *&gt; io, llvm::BasicBlock *codegenInto, const gsl::span&lt; llvm::BasicBlock *&gt; outputBlocks) const =0</td></tr>
+<tr class="separator:ad61ce1a20fa6b174027cbbdd43782d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad78a890e3480aa9fdddb02f85d881531"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Context.html">Context</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ad78a890e3480aa9fdddb02f85d881531">context</a> () const</td></tr>
-<tr class="memdesc:ad78a890e3480aa9fdddb02f85d881531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> this <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> belongs to.  <a href="#ad78a890e3480aa9fdddb02f85d881531">More...</a><br /></td></tr>
 <tr class="separator:ad78a890e3480aa9fdddb02f85d881531"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dfb8b1b093b9de0ee59e8eee7ab84e1"><td class="memItemLeft" align="right" valign="top">gsl::span&lt; const std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a3dfb8b1b093b9de0ee59e8eee7ab84e1">dataInputs</a> () const</td></tr>
-<tr class="memdesc:a3dfb8b1b093b9de0ee59e8eee7ab84e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the data inputs for the node.  <a href="#a3dfb8b1b093b9de0ee59e8eee7ab84e1">More...</a><br /></td></tr>
 <tr class="separator:a3dfb8b1b093b9de0ee59e8eee7ab84e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7eb591e0e93940aeef541d9d37679b61"><td class="memItemLeft" align="right" valign="top">gsl::span&lt; const std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a7eb591e0e93940aeef541d9d37679b61">dataOutputs</a> () const</td></tr>
-<tr class="memdesc:a7eb591e0e93940aeef541d9d37679b61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the data outputs for the node.  <a href="#a7eb591e0e93940aeef541d9d37679b61">More...</a><br /></td></tr>
 <tr class="separator:a7eb591e0e93940aeef541d9d37679b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affd513d7d48eb9e3e8c8aa52f357f4b8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#affd513d7d48eb9e3e8c8aa52f357f4b8">description</a> () const</td></tr>
+<tr class="separator:affd513d7d48eb9e3e8c8aa52f357f4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5ef2ca8fec103e87c31ed39564fa050"><td class="memItemLeft" align="right" valign="top">gsl::span&lt; const std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ad5ef2ca8fec103e87c31ed39564fa050">execInputs</a> () const</td></tr>
-<tr class="memdesc:ad5ef2ca8fec103e87c31ed39564fa050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the execution inputs for the node.  <a href="#ad5ef2ca8fec103e87c31ed39564fa050">More...</a><br /></td></tr>
 <tr class="separator:ad5ef2ca8fec103e87c31ed39564fa050"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc4ee5b526c87f79a4b4e2a902e209a8"><td class="memItemLeft" align="right" valign="top">gsl::span&lt; const std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#afc4ee5b526c87f79a4b4e2a902e209a8">execOutputs</a> () const</td></tr>
-<tr class="memdesc:afc4ee5b526c87f79a4b4e2a902e209a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the execution outputs for the node.  <a href="#afc4ee5b526c87f79a4b4e2a902e209a8">More...</a><br /></td></tr>
 <tr class="separator:afc4ee5b526c87f79a4b4e2a902e209a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad18d6f37b20e92bcd580bcf7c7504e64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ad18d6f37b20e92bcd580bcf7c7504e64">module</a> () const</td></tr>
+<tr class="separator:ad18d6f37b20e92bcd580bcf7c7504e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeba0c62eaae2a477171d83a65c877f53"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53">name</a> () const</td></tr>
+<tr class="separator:aeba0c62eaae2a477171d83a65c877f53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec01c9c30813ec9f0e15dda0f7ae34f3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3">qualifiedName</a> () const</td></tr>
+<tr class="separator:aec01c9c30813ec9f0e15dda0f7ae34f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae32c95d458c85ea3633a3e5cb9fd321c"><td class="memItemLeft" align="right" valign="top">virtual nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c">toJSON</a> () const</td></tr>
+<tr class="separator:ae32c95d458c85ea3633a3e5cb9fd321c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a126d0904045a882d384eb04021273c04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a126d0904045a882d384eb04021273c04">setDataInputs</a> (std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt; newInputs)</td></tr>
-<tr class="memdesc:a126d0904045a882d384eb04021273c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data inputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#a126d0904045a882d384eb04021273c04">More...</a><br /></td></tr>
 <tr class="separator:a126d0904045a882d384eb04021273c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedf68d45786ed3d3987ed26de9b305de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#aedf68d45786ed3d3987ed26de9b305de">setDataOutputs</a> (std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt; newOutputs)</td></tr>
-<tr class="memdesc:aedf68d45786ed3d3987ed26de9b305de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data outputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#aedf68d45786ed3d3987ed26de9b305de">More...</a><br /></td></tr>
 <tr class="separator:aedf68d45786ed3d3987ed26de9b305de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2c90f6feb76c07a1a60aec4e6f44b18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#af2c90f6feb76c07a1a60aec4e6f44b18">setExecInputs</a> (std::vector&lt; std::string &gt; newInputs)</td></tr>
-<tr class="memdesc:af2c90f6feb76c07a1a60aec4e6f44b18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the exec inputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#af2c90f6feb76c07a1a60aec4e6f44b18">More...</a><br /></td></tr>
 <tr class="separator:af2c90f6feb76c07a1a60aec4e6f44b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0820866c93d3c2975aea01d582501a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#af0820866c93d3c2975aea01d582501a6">setExecOutputs</a> (std::vector&lt; std::string &gt; newOutputs)</td></tr>
-<tr class="memdesc:af0820866c93d3c2975aea01d582501a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the exec outputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#af0820866c93d3c2975aea01d582501a6">More...</a><br /></td></tr>
 <tr class="separator:af0820866c93d3c2975aea01d582501a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A generic node type. </p>
-<p>All user made types are of JsonNodeType type, which is defined in JsonModule.cpp. This allows for easy extension of the language. </p>
+<div class="textblock"><p>A generic node type. All user made types are of JsonNodeType type, which is defined in <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>. This allows for easy extension of the language. </p>
+
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00025">25</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a40819156921b514082c56e7268b73048"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a40819156921b514082c56e7268b73048">&sect;&nbsp;</a></span>NodeType()</h2>
@@ -181,16 +166,18 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Constructor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Constructor </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mod</td><td>The module to create the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> in </td></tr>
-    <tr><td class="paramname">name</td><td>The name of the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> </td></tr>
-    <tr><td class="paramname">description</td><td>The description of the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> </td></tr>
+    <tr><td class="paramname">mod</td><td>The module to create the <a class="el" href="structchig_1_1NodeType.html">NodeType</a> in </td></tr>
+    <tr><td class="paramname">name</td><td>The name of the <a class="el" href="structchig_1_1NodeType.html">NodeType</a> </td></tr>
+    <tr><td class="paramname">description</td><td>The description of the <a class="el" href="structchig_1_1NodeType.html">NodeType</a> </td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00030">30</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>References <a class="el" href="NodeType_8hpp_source.html#l00071">description()</a>, <a class="el" href="NodeType_8hpp_source.html#l00068">name()</a>, and <a class="el" href="structchig_1_1NodeType.html#afa1cdaa90d27cd073f5cb86878aaee72">~NodeType()</a>.</p>
 
 </div>
 </div>
@@ -217,9 +204,9 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Clones the type </p><dl class="section return"><dt>Returns</dt><dd>The clone </dd></dl>
 
-<p>Clones the type. </p>
-<dl class="section return"><dt>Returns</dt><dd>The clone </dd></dl>
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00039">chig::NodeInstance::operator=()</a>, and <a class="el" href="NodeType_8hpp_source.html#l00061">toJSON()</a>.</p>
 
 </div>
 </div>
@@ -280,9 +267,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>A virtual function that is called when this node needs to be called. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>A virtual function that is called when this node needs to be called </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">execInputID</td><td>The ID of the exec input </td></tr>
     <tr><td class="paramname">modToCodegenInto</td><td>The module that is being generated </td></tr>
@@ -294,6 +279,8 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> </dd></dl>
+
+<p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00042">qualifiedName()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00138">chig::GraphFunction::toJSON()</a>.</p>
 
 </div>
 </div>
@@ -319,9 +306,9 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the <a class="el" href="structchig_1_1Context.html">Context</a> this <a class="el" href="structchig_1_1NodeType.html">NodeType</a> belongs to </p><dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Context.html">Context</a> </dd></dl>
 
-<p>Get the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> this <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> belongs to. </p>
-<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00077">77</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -347,9 +334,11 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the data inputs for the node </p><dl class="section return"><dt>Returns</dt><dd>The data inputs in the format of {{<a class="el" href="structchig_1_1DataType.html">DataType</a>, description}, ...} </dd></dl>
 
-<p>Get the data inputs for the node. </p>
-<dl class="section return"><dt>Returns</dt><dd>The data inputs in the format of {{<a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a>, description}, ...} </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00080">80</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00049">chig::NodeInstance::setType()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00138">chig::GraphFunction::toJSON()</a>.</p>
 
 </div>
 </div>
@@ -375,9 +364,11 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the data outputs for the node </p><dl class="section return"><dt>Returns</dt><dd>The data outputs in the format of {{<a class="el" href="structchig_1_1DataType.html">DataType</a>, description}, ...} </dd></dl>
 
-<p>Get the data outputs for the node. </p>
-<dl class="section return"><dt>Returns</dt><dd>The data outputs in the format of {{<a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a>, description}, ...} </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00083">83</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00049">chig::NodeInstance::setType()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00138">chig::GraphFunction::toJSON()</a>.</p>
 
 </div>
 </div>
@@ -403,9 +394,11 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the description of the <a class="el" href="structchig_1_1NodeType.html">NodeType</a> </p><dl class="section return"><dt>Returns</dt><dd>The description </dd></dl>
 
-<p>Get the description of the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>The description </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00071">71</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00030">NodeType()</a>.</p>
 
 </div>
 </div>
@@ -431,9 +424,11 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the execution inputs for the node </p><dl class="section return"><dt>Returns</dt><dd>The names of the inputs. The size of this vector is the size of inputs. </dd></dl>
 
-<p>Get the execution inputs for the node. </p>
-<dl class="section return"><dt>Returns</dt><dd>The names of the inputs. The size of this vector is the size of inputs. </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00086">86</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00049">chig::NodeInstance::setType()</a>.</p>
 
 </div>
 </div>
@@ -459,9 +454,11 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the execution outputs for the node </p><dl class="section return"><dt>Returns</dt><dd>The names of the outputs. The size is the input count. </dd></dl>
 
-<p>Get the execution outputs for the node. </p>
-<dl class="section return"><dt>Returns</dt><dd>The names of the outputs. The size is the input count. </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00089">89</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00049">chig::NodeInstance::setType()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00138">chig::GraphFunction::toJSON()</a>.</p>
 
 </div>
 </div>
@@ -487,9 +484,11 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> this <a class="el" href="structchig_1_1NodeType.html">NodeType</a> belongs to </p><dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> </dd></dl>
 
-<p>Get the <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> this <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> belongs to. </p>
-<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00074">74</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00042">qualifiedName()</a>.</p>
 
 </div>
 </div>
@@ -515,9 +514,11 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the name of the <a class="el" href="structchig_1_1NodeType.html">NodeType</a> in the <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a>. </p><dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Get the name of the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> in the <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00068">68</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00030">NodeType()</a>, and <a class="el" href="NodeType_8hpp_source.html#l00042">qualifiedName()</a>.</p>
 
 </div>
 </div>
@@ -543,9 +544,13 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the qualified name of the node type, like module.name():<a class="el" href="structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53">name()</a> </p><dl class="section return"><dt>Returns</dt><dd>The qualified name </dd></dl>
 
-<p>Get the qualified name of the node type, like module.name():<a class="el" href="structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53" title="Get the name of the NodeType in the ChigModule. ">name()</a> </p>
-<dl class="section return"><dt>Returns</dt><dd>The qualified name </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00042">42</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>References <a class="el" href="structchig_1_1NodeType.html#ad61ce1a20fa6b174027cbbdd43782d9c">codegen()</a>, <a class="el" href="NodeType_8hpp_source.html#l00074">module()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00057">chig::ChigModule::name()</a>, and <a class="el" href="NodeType_8hpp_source.html#l00068">name()</a>.</p>
+
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00049">chig::NodeInstance::setType()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00138">chig::GraphFunction::toJSON()</a>.</p>
 
 </div>
 </div>
@@ -572,14 +577,14 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the data inputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Set the data inputs for the <a class="el" href="structchig_1_1NodeType.html">NodeType</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newInputs</td><td>The new inputs </td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00093">93</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -606,14 +611,14 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the data outputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Set the data outputs for the <a class="el" href="structchig_1_1NodeType.html">NodeType</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newOutputs</td><td>The new outputs </td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00099">99</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -640,14 +645,14 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the exec inputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Set the exec inputs for the <a class="el" href="structchig_1_1NodeType.html">NodeType</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newInputs</td><td>The new inputs </td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00105">105</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -674,14 +679,14 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the exec outputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Set the exec outputs for the <a class="el" href="structchig_1_1NodeType.html">NodeType</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newOutputs</td><td>The new outputs </td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00108">108</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -707,19 +712,23 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Create the JSON necessary to store the object. </p><dl class="section return"><dt>Returns</dt><dd>The json obejct </dd></dl>
 
-<p>Create the JSON necessary to store the object. </p>
-<dl class="section return"><dt>Returns</dt><dd>The json obejct </dd></dl>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00061">61</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+
+<p>References <a class="el" href="structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513">clone()</a>.</p>
+
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00049">chig::NodeInstance::setType()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>libchig/include/chig/<a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a></li>
+<li>include/chig/<a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 2 2017 18:47:31 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.12
 </small></address>

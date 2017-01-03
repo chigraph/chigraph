@@ -2,7 +2,7 @@ var searchData=
 [
   ['chigmodule',['ChigModule',['../structchig_1_1ChigModule.html#a5a851676e44f2e87a2715f0bd6ecd2e5',1,'chig::ChigModule']]],
   ['clone',['clone',['../structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513',1,'chig::NodeType']]],
-  ['cmodule',['CModule',['../structchig_1_1CModule.html#a092ef06ca6d48bd355289c992e31b45d',1,'chig::CModule']]],
+  ['cmodule',['CModule',['../structchig_1_1CModule.html#a1e2ea49f71e2f3152ed747b20d87188c',1,'chig::CModule']]],
   ['codegen',['codegen',['../structchig_1_1NodeType.html#ad61ce1a20fa6b174027cbbdd43782d9c',1,'chig::NodeType']]],
   ['compile',['compile',['../structchig_1_1GraphFunction.html#ac808aecb5fec9cd3a2a1f59e18c90eee',1,'chig::GraphFunction']]],
   ['compilemodule',['compileModule',['../structchig_1_1Context.html#a8987940286a7a67313b635891d8f51e8',1,'chig::Context']]],

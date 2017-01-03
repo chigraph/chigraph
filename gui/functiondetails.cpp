@@ -56,9 +56,21 @@ void FunctionDetails::loadFunction(chig::GraphFunction* func)
 	connect(outs, &ParamListWidget::paramChanged, this, &FunctionDetails::outputChanged);
 }
 
-void FunctionDetails::inputChanged(int idx, chig::DataType newType, QString newName) {}
-void FunctionDetails::inputAdded(chig::DataType type, QString name) {}
-void FunctionDetails::inputDeleted(int idx) {}
-void FunctionDetails::outputChanged(int idx, chig::DataType newType, QString newName) {}
-void FunctionDetails::outputAdded(chig::DataType type, QString name) {}
-void FunctionDetails::outputDeleted(int idx) {}
+void FunctionDetails::inputChanged(int idx, chig::DataType newType, QString newName) {
+    mFunc->modifyDataInput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
+}
+void FunctionDetails::inputAdded(chig::DataType type, QString name) {
+    mFunc->addDataInput(type, name.toStdString(), mFunc->dataInputs().size() - 1); // add to end
+}
+void FunctionDetails::inputDeleted(int idx) {
+    mFunc->removeDataInput(idx);
+}
+void FunctionDetails::outputChanged(int idx, chig::DataType newType, QString newName) {
+    mFunc->modifyDataOutput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
+}
+void FunctionDetails::outputAdded(chig::DataType type, QString name) {
+    mFunc->addDataOutput(type, name.toStdString(), mFunc->dataInputs().size() - 1);
+}
+void FunctionDetails::outputDeleted(int idx) {
+    mFunc->removeDataOutput(idx);
+}

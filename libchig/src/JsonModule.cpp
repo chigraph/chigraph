@@ -38,7 +38,7 @@ struct JsonFuncCallNodeType : public NodeType {
 
 	Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* /*f*/,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const
+		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
 		Result res = {};
 
@@ -75,7 +75,7 @@ struct JsonFuncCallNodeType : public NodeType {
 	}
 
 	nlohmann::json toJSON() const override { return {}; }
-	std::unique_ptr<NodeType> clone() const
+	std::unique_ptr<NodeType> clone() const override
 	{
 		Result res = {};  // there shouldn't be an error but check anywayss
 		// TODO: better way to do this?

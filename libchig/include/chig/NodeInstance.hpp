@@ -23,7 +23,7 @@ struct NodeInstance {
 	NodeInstance(NodeInstance&&) = default;
 
 	/// Copy constructor
-	NodeInstance(const NodeInstance& other);
+	NodeInstance(const NodeInstance& other, std::string id);
 
 	/// Move assignment operator
 	NodeInstance& operator=(NodeInstance&&) = default;

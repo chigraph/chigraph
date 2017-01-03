@@ -20,10 +20,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="chigraphsmall.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">..</span>
    </div>
+   <div id="projectbrief">SystemsprogramminglanguagewrittenforbeginnersinLLVM</div>
   </td>
  </tr>
  </tbody>
@@ -65,23 +67,23 @@ $(function() {
 <div class="contents">
 <div class="textblock">This inheritance list is sorted roughly, but not completely, alphabetically:</div><div class="directory">
 <div class="levels">[detail level <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span>]</div><table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1ChigModule.html" target="_self">chig::ChigModule</a></td><td class="desc">An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module </td></tr>
+<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1ChigModule.html" target="_self">chig::ChigModule</a></td><td class="desc"></td></tr>
 <tr id="row_0_0_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1CModule.html" target="_self">chig::CModule</a></td><td class="desc">The <a class="el" href="structchig_1_1CModule.html" title="The CModule is the module that supplies functionality to create C bindings. ">CModule</a> is the module that supplies functionality to create C bindings </td></tr>
 <tr id="row_0_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1JsonModule.html" target="_self">chig::JsonModule</a></td><td class="desc">Module that holds JSON code </td></tr>
 <tr id="row_0_2_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1LangModule.html" target="_self">chig::LangModule</a></td><td class="desc">The module that provides built-in operations like literals, math operations, etc </td></tr>
-<tr id="row_1_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1Context.html" target="_self">chig::Context</a></td><td class="desc">The class that handles the loading, creation, storing, and compilation of modules It also stores a <code>LLVMContext</code> object to be used everywhere </td></tr>
-<tr id="row_2_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1DataType.html" target="_self">chig::DataType</a></td><td class="desc">A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> its in </td></tr>
-<tr id="row_3_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1Graph.html" target="_self">chig::Graph</a></td><td class="desc">A graph holding nodes Normally not used by the user, used through <a class="el" href="structchig_1_1GraphFunction.html" title="this is an AST-like representation of a function in a graph It is used for IDE-like behavior...">GraphFunction</a> </td></tr>
-<tr id="row_4_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1GraphFunction.html" target="_self">chig::GraphFunction</a></td><td class="desc">This is an AST-like representation of a function in a graph It is used for IDE-like behavior, codegen, and JSON generation </td></tr>
+<tr id="row_1_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1Context.html" target="_self">chig::Context</a></td><td class="desc"></td></tr>
+<tr id="row_2_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1DataType.html" target="_self">chig::DataType</a></td><td class="desc"></td></tr>
+<tr id="row_3_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1Graph.html" target="_self">chig::Graph</a></td><td class="desc"></td></tr>
+<tr id="row_4_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1GraphFunction.html" target="_self">chig::GraphFunction</a></td><td class="desc"></td></tr>
 <tr id="row_5_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1NodeInstance.html" target="_self">chig::NodeInstance</a></td><td class="desc">An instance of a node </td></tr>
-<tr id="row_6_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1NodeType.html" target="_self">chig::NodeType</a></td><td class="desc">A generic node type </td></tr>
+<tr id="row_6_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1NodeType.html" target="_self">chig::NodeType</a></td><td class="desc"></td></tr>
 <tr id="row_7_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1Result.html" target="_self">chig::Result</a></td><td class="desc">The result object, used for identifiying errors with good diagnostics </td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 2 2017 18:47:31 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.12
 </small></address>

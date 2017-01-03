@@ -20,10 +20,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="chigraphsmall.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">..</span>
    </div>
+   <div id="projectbrief">SystemsprogramminglanguagewrittenforbeginnersinLLVM</div>
   </td>
  </tr>
  </tbody>
@@ -64,30 +66,40 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock">Here is a list of all documented files with brief descriptions:</div><div class="directory">
-<div class="levels">[detail level <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span><span onclick="javascript:toggleLevel(3);">3</span><span onclick="javascript:toggleLevel(4);">4</span>]</div><table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><span id="img_0_" class="iconfopen" onclick="toggleFolder('0_')">&#160;</span><a class="el" href="dir_dd1823b115988dc5433ea160a3de4758.html" target="_self">libchig</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_0_0_" class="arrow" onclick="toggleFolder('0_0_')">&#9660;</span><span id="img_0_0_" class="iconfopen" onclick="toggleFolder('0_0_')">&#160;</span><a class="el" href="dir_2df3c658836db959e203baafb685799e.html" target="_self">include</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span id="arr_0_0_0_" class="arrow" onclick="toggleFolder('0_0_0_')">&#9660;</span><span id="img_0_0_0_" class="iconfopen" onclick="toggleFolder('0_0_0_')">&#160;</span><a class="el" href="dir_890592bcd0c4cb6eb1188029a3f1c15e.html" target="_self">chig</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_0_"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="ChigModule_8hpp_source.html"><span class="icondoc"></span></a><b>ChigModule.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_1_" class="even"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="CModule_8hpp_source.html"><span class="icondoc"></span></a><b>CModule.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_2_"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="Context_8hpp_source.html"><span class="icondoc"></span></a><b>Context.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_3_" class="even"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="DataType_8hpp_source.html"><span class="icondoc"></span></a><b>DataType.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_4_"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="Fwd_8hpp_source.html"><span class="icondoc"></span></a><b>Fwd.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_5_" class="even"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="Graph_8hpp_source.html"><span class="icondoc"></span></a><b>Graph.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_6_"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="GraphFunction_8hpp_source.html"><span class="icondoc"></span></a><b>GraphFunction.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_7_" class="even"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="JsonModule_8hpp_source.html"><span class="icondoc"></span></a><b>JsonModule.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_8_"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="LangModule_8hpp_source.html"><span class="icondoc"></span></a><b>LangModule.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_9_" class="even"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="NameMangler_8hpp_source.html"><span class="icondoc"></span></a><b>NameMangler.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_10_"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="NodeInstance_8hpp_source.html"><span class="icondoc"></span></a><b>NodeInstance.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_11_" class="even"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="NodeType_8hpp_source.html"><span class="icondoc"></span></a><b>NodeType.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_12_"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="Result_8hpp_source.html"><span class="icondoc"></span></a><b>Result.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_13_" class="even"><td class="entry"><span style="width:64px;display:inline-block;">&#160;</span><a href="ToString_8hpp_source.html"><span class="icondoc"></span></a><b>ToString.hpp</b></td><td class="desc"></td></tr>
+<div class="levels">[detail level <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span><span onclick="javascript:toggleLevel(3);">3</span>]</div><table class="directory">
+<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><span id="img_0_" class="iconfopen" onclick="toggleFolder('0_')">&#160;</span><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html" target="_self">include</a></td><td class="desc"></td></tr>
+<tr id="row_0_0_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_0_0_" class="arrow" onclick="toggleFolder('0_0_')">&#9660;</span><span id="img_0_0_" class="iconfopen" onclick="toggleFolder('0_0_')">&#160;</span><a class="el" href="dir_16971e61b3ab07f0aa6ba57b2eb7b712.html" target="_self">chig</a></td><td class="desc"></td></tr>
+<tr id="row_0_0_0_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="ChigModule_8hpp_source.html"><span class="icondoc"></span></a><b>ChigModule.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_1_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="CModule_8hpp_source.html"><span class="icondoc"></span></a><b>CModule.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_2_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="Context_8hpp_source.html"><span class="icondoc"></span></a><b>Context.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_3_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="DataType_8hpp_source.html"><span class="icondoc"></span></a><b>DataType.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_4_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="Fwd_8hpp_source.html"><span class="icondoc"></span></a><b>Fwd.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_5_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="Graph_8hpp_source.html"><span class="icondoc"></span></a><b>Graph.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_6_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="GraphFunction_8hpp_source.html"><span class="icondoc"></span></a><b>GraphFunction.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_7_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="JsonModule_8hpp_source.html"><span class="icondoc"></span></a><b>JsonModule.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_8_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="LangModule_8hpp_source.html"><span class="icondoc"></span></a><b>LangModule.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_9_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="NameMangler_8hpp_source.html"><span class="icondoc"></span></a><b>NameMangler.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_10_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="NodeInstance_8hpp_source.html"><span class="icondoc"></span></a><b>NodeInstance.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_11_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="NodeType_8hpp_source.html"><span class="icondoc"></span></a><b>NodeType.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_12_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="Result_8hpp_source.html"><span class="icondoc"></span></a><b>Result.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_13_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="ToString_8hpp_source.html"><span class="icondoc"></span></a><b>ToString.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_1_" class="arrow" onclick="toggleFolder('1_')">&#9660;</span><span id="img_1_" class="iconfopen" onclick="toggleFolder('1_')">&#160;</span><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html" target="_self">src</a></td><td class="desc"></td></tr>
+<tr id="row_1_0_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="ChigModule_8cpp_source.html"><span class="icondoc"></span></a><b>ChigModule.cpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="CModule_8cpp_source.html"><span class="icondoc"></span></a><b>CModule.cpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_2_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="Context_8cpp_source.html"><span class="icondoc"></span></a><b>Context.cpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="Graph_8cpp_source.html"><span class="icondoc"></span></a><b>Graph.cpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_4_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="GraphFunction_8cpp_source.html"><span class="icondoc"></span></a><b>GraphFunction.cpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="JsonModule_8cpp_source.html"><span class="icondoc"></span></a><b>JsonModule.cpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_6_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="LangModule_8cpp_source.html"><span class="icondoc"></span></a><b>LangModule.cpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_7_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="NameMangler_8cpp_source.html"><span class="icondoc"></span></a><b>NameMangler.cpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_8_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="NodeInstance_8cpp_source.html"><span class="icondoc"></span></a><b>NodeInstance.cpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_9_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><a href="Result_8cpp_source.html"><span class="icondoc"></span></a><b>Result.cpp</b></td><td class="desc"></td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 2 2017 18:47:31 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.12
 </small></address>

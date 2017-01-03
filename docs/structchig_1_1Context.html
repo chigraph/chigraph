@@ -20,10 +20,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="chigraphsmall.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">..</span>
    </div>
+   <div id="projectbrief">SystemsprogramminglanguagewrittenforbeginnersinLLVM</div>
   </td>
  </tr>
  </tbody>
@@ -71,15 +73,11 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The class that handles the loading, creation, storing, and compilation of modules It also stores a <code>LLVMContext</code> object to be used everywhere.  
- <a href="structchig_1_1Context.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="Context_8hpp_source.html">Context.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="Context_8hpp_source.html">chig/Context.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa524b83a49d7109a09e8d32d098bf2d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aa524b83a49d7109a09e8d32d098bf2d5">Context</a> (const boost::filesystem::path &amp;workPath={})</td></tr>
-<tr class="memdesc:aa524b83a49d7109a09e8d32d098bf2d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a context with just the lang module.  <a href="#aa524b83a49d7109a09e8d32d098bf2d5">More...</a><br /></td></tr>
 <tr class="separator:aa524b83a49d7109a09e8d32d098bf2d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8affdb0c2d5f018f568b3d559746fae"><td class="memItemLeft" align="right" valign="top"><a id="ac8affdb0c2d5f018f568b3d559746fae"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Context</b> (const <a class="el" href="structchig_1_1Context.html">Context</a> &amp;context)=delete</td></tr>
@@ -87,54 +85,41 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab1f45dadfd626b326d9f0bb33dd885d8"><td class="memItemLeft" align="right" valign="top"><a id="ab1f45dadfd626b326d9f0bb33dd885d8"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Context</b> (<a class="el" href="structchig_1_1Context.html">Context</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:ab1f45dadfd626b326d9f0bb33dd885d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dbc09767e3e199999a9ba5586298e2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a9dbc09767e3e199999a9ba5586298e2a">moduleByName</a> (gsl::cstring_span&lt;&gt; moduleName) const noexcept</td></tr>
-<tr class="memdesc:a9dbc09767e3e199999a9ba5586298e2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module by the name.  <a href="#a9dbc09767e3e199999a9ba5586298e2a">More...</a><br /></td></tr>
-<tr class="separator:a9dbc09767e3e199999a9ba5586298e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea97663df4ecdfa4efe283c62ad6f8e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aea97663df4ecdfa4efe283c62ad6f8e7">moduleByFullName</a> (gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1Context.html#a80a87a895374988b5fe678fe0c664758">fullModuleName</a>) const noexcept</td></tr>
-<tr class="memdesc:aea97663df4ecdfa4efe283c62ad6f8e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module by the full name.  <a href="#aea97663df4ecdfa4efe283c62ad6f8e7">More...</a><br /></td></tr>
-<tr class="separator:aea97663df4ecdfa4efe283c62ad6f8e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81f3b408288a0b27dfc090d802a6ec38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a81f3b408288a0b27dfc090d802a6ec38">newJsonModule</a> (gsl::cstring_span&lt;&gt; fullName)</td></tr>
-<tr class="memdesc:a81f3b408288a0b27dfc090d802a6ec38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new JSONModule with the given full name.  <a href="#a81f3b408288a0b27dfc090d802a6ec38">More...</a><br /></td></tr>
-<tr class="separator:a81f3b408288a0b27dfc090d802a6ec38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d315a04d7adde147271edc326ac9d29"><td class="memItemLeft" align="right" valign="top">std::unordered_set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a2d315a04d7adde147271edc326ac9d29">listModulesInWorkspace</a> () const noexcept</td></tr>
-<tr class="memdesc:a2d315a04d7adde147271edc326ac9d29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the list of modules in the workspace.  <a href="#a2d315a04d7adde147271edc326ac9d29">More...</a><br /></td></tr>
-<tr class="separator:a2d315a04d7adde147271edc326ac9d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdba4cda195fa98e8519ce6d2db4ca58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#afdba4cda195fa98e8519ce6d2db4ca58">loadModule</a> (const gsl::cstring_span&lt;&gt; name, <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> **toFill=nullptr)</td></tr>
-<tr class="memdesc:afdba4cda195fa98e8519ce6d2db4ca58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a module from disk.  <a href="#afdba4cda195fa98e8519ce6d2db4ca58">More...</a><br /></td></tr>
-<tr class="separator:afdba4cda195fa98e8519ce6d2db4ca58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d60a4afd5cfd35c94ef0249a482fbe4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a6d60a4afd5cfd35c94ef0249a482fbe4">addModuleFromJson</a> (gsl::cstring_span&lt;&gt; fullName, const nlohmann::json &amp;json, <a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> **toFill=nullptr)</td></tr>
-<tr class="memdesc:a6d60a4afd5cfd35c94ef0249a482fbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a module from JSON &ndash; avoid this use the string overload.  <a href="#a6d60a4afd5cfd35c94ef0249a482fbe4">More...</a><br /></td></tr>
-<tr class="separator:a6d60a4afd5cfd35c94ef0249a482fbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6216fb103dda5088af5ef8ba6f65817"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aa6216fb103dda5088af5ef8ba6f65817">addModule</a> (std::unique_ptr&lt; <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> &gt; modToAdd) noexcept</td></tr>
-<tr class="memdesc:aa6216fb103dda5088af5ef8ba6f65817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a custom module to the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> This usually doesn't get called, use the <code>gsl::string_span&lt;&gt;</code> overload instead.  <a href="#aa6216fb103dda5088af5ef8ba6f65817">More...</a><br /></td></tr>
 <tr class="separator:aa6216fb103dda5088af5ef8ba6f65817"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa484ef2c16aaa4d97a21632af4122bd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aa484ef2c16aaa4d97a21632af4122bd8">typeFromModule</a> (gsl::cstring_span&lt;&gt; module, gsl::cstring_span&lt;&gt; name, <a class="el" href="structchig_1_1DataType.html">DataType</a> *toFill) noexcept</td></tr>
-<tr class="memdesc:aa484ef2c16aaa4d97a21632af4122bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a llvm::Type from a module.  <a href="#aa484ef2c16aaa4d97a21632af4122bd8">More...</a><br /></td></tr>
-<tr class="separator:aa484ef2c16aaa4d97a21632af4122bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1cfbdb1646a75316dfa60f117576f37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#ab1cfbdb1646a75316dfa60f117576f37">nodeTypeFromModule</a> (gsl::cstring_span&lt;&gt; moduleName, gsl::cstring_span&lt;&gt; typeName, const nlohmann::json &amp;data, std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt; *toFill) noexcept</td></tr>
-<tr class="memdesc:ab1cfbdb1646a75316dfa60f117576f37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> from the JSON and name.  <a href="#ab1cfbdb1646a75316dfa60f117576f37">More...</a><br /></td></tr>
-<tr class="separator:ab1cfbdb1646a75316dfa60f117576f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21a5a702d92a00b87700e03782f9cb5f"><td class="memItemLeft" align="right" valign="top">boost::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f">workspacePath</a> () const</td></tr>
-<tr class="memdesc:a21a5a702d92a00b87700e03782f9cb5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the workspace path of the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a>.  <a href="#a21a5a702d92a00b87700e03782f9cb5f">More...</a><br /></td></tr>
-<tr class="separator:a21a5a702d92a00b87700e03782f9cb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4fb30ced50d32c629ad50669b8b1e05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aa4fb30ced50d32c629ad50669b8b1e05">hasWorkspace</a> () const noexcept</td></tr>
-<tr class="memdesc:aa4fb30ced50d32c629ad50669b8b1e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this context has a workspace bound to it &ndash; same as !workspacePath().empty()  <a href="#aa4fb30ced50d32c629ad50669b8b1e05">More...</a><br /></td></tr>
-<tr class="separator:aa4fb30ced50d32c629ad50669b8b1e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d60a4afd5cfd35c94ef0249a482fbe4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a6d60a4afd5cfd35c94ef0249a482fbe4">addModuleFromJson</a> (gsl::cstring_span&lt;&gt; fullName, const nlohmann::json &amp;json, <a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> **toFill=nullptr)</td></tr>
+<tr class="separator:a6d60a4afd5cfd35c94ef0249a482fbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8987940286a7a67313b635891d8f51e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a8987940286a7a67313b635891d8f51e8">compileModule</a> (gsl::cstring_span&lt;&gt; fullName, std::unique_ptr&lt; llvm::Module &gt; *toFill)</td></tr>
-<tr class="memdesc:a8987940286a7a67313b635891d8f51e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile a module to a <code>llvm::Module</code>.  <a href="#a8987940286a7a67313b635891d8f51e8">More...</a><br /></td></tr>
 <tr class="separator:a8987940286a7a67313b635891d8f51e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80a87a895374988b5fe678fe0c664758"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a80a87a895374988b5fe678fe0c664758">fullModuleName</a> (gsl::cstring_span&lt;&gt; shortName) const</td></tr>
-<tr class="memdesc:a80a87a895374988b5fe678fe0c664758"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the full module name from a short one.  <a href="#a80a87a895374988b5fe678fe0c664758">More...</a><br /></td></tr>
 <tr class="separator:a80a87a895374988b5fe678fe0c664758"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92c913aaa730281508e2048807472cee"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a92c913aaa730281508e2048807472cee">numModules</a> () const</td></tr>
-<tr class="memdesc:a92c913aaa730281508e2048807472cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of modules this <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> has.  <a href="#a92c913aaa730281508e2048807472cee">More...</a><br /></td></tr>
-<tr class="separator:a92c913aaa730281508e2048807472cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4fb30ced50d32c629ad50669b8b1e05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aa4fb30ced50d32c629ad50669b8b1e05">hasWorkspace</a> () const noexcept</td></tr>
+<tr class="separator:aa4fb30ced50d32c629ad50669b8b1e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29560b87cbcd1fb4b772faceca58b231"><td class="memItemLeft" align="right" valign="top">std::unordered_set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a29560b87cbcd1fb4b772faceca58b231">listModulesInWorkspace</a> () const noexcept</td></tr>
+<tr class="separator:a29560b87cbcd1fb4b772faceca58b231"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782020dfc6a44bdbacbea2a72cfd38e6"><td class="memItemLeft" align="right" valign="top">llvm::LLVMContext &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a782020dfc6a44bdbacbea2a72cfd38e6">llvmContext</a> () const</td></tr>
-<tr class="memdesc:a782020dfc6a44bdbacbea2a72cfd38e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the associated LLVMContext.  <a href="#a782020dfc6a44bdbacbea2a72cfd38e6">More...</a><br /></td></tr>
 <tr class="separator:a782020dfc6a44bdbacbea2a72cfd38e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ee400680060a0891bdffc7109016fec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a2ee400680060a0891bdffc7109016fec">loadModule</a> (const gsl::cstring_span&lt;&gt; name, <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> **toFill=nullptr)</td></tr>
+<tr class="separator:a2ee400680060a0891bdffc7109016fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98839bbfddeb9b73c59a112d37b1a9c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a98839bbfddeb9b73c59a112d37b1a9c3">moduleByFullName</a> (gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1Context.html#a80a87a895374988b5fe678fe0c664758">fullModuleName</a>) const noexcept</td></tr>
+<tr class="separator:a98839bbfddeb9b73c59a112d37b1a9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd6ab34891919a07d0fb5b6cd270afb0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#abd6ab34891919a07d0fb5b6cd270afb0">moduleByName</a> (gsl::cstring_span&lt;&gt; moduleName) const noexcept</td></tr>
+<tr class="separator:abd6ab34891919a07d0fb5b6cd270afb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c11bfd47be5c451906840f293fa82c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a9c11bfd47be5c451906840f293fa82c2">newJsonModule</a> (gsl::cstring_span&lt;&gt; fullName)</td></tr>
+<tr class="separator:a9c11bfd47be5c451906840f293fa82c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1cfbdb1646a75316dfa60f117576f37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#ab1cfbdb1646a75316dfa60f117576f37">nodeTypeFromModule</a> (gsl::cstring_span&lt;&gt; moduleName, gsl::cstring_span&lt;&gt; typeName, const nlohmann::json &amp;data, std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt; *toFill) noexcept</td></tr>
+<tr class="separator:ab1cfbdb1646a75316dfa60f117576f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92c913aaa730281508e2048807472cee"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a92c913aaa730281508e2048807472cee">numModules</a> () const</td></tr>
+<tr class="separator:a92c913aaa730281508e2048807472cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa484ef2c16aaa4d97a21632af4122bd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aa484ef2c16aaa4d97a21632af4122bd8">typeFromModule</a> (gsl::cstring_span&lt;&gt; module, gsl::cstring_span&lt;&gt; name, <a class="el" href="structchig_1_1DataType.html">DataType</a> *toFill) noexcept</td></tr>
+<tr class="separator:aa484ef2c16aaa4d97a21632af4122bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21a5a702d92a00b87700e03782f9cb5f"><td class="memItemLeft" align="right" valign="top">boost::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f">workspacePath</a> () const</td></tr>
+<tr class="separator:a21a5a702d92a00b87700e03782f9cb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The class that handles the loading, creation, storing, and compilation of modules It also stores a <code>LLVMContext</code> object to be used everywhere. </p>
+
+<p>Definition at line <a class="el" href="Context_8hpp_source.html#l00030">30</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa524b83a49d7109a09e8d32d098bf2d5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa524b83a49d7109a09e8d32d098bf2d5">&sect;&nbsp;</a></span>Context()</h2>
@@ -151,9 +136,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Creates a context with just the lang module. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Creates a context with just the lang module </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">workPath</td><td>Path to the workspace, or a subdirectory of the workspace </td></tr>
   </table>
@@ -186,15 +169,15 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Adds a custom module to the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> This usually doesn't get called, use the <code>gsl::string_span&lt;&gt;</code> overload instead. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Adds a custom module to the <a class="el" href="structchig_1_1Context.html">Context</a> This usually doesn't get called, use the <code>gsl::string_span&lt;&gt;</code> overload instead </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">modToAdd</td><td>The module to add. The context will take excluseive ownership of it. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the module was added (it didn't exist before) </dd></dl>
+
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00198">198</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
 
 </div>
 </div>
@@ -229,9 +212,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Load a module from JSON &ndash; avoid this use the string overload. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Load a module from JSON &ndash; avoid this use the string overload </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fullName</td><td>The full path of the module, including URL </td></tr>
     <tr><td class="paramname">json</td><td>The JSON data </td></tr>
@@ -239,6 +220,10 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00156">156</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p>References <a class="el" href="JsonModule_8cpp_source.html#l00316">chig::JsonModule::loadGraphs()</a>.</p>
 
 </div>
 </div>
@@ -267,9 +252,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Compile a module to a <code>llvm::Module</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Compile a module to a <code>llvm::Module</code> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fullName</td><td>The full name of the moudle to compile </td></tr>
     <tr><td class="paramname">toFill</td><td>The <code>llvm::Module</code> to fill &ndash; this can be nullptr it will be replaced </td></tr>
@@ -277,6 +260,12 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
+
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00251">251</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>.</p>
+
+<p>Referenced by <a class="el" href="Context_8hpp_source.html#l00098">hasWorkspace()</a>.</p>
 
 </div>
 </div>
@@ -295,15 +284,17 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Get the full module name from a short one. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Get the full module name from a short one </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">shortName</td><td>The short name of the module </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The long name. If there was an error getting the module then an empty string. </dd></dl>
+
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00296">296</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p>Referenced by <a class="el" href="Context_8hpp_source.html#l00098">hasWorkspace()</a>.</p>
 
 </div>
 </div>
@@ -329,14 +320,16 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Check if this context has a workspace bound to it &ndash; same as !workspacePath().empty() </p><dl class="section return"><dt>Returns</dt><dd>If it has a workspace </dd></dl>
 
-<p>Check if this context has a workspace bound to it &ndash; same as !workspacePath().empty() </p>
-<dl class="section return"><dt>Returns</dt><dd>If it has a workspace </dd></dl>
+<p>Definition at line <a class="el" href="Context_8hpp_source.html#l00098">98</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+
+<p>References <a class="el" href="Context_8cpp_source.html#l00251">compileModule()</a>, <a class="el" href="Context_8cpp_source.html#l00296">fullModuleName()</a>, and <a class="el" href="Context_8hpp_source.html#l00095">workspacePath()</a>.</p>
 
 </div>
 </div>
-<a id="a2d315a04d7adde147271edc326ac9d29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d315a04d7adde147271edc326ac9d29">&sect;&nbsp;</a></span>listModulesInWorkspace()</h2>
+<a id="a29560b87cbcd1fb4b772faceca58b231"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29560b87cbcd1fb4b772faceca58b231">&sect;&nbsp;</a></span>listModulesInWorkspace()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -345,7 +338,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unordered_set&lt;std::string&gt; chig::Context::listModulesInWorkspace </td>
+          <td class="memname">std::unordered_set&lt; std::string &gt; chig::Context::listModulesInWorkspace </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -357,9 +350,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the list of modules in the workspace </p><dl class="section return"><dt>Returns</dt><dd>The module list </dd></dl>
 
-<p>Get the list of modules in the workspace. </p>
-<dl class="section return"><dt>Returns</dt><dd>The module list </dd></dl>
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00075">75</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
 
 </div>
 </div>
@@ -385,20 +378,20 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the associated LLVMContext </p><dl class="section return"><dt>Returns</dt><dd>The LLVMContext </dd></dl>
 
-<p>Get the associated LLVMContext. </p>
-<dl class="section return"><dt>Returns</dt><dd>The LLVMContext </dd></dl>
+<p>Definition at line <a class="el" href="Context_8hpp_source.html#l00115">115</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
 
 </div>
 </div>
-<a id="afdba4cda195fa98e8519ce6d2db4ca58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdba4cda195fa98e8519ce6d2db4ca58">&sect;&nbsp;</a></span>loadModule()</h2>
+<a id="a2ee400680060a0891bdffc7109016fec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ee400680060a0891bdffc7109016fec">&sect;&nbsp;</a></span>loadModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> chig::Context::loadModule </td>
+          <td class="memname"><a class="el" href="structchig_1_1Result.html">chig::Result</a> chig::Context::loadModule </td>
           <td>(</td>
           <td class="paramtype">const gsl::cstring_span&lt;&gt;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -416,9 +409,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Load a module from disk. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Load a module from disk </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the moudle </td></tr>
     <tr><td class="paramname">toFill</td><td>The module that was loaded, optional </td></tr>
@@ -427,10 +418,16 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00102">102</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>.</p>
+
+<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00015">chig::ChigModule::addDependency()</a>.</p>
+
 </div>
 </div>
-<a id="aea97663df4ecdfa4efe283c62ad6f8e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea97663df4ecdfa4efe283c62ad6f8e7">&sect;&nbsp;</a></span>moduleByFullName()</h2>
+<a id="a98839bbfddeb9b73c59a112d37b1a9c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98839bbfddeb9b73c59a112d37b1a9c3">&sect;&nbsp;</a></span>moduleByFullName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -439,7 +436,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a>* chig::Context::moduleByFullName </td>
+          <td class="memname"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> * chig::Context::moduleByFullName </td>
           <td>(</td>
           <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
           <td class="paramname"><em>fullModuleName</em></td><td>)</td>
@@ -452,9 +449,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Gets the module by the full name. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Gets the module by the full name </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fullModuleName</td><td>The name of the module to find </td></tr>
   </table>
@@ -462,10 +457,12 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ret_module The module that has the full name <code>fullModuleName</code>, nullptr if none were found </dd></dl>
 
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00042">42</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
 </div>
 </div>
-<a id="a9dbc09767e3e199999a9ba5586298e2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9dbc09767e3e199999a9ba5586298e2a">&sect;&nbsp;</a></span>moduleByName()</h2>
+<a id="abd6ab34891919a07d0fb5b6cd270afb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd6ab34891919a07d0fb5b6cd270afb0">&sect;&nbsp;</a></span>moduleByName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -474,7 +471,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a>* chig::Context::moduleByName </td>
+          <td class="memname"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> * chig::Context::moduleByName </td>
           <td>(</td>
           <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
           <td class="paramname"><em>moduleName</em></td><td>)</td>
@@ -487,9 +484,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Gets the module by the name. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Gets the module by the name </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">moduleName</td><td>The name of the module to find </td></tr>
   </table>
@@ -497,16 +492,18 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ret_module The module that has the name <code>moduleName</code>, nullptr if none were found </dd></dl>
 
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00030">30</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
 </div>
 </div>
-<a id="a81f3b408288a0b27dfc090d802a6ec38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81f3b408288a0b27dfc090d802a6ec38">&sect;&nbsp;</a></span>newJsonModule()</h2>
+<a id="a9c11bfd47be5c451906840f293fa82c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c11bfd47be5c451906840f293fa82c2">&sect;&nbsp;</a></span>newJsonModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structchig_1_1JsonModule.html">JsonModule</a>* chig::Context::newJsonModule </td>
+          <td class="memname"><a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> * chig::Context::newJsonModule </td>
           <td>(</td>
           <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
           <td class="paramname"><em>fullName</em></td><td>)</td>
@@ -514,14 +511,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Create a new JSONModule with the given full name. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Create a new JSONModule with the given full name </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fullName</td><td>The new name </td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00054">54</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p>References <a class="el" href="JsonModule_8cpp_source.html#l00194">chig::JsonModule::saveToDisk()</a>, and <a class="el" href="Result_8hpp_source.html#l00037">chig::Result::success</a>.</p>
 
 </div>
 </div>
@@ -570,17 +569,21 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Gets a <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> from the JSON and name. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Gets a <a class="el" href="structchig_1_1NodeType.html">NodeType</a> from the JSON and name </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">moduleName</td><td>The module name. </td></tr>
     <tr><td class="paramname">typeName</td><td>The name of the node type </td></tr>
-    <tr><td class="paramname">data</td><td>The JSON data that is used to construct the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>. </td></tr>
+    <tr><td class="paramname">data</td><td>The JSON data that is used to construct the <a class="el" href="structchig_1_1NodeType.html">NodeType</a>. </td></tr>
     <tr><td class="paramname">toFill</td><td>The point to fill </td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00235">235</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>.</p>
+
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00483">chig::GraphFunction::createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00506">chig::GraphFunction::createExitNodeType()</a>, <a class="el" href="Graph_8cpp_source.html#l00006">chig::Graph::Graph()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00424">chig::GraphFunction::insertNode()</a>.</p>
 
 </div>
 </div>
@@ -606,9 +609,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the number of modules this <a class="el" href="structchig_1_1Context.html">Context</a> has </p><dl class="section return"><dt>Returns</dt><dd>The module count </dd></dl>
 
-<p>Get the number of modules this <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> has. </p>
-<dl class="section return"><dt>Returns</dt><dd>The module count </dd></dl>
+<p>Definition at line <a class="el" href="Context_8hpp_source.html#l00112">112</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
 
 </div>
 </div>
@@ -651,9 +654,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Gets a llvm::Type from a module. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Gets a llvm::Type from a module </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">module</td><td>The name of the module, "lang" if nullptr </td></tr>
     <tr><td class="paramname">name</td><td>The name of the type, required </td></tr>
@@ -662,6 +663,12 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
+
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00215">215</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, and <a class="el" href="structchig_1_1ChigModule.html#a7bb138db48ea320a09312ffd1af0999a">chig::ChigModule::typeFromName()</a>.</p>
+
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00028">chig::GraphFunction::fromJSON()</a>, and <a class="el" href="LangModule_8cpp_source.html#l00266">chig::LangModule::LangModule()</a>.</p>
 
 </div>
 </div>
@@ -687,19 +694,22 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the workspace path of the <a class="el" href="structchig_1_1Context.html">Context</a> </p><dl class="section return"><dt>Returns</dt><dd>The workspace path </dd></dl>
 
-<p>Get the workspace path of the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>The workspace path </dd></dl>
+<p>Definition at line <a class="el" href="Context_8hpp_source.html#l00095">95</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="Context_8hpp_source.html#l00098">hasWorkspace()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00194">chig::JsonModule::saveToDisk()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>libchig/include/chig/<a class="el" href="Context_8hpp_source.html">Context.hpp</a></li>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>include/chig/<a class="el" href="Context_8hpp_source.html">Context.hpp</a></li>
+<li>src/<a class="el" href="Context_8cpp_source.html">Context.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 2 2017 18:47:31 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.12
 </small></address>

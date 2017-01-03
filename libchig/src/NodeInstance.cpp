@@ -21,13 +21,19 @@ NodeInstance::NodeInstance(
 	outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0});
 }
 
-NodeInstance::NodeInstance(const NodeInstance& other)
+NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
 	: mType(other.type().clone()),
 	  mX{other.x()},
 	  mY{other.y()},
-	  mId{other.id() + "_"},
+	  mId{std::move(id)},
 	  mContext{&other.context()}
 {
+    inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
+	outputDataConnections.resize(type().dataOutputs().size(), {});
+
+	inputExecConnections.resize(type().execInputs().size(), {});
+	outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0});
+
 }
 
 NodeInstance& NodeInstance::operator=(const NodeInstance& other)

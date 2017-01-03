@@ -120,6 +120,7 @@ struct GraphFunction {
 	llvm::FunctionType* functionType() const;
 
 	/// Load the graph from the source json
+	/// This is called from Context::loadModuleFromJson 
 	/// \return The result
 	Result loadGraph();
 
@@ -128,7 +129,7 @@ struct GraphFunction {
 	Result validateGraph() const;
 
 	// Data I/O modifiers
-	/////////////////////
+	///////////////////// TODO: check uses and replace to avoid errors
 
 	// Data input modifiers
 

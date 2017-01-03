@@ -20,10 +20,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="chigraphsmall.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">..</span>
    </div>
+   <div id="projectbrief">SystemsprogramminglanguagewrittenforbeginnersinLLVM</div>
   </td>
  </tr>
  </tbody>
@@ -71,41 +73,33 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> its in.  
- <a href="structchig_1_1DataType.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="DataType_8hpp_source.html">chig/DataType.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a97a69583222a0a581a9adb084b826119"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a97a69583222a0a581a9adb084b826119">DataType</a> (<a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> *chigMod=nullptr, std::string typeName={}, llvm::Type *llvmtype=nullptr)</td></tr>
-<tr class="memdesc:a97a69583222a0a581a9adb084b826119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a97a69583222a0a581a9adb084b826119">More...</a><br /></td></tr>
 <tr class="separator:a97a69583222a0a581a9adb084b826119"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa63396ca8c48bd0a6be166df245772a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#aa63396ca8c48bd0a6be166df245772a9">module</a> () const</td></tr>
-<tr class="memdesc:aa63396ca8c48bd0a6be166df245772a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the module this is a part of.  <a href="#aa63396ca8c48bd0a6be166df245772a9">More...</a><br /></td></tr>
-<tr class="separator:aa63396ca8c48bd0a6be166df245772a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a977054d97d25af626109f372a793f4a6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a977054d97d25af626109f372a793f4a6">unqualifiedName</a> () const</td></tr>
-<tr class="memdesc:a977054d97d25af626109f372a793f4a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the unqualified name of the type.  <a href="#a977054d97d25af626109f372a793f4a6">More...</a><br /></td></tr>
-<tr class="separator:a977054d97d25af626109f372a793f4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a918a4163252b17b6971b3cf98497d537"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a918a4163252b17b6971b3cf98497d537">qualifiedName</a> () const</td></tr>
-<tr class="memdesc:a918a4163252b17b6971b3cf98497d537"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the qualified name of the type (with the module)  <a href="#a918a4163252b17b6971b3cf98497d537">More...</a><br /></td></tr>
-<tr class="separator:a918a4163252b17b6971b3cf98497d537"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b053e3ef3585abbc0453f59c25383b9"><td class="memItemLeft" align="right" valign="top">llvm::Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a3b053e3ef3585abbc0453f59c25383b9">llvmType</a> () const</td></tr>
-<tr class="memdesc:a3b053e3ef3585abbc0453f59c25383b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying <code>llvm::Type</code>.  <a href="#a3b053e3ef3585abbc0453f59c25383b9">More...</a><br /></td></tr>
 <tr class="separator:a3b053e3ef3585abbc0453f59c25383b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa63396ca8c48bd0a6be166df245772a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#aa63396ca8c48bd0a6be166df245772a9">module</a> () const</td></tr>
+<tr class="separator:aa63396ca8c48bd0a6be166df245772a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10f4c641a18c6127f37c71b34fa0e320"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a10f4c641a18c6127f37c71b34fa0e320">operator!=</a> (const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;other) const</td></tr>
+<tr class="separator:a10f4c641a18c6127f37c71b34fa0e320"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af71e8c0cc7981392f3af0fa5df1f1d4c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#af71e8c0cc7981392f3af0fa5df1f1d4c">operator==</a> (const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;other) const</td></tr>
+<tr class="separator:af71e8c0cc7981392f3af0fa5df1f1d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a918a4163252b17b6971b3cf98497d537"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a918a4163252b17b6971b3cf98497d537">qualifiedName</a> () const</td></tr>
+<tr class="separator:a918a4163252b17b6971b3cf98497d537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a977054d97d25af626109f372a793f4a6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a977054d97d25af626109f372a793f4a6">unqualifiedName</a> () const</td></tr>
+<tr class="separator:a977054d97d25af626109f372a793f4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a307eaa94c9f2d408c7a204e364b02b22"><td class="memItemLeft" align="right" valign="top"><a id="a307eaa94c9f2d408c7a204e364b02b22"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22">valid</a> () const</td></tr>
-<tr class="memdesc:a307eaa94c9f2d408c7a204e364b02b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a> is valid. <br /></td></tr>
+<tr class="memdesc:a307eaa94c9f2d408c7a204e364b02b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the <a class="el" href="structchig_1_1DataType.html">DataType</a> is valid. <br /></td></tr>
 <tr class="separator:a307eaa94c9f2d408c7a204e364b02b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af71e8c0cc7981392f3af0fa5df1f1d4c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#af71e8c0cc7981392f3af0fa5df1f1d4c">operator==</a> (const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;other) const</td></tr>
-<tr class="memdesc:af71e8c0cc7981392f3af0fa5df1f1d4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality check.  <a href="#af71e8c0cc7981392f3af0fa5df1f1d4c">More...</a><br /></td></tr>
-<tr class="separator:af71e8c0cc7981392f3af0fa5df1f1d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10f4c641a18c6127f37c71b34fa0e320"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a10f4c641a18c6127f37c71b34fa0e320">operator!=</a> (const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;other) const</td></tr>
-<tr class="memdesc:a10f4c641a18c6127f37c71b34fa0e320"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality check.  <a href="#a10f4c641a18c6127f37c71b34fa0e320">More...</a><br /></td></tr>
-<tr class="separator:a10f4c641a18c6127f37c71b34fa0e320"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> its in. </p>
+<div class="textblock"><p>A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> its in </p>
+
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00015">15</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a97a69583222a0a581a9adb084b826119"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a97a69583222a0a581a9adb084b826119">&sect;&nbsp;</a></span>DataType()</h2>
@@ -146,9 +140,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Constructor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Constructor </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">chigMod</td><td>The module </td></tr>
     <tr><td class="paramname">typeName</td><td>The ID of the type in the module </td></tr>
@@ -156,6 +148,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00020">20</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -182,9 +176,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the underlying <code>llvm::Type</code> </p><dl class="section return"><dt>Returns</dt><dd>the <code>llvm::Type</code> </dd></dl>
 
-<p>Get the underlying <code>llvm::Type</code>. </p>
-<dl class="section return"><dt>Returns</dt><dd>the <code>llvm::Type</code> </dd></dl>
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00037">37</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -210,9 +204,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the module this is a part of </p><dl class="section return"><dt>Returns</dt><dd>The module </dd></dl>
 
-<p>Get the module this is a part of. </p>
-<dl class="section return"><dt>Returns</dt><dd>The module </dd></dl>
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00028">28</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -239,15 +233,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Inequality check. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Inequality check </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td>The <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a> to check equality against </td></tr>
+    <tr><td class="paramname">other</td><td>The <a class="el" href="structchig_1_1DataType.html">DataType</a> to check equality against </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If they are inequal </dd></dl>
+
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00051">51</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -274,15 +268,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Equality check. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Equality check </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td>The <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a> to check equality against </td></tr>
+    <tr><td class="paramname">other</td><td>The <a class="el" href="structchig_1_1DataType.html">DataType</a> to check equality against </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If they are equal </dd></dl>
+
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00043">43</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -308,9 +302,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the qualified name of the type (with the module) </p><dl class="section return"><dt>Returns</dt><dd>The qualified name </dd></dl>
 
-<p>Get the qualified name of the type (with the module) </p>
-<dl class="section return"><dt>Returns</dt><dd>The qualified name </dd></dl>
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00034">34</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00057">chig::ChigModule::name()</a>.</p>
 
 </div>
 </div>
@@ -336,19 +332,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the unqualified name of the type </p><dl class="section return"><dt>Returns</dt><dd>The unqualified name </dd></dl>
 
-<p>Get the unqualified name of the type. </p>
-<dl class="section return"><dt>Returns</dt><dd>The unqualified name </dd></dl>
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00031">31</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>libchig/include/chig/<a class="el" href="DataType_8hpp_source.html">DataType.hpp</a></li>
+<li>include/chig/<a class="el" href="DataType_8hpp_source.html">DataType.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 2 2017 18:47:31 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.12
 </small></address>

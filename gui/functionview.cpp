@@ -126,6 +126,8 @@ void FunctionView::nodeAdded(Node& n)
 	if (ptr == nullptr) {
 		return;
 	}
+	
+	// make sure ID is unique
 
 	func->graph().nodes()[ptr->inst->id()] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
 
