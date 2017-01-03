@@ -184,7 +184,7 @@ void MainWindow::openWorkspace(QUrl url)
 	workspaceOpened(*ccontext);
 }
 
-void MainWindow::openModule(QString path)
+void MainWindow::openModule(const QString& path)
 {
 	chig::ChigModule* cmod;
 	chig::Result res = ccontext->loadModule(path.toStdString(), &cmod);

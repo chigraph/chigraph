@@ -16,7 +16,7 @@
 class ParamListItem : public QListWidgetItem
 {
 public:
-	ParamListItem(ParamListWidget* container, chig::DataType ty, QString name)
+	ParamListItem(ParamListWidget* container, chig::DataType ty, const QString& name)
 		: QListWidgetItem(nullptr, QListWidgetItem::UserType),
 		  mDataType{ty},
 		  mName{name},
@@ -33,7 +33,7 @@ public:
 		updateName();
 	}
 
-	void setName(QString newName)
+	void setName(cosnt QString& newName)
 	{
 		mName = newName;
 		updateName();
@@ -111,7 +111,7 @@ boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(
 	return std::make_pair(dtype, name);
 }
 
-ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(parent)
+ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidget(parent)
 {
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
@@ -205,7 +205,7 @@ QString ParamListWidget::nameForIdx(int idx) const
 	return param->name();
 }
 
-void ParamListWidget::addParam(chig::DataType type, QString name, int after)
+void ParamListWidget::addParam(chig::DataType type, const QString& name, int after)
 {
 	auto newItem = new ParamListItem(this, type, name);
 	mParamList->insertItem(after + 1, newItem);
@@ -218,7 +218,7 @@ void ParamListWidget::deleteParam(int idx)
 	paramDeleted(idx);
 }
 
-void ParamListWidget::modifyParam(int idx, chig::DataType type, QString name)
+void ParamListWidget::modifyParam(int idx, chig::DataType type, const QString& name)
 {
 	auto param = paramFromIdx(idx, mParamList);
 	if (param == nullptr) {

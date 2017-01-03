@@ -33,7 +33,7 @@ public slots:
     }
     
 signals:
-    void dependencyAdded(QString str);
+    void dependencyAdded(const QString& str);
     
 private:
     

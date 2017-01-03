@@ -10,12 +10,22 @@
 #include <chig/JsonModule.hpp>
 #include <chig/NodeInstance.hpp>
 
+#include <nodes/ConnectionStyle>
+
 #include "chignodegui.hpp"
 
 FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	: QWidget(parent), func{func_}
 {
 	auto hlayout = new QHBoxLayout(this);
+    
+    ConnectionStyle::setConnectionStyle(R"(
+    {
+      "ConnectionStyle": {
+        "UseDataDefinedColors": true
+      }
+    }
+    )");
 
 	hlayout->setMargin(0);
 	hlayout->setSpacing(0);

@@ -58,7 +58,7 @@ void FunctionDetails::loadFunction(FunctionView* func)
 	connect(outs, &ParamListWidget::paramChanged, this, &FunctionDetails::outputChanged);
 }
 
-void FunctionDetails::inputChanged(int idx, chig::DataType newType, QString newName)
+void FunctionDetails::inputChanged(int idx, chig::DataType newType, const QString& newName)
 {
 	mFunc->modifyDataInput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
 
@@ -68,7 +68,7 @@ void FunctionDetails::inputChanged(int idx, chig::DataType newType, QString newN
 	}
 	mFuncView->refreshGuiForNode(mFuncView->nodes[entry]);
 }
-void FunctionDetails::inputAdded(chig::DataType type, QString name)
+void FunctionDetails::inputAdded(chig::DataType type, const QString& name)
 {
 	mFunc->addDataInput(type, name.toStdString(), mFunc->dataInputs().size() - 1);  // add to end
 
@@ -88,7 +88,7 @@ void FunctionDetails::inputDeleted(int idx)
 	}
 	mFuncView->refreshGuiForNode(mFuncView->nodes[entry]);
 }
-void FunctionDetails::outputChanged(int idx, chig::DataType newType, QString newName)
+void FunctionDetails::outputChanged(int idx, chig::DataType newType, const QString& newName)
 {
 	mFunc->modifyDataOutput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
 
@@ -96,7 +96,7 @@ void FunctionDetails::outputChanged(int idx, chig::DataType newType, QString new
 		mFuncView->refreshGuiForNode(mFuncView->nodes[exit]);
 	}
 }
-void FunctionDetails::outputAdded(chig::DataType type, QString name)
+void FunctionDetails::outputAdded(chig::DataType type, const QString& name)
 {
 	mFunc->addDataOutput(type, name.toStdString(), mFunc->dataInputs().size() - 1);
 

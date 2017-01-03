@@ -18,7 +18,7 @@ public:
 	ModuleBrowser(QWidget* parent = nullptr);
 
 signals:
-	void moduleSelected(QString name);
+	void moduleSelected(const QString& name);
 
 public slots:
 	void loadWorkspace(chig::Context& path);
