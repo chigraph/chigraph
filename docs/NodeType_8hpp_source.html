@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -23,7 +30,7 @@
   <td id="projectlogo"><img alt="Logo" src="chigraphsmall64.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
-   &#160;<span id="projectnumber">..</span>
+   &#160;<span id="projectnumber">master</span>
    </div>
    <div id="projectbrief">Systems programming language written for beginners in LLVM</div>
   </td>
@@ -45,6 +52,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('NodeType_8hpp_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -59,11 +81,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_16971e61b3ab07f0aa6ba57b2eb7b712.html">chig</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">NodeType.hpp</div>  </div>
@@ -74,31 +91,35 @@ $(function() {
 <div class="ttc" id="structchig_1_1NodeType_html_af2c90f6feb76c07a1a60aec4e6f44b18"><div class="ttname"><a href="structchig_1_1NodeType.html#af2c90f6feb76c07a1a60aec4e6f44b18">chig::NodeType::setExecInputs</a></div><div class="ttdeci">void setExecInputs(std::vector&lt; std::string &gt; newInputs)</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00105">NodeType.hpp:105</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_ad61ce1a20fa6b174027cbbdd43782d9c"><div class="ttname"><a href="structchig_1_1NodeType.html#ad61ce1a20fa6b174027cbbdd43782d9c">chig::NodeType::codegen</a></div><div class="ttdeci">virtual Result codegen(size_t execInputID, llvm::Module *modToCodegenInto, llvm::Function *f, const gsl::span&lt; llvm::Value *&gt; io, llvm::BasicBlock *codegenInto, const gsl::span&lt; llvm::BasicBlock *&gt; outputBlocks) const =0</div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_aedf68d45786ed3d3987ed26de9b305de"><div class="ttname"><a href="structchig_1_1NodeType.html#aedf68d45786ed3d3987ed26de9b305de">chig::NodeType::setDataOutputs</a></div><div class="ttdeci">void setDataOutputs(std::vector&lt; std::pair&lt; DataType, std::string &gt;&gt; newOutputs)</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00099">NodeType.hpp:99</a></div></div>
-<div class="ttc" id="structchig_1_1ChigModule_html_a1fe8df6ff170ecd33057387571bb5cd2"><div class="ttname"><a href="structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2">chig::ChigModule::name</a></div><div class="ttdeci">std::string name() const</div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00057">ChigModule.hpp:57</a></div></div>
+<div class="ttc" id="structchig_1_1ChigModule_html_a1fe8df6ff170ecd33057387571bb5cd2"><div class="ttname"><a href="structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2">chig::ChigModule::name</a></div><div class="ttdeci">std::string name() const</div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00058">ChigModule.hpp:58</a></div></div>
 <div class="ttc" id="structchig_1_1Result_html"><div class="ttname"><a href="structchig_1_1Result.html">chig::Result</a></div><div class="ttdoc">The result object, used for identifiying errors with good diagnostics. </div><div class="ttdef"><b>Definition:</b> <a href="Result_8hpp_source.html#l00014">Result.hpp:14</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_a7eb591e0e93940aeef541d9d37679b61"><div class="ttname"><a href="structchig_1_1NodeType.html#a7eb591e0e93940aeef541d9d37679b61">chig::NodeType::dataOutputs</a></div><div class="ttdeci">gsl::span&lt; const std::pair&lt; DataType, std::string &gt; &gt; dataOutputs() const</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00083">NodeType.hpp:83</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_aec01c9c30813ec9f0e15dda0f7ae34f3"><div class="ttname"><a href="structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3">chig::NodeType::qualifiedName</a></div><div class="ttdeci">std::string qualifiedName() const</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00042">NodeType.hpp:42</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_a3dfb8b1b093b9de0ee59e8eee7ab84e1"><div class="ttname"><a href="structchig_1_1NodeType.html#a3dfb8b1b093b9de0ee59e8eee7ab84e1">chig::NodeType::dataInputs</a></div><div class="ttdeci">gsl::span&lt; const std::pair&lt; DataType, std::string &gt; &gt; dataInputs() const</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00080">NodeType.hpp:80</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html"><div class="ttname"><a href="structchig_1_1NodeType.html">chig::NodeType</a></div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00025">NodeType.hpp:25</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_afa1cdaa90d27cd073f5cb86878aaee72"><div class="ttname"><a href="structchig_1_1NodeType.html#afa1cdaa90d27cd073f5cb86878aaee72">chig::NodeType::~NodeType</a></div><div class="ttdeci">virtual ~NodeType()=default</div><div class="ttdoc">Destructor. </div></div>
-<div class="ttc" id="namespacechig_html"><div class="ttname"><a href="namespacechig.html">chig</a></div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00022">ChigModule.hpp:22</a></div></div>
-<div class="ttc" id="structchig_1_1Context_html"><div class="ttname"><a href="structchig_1_1Context.html">chig::Context</a></div><div class="ttdef"><b>Definition:</b> <a href="Context_8hpp_source.html#l00030">Context.hpp:30</a></div></div>
+<div class="ttc" id="namespacechig_html"><div class="ttname"><a href="namespacechig.html">chig</a></div><div class="ttdoc">The namespace where chigraph lives. </div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00023">ChigModule.hpp:23</a></div></div>
+<div class="ttc" id="structchig_1_1Context_html"><div class="ttname"><a href="structchig_1_1Context.html">chig::Context</a></div><div class="ttdef"><b>Definition:</b> <a href="Context_8hpp_source.html#l00031">Context.hpp:31</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_af0820866c93d3c2975aea01d582501a6"><div class="ttname"><a href="structchig_1_1NodeType.html#af0820866c93d3c2975aea01d582501a6">chig::NodeType::setExecOutputs</a></div><div class="ttdeci">void setExecOutputs(std::vector&lt; std::string &gt; newOutputs)</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00108">NodeType.hpp:108</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_a40819156921b514082c56e7268b73048"><div class="ttname"><a href="structchig_1_1NodeType.html#a40819156921b514082c56e7268b73048">chig::NodeType::NodeType</a></div><div class="ttdeci">NodeType(ChigModule &amp;mod, gsl::cstring_span&lt;&gt; name, gsl::cstring_span&lt;&gt; description)</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00030">NodeType.hpp:30</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_afc4ee5b526c87f79a4b4e2a902e209a8"><div class="ttname"><a href="structchig_1_1NodeType.html#afc4ee5b526c87f79a4b4e2a902e209a8">chig::NodeType::execOutputs</a></div><div class="ttdeci">gsl::span&lt; const std::string &gt; execOutputs() const</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00089">NodeType.hpp:89</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_ad78a890e3480aa9fdddb02f85d881531"><div class="ttname"><a href="structchig_1_1NodeType.html#ad78a890e3480aa9fdddb02f85d881531">chig::NodeType::context</a></div><div class="ttdeci">Context &amp; context() const</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00077">NodeType.hpp:77</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_a126d0904045a882d384eb04021273c04"><div class="ttname"><a href="structchig_1_1NodeType.html#a126d0904045a882d384eb04021273c04">chig::NodeType::setDataInputs</a></div><div class="ttdeci">void setDataInputs(std::vector&lt; std::pair&lt; DataType, std::string &gt;&gt; newInputs)</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00093">NodeType.hpp:93</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_aeba0c62eaae2a477171d83a65c877f53"><div class="ttname"><a href="structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53">chig::NodeType::name</a></div><div class="ttdeci">std::string name() const</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00068">NodeType.hpp:68</a></div></div>
-<div class="ttc" id="structchig_1_1ChigModule_html"><div class="ttname"><a href="structchig_1_1ChigModule.html">chig::ChigModule</a></div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00026">ChigModule.hpp:26</a></div></div>
+<div class="ttc" id="structchig_1_1ChigModule_html"><div class="ttname"><a href="structchig_1_1ChigModule.html">chig::ChigModule</a></div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00027">ChigModule.hpp:27</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_ae32c95d458c85ea3633a3e5cb9fd321c"><div class="ttname"><a href="structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c">chig::NodeType::toJSON</a></div><div class="ttdeci">virtual nlohmann::json toJSON() const</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00061">NodeType.hpp:61</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_affd513d7d48eb9e3e8c8aa52f357f4b8"><div class="ttname"><a href="structchig_1_1NodeType.html#affd513d7d48eb9e3e8c8aa52f357f4b8">chig::NodeType::description</a></div><div class="ttdeci">std::string description() const</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00071">NodeType.hpp:71</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_ad18d6f37b20e92bcd580bcf7c7504e64"><div class="ttname"><a href="structchig_1_1NodeType.html#ad18d6f37b20e92bcd580bcf7c7504e64">chig::NodeType::module</a></div><div class="ttdeci">ChigModule &amp; module() const</div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00074">NodeType.hpp:74</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 2 2017 18:50:32 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.12
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_16971e61b3ab07f0aa6ba57b2eb7b712.html">chig</a></li><li class="navelem"><b>NodeType.hpp</b></li>
+    <li class="footer">Generated on Mon Jan 2 2017 20:05:36 for chigraph by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
+  </ul>
+</div>
 </body>
 </html>

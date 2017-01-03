@@ -5,5 +5,7 @@ var searchData=
   ['datatype',['DataType',['../structchig_1_1DataType.html#a97a69583222a0a581a9adb084b826119',1,'chig::DataType']]],
   ['dependencies',['dependencies',['../structchig_1_1ChigModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40',1,'chig::ChigModule']]],
   ['description',['description',['../structchig_1_1NodeType.html#affd513d7d48eb9e3e8c8aa52f357f4b8',1,'chig::NodeType']]],
+  ['disconnectdata',['disconnectData',['../namespacechig.html#a5977e55ae63e7f16a0ac342e2311e1b6',1,'chig']]],
+  ['disconnectexec',['disconnectExec',['../namespacechig.html#a215d31f09c52ea11a74173e7ac1392bb',1,'chig']]],
   ['dump',['dump',['../structchig_1_1Result.html#af0d6e60f12b46f5723fa32524ae53db9',1,'chig::Result']]]
 ];

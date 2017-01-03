@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -23,7 +30,7 @@
   <td id="projectlogo"><img alt="Logo" src="chigraphsmall64.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
-   &#160;<span id="projectnumber">..</span>
+   &#160;<span id="projectnumber">master</span>
    </div>
    <div id="projectbrief">Systems programming language written for beginners in LLVM</div>
   </td>
@@ -45,6 +52,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('structchig_1_1LangModule.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -59,11 +81,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><b>chig</b></li><li class="navelem"><a class="el" href="structchig_1_1LangModule.html">LangModule</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -77,15 +94,20 @@ $(function() {
  <a href="structchig_1_1LangModule.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="LangModule_8hpp_source.html">chig/LangModule.hpp</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for chig::LangModule:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="structchig_1_1LangModule.png" usemap="#chig::LangModule_map" alt=""/>
-  <map id="chig::LangModule_map" name="chig::LangModule_map">
-<area href="structchig_1_1ChigModule.html" alt="chig::ChigModule" shape="rect" coords="0,0,112,24"/>
-</map>
- </div></div>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for chig::LangModule:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1LangModule__inherit__graph.svg" width="146" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for chig::LangModule:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1LangModule__coll__graph.svg" width="146" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -157,11 +179,27 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8cpp_source.html#l00015">15</a> of file <a class="el" href="ChigModule_8cpp_source.html">ChigModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8cpp_source.html#l00013">13</a> of file <a class="el" href="ChigModule_8cpp_source.html">ChigModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00063">chig::ChigModule::context()</a>, and <a class="el" href="Context_8cpp_source.html#l00102">chig::Context::loadModule()</a>.</p>
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00064">chig::ChigModule::context()</a>, and <a class="el" href="Context_8cpp_source.html#l00102">chig::Context::loadModule()</a>.</p>
 
-<p>Referenced by <a class="el" href="ChigModule_8hpp_source.html#l00071">chig::ChigModule::dependencies()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00088">chig::JsonModule::JsonModule()</a>.</p>
+<p>Referenced by <a class="el" href="ChigModule_8hpp_source.html#l00072">chig::ChigModule::dependencies()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00088">chig::JsonModule::JsonModule()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_acec829296a8677186fcd6f0beae3d3a1_cgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_acec829296a8677186fcd6f0beae3d3a1_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
@@ -189,11 +227,27 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the <a class="el" href="structchig_1_1Context.html">Context</a> that this module belongs to </p><dl class="section return"><dt>Returns</dt><dd>The context </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00063">63</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00064">64</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
 <p>References <a class="el" href="structchig_1_1ChigModule.html#aad4b97558b2455201b4db986b3b63840">chig::ChigModule::generateModule()</a>.</p>
 
-<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00015">chig::ChigModule::addDependency()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00028">chig::GraphFunction::fromJSON()</a>, <a class="el" href="LangModule_8cpp_source.html#l00266">LangModule()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00194">chig::JsonModule::saveToDisk()</a>, and <a class="el" href="LangModule_8cpp_source.html#l00452">typeFromName()</a>.</p>
+<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00013">chig::ChigModule::addDependency()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00028">chig::GraphFunction::fromJSON()</a>, <a class="el" href="LangModule_8cpp_source.html#l00266">LangModule()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00194">chig::JsonModule::saveToDisk()</a>, and <a class="el" href="LangModule_8cpp_source.html#l00452">typeFromName()</a>.</p>
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_aad81aae17452ddc5fc43809924236385_cgraph.svg" width="448" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_aad81aae17452ddc5fc43809924236385_icgraph.svg" width="100%" height="492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
@@ -221,11 +275,27 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the dependencies </p><dl class="section return"><dt>Returns</dt><dd>The dependencies </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00071">71</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00072">72</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8cpp_source.html#l00015">chig::ChigModule::addDependency()</a>.</p>
+<p>References <a class="el" href="ChigModule_8cpp_source.html#l00013">chig::ChigModule::addDependency()</a>.</p>
 
 <p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00173">chig::JsonModule::toJSON()</a>.</p>
+<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_a0fc2b8e9bab1d061ec12212ac8c78a40_cgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_a0fc2b8e9bab1d061ec12212ac8c78a40_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
@@ -253,9 +323,17 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the full name of the module </p><dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00060">60</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00061">61</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00007">chig::ChigModule::ChigModule()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00155">chig::JsonModule::generateModule()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00194">chig::JsonModule::saveToDisk()</a>.</p>
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00155">chig::JsonModule::generateModule()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00194">chig::JsonModule::saveToDisk()</a>.</p>
+<div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_ad730121a133fbc474fcb71d49f31f7b3_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
@@ -322,9 +400,17 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the short name of the module (the last bit) </p><dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00057">57</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00058">58</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00280">chig::JsonModule::graphFuncFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00166">chig::CModule::nodeTypeFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00291">chig::JsonModule::nodeTypeFromName()</a>, <a class="el" href="DataType_8hpp_source.html#l00034">chig::DataType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00173">chig::JsonModule::toJSON()</a>.</p>
+<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_a1fe8df6ff170ecd33057387571bb5cd2_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
@@ -384,6 +470,14 @@ Public Member Functions</h2></td></tr>
 <p>Definition at line <a class="el" href="LangModule_8cpp_source.html#l00434">434</a> of file <a class="el" href="LangModule_8cpp_source.html">LangModule.cpp</a>.</p>
 
 <p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>.</p>
+<div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1LangModule_a37aba881a58ba961fbf9c77196dc810e_cgraph.svg" width="430" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -450,7 +544,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If one was removed </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00082">82</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00083">83</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
 </div>
 </div>
@@ -491,7 +585,15 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="LangModule_8cpp_source.html#l00452">452</a> of file <a class="el" href="LangModule_8cpp_source.html">LangModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00063">chig::ChigModule::context()</a>.</p>
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00064">chig::ChigModule::context()</a>.</p>
+<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1LangModule_a8c6c7b9ada9f7dc770842e9a065ca1b2_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
@@ -531,11 +633,15 @@ Public Member Functions</h2></td></tr>
 <li>src/<a class="el" href="LangModule_8cpp_source.html">LangModule.cpp</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 2 2017 18:50:32 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.12
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1LangModule.html">LangModule</a></li>
+    <li class="footer">Generated on Mon Jan 2 2017 20:05:36 for chigraph by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
+  </ul>
+</div>
 </body>
 </html>

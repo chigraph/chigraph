@@ -8,12 +8,16 @@
 #include <llvm/IR/Verifier.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/Support/TargetRegistry.h>
+#include <llvm/Target/TargetOptions.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
 
 #include <chig/CModule.hpp>
 #include <gsl/gsl>
+#include <llvm/Target/TargetMachine.h>
 
 using namespace llvm;
 
@@ -21,8 +25,11 @@ namespace fs = boost::filesystem;
 
 namespace chig
 {
-Context::Context(const fs::path& workPath)
+Context::Context(const boost::filesystem::path& workPath)
 {
+
+
+    
 	mLLVMContext = std::make_unique<llvm::LLVMContext>();
 
 	mWorkspacePath = workspaceFromChildPath(workPath);

@@ -25,34 +25,32 @@ GraphFunction::GraphFunction(JsonModule& mod, gsl::cstring_span<> name,
 
 GraphFunction::~GraphFunction() = default;
 
-Result GraphFunction::fromJSON(
-	JsonModule& module, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_func)
+GraphFunction::GraphFunction(
+	JsonModule& module, const nlohmann::json& data, Result& res)
 {
-	Result res = {};
-
 	if (!data.is_object()) {
 		res.addEntry("E1", "Graph json isn't a JSON object", {});
-		return res;
+		return;
 	}
 	// make sure it has a type element
 	if (data.find("type") == data.end()) {
 		res.addEntry("E2", R"(JSON in graph doesn't have a "type" element)", {});
-		return res;
+		return;
 	}
 	if (data["type"] != "function") {
 		res.addEntry("E3", "JSON in graph doesn't have a function type", {});
-		return res;
+		return;
 	}
 	// make sure there is a name
 	if (data.find("name") == data.end()) {
 		res.addEntry("E4", "JSON in graph doesn't have a name parameter", {});
-		return res;
+		return;
 	}
 	std::string name = data["name"];
 
 	if (data.find("data_inputs") == data.end() || !data["data_inputs"].is_array()) {
 		res.addEntry("E43", "JSON in graph doesn't have an data_inputs array", {});
-		return res;
+		return;
 	}
 
 	std::vector<std::pair<DataType, std::string>> datainputs;
@@ -68,7 +66,7 @@ Result GraphFunction::fromJSON(
 			res += module.context().typeFromModule(moduleName, name, &ty);
 
 			if (!res) {
-				return res;
+				return;
 			}
 
 			datainputs.emplace_back(ty, docString);
@@ -77,7 +75,7 @@ Result GraphFunction::fromJSON(
 
 	if (data.find("data_outputs") == data.end() || !data["data_outputs"].is_array()) {
 		res.addEntry("E44", "JSON in graph doesn't have an data_outputs array", {});
-		return res;
+		return;
 	}
 
 	std::vector<std::pair<DataType, std::string>> dataoutputs;
@@ -93,7 +91,7 @@ Result GraphFunction::fromJSON(
 			res += module.context().typeFromModule(moduleName, name, &ty);
 
 			if (!res) {
-				return res;
+				return;
 			}
 
 			dataoutputs.emplace_back(ty, docString);
@@ -103,7 +101,7 @@ Result GraphFunction::fromJSON(
 	// get exec I/O
 	if (data.find("exec_inputs") == data.end() || !data["exec_inputs"].is_array()) {
 		res.addEntry("EUKN", "JSON in graph doesn't have an exec_inputs array", {});
-		return res;
+		return;
 	}
 
 	std::vector<std::string> execinputs;
@@ -115,7 +113,7 @@ Result GraphFunction::fromJSON(
 
 	if (data.find("exec_outputs") == data.end() || !data["exec_outputs"].is_array()) {
 		res.addEntry("EUKN", "JSON in graph doesn't have an data_outputs array", {});
-		return res;
+		return;
 	}
 
 	std::vector<std::string> execoutputs;
@@ -126,13 +124,15 @@ Result GraphFunction::fromJSON(
 	}
 
 	// construct it
-	*ret_func = std::make_unique<GraphFunction>(module, name, std::move(datainputs),
-		std::move(dataoutputs), std::move(execinputs), std::move(execoutputs));
-	auto& ret = *ret_func;
+    mModule = &module;
+    mContext = &module.context();
+    mName = name;
+    mDataInputs = std::move(datainputs);
+    mDataOutputs = std::move(dataoutputs);
+    mExecInputs = std::move(execinputs);
+    mExecOutputs = std::move(execoutputs);
 
-	ret->mSource = data;
-
-	return res;
+	mSource = data;
 }
 
 Result GraphFunction::toJSON(nlohmann::json* toFill) const
@@ -480,7 +480,7 @@ Result GraphFunction::removeNode(NodeInstance* nodeToRemove)
 	return res;
 }
 
-Result GraphFunction::createEntryNodeType(std::unique_ptr<NodeType>* toFill)
+Result GraphFunction::createEntryNodeType(std::unique_ptr<NodeType>* toFill) const
 {
 	Result res;
 
@@ -503,7 +503,7 @@ Result GraphFunction::createEntryNodeType(std::unique_ptr<NodeType>* toFill)
 	return res;
 }
 
-Result GraphFunction::createExitNodeType(std::unique_ptr<NodeType>* toFill)
+Result GraphFunction::createExitNodeType(std::unique_ptr<NodeType>* toFill) const
 {
 	Result res;
 

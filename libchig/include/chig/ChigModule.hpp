@@ -19,6 +19,7 @@
 
 #include <gsl/gsl>
 
+/// The namespace where chigraph lives
 namespace chig
 {
 /// An abstract class that represents a module of code in Chigraph
@@ -26,8 +27,8 @@ namespace chig
 struct ChigModule {
 	/// Default constructor. This is usually run by Context::addModule
 	/// \param contextArg The context to create the module insides
-	/// \param fullName The full name of the module
-	ChigModule(Context& contextArg, std::string fullName);
+	/// \param moduleFullName The full name of the module
+	ChigModule(Context& contextArg, std::string moduleFullName);
 
 	/// Destructor
 	virtual ~ChigModule() = default;

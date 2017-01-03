@@ -73,8 +73,7 @@ int main(int argc, char** argv)
 			c, "main", gsl::span<std::string>(deps.data(), deps.size()));
 		auto modPtr = uMod.get();
 		c.addModule(std::move(uMod));
-		std::unique_ptr<GraphFunction> graphFunc;
-		res = GraphFunction::fromJSON(*modPtr, newData, &graphFunc);
+		auto graphFunc = std::make_unique<GraphFunction>(*modPtr, newData, res);
 
 		int ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;

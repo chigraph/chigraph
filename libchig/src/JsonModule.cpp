@@ -129,8 +129,7 @@ JsonModule::JsonModule(
 		}
 		mFunctions.reserve(iter->size());
 		for (const auto& graph : *iter) {
-			std::unique_ptr<GraphFunction> newf;
-			*res += GraphFunction::fromJSON(*this, graph, &newf);
+			auto newf = std::make_unique<GraphFunction>(*this, graph, *res);
 
 			if (!*res) {
 				return;

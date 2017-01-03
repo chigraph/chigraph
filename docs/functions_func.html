@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -23,7 +30,7 @@
   <td id="projectlogo"><img alt="Logo" src="chigraphsmall64.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
-   &#160;<span id="projectnumber">..</span>
+   &#160;<span id="projectnumber">master</span>
    </div>
    <div id="projectbrief">Systems programming language written for beginners in LLVM</div>
   </td>
@@ -46,6 +53,20 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('functions_func.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -93,7 +114,7 @@ $(function() {
 
 <h3><a id="index_c"></a>- c -</h3><ul>
 <li>ChigModule()
-: <a class="el" href="structchig_1_1ChigModule.html#a5a851676e44f2e87a2715f0bd6ecd2e5">chig::ChigModule</a>
+: <a class="el" href="structchig_1_1ChigModule.html#a9ca770c02ec9efb90379bef900497bb1">chig::ChigModule</a>
 </li>
 <li>clone()
 : <a class="el" href="structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513">chig::NodeType</a>
@@ -123,10 +144,10 @@ $(function() {
 , <a class="el" href="structchig_1_1NodeType.html#ad78a890e3480aa9fdddb02f85d881531">chig::NodeType</a>
 </li>
 <li>createEntryNodeType()
-: <a class="el" href="structchig_1_1GraphFunction.html#a724e94f1ffc69b072e7ae581b4aec286">chig::GraphFunction</a>
+: <a class="el" href="structchig_1_1GraphFunction.html#abc41f524da8fd9b7308cb7abaa2b28c9">chig::GraphFunction</a>
 </li>
 <li>createExitNodeType()
-: <a class="el" href="structchig_1_1GraphFunction.html#a1867ac116f5993589b089f57885dbcd2">chig::GraphFunction</a>
+: <a class="el" href="structchig_1_1GraphFunction.html#ac7c52122fef0c74d9d0ee04af9a741c4">chig::GraphFunction</a>
 </li>
 <li>createFunction()
 : <a class="el" href="structchig_1_1JsonModule.html#aac5a649c9a98e72ecc20ecadb30d3e4c">chig::JsonModule</a>
@@ -424,8 +445,7 @@ $(function() {
 : <a class="el" href="structchig_1_1Graph.html#ab9e1ddbe7cb9ca59a3bb2d2191dd1d35">chig::Graph</a>
 </li>
 <li>toJSON()
-: <a class="el" href="structchig_1_1GraphFunction.html#a5a8768d5514a31104f0b3a9b5553099c">chig::GraphFunction</a>
-, <a class="el" href="structchig_1_1JsonModule.html#a200bbbf7eefaffdc40978c01d1053f46">chig::JsonModule</a>
+: <a class="el" href="structchig_1_1JsonModule.html#a200bbbf7eefaffdc40978c01d1053f46">chig::JsonModule</a>
 , <a class="el" href="structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c">chig::NodeType</a>
 </li>
 <li>type()
@@ -505,11 +525,14 @@ $(function() {
 </li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 2 2017 18:50:32 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.12
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Mon Jan 2 2017 20:05:36 for chigraph by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
+  </ul>
+</div>
 </body>
 </html>

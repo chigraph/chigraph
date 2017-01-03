@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -23,7 +30,7 @@
   <td id="projectlogo"><img alt="Logo" src="chigraphsmall64.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
-   &#160;<span id="projectnumber">..</span>
+   &#160;<span id="projectnumber">master</span>
    </div>
    <div id="projectbrief">Systems programming language written for beginners in LLVM</div>
   </td>
@@ -45,6 +52,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('Graph_8hpp_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -59,11 +81,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_16971e61b3ab07f0aa6ba57b2eb7b712.html">chig</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">Graph.hpp</div>  </div>
@@ -78,15 +95,19 @@ $(function() {
 <div class="ttc" id="structchig_1_1Graph_html_a41afa4af0758e9665d4acba867175369"><div class="ttname"><a href="structchig_1_1Graph.html#a41afa4af0758e9665d4acba867175369">chig::Graph::nodesWithType</a></div><div class="ttdeci">std::vector&lt; NodeInstance * &gt; nodesWithType(gsl::cstring_span&lt;&gt; module, gsl::cstring_span&lt;&gt; name) const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="Graph_8cpp_source.html#l00213">Graph.cpp:213</a></div></div>
 <div class="ttc" id="structchig_1_1Result_html"><div class="ttname"><a href="structchig_1_1Result.html">chig::Result</a></div><div class="ttdoc">The result object, used for identifiying errors with good diagnostics. </div><div class="ttdef"><b>Definition:</b> <a href="Result_8hpp_source.html#l00014">Result.hpp:14</a></div></div>
 <div class="ttc" id="structchig_1_1Graph_html"><div class="ttname"><a href="structchig_1_1Graph.html">chig::Graph</a></div><div class="ttdef"><b>Definition:</b> <a href="Graph_8hpp_source.html#l00018">Graph.hpp:18</a></div></div>
-<div class="ttc" id="namespacechig_html"><div class="ttname"><a href="namespacechig.html">chig</a></div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00022">ChigModule.hpp:22</a></div></div>
-<div class="ttc" id="structchig_1_1Context_html"><div class="ttname"><a href="structchig_1_1Context.html">chig::Context</a></div><div class="ttdef"><b>Definition:</b> <a href="Context_8hpp_source.html#l00030">Context.hpp:30</a></div></div>
+<div class="ttc" id="namespacechig_html"><div class="ttname"><a href="namespacechig.html">chig</a></div><div class="ttdoc">The namespace where chigraph lives. </div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00023">ChigModule.hpp:23</a></div></div>
+<div class="ttc" id="structchig_1_1Context_html"><div class="ttname"><a href="structchig_1_1Context.html">chig::Context</a></div><div class="ttdef"><b>Definition:</b> <a href="Context_8hpp_source.html#l00031">Context.hpp:31</a></div></div>
 <div class="ttc" id="structchig_1_1Graph_html_ab9e1ddbe7cb9ca59a3bb2d2191dd1d35"><div class="ttname"><a href="structchig_1_1Graph.html#ab9e1ddbe7cb9ca59a3bb2d2191dd1d35">chig::Graph::toJson</a></div><div class="ttdeci">Result toJson(nlohmann::json *toFill) const</div><div class="ttdef"><b>Definition:</b> <a href="Graph_8cpp_source.html#l00146">Graph.cpp:146</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 2 2017 18:50:32 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.12
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_16971e61b3ab07f0aa6ba57b2eb7b712.html">chig</a></li><li class="navelem"><b>Graph.hpp</b></li>
+    <li class="footer">Generated on Mon Jan 2 2017 20:05:36 for chigraph by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
+  </ul>
+</div>
 </body>
 </html>

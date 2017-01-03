@@ -16,8 +16,9 @@ TEST_CASE("JsonSerializer", "[json]")
 		Result res;
 		Context c;
 		REQUIRE(!!c.loadModule("lang"));
-		LangModule* lmod = static_cast<LangModule*>(c.moduleByName("lang"));
+		LangModule* lmod = static_cast<LangModule*>(c.moduleByFullName("lang"));
 		REQUIRE(lmod != nullptr);
+        REQUIRE(lmod == static_cast<LangModule*>(c.moduleByName("lang")));
 
 		auto jmod = c.newJsonModule("main/main");
 		jmod->addDependency("lang");

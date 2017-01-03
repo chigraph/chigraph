@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -23,7 +30,7 @@
   <td id="projectlogo"><img alt="Logo" src="chigraphsmall64.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
-   &#160;<span id="projectnumber">..</span>
+   &#160;<span id="projectnumber">master</span>
    </div>
    <div id="projectbrief">Systems programming language written for beginners in LLVM</div>
   </td>
@@ -46,6 +53,20 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('classes.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -69,27 +90,30 @@ $(function() {
 <table class="classindex">
 <tr><td rowspan="2" valign="bottom"><a name="letter_c"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;c&#160;&#160;</div></td></tr></table>
 </td><td rowspan="2" valign="bottom"><a name="letter_d"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;d&#160;&#160;</div></td></tr></table>
-</td><td valign="top"><a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> (chig)&#160;&#160;&#160;</td><td rowspan="2" valign="bottom"><a name="letter_n"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;n&#160;&#160;</div></td></tr></table>
+</td><td valign="top"><a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td rowspan="2" valign="bottom"><a name="letter_n"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;n&#160;&#160;</div></td></tr></table>
 </td><td></td></tr>
 <tr><td rowspan="2" valign="bottom"><a name="letter_j"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;j&#160;&#160;</div></td></tr></table>
 </td><td></td></tr>
-<tr><td valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> (chig)&#160;&#160;&#160;</td><td valign="top"><a class="el" href="structchig_1_1DataType.html">DataType</a> (chig)&#160;&#160;&#160;</td><td valign="top"><a class="el" href="structchig_1_1NodeInstance.html">NodeInstance</a> (chig)&#160;&#160;&#160;</td><td></td></tr>
-<tr><td valign="top"><a class="el" href="structchig_1_1CModule.html">CModule</a> (chig)&#160;&#160;&#160;</td><td rowspan="2" valign="bottom"><a name="letter_g"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;g&#160;&#160;</div></td></tr></table>
-</td><td valign="top"><a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> (chig)&#160;&#160;&#160;</td><td valign="top"><a class="el" href="structchig_1_1NodeType.html">NodeType</a> (chig)&#160;&#160;&#160;</td><td></td></tr>
-<tr><td valign="top"><a class="el" href="structchig_1_1Context.html">Context</a> (chig)&#160;&#160;&#160;</td><td rowspan="2" valign="bottom"><a name="letter_l"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;l&#160;&#160;</div></td></tr></table>
+<tr><td valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td valign="top"><a class="el" href="structchig_1_1DataType.html">DataType</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td valign="top"><a class="el" href="structchig_1_1NodeInstance.html">NodeInstance</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td></td></tr>
+<tr><td valign="top"><a class="el" href="structchig_1_1CModule.html">CModule</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td rowspan="2" valign="bottom"><a name="letter_g"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;g&#160;&#160;</div></td></tr></table>
+</td><td valign="top"><a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td valign="top"><a class="el" href="structchig_1_1NodeType.html">NodeType</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td></td></tr>
+<tr><td valign="top"><a class="el" href="structchig_1_1Context.html">Context</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td rowspan="2" valign="bottom"><a name="letter_l"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;l&#160;&#160;</div></td></tr></table>
 </td><td rowspan="2" valign="bottom"><a name="letter_r"></a><table border="0" cellspacing="0" cellpadding="0"><tr><td><div class="ah">&#160;&#160;r&#160;&#160;</div></td></tr></table>
 </td><td></td></tr>
-<tr><td></td><td valign="top"><a class="el" href="structchig_1_1Graph.html">Graph</a> (chig)&#160;&#160;&#160;</td><td></td></tr>
-<tr><td></td><td></td><td valign="top"><a class="el" href="structchig_1_1LangModule.html">LangModule</a> (chig)&#160;&#160;&#160;</td><td valign="top"><a class="el" href="structchig_1_1Result.html">Result</a> (chig)&#160;&#160;&#160;</td><td></td></tr>
+<tr><td></td><td valign="top"><a class="el" href="structchig_1_1Graph.html">Graph</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td></td></tr>
+<tr><td></td><td></td><td valign="top"><a class="el" href="structchig_1_1LangModule.html">LangModule</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td valign="top"><a class="el" href="structchig_1_1Result.html">Result</a> (<a class="el" href="namespacechig.html">chig</a>)&#160;&#160;&#160;</td><td></td></tr>
 <tr><td></td><td></td><td></td><td></td><td></td></tr>
 </table>
 <div class="qindex"><a class="qindex" href="#letter_c">c</a>&#160;|&#160;<a class="qindex" href="#letter_d">d</a>&#160;|&#160;<a class="qindex" href="#letter_g">g</a>&#160;|&#160;<a class="qindex" href="#letter_j">j</a>&#160;|&#160;<a class="qindex" href="#letter_l">l</a>&#160;|&#160;<a class="qindex" href="#letter_n">n</a>&#160;|&#160;<a class="qindex" href="#letter_r">r</a></div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 2 2017 18:50:32 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.12
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Mon Jan 2 2017 20:05:36 for chigraph by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
+  </ul>
+</div>
 </body>
 </html>

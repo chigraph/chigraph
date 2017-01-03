@@ -36,17 +36,18 @@ struct GraphFunction {
 		std::vector<std::pair<DataType, std::string>> dataOuts, std::vector<std::string> execIns,
 		std::vector<std::string> execOuts);
 
-	/// Destructor
-	~GraphFunction();
-
-	/// Constructs a GraphFunction from a JOSN object
+    /// Constructs a GraphFunction from a JOSN object
 	/// \param data The JSON object to read from
 	/// \param module The module to create the GraphFunction with
 	/// \param ret_func The GraphFunction that has been produced
 	/// \return The result
-	static Result fromJSON(
-		JsonModule& module, const nlohmann::json& data, std::unique_ptr<GraphFunction>* ret_func);
+	GraphFunction(
+		JsonModule& module, const nlohmann::json& data, Result& res);
 
+    
+	/// Destructor
+	~GraphFunction();
+    
 	/// Serialize the GraphFunction to JSON (usually called from JsonModule::toJson)
 	/// \param toFill The JSON object representing the graph
 	/// \return The result
@@ -58,6 +59,11 @@ struct GraphFunction {
 	/// \return The result
 	Result compile(llvm::Module* mod, llvm::Function** ret_func) const;
 
+    
+    /// \name Node Manipulation
+    /// Functions for mainpulating nodes; getting, adding
+    /// \{
+    
 	/// Gets the node with type lang:entry
 	/// returns nullptr on failure
 	/// Also returns nullptr if there are two entry nodes, which is illegal
@@ -94,16 +100,6 @@ struct GraphFunction {
 	/// \return The result
 	Result removeNode(NodeInstance* nodeToRemove);
 
-	/// Create a fresh NodeType for an entry
-	/// \param toFill The NodeType pointer to fill
-	/// \return The result
-	Result createEntryNodeType(std::unique_ptr<NodeType>* toFill);
-
-	/// Create a fresh NodeType for an exit
-	/// \param toFill The NodeType pointer to fill
-	/// \return The result
-	Result createExitNodeType(std::unique_ptr<NodeType>* toFill);
-
 	/// Creates an entry node if it doesn't already exist, else just return it
 	/// \param x The x coordinate of the new entry, or changes the existing entry node to be at this
 	/// X location
@@ -114,6 +110,18 @@ struct GraphFunction {
 	/// \return The Result
 	Result getOrInsertEntryNode(
 		float x, float y, gsl::cstring_span<> id, NodeInstance** toFill = nullptr);
+
+    /// \}
+    
+	/// Create a fresh NodeType for an entry
+	/// \param toFill The NodeType pointer to fill
+	/// \return The result
+	Result createEntryNodeType(std::unique_ptr<NodeType>* toFill) const;
+
+	/// Create a fresh NodeType for an exit
+	/// \param toFill The NodeType pointer to fill
+	/// \return The result
+	Result createExitNodeType(std::unique_ptr<NodeType>* toFill) const;
 
 	/// Get the LLVM function type for the function
 	/// \return The function type
@@ -128,10 +136,9 @@ struct GraphFunction {
 	/// \return The result
 	Result validateGraph() const;
 
-	// Data I/O modifiers
-	///////////////////// TODO: check uses and replace to avoid errors
-
-	// Data input modifiers
+	// TODO: check uses and replace to avoid errors
+	/// \name Data input modifiers
+	/// \{
 
 	/// Get the function data inputs in the format {type, docstring}
 	/// \return The inputs
@@ -151,7 +158,10 @@ struct GraphFunction {
 	/// \param name The new name. Use {} to keep it's current name
 	void modifyDataInput(int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name);
 
-	// Data output modifiers
+    /// \}
+    
+	/// \name Data output modifiers
+	/// \{
 
 	/// Get the function data outputs in the format {type, docstring}
 	/// \return The outputs
@@ -174,10 +184,10 @@ struct GraphFunction {
 	/// \param name The new name. Use {} to keep it's current name
 	void modifyDataOutput(int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name);
 
-	// Exec I/O modifiers
-	/////////////////////
-
-	// Exec input modifiers
+    /// \}
+    
+	/// \name Exec input modifiers
+	/// \{
 
 	/// Get the function exec inputs
 	/// \return The exec outputs
@@ -196,7 +206,11 @@ struct GraphFunction {
 	/// \param name The new name.
 	void modifyExecInput(int idx, gsl::cstring_span<> name);
 
-	// Exec output modifiers
+    /// \}
+    
+	/// \name Exec output modifiers
+    /// \{
+    /// Getters/modifers for exec output
 
 	/// Get the function exec outputs
 	/// \return The exec outputs
@@ -215,6 +229,8 @@ struct GraphFunction {
 	/// \param name The new name.
 	void modifyExecOutput(int idx, gsl::cstring_span<> name);
 
+    /// \}
+    
 	// Various getters
 	//////////////////
 

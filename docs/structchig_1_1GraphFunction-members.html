@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -23,7 +30,7 @@
   <td id="projectlogo"><img alt="Logo" src="chigraphsmall64.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
-   &#160;<span id="projectnumber">..</span>
+   &#160;<span id="projectnumber">master</span>
    </div>
    <div id="projectbrief">Systems programming language written for beginners in LLVM</div>
   </td>
@@ -45,6 +52,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('structchig_1_1GraphFunction.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -59,11 +81,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><b>chig</b></li><li class="navelem"><a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">chig::GraphFunction Member List</div>  </div>
@@ -78,8 +95,8 @@ $(function() {
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#abbe7b69cdd8a02210fd2d5a580f1f80a">addExecOutput</a>(gsl::cstring_span&lt;&gt; name, int addAfter)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ac808aecb5fec9cd3a2a1f59e18c90eee">compile</a>(llvm::Module *mod, llvm::Function **ret_func) const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a1e937f70e87b2d783211f31a6ddfb91c">context</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a724e94f1ffc69b072e7ae581b4aec286">createEntryNodeType</a>(std::unique_ptr&lt; NodeType &gt; *toFill)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a1867ac116f5993589b089f57885dbcd2">createExitNodeType</a>(std::unique_ptr&lt; NodeType &gt; *toFill)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#abc41f524da8fd9b7308cb7abaa2b28c9">createEntryNodeType</a>(std::unique_ptr&lt; NodeType &gt; *toFill) const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ac7c52122fef0c74d9d0ee04af9a741c4">createExitNodeType</a>(std::unique_ptr&lt; NodeType &gt; *toFill) const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ad871a4642c83ead67062eb907b55443f">dataInputs</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ae734c04f29489efeb96227a20e2ada22">dataOutputs</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#aa47e30665a08b671950c4e8411c7a4ba">entryNode</a>() const noexcept</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
@@ -105,15 +122,18 @@ $(function() {
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a390ce7b4174a06ecd00ae7c72af9e157">removeExecInput</a>(int idx)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a90a589106d823501ecb6450636a19e64">removeExecOutput</a>(int idx)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e">removeNode</a>(NodeInstance *nodeToRemove)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#a5a8768d5514a31104f0b3a9b5553099c">toJSON</a>(nlohmann::json *toFill) const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>toJSON</b>(nlohmann::json *toFill) const (defined in <a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a>)</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ab1f0121edf211dbd98bb49a2d4fe5260">validateGraph</a>() const</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html#ac65f801cb810bd956c4ebc8f93e0c494">~GraphFunction</a>()</td><td class="entry"><a class="el" href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 2 2017 18:50:32 for chigraph by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.12
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Mon Jan 2 2017 20:05:36 for chigraph by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
+  </ul>
+</div>
 </body>
 </html>
