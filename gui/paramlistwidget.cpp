@@ -33,7 +33,7 @@ public:
 		updateName();
 	}
 
-	void setName(cosnt QString& newName)
+	void setName(const QString& newName)
 	{
 		mName = newName;
 		updateName();

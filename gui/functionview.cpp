@@ -19,6 +19,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 {
 	auto hlayout = new QHBoxLayout(this);
     
+    // TODO: see how to actually set the colors
     ConnectionStyle::setConnectionStyle(R"(
     {
       "ConnectionStyle": {
@@ -65,11 +66,6 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 		new chig::NodeInstance(std::move(ty), 0, 0, "lang:exit"), this));
 
 	scene = new FlowScene(reg);
-	connect(scene, &FlowScene::nodeCreated, this, &FunctionView::nodeAdded);
-	connect(scene, &FlowScene::nodeDeleted, this, &FunctionView::nodeDeleted);
-
-	connect(scene, &FlowScene::connectionCreated, this, &FunctionView::connectionAdded);
-	connect(scene, &FlowScene::connectionDeleted, this, &FunctionView::connectionDeleted);
 
 	view = new FlowView(scene);
 
@@ -120,15 +116,17 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 			++connId;
 		}
 	}
+    
+    // finally connect to know when new stuff is made
+    connect(scene, &FlowScene::nodeCreated, this, &FunctionView::nodeAdded);
+	connect(scene, &FlowScene::nodeDeleted, this, &FunctionView::nodeDeleted);
 
-	creating = false;
+	connect(scene, &FlowScene::connectionCreated, this, &FunctionView::connectionAdded);
+	connect(scene, &FlowScene::connectionDeleted, this, &FunctionView::connectionDeleted);
 }
 
 void FunctionView::nodeAdded(Node& n)
 {
-	if (creating) {
-		return;
-	}
 
 	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
 
@@ -182,9 +180,6 @@ void FunctionView::nodeDeleted(Node& n)
 
 void FunctionView::connectionAdded(Connection& c)
 {
-	if (creating) {
-		return;
-	}
 
 	Node *lguinode, *rguinode;
 	lguinode = c.getNode(PortType::Out);
@@ -273,8 +268,6 @@ void FunctionView::updatePositions()
 
 void FunctionView::connectionUpdated(Connection& c)
 {
-	if (creating) return;
-
 	// find in assoc
 	auto iter = conns.find(&c);
 	if (iter == conns.end()) {

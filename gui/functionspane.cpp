@@ -26,7 +26,7 @@ public:
 
 FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(parent)
 {
-	connect(win, &MainWindow::openJsonModule, this, &FunctionsPane::updateModule);
+	connect(win, &MainWindow::moduleOpened, this, &FunctionsPane::updateModule);
 
 	connect(this, &QListWidget::itemDoubleClicked, this, &FunctionsPane::selectItem);
 

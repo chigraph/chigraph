@@ -36,7 +36,10 @@ public:
 
 	void refreshGuiForNode(Node* node);
 
-public slots:
+signals:
+    
+
+private slots:
 	void nodeAdded(Node& n);
 	void nodeDeleted(Node& n);
 
@@ -44,9 +47,8 @@ public slots:
 	void connectionDeleted(Connection& c);
 
 	void connectionUpdated(Connection& c);
-
+    
 private:
-	bool creating = true;
 };
 
 #endif  // CHIGGUI_FUNCTIONVIEW_HPP

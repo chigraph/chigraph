@@ -41,48 +41,58 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	// set icon
 	setWindowIcon(QIcon(":/icons/chigraphsmall.png"));
 
-	ccontext = std::make_unique<chig::Context>();
+	mChigContext = std::make_unique<chig::Context>();
 
+    // setup functions pane
 	QDockWidget* docker = new QDockWidget(i18n("Functions"), this);
 	docker->setObjectName("Functions");
-	functionpane = new FunctionsPane(this, this);
-	docker->setWidget(functionpane);
+	auto functionsPane = new FunctionsPane(this, this);
+	docker->setWidget(functionsPane);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
-	connect(functionpane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
+	connect(
+		functionsPane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
+    connect(this, &MainWindow::newFunctionCreated, functionsPane, 
+            [functionsPane](chig::GraphFunction* func){ functionsPane->updateModule(&func->module()); });
 
+    // setup module browser
 	docker = new QDockWidget(i18n("Modules"), this);
 	docker->setObjectName("Modules");
-	moduleBrowser = new ModuleBrowser(this);
+	auto moduleBrowser = new ModuleBrowser(this);
 	docker->setWidget(moduleBrowser);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
 	connect(this, &MainWindow::workspaceOpened, moduleBrowser, &ModuleBrowser::loadWorkspace);
 	connect(moduleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
+    connect(this, &MainWindow::newModuleCreated, moduleBrowser, [moduleBrowser](chig::JsonModule* mod){
+         moduleBrowser->loadWorkspace(mod->context());
+    });
 
-	functabs = new QTabWidget(this);
-	functabs->setMovable(true);
-	functabs->setTabsClosable(true);
-	connect(functabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
-	setCentralWidget(functabs);
+	mFunctionTabs = new QTabWidget(this);
+	mFunctionTabs->setMovable(true);
+	mFunctionTabs->setTabsClosable(true);
+	connect(mFunctionTabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
+    
+	setCentralWidget(mFunctionTabs);
 
 	docker = new QDockWidget(i18n("Output"), this);
 	docker->setObjectName("Output");
-	outputView = new OutputView;
+	auto outputView = new OutputView;
 	docker->setWidget(outputView);
 	addDockWidget(Qt::BottomDockWidgetArea, docker);
+    connect(this, &MainWindow::runStarted, outputView, &OutputView::setProcess);
 
 	docker = new QDockWidget(i18n("Function Details"), this);
 	docker->setObjectName("Function Details");
-	funcDetails = new FunctionDetails;
-	docker->setWidget(funcDetails);
+	auto functionDetails = new FunctionDetails;
+	docker->setWidget(functionDetails);
 	addDockWidget(Qt::RightDockWidgetArea, docker);
-	connect(this, &MainWindow::newFunctionOpened, funcDetails, &FunctionDetails::loadFunction);
+	connect(this, &MainWindow::functionOpened, functionDetails, &FunctionDetails::loadFunction);
     
     docker = new QDockWidget(i18n("Module Dependencies"), this);
     docker->setObjectName("Module Dependencies");
-    modDeps = new ModuleDependencies;
-    docker->setWidget(modDeps);
+    auto mModuleDeps = new ModuleDependencies;
+    docker->setWidget(mModuleDeps);
     addDockWidget(Qt::RightDockWidgetArea, docker);
-    connect(this, &MainWindow::openJsonModule, modDeps, &ModuleDependencies::setModule);
+    connect(this, &MainWindow::moduleOpened, mModuleDeps, &ModuleDependencies::setModule);
 
 	setupActions();
 }
@@ -97,36 +107,36 @@ void MainWindow::setupActions()
 	openAction->setWhatsThis(QStringLiteral("Open a chigraph workspace"));
 	connect(openAction, &QAction::triggered, this, &MainWindow::openWorkspaceDialog);
 
-	openRecentAction = KStandardAction::openRecent(this, &MainWindow::openWorkspace, nullptr);
-	actColl->addAction(QStringLiteral("open-recent"), openRecentAction);
+	mOpenRecentAction = KStandardAction::openRecent(this, &MainWindow::openWorkspace, nullptr);
+	actColl->addAction(QStringLiteral("open-recent"), mOpenRecentAction);
 
-	openRecentAction->setToolBarMode(KRecentFilesAction::MenuMode);
-	openRecentAction->setToolButtonPopupMode(QToolButton::DelayedPopup);
-	openRecentAction->setIconText(i18nc("action, to open an archive", "Open"));
-	openRecentAction->setToolTip(i18n("Open an archive"));
-	openRecentAction->loadEntries(KSharedConfig::openConfig()->group("Recent Files"));
+	mOpenRecentAction->setToolBarMode(KSelectAction::MenuMode);
+	mOpenRecentAction->setToolButtonPopupMode(QToolButton::DelayedPopup);
+	mOpenRecentAction->setIconText(i18nc("action, to open an archive", "Open"));
+	mOpenRecentAction->setToolTip(i18n("Open an archive"));
+	mOpenRecentAction->loadEntries(KSharedConfig::openConfig()->group("Recent Files"));
 
-	QAction* newAction = actColl->addAction(KStandardAction::New, QStringLiteral("new"));
+	auto newAction = actColl->addAction(KStandardAction::New, QStringLiteral("new"));
 	newAction->setWhatsThis(QStringLiteral("Create a new chigraph module"));
 
-	QAction* saveAction = actColl->addAction(KStandardAction::Save, QStringLiteral("save"));
+	auto saveAction = actColl->addAction(KStandardAction::Save, QStringLiteral("save"));
 	saveAction->setWhatsThis(QStringLiteral("Save the chigraph module"));
 	connect(saveAction, &QAction::triggered, this, &MainWindow::save);
 
-	QAction* runAction = new QAction;
+	auto runAction = new QAction;
 	runAction->setText(i18n("&Run"));
 	runAction->setIcon(QIcon::fromTheme("system-run"));
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
 	actColl->addAction(QStringLiteral("run"), runAction);
 	connect(runAction, &QAction::triggered, this, &MainWindow::run);
 
-	QAction* newFunctionAction = new QAction;
+	auto newFunctionAction = new QAction;
 	newFunctionAction->setText(i18n("New Function"));
 	newFunctionAction->setIcon(QIcon::fromTheme("list-add"));
 	actColl->addAction(QStringLiteral("new-function"), newFunctionAction);
 	connect(newFunctionAction, &QAction::triggered, this, &MainWindow::newFunction);
 
-	QAction* newModuleAction = new QAction;
+	auto newModuleAction = new QAction;
 	newModuleAction->setText(i18n("New Module"));
 	newModuleAction->setIcon(QIcon::fromTheme("package-new"));
 	actColl->addAction(QStringLiteral("new-module"), newModuleAction);
@@ -137,13 +147,13 @@ void MainWindow::setupActions()
 
 MainWindow::~MainWindow()
 {
-	openRecentAction->saveEntries(KSharedConfig::openConfig()->group("Recent Files"));
+	mOpenRecentAction->saveEntries(KSharedConfig::openConfig()->group("Recent Files"));
 }
 
 void MainWindow::save()
 {
-	for (int idx = 0; idx < functabs->count(); ++idx) {
-		auto func = functabs->widget(idx);
+	for (int idx = 0; idx < mFunctionTabs->count(); ++idx) {
+		auto func = mFunctionTabs->widget(idx);
 		if (func != nullptr) {
 			auto castedFunc = dynamic_cast<FunctionView*>(func);
 			if (castedFunc != nullptr) {
@@ -152,8 +162,8 @@ void MainWindow::save()
 		}
 	}
 
-	if (module != nullptr) {
-		chig::Result res = module->saveToDisk();
+	if (mModule != nullptr) {
+		chig::Result res = mModule->saveToDisk();
 		if (!res) {
 			KMessageBox::detailedError(
 				this, i18n("Failed to save module!"), QString::fromStdString(res.dump()));
@@ -172,22 +182,22 @@ void MainWindow::openWorkspaceDialog()
 
 	QUrl url = QUrl::fromLocalFile(workspace);
 
-	openRecentAction->addUrl(url);
+	mOpenRecentAction->addUrl(url);
 
 	openWorkspace(url);
 }
 
 void MainWindow::openWorkspace(QUrl url)
 {
-	ccontext = std::make_unique<chig::Context>(url.toLocalFile().toStdString());
+	mChigContext = std::make_unique<chig::Context>(url.toLocalFile().toStdString());
 
-	workspaceOpened(*ccontext);
+	workspaceOpened(*mChigContext);
 }
 
 void MainWindow::openModule(const QString& path)
 {
 	chig::ChigModule* cmod;
-	chig::Result res = ccontext->loadModule(path.toStdString(), &cmod);
+	chig::Result res = context().loadModule(path.toStdString(), &cmod);
 
 	if (!res) {
 		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + path + "\"",
@@ -196,11 +206,11 @@ void MainWindow::openModule(const QString& path)
 		return;
 	}
 
-	module = static_cast<chig::JsonModule*>(cmod);
-	setWindowTitle(QString::fromStdString(module->fullName()));
+	mModule = static_cast<chig::JsonModule*>(cmod);
+	setWindowTitle(QString::fromStdString(mModule->fullName()));
 
 	// call signal
-	openJsonModule(module);
+	moduleOpened(mModule);
 }
 
 void MainWindow::newFunctionSelected(chig::GraphFunction* func)
@@ -210,37 +220,39 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 	QString qualifiedFunctionName =
 		QString::fromStdString(func->module().fullName() + ":" + func->name());
 
-	auto iter = openFunctions.find(qualifiedFunctionName);
-	if (iter != openFunctions.end()) {
-		functabs->setCurrentWidget(iter->second);
-		return;
-	}
+    // see if it's already open
+    auto funcView = functionView(qualifiedFunctionName);
+    if(funcView != nullptr) {
+        mFunctionTabs->setCurrentWidget(funcView);
+        return;
+    }
+    // if it's not already open, we'll have to create our own
+    
+	auto view = new FunctionView(func, mFunctionTabs);
+	int idx = mFunctionTabs->addTab(view, qualifiedFunctionName);
+	mOpenFunctions[qualifiedFunctionName] = view;
+	mFunctionTabs->setTabText(idx, qualifiedFunctionName);
+	mFunctionTabs->setCurrentWidget(view);
 
-	auto view = new FunctionView(func, functabs);
-	int idx = functabs->addTab(view, qualifiedFunctionName);
-	openFunctions[qualifiedFunctionName] = view;
-	functabs->setTabText(idx, qualifiedFunctionName);
-	functabs->setCurrentWidget(view);
-
-	newFunctionOpened(view);
+	functionOpened(view);
 }
 
 void MainWindow::closeTab(int idx)
 {
-	openFunctions.erase(std::find_if(openFunctions.begin(), openFunctions.end(),
-		[&](auto& p) { return p.second == functabs->widget(idx); }));
-	functabs->removeTab(idx);
+	mOpenFunctions.erase(std::find_if(mOpenFunctions.begin(), mOpenFunctions.end(),
+		[&](auto& p) { return p.second == mFunctionTabs->widget(idx); }));
+	mFunctionTabs->removeTab(idx);
 }
 
 void MainWindow::run()
 {
-	if (module == nullptr) {
+	if (currentModule() == nullptr) {
 		return;
 	}
 
 	// compile!
 	std::unique_ptr<llvm::Module> llmod;
-	chig::Result res = ccontext->compileModule(module->fullName(), &llmod);
+	chig::Result res = context().compileModule(currentModule()->fullName(), &llmod);
 
 	if (!res) {
 		KMessageBox::detailedError(
@@ -263,12 +275,12 @@ void MainWindow::run()
 	lliproc->write(str.c_str(), str.length());
 	lliproc->closeWriteChannel();
 
-	outputView->setProcess(lliproc);
+    runStarted(lliproc);
 }
 
 void MainWindow::newFunction()
 {
-	if (module == nullptr) {
+	if (currentModule() == nullptr) {
 		KMessageBox::error(this, "Load a module before creating a new function");
 		return;
 	}
@@ -280,17 +292,17 @@ void MainWindow::newFunction()
 	}
 
 	chig::GraphFunction* func;
-	module->createFunction(newName.toStdString(), {}, {}, {""}, {""}, &func);
+	currentModule()->createFunction(newName.toStdString(), {}, {}, {""}, {""}, &func);
 	func->getOrInsertEntryNode(0, 0, "entry");
 
-	functionpane->updateModule(module);
+    newFunctionCreated(func);
 	newFunctionSelected(func);  // open the newly created function
 }
 
 void MainWindow::newModule()
 {
 	// can't do this without a workspace
-	if (ccontext->workspacePath().empty()) {
+	if (context().workspacePath().empty()) {
 		KMessageBox::error(this, i18n("Cannot create a module without a workspace to place it in"),
 			i18n("Failed to create module"));
 		return;
@@ -299,7 +311,7 @@ void MainWindow::newModule()
 	// TODO: validator
 	auto fullName = QInputDialog::getText(this, i18n("New Module"), i18n("Full Module Name"));
 
-	auto mod = ccontext->newJsonModule(fullName.toStdString());
+	auto mod = context().newJsonModule(fullName.toStdString());
 
 	// add lang and c
 	mod->addDependency("lang");
@@ -307,9 +319,7 @@ void MainWindow::newModule()
 
 	mod->saveToDisk();
 
-	// refresh modules
-	moduleBrowser->loadWorkspace(*ccontext);
-
+    newModuleCreated(mod);
 	// then load the module
 	openModule(QString::fromStdString(mod->fullName()));
 }
