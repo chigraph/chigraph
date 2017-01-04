@@ -32,7 +32,7 @@
 #include <fstream>
 
 #include <KSharedConfig>
-#include "chignodegui.hpp"
+#include "chigraphnodemodel.hpp"
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 {

@@ -12,7 +12,7 @@
 
 #include <nodes/ConnectionStyle>
 
-#include "chignodegui.hpp"
+#include "chigraphnodemodel.hpp"
 
 FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	: QWidget(parent), mFunction{func_}
@@ -53,7 +53,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 			module->nodeTypeFromName(typeName, {}, &ty);
 
 			auto name = ty->qualifiedName();  // cache the name because ty is moved from
-			reg->registerModel(std::make_unique<ChigNodeGui>(
+			reg->registerModel(std::make_unique<ChigraphNodeModel>(
 				new chig::NodeInstance(std::move(ty), 0, 0, name), this));
 		}
 	}
@@ -62,7 +62,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	std::unique_ptr<chig::NodeType> ty;
 	mFunction->createExitNodeType(&ty);
 
-	reg->registerModel(std::make_unique<ChigNodeGui>(
+	reg->registerModel(std::make_unique<ChigraphNodeModel>(
 		new chig::NodeInstance(std::move(ty), 0, 0, "lang:exit"), this));
 
 	mScene = new FlowScene(reg);
@@ -73,7 +73,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 
 	// create nodes
 	for (auto& node : mFunction->graph().nodes()) {
-		auto& guinode = mScene->createNode(std::make_unique<ChigNodeGui>(node.second.get(), this));
+		auto& guinode = mScene->createNode(std::make_unique<ChigraphNodeModel>(node.second.get(), this));
 
 		guinode.nodeGraphicsObject().setPos({node.second->x(), node.second->y()});
 
@@ -128,31 +128,31 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 void FunctionView::nodeAdded(Node& n)
 {
 
-	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
+	auto ptr = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
 
 	if (ptr == nullptr) {
 		return;
 	}
 	// if it already exists then don't
-	if (mNodeMap.find(ptr->inst) != mNodeMap.end()) {
+	if (mNodeMap.find(&ptr->instance()) != mNodeMap.end()) {
 		return;
 	}
 
-	mFunction->graph().nodes()[ptr->inst->id()] = std::unique_ptr<chig::NodeInstance>(ptr->inst);
+	mFunction->graph().nodes()[ptr->instance().id()] = std::unique_ptr<chig::NodeInstance>(&ptr->instance());
 
-	mNodeMap[ptr->inst] = &n;
+	mNodeMap[&ptr->instance()] = &n;
 }
 
 void FunctionView::nodeDeleted(Node& n)
 {
-	auto ptr = dynamic_cast<ChigNodeGui*>(n.nodeDataModel());
+	auto ptr = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
 
 	if (ptr == nullptr) {
 		return;
 	}
 
 	// don't do it if it isn't in nodes
-	if (mNodeMap.find(ptr->inst) == mNodeMap.end()) {
+	if (mNodeMap.find(&ptr->instance()) == mNodeMap.end()) {
 		return;
 	}
 
@@ -161,7 +161,7 @@ void FunctionView::nodeDeleted(Node& n)
 
 	for (auto iter = conns.begin(); iter != conns.end();) {
 		auto& pair = *iter;
-		if (pair.second[0].first == ptr->inst || pair.second[1].first == ptr->inst) {
+		if (pair.second[0].first == &ptr->instance() || pair.second[1].first == &ptr->instance()) {
 			// this doesn't invalidate iterators don't worry
 			// http://en.cppreference.com/w/cpp/container/unordered_map#Iterator_invalidation
 			conns.erase(iter);
@@ -173,9 +173,9 @@ void FunctionView::nodeDeleted(Node& n)
 		}
 	}
 
-	mFunction->removeNode(ptr->inst);
+	mFunction->removeNode(&ptr->instance());
 
-	mNodeMap.erase(ptr->inst);
+	mNodeMap.erase(&ptr->instance());
 }
 
 void FunctionView::connectionAdded(Connection& c)
@@ -192,8 +192,8 @@ void FunctionView::connectionAdded(Connection& c)
 	}
 
 	// here, in and out mean input and output to the connection (like in chigraph)
-	auto outptr = dynamic_cast<ChigNodeGui*>(rguinode->nodeDataModel());
-	auto inptr = dynamic_cast<ChigNodeGui*>(lguinode->nodeDataModel());
+	auto outptr = dynamic_cast<ChigraphNodeModel*>(rguinode->nodeDataModel());
+	auto inptr = dynamic_cast<ChigraphNodeModel*>(lguinode->nodeDataModel());
 
 	if (outptr == nullptr || inptr == nullptr) {
 		return;
@@ -202,14 +202,14 @@ void FunctionView::connectionAdded(Connection& c)
 	size_t inconnid = c.getPortIndex(PortType::Out);
 	size_t outconnid = c.getPortIndex(PortType::In);
 
-	bool isExec = inconnid < inptr->inst->type().execOutputs().size();
+	bool isExec = inconnid < inptr->instance().type().execOutputs().size();
 
 	chig::Result res;
 	if (isExec) {
-		res += chig::connectExec(*inptr->inst, inconnid, *outptr->inst, outconnid);
+		res += chig::connectExec(inptr->instance(), inconnid, outptr->instance(), outconnid);
 	} else {
-		res += chig::connectData(*inptr->inst, inconnid - inptr->inst->type().execOutputs().size(),
-			*outptr->inst, outconnid - outptr->inst->type().execInputs().size());
+		res += chig::connectData(inptr->instance(), inconnid - inptr->instance().type().execOutputs().size(),
+			outptr->instance(), outconnid - outptr->instance().type().execInputs().size());
 	}
 	if (!res) {
 		// actually delete that connection
@@ -221,7 +221,7 @@ void FunctionView::connectionAdded(Connection& c)
 	}
 
 	conns[&c] = std::array<std::pair<chig::NodeInstance*, size_t>, 2>{
-		{std::make_pair(inptr->inst, inconnid), std::make_pair(outptr->inst, outconnid)}};
+		{std::make_pair(&inptr->instance(), inconnid), std::make_pair(&outptr->instance(), outconnid)}};
 }
 void FunctionView::connectionDeleted(Connection& c)
 {
@@ -279,9 +279,9 @@ void FunctionView::connectionUpdated(Connection& c)
 
 void FunctionView::refreshGuiForNode(Node* node)
 {
-	auto model = dynamic_cast<ChigNodeGui*>(node->nodeDataModel());
+	auto model = dynamic_cast<ChigraphNodeModel*>(node->nodeDataModel());
 
-	auto inst = model->inst;
+	auto inst = &model->instance();
 
 	// find connections with this node
 	for (auto iter = conns.begin(); iter != conns.end();) {
@@ -301,7 +301,7 @@ void FunctionView::refreshGuiForNode(Node* node)
 
     mNodeMap.emplace(inst, nullptr); // just so the signal doesn't do stuff
     
-	auto& thisNode = mScene->createNode(std::make_unique<ChigNodeGui>(inst, this));
+	auto& thisNode = mScene->createNode(std::make_unique<ChigraphNodeModel>(inst, this));
     mNodeMap[inst] = &thisNode;
 	thisNode.nodeGraphicsObject().setPos(pos);
 
@@ -354,9 +354,9 @@ Node* FunctionView::guiNodeFromChigNode(chig::NodeInstance* inst)
 
 chig::NodeInstance* FunctionView::chigNodeFromGuiNode(Node* node)
 {
-	auto nodeGui = dynamic_cast<ChigNodeGui*>(node->nodeDataModel());
+	auto nodeGui = dynamic_cast<ChigraphNodeModel*>(node->nodeDataModel());
 	if (nodeGui == nullptr) {
 		return nullptr;
 	}
-	return nodeGui->inst;
+	return &nodeGui->instance();
 }

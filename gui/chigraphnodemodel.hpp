@@ -27,23 +27,24 @@
 
 class FunctionView;
 
-class ChigNodeGui : public NodeDataModel
+class ChigraphNodeModel : public NodeDataModel
 {
 public:
-	ChigNodeGui(chig::NodeInstance* inst_, FunctionView* fview_) : inst{inst_}, fview{fview_} {}
-	chig::NodeInstance* inst;
-	FunctionView* fview;
+	ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fview_) : mInst{inst_}, mFunctionView{fview_} {}
 
+	chig::NodeInstance& instance() const { return *mInst; }
+	
 	QString caption() const override
 	{
-		auto str = QString::fromStdString(inst->type().qualifiedName());
+		auto str = QString::fromStdString(mInst->type().qualifiedName());
 		return str;
 	}
-	QString name() const override { return QString::fromStdString(inst->type().qualifiedName()); }
+	QString name() const override { return QString::fromStdString(mInst->type().qualifiedName()); }
+	
 	std::unique_ptr<NodeDataModel> clone() const override
 	{
-		auto newInst = new chig::NodeInstance(*inst, QUuid::createUuid().toString().toStdString());
-		return std::make_unique<ChigNodeGui>(newInst, fview);
+		auto newInst = new chig::NodeInstance(*mInst, QUuid::createUuid().toString().toStdString());
+		return std::make_unique<ChigraphNodeModel>(newInst, mFunctionView);
 	}
 
 	virtual unsigned int nPorts(PortType portType) const override;
@@ -55,6 +56,11 @@ public:
 	virtual QWidget* embeddedWidget() override;
 	// We don't need saving...chigraph has its own serialization
 	void save(Properties&) const override {}
+	
+private:
+    
+	chig::NodeInstance* mInst;
+	FunctionView* mFunctionView;
 };
 
 #endif  // CHIG_GUI_CHIGNODEGUI_HPP

@@ -1,4 +1,4 @@
-#include "chignodegui.hpp"
+#include "chigraphnodemodel.hpp"
 
 #include "functionview.hpp"
 
@@ -45,43 +45,43 @@ public:
 	}
 };
 
-unsigned int ChigNodeGui::nPorts(PortType portType) const
+unsigned int ChigraphNodeModel::nPorts(PortType portType) const
 {
 	if (portType == PortType::In) {
-		return inst->type().execInputs().size() + inst->type().dataInputs().size();
+		return mInst->type().execInputs().size() + mInst->type().dataInputs().size();
 	} else if (portType == PortType::Out) {
-		return inst->type().execOutputs().size() + inst->type().dataOutputs().size();
+		return mInst->type().execOutputs().size() + mInst->type().dataOutputs().size();
 	}
 
 	return 1;  // ?
 }
 
-NodeDataType ChigNodeGui::dataType(PortType pType, PortIndex pIndex) const
+NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 {
 	if (pType == PortType::In) {
 		std::pair<std::string, std::string> idandname;
-		if (pIndex >= int(inst->type().execInputs().size())) {
-			if (pIndex - inst->type().execInputs().size() >= inst->type().dataInputs().size())
+		if (pIndex >= int(mInst->type().execInputs().size())) {
+			if (pIndex - mInst->type().execInputs().size() >= mInst->type().dataInputs().size())
 				return {};
 
-			idandname = {inst->type()
-							 .dataInputs()[pIndex - inst->type().execInputs().size()]
+			idandname = {mInst->type()
+							 .dataInputs()[pIndex - mInst->type().execInputs().size()]
 							 .first.qualifiedName(),
-				inst->type().dataInputs()[pIndex - inst->type().execInputs().size()].second};
+				mInst->type().dataInputs()[pIndex - mInst->type().execInputs().size()].second};
 
 		} else {
-			idandname = {"exec", inst->type().execInputs()[pIndex]};
+			idandname = {"exec", mInst->type().execInputs()[pIndex]};
 		}
 		return {QString::fromStdString(idandname.first), QString::fromStdString(idandname.second)};
 	} else if (pType == PortType::Out) {
 		std::pair<std::string, std::string> idandname;
-		if (pIndex >= int(inst->type().execOutputs().size())) {
+		if (pIndex >= int(mInst->type().execOutputs().size())) {
 			auto dataOutput =
-				inst->type().dataOutputs()[pIndex - inst->type().execOutputs().size()];
+				mInst->type().dataOutputs()[pIndex - mInst->type().execOutputs().size()];
 			idandname = {dataOutput.first.qualifiedName(), dataOutput.second};
 
 		} else {
-			idandname = {"exec", inst->type().execOutputs()[pIndex]};
+			idandname = {"exec", mInst->type().execOutputs()[pIndex]};
 		}
 		return {QString::fromStdString(idandname.first), QString::fromStdString(idandname.second)};
 	}
@@ -89,28 +89,28 @@ NodeDataType ChigNodeGui::dataType(PortType pType, PortIndex pIndex) const
 	return {};
 }
 
-QWidget* ChigNodeGui::embeddedWidget()
+QWidget* ChigraphNodeModel::embeddedWidget()
 {
-	if (inst->type().name() == "const-bool") {
+	if (mInst->type().name() == "const-bool") {
 		QCheckBox* box = new QCheckBox("");
-		bool checked = inst->type().toJSON();
+		bool checked = mInst->type().toJSON();
 		box->setCheckState(checked ? Qt::Checked : Qt::Unchecked);
 
 		connect(box, &QCheckBox::stateChanged, this, [this](int newState) {
 			std::unique_ptr<chig::NodeType> newType;
 
-			inst->context().nodeTypeFromModule(
+			mInst->context().nodeTypeFromModule(
 				"lang", "const-bool", newState == Qt::Checked, &newType);
 
-			inst->setType(std::move(newType));
+			mInst->setType(std::move(newType));
 		});
 
 		box->setMaximumSize(box->sizeHint());
 		return box;
 	}
-	if (inst->type().name() == "strliteral") {
+	if (mInst->type().name() == "strliteral") {
 		QLineEdit* edit = new QLineEdit();
-		std::string s = inst->type().toJSON();
+		std::string s = mInst->type().toJSON();
 		edit->setText(QString::fromStdString(s));
 
 		edit->setMaximumSize(edit->sizeHint());
@@ -118,19 +118,19 @@ QWidget* ChigNodeGui::embeddedWidget()
 		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
 			std::unique_ptr<chig::NodeType> newType;
 
-			inst->context().nodeTypeFromModule(
+			mInst->context().nodeTypeFromModule(
 				"lang", "strliteral", s.toUtf8().constData(), &newType);
 
-			inst->setType(std::move(newType));
+			mInst->setType(std::move(newType));
 
 		});
 
 		return edit;
 	}
-	if (inst->type().name() == "const-int") {
+	if (mInst->type().name() == "const-int") {
 		QLineEdit* edit = new QLineEdit();
 		edit->setValidator(new QIntValidator);
-		int val = inst->type().toJSON();
+		int val = mInst->type().toJSON();
 		edit->setText(QString::number(val));
 
 		edit->setMaximumSize(edit->sizeHint());
@@ -138,18 +138,18 @@ QWidget* ChigNodeGui::embeddedWidget()
 		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
 			std::unique_ptr<chig::NodeType> newType;
 
-			inst->context().nodeTypeFromModule("lang", "const-int", s.toInt(), &newType);
+			mInst->context().nodeTypeFromModule("lang", "const-int", s.toInt(), &newType);
 
-			inst->setType(std::move(newType));
+			mInst->setType(std::move(newType));
 
 		});
 
 		return edit;
 	}
-	if (inst->type().name() == "func") {
+	if (mInst->type().name() == "func") {
 		QPushButton* butt = new QPushButton(i18n("Edit code"));
 		connect(butt, &QPushButton::clicked, this, [this] {
-			auto dialog = new EditCodeDialog(inst, fview);
+			auto dialog = new EditCodeDialog(mInst, mFunctionView);
 
 			dialog->exec();
 		});

@@ -13,7 +13,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "chignodegui.hpp"
+#include "chigraphnodemodel.hpp"
 
 class FunctionView : public QWidget
 {

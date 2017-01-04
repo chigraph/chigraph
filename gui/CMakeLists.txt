@@ -17,7 +17,7 @@ find_package(KF5 REQUIRED COMPONENTS CoreAddons I18n XmlGui WidgetsAddons TextWi
 set(GUI_SRCS
 	main.cpp
 	mainwindow.cpp
-	chignodegui.cpp
+	chigraphnodemodel.cpp
 	functionspane.cpp
 	functionview.cpp
     functiondetails.cpp
@@ -30,7 +30,7 @@ set(GUI_SRCS
 
 set(GUI_HEADERS
 	mainwindow.hpp
-	chignodegui.hpp
+	chigraphnodemodel.hpp
 	functionspane.hpp
 	functionview.hpp
 	outputview.hpp
