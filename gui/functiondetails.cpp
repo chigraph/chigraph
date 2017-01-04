@@ -21,7 +21,7 @@ FunctionDetails::FunctionDetails(QWidget* parent) : QWidget(parent)
 void FunctionDetails::loadFunction(FunctionView* func)
 {
 	mFuncView = func;
-	mFunc = func->func;
+	mFunc = func->function();
 
 	ins->clear();
 	outs->clear();
@@ -66,7 +66,7 @@ void FunctionDetails::inputChanged(int idx, chig::DataType newType, const QStrin
 	if (entry == nullptr) {
 		return;
 	}
-	mFuncView->refreshGuiForNode(mFuncView->nodes[entry]);
+	mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(entry));
 }
 void FunctionDetails::inputAdded(chig::DataType type, const QString& name)
 {
@@ -76,7 +76,7 @@ void FunctionDetails::inputAdded(chig::DataType type, const QString& name)
 	if (entry == nullptr) {
 		return;
 	}
-	mFuncView->refreshGuiForNode(mFuncView->nodes[entry]);
+	mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(entry));
 }
 void FunctionDetails::inputDeleted(int idx)
 {
@@ -86,14 +86,14 @@ void FunctionDetails::inputDeleted(int idx)
 	if (entry == nullptr) {
 		return;
 	}
-	mFuncView->refreshGuiForNode(mFuncView->nodes[entry]);
+	mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(entry));
 }
 void FunctionDetails::outputChanged(int idx, chig::DataType newType, const QString& newName)
 {
 	mFunc->modifyDataOutput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
 
 	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
-		mFuncView->refreshGuiForNode(mFuncView->nodes[exit]);
+		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));
 	}
 }
 void FunctionDetails::outputAdded(chig::DataType type, const QString& name)
@@ -101,13 +101,13 @@ void FunctionDetails::outputAdded(chig::DataType type, const QString& name)
 	mFunc->addDataOutput(type, name.toStdString(), mFunc->dataInputs().size() - 1);
 
 	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
-		mFuncView->refreshGuiForNode(mFuncView->nodes[exit]);
+		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));
 	}
 }
 void FunctionDetails::outputDeleted(int idx)
 {
 	mFunc->removeDataOutput(idx);
 	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
-		mFuncView->refreshGuiForNode(mFuncView->nodes[exit]);
+		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));
 	}
 }

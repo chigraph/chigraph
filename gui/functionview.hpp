@@ -13,31 +13,24 @@
 #include <memory>
 #include <unordered_map>
 
-#include <boost/bimap.hpp>
+#include "chignodegui.hpp"
 
 class FunctionView : public QWidget
 {
 	Q_OBJECT
 public:
-	FlowScene* scene;
-	FlowView* view;
 
 	FunctionView(chig::GraphFunction* func_, QWidget* parent = nullptr);
 
-	chig::GraphFunction* func;
-
-	std::unordered_map<chig::NodeInstance*, Node*> nodes;
-
-	// this contains absolute port ids
-	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
-		conns;
-
+    Node* guiNodeFromChigNode(chig::NodeInstance* inst);    
+    chig::NodeInstance* chigNodeFromGuiNode(Node* node);
+    
 	void updatePositions();
 
+    // refresh I/O for the node
 	void refreshGuiForNode(Node* node);
-
-signals:
     
+    chig::GraphFunction* function() const { return mFunction; }
 
 private slots:
 	void nodeAdded(Node& n);
@@ -49,6 +42,18 @@ private slots:
 	void connectionUpdated(Connection& c);
     
 private:
+	FlowScene* mScene;
+	FlowView* mView;
+    
+	chig::GraphFunction* mFunction;
+    
+	std::unordered_map<chig::NodeInstance*, Node*> mNodeMap;
+    
+    
+	// this contains absolute port ids
+	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
+		conns;
+
 };
 
 #endif  // CHIGGUI_FUNCTIONVIEW_HPP

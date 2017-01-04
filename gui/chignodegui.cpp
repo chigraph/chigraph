@@ -38,7 +38,7 @@ public:
 				return;
 			}
 			inst->setType(std::move(ty));
-			fview->refreshGuiForNode(fview->nodes[inst]);
+			fview->refreshGuiForNode(fview->guiNodeFromChigNode(inst));
 
 			close();
 		});
