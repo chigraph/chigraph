@@ -6,7 +6,6 @@ addons:
   apt: 
     sources:
       - ubuntu-toolchain-r-test
-      - llvm-toolchain-precise-3.8
 matrix: 
   include: 
     - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug
@@ -21,11 +20,8 @@ before_install:
   - sudo apt-get update
 
 install: 
-  - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras qt57svg ninja-build libxcb-keysyms1-dev libxml2-utils libboost-all-dev llvm-3.8-dev clang-3.8 gcc-5 gcc-6 g++-5 g++-6 build-essential
+  - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras qt57svg ninja-build libxcb-keysyms1-dev libxml2-utils libboost-all-dev clang-3.8 gcc-5 gcc-6 g++-5 g++-6 build-essential
   - source /opt/qt57/bin/qt57-env.sh
-  - sudo rm /usr/local/clang-3.5.0/share/llvm/cmake/LLVMConfig.cmake
-  - sudo ln -s /usr/share/llvm-3.8 /usr/share/llvm
-  - ./scripts/build_frameworks.sh $BUILD_TYPE Ninja
 
 script:
   - mkdir build
