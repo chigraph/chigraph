@@ -1,0 +1,10 @@
+QT.KXmlGui.VERSION = 5.30.0
+QT.KXmlGui.MAJOR_VERSION = 5
+QT.KXmlGui.MINOR_VERSION = 30
+QT.KXmlGui.PATCH_VERSION = 0
+QT.KXmlGui.name = KF5XmlGui
+QT.KXmlGui.defines = 
+QT.KXmlGui.includes = /home/russellg/chigraph/third_party/include/KF5/KXmlGui
+QT.KXmlGui.private_includes =
+QT.KXmlGui.libs = /home/russellg/chigraph/third_party/lib64
+QT.KXmlGui.depends = dbus xml widgets KConfigCore KConfigWidgets

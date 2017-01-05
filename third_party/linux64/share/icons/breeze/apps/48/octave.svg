@@ -1,0 +1,49 @@
+<svg width="48" xmlns="http://www.w3.org/2000/svg" height="48" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="a" y1="543.8" y2="503.8" x2="0" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#197cf1"/>
+   <stop offset="1" stop-color="#20bcfa"/>
+  </linearGradient>
+  <linearGradient id="b" y1="531.8" x1="422.57" y2="543.8" x2="408.57" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#217bb7"/>
+   <stop offset="1" stop-color="#217bb7" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="c" y1="30" x1="14" y2="44" x2="34" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#2489cd"/>
+   <stop offset="1" stop-color="#2489cd" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="d" y1="511.8" x1="408.57" y2="529.8" x2="426.57" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#2691d9"/>
+   <stop offset="1" stop-color="#2691d9" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="e" y1="513.8" x1="390.57" y2="533.8" x2="398.57" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#2792d9"/>
+   <stop offset="1" stop-color="#51a7e0" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="f" y1="531.8" y2="527.8" x2="0" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#2a2c2f"/>
+   <stop offset="1" stop-color="#424649"/>
+  </linearGradient>
+  <linearGradient xlink:href="#f" id="g" y1="514.8" y2="509.08" x2="0" gradientUnits="userSpaceOnUse"/>
+ </defs>
+ <g transform="translate(-384.57-499.8)">
+  <g fill-rule="evenodd">
+   <path fill="url(#a)" d="m408.57 503.8l-18 10v20l18 10 18-10v-20z"/>
+   <path fill="url(#c)" d="m14 30l10 14 10-14h-10z" transform="translate(384.57 499.8)"/>
+   <path fill="#3498db" d="m408.57 543.8l-18-10 8-4z"/>
+   <path fill="url(#b)" d="m408.57 543.8l18-10-8-4z"/>
+   <path fill="url(#e)" d="m398.57 529.8l-8-16v20z"/>
+   <path fill="#2482c0" d="m418.57 529.8l8-16v20z"/>
+   <path fill="#51a7e0" d="m390.57 513.8l18-2-10 18z"/>
+   <path fill="url(#d)" d="m426.57 513.8l-18-2 10 18z"/>
+   <path fill="#42a0de" d="m408.57 511.8l-18 2 18-10z"/>
+   <path fill="#3498db" d="m408.57 511.8l18 2-18-10z"/>
+  </g>
+  <circle fill="url(#f)" cx="398.57" cy="529.8" r="2"/>
+  <circle fill="#f4754e" cx="398.57" cy="529.8" r="1"/>
+  <circle fill="url(#g)" cx="408.57" cy="511.8" r="3"/>
+  <circle fill="#f4754e" cx="408.57" cy="511.8" r="2"/>
+  <circle fill="url(#f)" cx="418.57" cy="529.8" r="2"/>
+  <circle fill="#f4754e" cx="418.57" cy="529.8" r="1"/>
+ </g>
+</svg>

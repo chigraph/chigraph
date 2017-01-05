@@ -1,0 +1,10 @@
+QT.KArchive.VERSION = 5.30.0
+QT.KArchive.MAJOR_VERSION = 5
+QT.KArchive.MINOR_VERSION = 30
+QT.KArchive.PATCH_VERSION = 0
+QT.KArchive.name = KF5Archive
+QT.KArchive.defines = 
+QT.KArchive.includes = /home/russellg/chigraph/third_party/include/KF5/KArchive
+QT.KArchive.private_includes =
+QT.KArchive.libs = /home/russellg/chigraph/third_party/lib64
+QT.KArchive.depends = core

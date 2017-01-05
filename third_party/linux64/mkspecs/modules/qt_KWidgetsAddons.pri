@@ -1,0 +1,10 @@
+QT.KWidgetsAddons.VERSION = 5.30.0
+QT.KWidgetsAddons.MAJOR_VERSION = 5
+QT.KWidgetsAddons.MINOR_VERSION = 30
+QT.KWidgetsAddons.PATCH_VERSION = 0
+QT.KWidgetsAddons.name = KF5WidgetsAddons
+QT.KWidgetsAddons.defines = 
+QT.KWidgetsAddons.includes = /home/russellg/chigraph/third_party/include/KF5/KWidgetsAddons
+QT.KWidgetsAddons.private_includes =
+QT.KWidgetsAddons.libs = /home/russellg/chigraph/third_party/lib64
+QT.KWidgetsAddons.depends = widgets

@@ -1,0 +1,31 @@
+<svg width="48" xmlns="http://www.w3.org/2000/svg" height="48">
+ <defs>
+  <linearGradient id="a" y1="44" x1="31" y2="7" x2="9.638" gradientUnits="userSpaceOnUse" gradientTransform="translate(386.57 499.8)">
+   <stop stop-color="#f27935"/>
+   <stop offset="1" stop-color="#f2784b"/>
+  </linearGradient>
+  <linearGradient id="b" y1="531.77" x1="414.63" y2="523.38" x2="409.79" gradientUnits="userSpaceOnUse" gradientTransform="translate(-825.14-1055.6)">
+   <stop stop-color="#197cf1"/>
+   <stop offset="1" stop-color="#21c9fb"/>
+  </linearGradient>
+  <linearGradient id="c" y1="537.26" x1="413.5" y2="519.75" x2="405.4" gradientUnits="userSpaceOnUse" gradientTransform="translate(2)">
+   <stop stop-color="#eef1f2"/>
+   <stop offset="1" stop-color="#f9fafb"/>
+  </linearGradient>
+  <linearGradient id="d" y1="527.8" y2="544.67" x2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(.70711-.70711.70711.70711-636.65-52.77)">
+   <stop stop-color="#292c2f"/>
+   <stop offset="1" stop-opacity="0"/>
+  </linearGradient>
+ </defs>
+ <g stroke-linejoin="round" transform="translate(-384.57-499.8)">
+  <g stroke-width="2">
+   <path fill="url(#a)" d="m407.44643 503.77261a3.0003 3.0003 0 0 0 -1.70508 5.40234l3.41 2.623h-16.58a3.0003 3.0003 0 1 0 0 6h7.52l-12.283 8.924a3.0003 3.0003 0 1 0 3.52539 4.85351l6.277-4.561a15.999973 15.999973 0 0 0 -.0391 .7832 15.999973 15.999973 0 0 0 16 16 15.999973 15.999973 0 0 0 16 -16 15.999973 15.999973 0 0 0 -6.95508 -13.19727 3.0003 3.0003 0 0 0 -.21679 -.18164l-13-10a3.0003 3.0003 0 0 0 -1.95313 -.64648"/>
+   <path fill="#b86333" d="m404.58 506.27c-.187 1.108.261 2.227 1.16 2.9l3.41 2.623h1l-4.41-3.623c-.616-.461-1.031-1.142-1.16-1.9m-15.01 8.02c-.318 1.85 1.122 3.533 2.998 3.508h7.5l1-1h-8.5c-1.481.019-2.755-1.046-2.998-2.508m8.04 11.725l-6.277 4.561c-1.797 1.371-4.408.337-4.779-1.893-.463 2.689 2.612 4.55 4.779 2.893l6.25-4.541c-.004-.079-.008-.158-.012-.236.007-.261.02-.522.039-.783m-.014 1.281c-.011.167-.02.335-.025.502 0 8.837 7.163 16 16 16 8.837 0 16-7.163 16-16-.005-.14-.012-.28-.022-.42-.312 8.601-7.372 15.414-15.979 15.42-8.636-.01-15.706-6.87-15.975-15.502"/>
+  </g>
+  <path opacity=".2" fill="url(#d)" stroke-width="6" d="m36.07 20.93l-14.14 14.14 8.824 8.826a15.999973 15.999973 0 0 0 14.13086 -14.15234z" transform="translate(384.57 499.8)"/>
+  <g stroke-linecap="round" stroke-width="2">
+   <circle fill="url(#c)" cx="413.57" cy="527.8" r="10"/>
+   <circle fill="url(#b)" cx="-413.57" cy="-527.8" r="4" transform="scale(-1)"/>
+  </g>
+ </g>
+</svg>

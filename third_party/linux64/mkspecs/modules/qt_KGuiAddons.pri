@@ -1,0 +1,10 @@
+QT.KGuiAddons.VERSION = 5.30.0
+QT.KGuiAddons.MAJOR_VERSION = 5
+QT.KGuiAddons.MINOR_VERSION = 30
+QT.KGuiAddons.PATCH_VERSION = 0
+QT.KGuiAddons.name = KF5GuiAddons
+QT.KGuiAddons.defines = 
+QT.KGuiAddons.includes = /home/russellg/chigraph/third_party/include/KF5/KGuiAddons
+QT.KGuiAddons.private_includes =
+QT.KGuiAddons.libs = /home/russellg/chigraph/third_party/lib64
+QT.KGuiAddons.depends = gui

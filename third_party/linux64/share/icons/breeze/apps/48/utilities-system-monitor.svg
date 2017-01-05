@@ -1,0 +1,45 @@
+<svg width="48" xmlns="http://www.w3.org/2000/svg" height="48" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="a" y1="543.8" y2="503.8" x2="0" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#2a2c2f"/>
+   <stop offset="1" stop-color="#424649"/>
+  </linearGradient>
+  <linearGradient id="b" y1="44" y2="12" x2="0" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#77b76b"/>
+   <stop offset="1" stop-color="#58b4b4"/>
+  </linearGradient>
+  <linearGradient id="c" y1="21" y2="15" x2="0" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#b8ddd2"/>
+   <stop offset="1" stop-color="#c4e4dd"/>
+  </linearGradient>
+  <linearGradient xlink:href="#c" id="d" y1="21" y2="15" x2="0" gradientUnits="userSpaceOnUse" gradientTransform="translate(406.57 509.8)"/>
+  <linearGradient id="e" y1="15" x1="9" y2="21.928" x2="13" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#ffffff"/>
+   <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient xlink:href="#e" id="f" y1="23" x1="46" y2="30" gradientUnits="userSpaceOnUse" x2="39"/>
+  <linearGradient xlink:href="#e" id="g" y1="46" y2="38" gradientUnits="userSpaceOnUse" x2="0"/>
+  <linearGradient id="h" y1="15" x1="10" y2="41" x2="36" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#292c2f"/>
+   <stop offset="1" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient xlink:href="#h" id="i" y1="11" x1="6" y2="27" gradientUnits="userSpaceOnUse" x2="22" gradientTransform="translate(22 10)"/>
+  <path fill-rule="evenodd" id="j" d="m24 30c-5-3-5-13-12-12-5.639.806-4.793 8.099-10 11.428v14.572h44v-11.512c-1.633.149-3 1.512-5-.488-8-10-10.414 1.088-17-2"/>
+  <path fill-rule="evenodd" id="k" d="m12.637 17.938c-.205.01-.418.031-.637.063-5.639.806-4.793 8.099-10 11.428v1c5.207-3.329 4.361-10.622 10-11.428 7-1 7 9 12 12 6.586 3.088 9-8 17 2 2 2 3.367.637 5 .488v-1c-1.633.149-3 1.512-5-.488-8-10-10.414 1.088-17-2-4.844-2.906-4.995-12.382-11.363-12.06"/>
+ </defs>
+ <g transform="translate(-384.57-499.8)">
+  <rect width="44" x="386.57" y="503.8" fill="url(#a)" height="40"/>
+  <g transform="translate(384.57 499.8)">
+   <path opacity=".11" fill="#1a1a1a" fill-rule="evenodd" d="m14.332 17.936c-.423-.018-.875.001-1.355.059-6.19.744-5.261 7.477-10.977 10.551v13.455h44v-10.355c-.377-.156-.768-.37-1.189-.725-8.782-9.233-11.431 1.01-18.66-1.846-5.145-2.597-5.467-10.875-11.818-11.139"/>
+   <use fill="url(#b)" xlink:href="#j"/>
+   <use fill="url(#e)" xlink:href="#k"/>
+   <use fill="url(#f)" xlink:href="#k"/>
+   <path opacity=".2" fill="url(#i)" fill-rule="evenodd" d="m34 25v1h-1v1h-1l14 14v-4l-8-8zm4 0v2h-1l9 9v-3zm-6 4v2l13 13h1v-2l-13-13z"/>
+  </g>
+  <path fill="url(#d)" d="m416.57 524.8v2h1v-1h1v-1zm4 0v1h1v1h1v-2zm-4 4v2h2v-1h-1v-1zm5 0v1h-1v1h2v-2z"/>
+  <use opacity=".3" fill="url(#g)" xlink:href="#j" transform="translate(384.57 499.8)"/>
+  <path opacity=".2" fill="url(#h)" fill-rule="evenodd" d="m12 15v1h-1v1h-1l27 27h4l-25-25zm4 0v2h-1l27 27h3zm-6 4v2l23 23h3l-25-25z" transform="translate(384.57 499.8)"/>
+  <path fill="url(#c)" d="m10 15v2h1v-1h1v-1zm4 0v1h1v1h1v-2zm-4 4v2h2v-1h-1v-1zm5 0v1h-1v1h2v-2z" transform="translate(384.57 499.8)"/>
+  <rect width="44" x="386.57" y="542.8" fill="#498d48" height="1"/>
+ </g>
+</svg>
