@@ -5,8 +5,8 @@ set -xe
 SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPTSDIR/..
 
-#rm -rf build
-#mkdir -p build
+rm -rf build
+mkdir -p build
 cd build
 
 cmake .. $@ -DCMAKE_BUILD_TYPE=Release
