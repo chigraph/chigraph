@@ -45,7 +45,7 @@ TEST_CASE("LangModule", "[module]")
 					std::vector<std::string>(
 						{"if", "entry", "exit", "const-int", "strliteral", "const-bool"}));
 			REQUIRE(c.moduleByName("lang")->typeNames() ==
-					std::vector<std::string>({"i32", "i1", "double"}));
+					std::vector<std::string>({"i32", "i1", "double", "i8*"}));
 		}
 
 		THEN(
