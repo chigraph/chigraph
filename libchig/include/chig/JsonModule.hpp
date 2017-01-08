@@ -43,18 +43,13 @@ struct JsonModule : public ChigModule {
 	// ChigModule interface
 	///////////////////////
 
-	/// \copydoc ChigModule::nodeTypeFromName()
 	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
 
-	/// \copydoc ChigModule::typeFromName
-	DataType typeFromName(gsl::cstring_span<> name) override { return {}; }
-	/// \copydoc ChigModule::nodeTypeNames
-	virtual std::vector<std::string> nodeTypeNames() const override;  // TODO: implement
+	DataType typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
+	std::vector<std::string> nodeTypeNames() const override;  // TODO: implement
 
-	/// \copydoc ChigModule::typeNames
-	virtual std::vector<std::string> typeNames() const override { return {}; }  // TODO: implement
-	/// \copydoc ChigModule::generateModule
+	std::vector<std::string> typeNames() const override { return {}; }  // TODO: implement
 	Result generateModule(std::unique_ptr<llvm::Module>* module) override;
 
 	/////////////////////

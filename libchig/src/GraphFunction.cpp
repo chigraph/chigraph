@@ -104,7 +104,7 @@ GraphFunction::GraphFunction(JsonModule& module, const nlohmann::json& data, Res
 	}
 
 	std::vector<std::string> execinputs;
-	for (auto param : data["exec_inputs"]) {
+	for (const auto& param : data["exec_inputs"]) {
 		std::string name = param;
 
 		execinputs.emplace_back(name);
@@ -116,7 +116,7 @@ GraphFunction::GraphFunction(JsonModule& module, const nlohmann::json& data, Res
 	}
 
 	std::vector<std::string> execoutputs;
-	for (auto param : data["exec_outputs"]) {
+	for (const auto& param : data["exec_outputs"]) {
 		std::string name = param;
 
 		execoutputs.emplace_back(name);
@@ -438,7 +438,7 @@ Result GraphFunction::removeNode(NodeInstance* nodeToRemove)
 	// disconnect input exec
 	for (const auto& execSlot : nodeToRemove->inputExecConnections) {
 		for (const auto& pair : execSlot) {
-			if (pair.first) {
+			if (pair.first != nullptr) {
 				res += disconnectExec(*pair.first, pair.second);
 			}
 		}
@@ -446,7 +446,7 @@ Result GraphFunction::removeNode(NodeInstance* nodeToRemove)
 	// disconnect output exec
 	auto ID = 0ull;
 	for (const auto& pair : nodeToRemove->outputExecConnections) {
-		if (pair.first) {
+		if (pair.first != nullptr) {
 			res += disconnectExec(*nodeToRemove, ID);
 		}
 		++ID;
@@ -454,7 +454,7 @@ Result GraphFunction::removeNode(NodeInstance* nodeToRemove)
 
 	// disconnect input data
 	for (const auto& pair : nodeToRemove->inputDataConnections) {
-		if (pair.first) {
+		if (pair.first != nullptr) {
 			res += disconnectData(*pair.first, pair.second, *nodeToRemove);
 		}
 	}
@@ -463,7 +463,7 @@ Result GraphFunction::removeNode(NodeInstance* nodeToRemove)
 	ID = 0ull;
 	for (const auto& dataSlot : nodeToRemove->outputDataConnections) {
 		for (const auto& pair : dataSlot) {
-			if (pair.first) {
+			if (pair.first != nullptr) {
 				disconnectData(*nodeToRemove, ID, *pair.first);
 			}
 		}
@@ -489,7 +489,7 @@ Result GraphFunction::createEntryNodeType(std::unique_ptr<NodeType>* toFill) con
 
 	auto& exec = entry["exec"];
 	exec = nlohmann::json::array();
-	for (auto in : execInputs()) {
+	for (const auto& in : execInputs()) {
 		exec.push_back(in);
 	}
 
@@ -512,7 +512,7 @@ Result GraphFunction::createExitNodeType(std::unique_ptr<NodeType>* toFill) cons
 
 	auto& exec = exit["exec"];
 	exec = nlohmann::json::array();
-	for (auto out : execOutputs()) {
+	for (const auto& out : execOutputs()) {
 		exec.push_back(out);
 	}
 

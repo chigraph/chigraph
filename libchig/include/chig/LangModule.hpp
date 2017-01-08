@@ -23,27 +23,22 @@ struct LangModule : ChigModule {
 	/// Destructor
 	~LangModule() = default;
 
-	/// \copydoc chig::ChigModule::nodeTypeFromName
 	virtual Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
 
-	/// \copydoc chig::ChigModule::typeFromName
 	virtual DataType typeFromName(gsl::cstring_span<> name) override;
 
-	/// \copydoc chig::ChigModule::nodeTypeNames
 	virtual std::vector<std::string> nodeTypeNames() const override
 	{
 		return {"if", "entry", "exit", "const-int", "strliteral", "const-bool"};
 	}
 
-	/// \copydoc chig::ChigModule::typeNames
 	virtual std::vector<std::string> typeNames() const override
 	{
 		return {"i32", "i1", "double", "i8*"};  // TODO: do i need more?
 	}
 
-	/// \copydoc chig::ChigModule::generateModule
-	Result generateModule(std::unique_ptr<llvm::Module>* module) override { return {}; };
+	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; };
 private:
 	std::unordered_map<std::string,
 		std::function<std::unique_ptr<NodeType>(const nlohmann::json&, Result&)>>
