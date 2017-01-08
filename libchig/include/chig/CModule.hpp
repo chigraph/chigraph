@@ -23,18 +23,13 @@ struct CModule : ChigModule {
 	/// Destructor
 	~CModule() = default;
 
-	/// \copydoc chig::ChigModule::nodeTypeFromName
 	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
-	/// \copydoc chig::ChigModule::typeFromName
 	DataType typeFromName(gsl::cstring_span<> name) override;
 
-	/// \copydoc chig::ChigModule::nodeTypeNames
 	std::vector<std::string> nodeTypeNames() const override { return {"func"}; }
-	/// \copydoc  chig::ChigModule::typeNames
 	std::vector<std::string> typeNames() const override { return {}; }
-	/// \copydoc chig::ChigModule::generateModule
-	Result generateModule(std::unique_ptr<llvm::Module>* module) override { return {}; }
+	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; }
 };
 }
 

@@ -199,8 +199,8 @@ void FunctionView::connectionAdded(Connection& c)
 		return;
 	}
 
-	size_t inconnid = c.getPortIndex(PortType::Out);
-	size_t outconnid = c.getPortIndex(PortType::In);
+	auto inconnid = c.getPortIndex(PortType::Out);
+	auto outconnid = c.getPortIndex(PortType::In);
 
 	bool isExec = inconnid < inptr->instance().type().execOutputs().size();
 
