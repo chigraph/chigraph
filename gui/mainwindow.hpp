@@ -68,8 +68,6 @@ signals:
 
 private:
     
-	void setupActions();
-    
 	KRecentFilesAction* mOpenRecentAction; // keep this so we can save the entries
 	std::unordered_map<QString, FunctionView*> mOpenFunctions;
 	
