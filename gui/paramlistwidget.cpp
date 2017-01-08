@@ -126,10 +126,10 @@ ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidge
 		auto button = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add")), QString());
 		connect(button, &QPushButton::clicked, this, [this] {
 
-            if(mMod == nullptr) {
-                return;
-            }
-            
+			if (mMod == nullptr) {
+				return;
+			}
+
 			chig::DataType type;
 			QString name;
 			auto opt = getDataNamePair(this, mMod);

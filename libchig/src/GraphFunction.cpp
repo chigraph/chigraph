@@ -181,7 +181,7 @@ Result GraphFunction::toJSON(nlohmann::json* toFill) const
 
 struct cache {
 	std::vector<llvm::Value*> outputs;
-    std::vector<llvm::BasicBlock*> inputBlock; // one for each exec input
+	std::vector<llvm::BasicBlock*> inputBlock;  // one for each exec input
 };
 
 // Codegens a single input to a node
@@ -271,40 +271,40 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		}
 	}
 
-    // add this block to the cache
-    if(node->type().qualifiedName() != "lang:entry") {
-        nodeCache[node].inputBlock.resize(node->inputExecConnections.size(), nullptr);
-        nodeCache[node].inputBlock[execInputID] = block;
-    }
+	// add this block to the cache
+	if (node->type().qualifiedName() != "lang:entry") {
+		nodeCache[node].inputBlock.resize(node->inputExecConnections.size(), nullptr);
+		nodeCache[node].inputBlock[execInputID] = block;
+	}
 
 	// create output blocks
 	std::vector<llvm::BasicBlock*> outputBlocks;
 	std::vector<llvm::BasicBlock*> unusedBlocks;
-    boost::dynamic_bitset<> needsCodegen; // this holds if each block needs to recurse of it it's already in the cache
+	boost::dynamic_bitset<>
+		needsCodegen;  // this holds if each block needs to recurse of it it's already in the cache
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
-        // see if we can find it in the cache
-        NodeInstance* remoteNode;
-        size_t remotePortIdx;
-        std::tie(remoteNode, remotePortIdx) = node->outputExecConnections[idx];
+		// see if we can find it in the cache
+		NodeInstance* remoteNode;
+		size_t remotePortIdx;
+		std::tie(remoteNode, remotePortIdx) = node->outputExecConnections[idx];
 
-        auto remoteCache = nodeCache[remoteNode]; // this will construct it if it doesn't exist
-        if(remoteCache.inputBlock.size() > remotePortIdx && remoteCache.inputBlock[remotePortIdx] != nullptr) {
-            // this means it's already in the cache
-            outputBlocks.push_back(remoteCache.inputBlock[remotePortIdx]);
-            needsCodegen.push_back(false);
-        } else {
-            auto outBlock =
-                    llvm::BasicBlock::Create(f->getContext(), node->type().execOutputs()[idx], f);
-            outputBlocks.push_back(outBlock);
-            needsCodegen.push_back(true); // these need codegen
-            if (node->outputExecConnections[idx].first != nullptr) {
-                outBlock->setName("node_" + node->outputExecConnections[idx].first->id());
-            } else {
-                unusedBlocks.push_back(outBlock);
-            }
-        }
-
-
+		auto remoteCache = nodeCache[remoteNode];  // this will construct it if it doesn't exist
+		if (remoteCache.inputBlock.size() > remotePortIdx &&
+			remoteCache.inputBlock[remotePortIdx] != nullptr) {
+			// this means it's already in the cache
+			outputBlocks.push_back(remoteCache.inputBlock[remotePortIdx]);
+			needsCodegen.push_back(false);
+		} else {
+			auto outBlock =
+				llvm::BasicBlock::Create(f->getContext(), node->type().execOutputs()[idx], f);
+			outputBlocks.push_back(outBlock);
+			needsCodegen.push_back(true);  // these need codegen
+			if (node->outputExecConnections[idx].first != nullptr) {
+				outBlock->setName("node_" + node->outputExecConnections[idx].first->id());
+			} else {
+				unusedBlocks.push_back(outBlock);
+			}
+		}
 	}
 
 	// codegen
@@ -325,7 +325,6 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
 		if (output.first != nullptr && needsCodegen[idx]) {
-
 			codegenHelper(
 				output.first, output.second, outputBlocks[idx], allocblock, mod, f, nodeCache, res);
 		}

@@ -13,9 +13,9 @@ ModuleDependencies::ModuleDependencies(QWidget* parent) : QListWidget(parent)
 		// get module list
 		QStringList modList;
 		for (const auto& module : mModule->context().listModulesInWorkspace()) {
-            if(module != mModule->fullName()) {
-                modList << QString::fromStdString(module);
-            }
+			if (module != mModule->fullName()) {
+				modList << QString::fromStdString(module);
+			}
 		}
 
 		QString mod =
@@ -33,8 +33,8 @@ ModuleDependencies::ModuleDependencies(QWidget* parent) : QListWidget(parent)
 	});
 }
 
-void ModuleDependencies::addNewDepItem() {
-    
+void ModuleDependencies::addNewDepItem()
+{
 	mAddDepItem = new QListWidgetItem(QStringLiteral("  <Add Dependnecy>  "));
 	addItem(mAddDepItem);
 }
