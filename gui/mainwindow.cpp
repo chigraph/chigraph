@@ -94,12 +94,10 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
     addDockWidget(Qt::RightDockWidgetArea, docker);
     connect(this, &MainWindow::moduleOpened, mModuleDeps, &ModuleDependencies::setModule);
 
-	setupActions();
-}
-
-void MainWindow::setupActions()
-{
-	auto actColl = this->KXmlGuiWindow::actionCollection();
+    
+    
+    /// Setup actions
+    auto actColl = this->KXmlGuiWindow::actionCollection();
 
 	KStandardAction::quit(qApp, SLOT(quit()), actColl);
 
@@ -129,6 +127,13 @@ void MainWindow::setupActions()
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
 	actColl->addAction(QStringLiteral("run"), runAction);
 	connect(runAction, &QAction::triggered, this, &MainWindow::run);
+    
+    auto cancelAction = new QAction;
+    cancelAction->setText(i18n("Cancel"));
+    cancelAction->setIcon(QIcon::fromTheme("process-stop"));
+    actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_Q);
+    actColl->addAction(QStringLiteral("cancel"), cancelAction);
+    connect(runAction, &QAction::triggered, outputView, &OutputView::cancelProcess);
 
 	auto newFunctionAction = new QAction;
 	newFunctionAction->setText(i18n("New Function"));

@@ -13,6 +13,7 @@ public:
 	OutputView();
 
 	void setProcess(QProcess* p);
+    void cancelProcess();
 
 private:
 	QPlainTextEdit* textarea;
