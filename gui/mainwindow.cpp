@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 
 	mChigContext = std::make_unique<chig::Context>();
 
-    // setup functions pane
+	// setup functions pane
 	QDockWidget* docker = new QDockWidget(i18n("Functions"), this);
 	docker->setObjectName("Functions");
 	auto functionsPane = new FunctionsPane(this, this);
@@ -51,10 +51,11 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
 	connect(
 		functionsPane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
-    connect(this, &MainWindow::newFunctionCreated, functionsPane, 
-            [functionsPane](chig::GraphFunction* func){ functionsPane->updateModule(&func->module()); });
+	connect(this, &MainWindow::newFunctionCreated, functionsPane,
+		[functionsPane](
+			chig::GraphFunction* func) { functionsPane->updateModule(&func->module()); });
 
-    // setup module browser
+	// setup module browser
 	docker = new QDockWidget(i18n("Modules"), this);
 	docker->setObjectName("Modules");
 	auto moduleBrowser = new ModuleBrowser(this);
@@ -62,15 +63,14 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
 	connect(this, &MainWindow::workspaceOpened, moduleBrowser, &ModuleBrowser::loadWorkspace);
 	connect(moduleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
-    connect(this, &MainWindow::newModuleCreated, moduleBrowser, [moduleBrowser](chig::JsonModule* mod){
-         moduleBrowser->loadWorkspace(mod->context());
-    });
+	connect(this, &MainWindow::newModuleCreated, moduleBrowser,
+		[moduleBrowser](chig::JsonModule* mod) { moduleBrowser->loadWorkspace(mod->context()); });
 
 	mFunctionTabs = new QTabWidget(this);
 	mFunctionTabs->setMovable(true);
 	mFunctionTabs->setTabsClosable(true);
 	connect(mFunctionTabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
-    
+
 	setCentralWidget(mFunctionTabs);
 
 	docker = new QDockWidget(i18n("Output"), this);
@@ -78,7 +78,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	auto outputView = new OutputView;
 	docker->setWidget(outputView);
 	addDockWidget(Qt::BottomDockWidgetArea, docker);
-    connect(this, &MainWindow::runStarted, outputView, &OutputView::setProcess);
+	connect(this, &MainWindow::runStarted, outputView, &OutputView::setProcess);
 
 	docker = new QDockWidget(i18n("Function Details"), this);
 	docker->setObjectName("Function Details");
@@ -86,18 +86,16 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	docker->setWidget(functionDetails);
 	addDockWidget(Qt::RightDockWidgetArea, docker);
 	connect(this, &MainWindow::functionOpened, functionDetails, &FunctionDetails::loadFunction);
-    
-    docker = new QDockWidget(i18n("Module Dependencies"), this);
-    docker->setObjectName("Module Dependencies");
-    auto mModuleDeps = new ModuleDependencies;
-    docker->setWidget(mModuleDeps);
-    addDockWidget(Qt::RightDockWidgetArea, docker);
-    connect(this, &MainWindow::moduleOpened, mModuleDeps, &ModuleDependencies::setModule);
 
-    
-    
-    /// Setup actions
-    auto actColl = this->KXmlGuiWindow::actionCollection();
+	docker = new QDockWidget(i18n("Module Dependencies"), this);
+	docker->setObjectName("Module Dependencies");
+	auto mModuleDeps = new ModuleDependencies;
+	docker->setWidget(mModuleDeps);
+	addDockWidget(Qt::RightDockWidgetArea, docker);
+	connect(this, &MainWindow::moduleOpened, mModuleDeps, &ModuleDependencies::setModule);
+
+	/// Setup actions
+	auto actColl = this->KXmlGuiWindow::actionCollection();
 
 	KStandardAction::quit(qApp, SLOT(quit()), actColl);
 
@@ -127,13 +125,13 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
 	actColl->addAction(QStringLiteral("run"), runAction);
 	connect(runAction, &QAction::triggered, this, &MainWindow::run);
-    
-    auto cancelAction = new QAction;
-    cancelAction->setText(i18n("Cancel"));
-    cancelAction->setIcon(QIcon::fromTheme("process-stop"));
-    actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_Q);
-    actColl->addAction(QStringLiteral("cancel"), cancelAction);
-    connect(runAction, &QAction::triggered, outputView, &OutputView::cancelProcess);
+
+	auto cancelAction = new QAction;
+	cancelAction->setText(i18n("Cancel"));
+	cancelAction->setIcon(QIcon::fromTheme("process-stop"));
+	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_Q);
+	actColl->addAction(QStringLiteral("cancel"), cancelAction);
+	connect(runAction, &QAction::triggered, outputView, &OutputView::cancelProcess);
 
 	auto newFunctionAction = new QAction;
 	newFunctionAction->setText(i18n("New Function"));
@@ -225,14 +223,14 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 	QString qualifiedFunctionName =
 		QString::fromStdString(func->module().fullName() + ":" + func->name());
 
-    // see if it's already open
-    auto funcView = functionView(qualifiedFunctionName);
-    if(funcView != nullptr) {
-        mFunctionTabs->setCurrentWidget(funcView);
-        return;
-    }
-    // if it's not already open, we'll have to create our own
-    
+	// see if it's already open
+	auto funcView = functionView(qualifiedFunctionName);
+	if (funcView != nullptr) {
+		mFunctionTabs->setCurrentWidget(funcView);
+		return;
+	}
+	// if it's not already open, we'll have to create our own
+
 	auto view = new FunctionView(func, mFunctionTabs);
 	int idx = mFunctionTabs->addTab(view, qualifiedFunctionName);
 	mOpenFunctions[qualifiedFunctionName] = view;
@@ -280,7 +278,7 @@ void MainWindow::run()
 	lliproc->write(str.c_str(), str.length());
 	lliproc->closeWriteChannel();
 
-    runStarted(lliproc);
+	runStarted(lliproc);
 }
 
 void MainWindow::newFunction()
@@ -300,7 +298,7 @@ void MainWindow::newFunction()
 	currentModule()->createFunction(newName.toStdString(), {}, {}, {""}, {""}, &func);
 	func->getOrInsertEntryNode(0, 0, "entry");
 
-    newFunctionCreated(func);
+	newFunctionCreated(func);
 	newFunctionSelected(func);  // open the newly created function
 }
 
@@ -324,7 +322,7 @@ void MainWindow::newModule()
 
 	mod->saveToDisk();
 
-    newModuleCreated(mod);
+	newModuleCreated(mod);
 	// then load the module
 	openModule(QString::fromStdString(mod->fullName()));
 }

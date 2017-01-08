@@ -31,7 +31,7 @@ private slots:
 	void outputDeleted(int idx);
 
 private:
-    FunctionView* mFuncView = nullptr;
+	FunctionView* mFuncView = nullptr;
 	chig::GraphFunction* mFunc = nullptr;
 
 	ParamListWidget* ins;

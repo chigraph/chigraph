@@ -19,19 +19,17 @@ class FunctionView : public QWidget
 {
 	Q_OBJECT
 public:
-
 	FunctionView(chig::GraphFunction* func_, QWidget* parent = nullptr);
 
-    Node* guiNodeFromChigNode(chig::NodeInstance* inst);    
-    chig::NodeInstance* chigNodeFromGuiNode(Node* node);
-    
+	Node* guiNodeFromChigNode(chig::NodeInstance* inst);
+	chig::NodeInstance* chigNodeFromGuiNode(Node* node);
+
 	void updatePositions();
 
-    // refresh I/O for the node
+	// refresh I/O for the node
 	void refreshGuiForNode(Node* node);
-    
-    chig::GraphFunction* function() const { return mFunction; }
 
+	chig::GraphFunction* function() const { return mFunction; }
 private slots:
 	void nodeAdded(Node& n);
 	void nodeDeleted(Node& n);
@@ -40,20 +38,18 @@ private slots:
 	void connectionDeleted(Connection& c);
 
 	void connectionUpdated(Connection& c);
-    
+
 private:
 	FlowScene* mScene;
 	FlowView* mView;
-    
+
 	chig::GraphFunction* mFunction;
-    
+
 	std::unordered_map<chig::NodeInstance*, Node*> mNodeMap;
-    
-    
+
 	// this contains absolute port ids
 	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
 		conns;
-
 };
 
 #endif  // CHIGGUI_FUNCTIONVIEW_HPP

@@ -23,31 +23,30 @@
 #include "functionspane.hpp"
 #include "functionview.hpp"
 #include "modulebrowser.hpp"
-#include "outputview.hpp"
 #include "moduledependencies.hpp"
+#include "outputview.hpp"
 
 class MainWindow : public KXmlGuiWindow
 {
 	Q_OBJECT
 public:
-    
 	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
-    
-    FunctionView* functionView(const QString& name) const {
-        auto iter = mOpenFunctions.find(name);
-        if (iter != mOpenFunctions.end()) {
-            return iter->second;
-        }
-        return nullptr;
-    }
 
-    chig::JsonModule* currentModule() const { return mModule; }
-    chig::Context& context() const { return *mChigContext; }
-    
+	FunctionView* functionView(const QString& name) const
+	{
+		auto iter = mOpenFunctions.find(name);
+		if (iter != mOpenFunctions.end()) {
+			return iter->second;
+		}
+		return nullptr;
+	}
+
+	chig::JsonModule* currentModule() const { return mModule; }
+	chig::Context& context() const { return *mChigContext; }
 public slots:
-	void openWorkspaceDialog(); // this one opens a dialog
-	void openWorkspace(QUrl url); // and this one doesn't
+	void openWorkspaceDialog();	// this one opens a dialog
+	void openWorkspace(QUrl url);  // and this one doesn't
 	void openModule(const QString& fullName);
 	void newFunctionSelected(chig::GraphFunction* name);
 	void save();
@@ -60,21 +59,20 @@ signals:
 	void workspaceOpened(chig::Context& workspace);
 	void moduleOpened(chig::JsonModule* mod);
 	void functionOpened(FunctionView* func);
-    
-    void newModuleCreated(chig::JsonModule* newModule);
-    void newFunctionCreated(chig::GraphFunction* func);
-    
-    void runStarted(QProcess* process);
+
+	void newModuleCreated(chig::JsonModule* newModule);
+	void newFunctionCreated(chig::GraphFunction* func);
+
+	void runStarted(QProcess* process);
 
 private:
-    
-	KRecentFilesAction* mOpenRecentAction; // keep this so we can save the entries
+	KRecentFilesAction* mOpenRecentAction;  // keep this so we can save the entries
 	std::unordered_map<QString, FunctionView*> mOpenFunctions;
-	
-    // the tabs for open functions
-    QTabWidget* mFunctionTabs = nullptr;
-    
-    // context & module
+
+	// the tabs for open functions
+	QTabWidget* mFunctionTabs = nullptr;
+
+	// context & module
 	std::unique_ptr<chig::Context> mChigContext = nullptr;
 	chig::JsonModule* mModule = nullptr;
 };
