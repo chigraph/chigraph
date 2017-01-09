@@ -84,7 +84,6 @@ $(document).ready(function(){initNavTree('structchig_1_1GraphFunction.html','');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="structchig_1_1GraphFunction-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">chig::GraphFunction Struct Reference</div>  </div>
@@ -97,6 +96,8 @@ $(document).ready(function(){initNavTree('structchig_1_1GraphFunction.html','');
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a18c5a468a48ea9468af4755e00aea293"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphFunction.html#a18c5a468a48ea9468af4755e00aea293">GraphFunction</a> (<a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> &amp;mod, gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37">name</a>, std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt; dataIns, std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt; dataOuts, std::vector&lt; std::string &gt; execIns, std::vector&lt; std::string &gt; execOuts)</td></tr>
 <tr class="separator:a18c5a468a48ea9468af4755e00aea293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad38700422a7466162b80969280ab5870"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphFunction.html#ad38700422a7466162b80969280ab5870">GraphFunction</a> (<a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> &amp;<a class="el" href="structchig_1_1GraphFunction.html#a1a331d17f2229f78a0b9c9407f500b07">module</a>, const nlohmann::json &amp;data, <a class="el" href="structchig_1_1Result.html">Result</a> &amp;res)</td></tr>
+<tr class="separator:ad38700422a7466162b80969280ab5870"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac65f801cb810bd956c4ebc8f93e0c494"><td class="memItemLeft" align="right" valign="top"><a id="ac65f801cb810bd956c4ebc8f93e0c494"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphFunction.html#ac65f801cb810bd956c4ebc8f93e0c494">~GraphFunction</a> ()</td></tr>
 <tr class="memdesc:ac65f801cb810bd956c4ebc8f93e0c494"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
@@ -121,21 +122,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1a331d17f2229f78a0b9c9407f500b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3291c0b882b4f73e5d60af4ca75b1a37"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37">name</a> () const</td></tr>
 <tr class="separator:a3291c0b882b4f73e5d60af4ca75b1a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a8768d5514a31104f0b3a9b5553099c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphFunction.html#a5a8768d5514a31104f0b3a9b5553099c">toJSON</a> (nlohmann::json *toFill) const</td></tr>
+<tr class="separator:a5a8768d5514a31104f0b3a9b5553099c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1f0121edf211dbd98bb49a2d4fe5260"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphFunction.html#ab1f0121edf211dbd98bb49a2d4fe5260">validateGraph</a> () const</td></tr>
 <tr class="separator:ab1f0121edf211dbd98bb49a2d4fe5260"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">JSON Serialization</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>Functions for serializing and deserializing to JSON. Usually called by <a class="el" href="structchig_1_1JsonModule.html" title="Module that holds JSON code. ">JsonModule</a></p>
-<p>Serialize the <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> to JSON (usually called from JsonModule::toJson) </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">toFill</td><td>The JSON object representing the graph </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
-</div></td></tr>
-<tr class="memitem:a5a8768d5514a31104f0b3a9b5553099c"><td class="memItemLeft" align="right" valign="top"><a id="a5a8768d5514a31104f0b3a9b5553099c"></a>
-<a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><b>toJSON</b> (nlohmann::json *toFill) const</td></tr>
-<tr class="separator:a5a8768d5514a31104f0b3a9b5553099c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Node Manipulation</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>Functions for mainpulating nodes; getting, adding </p>
 </div></td></tr>
@@ -187,11 +177,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a90a589106d823501ecb6450636a19e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae355b017f2859dabff4fa17791317d77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphFunction.html#ae355b017f2859dabff4fa17791317d77">modifyExecOutput</a> (int idx, gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37">name</a>)</td></tr>
 <tr class="separator:ae355b017f2859dabff4fa17791317d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af4417b3cb4bb432656d8d929a81a07f8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphFunction.html#af4417b3cb4bb432656d8d929a81a07f8">fromJSON</a> (<a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> &amp;<a class="el" href="structchig_1_1GraphFunction.html#a1a331d17f2229f78a0b9c9407f500b07">module</a>, const nlohmann::json &amp;data, std::unique_ptr&lt; <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> &gt; *ret_func)</td></tr>
-<tr class="separator:af4417b3cb4bb432656d8d929a81a07f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>this is an AST-like representation of a function in a graph It is used for IDE-like behavior, codegen, and JSON generation. </p>
@@ -199,7 +184,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00026">26</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a18c5a468a48ea9468af4755e00aea293"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18c5a468a48ea9468af4755e00aea293">&sect;&nbsp;</a></span>GraphFunction()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a18c5a468a48ea9468af4755e00aea293">&sect;&nbsp;</a></span>GraphFunction() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -259,15 +244,69 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00011">11</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00013">13</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00247">name()</a>, and <a class="el" href="structchig_1_1GraphFunction.html#ac65f801cb810bd956c4ebc8f93e0c494">~GraphFunction()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00238">name()</a>, and <a class="el" href="structchig_1_1GraphFunction.html#ac65f801cb810bd956c4ebc8f93e0c494">~GraphFunction()</a>.</p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a18c5a468a48ea9468af4755e00aea293_cgraph.svg" width="360" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ad38700422a7466162b80969280ab5870"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad38700422a7466162b80969280ab5870">&sect;&nbsp;</a></span>GraphFunction() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">chig::GraphFunction::GraphFunction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> &amp;&#160;</td>
+          <td class="paramname"><em>module</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structchig_1_1Result.html">Result</a> &amp;&#160;</td>
+          <td class="paramname"><em>res</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructs a <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> from a JOSN object </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>The JSON object to read from </td></tr>
+    <tr><td class="paramname">module</td><td>The module to create the <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> with </td></tr>
+    <tr><td class="paramname">res</td><td>The result </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00030">30</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+
+<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00064">chig::ChigModule::context()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00246">module()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00238">name()</a>, and <a class="el" href="Context_8cpp_source.html#l00219">chig::Context::typeFromModule()</a>.</p>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 0 -->
+</div>
 </div>
 
 </div>
@@ -313,15 +352,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00637">637</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00659">659</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00150">dataInputs()</a>.</p>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00141">dataInputs()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a58da0f0d53f153a37bb4ba7bdc00df75_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 1 -->
 </div>
 </div>
 
@@ -367,15 +406,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00667">667</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00692">692</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00173">dataOutputs()</a>.</p>
-<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00164">dataOutputs()</a>.</p>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_af76e111d051ead319035f83785b932e2_icgraph.svg" width="100%" height="515"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 2 -->
 </div>
 </div>
 
@@ -414,15 +453,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00738">738</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00746">746</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00199">execInputs()</a>.</p>
-<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00190">execInputs()</a>.</p>
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a61a90781bcdc650d6b2446dd16d8a079_icgraph.svg" width="100%" height="580"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 3 -->
 </div>
 </div>
 
@@ -461,15 +500,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00759">759</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00773">773</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00222">execOutputs()</a>.</p>
-<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00213">execOutputs()</a>.</p>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_abbe7b69cdd8a02210fd2d5a580f1f80a_icgraph.svg" width="100%" height="461"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 4 -->
 </div>
 </div>
 
@@ -509,15 +548,15 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00312">312</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00334">334</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00150">dataInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00173">dataOutputs()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00402">entryNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00717">functionType()</a>, <a class="el" href="NameMangler_8cpp_source.html#l00007">chig::mangleFunctionName()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00255">module()</a>, and <a class="el" href="GraphFunction_8hpp_source.html#l00247">name()</a>.</p>
-<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00141">dataInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00164">dataOutputs()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00424">entryNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00725">functionType()</a>, <a class="el" href="NameMangler_8cpp_source.html#l00007">chig::mangleFunctionName()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00246">module()</a>, and <a class="el" href="GraphFunction_8hpp_source.html#l00238">name()</a>.</p>
+<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ac808aecb5fec9cd3a2a1f59e18c90eee_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 5 -->
 </div>
 </div>
 
@@ -547,15 +586,15 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the context </p><dl class="section return"><dt>Returns</dt><dd>The context </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00244">244</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00235">235</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00483">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00506">createExitNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00717">functionType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00424">insertNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00549">loadGraph()</a>.</p>
-<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00503">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00526">createExitNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00725">functionType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00444">insertNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00569">loadGraph()</a>.</p>
+<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a1e937f70e87b2d783211f31a6ddfb91c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 6 -->
 </div>
 </div>
 
@@ -584,25 +623,25 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00483">483</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00503">503</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00244">context()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00150">dataInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00199">execInputs()</a>, and <a class="el" href="Context_8cpp_source.html#l00235">chig::Context::nodeTypeFromModule()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00235">context()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00141">dataInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00190">execInputs()</a>, and <a class="el" href="Context_8cpp_source.html#l00239">chig::Context::nodeTypeFromModule()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00529">getOrInsertEntryNode()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00684">modifyDataOutput()</a>.</p>
-<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_abc41f524da8fd9b7308cb7abaa2b28c9_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00549">getOrInsertEntryNode()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00792">modifyExecOutput()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_abc41f524da8fd9b7308cb7abaa2b28c9_icgraph.svg" width="100%" height="545"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 7 -->
+</div>
+</div>
+<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 8 -->
 </div>
 </div>
 
@@ -631,25 +670,25 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00506">506</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00526">526</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00244">context()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00173">dataOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00222">execOutputs()</a>, and <a class="el" href="Context_8cpp_source.html#l00235">chig::Context::nodeTypeFromModule()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00235">context()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00164">dataOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00213">execOutputs()</a>, and <a class="el" href="Context_8cpp_source.html#l00239">chig::Context::nodeTypeFromModule()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00684">modifyDataOutput()</a>.</p>
-<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ac7c52122fef0c74d9d0ee04af9a741c4_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00792">modifyExecOutput()</a>.</p>
 <div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-10-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ac7c52122fef0c74d9d0ee04af9a741c4_icgraph.svg" width="100%" height="510"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 9 -->
+</div>
+</div>
+<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 10 -->
 </div>
 </div>
 
@@ -679,25 +718,25 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the function data inputs in the format {type, docstring} </p><dl class="section return"><dt>Returns</dt><dd>The inputs </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00150">150</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00141">141</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00637">addDataInput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00654">modifyDataInput()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00647">removeDataInput()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00659">addDataInput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00678">modifyDataInput()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00670">removeDataInput()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00312">compile()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00483">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00402">entryNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00028">fromJSON()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00717">functionType()</a>.</p>
-<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-11-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ad871a4642c83ead67062eb907b55443f_cgraph.svg" width="568" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00334">compile()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00503">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00424">entryNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00725">functionType()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00139">toJSON()</a>.</p>
 <div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-12-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-12-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ad871a4642c83ead67062eb907b55443f_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 11 -->
+</div>
+</div>
+<div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 12 -->
 </div>
 </div>
 
@@ -727,25 +766,25 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the function data outputs in the format {type, docstring} </p><dl class="section return"><dt>Returns</dt><dd>The outputs </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00173">173</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00164">164</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00667">addDataOutput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00684">modifyDataOutput()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00677">removeDataOutput()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00692">addDataOutput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00711">modifyDataOutput()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00703">removeDataOutput()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00312">compile()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00506">createExitNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00028">fromJSON()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00717">functionType()</a>.</p>
-<div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-13-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ae734c04f29489efeb96227a20e2ada22_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00334">compile()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00526">createExitNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00725">functionType()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00139">toJSON()</a>.</p>
 <div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-14-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-14-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ae734c04f29489efeb96227a20e2ada22_icgraph.svg" width="100%" height="515"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 13 -->
+</div>
+</div>
+<div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 14 -->
 </div>
 </div>
 
@@ -775,25 +814,25 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two entry nodes, which is illegal </p><dl class="section return"><dt>Returns</dt><dd>the entry node </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00402">402</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00424">424</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00150">dataInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00199">execInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00250">graph()</a>, and <a class="el" href="Graph_8cpp_source.html#l00213">chig::Graph::nodesWithType()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00141">dataInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00190">execInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00241">graph()</a>, and <a class="el" href="Graph_8cpp_source.html#l00213">chig::Graph::nodesWithType()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00312">compile()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00529">getOrInsertEntryNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00684">modifyDataOutput()</a>.</p>
-<div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-15-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_aa47e30665a08b671950c4e8411c7a4ba_cgraph.svg" width="100%" height="599"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00334">compile()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00549">getOrInsertEntryNode()</a>.</p>
 <div id="dynsection-16" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-16-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-16-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-16-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-16-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_aa47e30665a08b671950c4e8411c7a4ba_icgraph.svg" width="100%" height="530"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 15 -->
+</div>
+</div>
+<div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-17-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 16 -->
 </div>
 </div>
 
@@ -823,25 +862,25 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the function exec inputs </p><dl class="section return"><dt>Returns</dt><dd>The exec outputs </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00199">199</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00190">190</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00738">addExecInput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00753">modifyExecInput()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00747">removeExecInput()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00746">addExecInput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00765">modifyExecInput()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00757">removeExecInput()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00483">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00402">entryNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00028">fromJSON()</a>.</p>
-<div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-17-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a217197f9e54f57cd7a8751a335f4710b_cgraph.svg" width="360" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00503">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00424">entryNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00139">toJSON()</a>.</p>
 <div id="dynsection-18" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-18-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-18-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-18-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-18-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a217197f9e54f57cd7a8751a335f4710b_icgraph.svg" width="100%" height="587"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 17 -->
+</div>
+</div>
+<div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 18 -->
 </div>
 </div>
 
@@ -871,98 +910,25 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the function exec outputs </p><dl class="section return"><dt>Returns</dt><dd>The exec outputs </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00222">222</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00213">213</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00759">addExecOutput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00774">modifyExecOutput()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00768">removeExecOutput()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00773">addExecOutput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00792">modifyExecOutput()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00784">removeExecOutput()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00506">createExitNodeType()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00028">fromJSON()</a>.</p>
-<div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-19-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ae155f716b072ef5f8e3ba064ae7ef8c0_cgraph.svg" width="364" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00526">createExitNodeType()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00139">toJSON()</a>.</p>
 <div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-20-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-20-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ae155f716b072ef5f8e3ba064ae7ef8c0_icgraph.svg" width="100%" height="510"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 19 -->
 </div>
 </div>
-
-</div>
-</div>
-<a id="af4417b3cb4bb432656d8d929a81a07f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4417b3cb4bb432656d8d929a81a07f8">&sect;&nbsp;</a></span>fromJSON()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> chig::GraphFunction::fromJSON </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structchig_1_1JsonModule.html">JsonModule</a> &amp;&#160;</td>
-          <td class="paramname"><em>module</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> &gt; *&#160;</td>
-          <td class="paramname"><em>ret_func</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Constructs a <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> from a JOSN object </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>The JSON object to read from </td></tr>
-    <tr><td class="paramname">module</td><td>The module to create the <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> with </td></tr>
-    <tr><td class="paramname">ret_func</td><td>The <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> that has been produced </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
-
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00028">28</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
-
-<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, <a class="el" href="structchig_1_1NodeType.html#ad61ce1a20fa6b174027cbbdd43782d9c">chig::NodeType::codegen()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00064">chig::ChigModule::context()</a>, <a class="el" href="NodeType_8hpp_source.html#l00080">chig::NodeType::dataInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00150">dataInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00083">chig::NodeType::dataOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00173">dataOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00199">execInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00089">chig::NodeType::execOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00222">execOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00250">graph()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00255">module()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00247">name()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00069">chig::NodeInstance::outputExecConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, <a class="el" href="Context_8cpp_source.html#l00319">chig::stringifyLLVMType()</a>, <a class="el" href="Graph_8cpp_source.html#l00146">chig::Graph::toJson()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00040">chig::NodeInstance::type()</a>, and <a class="el" href="Context_8cpp_source.html#l00215">chig::Context::typeFromModule()</a>.</p>
-
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00088">chig::JsonModule::JsonModule()</a>.</p>
 <div id="dynsection-21" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-21-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+  <img id="dynsection-21-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-21-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-21-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_af4417b3cb4bb432656d8d929a81a07f8_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
-<div id="dynsection-22" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-22-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-22-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_af4417b3cb4bb432656d8d929a81a07f8_icgraph.svg" width="423" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 20 -->
 </div>
 </div>
 
@@ -984,25 +950,25 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the LLVM function type for the function </p><dl class="section return"><dt>Returns</dt><dd>The function type </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00717">717</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00725">725</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00244">context()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00150">dataInputs()</a>, and <a class="el" href="GraphFunction_8hpp_source.html#l00173">dataOutputs()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00235">context()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00141">dataInputs()</a>, and <a class="el" href="GraphFunction_8hpp_source.html#l00164">dataOutputs()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00312">compile()</a>, and <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00334">compile()</a>, and <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>.</p>
+<div id="dynsection-22" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-22-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-22-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 21 -->
+</div>
+</div>
 <div id="dynsection-23" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-23-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+  <img id="dynsection-23-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-23-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-23-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a6aae3374651aca2f0973c81ecae2d848_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
-<div id="dynsection-24" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-24-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-24-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a6aae3374651aca2f0973c81ecae2d848_icgraph.svg" width="579" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 22 -->
 </div>
 </div>
 
@@ -1056,25 +1022,25 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00529">529</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00549">549</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00483">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00402">entryNode()</a>, and <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00503">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00424">entryNode()</a>, and <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>.</p>
+<div id="dynsection-24" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-24-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-24-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 23 -->
+</div>
+</div>
 <div id="dynsection-25" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-25-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+  <img id="dynsection-25-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-25-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-25-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a1fd77fbd5bb46690fdc79cd9c6d35917_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
-<div id="dynsection-26" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-26-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-26-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a1fd77fbd5bb46690fdc79cd9c6d35917_icgraph.svg" width="579" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 24 -->
 </div>
 </div>
 
@@ -1104,15 +1070,15 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the graph </p><dl class="section return"><dt>Returns</dt><dd>The graph </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00250">250</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00241">241</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00402">entryNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00028">fromJSON()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00684">modifyDataOutput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00437">removeNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00557">validateGraph()</a>.</p>
-<div id="dynsection-27" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-27-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00424">entryNode()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00792">modifyExecOutput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00457">removeNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00139">toJSON()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00577">validateGraph()</a>.</p>
+<div id="dynsection-26" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-26-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-27-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a5a5eed54a181b865e7bd842a40f5e1f1_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-26-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 25 -->
 </div>
 </div>
 
@@ -1144,7 +1110,7 @@ Static Public Member Functions</h2></td></tr>
 <p></p>
 <p>Get the graph </p><dl class="section return"><dt>Returns</dt><dd>The graph </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00252">252</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00243">243</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
 </div>
 </div>
@@ -1211,25 +1177,25 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00085">85</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00076">76</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00483">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00506">createExitNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00717">functionType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00529">getOrInsertEntryNode()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00250">graph()</a>, <a class="el" href="Graph_8cpp_source.html#l00190">chig::Graph::insertNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00549">loadGraph()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00437">removeNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00557">validateGraph()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00503">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00526">createExitNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00725">functionType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00549">getOrInsertEntryNode()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00241">graph()</a>, <a class="el" href="Graph_8cpp_source.html#l00190">chig::Graph::insertNode()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00569">loadGraph()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00457">removeNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00577">validateGraph()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00529">getOrInsertEntryNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00424">insertNode()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00549">getOrInsertEntryNode()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00444">insertNode()</a>.</p>
+<div id="dynsection-27" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-27-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-27-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 26 -->
+</div>
+</div>
 <div id="dynsection-28" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-28-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+  <img id="dynsection-28-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-28-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-28-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a70b74dd7330f7afb2b3ab38feebd57c5_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
-<div id="dynsection-29" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-29-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-29-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a70b74dd7330f7afb2b3ab38feebd57c5_icgraph.svg" width="380" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 27 -->
 </div>
 </div>
 
@@ -1303,15 +1269,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00424">424</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00444">444</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00244">context()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>, and <a class="el" href="Context_8cpp_source.html#l00235">chig::Context::nodeTypeFromModule()</a>.</p>
-<div id="dynsection-30" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-30-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00235">context()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>, and <a class="el" href="Context_8cpp_source.html#l00239">chig::Context::nodeTypeFromModule()</a>.</p>
+<div id="dynsection-29" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-29-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-30-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a449ab966907b5e32dd00d5f6bb1b3ede_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-29-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 28 -->
 </div>
 </div>
 
@@ -1333,25 +1299,25 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Load the graph from the source json This is called from Context::loadModuleFromJson </p><dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00549">549</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00569">569</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00244">context()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00235">context()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>.</p>
+<div id="dynsection-30" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-30-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-30-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 29 -->
+</div>
+</div>
 <div id="dynsection-31" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-31-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+  <img id="dynsection-31-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-31-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-31-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a9d343eff733249e7c3c6115ba4ebe9a4_cgraph.svg" width="360" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
-<div id="dynsection-32" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-32-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-32-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a9d343eff733249e7c3c6115ba4ebe9a4_icgraph.svg" width="579" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 30 -->
 </div>
 </div>
 
@@ -1397,25 +1363,25 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00654">654</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00678">678</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00247">name()</a>, and <a class="el" href="DataType_8hpp_source.html#l00039">chig::DataType::valid()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00238">name()</a>, and <a class="el" href="DataType_8hpp_source.html#l00039">chig::DataType::valid()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00150">dataInputs()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00141">dataInputs()</a>.</p>
+<div id="dynsection-32" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-32-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-32-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-32-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 31 -->
+</div>
+</div>
 <div id="dynsection-33" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-33-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+  <img id="dynsection-33-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-33-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-33-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a452c6ff0834f1acdb6740267ef468250_cgraph.svg" width="370" height="104"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
-<div id="dynsection-34" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-34-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-34-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a452c6ff0834f1acdb6740267ef468250_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 32 -->
 </div>
 </div>
 
@@ -1461,25 +1427,25 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00684">684</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00711">711</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00483">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00506">createExitNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00402">entryNode()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00250">graph()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00247">name()</a>, and <a class="el" href="DataType_8hpp_source.html#l00039">chig::DataType::valid()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00238">name()</a>, and <a class="el" href="DataType_8hpp_source.html#l00039">chig::DataType::valid()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00173">dataOutputs()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00164">dataOutputs()</a>.</p>
+<div id="dynsection-34" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-34-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-34-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-34-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 33 -->
+</div>
+</div>
 <div id="dynsection-35" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-35-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+  <img id="dynsection-35-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-35-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-35-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a3765dc838314ff13457ac933b043f711_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
-<div id="dynsection-36" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-36-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-36-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-36-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a3765dc838314ff13457ac933b043f711_icgraph.svg" width="100%" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 34 -->
 </div>
 </div>
 
@@ -1518,15 +1484,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00753">753</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00765">765</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00199">execInputs()</a>.</p>
-<div id="dynsection-37" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-37-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-37-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00190">execInputs()</a>.</p>
+<div id="dynsection-36" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-36-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-36-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-37-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a66359dd63933d9c37b00d3894c979b11_icgraph.svg" width="100%" height="587"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-36-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 35 -->
 </div>
 </div>
 
@@ -1565,15 +1531,25 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00774">774</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00792">792</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00222">execOutputs()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8cpp_source.html#l00503">createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00526">createExitNodeType()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00241">graph()</a>, and <a class="el" href="Graph_8cpp_source.html#l00213">chig::Graph::nodesWithType()</a>.</p>
+
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00213">execOutputs()</a>.</p>
+<div id="dynsection-37" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-37-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-37-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-37-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 36 -->
+</div>
+</div>
 <div id="dynsection-38" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-38-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-38-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-38-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ae355b017f2859dabff4fa17791317d77_icgraph.svg" width="100%" height="461"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 37 -->
 </div>
 </div>
 
@@ -1603,17 +1579,17 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the <a class="el" href="structchig_1_1JsonModule.html" title="Module that holds JSON code. ">JsonModule</a> that contains this <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> </p><dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1JsonModule.html" title="Module that holds JSON code. ">JsonModule</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00255">255</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00246">246</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
-<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00247">name()</a>.</p>
+<p>References <a class="el" href="GraphFunction_8hpp_source.html#l00238">name()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00312">compile()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00028">fromJSON()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00334">compile()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00030">GraphFunction()</a>.</p>
 <div id="dynsection-39" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-39-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-39-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-39-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a1a331d17f2229f78a0b9c9407f500b07_cgraph.svg" width="360" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 38 -->
 </div>
 </div>
 <div id="dynsection-40" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -1621,7 +1597,7 @@ Static Public Member Functions</h2></td></tr>
 <div id="dynsection-40-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-40-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a1a331d17f2229f78a0b9c9407f500b07_icgraph.svg" width="622" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 39 -->
 </div>
 </div>
 
@@ -1651,15 +1627,15 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the name of the function </p><dl class="section return"><dt>Returns</dt><dd>The name of the function </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00247">247</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8hpp_source.html#l00238">238</a> of file <a class="el" href="GraphFunction_8hpp_source.html">GraphFunction.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00312">compile()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00028">fromJSON()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00011">GraphFunction()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00654">modifyDataInput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00684">modifyDataOutput()</a>, and <a class="el" href="GraphFunction_8hpp_source.html#l00255">module()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00334">compile()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00013">GraphFunction()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00678">modifyDataInput()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00711">modifyDataOutput()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00246">module()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00139">toJSON()</a>.</p>
 <div id="dynsection-41" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-41-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-41-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-41-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a3291c0b882b4f73e5d60af4ca75b1a37_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 40 -->
 </div>
 </div>
 
@@ -1687,15 +1663,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00647">647</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00670">670</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00150">dataInputs()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00141">dataInputs()</a>.</p>
 <div id="dynsection-42" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-42-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-42-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-42-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a9698f54861e9997f2690e10e0e8316c8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 41 -->
 </div>
 </div>
 
@@ -1723,15 +1699,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00677">677</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00703">703</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00173">dataOutputs()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00164">dataOutputs()</a>.</p>
 <div id="dynsection-43" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-43-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-43-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-43-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ae6fc3833c6e0631177efb4e35e7f59e4_icgraph.svg" width="100%" height="515"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 42 -->
 </div>
 </div>
 
@@ -1759,15 +1735,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00747">747</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00757">757</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00199">execInputs()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00190">execInputs()</a>.</p>
 <div id="dynsection-44" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-44-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-44-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-44-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a390ce7b4174a06ecd00ae7c72af9e157_icgraph.svg" width="100%" height="587"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 43 -->
 </div>
 </div>
 
@@ -1795,15 +1771,15 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00768">768</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00784">784</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00222">execOutputs()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00213">execOutputs()</a>.</p>
 <div id="dynsection-45" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-45-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-45-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-45-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a90a589106d823501ecb6450636a19e64_icgraph.svg" width="100%" height="461"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 44 -->
 </div>
 </div>
 
@@ -1832,17 +1808,17 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00437">437</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00457">457</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="NodeInstance_8cpp_source.html#l00200">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00257">chig::disconnectExec()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00250">graph()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">chig::NodeInstance::inputExecConnections</a>, <a class="el" href="Graph_8hpp_source.html#l00056">chig::Graph::nodes()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">chig::NodeInstance::outputDataConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00069">chig::NodeInstance::outputExecConnections</a>.</p>
+<p>References <a class="el" href="NodeInstance_8cpp_source.html#l00199">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00256">chig::disconnectExec()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00241">graph()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">chig::NodeInstance::inputExecConnections</a>, <a class="el" href="Graph_8hpp_source.html#l00056">chig::Graph::nodes()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">chig::NodeInstance::outputDataConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00069">chig::NodeInstance::outputExecConnections</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>.</p>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>.</p>
 <div id="dynsection-46" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-46-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-46-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-46-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a398599d8fe1982a3c76462b1b2375a6e_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 45 -->
 </div>
 </div>
 <div id="dynsection-47" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -1850,7 +1826,44 @@ Static Public Member Functions</h2></td></tr>
 <div id="dynsection-47-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-47-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_a398599d8fe1982a3c76462b1b2375a6e_icgraph.svg" width="579" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 46 -->
+</div>
+</div>
+
+</div>
+</div>
+<a id="a5a8768d5514a31104f0b3a9b5553099c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a8768d5514a31104f0b3a9b5553099c">&sect;&nbsp;</a></span>toJSON()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> chig::GraphFunction::toJSON </td>
+          <td>(</td>
+          <td class="paramtype">nlohmann::json *&#160;</td>
+          <td class="paramname"><em>toFill</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Serialize the <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> to JSON (usually called from JsonModule::toJson) </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">toFill</td><td>The JSON object representing the graph </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
+
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00139">139</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+
+<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, <a class="el" href="structchig_1_1NodeType.html#ad61ce1a20fa6b174027cbbdd43782d9c">chig::NodeType::codegen()</a>, <a class="el" href="NodeType_8hpp_source.html#l00080">chig::NodeType::dataInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00141">dataInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00083">chig::NodeType::dataOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00164">dataOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00190">execInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00089">chig::NodeType::execOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00213">execOutputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00241">graph()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">chig::NodeInstance::inputExecConnections</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00238">name()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00069">chig::NodeInstance::outputExecConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, <a class="el" href="Context_8cpp_source.html#l00323">chig::stringifyLLVMType()</a>, <a class="el" href="Graph_8cpp_source.html#l00146">chig::Graph::toJson()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00040">chig::NodeInstance::type()</a>.</p>
+<div id="dynsection-48" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-48-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-48-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-48-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 47 -->
 </div>
 </div>
 
@@ -1872,25 +1885,25 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Validate the graph, makeing sure all connections are two-way etc. </p><dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00557">557</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphFunction_8cpp_source.html#l00577">577</a> of file <a class="el" href="GraphFunction_8cpp_source.html">GraphFunction.cpp</a>.</p>
 
-<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00250">graph()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">chig::NodeInstance::inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">chig::NodeInstance::outputDataConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00069">chig::NodeInstance::outputExecConnections</a>.</p>
+<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00241">graph()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">chig::NodeInstance::inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">chig::NodeInstance::outputDataConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00069">chig::NodeInstance::outputExecConnections</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00085">insertNode()</a>.</p>
-<div id="dynsection-48" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-48-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-48-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-48-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ab1f0121edf211dbd98bb49a2d4fe5260_cgraph.svg" width="376" height="155"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
-</div>
+<p>Referenced by <a class="el" href="GraphFunction_8hpp_source.html#l00076">insertNode()</a>.</p>
 <div id="dynsection-49" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-49-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-49-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-49-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-49-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphFunction_ab1f0121edf211dbd98bb49a2d4fe5260_icgraph.svg" width="579" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 48 -->
+</div>
+</div>
+<div id="dynsection-50" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-50-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-50-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-50-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 49 -->
 </div>
 </div>
 
@@ -1906,7 +1919,7 @@ Static Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a></li>
-    <li class="footer">Generated on Mon Jan 2 2017 20:05:36 for chigraph by
+    <li class="footer">Generated on Sun Jan 8 2017 19:33:45 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

@@ -127,8 +127,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0fc2b8e9bab1d061ec12212ac8c78a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad730121a133fbc474fcb71d49f31f7b3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3">fullName</a> () const</td></tr>
 <tr class="separator:ad730121a133fbc474fcb71d49f31f7b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63d9412a4408c43f25d5f68f4d3d7082"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1CModule.html#a63d9412a4408c43f25d5f68f4d3d7082">generateModule</a> (std::unique_ptr&lt; llvm::Module &gt; *module) override</td></tr>
-<tr class="separator:a63d9412a4408c43f25d5f68f4d3d7082"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92ac4a1987c332d9034e35d5cc37ab97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1CModule.html#a92ac4a1987c332d9034e35d5cc37ab97">generateModule</a> (std::unique_ptr&lt; llvm::Module &gt; *) override</td></tr>
+<tr class="separator:a92ac4a1987c332d9034e35d5cc37ab97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fe8df6ff170ecd33057387571bb5cd2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2">name</a> () const</td></tr>
 <tr class="separator:a1fe8df6ff170ecd33057387571bb5cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e55d5a477ad1f517d17ee4b809b7de7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1CModule.html#a7e55d5a477ad1f517d17ee4b809b7de7">nodeTypeFromName</a> (gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2">name</a>, const nlohmann::json &amp;jsonData, std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt; *toFill) override</td></tr>
@@ -139,8 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0d896e122a16c304bc465d212f46b9e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1c1117ae887ae98edfede6347280004"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1DataType.html">DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1CModule.html#ab1c1117ae887ae98edfede6347280004">typeFromName</a> (gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2">name</a>) override</td></tr>
 <tr class="separator:ab1c1117ae887ae98edfede6347280004"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93686f0f5199b7dc81f1ed7d722b00a8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1CModule.html#a93686f0f5199b7dc81f1ed7d722b00a8">typeNames</a> () const override</td></tr>
-<tr class="memdesc:a93686f0f5199b7dc81f1ed7d722b00a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the possible <a class="el" href="structchig_1_1DataType.html">DataType</a> names.  <a href="#a93686f0f5199b7dc81f1ed7d722b00a8">More...</a><br /></td></tr>
+<tr class="memitem:a93686f0f5199b7dc81f1ed7d722b00a8"><td class="memItemLeft" align="right" valign="top"><a id="a93686f0f5199b7dc81f1ed7d722b00a8"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1CModule.html#a93686f0f5199b7dc81f1ed7d722b00a8">typeNames</a> () const override</td></tr>
+<tr class="memdesc:a93686f0f5199b7dc81f1ed7d722b00a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the possible <a class="el" href="structchig_1_1DataType.html">DataType</a> names. <br /></td></tr>
 <tr class="separator:a93686f0f5199b7dc81f1ed7d722b00a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -179,9 +180,9 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8cpp_source.html#l00013">13</a> of file <a class="el" href="ChigModule_8cpp_source.html">ChigModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8cpp_source.html#l00014">14</a> of file <a class="el" href="ChigModule_8cpp_source.html">ChigModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00064">chig::ChigModule::context()</a>, and <a class="el" href="Context_8cpp_source.html#l00102">chig::Context::loadModule()</a>.</p>
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00064">chig::ChigModule::context()</a>, and <a class="el" href="Context_8cpp_source.html#l00106">chig::Context::loadModule()</a>.</p>
 
 <p>Referenced by <a class="el" href="ChigModule_8hpp_source.html#l00072">chig::ChigModule::dependencies()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00088">chig::JsonModule::JsonModule()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -189,7 +190,7 @@ Public Member Functions</h2></td></tr>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_acec829296a8677186fcd6f0beae3d3a1_cgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 0 -->
 </div>
 </div>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -197,7 +198,7 @@ Public Member Functions</h2></td></tr>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_acec829296a8677186fcd6f0beae3d3a1_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 1 -->
 </div>
 </div>
 
@@ -231,13 +232,13 @@ Public Member Functions</h2></td></tr>
 
 <p>References <a class="el" href="structchig_1_1ChigModule.html#aad4b97558b2455201b4db986b3b63840">chig::ChigModule::generateModule()</a>.</p>
 
-<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00013">chig::ChigModule::addDependency()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00028">chig::GraphFunction::fromJSON()</a>, <a class="el" href="LangModule_8cpp_source.html#l00266">chig::LangModule::LangModule()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00194">chig::JsonModule::saveToDisk()</a>, and <a class="el" href="LangModule_8cpp_source.html#l00452">chig::LangModule::typeFromName()</a>.</p>
+<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00014">chig::ChigModule::addDependency()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00030">chig::GraphFunction::GraphFunction()</a>, <a class="el" href="LangModule_8cpp_source.html#l00266">chig::LangModule::LangModule()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00193">chig::JsonModule::saveToDisk()</a>, and <a class="el" href="LangModule_8cpp_source.html#l00452">chig::LangModule::typeFromName()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_aad81aae17452ddc5fc43809924236385_cgraph.svg" width="448" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 2 -->
 </div>
 </div>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -245,7 +246,7 @@ Public Member Functions</h2></td></tr>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_aad81aae17452ddc5fc43809924236385_icgraph.svg" width="100%" height="492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 3 -->
 </div>
 </div>
 
@@ -277,15 +278,15 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00072">72</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8cpp_source.html#l00013">chig::ChigModule::addDependency()</a>.</p>
+<p>References <a class="el" href="ChigModule_8cpp_source.html#l00014">chig::ChigModule::addDependency()</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00173">chig::JsonModule::toJSON()</a>.</p>
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00172">chig::JsonModule::toJSON()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_a0fc2b8e9bab1d061ec12212ac8c78a40_cgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 4 -->
 </div>
 </div>
 <div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -293,7 +294,7 @@ Public Member Functions</h2></td></tr>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_a0fc2b8e9bab1d061ec12212ac8c78a40_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 5 -->
 </div>
 </div>
 
@@ -325,20 +326,20 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00061">61</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00155">chig::JsonModule::generateModule()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00194">chig::JsonModule::saveToDisk()</a>.</p>
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00154">chig::JsonModule::generateModule()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00193">chig::JsonModule::saveToDisk()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_ad730121a133fbc474fcb71d49f31f7b3_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 6 -->
 </div>
 </div>
 
 </div>
 </div>
-<a id="a63d9412a4408c43f25d5f68f4d3d7082"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63d9412a4408c43f25d5f68f4d3d7082">&sect;&nbsp;</a></span>generateModule()</h2>
+<a id="a92ac4a1987c332d9034e35d5cc37ab97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92ac4a1987c332d9034e35d5cc37ab97">&sect;&nbsp;</a></span>generateModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -360,8 +361,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p></p>
 <p>Generate a llvm::Module from the module. Usually called by <a class="el" href="structchig_1_1Context.html#a8987940286a7a67313b635891d8f51e8">Context::compileModule</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">module</td><td>The llvm::Module to fill &ndash; must be already filled with dependencies </td></tr>
@@ -372,7 +371,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structchig_1_1ChigModule.html#aad4b97558b2455201b4db986b3b63840">chig::ChigModule</a>.</p>
 
-<p>Definition at line <a class="el" href="CModule_8hpp_source.html#l00037">37</a> of file <a class="el" href="CModule_8hpp_source.html">CModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="CModule_8hpp_source.html#l00032">32</a> of file <a class="el" href="CModule_8hpp_source.html">CModule.hpp</a>.</p>
 
 </div>
 </div>
@@ -402,13 +401,13 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00058">58</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00280">chig::JsonModule::graphFuncFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00166">nodeTypeFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00291">chig::JsonModule::nodeTypeFromName()</a>, <a class="el" href="DataType_8hpp_source.html#l00034">chig::DataType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00173">chig::JsonModule::toJSON()</a>.</p>
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00279">chig::JsonModule::graphFuncFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00167">nodeTypeFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00290">chig::JsonModule::nodeTypeFromName()</a>, <a class="el" href="DataType_8hpp_source.html#l00034">chig::DataType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00172">chig::JsonModule::toJSON()</a>.</p>
 <div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1ChigModule_a1fe8df6ff170ecd33057387571bb5cd2_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 7 -->
 </div>
 </div>
 
@@ -453,8 +452,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p></p>
 <p>Create a node type that is in the module from the name and json </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the node type to create </td></tr>
@@ -467,7 +464,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structchig_1_1ChigModule.html#a84c7cbef23d7468b644abc26b8aa9173">chig::ChigModule</a>.</p>
 
-<p>Definition at line <a class="el" href="CModule_8cpp_source.html#l00166">166</a> of file <a class="el" href="CModule_8cpp_source.html">CModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="CModule_8cpp_source.html#l00167">167</a> of file <a class="el" href="CModule_8cpp_source.html">CModule.cpp</a>.</p>
 
 <p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, and <a class="el" href="ChigModule_8hpp_source.html#l00058">chig::ChigModule::name()</a>.</p>
 <div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -475,7 +472,7 @@ Public Member Functions</h2></td></tr>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-10-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1CModule_a7e55d5a477ad1f517d17ee4b809b7de7_cgraph.svg" width="495" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><!-- SVG 8 -->
 </div>
 </div>
 
@@ -503,13 +500,11 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p></p>
 <p>Get the possible node type names </p><dl class="section return"><dt>Returns</dt><dd>A std::vector of the possible names </dd></dl>
 
 <p>Implements <a class="el" href="structchig_1_1ChigModule.html#a777ffcdf5887fac173f12b787a21e508">chig::ChigModule</a>.</p>
 
-<p>Definition at line <a class="el" href="CModule_8hpp_source.html#l00033">33</a> of file <a class="el" href="CModule_8hpp_source.html">CModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="CModule_8hpp_source.html#l00030">30</a> of file <a class="el" href="CModule_8hpp_source.html">CModule.hpp</a>.</p>
 
 </div>
 </div>
@@ -571,8 +566,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p></p>
 <p>Get a <a class="el" href="structchig_1_1DataType.html">DataType</a> from the name </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>The name of the type </td></tr>
@@ -583,38 +576,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structchig_1_1ChigModule.html#a7bb138db48ea320a09312ffd1af0999a">chig::ChigModule</a>.</p>
 
-<p>Definition at line <a class="el" href="CModule_8cpp_source.html#l00159">159</a> of file <a class="el" href="CModule_8cpp_source.html">CModule.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a93686f0f5199b7dc81f1ed7d722b00a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93686f0f5199b7dc81f1ed7d722b00a8">&sect;&nbsp;</a></span>typeNames()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;std::string&gt; chig::CModule::typeNames </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the possible <a class="el" href="structchig_1_1DataType.html">DataType</a> names. </p>
-
-<p>Implements <a class="el" href="structchig_1_1ChigModule.html#a79c78be088a51529132f2fd6c37bdb11">chig::ChigModule</a>.</p>
-
-<p>Definition at line <a class="el" href="CModule_8hpp_source.html#l00035">35</a> of file <a class="el" href="CModule_8hpp_source.html">CModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="CModule_8cpp_source.html#l00160">160</a> of file <a class="el" href="CModule_8cpp_source.html">CModule.cpp</a>.</p>
 
 </div>
 </div>
@@ -628,7 +590,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1CModule.html">CModule</a></li>
-    <li class="footer">Generated on Mon Jan 2 2017 20:05:36 for chigraph by
+    <li class="footer">Generated on Sun Jan 8 2017 19:33:45 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

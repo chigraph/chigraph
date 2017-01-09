@@ -1,0 +1,18 @@
+digraph "chig::ChigModule::dependencies"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node25 [label="chig::ChigModule::dependencies",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node25 -> Node26 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 [label="chig::ChigModule::addDependency",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1ChigModule.html#acec829296a8677186fcd6f0beae3d3a1"];
+  Node26 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="chig::ChigModule::context",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385"];
+  Node27 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="chig::ChigModule::generate\lModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1ChigModule.html#aad4b97558b2455201b4db986b3b63840"];
+  Node26 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="chig::Context::loadModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1Context.html#a2ee400680060a0891bdffc7109016fec"];
+  Node29 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="chig::Result::addEntry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491"];
+}

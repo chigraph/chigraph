@@ -1,6 +1,7 @@
 var structchig_1_1GraphFunction =
 [
     [ "GraphFunction", "structchig_1_1GraphFunction.html#a18c5a468a48ea9468af4755e00aea293", null ],
+    [ "GraphFunction", "structchig_1_1GraphFunction.html#ad38700422a7466162b80969280ab5870", null ],
     [ "~GraphFunction", "structchig_1_1GraphFunction.html#ac65f801cb810bd956c4ebc8f93e0c494", null ],
     [ "addDataInput", "structchig_1_1GraphFunction.html#a58da0f0d53f153a37bb4ba7bdc00df75", null ],
     [ "addDataOutput", "structchig_1_1GraphFunction.html#af76e111d051ead319035f83785b932e2", null ],

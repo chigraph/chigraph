@@ -1,0 +1,18 @@
+digraph "chig::GraphFunction::dataOutputs"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node170 [label="chig::GraphFunction\l::dataOutputs",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node170 -> Node171 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node171 [label="chig::GraphFunction\l::addDataOutput",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#af76e111d051ead319035f83785b932e2"];
+  Node170 -> Node172 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node172 [label="chig::GraphFunction\l::modifyDataOutput",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a3765dc838314ff13457ac933b043f711"];
+  Node172 -> Node173 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node173 [label="chig::DataType::valid",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22",tooltip="Check if the DataType is valid. "];
+  Node172 -> Node174 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node174 [label="chig::GraphFunction\l::name",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37"];
+  Node170 -> Node175 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node175 [label="chig::GraphFunction\l::removeDataOutput",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#ae6fc3833c6e0631177efb4e35e7f59e4"];
+}

@@ -24,13 +24,13 @@ if (edges && edges.length) {
                 <circle id="rim" cx="0" cy="0" r="7"/>
                 <circle id="rim2" cx="0" cy="0" r="3.5"/>
                 <g id="zoomPlus">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomplus.mouseover" end="zoomplus.mouseout"/>
                         </use>
                         <path d="M-4,0h8M0,-4v8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
                 </g>
                 <g id="zoomMin">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomminus.mouseover" end="zoomminus.mouseout"/>
                         </use>
                         <path d="M-4,0h8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
@@ -39,7 +39,7 @@ if (edges && edges.length) {
                         <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
                <g id="resetDef">
-                       <use xlink:href="#rim2" fill="#404040">
+                       <use xlink:href="#rim2" target="_top" fill="#404040">
                                <set attributeName="fill" to="#808080" begin="reset.mouseover" end="reset.mouseout"/>
                        </use>
                </g>
@@ -50,7 +50,7 @@ var viewWidth = 1148;
 var viewHeight = 319;
 var sectionId = 'dynsection-12';
 </script>
-<script xlink:href="svgpan.js"/>
+<script xlink:href="svgpan.js" target="_top"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chig::Context::nodeTypeFromModule</title>
@@ -65,7 +65,7 @@ var sectionId = 'dynsection-12';
 <!-- Node59 -->
 <g id="node2" class="node">
 <title>Node59</title>
-<g id="a_node2"><a xlink:href="structchig_1_1GraphFunction.html#abc41f524da8fd9b7308cb7abaa2b28c9" target="_top" xlink:title="chig::GraphFunction\l::createEntryNodeType">
+<g id="a_node2"><a xlink:href="structchig_1_1GraphFunction.html#abc41f524da8fd9b7308cb7abaa2b28c9" target="_top" target="_top" xlink:title="chig::GraphFunction\l::createEntryNodeType">
 <polygon fill="#ffffff" stroke="#000000" points="196,-214.2609 196,-244.2609 324,-244.2609 324,-214.2609 196,-214.2609"/>
 <text text-anchor="start" x="204" y="-232.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="260" y="-221.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::createEntryNodeType</text>
@@ -81,7 +81,7 @@ var sectionId = 'dynsection-12';
 <!-- Node61 -->
 <g id="node4" class="node">
 <title>Node61</title>
-<g id="a_node4"><a xlink:href="structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" target="_top" xlink:title="chig::GraphFunction\l::insertNode">
+<g id="a_node4"><a xlink:href="structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" target="_top" target="_top" xlink:title="chig::GraphFunction\l::insertNode">
 <polygon fill="#ffffff" stroke="#000000" points="1019.5,-260.2609 1019.5,-290.2609 1132.5,-290.2609 1132.5,-260.2609 1019.5,-260.2609"/>
 <text text-anchor="start" x="1027.5" y="-278.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="1076" y="-267.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::insertNode</text>
@@ -97,7 +97,7 @@ var sectionId = 'dynsection-12';
 <!-- Node68 -->
 <g id="node11" class="node">
 <title>Node68</title>
-<g id="a_node11"><a xlink:href="structchig_1_1GraphFunction.html#ac7c52122fef0c74d9d0ee04af9a741c4" target="_top" xlink:title="chig::GraphFunction\l::createExitNodeType">
+<g id="a_node11"><a xlink:href="structchig_1_1GraphFunction.html#ac7c52122fef0c74d9d0ee04af9a741c4" target="_top" target="_top" xlink:title="chig::GraphFunction\l::createExitNodeType">
 <polygon fill="#ffffff" stroke="#000000" points="658,-176.2609 658,-206.2609 780,-206.2609 780,-176.2609 658,-176.2609"/>
 <text text-anchor="start" x="666" y="-194.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="719" y="-183.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::createExitNodeType</text>
@@ -113,7 +113,7 @@ var sectionId = 'dynsection-12';
 <!-- Node70 -->
 <g id="node13" class="node">
 <title>Node70</title>
-<g id="a_node13"><a xlink:href="structchig_1_1Graph.html#a3e0191ef63e6fa4137cebae20b27b9ed" target="_top" xlink:title="chig::Graph::Graph">
+<g id="a_node13"><a xlink:href="structchig_1_1Graph.html#a3e0191ef63e6fa4137cebae20b27b9ed" target="_top" target="_top" xlink:title="chig::Graph::Graph">
 <polygon fill="#ffffff" stroke="#000000" points="206.5,-175.7609 206.5,-194.7609 313.5,-194.7609 313.5,-175.7609 206.5,-175.7609"/>
 <text text-anchor="middle" x="260" y="-182.7609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Graph::Graph</text>
 </a>
@@ -128,7 +128,7 @@ var sectionId = 'dynsection-12';
 <!-- Node60 -->
 <g id="node3" class="node">
 <title>Node60</title>
-<g id="a_node3"><a xlink:href="structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" target="_top" xlink:title="chig::GraphFunction\l::insertNode">
+<g id="a_node3"><a xlink:href="structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" target="_top" target="_top" xlink:title="chig::GraphFunction\l::insertNode">
 <polygon fill="#ffffff" stroke="#000000" points="839.5,-176.2609 839.5,-206.2609 952.5,-206.2609 952.5,-176.2609 839.5,-176.2609"/>
 <text text-anchor="start" x="847.5" y="-194.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="896" y="-183.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::insertNode</text>
@@ -144,7 +144,7 @@ var sectionId = 'dynsection-12';
 <!-- Node62 -->
 <g id="node5" class="node">
 <title>Node62</title>
-<g id="a_node5"><a xlink:href="structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" target="_top" xlink:title="chig::GraphFunction\l::getOrInsertEntryNode">
+<g id="a_node5"><a xlink:href="structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" target="_top" target="_top" xlink:title="chig::GraphFunction\l::getOrInsertEntryNode">
 <polygon fill="#ffffff" stroke="#000000" points="1012,-176.2609 1012,-206.2609 1140,-206.2609 1140,-176.2609 1012,-176.2609"/>
 <text text-anchor="start" x="1020" y="-194.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="1076" y="-183.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::getOrInsertEntryNode</text>
@@ -160,7 +160,7 @@ var sectionId = 'dynsection-12';
 <!-- Node63 -->
 <g id="node6" class="node">
 <title>Node63</title>
-<g id="a_node6"><a xlink:href="structchig_1_1GraphFunction.html#a3765dc838314ff13457ac933b043f711" target="_top" xlink:title="chig::GraphFunction\l::modifyDataOutput">
+<g id="a_node6"><a xlink:href="structchig_1_1GraphFunction.html#a3765dc838314ff13457ac933b043f711" target="_top" target="_top" xlink:title="chig::GraphFunction\l::modifyDataOutput">
 <polygon fill="#ffffff" stroke="#000000" points="360,-176.2609 360,-206.2609 473,-206.2609 473,-176.2609 360,-176.2609"/>
 <text text-anchor="start" x="368" y="-194.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="416.5" y="-183.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::modifyDataOutput</text>
@@ -194,7 +194,7 @@ var sectionId = 'dynsection-12';
 <!-- Node64 -->
 <g id="node7" class="node">
 <title>Node64</title>
-<g id="a_node7"><a xlink:href="structchig_1_1GraphFunction.html#ae734c04f29489efeb96227a20e2ada22" target="_top" xlink:title="chig::GraphFunction\l::dataOutputs">
+<g id="a_node7"><a xlink:href="structchig_1_1GraphFunction.html#ae734c04f29489efeb96227a20e2ada22" target="_top" target="_top" xlink:title="chig::GraphFunction\l::dataOutputs">
 <polygon fill="#ffffff" stroke="#000000" points="509,-127.2609 509,-157.2609 622,-157.2609 622,-127.2609 509,-127.2609"/>
 <text text-anchor="start" x="517" y="-145.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="565.5" y="-134.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::dataOutputs</text>
@@ -210,7 +210,7 @@ var sectionId = 'dynsection-12';
 <!-- Node65 -->
 <g id="node8" class="node">
 <title>Node65</title>
-<g id="a_node8"><a xlink:href="structchig_1_1GraphFunction.html#af4417b3cb4bb432656d8d929a81a07f8" target="_top" xlink:title="chig::GraphFunction\l::fromJSON">
+<g id="a_node8"><a xlink:href="structchig_1_1GraphFunction.html#af4417b3cb4bb432656d8d929a81a07f8" target="_top" target="_top" xlink:title="chig::GraphFunction\l::fromJSON">
 <polygon fill="#ffffff" stroke="#000000" points="662.5,-39.2609 662.5,-69.2609 775.5,-69.2609 775.5,-39.2609 662.5,-39.2609"/>
 <text text-anchor="start" x="670.5" y="-57.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="719" y="-46.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::fromJSON</text>
@@ -226,7 +226,7 @@ var sectionId = 'dynsection-12';
 <!-- Node67 -->
 <g id="node10" class="node">
 <title>Node67</title>
-<g id="a_node10"><a xlink:href="structchig_1_1GraphFunction.html#ac808aecb5fec9cd3a2a1f59e18c90eee" target="_top" xlink:title="chig::GraphFunction\l::compile">
+<g id="a_node10"><a xlink:href="structchig_1_1GraphFunction.html#ac808aecb5fec9cd3a2a1f59e18c90eee" target="_top" target="_top" xlink:title="chig::GraphFunction\l::compile">
 <polygon fill="#ffffff" stroke="#000000" points="839.5,-105.2609 839.5,-135.2609 952.5,-135.2609 952.5,-105.2609 839.5,-105.2609"/>
 <text text-anchor="start" x="847.5" y="-123.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="896" y="-112.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::compile</text>
@@ -248,7 +248,7 @@ var sectionId = 'dynsection-12';
 <!-- Node69 -->
 <g id="node12" class="node">
 <title>Node69</title>
-<g id="a_node12"><a xlink:href="structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848" target="_top" xlink:title="chig::GraphFunction\l::functionType">
+<g id="a_node12"><a xlink:href="structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848" target="_top" target="_top" xlink:title="chig::GraphFunction\l::functionType">
 <polygon fill="#ffffff" stroke="#000000" points="662.5,-127.2609 662.5,-157.2609 775.5,-157.2609 775.5,-127.2609 662.5,-127.2609"/>
 <text text-anchor="start" x="670.5" y="-145.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="719" y="-134.2609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::functionType</text>
@@ -264,7 +264,7 @@ var sectionId = 'dynsection-12';
 <!-- Node66 -->
 <g id="node9" class="node">
 <title>Node66</title>
-<g id="a_node9"><a xlink:href="structchig_1_1JsonModule.html#ae9d14a6f432082a9489d3b5ccf5ae338" target="_top" xlink:title="chig::JsonModule::JsonModule">
+<g id="a_node9"><a xlink:href="structchig_1_1JsonModule.html#ae9d14a6f432082a9489d3b5ccf5ae338" target="_top" target="_top" xlink:title="chig::JsonModule::JsonModule">
 <polygon fill="#ffffff" stroke="#000000" points="816,-44.7609 816,-63.7609 976,-63.7609 976,-44.7609 816,-44.7609"/>
 <text text-anchor="middle" x="896" y="-51.7609" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::JsonModule</text>
 </a>
@@ -304,29 +304,29 @@ var sectionId = 'dynsection-12';
 </svg>
         <g id="navigator" transform="translate(0 0)" fill="#404254">
                 <rect fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width=".5" x="0" y="0" width="60" height="60"/>
-                <use id="zoomplus" xlink:href="#zoomPlus" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
-                <use id="zoomminus" xlink:href="#zoomMin" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
-                <use id="reset" xlink:href="#resetDef" x="30" y="36" onmousedown="handleReset()"/>
-                <g id="arrowUp" xlink:href="#dirArrow" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <use id="zoomplus" xlink:href="#zoomPlus" target="_top" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
+                <use id="zoomminus" xlink:href="#zoomMin" target="_top" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
+                <use id="reset" xlink:href="#resetDef" target="_top" x="30" y="36" onmousedown="handleReset()"/>
+                <g id="arrowUp" xlink:href="#dirArrow" target="_top" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowUp.mouseover" end="arrowUp.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowRight" xlink:href="#dirArrow" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowRight" xlink:href="#dirArrow" target="_top" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowRight.mouseover" end="arrowRight.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowDown" xlink:href="#dirArrow" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowDown" xlink:href="#dirArrow" target="_top" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowDown.mouseover" end="arrowDown.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowLeft" xlink:href="#dirArrow" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowLeft" xlink:href="#dirArrow" target="_top" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowLeft.mouseover" end="arrowLeft.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
@@ -334,7 +334,7 @@ var sectionId = 'dynsection-12';
         </g>
         <svg viewBox="0 0 15 15" width="100%" height="30px" preserveAspectRatio="xMaxYMin meet">
          <g id="arrow_out" transform="scale(0.3 0.3)">
-          <a xlink:href="structchig_1_1Context_ab1cfbdb1646a75316dfa60f117576f37_icgraph_org.svg" target="_base">
+          <a xlink:href="structchig_1_1Context_ab1cfbdb1646a75316dfa60f117576f37_icgraph_org.svg" target="_top" target="_base">
            <rect id="button" ry="5" rx="5" y="6" x="6" height="38" width="38"
                 fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width="1.0"/>
            <path id="arrow"
