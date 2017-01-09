@@ -219,6 +219,8 @@ bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 Result Context::typeFromModule(
 	gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept
 {
+	Expects(toFill != nullptr);
+	
 	Result res;
 
 	ChigModule* mod = moduleByName(module);
@@ -229,6 +231,28 @@ Result Context::typeFromModule(
 
 	*toFill = mod->typeFromName(name);
 	if (!toFill->valid()) {
+		res.addEntry("E37", "Could not find type in module",
+			{{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
+	}
+
+	return res;
+}
+
+Result Context::debugTypeFromModule(
+	gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::DIType** toFill) noexcept
+{
+	Expects(toFill != nullptr);
+	
+	Result res;
+
+	ChigModule* mod = moduleByName(module);
+	if (mod == nullptr) {
+		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(module)}});
+		return res;
+	}
+
+	*toFill = mod->debugTypeFromName(name);
+	if (*toFill == nullptr) {
 		res.addEntry("E37", "Could not find type in module",
 			{{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
 	}
@@ -280,15 +304,20 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 		llvm::Linker::linkModules(*llmod, std::move(compiledDep));
 	}
 
-	res += chigmod->generateModule(&llmod);
+	res += chigmod->generateModule(*llmod);
 
 	// verify the created module
 	if (res) {
 		std::string err;
 		llvm::raw_string_ostream os(err);
 		if (llvm::verifyModule(*llmod, &os)) {
+			std::string moduleStr;
+			{
+				llvm::raw_string_ostream printerStr{moduleStr};
+				llmod->print(printerStr, nullptr);
+			}
 			res.addEntry(
-				"EUKN", "Internal compiler error: Invalid module created", {{"Error", err}});
+				"EINT", "Internal compiler error: Invalid module created", {{"Error", err}, {"Module", moduleStr}});
 		}
 	}
 

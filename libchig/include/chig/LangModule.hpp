@@ -23,26 +23,30 @@ struct LangModule : ChigModule {
 	/// Destructor
 	~LangModule() = default;
 
-	virtual Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
+	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
+		
+		
+	llvm::DIType* debugTypeFromName(gsl::cstring_span<> name) override;
 
-	virtual DataType typeFromName(gsl::cstring_span<> name) override;
+	DataType typeFromName(gsl::cstring_span<> name) override;
 
-	virtual std::vector<std::string> nodeTypeNames() const override
+	std::vector<std::string> nodeTypeNames() const override
 	{
 		return {"if", "entry", "exit", "const-int", "strliteral", "const-bool"};
 	}
 
-	virtual std::vector<std::string> typeNames() const override
+	std::vector<std::string> typeNames() const override
 	{
 		return {"i32", "i1", "double", "i8*"};  // TODO: do i need more?
 	}
 
-	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; };
+	Result generateModule(llvm::Module& /*module*/) override { return {}; };
 private:
 	std::unordered_map<std::string,
 		std::function<std::unique_ptr<NodeType>(const nlohmann::json&, Result&)>>
 		nodes;
+	std::unordered_map<std::string, llvm::DIType*> mDebugTypes;
 };
 }
 

@@ -4,6 +4,7 @@
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/Support/SourceMgr.h>
+#include <llvm/IR/DebugInfoMetadata.h>
 #include <gsl/gsl_assert>
 
 namespace chig
@@ -429,6 +430,14 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 
 			 return std::make_unique<StringLiteralNodeType>(*this, str);
 		 }}};
+		 
+	// create debug types
+	mDebugTypes["i32"] = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i32", 32, 32, llvm::dwarf::DW_ATE_signed);
+	mDebugTypes["i1"] = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i1", 8, 8, llvm::dwarf::DW_ATE_boolean);
+	mDebugTypes["double"] = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:double", 64, 64, llvm::dwarf::DW_ATE_float);
+	auto charType = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i8", 64, 64, llvm::dwarf::DW_ATE_signed_char);
+	mDebugTypes["i8*"] = llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_pointer_type, "lang:i8*", nullptr, 0, nullptr, charType, 64, 64, 0, 0); // TODO: 32bit support?
+	
 }
 
 Result LangModule::nodeTypeFromName(
@@ -446,6 +455,15 @@ Result LangModule::nodeTypeFromName(
 		{{"Module", "lang"}, {"Requested Node Type", gsl::to_string(name)}});
 
 	return res;
+}
+
+
+llvm::DIType* LangModule::debugTypeFromName(gsl::cstring_span<> name) {
+	auto iter = mDebugTypes.find(gsl::to_string(name));
+	if(iter != mDebugTypes.end()) {
+		return iter->second;
+	}
+	return nullptr;
 }
 
 // the lang module just has the basic llvm types.
