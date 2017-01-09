@@ -26,10 +26,11 @@ struct CModule : ChigModule {
 	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
 	DataType typeFromName(gsl::cstring_span<> name) override;
+	llvm::DIType* debugTypeFromName(gsl::cstring_span<> /*name*/) override { return nullptr; }
 
 	std::vector<std::string> nodeTypeNames() const override { return {"func"}; }
 	std::vector<std::string> typeNames() const override { return {}; }
-	Result generateModule(std::unique_ptr<llvm::Module>* /*module*/) override { return {}; }
+	Result generateModule(llvm::Module& /*module*/) override { return {}; }
 };
 }
 

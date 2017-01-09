@@ -47,10 +47,12 @@ struct JsonModule : public ChigModule {
 		std::unique_ptr<NodeType>* toFill) override;
 
 	DataType typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
+	llvm::DIType* debugTypeFromName(gsl::cstring_span<> /*name*/) override { return nullptr; }
+	
 	std::vector<std::string> nodeTypeNames() const override;  // TODO: implement
 
 	std::vector<std::string> typeNames() const override { return {}; }  // TODO: implement
-	Result generateModule(std::unique_ptr<llvm::Module>* module) override;
+	Result generateModule(llvm::Module& module) override;
 
 	/////////////////////
 
@@ -59,12 +61,19 @@ struct JsonModule : public ChigModule {
 
 	/// Serialize to JSON
 	/// \param to_fill The JSON to fill
-	/// \return The result
+	/// \return The Result
 	Result toJSON(nlohmann::json* to_fill) const;
 
 	/// Serialize to disk in the context
 	/// \return The Result
 	Result saveToDisk() const;
+	
+	/// Get the path to the source file
+	/// It's not garunteed to exist, because it could have not been saved
+	/// \return The path
+	boost::filesystem::path sourceFilePath() const {
+		return context().workspacePath() / "src" / (fullName() + ".chigmod");
+	}
 
 	/// Create a new function if it does't already exist
 	/// \param name The name of the new function

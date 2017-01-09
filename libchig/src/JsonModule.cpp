@@ -7,6 +7,7 @@
 #include "chig/Result.hpp"
 
 #include <llvm/IR/Module.h>
+#include <llvm/IR/DIBuilder.h>
 
 #include <boost/filesystem.hpp>
 
@@ -151,20 +152,27 @@ JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::strin
 	}
 }
 
-Result JsonModule::generateModule(std::unique_ptr<llvm::Module>* mod)
+Result JsonModule::generateModule(llvm::Module& mod)
 {
 	Result res = {};
 
+	// debug info
+	llvm::DIBuilder debugBuilder(mod);
+	mod.addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
+	auto compileUnit = debugBuilder.createCompileUnit(llvm::dwarf::DW_LANG_C, sourceFilePath().filename().string(),
+													  sourceFilePath().parent_path().string(), "Chigraph Compiler", false, "", 0);
+	
 	// create prototypes
 	for (auto& graph : mFunctions) {
-		(*mod)->getOrInsertFunction(
+		mod.getOrInsertFunction(
 			mangleFunctionName(fullName(), graph->name()), graph->functionType());
 	}
 
 	for (auto& graph : mFunctions) {
-		llvm::Function* f;
-		res += graph->compile(mod->get(), &f);
+		res += graph->compile(&mod, compileUnit, debugBuilder);
 	}
+	
+	debugBuilder.finalize();
 
 	return res;
 }
@@ -200,7 +208,7 @@ Result JsonModule::saveToDisk() const
 		return res;
 	}
 
-	auto modulePath = context().workspacePath() / "src" / (fullName() + ".chigmod");
+	auto modulePath = sourceFilePath();
 
 	try {
 		// create directories that conatain the path

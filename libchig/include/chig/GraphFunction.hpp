@@ -9,6 +9,7 @@
 #include "chig/json.hpp"
 
 #include <llvm/IR/Module.h>
+#include <llvm/IR/DIBuilder.h>
 
 #include <memory>
 #include <string>
@@ -39,8 +40,7 @@ struct GraphFunction {
 	/// Constructs a GraphFunction from a JOSN object
 	/// \param data The JSON object to read from
 	/// \param module The module to create the GraphFunction with
-	/// \param ret_func The GraphFunction that has been produced
-	/// \return The result
+	/// \param res The result
 	GraphFunction(JsonModule& module, const nlohmann::json& data, Result& res);
 
 	/// Destructor
@@ -53,9 +53,9 @@ struct GraphFunction {
 
 	/// Compile the graph to an \c llvm::Function (usually called from JsonModule::generateModule)
 	/// \param mod The module to codgen into, should already be a valid module
-	/// \param ret_func The \c llvm::Function that it was compiled to
+	/// \param debugFile The file that the GraphFunction resides in.
 	/// \return The result
-	Result compile(llvm::Module* mod, llvm::Function** ret_func) const;
+	Result compile(llvm::Module* mod, llvm::DICompileUnit* debugFile, llvm::DIBuilder& debugBuilder) const;
 
 	/// \name Node Manipulation
 	/// Functions for mainpulating nodes; getting, adding
