@@ -20,12 +20,15 @@ set(GUI_SRCS
 	chigraphnodemodel.cpp
 	functionspane.cpp
 	functionview.cpp
-    functiondetails.cpp
-    paramlistwidget.cpp
-    outputview.cpp
-	chiggui.qrc
+	functiondetails.cpp
+	paramlistwidget.cpp
+	subprocessoutputview.cpp
 	modulebrowser.cpp
 	moduledependencies.cpp
+)
+
+set(GUI_RESOURCES
+	chiggui.qrc
 )
 
 set(GUI_HEADERS
@@ -33,14 +36,14 @@ set(GUI_HEADERS
 	chigraphnodemodel.hpp
 	functionspane.hpp
 	functionview.hpp
-	outputview.hpp
-        paramlistwidget.hpp
-        functiondetails.hpp
+	subprocessoutputview.hpp
+	paramlistwidget.hpp
+	functiondetails.hpp
 	modulebrowser.hpp
 	moduledependencies.hpp
 )
 
-add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS})
+add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
 
 target_link_libraries(chiggui Qt5::Widgets KF5::CoreAddons KF5::I18n KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets nodes chigcore)
 
