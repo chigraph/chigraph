@@ -1,0 +1,43 @@
+digraph "chig::NodeType::name"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node95 [label="chig::NodeType::name",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node95 -> Node96 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node96 [label="chig::NodeType::NodeType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1NodeType.html#a40819156921b514082c56e7268b73048"];
+  Node95 -> Node97 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node97 [label="chig::NodeType::qualifiedName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3"];
+  Node97 -> Node98 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node98 [label="chig::GraphFunction\l::toJSON",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a5a8768d5514a31104f0b3a9b5553099c"];
+  Node97 -> Node99 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node99 [label="chig::connectData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a6820d7f55025ec401bff502f0e6eb10d"];
+  Node99 -> Node100 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node100 [label="chig::NodeInstance\l::context",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1NodeInstance.html#a664d68ae63b0ec095892d17597ef9623",tooltip="Get the containing Context object. "];
+  Node99 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node101 [label="chig::Graph::Graph",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1Graph.html#a3e0191ef63e6fa4137cebae20b27b9ed"];
+  Node97 -> Node102 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node102 [label="chig::connectExec",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#aaf977bd046a5f4dc2f25c97a567ec0f1"];
+  Node102 -> Node100 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node102 -> Node101 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node97 -> Node103 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node103 [label="chig::disconnectData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a5977e55ae63e7f16a0ac342e2311e1b6"];
+  Node103 -> Node100 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node103 -> Node104 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node104 [label="chig::GraphFunction\l::removeNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e"];
+  Node104 -> Node105 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node105 [label="chig::GraphFunction\l::insertNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5"];
+  Node105 -> Node106 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node106 [label="chig::GraphFunction\l::getOrInsertEntryNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917"];
+  Node106 -> Node105 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node105 -> Node107 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node107 [label="chig::GraphFunction\l::insertNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede"];
+  Node103 -> Node108 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node108 [label="chig::NodeInstance\l::setType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153"];
+  Node97 -> Node109 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node109 [label="chig::disconnectExec",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a215d31f09c52ea11a74173e7ac1392bb"];
+  Node109 -> Node100 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node109 -> Node104 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node109 -> Node108 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

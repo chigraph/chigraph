@@ -1,0 +1,14 @@
+digraph "chig::ChigModule::typeFromName"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node89 [label="chig::ChigModule::typeFromName",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node89 -> Node90 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node90 [label="chig::Context::typeFromModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1Context.html#aa484ef2c16aaa4d97a21632af4122bd8"];
+  Node90 -> Node91 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node91 [label="chig::GraphFunction\l::GraphFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#ad38700422a7466162b80969280ab5870"];
+  Node90 -> Node92 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node92 [label="chig::LangModule::LangModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1LangModule.html#adab4150aa733a4aa66bc0ede5654dcaa",tooltip="Default constructor, usually called from Context::loadModule(\"lang\") "];
+}

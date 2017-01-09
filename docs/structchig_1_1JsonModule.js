@@ -23,6 +23,6 @@ var structchig_1_1JsonModule =
     [ "removeFunction", "structchig_1_1JsonModule.html#aac85e6b42c18ea9e52979cdbd4dac40c", null ],
     [ "saveToDisk", "structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04", null ],
     [ "toJSON", "structchig_1_1JsonModule.html#a200bbbf7eefaffdc40978c01d1053f46", null ],
-    [ "typeFromName", "structchig_1_1JsonModule.html#adc72b3912da2da6f757e9d922a7603e2", null ],
-    [ "typeNames", "structchig_1_1JsonModule.html#a51d5244f14c8b1e94cdd3985e3ae3db3", null ]
+    [ "typeFromName", "structchig_1_1JsonModule.html#a333bbd9973c79f0ee40bc960c5cf091b", null ],
+    [ "typeNames", "structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d", null ]
 ];
