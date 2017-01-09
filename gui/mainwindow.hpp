@@ -19,12 +19,8 @@
 #include <chig/JsonModule.hpp>
 
 #include <QProcess>
-#include "functiondetails.hpp"
-#include "functionspane.hpp"
+
 #include "functionview.hpp"
-#include "modulebrowser.hpp"
-#include "moduledependencies.hpp"
-#include "outputview.hpp"
 
 class MainWindow : public KXmlGuiWindow
 {
@@ -32,15 +28,6 @@ class MainWindow : public KXmlGuiWindow
 public:
 	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
-
-	FunctionView* functionView(const QString& name) const
-	{
-		auto iter = mOpenFunctions.find(name);
-		if (iter != mOpenFunctions.end()) {
-			return iter->second;
-		}
-		return nullptr;
-	}
 
 	chig::JsonModule* currentModule() const { return mModule; }
 	chig::Context& context() const { return *mChigContext; }
@@ -51,7 +38,6 @@ public slots:
 	void newFunctionSelected(chig::GraphFunction* name);
 	void save();
 	void closeTab(int idx);
-	void run();
 	void newFunction();
 	void newModule();
 
@@ -62,8 +48,6 @@ signals:
 
 	void newModuleCreated(chig::JsonModule* newModule);
 	void newFunctionCreated(chig::GraphFunction* func);
-
-	void runStarted(QProcess* process);
 
 private:
 	KRecentFilesAction* mOpenRecentAction;  // keep this so we can save the entries

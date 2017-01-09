@@ -1,4 +1,10 @@
 #include "mainwindow.hpp"
+#include "functiondetails.hpp"
+#include "functionspane.hpp"
+#include "functionview.hpp"
+#include "modulebrowser.hpp"
+#include "moduledependencies.hpp"
+#include "subprocessoutputview.hpp"
 
 #include <KActionCollection>
 #include <KConfigGroup>
@@ -75,10 +81,12 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 
 	docker = new QDockWidget(i18n("Output"), this);
 	docker->setObjectName("Output");
-	auto outputView = new OutputView;
+	auto outputView = new QTabWidget();
+	outputView->setTabsClosable(true);
 	docker->setWidget(outputView);
 	addDockWidget(Qt::BottomDockWidgetArea, docker);
-	connect(this, &MainWindow::runStarted, outputView, &OutputView::setProcess);
+	connect(outputView, &QTabWidget::tabCloseRequested, outputView, &QTabWidget::removeTab);
+
 
 	docker = new QDockWidget(i18n("Function Details"), this);
 	docker->setObjectName("Function Details");
@@ -119,19 +127,49 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	saveAction->setWhatsThis(QStringLiteral("Save the chigraph module"));
 	connect(saveAction, &QAction::triggered, this, &MainWindow::save);
 
+	auto cancelAction = new QAction;
+	cancelAction->setEnabled(false);
+	cancelAction->setText(i18n("Cancel"));
+	cancelAction->setIcon(QIcon::fromTheme("process-stop"));
+	actColl->setDefaultShortcut(cancelAction, Qt::CTRL + Qt::Key_Q);
+	actColl->addAction(QStringLiteral("cancel"), cancelAction);
+	connect(cancelAction, &QAction::triggered, this, [outputView]{
+		auto output = dynamic_cast<SubprocessOutputView*>(outputView->currentWidget());
+		
+		if(output != nullptr) {
+			output->cancelProcess();
+		}
+	});
+	
+	connect(outputView, &QTabWidget::currentChanged, this, [cancelAction, outputView](int){
+		auto view = dynamic_cast<SubprocessOutputView*>(outputView->currentWidget());
+		
+		cancelAction->setEnabled(view->running());
+	});
+	
 	auto runAction = new QAction;
 	runAction->setText(i18n("&Run"));
 	runAction->setIcon(QIcon::fromTheme("system-run"));
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
 	actColl->addAction(QStringLiteral("run"), runAction);
-	connect(runAction, &QAction::triggered, this, &MainWindow::run);
+	connect(runAction, &QAction::triggered, this, [this, outputView, cancelAction] {
+		auto view = new SubprocessOutputView(currentModule());
+		connect(view, &SubprocessOutputView::processFinished, this, [outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
+			QString statusStr = QString(" (%1, %2)").arg(exitStatus == QProcess::NormalExit ? "exited" : "crashed", QString::number(exitCode));
+			outputView->setTabText(outputView->indexOf(view), QString::fromStdString(view->module()->fullName()) + statusStr);
+			
+			// disable it
+			if(outputView->currentWidget() == view) {
+				cancelAction->setEnabled(false);
+			}
+		});
+		// add the tab to the beginning
+		int newTabID = outputView->insertTab(0, view, QString::fromStdString(currentModule()->fullName()) + i18n(" (running)"));
+		outputView->setCurrentIndex(newTabID);
+		cancelAction->setEnabled(true);
+	});
 
-	auto cancelAction = new QAction;
-	cancelAction->setText(i18n("Cancel"));
-	cancelAction->setIcon(QIcon::fromTheme("process-stop"));
-	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_Q);
-	actColl->addAction(QStringLiteral("cancel"), cancelAction);
-	connect(runAction, &QAction::triggered, outputView, &OutputView::cancelProcess);
+
 
 	auto newFunctionAction = new QAction;
 	newFunctionAction->setText(i18n("New Function"));
@@ -224,9 +262,9 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 		QString::fromStdString(func->module().fullName() + ":" + func->name());
 
 	// see if it's already open
-	auto funcView = functionView(qualifiedFunctionName);
-	if (funcView != nullptr) {
-		mFunctionTabs->setCurrentWidget(funcView);
+	auto funcViewIter = mOpenFunctions.find(qualifiedFunctionName);
+	if (funcViewIter != mOpenFunctions.end()) {
+		mFunctionTabs->setCurrentWidget(funcViewIter->second);
 		return;
 	}
 	// if it's not already open, we'll have to create our own
@@ -245,40 +283,6 @@ void MainWindow::closeTab(int idx)
 	mOpenFunctions.erase(std::find_if(mOpenFunctions.begin(), mOpenFunctions.end(),
 		[&](auto& p) { return p.second == mFunctionTabs->widget(idx); }));
 	mFunctionTabs->removeTab(idx);
-}
-
-void MainWindow::run()
-{
-	if (currentModule() == nullptr) {
-		return;
-	}
-
-	// compile!
-	std::unique_ptr<llvm::Module> llmod;
-	chig::Result res = context().compileModule(currentModule()->fullName(), &llmod);
-
-	if (!res) {
-		KMessageBox::detailedError(
-			this, "Failed to compile module", QString::fromStdString(res.dump()));
-
-		return;
-	}
-
-	std::string str;
-	{
-		llvm::raw_string_ostream os(str);
-
-		llvm::WriteBitcodeToFile(llmod.get(), os);
-	}
-
-	// run in lli
-	auto lliproc = new QProcess(this);
-	lliproc->setProgram(QStringLiteral(CHIG_LLI_EXE));
-	lliproc->start();
-	lliproc->write(str.c_str(), str.length());
-	lliproc->closeWriteChannel();
-
-	runStarted(lliproc);
 }
 
 void MainWindow::newFunction()
