@@ -15,7 +15,6 @@
 #include <vector>
 
 extern int compile(const std::vector<std::string>& opts);
-extern int get(const std::vector<std::string>& opts);
 extern int run(const std::vector<std::string>& opts);
 
 using namespace chig;
@@ -68,10 +67,9 @@ int main(int argc, char** argv)
 		return compile(opts);
 	} else if (cmd == "run") {
 		return run(opts);
-	} else if (cmd == "get") {
-		return get(opts);
 	}
 	// TODO: write other ones
+
 
 	std::cerr << "Unrecognized command: " << cmd << std::endl;
 	return 1;
