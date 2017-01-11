@@ -22,11 +22,12 @@ before_install:
 install: 
   - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras qt57svg ninja-build libxcb-keysyms1-dev libxml2-utils libboost-all-dev clang-3.8 gcc-5 gcc-6 g++-5 g++-6 build-essential
   - source /opt/qt57/bin/qt57-env.sh
+  - find /usr/lib/llvm-3.8 -name "*.cmake"
 
 script:
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_PREFIX_PATH=/usr/lib/llvm-3.8/
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_PREFIX_PATH=/usr/lib/llvm-3.8/ -DLLVM_DIR=/usr/lib/llvm-3.8/lib/cmake/llvm/
   - make -j`nproc`
   - make test
 
