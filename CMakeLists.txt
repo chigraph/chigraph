@@ -12,12 +12,10 @@ set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 option(CG_BUILD_GUI "Should the GUI be built" ON)
 
-find_package(Boost REQUIRED system filesystem program_options)
-
-
 # disable tests
 set(BUILD_CLAR OFF CACHE BOOL "")
 add_subdirectory(third_party/tiny-process-library)
+add_subdirectory(third_party/boost)
 
 add_subdirectory(libchig)
 add_subdirectory(chig)

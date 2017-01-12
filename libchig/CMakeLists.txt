@@ -45,7 +45,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.hpp.in ${CMAKE_BINARY_DIR}/chi
 target_include_directories(chigcore
 	PUBLIC
 	${LLVM_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIR}
 	include/
 	${CMAKE_BINARY_DIR}/
 	../third_party/GSL
@@ -68,14 +67,7 @@ target_link_libraries(chigcore PUBLIC ${LLVM_LIBRARIES})
 target_link_libraries(chigcore
 PUBLIC
 	tiny-process-library
-)
-
-target_link_libraries(chigcore
-PUBLIC
-	debug ${Boost_SYSTEM_LIBRARY_DEBUG}
-	optimized ${Boost_SYSTEM_LIBRARY_RELEASE}
-	debug ${Boost_FILESYSTEM_LIBRARY_DEBUG}
-	optimized ${Boost_FILESYSTEM_LIBRARY_RELEASE}
+	boost_filesystem
 )
 
 install(TARGETS chigcore DESTINATION lib)
