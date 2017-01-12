@@ -7,9 +7,6 @@ add_definitions("-D__STDC_CONSTANT_MACROS")
 
 add_executable(chig main.cpp compile.cpp run.cpp)
 
-find_package(LLVM REQUIRED)
-llvm_map_components_to_libnames(llvm_libs core irreader support bitwriter executionengine native nativecodegen interpreter linker orcjit mcjit codegen selectiondag)
-
 target_link_libraries(chig PUBLIC chigcore ${llvm_libs})
 target_link_libraries(chig 
 PUBLIC

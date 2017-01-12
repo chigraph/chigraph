@@ -1,7 +1,10 @@
-find_package(LLVM REQUIRED CONFIG)
 
-message(STATUS "LLVM found at ${LLVM_DIR}")
+find_program(LLVM_CONFIG llvm-config)
+
+message(STATUS "llvm-config found at ${LLVM_CONFIG}")
+
 find_program(CLANG_EXE clang)
+
 find_program(LLI_EXE lli)
 
 set(CHIG_PUBLIC_FILES
@@ -51,12 +54,19 @@ target_include_directories(chigcore
 
 target_compile_features(chigcore PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
 
-llvm_map_components_to_libnames(llvm_libs core irreader support bitwriter executionengine native nativecodegen interpreter linker orcjit mcjit codegen selectiondag)
+execute_process(COMMAND ${LLVM_CONFIG} --includedir OUTPUT_VARIABLE LLVM_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
+target_include_directories(chigcore PUBLIC "${LLVM_INCLUDE_DIR}")
+
+execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE LLVM_LIBDIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+link_directories(${LLVM_LIBDIR})
+
+execute_process(COMMAND ${LLVM_CONFIG} --libs irreader support bitwriter executionengine native nativecodegen interpreter linker orcjit mcjit codegen selectiondag OUTPUT_VARIABLE LLVM_LIBRARIES OUTPUT_STRIP_TRAILING_WHITESPACE)
+target_link_libraries(chigcore PUBLIC ${LLVM_LIBRARIES})
+
 
 
 target_link_libraries(chigcore
 PUBLIC
-	${llvm_libs} 
 	tiny-process-library
 )
 
