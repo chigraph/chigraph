@@ -19,7 +19,7 @@ build_framework() {
     mkdir $framework/build
     cd $framework/build
     
-    cmake .. -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$SCRIPTSDIR/../third_party/kf5 -G"$generator"
+    cmake .. -DCMAKE_PREFIX_PATH=$SCRIPTSDIR/../third_party/kf5 -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$SCRIPTSDIR/../third_party/kf5 -G"$generator"
     if [ $generator = "Unix Makefiles" ]; then
         make -j`nproc`
         make install
