@@ -81,7 +81,7 @@ struct Context {
 	/// \return The result
 	Result typeFromModule(
 		gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept;
-	
+
 	/// Gets a llvm::Type from a module
 	/// \param module The name of the module, "lang" if nullptr
 	/// \param name The name of the type, required

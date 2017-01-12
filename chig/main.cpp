@@ -70,7 +70,6 @@ int main(int argc, char** argv)
 	}
 	// TODO: write other ones
 
-
 	std::cerr << "Unrecognized command: " << cmd << std::endl;
 	return 1;
 }

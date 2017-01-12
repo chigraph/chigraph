@@ -11,13 +11,13 @@
 #include <iterator>
 #include <utility>
 
+#include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Value.h>
-#include <llvm/IR/DIBuilder.h>
 
 namespace chig
 {
@@ -55,7 +55,8 @@ struct NodeType {
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
 	/// numOutputExecs.
 	/// \return The Result
-	virtual Result codegen(size_t execInputID, llvm::Module* modToCodegenInto, llvm::DIBuilder* dBuilder, llvm::Function* f, llvm::DISubprogram* diFunc,
+	virtual Result codegen(size_t execInputID, llvm::Module* modToCodegenInto,
+		llvm::DIBuilder* dBuilder, llvm::Function* f, llvm::DISubprogram* diFunc,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
 

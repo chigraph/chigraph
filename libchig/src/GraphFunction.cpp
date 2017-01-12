@@ -3,14 +3,14 @@
 #include "chig/NameMangler.hpp"
 
 #include <llvm/AsmParser/Parser.h>
-#include <llvm/IR/Verifier.h>
 #include <llvm/IR/DIBuilder.h>
+#include <llvm/IR/Verifier.h>
 #include <llvm/Support/SourceMgr.h>
 
 #include <boost/dynamic_bitset.hpp>
 
-#include <boost/range/join.hpp>
 #include <boost/range/counting_range.hpp>
+#include <boost/range/join.hpp>
 
 namespace chig
 {
@@ -190,8 +190,8 @@ struct cache {
 
 // Codegens a single input to a node
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block,
-	llvm::BasicBlock* allocblock, llvm::Module* mod, llvm::DIBuilder* dbuilder, llvm::Function* f, llvm::DISubprogram* diFunc,
-	std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res)
+	llvm::BasicBlock* allocblock, llvm::Module* mod, llvm::DIBuilder* dbuilder, llvm::Function* f,
+	llvm::DISubprogram* diFunc, std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res)
 {
 	llvm::IRBuilder<> builder(block);
 
@@ -329,16 +329,17 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
 		if (output.first != nullptr && needsCodegen[idx]) {
-			codegenHelper(
-				output.first, output.second, outputBlocks[idx], allocblock, mod,dbuilder,  f, diFunc, nodeCache, res);
+			codegenHelper(output.first, output.second, outputBlocks[idx], allocblock, mod, dbuilder,
+				f, diFunc, nodeCache, res);
 		}
 	}
 }
 
-Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU, llvm::DIBuilder& debugBuilder) const
+Result GraphFunction::compile(
+	llvm::Module* mod, llvm::DICompileUnit* debugCU, llvm::DIBuilder& debugBuilder) const
 {
 	Expects(mod != nullptr);
-	
+
 	Result res;
 
 	auto entry = entryNode();
@@ -387,7 +388,6 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU, l
 	// create function type
 	llvm::DISubroutineType* subroutineType;
 	{
-		
 		// create param list
 		std::vector<llvm::Metadata*> params;
 		{
@@ -395,32 +395,34 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU, l
 			llvm::DIType* intType;
 			res += context().debugTypeFromModule("lang", "i32", &intType);
 			params.push_back(intType);
-			
+
 			// then first in inputexec id
 			params.push_back(intType);
-			
+
 			// add paramters
-			for(const auto& dType : boost::range::join(dataInputs(), dataOutputs())) {
+			for (const auto& dType : boost::range::join(dataInputs(), dataOutputs())) {
 				llvm::DIType* debugTy;
-				res += context().debugTypeFromModule(dType.first.module().name(), dType.first.unqualifiedName(), &debugTy);
+				res += context().debugTypeFromModule(
+					dType.first.module().name(), dType.first.unqualifiedName(), &debugTy);
 				params.push_back(debugTy);
 			}
 		}
-		
-		
+
 		// create type
-		subroutineType = debugBuilder.createSubroutineType(debugBuilder.getOrCreateTypeArray(params));
+		subroutineType =
+			debugBuilder.createSubroutineType(debugBuilder.getOrCreateTypeArray(params));
 	}
-	
+
 	// TODO: line numbers?
 	auto mangledName = mangleFunctionName(module().fullName(), name());
 	auto debugFile = debugBuilder.createFile(debugCU->getFilename(), debugCU->getDirectory());
-	auto debugFunc = debugBuilder.createFunction(debugFile, module().fullName() + ":" + name(), mangledName, debugFile, 0, subroutineType, false, true, 0, 0, false);
-	
-	llvm::Function* f = llvm::cast<llvm::Function>(mod->getOrInsertFunction(
-		mangledName, functionType()));
+	auto debugFunc = debugBuilder.createFunction(debugFile, module().fullName() + ":" + name(),
+		mangledName, debugFile, 0, subroutineType, false, true, 0, 0, false);
+
+	llvm::Function* f =
+		llvm::cast<llvm::Function>(mod->getOrInsertFunction(mangledName, functionType()));
 	f->setSubprogram(debugFunc);
-	
+
 	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
 	llvm::BasicBlock* block = llvm::BasicBlock::Create(mod->getContext(), name() + "_entry", f);
 	auto blockcpy = block;
@@ -437,17 +439,19 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU, l
 		// the first one is the input exec ID
 		if (idx == 0) {
 			arg.setName("inputexec_id");
-			
+
 			// create debug info
 			llvm::DIType* intDebugType;
 			res += context().debugTypeFromModule("lang", "i32", &intDebugType);
-			auto debugParam = debugBuilder.createParameterVariable(debugFile, "inputexec_id", 0, debugFile, 0, intDebugType);
-			//debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(), llvm::DebugLoc::get(0, 0, debugFile), allocblock); // TODO: "line" numbers
-			
+			auto debugParam = debugBuilder.createParameterVariable(
+				debugFile, "inputexec_id", 0, debugFile, 0, intDebugType);
+			// debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
+			// llvm::DebugLoc::get(0, 0, debugFile), allocblock); // TODO: "line" numbers
+
 			++idx;
 			continue;
 		}
-		
+
 		std::pair<DataType, std::string> tyAndName;
 		// all the - 1's is becaues the first is the inputexec_id
 		if (idx - 1 < dataInputs().size()) {
@@ -455,21 +459,23 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU, l
 		} else {
 			tyAndName = dataOutputs()[idx - 1 - entry->type().dataOutputs().size()];
 		}
-		arg.setName(tyAndName.second); 
-		
+		arg.setName(tyAndName.second);
 
 		// create debug info
-		
+
 		// create DIType*
-		llvm::DIType* dType = tyAndName.first.module().debugTypeFromName(tyAndName.first.unqualifiedName());
-		//auto debugParam = debugBuilder.createParameterVariable(debugFile, tyAndName.second, idx, debugFile, 0, dType);
-		//debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(), llvm::DebugLoc::get(0, 0, debugFile), allocblock); // TODO: line numbers
-		
+		llvm::DIType* dType =
+			tyAndName.first.module().debugTypeFromName(tyAndName.first.unqualifiedName());
+		// auto debugParam = debugBuilder.createParameterVariable(debugFile, tyAndName.second, idx,
+		// debugFile, 0, dType);
+		// debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
+		// llvm::DebugLoc::get(0, 0, debugFile), allocblock); // TODO: line numbers
+
 		++idx;
-		
 	}
 
-	codegenHelper(entry, execInputID, block, allocblock, mod, &debugBuilder, f,debugFunc, nodeCache, res);
+	codegenHelper(
+		entry, execInputID, block, allocblock, mod, &debugBuilder, f, debugFunc, nodeCache, res);
 
 	llvm::IRBuilder<> allocbuilder(allocblock);
 	allocbuilder.CreateBr(blockcpy);

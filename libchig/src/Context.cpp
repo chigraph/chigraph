@@ -220,7 +220,7 @@ Result Context::typeFromModule(
 	gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept
 {
 	Expects(toFill != nullptr);
-	
+
 	Result res;
 
 	ChigModule* mod = moduleByName(module);
@@ -242,7 +242,7 @@ Result Context::debugTypeFromModule(
 	gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::DIType** toFill) noexcept
 {
 	Expects(toFill != nullptr);
-	
+
 	Result res;
 
 	ChigModule* mod = moduleByName(module);
@@ -305,10 +305,10 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 	}
 
 	res += chigmod->generateModule(*llmod);
-    
-    // set debug info version
-    //llmod->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
 
+	// set debug info version
+	// llmod->addModuleFlag(llvm::Module::Warning, "Debug Info Version",
+	// llvm::DEBUG_METADATA_VERSION);
 
 	// verify the created module
 	if (res) {
@@ -320,8 +320,8 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 				llvm::raw_string_ostream printerStr{moduleStr};
 				llmod->print(printerStr, nullptr);
 			}
-			res.addEntry(
-				"EINT", "Internal compiler error: Invalid module created", {{"Error", err}, {"Full Name", gsl::to_string(fullName)}, {"Module", moduleStr}});
+			res.addEntry("EINT", "Internal compiler error: Invalid module created",
+				{{"Error", err}, {"Full Name", gsl::to_string(fullName)}, {"Module", moduleStr}});
 		}
 	}
 
