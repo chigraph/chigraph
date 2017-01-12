@@ -1,5 +1,6 @@
 find_package(LLVM REQUIRED CONFIG)
 
+message(STATUS "LLVM found at ${LLVM_DIR}")
 find_program(CLANG_EXE clang)
 find_program(LLI_EXE lli)
 
