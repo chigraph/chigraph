@@ -25,8 +25,7 @@ struct LangModule : ChigModule {
 
 	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 		std::unique_ptr<NodeType>* toFill) override;
-		
-		
+
 	llvm::DIType* debugTypeFromName(gsl::cstring_span<> name) override;
 
 	DataType typeFromName(gsl::cstring_span<> name) override;

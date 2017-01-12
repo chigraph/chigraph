@@ -90,8 +90,9 @@ struct CFuncNode : NodeType {
 		}
 	}
 
-	Result codegen(size_t /*inID*/, llvm::Module* mod, llvm::DIBuilder* dBuilder, llvm::Function* /*f*/, llvm::DISubprogram* diFunc,
-		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	Result codegen(size_t /*inID*/, llvm::Module* mod, llvm::DIBuilder* dBuilder,
+		llvm::Function* /*f*/, llvm::DISubprogram* diFunc, const gsl::span<llvm::Value*> io,
+		llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
 		Expects(io.size() == dataInputs().size() + dataOutputs().size() && mod != nullptr &&
@@ -121,17 +122,17 @@ struct CFuncNode : NodeType {
 
 		auto callinst =
 			builder.CreateCall(llfunc, {inputs.data(), (size_t)inputs.size()}, outputName);
-        callinst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
+		callinst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
 
 		// store theoutput if there are any
 		if (!dataOutputs().empty()) {
 			auto stoInst = builder.CreateStore(callinst, io[dataInputs().size()]);
-            stoInst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
+			stoInst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
 		}
 
 		auto brInst = builder.CreateBr(outputBlocks[0]);
-        brInst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
-        
+		brInst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
+
 		return {};
 	}
 

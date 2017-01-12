@@ -1,8 +1,8 @@
 #include "subprocessoutputview.hpp"
 
 #include <QLabel>
-#include <QVBoxLayout>
 #include <QPlainTextEdit>
+#include <QVBoxLayout>
 
 #include <KLocalizedString>
 #include <KMessageBox>
@@ -37,21 +37,21 @@ SubprocessOutputView::SubprocessOutputView(chig::JsonModule* module) : mModule(m
 	mProcess->start();
 	mProcess->write(str.c_str(), str.length());
 	mProcess->closeWriteChannel();
-	
+
 	setReadOnly(true);
-	
+
 	connect(mProcess, &QProcess::readyReadStandardOutput, this,
 		[this] { appendPlainText(mProcess->readAllStandardOutput().constData()); });
 
 	connect(mProcess, &QProcess::readyReadStandardOutput, this, [this] {
 		appendHtml("<span style='color:red'>" +
-							 QString(mProcess->readAllStandardOutput().constData()).toHtmlEscaped() +
-							 "</span>");
+				   QString(mProcess->readAllStandardOutput().constData()).toHtmlEscaped() +
+				   "</span>");
 	});
-	
-	connect(mProcess, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, &SubprocessOutputView::processFinished);
+
+	connect(mProcess,
+		static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this,
+		&SubprocessOutputView::processFinished);
 }
 
-void SubprocessOutputView::cancelProcess() {
-	mProcess->kill();
-}
+void SubprocessOutputView::cancelProcess() { mProcess->kill(); }

@@ -8,8 +8,8 @@
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
-#include <llvm/IR/Module.h>
 #include <llvm/IR/DIBuilder.h>
+#include <llvm/IR/Module.h>
 
 #include <memory>
 #include <string>
@@ -55,7 +55,8 @@ struct GraphFunction {
 	/// \param mod The module to codgen into, should already be a valid module
 	/// \param debugFile The file that the GraphFunction resides in.
 	/// \return The result
-	Result compile(llvm::Module* mod, llvm::DICompileUnit* debugFile, llvm::DIBuilder& debugBuilder) const;
+	Result compile(
+		llvm::Module* mod, llvm::DICompileUnit* debugFile, llvm::DIBuilder& debugBuilder) const;
 
 	/// \name Node Manipulation
 	/// Functions for mainpulating nodes; getting, adding

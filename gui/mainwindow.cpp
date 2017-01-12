@@ -87,7 +87,6 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	addDockWidget(Qt::BottomDockWidgetArea, docker);
 	connect(outputView, &QTabWidget::tabCloseRequested, outputView, &QTabWidget::removeTab);
 
-
 	docker = new QDockWidget(i18n("Function Details"), this);
 	docker->setObjectName("Function Details");
 	auto functionDetails = new FunctionDetails;
@@ -133,20 +132,20 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	cancelAction->setIcon(QIcon::fromTheme("process-stop"));
 	actColl->setDefaultShortcut(cancelAction, Qt::CTRL + Qt::Key_Q);
 	actColl->addAction(QStringLiteral("cancel"), cancelAction);
-	connect(cancelAction, &QAction::triggered, this, [outputView]{
+	connect(cancelAction, &QAction::triggered, this, [outputView] {
 		auto output = dynamic_cast<SubprocessOutputView*>(outputView->currentWidget());
-		
-		if(output != nullptr) {
+
+		if (output != nullptr) {
 			output->cancelProcess();
 		}
 	});
-	
-	connect(outputView, &QTabWidget::currentChanged, this, [cancelAction, outputView](int){
+
+	connect(outputView, &QTabWidget::currentChanged, this, [cancelAction, outputView](int) {
 		auto view = dynamic_cast<SubprocessOutputView*>(outputView->currentWidget());
-		
+
 		cancelAction->setEnabled(view->running());
 	});
-	
+
 	auto runAction = new QAction;
 	runAction->setText(i18n("&Run"));
 	runAction->setIcon(QIcon::fromTheme("system-run"));
@@ -154,22 +153,26 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	actColl->addAction(QStringLiteral("run"), runAction);
 	connect(runAction, &QAction::triggered, this, [this, outputView, cancelAction] {
 		auto view = new SubprocessOutputView(currentModule());
-		connect(view, &SubprocessOutputView::processFinished, this, [outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
-			QString statusStr = QString(" (%1, %2)").arg(exitStatus == QProcess::NormalExit ? "exited" : "crashed", QString::number(exitCode));
-			outputView->setTabText(outputView->indexOf(view), QString::fromStdString(view->module()->fullName()) + statusStr);
-			
-			// disable it
-			if(outputView->currentWidget() == view) {
-				cancelAction->setEnabled(false);
-			}
-		});
+		connect(view, &SubprocessOutputView::processFinished, this,
+			[outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
+				QString statusStr =
+					QString(" (%1, %2)")
+						.arg(exitStatus == QProcess::NormalExit ? "exited" : "crashed",
+							QString::number(exitCode));
+				outputView->setTabText(outputView->indexOf(view),
+					QString::fromStdString(view->module()->fullName()) + statusStr);
+
+				// disable it
+				if (outputView->currentWidget() == view) {
+					cancelAction->setEnabled(false);
+				}
+			});
 		// add the tab to the beginning
-		int newTabID = outputView->insertTab(0, view, QString::fromStdString(currentModule()->fullName()) + i18n(" (running)"));
+		int newTabID = outputView->insertTab(
+			0, view, QString::fromStdString(currentModule()->fullName()) + i18n(" (running)"));
 		outputView->setCurrentIndex(newTabID);
 		cancelAction->setEnabled(true);
 	});
-
-
 
 	auto newFunctionAction = new QAction;
 	newFunctionAction->setText(i18n("New Function"));

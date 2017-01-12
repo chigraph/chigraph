@@ -17,10 +17,9 @@ public:
 
 	chig::JsonModule* module() const { return mModule; }
 	bool running() const { return mProcess->state() == QProcess::Running; }
-	
 signals:
 	void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
-	
+
 private:
 	chig::JsonModule* mModule;
 	QProcess* mProcess;

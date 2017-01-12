@@ -48,7 +48,6 @@ struct JsonModule : public ChigModule {
 
 	DataType typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
 	llvm::DIType* debugTypeFromName(gsl::cstring_span<> /*name*/) override { return nullptr; }
-	
 	std::vector<std::string> nodeTypeNames() const override;  // TODO: implement
 
 	std::vector<std::string> typeNames() const override { return {}; }  // TODO: implement
@@ -67,11 +66,12 @@ struct JsonModule : public ChigModule {
 	/// Serialize to disk in the context
 	/// \return The Result
 	Result saveToDisk() const;
-	
+
 	/// Get the path to the source file
 	/// It's not garunteed to exist, because it could have not been saved
 	/// \return The path
-	boost::filesystem::path sourceFilePath() const {
+	boost::filesystem::path sourceFilePath() const
+	{
 		return context().workspacePath() / "src" / (fullName() + ".chigmod");
 	}
 

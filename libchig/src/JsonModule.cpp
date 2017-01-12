@@ -6,8 +6,8 @@
 #include "chig/NodeType.hpp"
 #include "chig/Result.hpp"
 
-#include <llvm/IR/Module.h>
 #include <llvm/IR/DIBuilder.h>
+#include <llvm/IR/Module.h>
 
 #include <boost/filesystem.hpp>
 
@@ -37,8 +37,9 @@ struct JsonFuncCallNodeType : public NodeType {
 		setExecOutputs(mygraph->execOutputs());
 	}
 
-	Result codegen(size_t execInputID, llvm::Module* mod, llvm::DIBuilder* dBuilder, llvm::Function* /*f*/, llvm::DISubprogram* diFunc,
-		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	Result codegen(size_t execInputID, llvm::Module* mod, llvm::DIBuilder* dBuilder,
+		llvm::Function* /*f*/, llvm::DISubprogram* diFunc, const gsl::span<llvm::Value*> io,
+		llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
 		Result res = {};
@@ -61,7 +62,7 @@ struct JsonFuncCallNodeType : public NodeType {
 		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
 
 		auto ret = builder.CreateCall(func, passingIO, "call_function");
-        ret->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
+		ret->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
 
 		// create switch on return
 		auto switchInst = builder.CreateSwitch(ret, outputBlocks[0]);  // TODO: better default
@@ -159,9 +160,10 @@ Result JsonModule::generateModule(llvm::Module& mod)
 
 	// debug info
 	llvm::DIBuilder debugBuilder(mod);
-    auto compileUnit = debugBuilder.createCompileUnit(llvm::dwarf::DW_LANG_C, sourceFilePath().filename().string(),
-													  sourceFilePath().parent_path().string(), "Chigraph Compiler", false, "", 0);
-	
+	auto compileUnit =
+		debugBuilder.createCompileUnit(llvm::dwarf::DW_LANG_C, sourceFilePath().filename().string(),
+			sourceFilePath().parent_path().string(), "Chigraph Compiler", false, "", 0);
+
 	// create prototypes
 	for (auto& graph : mFunctions) {
 		mod.getOrInsertFunction(
@@ -171,7 +173,7 @@ Result JsonModule::generateModule(llvm::Module& mod)
 	for (auto& graph : mFunctions) {
 		res += graph->compile(&mod, compileUnit, debugBuilder);
 	}
-	
+
 	debugBuilder.finalize();
 
 	return res;
