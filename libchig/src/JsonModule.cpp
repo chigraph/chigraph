@@ -37,7 +37,7 @@ struct JsonFuncCallNodeType : public NodeType {
 		setExecOutputs(mygraph->execOutputs());
 	}
 
-	Result codegen(size_t execInputID, llvm::Module* mod, llvm::Function* /*f*/,
+	Result codegen(size_t execInputID, llvm::Module* mod, llvm::DIBuilder* dBuilder, llvm::Function* /*f*/, llvm::DISubprogram* diFunc,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -61,6 +61,7 @@ struct JsonFuncCallNodeType : public NodeType {
 		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
 
 		auto ret = builder.CreateCall(func, passingIO, "call_function");
+        ret->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
 
 		// create switch on return
 		auto switchInst = builder.CreateSwitch(ret, outputBlocks[0]);  // TODO: better default
@@ -158,8 +159,7 @@ Result JsonModule::generateModule(llvm::Module& mod)
 
 	// debug info
 	llvm::DIBuilder debugBuilder(mod);
-	mod.addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
-	auto compileUnit = debugBuilder.createCompileUnit(llvm::dwarf::DW_LANG_C, sourceFilePath().filename().string(),
+    auto compileUnit = debugBuilder.createCompileUnit(llvm::dwarf::DW_LANG_C, sourceFilePath().filename().string(),
 													  sourceFilePath().parent_path().string(), "Chigraph Compiler", false, "", 0);
 	
 	// create prototypes

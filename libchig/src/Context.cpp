@@ -305,6 +305,10 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 	}
 
 	res += chigmod->generateModule(*llmod);
+    
+    // set debug info version
+    //llmod->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
+
 
 	// verify the created module
 	if (res) {
@@ -317,7 +321,7 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 				llmod->print(printerStr, nullptr);
 			}
 			res.addEntry(
-				"EINT", "Internal compiler error: Invalid module created", {{"Error", err}, {"Module", moduleStr}});
+				"EINT", "Internal compiler error: Invalid module created", {{"Error", err}, {"Full Name", gsl::to_string(fullName)}, {"Module", moduleStr}});
 		}
 	}
 

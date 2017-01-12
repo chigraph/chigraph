@@ -190,7 +190,7 @@ struct cache {
 
 // Codegens a single input to a node
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block,
-	llvm::BasicBlock* allocblock, llvm::Module* mod, llvm::Function* f,
+	llvm::BasicBlock* allocblock, llvm::Module* mod, llvm::DIBuilder* dbuilder, llvm::Function* f, llvm::DISubprogram* diFunc,
 	std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res)
 {
 	llvm::IRBuilder<> builder(block);
@@ -312,7 +312,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	}
 
 	// codegen
-	res += node->type().codegen(execInputID, mod, f, io, block, outputBlocks);
+	res += node->type().codegen(execInputID, mod, dbuilder, f, diFunc, io, block, outputBlocks);
 	if (!res) {
 		return;
 	}
@@ -330,7 +330,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		auto& output = node->outputExecConnections[idx];
 		if (output.first != nullptr && needsCodegen[idx]) {
 			codegenHelper(
-				output.first, output.second, outputBlocks[idx], allocblock, mod, f, nodeCache, res);
+				output.first, output.second, outputBlocks[idx], allocblock, mod,dbuilder,  f, diFunc, nodeCache, res);
 		}
 	}
 }
@@ -441,7 +441,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU, l
 			// create debug info
 			llvm::DIType* intDebugType;
 			res += context().debugTypeFromModule("lang", "i32", &intDebugType);
-			//lluto debugParam = debugBuilder.createParameterVariable(debugFile, "inputexec_id", 0, debugFile, 0, intDebugType);
+			auto debugParam = debugBuilder.createParameterVariable(debugFile, "inputexec_id", 0, debugFile, 0, intDebugType);
 			//debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(), llvm::DebugLoc::get(0, 0, debugFile), allocblock); // TODO: "line" numbers
 			
 			++idx;
@@ -461,7 +461,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU, l
 		// create debug info
 		
 		// create DIType*
-		//llvm::DIType* dType = tyAndName.first.module().debugTypeFromName(tyAndName.first.unqualifiedName());
+		llvm::DIType* dType = tyAndName.first.module().debugTypeFromName(tyAndName.first.unqualifiedName());
 		//auto debugParam = debugBuilder.createParameterVariable(debugFile, tyAndName.second, idx, debugFile, 0, dType);
 		//debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(), llvm::DebugLoc::get(0, 0, debugFile), allocblock); // TODO: line numbers
 		
@@ -469,7 +469,7 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU, l
 		
 	}
 
-	codegenHelper(entry, execInputID, block, allocblock, mod, f, nodeCache, res);
+	codegenHelper(entry, execInputID, block, allocblock, mod, &debugBuilder, f,debugFunc, nodeCache, res);
 
 	llvm::IRBuilder<> allocbuilder(allocblock);
 	allocbuilder.CreateBr(blockcpy);
