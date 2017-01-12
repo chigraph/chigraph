@@ -22,7 +22,7 @@ before_install:
   - sudo apt-get update
 
 install: 
-  - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras qt57svg ninja-build libxcb-keysyms1-dev libxml2-utils libboost-all-dev clang-3.8 gcc-5 gcc-6 g++-5 g++-6 build-essential llvm-3.8-dev
+  - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras qt57svg ninja-build libxcb-keysyms1-dev libxml2-utils  clang-3.8 gcc-5 gcc-6 g++-5 g++-6 build-essential llvm-3.8-dev
   - source /opt/qt57/bin/qt57-env.sh
 
 script:
