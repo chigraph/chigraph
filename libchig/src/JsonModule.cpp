@@ -62,7 +62,7 @@ struct JsonFuncCallNodeType : public NodeType {
 		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
 
 		auto ret = builder.CreateCall(func, passingIO, "call_function");
-		ret->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
+		ret->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
 
 		// create switch on return
 		auto switchInst = builder.CreateSwitch(ret, outputBlocks[0]);  // TODO: better default

@@ -444,9 +444,9 @@ Result GraphFunction::compile(
 			llvm::DIType* intDebugType;
 			res += context().debugTypeFromModule("lang", "i32", &intDebugType);
 			auto debugParam = debugBuilder.createParameterVariable(
-				debugFile, "inputexec_id", 0, debugFile, 0, intDebugType);
-			// debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
-			// llvm::DebugLoc::get(0, 0, debugFile), allocblock); // TODO: "line" numbers
+				debugFunc, "inputexec_id", 0, debugFile, 0, intDebugType);
+			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
+				llvm::DebugLoc::get(1, 1, debugFunc), allocblock);  // TODO: "line" numbers
 
 			++idx;
 			continue;
@@ -466,10 +466,10 @@ Result GraphFunction::compile(
 		// create DIType*
 		llvm::DIType* dType =
 			tyAndName.first.module().debugTypeFromName(tyAndName.first.unqualifiedName());
-		// auto debugParam = debugBuilder.createParameterVariable(debugFile, tyAndName.second, idx,
-		// debugFile, 0, dType);
-		// debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
-		// llvm::DebugLoc::get(0, 0, debugFile), allocblock); // TODO: line numbers
+		auto debugParam = debugBuilder.createParameterVariable(
+			debugFunc, tyAndName.second, idx, debugFile, 0, dType);
+		debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
+			llvm::DebugLoc::get(1, 1, debugFunc), allocblock);  // TODO: line numbers
 
 		++idx;
 	}
