@@ -24,6 +24,8 @@ namespace chig
 /// A generic node type. All user made types are of JsonNodeType type, which is defined in
 /// JsonModule.cpp. This allows for easy extension of the language.
 struct NodeType {
+	friend class NodeInstance;
+
 	/// Constructor
 	/// \param mod The module to create the NodeType in
 	/// \param name The name of the NodeType
@@ -114,10 +116,15 @@ protected:
 		mExecOutputs = std::move(newOutputs);
 	}
 
+	/// Get the node instance
+	/// \return the node instance
+	NodeInstance* nodeInstance() const { return mNodeInstance; }
 private:
 	ChigModule* mModule;
 	Context* mContext;
 	std::string mName, mDescription;
+
+	NodeInstance* mNodeInstance = nullptr;
 
 	std::vector<std::pair<DataType, std::string>> mDataInputs;
 	std::vector<std::pair<DataType, std::string>> mDataOutputs;

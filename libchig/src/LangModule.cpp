@@ -28,7 +28,7 @@ struct IfNodeType : NodeType {
 
 		llvm::IRBuilder<> builder(codegenInto);
 		auto brInst = builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
-		brInst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
+		brInst->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
 
 		return {};
 	}
@@ -66,7 +66,7 @@ struct EntryNodeType : NodeType {
 		}
 
 		auto brInst = builder.CreateBr(outputBlocks[0]);
-		brInst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
+		brInst->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
 
 		return {};
 	}
@@ -121,7 +121,7 @@ struct ConstIntNodeType : NodeType {
 			io[0], false);
 		auto brInst = builder.CreateBr(outputBlocks[0]);
 
-		auto dLoc = llvm::DebugLoc::get(0, 0, diFunc);
+		auto dLoc = llvm::DebugLoc::get(1, 1, diFunc);
 		storeInst->setDebugLoc(dLoc);
 		brInst->setDebugLoc(dLoc);
 
@@ -163,7 +163,7 @@ struct ConstBoolNodeType : NodeType {
 			io[0], false);
 		auto brInst = builder.CreateBr(outputBlocks[0]);
 
-		auto dLoc = llvm::DebugLoc::get(0, 0, diFunc);
+		auto dLoc = llvm::DebugLoc::get(1, 1, diFunc);
 		storeInst->setDebugLoc(dLoc);
 		brInst->setDebugLoc(dLoc);
 
@@ -206,13 +206,13 @@ struct ExitNodeType : NodeType {
 		std::advance(arg_iter, ret_start);
 		for (auto& value : io) {
 			auto stoInst = builder.CreateStore(value, &*arg_iter, false);  // TODO: volitility?
-			stoInst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
+			stoInst->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
 			++arg_iter;
 		}
 
 		auto retInst = builder.CreateRet(
 			llvm::ConstantInt::get(llvm::Type::getInt32Ty(context().llvmContext()), execInputID));
-		retInst->setDebugLoc(llvm::DebugLoc::get(0, 0, diFunc));
+		retInst->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
 
 		return {};
 	}
@@ -262,7 +262,7 @@ struct StringLiteralNodeType : NodeType {
 
 		llvm::IRBuilder<> builder(codegenInto);
 
-		auto dLoc = llvm::DebugLoc::get(0, 0, diFunc);
+		auto dLoc = llvm::DebugLoc::get(1, 1, diFunc);
 
 		auto global = builder.CreateGlobalString(literalString);
 
@@ -462,10 +462,10 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 	mDebugTypes["double"] = llvm::DIBasicType::get(context().llvmContext(),
 		llvm::dwarf::DW_TAG_base_type, "lang:double", 64, 64, llvm::dwarf::DW_ATE_float);
 	auto charType = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
-		"lang:i8", 64, 64, llvm::dwarf::DW_ATE_signed_char);
+		"lang:i8", 8, 8, llvm::dwarf::DW_ATE_signed_char);
 	mDebugTypes["i8*"] =
-		llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_pointer_type,
-			"lang:i8*", nullptr, 0, nullptr, charType, 64, 64, 0, 0);  // TODO: 32bit support?
+		llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_pointer_type, nullptr,
+			nullptr, 0, nullptr, charType, 64, 64, 0, 0);  // TODO: 32bit support?
 }
 
 Result LangModule::nodeTypeFromName(

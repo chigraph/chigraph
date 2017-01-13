@@ -14,6 +14,8 @@ NodeInstance::NodeInstance(
 {
 	Expects(mType != nullptr);
 
+	mType->mNodeInstance = this;
+
 	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
 	outputDataConnections.resize(type().dataOutputs().size(), {});
 
@@ -28,6 +30,8 @@ NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
 	  mId{std::move(id)},
 	  mContext{&other.context()}
 {
+	mType->mNodeInstance = this;
+
 	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
 	outputDataConnections.resize(type().dataOutputs().size(), {});
 
@@ -38,6 +42,7 @@ NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
 NodeInstance& NodeInstance::operator=(const NodeInstance& other)
 {
 	mType = other.type().clone();
+	mType->mNodeInstance = this;
 	mX = other.x();
 	mY = other.y();
 	mId = other.id() + "_";
@@ -85,6 +90,7 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType)
 	outputDataConnections.resize(newType->dataOutputs().size());
 
 	mType = std::move(newType);
+	mType->mNodeInstance = this;
 }
 
 Result connectData(

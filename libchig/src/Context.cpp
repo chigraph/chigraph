@@ -306,9 +306,11 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 
 	res += chigmod->generateModule(*llmod);
 
-	// set debug info version
-	// llmod->addModuleFlag(llvm::Module::Warning, "Debug Info Version",
-	// llvm::DEBUG_METADATA_VERSION);
+	// set debug info version if it doesn't already have it
+	if (llmod->getModuleFlag("Debug Info Version") == nullptr) {
+		llmod->addModuleFlag(
+			llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
+	}
 
 	// verify the created module
 	if (res) {
