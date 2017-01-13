@@ -11,6 +11,8 @@
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
+#include <boost/bimap.hpp>
+
 namespace chig
 {
 /// A graph holding nodes

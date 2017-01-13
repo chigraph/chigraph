@@ -483,6 +483,26 @@ Result GraphFunction::compile(
 	return res;
 }
 
+
+boost::bimap<unsigned, NodeInstance*> GraphFunction::createColumnNumberAssoc() const {
+    // create sorted list
+    std::vector<NodeInstance*> insts;
+    for(const auto& n : graph().nodes()) {
+        insts.push_back(n.second.get());
+    }
+    
+    std::sort(insts.begin(), insts.end(), [](const auto& lhs, const auto& rhs) {
+        return lhs->id() < rhs->id();
+    });
+    
+    boost::bimap<unsigned, NodeInstance*> ret;
+    for(unsigned i = 0; i < insts.size(); ++i) {
+        ret.left.insert({i + 1, insts[i]}); // + 1 because line numbers start at 1
+    }
+    
+    return ret;
+}
+
 NodeInstance* GraphFunction::entryNode() const noexcept
 {
 	auto matching = graph().nodesWithType("lang", "entry");

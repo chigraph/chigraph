@@ -322,6 +322,26 @@ std::vector<std::string> JsonModule::nodeTypeNames() const
 	return ret;
 }
 
+boost::bimap<unsigned, GraphFunction*> JsonModule::createLineNumberAssoc() const {
+    // create a sorted list of GraphFunctions
+    std::vector<GraphFunction*> funcs;
+    for(const auto& f : functions()) {
+        funcs.push_back(f.get());
+    }
+    
+    std::sort(funcs.begin(), funcs.end(), [](const auto& lhs, const auto& rhs) {
+        return lhs->name() < rhs->name();
+    });
+    
+    boost::bimap<unsigned, GraphFunction*> ret;
+    for(unsigned i = 0; i < funcs.size(); ++i) {
+        ret.left.insert({i + 1, funcs[i]}); // + 1 because line numbers start at 1
+    }
+    
+    return ret;
+}
+
+
 Result JsonModule::loadGraphs()
 {
 	Result res = {};

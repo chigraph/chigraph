@@ -13,6 +13,8 @@
 
 #include <gsl/gsl>
 
+#include <boost/bimap.hpp>
+
 #include <iostream>
 #include <unordered_set>
 #include <vector>
@@ -54,6 +56,10 @@ struct JsonModule : public ChigModule {
 	Result generateModule(llvm::Module& module) override;
 
 	/////////////////////
+    
+    /// Create the associations from line number and function in debug info
+    /// \return A bimap of function to line number
+    boost::bimap<unsigned, GraphFunction*> createLineNumberAssoc() const;
 
 	/// Load the graphs (usually called by Context::addModule)
 	Result loadGraphs();
