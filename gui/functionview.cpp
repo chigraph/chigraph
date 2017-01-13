@@ -54,7 +54,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 
 			auto name = ty->qualifiedName();  // cache the name because ty is moved from
 			reg->registerModel(std::make_unique<ChigraphNodeModel>(
-				new chig::NodeInstance(std::move(ty), 0, 0, name), this));
+				new chig::NodeInstance(nullptr, std::move(ty), 0, 0, name), this)); // TODO: this is a memory leak
 		}
 	}
 	// register functions in this module
@@ -63,7 +63,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	mFunction->createExitNodeType(&ty);
 
 	reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		new chig::NodeInstance(std::move(ty), 0, 0, "lang:exit"), this));
+		new chig::NodeInstance(nullptr, std::move(ty), 0, 0, "lang:exit"), this));
 
 	mScene = new FlowScene(reg);
 

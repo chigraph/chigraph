@@ -59,7 +59,7 @@ struct JsonModule : public ChigModule {
     
     /// Create the associations from line number and function in debug info
     /// \return A bimap of function to line number
-    boost::bimap<unsigned, GraphFunction*> createLineNumberAssoc() const;
+    boost::bimap<unsigned, NodeInstance*> createLineNumberAssoc() const;
 
 	/// Load the graphs (usually called by Context::addModule)
 	Result loadGraphs();

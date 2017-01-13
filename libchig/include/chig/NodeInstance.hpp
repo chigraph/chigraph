@@ -11,13 +11,13 @@ namespace chig
 {
 /// An instance of a node
 struct NodeInstance {
-	/// Construct a nodeinstace with a type location and an ID
+	/// Construct a nodeinstace with a type location and an ID, usually called from GraphFunction::insertNode
 	/// \param nodeType The type that the node is
 	/// \param posX The X location of the node
 	/// \param posY The Y location of the node
 	/// \param nodeID The unique ID for the node
 	NodeInstance(
-		std::unique_ptr<NodeType> nodeType, float posX, float posY, gsl::cstring_span<> nodeID);
+		GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX, float posY, gsl::cstring_span<> nodeID);
 
 	/// Move constructor
 	NodeInstance(NodeInstance&&) = default;
@@ -73,8 +73,10 @@ struct NodeInstance {
 
 	/// Get the containing Context object
 	Context& context() const { return *mContext; }
+	
+	/// Get the containing GraphFunction
+	GraphFunction& function() const { return *mFunction; }
 private:
-	// general data
 	std::unique_ptr<NodeType> mType = nullptr;
 
 	float mX = 0.f;
@@ -83,6 +85,7 @@ private:
 	std::string mId;
 
 	Context* mContext;
+    GraphFunction* mFunction;
 };
 
 /// Connects two nodes' data connections
