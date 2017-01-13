@@ -4,15 +4,16 @@
 
 namespace chig
 {
-NodeInstance::NodeInstance(
+NodeInstance::NodeInstance(GraphFunction* func,
 	std::unique_ptr<NodeType> nodeType, float posX, float posY, gsl::cstring_span<> nodeID)
 	: mType{std::move(nodeType)},
 	  mX{posX},
 	  mY{posY},
 	  mId{gsl::to_string(nodeID)},
+	  mFunction{func},
 	  mContext{&mType->context()}
 {
-	Expects(mType != nullptr);
+	Expects(mType != nullptr && mFunction != nullptr);
 
 	mType->mNodeInstance = this;
 

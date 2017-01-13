@@ -57,11 +57,7 @@ struct GraphFunction {
 	/// \return The result
 	Result compile(
 		llvm::Module* mod, llvm::DICompileUnit* debugFile, llvm::DIBuilder& debugBuilder) const;
-        
-    /// Get the associations from nodeInstance to column number 
-    /// \return The bimap
-    boost::bimap<unsigned, NodeInstance*> createColumnNumberAssoc() const;
-
+    
 	/// \name Node Manipulation
 	/// Functions for mainpulating nodes; getting, adding
 	/// \{

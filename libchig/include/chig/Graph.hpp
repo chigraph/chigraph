@@ -19,13 +19,13 @@ namespace chig
 /// Normally not used by the user, used through GraphFunction
 struct Graph {
 	/// Default constructor, creates an empty graph
-	Graph(){};
+	Graph() {}
 
 	/// Normal constructor (don't call this, let GraphFunction call it)
-	/// \param con The context object
+	/// \param func The context object
 	/// \param data The JSON data
 	/// \param res The result to fill in the case of errors
-	Graph(Context& con, const nlohmann::json& data, Result& res);
+	Graph(GraphFunction& func, const nlohmann::json& data, Result& res);
 
 	/// Convert to JSON. Don't actually call this, let GraphFunction
 	/// \param toFill The JSON object to fill.
@@ -67,6 +67,7 @@ private:
 		mNodes;  /// Storage for the nodes
 
 	Context* mContext;
+    GraphFunction* mFunction;
 };
 }
 

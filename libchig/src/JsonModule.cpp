@@ -322,20 +322,23 @@ std::vector<std::string> JsonModule::nodeTypeNames() const
 	return ret;
 }
 
-boost::bimap<unsigned, GraphFunction*> JsonModule::createLineNumberAssoc() const {
+boost::bimap<unsigned int, NodeInstance*> JsonModule::createLineNumberAssoc() const
+{
     // create a sorted list of GraphFunctions
-    std::vector<GraphFunction*> funcs;
+    std::vector<NodeInstance*> nodes;
     for(const auto& f : functions()) {
-        funcs.push_back(f.get());
+        for(const auto& node : f->graph().nodes()) {
+            nodes.push_back(node.second.get());
+        }
     }
     
-    std::sort(funcs.begin(), funcs.end(), [](const auto& lhs, const auto& rhs) {
-        return lhs->name() < rhs->name();
+    std::sort(nodes.begin(), nodes.end(), [](const auto& lhs, const auto& rhs) {
+        return (lhs->function().name() + ":" + lhs->id()) < (rhs->function().name() + rhs->id());
     });
     
-    boost::bimap<unsigned, GraphFunction*> ret;
-    for(unsigned i = 0; i < funcs.size(); ++i) {
-        ret.left.insert({i + 1, funcs[i]}); // + 1 because line numbers start at 1
+    boost::bimap<unsigned, NodeInstance*> ret;
+    for(unsigned i = 0; i < nodes.size(); ++i) {
+        ret.left.insert({i + 1, nodes[i]}); // + 1 because line numbers start at 1
     }
     
     return ret;

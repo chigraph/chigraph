@@ -3,7 +3,7 @@
 
 using namespace chig;
 
-Graph::Graph(Context& con, const nlohmann::json& data, Result& res) : mContext{&con}
+Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mContext{&func.context()}, mFunction{&func}
 {
 	// read the nodes
 	if (data.find("nodes") == data.end() || !data["nodes"].is_object()) {
@@ -199,7 +199,7 @@ Result Graph::insertNode(
 		return res;
 	}
 
-	auto ptr = std::make_unique<NodeInstance>(std::move(type), x, y, id);
+	auto ptr = std::make_unique<NodeInstance>(mFunction, std::move(type), x, y, id);
 
 	auto emplaced = mNodes.emplace(gsl::to_string(id), std::move(ptr)).first;
 

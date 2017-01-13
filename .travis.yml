@@ -31,7 +31,7 @@ script:
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_CONFIG=/usr/lib/llvm-3.9/bin/llvm-config
   - make -j`nproc`
-  - make test
+  - CTEST_OUTPUT_ON_FAILURE=1 make test
 
 deploy:
   skip_cleanup: true
