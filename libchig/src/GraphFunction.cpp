@@ -191,7 +191,7 @@ struct cache {
 // Codegens a single input to a node
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block,
 	llvm::BasicBlock* allocblock, llvm::Module* mod, llvm::DIBuilder* dbuilder, llvm::Function* f,
-	llvm::DISubprogram* diFunc, std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res)
+	llvm::DISubprogram* diFunc, std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res, boost::bimap<unsigned, NodeInstance*>& nodeLocations)
 {
 	llvm::IRBuilder<> builder(block);
 
@@ -232,7 +232,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			auto value = cacheObject.outputs[param.second];
 			// dereference
 			io.push_back(builder.CreateLoad(
-				value, node->type().dataInputs()[inputID].second));  // TODO: pass ptr to value
+				value));  // TODO: pass ptr to value
 
 			// make sure it's the right type
 			if (io[io.size() - 1]->getType() !=
@@ -258,10 +258,21 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		for (auto& output : node->type().dataOutputs()) {
 			// TODO: research address spaces
 			llvm::AllocaInst* alloc =
-				allocBuilder.CreateAlloca(output.first.llvmType(), nullptr, output.second);
+				allocBuilder.CreateAlloca(output.first.llvmType(), nullptr, node->id() + "__" + output.second);
 			alloc->setName(output.second);
 			outputCache.push_back(alloc);
 			io.push_back(alloc);
+            
+            // create debug info
+            {
+                // get type
+                llvm::DIType* dType = output.first.module().debugTypeFromName(output.first.unqualifiedName());
+                
+                // TODO: better names
+                auto debugVar = dbuilder->createAutoVariable(diFunc, node->id() + "__" + output.second, diFunc->getFile(), 1, dType);
+                dbuilder->insertDeclare(alloc, debugVar, dbuilder->createExpression(),
+                    llvm::DebugLoc::get(1, 1, diFunc), allocblock);
+            }
 
 			// make sure the type is right
 			if (llvm::PointerType::get(output.first.llvmType(), 0) != alloc->getType()) {
@@ -312,7 +323,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	}
 
 	// codegen
-	res += node->type().codegen(execInputID, mod, dbuilder, f, diFunc, io, block, outputBlocks);
+	res += node->type().codegen(execInputID, mod, llvm::DebugLoc::get(nodeLocations.right.at(node), 1, diFunc), f, io, block, outputBlocks);
 	if (!res) {
 		return;
 	}
@@ -330,7 +341,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		auto& output = node->outputExecConnections[idx];
 		if (output.first != nullptr && needsCodegen[idx]) {
 			codegenHelper(output.first, output.second, outputBlocks[idx], allocblock, mod, dbuilder,
-				f, diFunc, nodeCache, res);
+				f, diFunc, nodeCache, res, nodeLocations);
 		}
 	}
 }
@@ -474,8 +485,9 @@ Result GraphFunction::compile(
 		++idx;
 	}
 
+	auto nodeLocations = module().createLineNumberAssoc();
 	codegenHelper(
-		entry, execInputID, block, allocblock, mod, &debugBuilder, f, debugFunc, nodeCache, res);
+		entry, execInputID, block, allocblock, mod, &debugBuilder, f, debugFunc, nodeCache, res, nodeLocations);
 
 	llvm::IRBuilder<> allocbuilder(allocblock);
 	allocbuilder.CreateBr(blockcpy);
