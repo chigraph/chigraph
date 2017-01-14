@@ -37,8 +37,7 @@ struct JsonFuncCallNodeType : public NodeType {
 		setExecOutputs(mygraph->execOutputs());
 	}
 
-	Result codegen(size_t execInputID, llvm::Module* mod, llvm::DIBuilder* dBuilder,
-		llvm::Function* /*f*/, llvm::DISubprogram* diFunc, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t execInputID, llvm::Module* mod, const llvm::DebugLoc& nodeLocation, llvm::Function* f, const gsl::span<llvm::Value*> io,
 		llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -62,7 +61,7 @@ struct JsonFuncCallNodeType : public NodeType {
 		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
 
 		auto ret = builder.CreateCall(func, passingIO, "call_function");
-		ret->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
+		ret->setDebugLoc(nodeLocation);
 
 		// create switch on return
 		auto switchInst = builder.CreateSwitch(ret, outputBlocks[0]);  // TODO: better default

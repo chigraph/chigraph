@@ -46,9 +46,8 @@ struct NodeType {
 	/// A virtual function that is called when this node needs to be called
 	/// \param execInputID The ID of the exec input
 	/// \param modToCodegenInto The module that is being generated
-	/// \param dBuilder Debug info builder
+	/// \param nodeLocation The location of the node
 	/// \param f The function that is being generated
-	/// \param diFunc The Debug function
 	/// \param io This has the values that are the inputs and outputs of the function.
 	/// This vector will always have the size of `inputs.size() + outputs.size()` and starts with
 	/// the inputs.
@@ -58,7 +57,7 @@ struct NodeType {
 	/// numOutputExecs.
 	/// \return The Result
 	virtual Result codegen(size_t execInputID, llvm::Module* modToCodegenInto,
-		llvm::DIBuilder* dBuilder, llvm::Function* f, llvm::DISubprogram* diFunc,
+		const llvm::DebugLoc& nodeLocation, llvm::Function* f,
 		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
 

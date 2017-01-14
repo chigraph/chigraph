@@ -19,8 +19,7 @@ struct IfNodeType : NodeType {
 		setDataInputs({{mod.typeFromName("i1"), "condition"}});
 	}
 
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, llvm::DIBuilder* dBuilder,
-		llvm::Function* /*f*/, llvm::DISubprogram* diFunc, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation, llvm::Function* f, const gsl::span<llvm::Value*> io,
 		llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -28,7 +27,7 @@ struct IfNodeType : NodeType {
 
 		llvm::IRBuilder<> builder(codegenInto);
 		auto brInst = builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
-		brInst->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
+		brInst->setDebugLoc(nodeLocation);
 
 		return {};
 	}
@@ -46,8 +45,7 @@ struct EntryNodeType : NodeType {
 		setDataOutputs(std::move(dataInputs));
 	}
 
-	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, llvm::DIBuilder* dBuilder,
-		llvm::Function* f, llvm::DISubprogram* diFunc, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation, llvm::Function* f, const gsl::span<llvm::Value*> io,
 		llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -66,7 +64,7 @@ struct EntryNodeType : NodeType {
 		}
 
 		auto brInst = builder.CreateBr(outputBlocks[0]);
-		brInst->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
+		brInst->setDebugLoc(nodeLocation);
 
 		return {};
 	}
@@ -106,8 +104,7 @@ struct ConstIntNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i32"), "out"}});
 	}
 
-	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, llvm::DIBuilder* dBuilder,
-		llvm::Function* /*f*/, llvm::DISubprogram* diFunc, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation, llvm::Function* f, const gsl::span<llvm::Value*> io,
 		llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -121,9 +118,8 @@ struct ConstIntNodeType : NodeType {
 			io[0], false);
 		auto brInst = builder.CreateBr(outputBlocks[0]);
 
-		auto dLoc = llvm::DebugLoc::get(1, 1, diFunc);
-		storeInst->setDebugLoc(dLoc);
-		brInst->setDebugLoc(dLoc);
+		storeInst->setDebugLoc(nodeLocation);
+		brInst->setDebugLoc(nodeLocation);
 
 		return {};
 	}
@@ -147,8 +143,7 @@ struct ConstBoolNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i1"), "out"}});
 	}
 
-	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, llvm::DIBuilder* dBuilder,
-		llvm::Function* /*f*/, llvm::DISubprogram* diFunc, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation, llvm::Function* f, const gsl::span<llvm::Value*> io,
 		llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
@@ -163,9 +158,8 @@ struct ConstBoolNodeType : NodeType {
 			io[0], false);
 		auto brInst = builder.CreateBr(outputBlocks[0]);
 
-		auto dLoc = llvm::DebugLoc::get(1, 1, diFunc);
-		storeInst->setDebugLoc(dLoc);
-		brInst->setDebugLoc(dLoc);
+		storeInst->setDebugLoc(nodeLocation);
+		brInst->setDebugLoc(nodeLocation);
 
 		return {};
 	}
@@ -190,8 +184,7 @@ struct ExitNodeType : NodeType {
 		setDataInputs(std::move(dataOutputs));
 	}
 
-	Result codegen(size_t execInputID, llvm::Module* /*mod*/, llvm::DIBuilder* dBuilder,
-		llvm::Function* f, llvm::DISubprogram* diFunc, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t execInputID, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation, llvm::Function* f, const gsl::span<llvm::Value*> io,
 		llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> /*outputBlocks*/) const override
 	{
@@ -206,13 +199,13 @@ struct ExitNodeType : NodeType {
 		std::advance(arg_iter, ret_start);
 		for (auto& value : io) {
 			auto stoInst = builder.CreateStore(value, &*arg_iter, false);  // TODO: volitility?
-			stoInst->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
+			stoInst->setDebugLoc(nodeLocation);
 			++arg_iter;
 		}
 
 		auto retInst = builder.CreateRet(
 			llvm::ConstantInt::get(llvm::Type::getInt32Ty(context().llvmContext()), execInputID));
-		retInst->setDebugLoc(llvm::DebugLoc::get(1, 1, diFunc));
+		retInst->setDebugLoc(nodeLocation);
 
 		return {};
 	}
@@ -253,16 +246,13 @@ struct StringLiteralNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i8*"), "string"}});
 	}
 
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, llvm::DIBuilder* dBuilder,
-		llvm::Function* /*f*/, llvm::DISubprogram* diFunc, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation, llvm::Function* f, const gsl::span<llvm::Value*> io,
 		llvm::BasicBlock* codegenInto,
 		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
 	{
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
-
-		auto dLoc = llvm::DebugLoc::get(1, 1, diFunc);
 
 		auto global = builder.CreateGlobalString(literalString);
 
@@ -272,8 +262,8 @@ struct StringLiteralNodeType : NodeType {
 
 		auto brInst = builder.CreateBr(outputBlocks[0]);
 
-		storeInst->setDebugLoc(dLoc);
-		brInst->setDebugLoc(dLoc);
+		storeInst->setDebugLoc(nodeLocation);
+		brInst->setDebugLoc(nodeLocation);
 
 		return {};
 	}
@@ -462,7 +452,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang")
 	mDebugTypes["double"] = llvm::DIBasicType::get(context().llvmContext(),
 		llvm::dwarf::DW_TAG_base_type, "lang:double", 64, 64, llvm::dwarf::DW_ATE_float);
 	auto charType = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
-		"lang:i8", 8, 8, llvm::dwarf::DW_ATE_signed_char);
+		"lang:i8", 8, 8, llvm::dwarf::DW_ATE_unsigned_char);
 	mDebugTypes["i8*"] =
 		llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_pointer_type, nullptr,
 			nullptr, 0, nullptr, charType, 64, 64, 0, 0);  // TODO: 32bit support?
