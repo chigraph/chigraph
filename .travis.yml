@@ -29,7 +29,7 @@ script:
   - ./scripts/build_frameworks.sh $BUILD_TYPE "Unix Makefiles"
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_CONFIG=/usr/lib/llvm-3.9/bin/llvm-config
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_CONFIG=/usr/lib/llvm-3.9/bin/llvm-config -DCLANG_EXE=clang-3.9 -DLLI_EXE=lli-3.9
   - make -j`nproc`
   - CTEST_OUTPUT_ON_FAILURE=1 make test
 
