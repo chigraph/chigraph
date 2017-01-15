@@ -56,14 +56,14 @@ void FunctionDetails::loadFunction(FunctionView* func) {
 	connect(outs, &ParamListWidget::paramChanged, this, &FunctionDetails::outputChanged);
 }
 
-void FunctionDetails::inputChanged(int idx, chig::DataType newType, const QString& newName) {
+void FunctionDetails::inputChanged(int idx, const chig::DataType& newType, const QString& newName) {
 	mFunc->modifyDataInput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
 
 	auto entry = mFunc->entryNode();
 	if (entry == nullptr) { return; }
 	mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(entry));
 }
-void FunctionDetails::inputAdded(chig::DataType type, const QString& name) {
+void FunctionDetails::inputAdded(const chig::DataType& type, const QString& name) {
 	mFunc->addDataInput(type, name.toStdString(), mFunc->dataInputs().size() - 1);  // add to end
 
 	auto entry = mFunc->entryNode();
@@ -77,14 +77,14 @@ void FunctionDetails::inputDeleted(int idx) {
 	if (entry == nullptr) { return; }
 	mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(entry));
 }
-void FunctionDetails::outputChanged(int idx, chig::DataType newType, const QString& newName) {
+void FunctionDetails::outputChanged(int idx, const chig::DataType& newType, const QString& newName) {
 	mFunc->modifyDataOutput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
 
 	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
 		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));
 	}
 }
-void FunctionDetails::outputAdded(chig::DataType type, const QString& name) {
+void FunctionDetails::outputAdded(const chig::DataType& type, const QString& name) {
 	mFunc->addDataOutput(type, name.toStdString(), mFunc->dataInputs().size() - 1);
 
 	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {

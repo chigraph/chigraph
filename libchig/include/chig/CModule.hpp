@@ -22,7 +22,7 @@ struct CModule : ChigModule {
 	/// Destructor
 	~CModule() = default;
 
-	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
+	Result nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& jsonData,
 							std::unique_ptr<NodeType>* toFill) override;
 	DataType typeFromName(gsl::cstring_span<> name) override;
 	llvm::DIType* debugTypeFromName(gsl::cstring_span<> /*name*/) override { return nullptr; }

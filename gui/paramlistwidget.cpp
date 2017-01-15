@@ -15,10 +15,10 @@
 
 class ParamListItem : public QListWidgetItem {
 public:
-	ParamListItem(ParamListWidget* container, chig::DataType ty, const QString& name)
+	ParamListItem(ParamListWidget* container, chig::DataType ty, QString name)
 		: QListWidgetItem(nullptr, QListWidgetItem::UserType),
-		  mDataType{ty},
-		  mName{name},
+		  mDataType{std::move(ty)},
+		  mName{std::move(name)},
 		  mContainer{container} {
 		updateName();
 	}
@@ -26,7 +26,7 @@ public:
 	chig::DataType dataType() const { return mDataType; }
 	QString		   name() const { return mName; }
 	void setDataType(chig::DataType newDataType) {
-		mDataType = newDataType;
+		mDataType = std::move(newDataType);
 		updateName();
 	}
 
@@ -62,7 +62,7 @@ QStringList createTypeOptions(chig::JsonModule* mod) {
 
 	for (auto dep : mod->dependencies()) {
 		auto depMod = mod->context().moduleByFullName(dep);
-		for (auto type : depMod->typeNames()) {
+		for (const auto& type : depMod->typeNames()) {
 			ret << QString::fromStdString(depMod->name() + ":" + type);
 		}
 	}
@@ -95,7 +95,7 @@ boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(QWidget* par
 	return std::make_pair(dtype, name);
 }
 
-ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidget(parent) {
+ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(parent) {
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 
@@ -104,7 +104,7 @@ ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidge
 		auto buttLayout = new QHBoxLayout;
 		labelAndButtons->setLayout(buttLayout);
 
-		buttLayout->addWidget(new QLabel(title));
+		buttLayout->addWidget(new QLabel(std::move(title)));
 
 		auto button = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add")), QString());
 		connect(button, &QPushButton::clicked, this, [this] {
@@ -174,7 +174,7 @@ QString ParamListWidget::nameForIdx(int idx) const {
 	return param->name();
 }
 
-void ParamListWidget::addParam(chig::DataType type, const QString& name, int after) {
+void ParamListWidget::addParam(const chig::DataType& type, const QString& name, int after) {
 	auto newItem = new ParamListItem(this, type, name);
 	mParamList->insertItem(after + 1, newItem);
 	paramAdded(type, name);
@@ -185,7 +185,7 @@ void ParamListWidget::deleteParam(int idx) {
 	paramDeleted(idx);
 }
 
-void ParamListWidget::modifyParam(int idx, chig::DataType type, const QString& name) {
+void ParamListWidget::modifyParam(int idx, const chig::DataType& type, const QString& name) {
 	auto param = paramFromIdx(idx, mParamList);
 	if (param == nullptr) { return; }
 

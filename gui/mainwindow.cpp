@@ -226,24 +226,26 @@ void MainWindow::openWorkspaceDialog() {
 	openWorkspace(url);
 }
 
-void MainWindow::openWorkspace(QUrl url) {
+void MainWindow::openWorkspace(const QUrl& url) {
 	mChigContext = std::make_unique<chig::Context>(url.toLocalFile().toStdString());
 
 	workspaceOpened(*mChigContext);
 }
 
-void MainWindow::openModule(const QString& path) {
+void MainWindow::openModule(const QString& fullName) {
 	chig::ChigModule* cmod;
-	chig::Result	  res = context().loadModule(path.toStdString(), &cmod);
+	chig::Result	  res = context().loadModule(fullName.toStdString(), &cmod);
 
 	if (!res) {
-		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + path + "\"",
+		KMessageBox::detailedError(this, R"(Failed to load JsonModule from file ")" + fullName + R"(")",
 								   QString::fromStdString(res.dump()), "Error Loading");
 
 		return;
 	}
 
-	mModule = static_cast<chig::JsonModule*>(cmod);
+	mModule = dynamic_cast<chig::JsonModule*>(cmod);
+    Expects(mModule != nullptr);
+    
 	setWindowTitle(QString::fromStdString(mModule->fullName()));
 
 	// call signal

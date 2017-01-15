@@ -46,7 +46,8 @@ public:
 unsigned int ChigraphNodeModel::nPorts(PortType portType) const {
 	if (portType == PortType::In) {
 		return mInst->type().execInputs().size() + mInst->type().dataInputs().size();
-	} else if (portType == PortType::Out) {
+	}
+	if (portType == PortType::Out) {
 		return mInst->type().execOutputs().size() + mInst->type().dataOutputs().size();
 	}
 
@@ -57,8 +58,9 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 	if (pType == PortType::In) {
 		std::pair<std::string, std::string> idandname;
 		if (pIndex >= int(mInst->type().execInputs().size())) {
-			if (pIndex - mInst->type().execInputs().size() >= mInst->type().dataInputs().size())
+			if (pIndex - mInst->type().execInputs().size() >= mInst->type().dataInputs().size()) {
 				return {};
+            }
 
 			idandname = {
 				mInst->type()
@@ -70,7 +72,8 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 			idandname = {"exec", mInst->type().execInputs()[pIndex]};
 		}
 		return {QString::fromStdString(idandname.first), QString::fromStdString(idandname.second)};
-	} else if (pType == PortType::Out) {
+	} 
+	if (pType == PortType::Out) {
 		std::pair<std::string, std::string> idandname;
 		if (pIndex >= int(mInst->type().execOutputs().size())) {
 			auto dataOutput =
@@ -105,7 +108,7 @@ QWidget* ChigraphNodeModel::embeddedWidget() {
 		return box;
 	}
 	if (mInst->type().name() == "strliteral") {
-		QLineEdit*  edit = new QLineEdit();
+		auto edit = new QLineEdit();
 		std::string s	= mInst->type().toJSON();
 		edit->setText(QString::fromStdString(s));
 
@@ -124,7 +127,7 @@ QWidget* ChigraphNodeModel::embeddedWidget() {
 		return edit;
 	}
 	if (mInst->type().name() == "const-int") {
-		QLineEdit* edit = new QLineEdit();
+		auto edit = new QLineEdit();
 		edit->setValidator(new QIntValidator);
 		int val = mInst->type().toJSON();
 		edit->setText(QString::number(val));

@@ -32,9 +32,9 @@ public:
 	chig::Context&	context() const { return *mChigContext; }
 public slots:
 	void openWorkspaceDialog();	// this one opens a dialog
-	void openWorkspace(QUrl url);  // and this one doesn't
+	void openWorkspace(const QUrl& url);  // and this one doesn't
 	void openModule(const QString& fullName);
-	void newFunctionSelected(chig::GraphFunction* name);
+	void newFunctionSelected(chig::GraphFunction* func);
 	void save();
 	void closeTab(int idx);
 	void newFunction();

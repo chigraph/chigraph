@@ -15,15 +15,15 @@ class ParamListWidget : public QWidget {
 	friend class ParamListItem;
 
 public:
-	ParamListWidget(const QString& title, QWidget* parent = nullptr);
+	ParamListWidget(QString title, QWidget* parent = nullptr);
 
 	chig::DataType typeForIdx(int idx) const;
 	QString nameForIdx(int idx) const;
 
-	void addParam(chig::DataType type, const QString& name, int after);
+	void addParam(const chig::DataType& type, const QString& name, int after);
 	void deleteParam(int idx);
 
-	void modifyParam(int idx, chig::DataType type, const QString& name);
+	void modifyParam(int idx, const chig::DataType& type, const QString& name);
 
 	int paramCount() const;
 
@@ -31,9 +31,9 @@ public:
 	void setModule(chig::JsonModule* mod) { mMod = mod; }
 signals:
 
-	void paramChanged(int idx, chig::DataType newType, const QString& newName);
+	void paramChanged(int idx, const chig::DataType& newType, const QString& newName);
 
-	void paramAdded(chig::DataType type, const QString& name);
+	void paramAdded(const chig::DataType& type, const QString& name);
 	void paramDeleted(int idx);
 
 private:
