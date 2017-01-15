@@ -18,7 +18,7 @@ struct IfNodeType : NodeType {
 	}
 
 	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-				   const llvm::DebugLoc& nodeLocation, llvm::Function* f,
+				   const llvm::DebugLoc& nodeLocation, llvm::Function* /*f*/,
 				   const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 2);
@@ -26,7 +26,7 @@ struct IfNodeType : NodeType {
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		auto brInst = builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
+		builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
 
 		return {};
 	}
@@ -98,7 +98,7 @@ struct ConstIntNodeType : NodeType {
 	}
 
 	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
-				   const llvm::DebugLoc& nodeLocation, llvm::Function* f,
+				   const llvm::DebugLoc& nodeLocation, llvm::Function* /*f*/,
 				   const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -132,7 +132,7 @@ struct ConstFloatNodeType : NodeType {
 	}
 
 	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
-				   const llvm::DebugLoc& nodeLocation, llvm::Function* f,
+				   const llvm::DebugLoc& nodeLocation, llvm::Function* /*f*/,
 				   const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -165,7 +165,7 @@ struct ConstBoolNodeType : NodeType {
 	}
 
 	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
-				   const llvm::DebugLoc& nodeLocation, llvm::Function* f,
+				   const llvm::DebugLoc& nodeLocation, llvm::Function* /*f*/,
 				   const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -258,7 +258,7 @@ struct StringLiteralNodeType : NodeType {
 	}
 
 	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-				   const llvm::DebugLoc& nodeLocation, llvm::Function* f,
+				   const llvm::DebugLoc& nodeLocation, llvm::Function* /*f*/,
 				   const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -437,21 +437,21 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 		{"if"s, [this](const nlohmann::json&,
 					   Result&) { return std::make_unique<IfNodeType>(*this); }},
 		{"i32+i32"s, [this](const nlohmann::json&,
-							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("i32"), BinOp::Add); }},
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, LangModule::typeFromName("i32"), BinOp::Add); }},
 		{"i32-i32"s, [this](const nlohmann::json&,
-							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("i32"), BinOp::Subtract); }},
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, LangModule::typeFromName("i32"), BinOp::Subtract); }},
 		{"i32*i32"s, [this](const nlohmann::json&,
-							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("i32"), BinOp::Multiply); }},
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, LangModule::typeFromName("i32"), BinOp::Multiply); }},
 		{"i32/i32"s, [this](const nlohmann::json&,
-							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("i32"), BinOp::Divide); }},
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, LangModule::typeFromName("i32"), BinOp::Divide); }},
 		{"float+float"s, [this](const nlohmann::json&,
-							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("float"), BinOp::Add); }},
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, LangModule::typeFromName("float"), BinOp::Add); }},
 		{"float-float"s, [this](const nlohmann::json&,
-							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("float"), BinOp::Subtract); }},
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, LangModule::typeFromName("float"), BinOp::Subtract); }},
 		{"float*float"s, [this](const nlohmann::json&,
-							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("float"), BinOp::Multiply); }},
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, LangModule::typeFromName("float"), BinOp::Multiply); }},
 		{"float/float"s, [this](const nlohmann::json&,
-							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("float"), BinOp::Divide); }},
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, LangModule::typeFromName("float"), BinOp::Divide); }},
 		{"inttofloat"s,
 		 [this](const nlohmann::json&, Result&) {
 			 return std::make_unique<IntToFloatNodeType>(*this);
@@ -645,13 +645,13 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 		charType, 64, 64, 0, 0);  // TODO: 32bit support?
 }
 
-Result LangModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& json_data,
+Result LangModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 									std::unique_ptr<NodeType>* toFill) {
 	Result res;
 
 	auto iter = nodes.find(gsl::to_string(name));
 	if (iter != nodes.end()) {
-		*toFill = iter->second(json_data, res);
+		*toFill = iter->second(jsonData, res);
 		return res;
 	}
 

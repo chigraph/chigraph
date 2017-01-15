@@ -86,7 +86,7 @@ private:
 	std::string mId;
 
 	Context*	   mContext;
-	GraphFunction* mFunction;
+	GraphFunction* mFunction = nullptr;
 };
 
 /// Connects two nodes' data connections

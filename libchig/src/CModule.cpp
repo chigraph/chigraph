@@ -93,7 +93,7 @@ struct CFuncNode : NodeType {
 	}
 
 	Result codegen(size_t /*inID*/, llvm::Module* mod, const llvm::DebugLoc& nodeLocation,
-				   llvm::Function* f, const gsl::span<llvm::Value*> io,
+				   llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
 				   llvm::BasicBlock*				  codegenInto,
 				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == dataInputs().size() + dataOutputs().size() && mod != nullptr &&
@@ -166,37 +166,37 @@ DataType				  CModule::typeFromName(gsl::cstring_span<> /*typeName*/) {
 	return {};
 }
 
-Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
+Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& jsonData,
 								 std::unique_ptr<NodeType>* toFill) {
 	Result res;
 
 	if (typeName == "func") {
-		if (!json_data.is_object()) {
-			res.addEntry("WUKN", "Data for c:func must be an object", {{"Given Data"}, json_data});
+		if (!jsonData.is_object()) {
+			res.addEntry("WUKN", "Data for c:func must be an object", {{"Given Data"}, jsonData});
 		}
 
 		std::string code;
-		if (json_data.is_object() && json_data.find("code") != json_data.end() &&
-			json_data["code"].is_string()) {
-			code = json_data["code"];
+		if (jsonData.is_object() && jsonData.find("code") != jsonData.end() &&
+			jsonData["code"].is_string()) {
+			code = jsonData["code"];
 		} else {
 			res.addEntry(
 				"WUKN",
 				"Data for c:func must have a pair with the key of code and that the data is a "
 				"string",
-				{{"Given Data"}, json_data});
+				{{"Given Data"}, jsonData});
 		}
 
 		std::string function;
-		if (json_data.is_object() && json_data.find("function") != json_data.end() &&
-			json_data["function"].is_string()) {
-			function = json_data["function"];
+		if (jsonData.is_object() && jsonData.find("function") != jsonData.end() &&
+			jsonData["function"].is_string()) {
+			function = jsonData["function"];
 		} else {
 			res.addEntry(
 				"WUKN",
 				"Data for c:func must have a pair with the key of function and that the data is a "
 				"string",
-				{{"Given Data"}, json_data});
+				{{"Given Data"}, jsonData});
 		}
 
 		*toFill = std::make_unique<CFuncNode>(*this, code, function, res);

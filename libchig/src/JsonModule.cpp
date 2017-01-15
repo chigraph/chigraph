@@ -39,7 +39,7 @@ struct JsonFuncCallNodeType : public NodeType {
 	}
 
 	Result codegen(size_t execInputID, llvm::Module* mod, const llvm::DebugLoc& nodeLocation,
-				   llvm::Function* f, const gsl::span<llvm::Value*> io,
+				   llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
 				   llvm::BasicBlock*				  codegenInto,
 				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Result res = {};
@@ -145,22 +145,22 @@ JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::strin
 	for (const auto& dep : dependencies) { addDependency(dep); }
 }
 
-Result JsonModule::generateModule(llvm::Module& mod) {
+Result JsonModule::generateModule(llvm::Module& module) {
 	Result res = {};
 
 	// debug info
-	llvm::DIBuilder debugBuilder(mod);
+	llvm::DIBuilder debugBuilder(module);
 	auto			compileUnit = debugBuilder.createCompileUnit(
 		llvm::dwarf::DW_LANG_C, sourceFilePath().filename().string(),
 		sourceFilePath().parent_path().string(), "Chigraph Compiler", false, "", 0);
 
 	// create prototypes
 	for (auto& graph : mFunctions) {
-		mod.getOrInsertFunction(mangleFunctionName(fullName(), graph->name()),
+		module.getOrInsertFunction(mangleFunctionName(fullName(), graph->name()),
 								graph->functionType());
 	}
 
-	for (auto& graph : mFunctions) { res += graph->compile(&mod, compileUnit, debugBuilder); }
+	for (auto& graph : mFunctions) { res += graph->compile(&module, compileUnit, debugBuilder); }
 
 	debugBuilder.finalize();
 

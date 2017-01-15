@@ -21,7 +21,6 @@ using namespace chig;
 
 int main(int argc, char** argv) {
 	namespace po = boost::program_options;
-	namespace fs = boost::filesystem;
 
 	po::options_description general(
 		"chig: Chigraph command line. Usage: chig <command> <arguments>", 50);
@@ -46,7 +45,7 @@ int main(int argc, char** argv) {
 	po::notify(vm);
 
 	// see help
-	if (vm.count("help")) {
+	if (vm.count("help") != 0u) {
 		std::cout << general << std::endl;
 		return 0;
 	}
@@ -65,7 +64,8 @@ int main(int argc, char** argv) {
 
 	if (cmd == "compile") {
 		return compile(opts);
-	} else if (cmd == "run") {
+	} 
+	if (cmd == "run") {
 		return run(opts);
 	}
 	// TODO: write other ones

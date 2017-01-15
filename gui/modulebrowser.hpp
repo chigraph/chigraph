@@ -20,7 +20,7 @@ signals:
 	void moduleSelected(const QString& name);
 
 public slots:
-	void loadWorkspace(chig::Context& path);
+	void loadWorkspace(chig::Context& context);
 
 private:
 	chig::Context* mContext = nullptr;

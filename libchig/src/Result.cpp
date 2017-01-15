@@ -8,7 +8,7 @@ std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 	if (j.is_array()) {
 		ret += indentString + "[\n";
 
-		for (auto elem : j) {
+		for (const auto& elem : j) {
 			ret += prettyPrintJson(elem, indentLevel + 1);
 			ret += ",\n";
 		}

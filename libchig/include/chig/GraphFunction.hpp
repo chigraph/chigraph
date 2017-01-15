@@ -52,9 +52,9 @@ struct GraphFunction {
 
 	/// Compile the graph to an \c llvm::Function (usually called from JsonModule::generateModule)
 	/// \param mod The module to codgen into, should already be a valid module
-	/// \param debugFile The file that the GraphFunction resides in.
+	/// \param debugCU The compilation unit that the GraphFunction resides in.
 	/// \return The result
-	Result compile(llvm::Module* mod, llvm::DICompileUnit* debugFile,
+	Result compile(llvm::Module* mod, llvm::DICompileUnit* debugCU,
 				   llvm::DIBuilder& debugBuilder) const;
 
 	/// \name Node Manipulation

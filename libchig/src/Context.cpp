@@ -72,7 +72,6 @@ std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept
 
 	fs::path srcDir = workspacePath() / "src";
 
-	;
 	if (!fs::is_directory(srcDir)) { return {}; }
 
 	for (const auto& dirEntry : boost::make_iterator_range(

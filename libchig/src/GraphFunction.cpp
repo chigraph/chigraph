@@ -8,7 +8,6 @@
 #include <llvm/Support/SourceMgr.h>
 
 #include <boost/dynamic_bitset.hpp>
-
 #include <boost/range/counting_range.hpp>
 #include <boost/range/join.hpp>
 

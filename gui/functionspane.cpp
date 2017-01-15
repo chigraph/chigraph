@@ -43,7 +43,7 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 								  Expects(funcItem->type() == QListWidgetItem::UserType);
 
 								  auto casted = dynamic_cast<FunctionListItem*>(funcItem);
-								  if (!casted) { return; }
+								  if (casted == nullptr) { return; }
 
 								  chig::JsonModule* mod = &casted->mFunc->module();
 								  casted->mFunc->module().removeFunction(casted->mFunc);
@@ -67,5 +67,10 @@ void FunctionsPane::updateModule(chig::JsonModule* mod) {
 void FunctionsPane::selectItem(QListWidgetItem* newitem) {
 	Expects(newitem->type() == QListWidgetItem::UserType);
 
-	functionSelected(static_cast<FunctionListItem*>(newitem)->mFunc);
+    auto casted = dynamic_cast<FunctionListItem*>(newitem);
+    if(casted == nullptr) {
+        return;
+    }
+    
+	functionSelected(casted->mFunc);
 }

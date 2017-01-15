@@ -105,7 +105,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 		for (auto& conn : node.second->outputExecConnections) {
 			auto outExecNode = mNodeMap[conn.first];
 
-			if (outExecNode) {
+			if (outExecNode != nullptr) {
 				auto guiconn =
 					mScene->createConnection(*outExecNode, conn.second, *thisNode, connId).get();
 
@@ -173,7 +173,7 @@ void FunctionView::connectionAdded(Connection& c) {
 
 	connect(&c, &Connection::updated, this, &FunctionView::connectionUpdated);
 
-	if (!lguinode || !rguinode) { return; }
+	if (lguinode == nullptr || rguinode == nullptr) { return; }
 
 	// here, in and out mean input and output to the connection (like in chigraph)
 	auto outptr = dynamic_cast<ChigraphNodeModel*>(rguinode->nodeDataModel());
@@ -239,7 +239,7 @@ void FunctionView::connectionDeleted(Connection& c) {
 void FunctionView::updatePositions() {
 	for (auto& inst : mNodeMap) {
 		auto ptr = inst.second;
-		if (ptr) {
+		if (ptr != nullptr) {
 			QPointF pos = ptr->nodeGraphicsObject().pos();
 			inst.first->setX(pos.x());
 			inst.first->setY(pos.y());
@@ -294,7 +294,7 @@ void FunctionView::refreshGuiForNode(Node* node) {
 	}
 	id = 0;
 	for (const auto& conn : inst->outputExecConnections) {
-		if (conn.first) {
+		if (conn.first != nullptr) {
 			conns[mScene->createConnection(*mNodeMap[conn.first], conn.second, thisNode, id)
 					  .get()] = {
 				{std::make_pair(inst, id), std::make_pair(conn.first, conn.second)}};
@@ -303,7 +303,7 @@ void FunctionView::refreshGuiForNode(Node* node) {
 	}
 	id = 0;
 	for (const auto& conn : inst->inputDataConnections) {
-		if (conn.first) {
+		if (conn.first != nullptr) {
 			auto remoteID = conn.second + conn.first->outputExecConnections.size();
 			auto localID  = id + inst->inputExecConnections.size();
 			conns[mScene->createConnection(thisNode, localID, *mNodeMap[conn.first], remoteID)
