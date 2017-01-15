@@ -40,7 +40,9 @@ TEST_CASE("LangModule", "[module]") {
 
 			REQUIRE(c.moduleByName("lang")->nodeTypeNames() ==
 					std::vector<std::string>(
-						{"if", "entry", "exit", "const-int", "strliteral", "const-bool"}));
+     {"const-bool", "const-float", "const-int", "entry", "exit", "floattoint",
+  "float/float", "float*float", "float-float", "float+float", "i32/i32",
+  "strliteral", "i32*i32", "inttofloat", "i32-i32", "i32+i32", "if"}));
 			REQUIRE(c.moduleByName("lang")->typeNames() ==
 					std::vector<std::string>({"i32", "i1", "double", "i8*"}));
 		}

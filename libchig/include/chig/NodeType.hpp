@@ -20,7 +20,7 @@
 #include <llvm/IR/Value.h>
 
 namespace chig {
-/// A generic node type. All user made types are of JsonNodeType type, which is defined in
+/// A generic node type. All user made types are of JsonNo  deType type, which is defined in
 /// JsonModule.cpp. This allows for easy extension of the language.
 struct NodeType {
 	friend class NodeInstance;
