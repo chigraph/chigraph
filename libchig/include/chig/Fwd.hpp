@@ -1,5 +1,4 @@
-namespace chig
-{
+namespace chig {
 struct ChigModule;
 struct Context;
 struct GraphFunction;

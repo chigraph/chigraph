@@ -12,8 +12,7 @@ using namespace chig;
 using namespace nlohmann;
 
 // returns -1 for failure, 1 for keep going  and 0 for success
-int checkForErrors(Result res, const char* expectedErr)
-{
+int checkForErrors(Result res, const char* expectedErr) {
 	if (!res) {
 		if (res.result_json[0]["errorcode"] == expectedErr) {
 			return 0;
@@ -27,14 +26,13 @@ int checkForErrors(Result res, const char* expectedErr)
 	return 1;
 }
 
-int main(int argc, char** argv)
-{
-	const char* mode = argv[1];
-	const char* file = argv[2];
+int main(int argc, char** argv) {
+	const char* mode		= argv[1];
+	const char* file		= argv[2];
 	const char* expectedErr = argv[3];
 
 	std::ifstream ifile(file);
-	std::string str((std::istreambuf_iterator<char>(ifile)), std::istreambuf_iterator<char>());
+	std::string   str((std::istreambuf_iterator<char>(ifile)), std::istreambuf_iterator<char>());
 
 	json newData;
 	try {
@@ -44,10 +42,10 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	Context c;
-	Result res;
+	Result  res;
 
 	if (strcmp(mode, "mod") == 0) {
-		auto mod = std::make_unique<JsonModule>(c, "main", newData, &res);
+		auto		mod		   = std::make_unique<JsonModule>(c, "main", newData, &res);
 		std::string moduleName = mod->name();
 
 		int ret = checkForErrors(res, expectedErr);
@@ -69,8 +67,8 @@ int main(int argc, char** argv)
 
 	} else if (strcmp(mode, "func") == 0) {
 		auto deps = std::vector<std::string>{"lang", "c"};
-		auto uMod = std::make_unique<JsonModule>(
-			c, "main", gsl::span<std::string>(deps.data(), deps.size()));
+		auto uMod = std::make_unique<JsonModule>(c, "main",
+												 gsl::span<std::string>(deps.data(), deps.size()));
 		auto modPtr = uMod.get();
 		c.addModule(std::move(uMod));
 		auto graphFunc = std::make_unique<GraphFunction>(*modPtr, newData, res);

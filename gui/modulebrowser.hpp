@@ -10,8 +10,7 @@ class MainWindow;
 #include <chig/Context.hpp>
 #include <chig/JsonModule.hpp>
 
-class ModuleBrowser : public QTreeWidget
-{
+class ModuleBrowser : public QTreeWidget {
 	Q_OBJECT
 
 public:

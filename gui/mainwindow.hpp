@@ -22,15 +22,14 @@
 
 #include "functionview.hpp"
 
-class MainWindow : public KXmlGuiWindow
-{
+class MainWindow : public KXmlGuiWindow {
 	Q_OBJECT
 public:
 	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
 	chig::JsonModule* currentModule() const { return mModule; }
-	chig::Context& context() const { return *mChigContext; }
+	chig::Context&	context() const { return *mChigContext; }
 public slots:
 	void openWorkspaceDialog();	// this one opens a dialog
 	void openWorkspace(QUrl url);  // and this one doesn't
@@ -58,7 +57,7 @@ private:
 
 	// context & module
 	std::unique_ptr<chig::Context> mChigContext = nullptr;
-	chig::JsonModule* mModule = nullptr;
+	chig::JsonModule*			   mModule		= nullptr;
 };
 
 #endif  // CHIGGUI_MAINWINDOW_H

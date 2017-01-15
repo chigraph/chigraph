@@ -14,12 +14,10 @@ namespace fs = boost::filesystem;
 
 constexpr static int ModuleTreeItemType = 1001;
 
-class ModuleTreeItem : public QTreeWidgetItem
-{
+class ModuleTreeItem : public QTreeWidgetItem {
 public:
 	ModuleTreeItem(QTreeWidgetItem* parent, const fs::path& path)
-		: QTreeWidgetItem(parent, ModuleTreeItemType), mName{path}
-	{
+		: QTreeWidgetItem(parent, ModuleTreeItemType), mName{path} {
 		setText(0, QString::fromStdString(mName.filename().string()));
 		setIcon(0, QIcon::fromTheme(QStringLiteral("package-available")));
 	}
@@ -27,25 +25,23 @@ public:
 	fs::path mName;
 };
 
-ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent)
-{
+ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
 	setColumnCount(1);
 	setAnimated(true);
 	setSortingEnabled(true);
 	header()->close();
-	connect(
-		this, &QTreeWidget::itemDoubleClicked, this, [this](QTreeWidgetItem* item, int /*column*/) {
-			if (item->type() != ModuleTreeItemType) {  // don't do module folders or modules
-				return;
-			}
-			ModuleTreeItem* casted = static_cast<ModuleTreeItem*>(item);
+	connect(this, &QTreeWidget::itemDoubleClicked, this,
+			[this](QTreeWidgetItem* item, int /*column*/) {
+				if (item->type() != ModuleTreeItemType) {  // don't do module folders or modules
+					return;
+				}
+				ModuleTreeItem* casted = static_cast<ModuleTreeItem*>(item);
 
-			moduleSelected(QString::fromStdString(casted->mName.string()));
-		});
+				moduleSelected(QString::fromStdString(casted->mName.string()));
+			});
 }
 
-void ModuleBrowser::loadWorkspace(chig::Context& context)
-{
+void ModuleBrowser::loadWorkspace(chig::Context& context) {
 	mContext = &context;
 
 	// clear existing entries
@@ -63,14 +59,14 @@ void ModuleBrowser::loadWorkspace(chig::Context& context)
 		auto iter = module.begin();
 
 		// consume the first
-		std::string topLevelName = module.begin()->string();
-		QTreeWidgetItem* topLevel = nullptr;
+		std::string		 topLevelName = module.begin()->string();
+		QTreeWidgetItem* topLevel	 = nullptr;
 		if (topLevels.find(topLevelName) != topLevels.end()) {
 			topLevel = topLevels[topLevelName];
 		} else {
 			// check if this is a module
 			auto iterCpy = module.begin();
-			++iterCpy;
+			if (iterCpy == module.end()) { continue; }
 			if (iterCpy == module.end()) {
 				topLevel = new ModuleTreeItem(nullptr, module);
 			} else {

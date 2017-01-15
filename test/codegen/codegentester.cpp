@@ -36,13 +36,10 @@ using namespace nlohmann;
 
 namespace fs = boost::filesystem;
 
-std::string areArrayEqualUnordered(nlohmann::json lhs, nlohmann::json rhs)
-{
+std::string areArrayEqualUnordered(nlohmann::json lhs, nlohmann::json rhs) {
 	std::vector<nlohmann::json> objects;
 
-	for (auto& obj : lhs) {
-		objects.push_back(obj);
-	}
+	for (auto& obj : lhs) { objects.push_back(obj); }
 
 	for (auto& obj : rhs) {
 		auto iter = std::find(objects.begin(), objects.end(), obj);
@@ -64,8 +61,7 @@ std::string areArrayEqualUnordered(nlohmann::json lhs, nlohmann::json rhs)
 	return "";
 }
 
-std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs)
-{
+std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
 	std::string errstring;
 
 	errstring = areArrayEqualUnordered(lhs["dependencies"], rhs["dependencies"]);
@@ -122,8 +118,7 @@ std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs)
 	return "";
 }
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 	if (argc != 2) {
 		std::cerr << "Usage: codegen_tester <path to module>" << std::endl;
 		return 1;
@@ -163,17 +158,17 @@ int main(int argc, char** argv)
 
 	int expectedreturncode = j["expectedret"];
 
-	auto modfile = moduleDir / "main.chigmod";
+	auto		 modfile = moduleDir / "main.chigmod";
 	fs::ifstream inmodfile(modfile);
-	json chigmodule;
+	json		 chigmodule;
 	inmodfile >> chigmodule;
 
 	// chig compile + lli
 	{
 		std::string generatedir, chigstderr;
 		// go through chig compile
-		Process chigexe((fs::current_path() / "chig compile main.chigmod").string(),
-			moduleDir.string(),
+		Process chigexe(
+			(fs::current_path() / "chig compile main.chigmod").string(), moduleDir.string(),
 			[&generatedir](const char* bytes, size_t n) { generatedir.append(bytes, n); },
 			[&chigstderr](const char* bytes, size_t n) { chigstderr.append(bytes, n); });
 
@@ -188,8 +183,9 @@ int main(int argc, char** argv)
 
 		// now go through lli
 		Process lliexe(CHIG_LLI_EXE, "",
-			[&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
-			[&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); }, true);
+					   [&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
+					   [&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); },
+					   true);
 		lliexe.write(generatedir);
 		lliexe.close_stdin();
 
@@ -228,7 +224,8 @@ int main(int argc, char** argv)
 		std::string generatedstdout, generatedstderr;
 
 		// this program is to be started where chigc is
-		Process chigexe((fs::current_path() / "chig run main.chigmod").string(), moduleDir.string(),
+		Process chigexe(
+			(fs::current_path() / "chig run main.chigmod").string(), moduleDir.string(),
 			[&generatedstdout](const char* bytes, size_t n) { generatedstdout.append(bytes, n); },
 			[&generatedstderr](const char* bytes, size_t n) { generatedstderr.append(bytes, n); });
 
@@ -266,7 +263,7 @@ int main(int argc, char** argv)
 	{
 		Result r;
 
-		Context c{moduleDir};
+		Context		c{moduleDir};
 		std::string fullName =
 			(fs::relative(moduleDir, c.workspacePath() / "src") / "main").string();
 
@@ -307,8 +304,8 @@ int main(int argc, char** argv)
 		// go through chig compile
 		std::string generatedir, chigstderr;
 		// go through chig compile
-		Process chigexe((fs::current_path() / "chig compile -tbc main.chigmod").string(),
-			moduleDir.string(),
+		Process chigexe(
+			(fs::current_path() / "chig compile -tbc main.chigmod").string(), moduleDir.string(),
 			[&generatedir](const char* bytes, size_t n) { generatedir.append(bytes, n); },
 			[&chigstderr](const char* bytes, size_t n) { chigstderr.append(bytes, n); });
 
@@ -323,8 +320,9 @@ int main(int argc, char** argv)
 
 		// now go through lli
 		Process lliexe(CHIG_LLI_EXE, "",
-			[&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
-			[&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); }, true);
+					   [&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
+					   [&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); },
+					   true);
 		lliexe.write(generatedir);
 		lliexe.close_stdin();
 

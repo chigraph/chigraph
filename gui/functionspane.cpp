@@ -10,22 +10,18 @@
 
 #include <KLocalizedString>
 
-class FunctionListItem : public QListWidgetItem
-{
+class FunctionListItem : public QListWidgetItem {
 public:
 	FunctionListItem(chig::GraphFunction* func)
 		: QListWidgetItem(QIcon::fromTheme(QStringLiteral("code-class")),
-			  QString::fromStdString(func->module().fullName() + ":" + func->name()), nullptr,
-			  QListWidgetItem::UserType),
-		  mFunc{func}
-	{
-	}
+						  QString::fromStdString(func->module().fullName() + ":" + func->name()),
+						  nullptr, QListWidgetItem::UserType),
+		  mFunc{func} {}
 
 	chig::GraphFunction* mFunc;
 };
 
-FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(parent)
-{
+FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(parent) {
 	connect(win, &MainWindow::moduleOpened, this, &FunctionsPane::updateModule);
 
 	connect(this, &QListWidget::itemDoubleClicked, this, &FunctionsPane::selectItem);
@@ -38,45 +34,37 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 		QListWidgetItem* funcItem = item(indexAt(p).row());
 
 		// if we didn't right click on an item, then don't do anything
-		if (funcItem == nullptr) {
-			return;
-		}
+		if (funcItem == nullptr) { return; }
 
 		QMenu contextMenu;
-		contextMenu.addAction(
-			QIcon::fromTheme(QStringLiteral("edit-delete")), i18n("Delete"), [this, p, funcItem] {
+		contextMenu.addAction(QIcon::fromTheme(QStringLiteral("edit-delete")), i18n("Delete"),
+							  [this, p, funcItem] {
 
-				Expects(funcItem->type() == QListWidgetItem::UserType);
+								  Expects(funcItem->type() == QListWidgetItem::UserType);
 
-				auto casted = dynamic_cast<FunctionListItem*>(funcItem);
-				if (!casted) {
-					return;
-				}
+								  auto casted = dynamic_cast<FunctionListItem*>(funcItem);
+								  if (!casted) { return; }
 
-				chig::JsonModule* mod = &casted->mFunc->module();
-				casted->mFunc->module().removeFunction(casted->mFunc);
+								  chig::JsonModule* mod = &casted->mFunc->module();
+								  casted->mFunc->module().removeFunction(casted->mFunc);
 
-				updateModule(mod);
+								  updateModule(mod);
 
-			});  // TODO: shortcut
+							  });  // TODO: shortcut
 		contextMenu.exec(global);
 	});
 }
 
-void FunctionsPane::updateModule(chig::JsonModule* mod)
-{
+void FunctionsPane::updateModule(chig::JsonModule* mod) {
 	Expects(mod != nullptr);
 
 	clear();
 
 	// go through functions
-	for (auto& fun : mod->functions()) {
-		addItem(new FunctionListItem(fun.get()));
-	}
+	for (auto& fun : mod->functions()) { addItem(new FunctionListItem(fun.get())); }
 }
 
-void FunctionsPane::selectItem(QListWidgetItem* newitem)
-{
+void FunctionsPane::selectItem(QListWidgetItem* newitem) {
 	Expects(newitem->type() == QListWidgetItem::UserType);
 
 	functionSelected(static_cast<FunctionListItem*>(newitem)->mFunc);

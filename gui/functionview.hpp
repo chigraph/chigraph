@@ -15,8 +15,7 @@
 
 #include "chigraphnodemodel.hpp"
 
-class FunctionView : public QWidget
-{
+class FunctionView : public QWidget {
 	Q_OBJECT
 public:
 	FunctionView(chig::GraphFunction* func_, QWidget* parent = nullptr);
@@ -41,7 +40,7 @@ private slots:
 
 private:
 	FlowScene* mScene;
-	FlowView* mView;
+	FlowView*  mView;
 
 	chig::GraphFunction* mFunction;
 

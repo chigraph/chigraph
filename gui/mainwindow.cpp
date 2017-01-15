@@ -40,8 +40,7 @@
 #include <KSharedConfig>
 #include "chigraphnodemodel.hpp"
 
-MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
-{
+MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	Q_INIT_RESOURCE(chiggui);
 
 	// set icon
@@ -55,11 +54,12 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	auto functionsPane = new FunctionsPane(this, this);
 	docker->setWidget(functionsPane);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
-	connect(
-		functionsPane, &FunctionsPane::functionSelected, this, &MainWindow::newFunctionSelected);
+	connect(functionsPane, &FunctionsPane::functionSelected, this,
+			&MainWindow::newFunctionSelected);
 	connect(this, &MainWindow::newFunctionCreated, functionsPane,
-		[functionsPane](
-			chig::GraphFunction* func) { functionsPane->updateModule(&func->module()); });
+			[functionsPane](chig::GraphFunction* func) {
+				functionsPane->updateModule(&func->module());
+			});
 
 	// setup module browser
 	docker = new QDockWidget(i18n("Modules"), this);
@@ -69,7 +69,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
 	connect(this, &MainWindow::workspaceOpened, moduleBrowser, &ModuleBrowser::loadWorkspace);
 	connect(moduleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
-	connect(this, &MainWindow::newModuleCreated, moduleBrowser,
+	connect(
+		this, &MainWindow::newModuleCreated, moduleBrowser,
 		[moduleBrowser](chig::JsonModule* mod) { moduleBrowser->loadWorkspace(mod->context()); });
 
 	mFunctionTabs = new QTabWidget(this);
@@ -135,15 +136,17 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	connect(cancelAction, &QAction::triggered, this, [outputView] {
 		auto output = dynamic_cast<SubprocessOutputView*>(outputView->currentWidget());
 
-		if (output != nullptr) {
-			output->cancelProcess();
-		}
+		if (output != nullptr) { output->cancelProcess(); }
 	});
 
 	connect(outputView, &QTabWidget::currentChanged, this, [cancelAction, outputView](int) {
 		auto view = dynamic_cast<SubprocessOutputView*>(outputView->currentWidget());
 
-		cancelAction->setEnabled(view->running());
+		if (view != nullptr) {
+			cancelAction->setEnabled(view->running());
+		} else {
+			cancelAction->setEnabled(false);
+		}
 	});
 
 	auto runAction = new QAction;
@@ -154,19 +157,18 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	connect(runAction, &QAction::triggered, this, [this, outputView, cancelAction] {
 		auto view = new SubprocessOutputView(currentModule());
 		connect(view, &SubprocessOutputView::processFinished, this,
-			[outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
-				QString statusStr =
-					QString(" (%1, %2)")
-						.arg(exitStatus == QProcess::NormalExit ? "exited" : "crashed",
-							QString::number(exitCode));
-				outputView->setTabText(outputView->indexOf(view),
-					QString::fromStdString(view->module()->fullName()) + statusStr);
+				[outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
+					QString statusStr =
+						QString(" (%1, %2)")
+							.arg(exitStatus == QProcess::NormalExit ? "exited" : "crashed",
+								 QString::number(exitCode));
+					outputView->setTabText(
+						outputView->indexOf(view),
+						QString::fromStdString(view->module()->fullName()) + statusStr);
 
-				// disable it
-				if (outputView->currentWidget() == view) {
-					cancelAction->setEnabled(false);
-				}
-			});
+					// disable it
+					if (outputView->currentWidget() == view) { cancelAction->setEnabled(false); }
+				});
 		// add the tab to the beginning
 		int newTabID = outputView->insertTab(
 			0, view, QString::fromStdString(currentModule()->fullName()) + i18n(" (running)"));
@@ -189,40 +191,33 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent)
 	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
 	mOpenRecentAction->saveEntries(KSharedConfig::openConfig()->group("Recent Files"));
 }
 
-void MainWindow::save()
-{
+void MainWindow::save() {
 	for (int idx = 0; idx < mFunctionTabs->count(); ++idx) {
 		auto func = mFunctionTabs->widget(idx);
 		if (func != nullptr) {
 			auto castedFunc = dynamic_cast<FunctionView*>(func);
-			if (castedFunc != nullptr) {
-				castedFunc->updatePositions();
-			}
+			if (castedFunc != nullptr) { castedFunc->updatePositions(); }
 		}
 	}
 
 	if (mModule != nullptr) {
 		chig::Result res = mModule->saveToDisk();
 		if (!res) {
-			KMessageBox::detailedError(
-				this, i18n("Failed to save module!"), QString::fromStdString(res.dump()));
+			KMessageBox::detailedError(this, i18n("Failed to save module!"),
+									   QString::fromStdString(res.dump()));
 		}
 	}
 }
 
-void MainWindow::openWorkspaceDialog()
-{
+void MainWindow::openWorkspaceDialog() {
 	QString workspace = QFileDialog::getOpenFileName(
 		this, i18n("Chigraph Workspace"), QDir::homePath(), {}, nullptr, QFileDialog::ShowDirsOnly);
 
-	if (workspace == "") {
-		return;
-	}
+	if (workspace == "") { return; }
 
 	QUrl url = QUrl::fromLocalFile(workspace);
 
@@ -231,21 +226,19 @@ void MainWindow::openWorkspaceDialog()
 	openWorkspace(url);
 }
 
-void MainWindow::openWorkspace(QUrl url)
-{
+void MainWindow::openWorkspace(QUrl url) {
 	mChigContext = std::make_unique<chig::Context>(url.toLocalFile().toStdString());
 
 	workspaceOpened(*mChigContext);
 }
 
-void MainWindow::openModule(const QString& path)
-{
+void MainWindow::openModule(const QString& path) {
 	chig::ChigModule* cmod;
-	chig::Result res = context().loadModule(path.toStdString(), &cmod);
+	chig::Result	  res = context().loadModule(path.toStdString(), &cmod);
 
 	if (!res) {
 		KMessageBox::detailedError(this, "Failed to load JsonModule from file \"" + path + "\"",
-			QString::fromStdString(res.dump()), "Error Loading");
+								   QString::fromStdString(res.dump()), "Error Loading");
 
 		return;
 	}
@@ -257,8 +250,7 @@ void MainWindow::openModule(const QString& path)
 	moduleOpened(mModule);
 }
 
-void MainWindow::newFunctionSelected(chig::GraphFunction* func)
-{
+void MainWindow::newFunctionSelected(chig::GraphFunction* func) {
 	Expects(func);
 
 	QString qualifiedFunctionName =
@@ -272,8 +264,8 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 	}
 	// if it's not already open, we'll have to create our own
 
-	auto view = new FunctionView(func, mFunctionTabs);
-	int idx = mFunctionTabs->addTab(view, qualifiedFunctionName);
+	auto view							  = new FunctionView(func, mFunctionTabs);
+	int  idx							  = mFunctionTabs->addTab(view, qualifiedFunctionName);
 	mOpenFunctions[qualifiedFunctionName] = view;
 	mFunctionTabs->setTabText(idx, qualifiedFunctionName);
 	mFunctionTabs->setCurrentWidget(view);
@@ -281,15 +273,14 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func)
 	functionOpened(view);
 }
 
-void MainWindow::closeTab(int idx)
-{
-	mOpenFunctions.erase(std::find_if(mOpenFunctions.begin(), mOpenFunctions.end(),
-		[&](auto& p) { return p.second == mFunctionTabs->widget(idx); }));
+void MainWindow::closeTab(int idx) {
+	mOpenFunctions.erase(std::find_if(mOpenFunctions.begin(), mOpenFunctions.end(), [&](auto& p) {
+		return p.second == mFunctionTabs->widget(idx);
+	}));
 	mFunctionTabs->removeTab(idx);
 }
 
-void MainWindow::newFunction()
-{
+void MainWindow::newFunction() {
 	if (currentModule() == nullptr) {
 		KMessageBox::error(this, "Load a module before creating a new function");
 		return;
@@ -297,9 +288,7 @@ void MainWindow::newFunction()
 
 	QString newName = QInputDialog::getText(this, i18n("New Function Name"), i18n("Function Name"));
 
-	if (newName == "") {
-		return;
-	}
+	if (newName == "") { return; }
 
 	chig::GraphFunction* func;
 	currentModule()->createFunction(newName.toStdString(), {}, {}, {""}, {""}, &func);
@@ -309,12 +298,11 @@ void MainWindow::newFunction()
 	newFunctionSelected(func);  // open the newly created function
 }
 
-void MainWindow::newModule()
-{
+void MainWindow::newModule() {
 	// can't do this without a workspace
 	if (context().workspacePath().empty()) {
 		KMessageBox::error(this, i18n("Cannot create a module without a workspace to place it in"),
-			i18n("Failed to create module"));
+						   i18n("Failed to create module"));
 		return;
 	}
 

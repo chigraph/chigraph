@@ -12,12 +12,11 @@ using namespace chig;
 
 /// The NodeType for calling C functions
 struct CFuncNode : NodeType {
-	CFuncNode(
-		ChigModule& mod, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName, Result& res)
+	CFuncNode(ChigModule& mod, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName,
+			  Result& res)
 		: NodeType{mod, "func", "call C code"},
 		  functocall{gsl::to_string(functionName)},
-		  ccode(gsl::to_string(cCode))
-	{
+		  ccode(gsl::to_string(cCode)) {
 		setExecInputs({""});
 		setExecOutputs({""});
 
@@ -26,11 +25,12 @@ struct CFuncNode : NodeType {
 		try {
 			// compile the C code
 			Process clangexe(std::string(CHIG_CLANG_EXE) + " -xc - -c -g -emit-llvm -O0 -o -", {},
-				[&bitcode](const char* bytes, size_t n) {
-					// read stdin
-					bitcode.append(bytes, n);
-				},
-				[&error](const char* bytes, size_t n) { error.append(bytes, n); }, true);
+							 [&bitcode](const char* bytes, size_t n) {
+								 // read stdin
+								 bitcode.append(bytes, n);
+							 },
+							 [&error](const char* bytes, size_t n) { error.append(bytes, n); },
+							 true);
 			clangexe.write(ccode);
 			clangexe.close_stdin();
 
@@ -50,15 +50,16 @@ struct CFuncNode : NodeType {
 		}
 
 		llvm::SMDiagnostic diag;
-		auto modorerror = llvm::parseBitcodeFile(
-			llvm::MemoryBufferRef(bitcode, "clang-generated"), context().llvmContext());
+		auto modorerror = llvm::parseBitcodeFile(llvm::MemoryBufferRef(bitcode, "clang-generated"),
+												 context().llvmContext());
 
 		if (!modorerror) {
-			std::string errorString;
+			std::string				 errorString;
 			llvm::raw_string_ostream errorStream(errorString);
 			diag.print("chig compile", errorStream);
 
-			res.addEntry("EUKN", "Error parsing clang-generated bitcode module",
+			res.addEntry(
+				"EUKN", "Error parsing clang-generated bitcode module",
 				{{"Error Code", modorerror.getError().value()}, {"Error Text", errorString}});
 			return;
 		}
@@ -68,15 +69,16 @@ struct CFuncNode : NodeType {
 
 		if (llfunc == nullptr) {
 			res.addEntry("EUKN", "Failed to get function in clang-compiled module",
-				{{"Requested Function", functocall}});
+						 {{"Requested Function", functocall}});
 			return;
 		}
 
 		// get arguments
 		std::vector<std::pair<DataType, std::string>> dInputs;
 		for (const auto& argument : llfunc->args()) {
-			dInputs.emplace_back(DataType(context().moduleByFullName("lang"),
-									 stringifyLLVMType(argument.getType()), argument.getType()),
+			dInputs.emplace_back(
+				DataType(context().moduleByFullName("lang"), stringifyLLVMType(argument.getType()),
+						 argument.getType()),
 				argument.getName());
 		}
 		setDataInputs(std::move(dInputs));
@@ -90,10 +92,10 @@ struct CFuncNode : NodeType {
 		}
 	}
 
-	Result codegen(size_t /*inID*/, llvm::Module* mod, const llvm::DebugLoc& nodeLocation, llvm::Function* f, const gsl::span<llvm::Value*> io,
-		llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const override
-	{
+	Result codegen(size_t /*inID*/, llvm::Module* mod, const llvm::DebugLoc& nodeLocation,
+				   llvm::Function* f, const gsl::span<llvm::Value*> io,
+				   llvm::BasicBlock*				  codegenInto,
+				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == dataInputs().size() + dataOutputs().size() && mod != nullptr &&
 				codegenInto != nullptr && outputBlocks.size() == 1);
 
@@ -115,7 +117,7 @@ struct CFuncNode : NodeType {
 
 		// remove the return type if there is one
 		if (!dataOutputs().empty()) {
-			inputs = inputs.subspan(0, inputs.size() - 1);
+			inputs	 = inputs.subspan(0, inputs.size() - 1);
 			outputName = dataOutputs()[0].second;
 		}
 
@@ -135,19 +137,17 @@ struct CFuncNode : NodeType {
 		return {};
 	}
 
-	nlohmann::json toJSON() const override
-	{
+	nlohmann::json toJSON() const override {
 		auto j = nlohmann::json{};
 
-		j = nlohmann::json::object();
-		j["code"] = ccode;
+		j			  = nlohmann::json::object();
+		j["code"]	 = ccode;
 		j["function"] = functocall;
 
 		return j;
 	}
 
-	std::unique_ptr<NodeType> clone() const override
-	{
+	std::unique_ptr<NodeType> clone() const override {
 		Result res;
 
 		return std::make_unique<CFuncNode>(module(), ccode, functocall, res);
@@ -160,16 +160,14 @@ struct CFuncNode : NodeType {
 };
 
 CModule::CModule(Context& ctx) : ChigModule(ctx, "c") {}
-DataType CModule::typeFromName(gsl::cstring_span<> /*typeName*/)
-{
+DataType				  CModule::typeFromName(gsl::cstring_span<> /*typeName*/) {
 	// TODO: implement
 
 	return {};
 }
 
 Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& json_data,
-	std::unique_ptr<NodeType>* toFill)
-{
+								 std::unique_ptr<NodeType>* toFill) {
 	Result res;
 
 	if (typeName == "func") {
@@ -182,7 +180,8 @@ Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::j
 			json_data["code"].is_string()) {
 			code = json_data["code"];
 		} else {
-			res.addEntry("WUKN",
+			res.addEntry(
+				"WUKN",
 				"Data for c:func must have a pair with the key of code and that the data is a "
 				"string",
 				{{"Given Data"}, json_data});
@@ -193,7 +192,8 @@ Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::j
 			json_data["function"].is_string()) {
 			function = json_data["function"];
 		} else {
-			res.addEntry("WUKN",
+			res.addEntry(
+				"WUKN",
 				"Data for c:func must have a pair with the key of function and that the data is a "
 				"string",
 				{{"Given Data"}, json_data});
@@ -203,7 +203,7 @@ Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::j
 		return res;
 	}
 
-	res.addEntry(
-		"E37", "Unrecognized node type in module", {{"Module", "c"}, {"Requested Type", name()}});
+	res.addEntry("E37", "Unrecognized node type in module",
+				 {{"Module", "c"}, {"Requested Type", name()}});
 	return res;
 }

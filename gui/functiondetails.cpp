@@ -6,8 +6,7 @@
 
 #include <KLocalizedString>
 
-FunctionDetails::FunctionDetails(QWidget* parent) : QWidget(parent)
-{
+FunctionDetails::FunctionDetails(QWidget* parent) : QWidget(parent) {
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 
@@ -18,10 +17,9 @@ FunctionDetails::FunctionDetails(QWidget* parent) : QWidget(parent)
 	layout->addWidget(outs);
 }
 
-void FunctionDetails::loadFunction(FunctionView* func)
-{
+void FunctionDetails::loadFunction(FunctionView* func) {
 	mFuncView = func;
-	mFunc = func->function();
+	mFunc	 = func->function();
 
 	ins->clear();
 	outs->clear();
@@ -58,54 +56,42 @@ void FunctionDetails::loadFunction(FunctionView* func)
 	connect(outs, &ParamListWidget::paramChanged, this, &FunctionDetails::outputChanged);
 }
 
-void FunctionDetails::inputChanged(int idx, chig::DataType newType, const QString& newName)
-{
+void FunctionDetails::inputChanged(int idx, chig::DataType newType, const QString& newName) {
 	mFunc->modifyDataInput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
 
 	auto entry = mFunc->entryNode();
-	if (entry == nullptr) {
-		return;
-	}
+	if (entry == nullptr) { return; }
 	mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(entry));
 }
-void FunctionDetails::inputAdded(chig::DataType type, const QString& name)
-{
+void FunctionDetails::inputAdded(chig::DataType type, const QString& name) {
 	mFunc->addDataInput(type, name.toStdString(), mFunc->dataInputs().size() - 1);  // add to end
 
 	auto entry = mFunc->entryNode();
-	if (entry == nullptr) {
-		return;
-	}
+	if (entry == nullptr) { return; }
 	mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(entry));
 }
-void FunctionDetails::inputDeleted(int idx)
-{
+void FunctionDetails::inputDeleted(int idx) {
 	mFunc->removeDataInput(idx);
 
 	auto entry = mFunc->entryNode();
-	if (entry == nullptr) {
-		return;
-	}
+	if (entry == nullptr) { return; }
 	mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(entry));
 }
-void FunctionDetails::outputChanged(int idx, chig::DataType newType, const QString& newName)
-{
+void FunctionDetails::outputChanged(int idx, chig::DataType newType, const QString& newName) {
 	mFunc->modifyDataOutput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
 
 	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
 		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));
 	}
 }
-void FunctionDetails::outputAdded(chig::DataType type, const QString& name)
-{
+void FunctionDetails::outputAdded(chig::DataType type, const QString& name) {
 	mFunc->addDataOutput(type, name.toStdString(), mFunc->dataInputs().size() - 1);
 
 	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
 		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));
 	}
 }
-void FunctionDetails::outputDeleted(int idx)
-{
+void FunctionDetails::outputDeleted(int idx) {
 	mFunc->removeDataOutput(idx);
 	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
 		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));

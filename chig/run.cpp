@@ -32,15 +32,14 @@ namespace fs = boost::filesystem;
 
 using namespace chig;
 
-int run(const std::vector<std::string>& opts)
-{
+int run(const std::vector<std::string>& opts) {
 	llvm::InitializeNativeTarget();
 	llvm::InitializeNativeTargetAsmPrinter();
 	llvm::InitializeNativeTargetAsmParser();
 
 	po::options_description run_opts;
 	run_opts.add_options()("input-file", po::value<std::string>(),
-		"The input file, - for stdin. Should be a chig module");
+						   "The input file, - for stdin. Should be a chig module");
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1);
@@ -89,9 +88,7 @@ int run(const std::vector<std::string>& opts)
 	std::unique_ptr<llvm::Module> llmod;
 	res += c.compileModule(jmod->fullName(), &llmod);
 
-	if (!res) {
-		std::cerr << "Error compiling module: " << res << std::endl;
-	}
+	if (!res) { std::cerr << "Error compiling module: " << res << std::endl; }
 
 	// run it!
 

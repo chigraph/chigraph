@@ -4,8 +4,7 @@
 
 using namespace chig;
 
-TEST_CASE("Name Mangler", "")
-{
+TEST_CASE("Name Mangler", "") {
 	using namespace std::string_literals;
 
 	REQUIRE(mangleFunctionName("github.com/russelltg/test/lib", "docall") ==

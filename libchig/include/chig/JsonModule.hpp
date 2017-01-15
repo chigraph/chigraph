@@ -19,8 +19,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace chig
-{
+namespace chig {
 /// Module that holds JSON code
 struct JsonModule : public ChigModule {
 	/// Constructor for a json module
@@ -38,7 +37,7 @@ struct JsonModule : public ChigModule {
 
 	// No copy or move -- pointer only
 	JsonModule(const JsonModule&) = delete;
-	JsonModule(JsonModule&&) = delete;
+	JsonModule(JsonModule&&)	  = delete;
 	JsonModule& operator=(const JsonModule&) = delete;
 	JsonModule& operator=(JsonModule&&) = delete;
 
@@ -46,9 +45,9 @@ struct JsonModule : public ChigModule {
 	///////////////////////
 
 	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
-		std::unique_ptr<NodeType>* toFill) override;
+							std::unique_ptr<NodeType>* toFill) override;
 
-	DataType typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
+	DataType	  typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
 	llvm::DIType* debugTypeFromName(gsl::cstring_span<> /*name*/) override { return nullptr; }
 	std::vector<std::string> nodeTypeNames() const override;  // TODO: implement
 
@@ -56,10 +55,10 @@ struct JsonModule : public ChigModule {
 	Result generateModule(llvm::Module& module) override;
 
 	/////////////////////
-    
-    /// Create the associations from line number and function in debug info
-    /// \return A bimap of function to line number
-    boost::bimap<unsigned, NodeInstance*> createLineNumberAssoc() const;
+
+	/// Create the associations from line number and function in debug info
+	/// \return A bimap of function to line number
+	boost::bimap<unsigned, NodeInstance*> createLineNumberAssoc() const;
 
 	/// Load the graphs (usually called by Context::addModule)
 	Result loadGraphs();
@@ -76,8 +75,7 @@ struct JsonModule : public ChigModule {
 	/// Get the path to the source file
 	/// It's not garunteed to exist, because it could have not been saved
 	/// \return The path
-	boost::filesystem::path sourceFilePath() const
-	{
+	boost::filesystem::path sourceFilePath() const {
 		return context().workspacePath() / "src" / (fullName() + ".chigmod");
 	}
 
@@ -90,9 +88,10 @@ struct JsonModule : public ChigModule {
 	/// \param toFill The new GraphFunction, optional
 	/// \return True if a new function was created, false otherwise
 	bool createFunction(gsl::cstring_span<> name,
-		std::vector<std::pair<DataType, std::string>> dataIns,
-		std::vector<std::pair<DataType, std::string>> dataOuts, std::vector<std::string> execIns,
-		std::vector<std::string> execOuts, GraphFunction** toFill = nullptr);
+						std::vector<std::pair<DataType, std::string>> dataIns,
+						std::vector<std::pair<DataType, std::string>> dataOuts,
+						std::vector<std::string> execIns, std::vector<std::string> execOuts,
+						GraphFunction** toFill = nullptr);
 
 	/// Remove a function from the module
 	/// \param name The name of the function to remove
@@ -111,6 +110,7 @@ struct JsonModule : public ChigModule {
 	/// Get functions
 	/// \return The functions
 	const std::vector<std::unique_ptr<GraphFunction>>& functions() const { return mFunctions; }
+
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
 };

@@ -3,8 +3,8 @@
 
 using namespace chig;
 
-Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mContext{&func.context()}, mFunction{&func}
-{
+Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res)
+	: mContext{&func.context()}, mFunction{&func} {
 	// read the nodes
 	if (data.find("nodes") == data.end() || !data["nodes"].is_object()) {
 		res.addEntry("E5", "JSON in graph doesn't have nodes object", {});
@@ -12,7 +12,7 @@ Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mC
 	}
 
 	for (auto nodeiter = data["nodes"].begin(); nodeiter != data["nodes"].end(); ++nodeiter) {
-		auto node = nodeiter.value();
+		auto		node   = nodeiter.value();
 		std::string nodeid = nodeiter.key();
 		if (node.find("type") == node.end() || !node.find("type")->is_string()) {
 			res.addEntry("E6", R"(Node doesn't have a "type" string)", {{"nodeid", nodeid}});
@@ -24,7 +24,7 @@ Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mC
 
 		if (moduleName.empty() || typeName.empty()) {
 			res.addEntry("E7", "Incorrect qualified module name (should be module:type)",
-				{{"nodeid", nodeid}, {"Requested Qualified Name", fullType}});
+						 {{"nodeid", nodeid}, {"Requested Qualified Name", fullType}});
 			return;
 		}
 
@@ -35,9 +35,7 @@ Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mC
 
 		std::unique_ptr<NodeType> nodeType;
 		res += context().nodeTypeFromModule(moduleName, typeName, node["data"], &nodeType);
-		if (!res) {
-			continue;
-		}
+		if (!res) { continue; }
 
 		auto testIter = node.find("location");
 		if (testIter == node.end()) {
@@ -47,14 +45,14 @@ Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mC
 
 		// make sure it is the right size
 		if (!testIter.value().is_array()) {
-			res.addEntry(
-				"E10", "Node doesn't have a location that is an array.", {{"nodeid", nodeid}});
+			res.addEntry("E10", "Node doesn't have a location that is an array.",
+						 {{"nodeid", nodeid}});
 			continue;
 		}
 
 		if (testIter.value().size() != 2) {
 			res.addEntry("E11", "Node doesn't have a location that is an array of size 2.",
-				{{"nodeid", nodeid}});
+						 {{"nodeid", nodeid}});
 			continue;
 		}
 
@@ -75,12 +73,12 @@ Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mC
 				res.addEntry("E14", "No type string in connection", {"connectionid", connID});
 				continue;
 			}
-			std::string type = connection["type"];
-			bool isData = type == "data";
+			std::string type   = connection["type"];
+			bool		isData = type == "data";
 			// it either has to be "data" or "exec"
 			if (!isData && type != "exec") {
 				res.addEntry("E15", "Unrecognized connection type",
-					{{"connectionid", connID}, {"Found Type", type}});
+							 {{"connectionid", connID}, {"Found Type", type}});
 				continue;
 			}
 
@@ -91,14 +89,15 @@ Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mC
 			if (!connection.find("input")->is_array() || connection.find("input")->size() != 2 ||
 				!connection.find("input")->operator[](0).is_string() ||
 				!connection.find("input")->operator[](1).is_number_integer()) {
-				res.addEntry("E17",
+				res.addEntry(
+					"E17",
 					"Incorrect connection input format, must be an array of of a string (node id) "
 					"and int (connection id)",
 					{{"connectionid", connID}, {"Requested Type", *connection.find("input")}});
 				continue;
 			}
-			std::string InputNodeID = connection["input"][0];
-			int InputConnectionID = connection["input"][1];
+			std::string InputNodeID		  = connection["input"][0];
+			int			InputConnectionID = connection["input"][1];
 
 			if (connection.find("output") == connection.end()) {
 				res.addEntry("E18", "No output element in connection", {{"connectionid", connID}});
@@ -107,24 +106,25 @@ Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mC
 			if (!connection.find("output")->is_array() || connection.find("output")->size() != 2 ||
 				!connection.find("output")->operator[](0).is_string() ||
 				!connection.find("output")->operator[](1).is_number_integer()) {
-				res.addEntry("E19",
+				res.addEntry(
+					"E19",
 					"Incorrect connection output format, must be an array of a string (node id) "
 					"and int (connection id)",
 					{{"connectionid", connID}, {"Requested Type", *connection.find("output")}});
 				continue;
 			}
-			std::string OutputNodeID = connection["output"][0];
-			int OutputConnectionID = connection["output"][1];
+			std::string OutputNodeID	   = connection["output"][0];
+			int			OutputConnectionID = connection["output"][1];
 
 			// make sure the nodes exist
 			if (mNodes.find(InputNodeID) == mNodes.end()) {
 				res.addEntry("E20", "Input node for connection doesn't exist",
-					{{"connectionid", connID}, {"Requested Node", InputNodeID}});
+							 {{"connectionid", connID}, {"Requested Node", InputNodeID}});
 				continue;
 			}
 			if (mNodes.find(OutputNodeID) == mNodes.end()) {
 				res.addEntry("E21", "Output node for connection doesn't exist",
-					{{"connectionid", connID}, {"Requested Node", OutputNodeID}});
+							 {{"connectionid", connID}, {"Requested Node", OutputNodeID}});
 				continue;
 			}
 
@@ -132,10 +132,10 @@ Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mC
 			// these functions do bounds checking, it's okay
 			if (isData) {
 				res += connectData(*mNodes[InputNodeID], InputConnectionID, *mNodes[OutputNodeID],
-					OutputConnectionID);
+								   OutputConnectionID);
 			} else {
 				res += connectExec(*mNodes[InputNodeID], InputConnectionID, *mNodes[OutputNodeID],
-					OutputConnectionID);
+								   OutputConnectionID);
 			}
 
 			++connID;
@@ -143,23 +143,23 @@ Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res) :  mC
 	}
 }
 
-Result Graph::toJson(nlohmann::json* toFill) const
-{
+Result Graph::toJson(nlohmann::json* toFill) const {
 	auto& jsonData = *toFill;
 
 	// serialize the nodes
 	auto& jsonNodes = jsonData["nodes"];
-	jsonNodes = nlohmann::json::object();  // make sure even if it's empty it's an object
+	jsonNodes		= nlohmann::json::object();  // make sure even if it's empty it's an object
 	auto& jsonConnections = jsonData["connections"];
-	jsonConnections = nlohmann::json::array();  // make sure even if it's empty it's an aray
+	jsonConnections		  = nlohmann::json::array();  // make sure even if it's empty it's an aray
 
 	for (const auto& nodepair : mNodes) {
-		auto& node = nodepair.second;
+		auto&		node   = nodepair.second;
 		std::string nodeID = nodepair.first;
 
 		nlohmann::json nodeJson = node->type().toJSON();
-		jsonNodes[nodeID] = {{"type", node->type().qualifiedName()},
-			{"location", {node->x(), node->y()}}, {"data", nodeJson}};
+		jsonNodes[nodeID]		= {{"type", node->type().qualifiedName()},
+							 {"location", {node->x(), node->y()}},
+							 {"data", nodeJson}};
 		// add its connections. Just out the outputs to avoid duplicates
 
 		// add the exec outputs
@@ -167,8 +167,9 @@ Result Graph::toJson(nlohmann::json* toFill) const
 			auto& conn = node->outputExecConnections[conn_id];
 			// if there is actually a connection
 			if (conn.first != nullptr) {
-				jsonConnections.push_back({{"type", "exec"}, {"input", {nodeID, conn_id}},
-					{"output", {conn.first->id(), conn.second}}});
+				jsonConnections.push_back({{"type", "exec"},
+										   {"input", {nodeID, conn_id}},
+										   {"output", {conn.first->id(), conn.second}}});
 			}
 		}
 
@@ -177,9 +178,9 @@ Result Graph::toJson(nlohmann::json* toFill) const
 			// if there is actually a connection
 			auto& connpair = node->inputDataConnections[conn_id];
 			if (connpair.first != nullptr) {
-				jsonConnections.push_back(
-					{{"type", "data"}, {"input", {connpair.first->id(), connpair.second}},
-						{"output", {nodeID, conn_id}}});
+				jsonConnections.push_back({{"type", "data"},
+										   {"input", {connpair.first->id(), connpair.second}},
+										   {"output", {nodeID, conn_id}}});
 			}
 		}
 	}
@@ -187,15 +188,14 @@ Result Graph::toJson(nlohmann::json* toFill) const
 	return {};
 }
 
-Result Graph::insertNode(
-	std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id, NodeInstance** toFill)
-{
+Result Graph::insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
+						 NodeInstance** toFill) {
 	Result res;
 
 	// make sure the ID doesn't exist
 	if (nodes().find(gsl::to_string(id)) != nodes().end()) {
 		res.addEntry("EUKN", "Cannot have two nodes with the same ID",
-			{{"Requested ID", gsl::to_string(id)}});
+					 {{"Requested ID", gsl::to_string(id)}});
 		return res;
 	}
 
@@ -203,22 +203,19 @@ Result Graph::insertNode(
 
 	auto emplaced = mNodes.emplace(gsl::to_string(id), std::move(ptr)).first;
 
-	if (toFill != nullptr) {
-		*toFill = emplaced->second.get();
-	}
+	if (toFill != nullptr) { *toFill = emplaced->second.get(); }
 
 	return res;
 }
 
-std::vector<NodeInstance*> Graph::nodesWithType(
-	gsl::cstring_span<> module, gsl::cstring_span<> name) const noexcept
-{
+std::vector<NodeInstance*> Graph::nodesWithType(gsl::cstring_span<> module,
+												gsl::cstring_span<> name) const noexcept {
 	auto typeFinder = [&](auto& pair) {
 		return pair.second->type().module().name() == module && pair.second->type().name() == name;
 	};
 
 	std::vector<NodeInstance*> ret;
-	auto iter = std::find_if(mNodes.begin(), mNodes.end(), typeFinder);
+	auto					   iter = std::find_if(mNodes.begin(), mNodes.end(), typeFinder);
 	while (iter != mNodes.end()) {
 		ret.emplace_back(iter->second.get());
 

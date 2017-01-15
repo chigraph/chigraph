@@ -20,8 +20,7 @@
 
 #include <boost/optional.hpp>
 
-namespace chig
-{
+namespace chig {
 /// this is an AST-like representation of a function in a graph
 /// It is used for IDE-like behavior, codegen, and JSON generation.
 struct GraphFunction {
@@ -32,10 +31,10 @@ struct GraphFunction {
 	/// \param dataOuts The data outputs of the function
 	/// \param execIns The exec inputs to the function
 	/// \param execOuts The exec outputs to the function
-	GraphFunction(JsonModule& mod, gsl::cstring_span<> name,
-		std::vector<std::pair<DataType, std::string>> dataIns,
-		std::vector<std::pair<DataType, std::string>> dataOuts, std::vector<std::string> execIns,
-		std::vector<std::string> execOuts);
+	GraphFunction(JsonModule& mod, gsl::cstring_span<>			name,
+				  std::vector<std::pair<DataType, std::string>> dataIns,
+				  std::vector<std::pair<DataType, std::string>> dataOuts,
+				  std::vector<std::string> execIns, std::vector<std::string> execOuts);
 
 	/// Constructs a GraphFunction from a JOSN object
 	/// \param data The JSON object to read from
@@ -55,9 +54,9 @@ struct GraphFunction {
 	/// \param mod The module to codgen into, should already be a valid module
 	/// \param debugFile The file that the GraphFunction resides in.
 	/// \return The result
-	Result compile(
-		llvm::Module* mod, llvm::DICompileUnit* debugFile, llvm::DIBuilder& debugBuilder) const;
-    
+	Result compile(llvm::Module* mod, llvm::DICompileUnit* debugFile,
+				   llvm::DIBuilder& debugBuilder) const;
+
 	/// \name Node Manipulation
 	/// Functions for mainpulating nodes; getting, adding
 	/// \{
@@ -76,8 +75,7 @@ struct GraphFunction {
 	/// \param toFill The nodeInstance to fill to, optional.
 	/// \return The result
 	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
-		NodeInstance** toFill = nullptr)
-	{
+					  NodeInstance** toFill = nullptr) {
 		return graph().insertNode(std::move(type), x, y, id, toFill);
 	}
 
@@ -90,8 +88,8 @@ struct GraphFunction {
 	/// \param id The node ID
 	/// \param toFill The NodeInstance to fill to, optional
 	Result insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
-		const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
-		NodeInstance** toFill = nullptr);
+					  const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
+					  NodeInstance** toFill = nullptr);
 
 	/// Remove a node from the function. Also disconnect it's connections.
 	/// \param nodeToRemove The node to remove
@@ -106,8 +104,8 @@ struct GraphFunction {
 	/// \param id The ID of the node, disregarded if there is already an entry
 	/// \param toFill The NodeInstance* to fill, optional
 	/// \return The Result
-	Result getOrInsertEntryNode(
-		float x, float y, gsl::cstring_span<> id, NodeInstance** toFill = nullptr);
+	Result getOrInsertEntryNode(float x, float y, gsl::cstring_span<> id,
+								NodeInstance** toFill = nullptr);
 
 	/// \}
 
@@ -163,8 +161,7 @@ struct GraphFunction {
 
 	/// Get the function data outputs in the format {type, docstring}
 	/// \return The outputs
-	const std::vector<std::pair<DataType, std::string>>& dataOutputs() const
-	{
+	const std::vector<std::pair<DataType, std::string>>& dataOutputs() const {
 		return mDataOutputs;
 	}
 	/// Add an data output to the end of the argument list
@@ -246,12 +243,13 @@ struct GraphFunction {
 	/// Get the JsonModule that contains this GraphFunction
 	/// \return The JsonModule.
 	JsonModule& module() const { return *mModule; }
+
 private:
 	void updateEntries();  // update the entry node to work with
 	void updateExits();
 
 	JsonModule* mModule;
-	Context* mContext;
+	Context*	mContext;
 	std::string mName;  /// the name of the function
 
 	std::vector<std::pair<DataType, std::string>> mDataInputs;
@@ -261,17 +259,14 @@ private:
 	std::vector<std::string> mExecOutputs;
 
 	nlohmann::json mSource = {};
-	Graph mGraph;
+	Graph		   mGraph;
 };
 
-inline std::pair<std::string, std::string> parseColonPair(const std::string& in)
-{
+inline std::pair<std::string, std::string> parseColonPair(const std::string& in) {
 	size_t colonID = in.find(':');
-	if (colonID == std::string::npos) {
-		return {};
-	}
+	if (colonID == std::string::npos) { return {}; }
 	std::string module = in.substr(0, in.find(':'));
-	std::string name = in.substr(in.find(':') + 1);
+	std::string name   = in.substr(in.find(':') + 1);
 
 	return {module, name};
 }

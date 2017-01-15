@@ -1,9 +1,7 @@
 #include "chig/Result.hpp"
 
-namespace chig
-{
-std::string prettyPrintJson(const nlohmann::json& j, int indentLevel)
-{
+namespace chig {
+std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 	std::string indentString(indentLevel * 2, ' ');
 
 	std::string ret;
@@ -35,8 +33,7 @@ std::string prettyPrintJson(const nlohmann::json& j, int indentLevel)
 	return ret;
 }
 
-std::string Result::dump() const
-{
+std::string Result::dump() const {
 	std::string ret;
 	if (result_json.size() != 0) {
 		for (auto error : result_json) {
@@ -44,7 +41,7 @@ std::string Result::dump() const
 				error.find("overview") == error.end() || !error["overview"].is_string()) {
 				return "";
 			}
-			std::string ec = error["errorcode"];
+			std::string ec   = error["errorcode"];
 			std::string desc = error["overview"];
 			ret += ec + ": " + desc + "\n";
 			// recursively display children

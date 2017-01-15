@@ -7,17 +7,17 @@
 
 #include <vector>
 
-namespace chig
-{
+namespace chig {
 /// An instance of a node
 struct NodeInstance {
-	/// Construct a nodeinstace with a type location and an ID, usually called from GraphFunction::insertNode
+	/// Construct a nodeinstace with a type location and an ID, usually called from
+	/// GraphFunction::insertNode
 	/// \param nodeType The type that the node is
 	/// \param posX The X location of the node
 	/// \param posY The Y location of the node
 	/// \param nodeID The unique ID for the node
-	NodeInstance(
-		GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX, float posY, gsl::cstring_span<> nodeID);
+	NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX, float posY,
+				 gsl::cstring_span<> nodeID);
 
 	/// Move constructor
 	NodeInstance(NodeInstance&&) = default;
@@ -73,9 +73,10 @@ struct NodeInstance {
 
 	/// Get the containing Context object
 	Context& context() const { return *mContext; }
-	
+
 	/// Get the containing GraphFunction
 	GraphFunction& function() const { return *mFunction; }
+
 private:
 	std::unique_ptr<NodeType> mType = nullptr;
 
@@ -84,8 +85,8 @@ private:
 
 	std::string mId;
 
-	Context* mContext;
-    GraphFunction* mFunction;
+	Context*	   mContext;
+	GraphFunction* mFunction;
 };
 
 /// Connects two nodes' data connections
@@ -94,8 +95,8 @@ private:
 /// \param rhs The node to the right, that takes in the data as a parameter
 /// \param connectionOutputID The ID of data input in \c rhs
 /// \return The result
-Result connectData(
-	NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID);
+Result connectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs,
+				   size_t connectionOutputID);
 
 /// Connects two nodes' exec connections
 /// \param lhs The node to the left, the node outputting the connections
@@ -103,8 +104,8 @@ Result connectData(
 /// \param rhs The node to the right, that takes in the exec as a parameter
 /// \param connectionOutputID The ID of exec input in \c rhs
 /// \return The result
-Result connectExec(
-	NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs, size_t connectionOutputID);
+Result connectExec(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs,
+				   size_t connectionOutputID);
 
 /// Disconnect a data connection
 /// \param lhs The left hand node
