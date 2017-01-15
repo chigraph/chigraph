@@ -9,11 +9,9 @@
 using namespace chig;
 using namespace nlohmann;
 
-TEST_CASE("JsonSerializer", "[json]")
-{
-	GIVEN("A default constructed Context with a LangModule and GraphFunction named hello")
-	{
-		Result res;
+TEST_CASE("JsonSerializer", "[json]") {
+	GIVEN("A default constructed Context with a LangModule and GraphFunction named hello") {
+		Result  res;
 		Context c;
 		REQUIRE(!!c.loadModule("lang"));
 		LangModule* lmod = static_cast<LangModule*>(c.moduleByFullName("lang"));
@@ -25,7 +23,7 @@ TEST_CASE("JsonSerializer", "[json]")
 		REQUIRE(jmod != nullptr);
 
 		GraphFunction* func;
-		bool created = jmod->createFunction("hello", {}, {}, {""}, {""}, &func);
+		bool		   created = jmod->createFunction("hello", {}, {}, {""}, {""}, &func);
 		REQUIRE(created == true);
 		REQUIRE(func != nullptr);
 
@@ -39,8 +37,7 @@ TEST_CASE("JsonSerializer", "[json]")
 
 		};
 
-		THEN("The JSON should be correct")
-		{
+		THEN("The JSON should be correct") {
 			auto correctJSON = R"ENDJSON(
 				{
 					"type": "function",
@@ -57,21 +54,19 @@ TEST_CASE("JsonSerializer", "[json]")
 			requireWorks(correctJSON);
 		}
 
-		WHEN("We create some nodes and try to dump json")
-		{
+		WHEN("We create some nodes and try to dump json") {
 			std::vector<std::pair<DataType, std::string>> inputs = {
 				{lmod->typeFromName("i1"), "in1"}};
 
 			std::unique_ptr<NodeType> toFill;
-			Result res = c.nodeTypeFromModule(
+			Result					  res = c.nodeTypeFromModule(
 				"lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
 			REQUIRE(!!res);
 			NodeInstance* entry;
 			res += func->insertNode(std::move(toFill), 32, 32, "entry", &entry);
 			REQUIRE(!!res);
 
-			THEN("The JSON should be correct")
-			{
+			THEN("The JSON should be correct") {
 				auto correctJSON = R"ENDJSON(
 					{
 						"type": "function",
@@ -97,8 +92,7 @@ TEST_CASE("JsonSerializer", "[json]")
 				requireWorks(correctJSON);
 			}
 
-			WHEN("A lang:if is added")
-			{
+			WHEN("A lang:if is added") {
 				std::unique_ptr<NodeType> ifType;
 				res = c.nodeTypeFromModule("lang", "if", {}, &ifType);
 				REQUIRE(!!res);
@@ -106,8 +100,7 @@ TEST_CASE("JsonSerializer", "[json]")
 				res += func->insertNode(std::move(ifType), 44.f, 23.f, "if", &ifNode);
 				REQUIRE(!!res);
 
-				THEN("The JSON should be correct")
-				{
+				THEN("The JSON should be correct") {
 					auto correctJSON = R"ENDJSON(
 						{
 							"type": "function",
@@ -138,12 +131,10 @@ TEST_CASE("JsonSerializer", "[json]")
 					requireWorks(correctJSON);
 				}
 
-				WHEN("We connect the entry to the ifNode exec")
-				{
+				WHEN("We connect the entry to the ifNode exec") {
 					connectExec(*entry, 0, *ifNode, 0);
 
-					THEN("The JSON should be correct")
-					{
+					THEN("The JSON should be correct") {
 						auto correctJSON = R"ENDJSON(
 							{
 								"type": "function",
@@ -180,14 +171,12 @@ TEST_CASE("JsonSerializer", "[json]")
 						requireWorks(correctJSON);
 					}
 
-					WHEN("Connect the data")
-					{
+					WHEN("Connect the data") {
 						res = connectData(*entry, 0, *ifNode, 0);
 
 						REQUIRE(res.result_json == json::array());
 
-						THEN("The JSON should be correct")
-						{
+						THEN("The JSON should be correct") {
 							auto correctJSON = R"ENDJSON(
 								{
 								"type": "function",

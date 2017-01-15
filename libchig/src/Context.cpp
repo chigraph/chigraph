@@ -23,40 +23,31 @@ using namespace llvm;
 
 namespace fs = boost::filesystem;
 
-namespace chig
-{
-Context::Context(const boost::filesystem::path& workPath)
-{
+namespace chig {
+Context::Context(const boost::filesystem::path& workPath) {
 	mLLVMContext = std::make_unique<llvm::LLVMContext>();
 
 	mWorkspacePath = workspaceFromChildPath(workPath);
 }
-ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) const noexcept
-{
+ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) const noexcept {
 	Result res;
 
 	for (auto& module : mModules) {
-		if (module->name() == moduleName) {
-			return module.get();
-		}
+		if (module->name() == moduleName) { return module.get(); }
 	}
 	return nullptr;
 }
 
-ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept
-{
+ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept {
 	Result res;
 
 	for (auto& module : mModules) {
-		if (module->fullName() == fullModuleName) {
-			return module.get();
-		}
+		if (module->fullName() == fullModuleName) { return module.get(); }
 	}
 	return nullptr;
 }
 
-JsonModule* Context::newJsonModule(gsl::cstring_span<> fullName)
-{
+JsonModule* Context::newJsonModule(gsl::cstring_span<> fullName) {
 	// create the module
 	JsonModule* mod = nullptr;
 	{
@@ -76,16 +67,13 @@ JsonModule* Context::newJsonModule(gsl::cstring_span<> fullName)
 	return mod;
 }
 
-std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept
-{
+std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept {
 	std::unordered_set<std::string> moduleList;
 
 	fs::path srcDir = workspacePath() / "src";
 
 	;
-	if (!fs::is_directory(srcDir)) {
-		return {};
-	}
+	if (!fs::is_directory(srcDir)) { return {}; }
 
 	for (const auto& dirEntry : boost::make_iterator_range(
 			 fs::recursive_directory_iterator{srcDir, fs::symlink_option::recurse}, {})) {
@@ -103,31 +91,26 @@ std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept
 	return moduleList;
 }
 
-chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModule** toFill)
-{
+chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModule** toFill) {
 	Result res;
 
 	// check for built-in modules
 	if (name == "lang") {
 		auto mod = std::make_unique<LangModule>(*this);
-		if (toFill != nullptr) {
-			*toFill = mod.get();
-		}
+		if (toFill != nullptr) { *toFill = mod.get(); }
 		addModule(std::move(mod));
 		return {};
 	}
 	if (name == "c") {
 		auto mod = std::make_unique<CModule>(*this);
-		if (toFill != nullptr) {
-			*toFill = mod.get();
-		}
+		if (toFill != nullptr) { *toFill = mod.get(); }
 		addModule(std::move(mod));  // we don't care if it's actually added
 		return {};
 	}
 
 	if (workspacePath().empty()) {
 		res.addEntry("EUKN", "Cannot load module without a workspace path",
-			{{"Requested Module"}, gsl::to_string(name)});
+					 {{"Requested Module"}, gsl::to_string(name)});
 		return res;
 	}
 
@@ -135,7 +118,8 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 	fs::path fullPath = workspacePath() / "src" / (gsl::to_string(name) + ".chigmod");
 
 	if (!fs::is_regular_file(fullPath)) {
-		res.addEntry("EUKN", "Failed to find module",
+		res.addEntry(
+			"EUKN", "Failed to find module",
 			{{"Module Name", gsl::to_string(name)}, {"Workspace Path", workspacePath().string()}});
 		return res;
 	}
@@ -150,16 +134,13 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 
 	JsonModule* toFillJson = nullptr;
 	res += addModuleFromJson(name, readJson, &toFillJson);
-	if (toFill != nullptr) {
-		*toFill = toFillJson;
-	}
+	if (toFill != nullptr) { *toFill = toFillJson; }
 
 	return res;
 }
 
-Result Context::addModuleFromJson(
-	gsl::cstring_span<> fullName, const nlohmann::json& json, JsonModule** toFill)
-{
+Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json,
+								  JsonModule** toFill) {
 	Result res;
 
 	// make sure it's not already added
@@ -168,9 +149,7 @@ Result Context::addModuleFromJson(
 		if (mod != nullptr) {
 			if (toFill != nullptr) {
 				auto casted = dynamic_cast<JsonModule*>(mod);
-				if (casted != nullptr) {
-					*toFill = casted;
-				}
+				if (casted != nullptr) { *toFill = casted; }
 			}
 			return {};
 		}
@@ -181,14 +160,10 @@ Result Context::addModuleFromJson(
 	{
 		// parse module
 		auto jmod = std::make_unique<JsonModule>(*this, gsl::to_string(fullName), json, &res);
-		if (!res) {
-			return res;
-		}
-		if (toFill != nullptr) {
-			*toFill = jmod.get();
-		}
+		if (!res) { return res; }
+		if (toFill != nullptr) { *toFill = jmod.get(); }
 
-		cPtr = jmod.get();
+		cPtr	   = jmod.get();
 		bool added = addModule(std::move(jmod));
 		Expects(added);  // it really should be added
 	}
@@ -199,15 +174,12 @@ Result Context::addModuleFromJson(
 	return res;
 }
 
-bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
-{
+bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept {
 	Expects(modToAdd != nullptr);
 
 	// make sure it's unique
 	auto ptr = moduleByFullName(modToAdd->fullName());
-	if (ptr != nullptr) {
-		return false;
-	}
+	if (ptr != nullptr) { return false; }
 
 	mModules.push_back(std::move(modToAdd));
 
@@ -216,9 +188,8 @@ bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept
 	return true;
 }
 
-Result Context::typeFromModule(
-	gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept
-{
+Result Context::typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
+							   DataType* toFill) noexcept {
 	Expects(toFill != nullptr);
 
 	Result res;
@@ -232,15 +203,14 @@ Result Context::typeFromModule(
 	*toFill = mod->typeFromName(name);
 	if (!toFill->valid()) {
 		res.addEntry("E37", "Could not find type in module",
-			{{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
+					 {{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
 	}
 
 	return res;
 }
 
-Result Context::debugTypeFromModule(
-	gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::DIType** toFill) noexcept
-{
+Result Context::debugTypeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
+									llvm::DIType** toFill) noexcept {
 	Expects(toFill != nullptr);
 
 	Result res;
@@ -254,15 +224,15 @@ Result Context::debugTypeFromModule(
 	*toFill = mod->debugTypeFromName(name);
 	if (*toFill == nullptr) {
 		res.addEntry("E37", "Could not find type in module",
-			{{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
+					 {{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
 	}
 
 	return res;
 }
 
 Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
-	const nlohmann::json& data, std::unique_ptr<NodeType>* toFill) noexcept
-{
+								   const nlohmann::json&	  data,
+								   std::unique_ptr<NodeType>* toFill) noexcept {
 	Result res;
 
 	auto module = moduleByName(moduleName);
@@ -276,8 +246,7 @@ Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_
 	return res;
 }
 
-Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill)
-{
+Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill) {
 	Expects(toFill != nullptr);
 
 	Result res;
@@ -296,9 +265,7 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 		std::unique_ptr<llvm::Module> compiledDep;
 		res += compileModule(depName, &compiledDep);  // TODO: detect circular dependencies
 
-		if (!res) {
-			return res;
-		}
+		if (!res) { return res; }
 
 		// link it in
 		llvm::Linker::linkModules(*llmod, std::move(compiledDep));
@@ -308,13 +275,13 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 
 	// set debug info version if it doesn't already have it
 	if (llmod->getModuleFlag("Debug Info Version") == nullptr) {
-		llmod->addModuleFlag(
-			llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
+		llmod->addModuleFlag(llvm::Module::Warning, "Debug Info Version",
+							 llvm::DEBUG_METADATA_VERSION);
 	}
 
 	// verify the created module
 	if (res) {
-		std::string err;
+		std::string				 err;
 		llvm::raw_string_ostream os(err);
 		if (llvm::verifyModule(*llmod, &os)) {
 			std::string moduleStr;
@@ -322,7 +289,8 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 				llvm::raw_string_ostream printerStr{moduleStr};
 				llmod->print(printerStr, nullptr);
 			}
-			res.addEntry("EINT", "Internal compiler error: Invalid module created",
+			res.addEntry(
+				"EINT", "Internal compiler error: Invalid module created",
 				{{"Error", err}, {"Full Name", gsl::to_string(fullName)}, {"Module", moduleStr}});
 		}
 	}
@@ -332,18 +300,14 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 	return res;
 }
 
-std::string Context::fullModuleName(gsl::cstring_span<> shortName) const
-{
+std::string Context::fullModuleName(gsl::cstring_span<> shortName) const {
 	auto mod = moduleByName(shortName);
 
-	if (mod != nullptr) {
-		return mod->fullName();
-	}
+	if (mod != nullptr) { return mod->fullName(); }
 
 	return "";
 }
-fs::path workspaceFromChildPath(const fs::path& path)
-{
+fs::path workspaceFromChildPath(const fs::path& path) {
 	fs::path ret = path;
 
 	// initialize workspace directory
@@ -355,8 +319,7 @@ fs::path workspaceFromChildPath(const fs::path& path)
 	return ret;  // it's ok if it's empty
 }
 
-std::string stringifyLLVMType(llvm::Type* ty)
-{
+std::string stringifyLLVMType(llvm::Type* ty) {
 	Expects(ty != nullptr);
 
 	std::string data;

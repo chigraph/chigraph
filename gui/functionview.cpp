@@ -15,8 +15,7 @@
 #include "chigraphnodemodel.hpp"
 
 FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
-	: QWidget(parent), mFunction{func_}
-{
+	: QWidget(parent), mFunction{func_} {
 	auto hlayout = new QHBoxLayout(this);
 
 	// TODO: see how to actually set the colors
@@ -45,16 +44,15 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 
 		for (auto typeName : module->nodeTypeNames()) {
 			// create that node type unless it's entry or exit
-			if (modName == "lang" && (typeName == "entry" || typeName == "exit")) {
-				continue;
-			}
+			if (modName == "lang" && (typeName == "entry" || typeName == "exit")) { continue; }
 
 			std::unique_ptr<chig::NodeType> ty;
 			module->nodeTypeFromName(typeName, {}, &ty);
 
 			auto name = ty->qualifiedName();  // cache the name because ty is moved from
 			reg->registerModel(std::make_unique<ChigraphNodeModel>(
-				new chig::NodeInstance(nullptr, std::move(ty), 0, 0, name), this)); // TODO: this is a memory leak
+				new chig::NodeInstance(nullptr, std::move(ty), 0, 0, name),
+				this));  // TODO: this is a memory leak
 		}
 	}
 	// register functions in this module
@@ -87,19 +85,18 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 
 		size_t connId = 0;
 		for (auto& conn : node.second->inputDataConnections) {
-			if (conn.first == nullptr) {
-				continue;
-			}
+			if (conn.first == nullptr) { continue; }
 			auto inData = mNodeMap[conn.first];
 
-			auto guiconn =
-				mScene
-					->createConnection(*thisNode, connId + node.second->inputExecConnections.size(),
-						*inData, conn.second + conn.first->outputExecConnections.size())
-					.get();
+			auto guiconn = mScene
+							   ->createConnection(
+								   *thisNode, connId + node.second->inputExecConnections.size(),
+								   *inData, conn.second + conn.first->outputExecConnections.size())
+							   .get();
 
-			conns[guiconn] = {{{conn.first, conn.second + conn.first->outputExecConnections.size()},
-				{node.second.get(), connId + node.second->inputExecConnections.size()}}};
+			conns[guiconn] = {
+				{{conn.first, conn.second + conn.first->outputExecConnections.size()},
+				 {node.second.get(), connId + node.second->inputExecConnections.size()}}};
 
 			++connId;
 		}
@@ -126,17 +123,12 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	connect(mScene, &FlowScene::connectionDeleted, this, &FunctionView::connectionDeleted);
 }
 
-void FunctionView::nodeAdded(Node& n)
-{
+void FunctionView::nodeAdded(Node& n) {
 	auto ptr = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
 
-	if (ptr == nullptr) {
-		return;
-	}
+	if (ptr == nullptr) { return; }
 	// if it already exists then don't
-	if (mNodeMap.find(&ptr->instance()) != mNodeMap.end()) {
-		return;
-	}
+	if (mNodeMap.find(&ptr->instance()) != mNodeMap.end()) { return; }
 
 	mFunction->graph().nodes()[ptr->instance().id()] =
 		std::unique_ptr<chig::NodeInstance>(&ptr->instance());
@@ -144,18 +136,13 @@ void FunctionView::nodeAdded(Node& n)
 	mNodeMap[&ptr->instance()] = &n;
 }
 
-void FunctionView::nodeDeleted(Node& n)
-{
+void FunctionView::nodeDeleted(Node& n) {
 	auto ptr = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
 
-	if (ptr == nullptr) {
-		return;
-	}
+	if (ptr == nullptr) { return; }
 
 	// don't do it if it isn't in nodes
-	if (mNodeMap.find(&ptr->instance()) == mNodeMap.end()) {
-		return;
-	}
+	if (mNodeMap.find(&ptr->instance()) == mNodeMap.end()) { return; }
 
 	// find connections to this in conns and delete them -- removeNode does this in the chigraph
 	// model now do that in the nodes model
@@ -179,27 +166,22 @@ void FunctionView::nodeDeleted(Node& n)
 	mNodeMap.erase(&ptr->instance());
 }
 
-void FunctionView::connectionAdded(Connection& c)
-{
+void FunctionView::connectionAdded(Connection& c) {
 	Node *lguinode, *rguinode;
 	lguinode = c.getNode(PortType::Out);
 	rguinode = c.getNode(PortType::In);
 
 	connect(&c, &Connection::updated, this, &FunctionView::connectionUpdated);
 
-	if (!lguinode || !rguinode) {
-		return;
-	}
+	if (!lguinode || !rguinode) { return; }
 
 	// here, in and out mean input and output to the connection (like in chigraph)
 	auto outptr = dynamic_cast<ChigraphNodeModel*>(rguinode->nodeDataModel());
-	auto inptr = dynamic_cast<ChigraphNodeModel*>(lguinode->nodeDataModel());
+	auto inptr  = dynamic_cast<ChigraphNodeModel*>(lguinode->nodeDataModel());
 
-	if (outptr == nullptr || inptr == nullptr) {
-		return;
-	}
+	if (outptr == nullptr || inptr == nullptr) { return; }
 
-	auto inconnid = c.getPortIndex(PortType::Out);
+	auto inconnid  = c.getPortIndex(PortType::Out);
 	auto outconnid = c.getPortIndex(PortType::In);
 
 	bool isExec = inconnid < inptr->instance().type().execOutputs().size();
@@ -208,9 +190,9 @@ void FunctionView::connectionAdded(Connection& c)
 	if (isExec) {
 		res += chig::connectExec(inptr->instance(), inconnid, outptr->instance(), outconnid);
 	} else {
-		res += chig::connectData(inptr->instance(),
-			inconnid - inptr->instance().type().execOutputs().size(), outptr->instance(),
-			outconnid - outptr->instance().type().execInputs().size());
+		res += chig::connectData(
+			inptr->instance(), inconnid - inptr->instance().type().execOutputs().size(),
+			outptr->instance(), outconnid - outptr->instance().type().execInputs().size());
 	}
 	if (!res) {
 		// actually delete that connection
@@ -223,14 +205,11 @@ void FunctionView::connectionAdded(Connection& c)
 
 	conns[&c] = std::array<std::pair<chig::NodeInstance*, size_t>, 2>{
 		{std::make_pair(&inptr->instance(), inconnid),
-			std::make_pair(&outptr->instance(), outconnid)}};
+		 std::make_pair(&outptr->instance(), outconnid)}};
 }
-void FunctionView::connectionDeleted(Connection& c)
-{
+void FunctionView::connectionDeleted(Connection& c) {
 	auto conniter = conns.find(&c);
-	if (conniter == conns.end()) {
-		return;
-	}
+	if (conniter == conns.end()) { return; }
 
 	// don't do anything if
 
@@ -245,19 +224,19 @@ void FunctionView::connectionDeleted(Connection& c)
 		res += chig::disconnectExec(*conn[0].first, conn[0].second);
 	} else {
 		res += chig::disconnectData(*conn[0].first,
-			conn[0].second - conn[0].first->outputExecConnections.size(), *conn[1].first);
+									conn[0].second - conn[0].first->outputExecConnections.size(),
+									*conn[1].first);
 	}
 
 	if (!res) {
-		KMessageBox::detailedError(
-			this, "Internal error deleting connection", QString::fromStdString(res.dump()));
+		KMessageBox::detailedError(this, "Internal error deleting connection",
+								   QString::fromStdString(res.dump()));
 	}
 
 	conns.erase(&c);
 }
 
-void FunctionView::updatePositions()
-{
+void FunctionView::updatePositions() {
 	for (auto& inst : mNodeMap) {
 		auto ptr = inst.second;
 		if (ptr) {
@@ -268,19 +247,15 @@ void FunctionView::updatePositions()
 	}
 }
 
-void FunctionView::connectionUpdated(Connection& c)
-{
+void FunctionView::connectionUpdated(Connection& c) {
 	// find in assoc
 	auto iter = conns.find(&c);
-	if (iter == conns.end()) {
-		return connectionAdded(c);
-	}
+	if (iter == conns.end()) { return connectionAdded(c); }
 
 	// remove the existing connection
 }
 
-void FunctionView::refreshGuiForNode(Node* node)
-{
+void FunctionView::refreshGuiForNode(Node* node) {
 	auto model = dynamic_cast<ChigraphNodeModel*>(node->nodeDataModel());
 
 	auto inst = &model->instance();
@@ -330,7 +305,7 @@ void FunctionView::refreshGuiForNode(Node* node)
 	for (const auto& conn : inst->inputDataConnections) {
 		if (conn.first) {
 			auto remoteID = conn.second + conn.first->outputExecConnections.size();
-			auto localID = id + inst->inputExecConnections.size();
+			auto localID  = id + inst->inputExecConnections.size();
 			conns[mScene->createConnection(thisNode, localID, *mNodeMap[conn.first], remoteID)
 					  .get()] = {{{conn.first, remoteID}, {inst, localID}}};
 		}
@@ -340,27 +315,21 @@ void FunctionView::refreshGuiForNode(Node* node)
 	for (const auto& connSlot : inst->outputDataConnections) {
 		for (const auto& conn : connSlot) {
 			auto remoteID = conn.second + conn.first->inputExecConnections.size();
-			auto localID = id + inst->outputExecConnections.size();
+			auto localID  = id + inst->outputExecConnections.size();
 			conns[mScene->createConnection(*mNodeMap[conn.first], remoteID, thisNode, localID)
 					  .get()] = {{{inst, localID}, {conn.first, remoteID}}};
 		}
 	}
 }
 
-Node* FunctionView::guiNodeFromChigNode(chig::NodeInstance* inst)
-{
+Node* FunctionView::guiNodeFromChigNode(chig::NodeInstance* inst) {
 	auto iter = mNodeMap.find(inst);
-	if (iter != mNodeMap.end()) {
-		return iter->second;
-	}
+	if (iter != mNodeMap.end()) { return iter->second; }
 	return nullptr;
 }
 
-chig::NodeInstance* FunctionView::chigNodeFromGuiNode(Node* node)
-{
+chig::NodeInstance* FunctionView::chigNodeFromGuiNode(Node* node) {
 	auto nodeGui = dynamic_cast<ChigraphNodeModel*>(node->nodeDataModel());
-	if (nodeGui == nullptr) {
-		return nullptr;
-	}
+	if (nodeGui == nullptr) { return nullptr; }
 	return &nodeGui->instance();
 }

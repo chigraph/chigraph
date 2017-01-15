@@ -8,8 +8,7 @@
 
 #include <gsl/gsl>
 
-namespace chig
-{
+namespace chig {
 /// Mangle a function name
 /// \param fullModuleName The full name of the module. Example github.com/russelltg/test/lib
 /// \param name The name of the function

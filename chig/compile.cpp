@@ -24,15 +24,14 @@ using namespace chig;
 namespace fs = boost::filesystem;
 namespace po = boost::program_options;
 
-int compile(const std::vector<std::string>& opts)
-{
+int compile(const std::vector<std::string>& opts) {
 	po::options_description compile_opts("compile options");
 	compile_opts.add_options()("input-file", po::value<std::string>(), "Input file, - for stdin")(
-		"output,o", po::value<std::string>(), "Output file, - for stdout")("output-type,t",
-		po::value<std::string>(),
+		"output,o", po::value<std::string>(), "Output file, - for stdout")(
+		"output-type,t", po::value<std::string>(),
 		"The output type, either bc or ll. If an output file is defined, then this can be "
 		"inferred")("workspace,w", po::value<std::string>(),
-		"The workspace path. Leave blank to inferr from the working directory");
+					"The workspace path. Leave blank to inferr from the working directory");
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1);
@@ -106,7 +105,7 @@ int compile(const std::vector<std::string>& opts)
 	// create output
 	{
 		std::error_code ec;
-		auto lloutstream =
+		auto			lloutstream =
 			outpath.string() == "-"
 				? std::unique_ptr<llvm::raw_ostream>(
 					  std::make_unique<llvm::raw_os_ostream>(std::cout))

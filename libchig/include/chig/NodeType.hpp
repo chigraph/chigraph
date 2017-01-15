@@ -19,8 +19,7 @@
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Value.h>
 
-namespace chig
-{
+namespace chig {
 /// A generic node type. All user made types are of JsonNodeType type, which is defined in
 /// JsonModule.cpp. This allows for easy extension of the language.
 struct NodeType {
@@ -34,9 +33,7 @@ struct NodeType {
 		: mModule{&mod},
 		  mContext{&mod.context()},
 		  mName{gsl::to_string(name)},
-		  mDescription{gsl::to_string(description)}
-	{
-	}
+		  mDescription{gsl::to_string(description)} {}
 	/// Destructor
 	virtual ~NodeType() = default;
 
@@ -57,9 +54,9 @@ struct NodeType {
 	/// numOutputExecs.
 	/// \return The Result
 	virtual Result codegen(size_t execInputID, llvm::Module* modToCodegenInto,
-		const llvm::DebugLoc& nodeLocation, llvm::Function* f,
-		const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-		const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
+						   const llvm::DebugLoc& nodeLocation, llvm::Function* f,
+						   const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+						   const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
 
 	/// Create the JSON necessary to store the object.
 	/// \return The json obejct
@@ -92,17 +89,16 @@ struct NodeType {
 	/// Get the execution outputs for the node
 	/// \return The names of the outputs. The size is the input count.
 	gsl::span<const std::string> execOutputs() const { return mExecOutputs; }
+
 protected:
 	/// Set the data inputs for the NodeType
 	/// \param newInputs The new inputs
-	void setDataInputs(std::vector<std::pair<DataType, std::string>> newInputs)
-	{
+	void setDataInputs(std::vector<std::pair<DataType, std::string>> newInputs) {
 		mDataInputs = std::move(newInputs);
 	}
 	/// Set the data outputs for the NodeType
 	/// \param newOutputs The new outputs
-	void setDataOutputs(std::vector<std::pair<DataType, std::string>> newOutputs)
-	{
+	void setDataOutputs(std::vector<std::pair<DataType, std::string>> newOutputs) {
 		mDataOutputs = std::move(newOutputs);
 	}
 	/// Set the exec inputs for the NodeType
@@ -110,17 +106,17 @@ protected:
 	void setExecInputs(std::vector<std::string> newInputs) { mExecInputs = std::move(newInputs); }
 	/// Set the exec outputs for the NodeType
 	/// \param newOutputs The new outputs
-	void setExecOutputs(std::vector<std::string> newOutputs)
-	{
+	void setExecOutputs(std::vector<std::string> newOutputs) {
 		mExecOutputs = std::move(newOutputs);
 	}
 
 	/// Get the node instance
 	/// \return the node instance
 	NodeInstance* nodeInstance() const { return mNodeInstance; }
+
 private:
 	ChigModule* mModule;
-	Context* mContext;
+	Context*	mContext;
 	std::string mName, mDescription;
 
 	NodeInstance* mNodeInstance = nullptr;

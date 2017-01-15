@@ -9,8 +9,7 @@
 
 class MainWindow;
 
-class FunctionsPane : public QListWidget
-{
+class FunctionsPane : public QListWidget {
 	Q_OBJECT
 public:
 	FunctionsPane(QWidget* parent, MainWindow* win);

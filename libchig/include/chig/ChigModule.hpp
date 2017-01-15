@@ -20,8 +20,7 @@
 #include <gsl/gsl>
 
 /// The namespace where chigraph lives
-namespace chig
-{
+namespace chig {
 /// An abstract class that represents a module of code in Chigraph
 /// Can be compiled to a llvm::Module
 struct ChigModule {
@@ -39,7 +38,7 @@ struct ChigModule {
 	/// \param toFill The NodeType object to fill
 	/// \return The result
 	virtual Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
-		std::unique_ptr<NodeType>* toFill) = 0;
+									std::unique_ptr<NodeType>* toFill) = 0;
 
 	/// Get a DataType from the name
 	/// \param name The name of the type
@@ -85,15 +84,14 @@ struct ChigModule {
 	/// Does not unload from context
 	/// \param depName The name of the dependency to remove
 	/// \return If one was removed
-	bool removeDependency(gsl::cstring_span<> depName)
-	{
+	bool removeDependency(gsl::cstring_span<> depName) {
 		return mDependencies.erase(gsl::to_string(depName)) == 1;
 	}
 
 private:
 	std::string mFullName;
 	std::string mName;
-	Context* mContext;
+	Context*	mContext;
 
 	std::unordered_set<std::string> mDependencies;
 };

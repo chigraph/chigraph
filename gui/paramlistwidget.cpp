@@ -13,62 +13,51 @@
 
 #include <chig/GraphFunction.hpp>
 
-class ParamListItem : public QListWidgetItem
-{
+class ParamListItem : public QListWidgetItem {
 public:
 	ParamListItem(ParamListWidget* container, chig::DataType ty, const QString& name)
 		: QListWidgetItem(nullptr, QListWidgetItem::UserType),
 		  mDataType{ty},
 		  mName{name},
-		  mContainer{container}
-	{
+		  mContainer{container} {
 		updateName();
 	}
 
 	chig::DataType dataType() const { return mDataType; }
-	QString name() const { return mName; }
-	void setDataType(chig::DataType newDataType)
-	{
+	QString		   name() const { return mName; }
+	void setDataType(chig::DataType newDataType) {
 		mDataType = newDataType;
 		updateName();
 	}
 
-	void setName(const QString& newName)
-	{
+	void setName(const QString& newName) {
 		mName = newName;
 		updateName();
 	}
 
 private:
-	int getIdx() const { return mContainer->mParamList->row(this); }
-	void updateName()
-	{
+	int  getIdx() const { return mContainer->mParamList->row(this); }
+	void updateName() {
 		setText(name() + " - " + QString::fromStdString(dataType().qualifiedName()));
 	}
 
-	chig::DataType mDataType;
-	QString mName;
+	chig::DataType   mDataType;
+	QString			 mName;
 	ParamListWidget* mContainer;
 };
 
-ParamListItem* paramFromIdx(int idx, QListWidget* list)
-{
+ParamListItem* paramFromIdx(int idx, QListWidget* list) {
 	auto notcasted = list->item(idx);
-	if (notcasted == nullptr || notcasted->type() != QListWidgetItem::UserType) {
-		return nullptr;
-	}
+	if (notcasted == nullptr || notcasted->type() != QListWidgetItem::UserType) { return nullptr; }
 
 	auto casted = dynamic_cast<ParamListItem*>(notcasted);
 
-	if (casted == nullptr) {
-		return nullptr;
-	}
+	if (casted == nullptr) { return nullptr; }
 
 	return casted;
 }
 
-QStringList createTypeOptions(chig::JsonModule* mod)
-{
+QStringList createTypeOptions(chig::JsonModule* mod) {
 	QStringList ret;
 
 	for (auto dep : mod->dependencies()) {
@@ -80,39 +69,33 @@ QStringList createTypeOptions(chig::JsonModule* mod)
 	return ret;
 }
 
-boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(
-	QWidget* parent, chig::JsonModule* mod)
-{
+boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(QWidget* parent,
+																	chig::JsonModule* mod) {
 	bool ok;
-	auto qualtype = QInputDialog::getItem(
-		parent, i18n("Select Type"), i18n("Type"), createTypeOptions(mod), 0, true, &ok);
+	auto qualtype = QInputDialog::getItem(parent, i18n("Select Type"), i18n("Type"),
+										  createTypeOptions(mod), 0, true, &ok);
 
 	// if the user pressed cancel then just return
-	if (!ok) {
-		return {};
-	}
+	if (!ok) { return {}; }
 
-	auto name = QInputDialog::getText(
-		parent, i18n("Parameter Name"), i18n("Name"), QLineEdit::Normal, {}, &ok);
-	if (!ok) {
-		return {};
-	}
+	auto name = QInputDialog::getText(parent, i18n("Parameter Name"), i18n("Name"),
+									  QLineEdit::Normal, {}, &ok);
+	if (!ok) { return {}; }
 
 	std::string module, type;
 	std::tie(module, type) = chig::parseColonPair(qualtype.toStdString());
 	chig::DataType dtype;
-	chig::Result res = mod->context().typeFromModule(module, type, &dtype);
+	chig::Result   res = mod->context().typeFromModule(module, type, &dtype);
 	if (!res) {
-		KMessageBox::detailedError(
-			parent, "Failed to get data type", QString::fromStdString(res.dump()), "Failure!");
+		KMessageBox::detailedError(parent, "Failed to get data type",
+								   QString::fromStdString(res.dump()), "Failure!");
 		return {};
 	}
 
 	return std::make_pair(dtype, name);
 }
 
-ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidget(parent)
-{
+ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidget(parent) {
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 
@@ -126,16 +109,12 @@ ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidge
 		auto button = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add")), QString());
 		connect(button, &QPushButton::clicked, this, [this] {
 
-			if (mMod == nullptr) {
-				return;
-			}
+			if (mMod == nullptr) { return; }
 
 			chig::DataType type;
-			QString name;
-			auto opt = getDataNamePair(this, mMod);
-			if (!opt) {
-				return;
-			}
+			QString		   name;
+			auto		   opt = getDataNamePair(this, mMod);
+			if (!opt) { return; }
 
 			std::tie(type, name) = *opt;
 
@@ -155,9 +134,7 @@ ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidge
 
 			auto selected = mParamList->selectedItems();
 
-			if (selected.size() != 0) {
-				deleteParam(mParamList->row(selected[0]));
-			}
+			if (selected.size() != 0) { deleteParam(mParamList->row(selected[0])); }
 		});
 		buttLayout->addWidget(button);
 	}
@@ -171,12 +148,10 @@ ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidge
 		int row = idx.row();
 
 		chig::DataType type;
-		QString name;
-		auto opt = getDataNamePair(this, mMod);
+		QString		   name;
+		auto		   opt = getDataNamePair(this, mMod);
 
-		if (!opt) {
-			return;
-		}
+		if (!opt) { return; }
 
 		std::tie(type, name) = *opt;
 
@@ -185,45 +160,34 @@ ParamListWidget::ParamListWidget(const QString& title, QWidget* parent) : QWidge
 	});
 }
 
-chig::DataType ParamListWidget::typeForIdx(int idx) const
-{
+chig::DataType ParamListWidget::typeForIdx(int idx) const {
 	auto param = paramFromIdx(idx, mParamList);
-	if (param == nullptr) {
-		return {};
-	}
+	if (param == nullptr) { return {}; }
 
 	return param->dataType();
 }
 
-QString ParamListWidget::nameForIdx(int idx) const
-{
+QString ParamListWidget::nameForIdx(int idx) const {
 	auto param = paramFromIdx(idx, mParamList);
-	if (param == nullptr) {
-		return "";
-	}
+	if (param == nullptr) { return ""; }
 
 	return param->name();
 }
 
-void ParamListWidget::addParam(chig::DataType type, const QString& name, int after)
-{
+void ParamListWidget::addParam(chig::DataType type, const QString& name, int after) {
 	auto newItem = new ParamListItem(this, type, name);
 	mParamList->insertItem(after + 1, newItem);
 	paramAdded(type, name);
 }
 
-void ParamListWidget::deleteParam(int idx)
-{
+void ParamListWidget::deleteParam(int idx) {
 	mParamList->takeItem(idx);
 	paramDeleted(idx);
 }
 
-void ParamListWidget::modifyParam(int idx, chig::DataType type, const QString& name)
-{
+void ParamListWidget::modifyParam(int idx, chig::DataType type, const QString& name) {
 	auto param = paramFromIdx(idx, mParamList);
-	if (param == nullptr) {
-		return;
-	}
+	if (param == nullptr) { return; }
 
 	param->setName(name);
 	param->setDataType(type);

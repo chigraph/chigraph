@@ -4,8 +4,7 @@
 
 using namespace chig;
 
-TEST_CASE("LoadUnloadModule", "[module]")
-{
+TEST_CASE("LoadUnloadModule", "[module]") {
 	Context c;
 
 	// only the lang module should be loaded

@@ -13,8 +13,7 @@
 
 #include <boost/bimap.hpp>
 
-namespace chig
-{
+namespace chig {
 /// A graph holding nodes
 /// Normally not used by the user, used through GraphFunction
 struct Graph {
@@ -36,8 +35,8 @@ struct Graph {
 	/// \param module The module the type is in
 	/// \param name The name of the type
 	/// \return A vector of NodeInstance
-	std::vector<NodeInstance*> nodesWithType(
-		gsl::cstring_span<> module, gsl::cstring_span<> name) const noexcept;
+	std::vector<NodeInstance*> nodesWithType(gsl::cstring_span<> module,
+											 gsl::cstring_span<> name) const noexcept;
 
 	/// Add a node to the graph
 	/// \param type The type of the node
@@ -47,7 +46,7 @@ struct Graph {
 	/// \param toFill The NodeInstance object to fill into, optional
 	/// \return The Result.
 	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
-		NodeInstance** toFill = nullptr);
+					  NodeInstance** toFill = nullptr);
 
 	/// Get the context
 	/// \return The context
@@ -57,8 +56,7 @@ struct Graph {
 	/// \return The nodes, mapped by id, value
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() { return mNodes; }
 	/// \copydoc Graph::nodes
-	const std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() const
-	{
+	const std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() const {
 		return mNodes;
 	}
 
@@ -66,8 +64,8 @@ private:
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>
 		mNodes;  /// Storage for the nodes
 
-	Context* mContext;
-    GraphFunction* mFunction;
+	Context*	   mContext;
+	GraphFunction* mFunction;
 };
 }
 

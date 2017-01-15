@@ -3,11 +3,9 @@
 #include <sstream>
 
 #ifdef MYTABLET
-namespace std
-{
+namespace std {
 template <typename T>
-string to_string(T to_conv)
-{
+string to_string(T to_conv) {
 	std::stringstream ss;
 	ss << to_conv;
 	return ss.str();

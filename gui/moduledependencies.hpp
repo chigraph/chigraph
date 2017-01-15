@@ -12,18 +12,16 @@
 
 #include <chig/JsonModule.hpp>
 
-class ModuleDependencies : public QListWidget
-{
+class ModuleDependencies : public QListWidget {
 	Q_OBJECT
 
 public:
 	ModuleDependencies(QWidget* parent = nullptr);
-	~ModuleDependencies() = default;
+	~ModuleDependencies()			   = default;
 
 	chig::JsonModule* module() const { return mModule; }
 public slots:
-	void setModule(chig::JsonModule* mod)
-	{
+	void setModule(chig::JsonModule* mod) {
 		clear();
 		addNewDepItem();
 		mModule = mod;

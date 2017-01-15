@@ -23,8 +23,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/optional.hpp>
 
-namespace chig
-{
+namespace chig {
 /// The class that handles the loading, creation, storing, and compilation of modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 struct Context {
@@ -34,7 +33,7 @@ struct Context {
 
 	// no move or copy, doesn't make sense
 	Context(const Context& context) = delete;
-	Context(Context&&) = delete;
+	Context(Context&&)				= delete;
 
 	/// Gets the module by the name
 	/// \param moduleName The name of the module to find
@@ -65,8 +64,8 @@ struct Context {
 	/// \param fullName The full path of the module, including URL
 	/// \param json The JSON data
 	/// \param toFill The JsonModule* to fill into, optional
-	Result addModuleFromJson(
-		gsl::cstring_span<> fullName, const nlohmann::json& json, JsonModule** toFill = nullptr);
+	Result addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json,
+							 JsonModule** toFill = nullptr);
 
 	/// Adds a custom module to the Context
 	/// This usually doesn't get called, use the \c gsl::string_span<> overload instead
@@ -79,16 +78,16 @@ struct Context {
 	/// \param name The name of the type, required
 	/// \param toFill The type to fill
 	/// \return The result
-	Result typeFromModule(
-		gsl::cstring_span<> module, gsl::cstring_span<> name, DataType* toFill) noexcept;
+	Result typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
+						  DataType* toFill) noexcept;
 
 	/// Gets a llvm::Type from a module
 	/// \param module The name of the module, "lang" if nullptr
 	/// \param name The name of the type, required
 	/// \param toFill The type to fill
 	/// \return The result
-	Result debugTypeFromModule(
-		gsl::cstring_span<> module, gsl::cstring_span<> name, llvm::DIType** toFill) noexcept;
+	Result debugTypeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
+							   llvm::DIType** toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
 	/// \param moduleName The module name.
@@ -96,7 +95,8 @@ struct Context {
 	/// \param data The JSON data that is used to construct the NodeType.
 	/// \param toFill The point to fill
 	Result nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
-		const nlohmann::json& data, std::unique_ptr<NodeType>* toFill) noexcept;
+							  const nlohmann::json&		 data,
+							  std::unique_ptr<NodeType>* toFill) noexcept;
 
 	/// Get the workspace path of the Context
 	/// \return The workspace path
@@ -121,6 +121,7 @@ struct Context {
 	/// Get the associated LLVMContext
 	/// \return The LLVMContext
 	llvm::LLVMContext& llvmContext() const { return *mLLVMContext; }
+
 private:
 	/// The workspace path for the module
 	boost::filesystem::path mWorkspacePath;

@@ -5,18 +5,15 @@
 
 using namespace chig;
 
-TEST_CASE("LangModule", "[module]")
-{
-	GIVEN("A context with LangModule in it")
-	{
+TEST_CASE("LangModule", "[module]") {
+	GIVEN("A context with LangModule in it") {
 		Context c;
 		c.loadModule("lang");
 		ChigModule* mod = c.moduleByName("lang");
 
-		THEN("We try to get associated types with correct parameters, it works")
-		{
+		THEN("We try to get associated types with correct parameters, it works") {
 			DataType test;
-			Result res;
+			Result   res;
 
 			res = c.typeFromModule("lang", "i32", &test);
 			REQUIRE(!!res);
@@ -24,14 +21,14 @@ TEST_CASE("LangModule", "[module]")
 
 			res = c.typeFromModule("lang", "i32*", &test);
 			REQUIRE(!!res);
-			REQUIRE(
-				test == DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llvmContext())));
+			REQUIRE(test ==
+					DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llvmContext())));
 
 			res = c.typeFromModule("lang", "i32**", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == DataType(mod, "i32**",
-								llvm::PointerType::get(
-									llvm::IntegerType::getInt32PtrTy(c.llvmContext()), 0)));
+									 llvm::PointerType::get(
+										 llvm::IntegerType::getInt32PtrTy(c.llvmContext()), 0)));
 
 			res = c.typeFromModule("lang", "i8", &test);
 			REQUIRE(!!res);
@@ -50,10 +47,9 @@ TEST_CASE("LangModule", "[module]")
 
 		THEN(
 			"We try to get associated types with incorrect parameters, it returns the correct "
-			"errors")
-		{
+			"errors") {
 			DataType test;
-			Result res;
+			Result   res;
 
 			res = c.typeFromModule("lang", "i32a", &test);
 			REQUIRE(!res);
@@ -76,15 +72,13 @@ TEST_CASE("LangModule", "[module]")
 			REQUIRE(res.result_json[0]["errorcode"] == "E37");
 		}
 
-		WHEN("We try to get if node")
-		{
-			Result res;
+		WHEN("We try to get if node") {
+			Result					  res;
 			std::unique_ptr<NodeType> ifNode = nullptr;
-			res = c.nodeTypeFromModule("lang", "if", {}, &ifNode);
+			res								 = c.nodeTypeFromModule("lang", "if", {}, &ifNode);
 			REQUIRE(!!res);
 
-			THEN("It should be totally valid")
-			{
+			THEN("It should be totally valid") {
 				REQUIRE(ifNode != nullptr);
 				REQUIRE(ifNode->execInputs().size() == 1);
 				REQUIRE(ifNode->execOutputs().size() == 2);
@@ -95,12 +89,10 @@ TEST_CASE("LangModule", "[module]")
 				REQUIRE(ifNode->name() == "if");
 			}
 
-			WHEN("We clone it")
-			{
+			WHEN("We clone it") {
 				std::unique_ptr<NodeType> clone = ifNode->clone();
 
-				THEN("The clone will be valid")
-				{
+				THEN("The clone will be valid") {
 					REQUIRE(ifNode != nullptr);
 					REQUIRE(ifNode->execInputs().size() == 1);
 					REQUIRE(ifNode->execOutputs().size() == 2);
@@ -113,20 +105,19 @@ TEST_CASE("LangModule", "[module]")
 			}
 		}
 
-		WHEN("We try to get entry node")
-		{
+		WHEN("We try to get entry node") {
 			Result res;
 
 			std::unique_ptr<NodeType> entryNode = nullptr;
 
-			res = c.nodeTypeFromModule("lang", "entry",
+			res = c.nodeTypeFromModule(
+				"lang", "entry",
 				nlohmann::json::parse(
 					R"end( { "data": [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}], "exec": [""]  } )end"),
 				&entryNode);
 			REQUIRE(!!res);
 
-			THEN("It should be totally valid")
-			{
+			THEN("It should be totally valid") {
 				REQUIRE(entryNode != nullptr);
 				REQUIRE(entryNode->execInputs().size() == 0);
 				REQUIRE(entryNode->execOutputs().size() == 1);
@@ -137,12 +128,10 @@ TEST_CASE("LangModule", "[module]")
 				REQUIRE(entryNode->name() == "entry");
 			}
 
-			WHEN("We clone it")
-			{
+			WHEN("We clone it") {
 				std::unique_ptr<NodeType> clone = entryNode->clone();
 
-				THEN("The clone will be valid")
-				{
+				THEN("The clone will be valid") {
 					REQUIRE(clone != nullptr);
 					REQUIRE(clone->execInputs().size() == 0);
 					REQUIRE(clone->execOutputs().size() == 1);

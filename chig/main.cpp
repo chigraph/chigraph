@@ -19,8 +19,7 @@ extern int run(const std::vector<std::string>& opts);
 
 using namespace chig;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 	namespace po = boost::program_options;
 	namespace fs = boost::filesystem;
 
@@ -28,7 +27,8 @@ int main(int argc, char** argv)
 		"chig: Chigraph command line. Usage: chig <command> <arguments>", 50);
 
 	general.add_options()("help,h", "Produce Help Message")("command", po::value<std::string>(),
-		"which command")("subargs", po::value<std::vector<std::string>>(), "arguments for command");
+															"which command")(
+		"subargs", po::value<std::vector<std::string>>(), "arguments for command");
 
 	po::positional_options_description pos;
 	pos.add("command", 1).add("subargs", -1);

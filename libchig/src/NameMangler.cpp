@@ -2,10 +2,8 @@
 
 #include <vector>
 
-namespace chig
-{
-std::string mangleFunctionName(gsl::cstring_span<> fullModuleName, gsl::cstring_span<> name)
-{
+namespace chig {
+std::string mangleFunctionName(gsl::cstring_span<> fullModuleName, gsl::cstring_span<> name) {
 	std::string modName = gsl::to_string(fullModuleName);
 	// escape characters
 
@@ -41,16 +39,13 @@ std::string mangleFunctionName(gsl::cstring_span<> fullModuleName, gsl::cstring_
 	return modName + "_m" + gsl::to_string(name);
 }
 
-std::pair<std::string, std::string> unmangleFunctionName(gsl::cstring_span<> mangledName)
-{
-	if (mangledName == "main") {
-		return {"main", "main"};
-	}
+std::pair<std::string, std::string> unmangleFunctionName(gsl::cstring_span<> mangledName) {
+	if (mangledName == "main") { return {"main", "main"}; }
 
 	std::string mangled = gsl::to_string(mangledName);
 
-	size_t splitter = mangled.find("_m");
-	std::string modName = mangled.substr(0, splitter);
+	size_t		splitter = mangled.find("_m");
+	std::string modName  = mangled.substr(0, splitter);
 	std::string typeName = mangled.substr(splitter + 2);
 
 	size_t id = 0;

@@ -9,8 +9,7 @@
 #include <chig/DataType.hpp>
 #include <chig/JsonModule.hpp>
 
-class ParamListWidget : public QWidget
-{
+class ParamListWidget : public QWidget {
 	Q_OBJECT
 
 	friend class ParamListItem;
@@ -38,7 +37,7 @@ signals:
 	void paramDeleted(int idx);
 
 private:
-	QListWidget* mParamList;
+	QListWidget*	  mParamList;
 	chig::JsonModule* mMod = nullptr;
 };
 

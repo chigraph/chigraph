@@ -8,8 +8,7 @@
 
 #include <gsl/gsl>
 
-namespace chig
-{
+namespace chig {
 /// The result object, used for identifiying errors with good diagnostics
 struct Result {
 	/// Default constructor; defaults to success
@@ -21,8 +20,7 @@ struct Result {
 	/// \param overview Basic overview of the error, this shouldn't change based on the instance of
 	/// the error
 	/// \param data The detailed description this instance of the error
-	void addEntry(const char* ec, const char* overview, nlohmann::json data)
-	{
+	void addEntry(const char* ec, const char* overview, nlohmann::json data) {
 		Expects(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
 
 		result_json.push_back(
@@ -48,8 +46,7 @@ struct Result {
 /// \param lhs The left error
 /// \param rhs The right error
 /// \return The concatinated errors
-inline Result operator+(const Result& lhs, const Result& rhs)
-{
+inline Result operator+(const Result& lhs, const Result& rhs) {
 	Result ret;
 	ret.success = !(!lhs.success || !rhs.success);  // if either of them are false, then result is
 
@@ -64,8 +61,7 @@ inline Result operator+(const Result& lhs, const Result& rhs)
 /// \param lhs The existing Result to add to
 /// \param rhs The (usually temporary) result to be added into lhs
 /// \return *this
-inline Result& operator+=(Result& lhs, const Result& rhs)
-{
+inline Result& operator+=(Result& lhs, const Result& rhs) {
 	lhs.success = !(!lhs.success || !rhs.success);  // if either of them are false, then result is
 
 	// copy each of the results in
@@ -78,8 +74,7 @@ inline Result& operator+=(Result& lhs, const Result& rhs)
 /// \param lhs The stream
 /// \param rhs The Result to print to lhs
 /// \return lhs after printing
-inline std::ostream& operator<<(std::ostream& lhs, const Result& rhs)
-{
+inline std::ostream& operator<<(std::ostream& lhs, const Result& rhs) {
 	lhs << rhs.dump();
 
 	return lhs;

@@ -8,21 +8,20 @@
 
 #include <chig/JsonModule.hpp>
 
-class SubprocessOutputView : public QPlainTextEdit
-{
+class SubprocessOutputView : public QPlainTextEdit {
 	Q_OBJECT
 public:
 	SubprocessOutputView(chig::JsonModule* module);
 	void cancelProcess();
 
 	chig::JsonModule* module() const { return mModule; }
-	bool running() const { return mProcess->state() == QProcess::Running; }
+	bool			  running() const { return mProcess->state() == QProcess::Running; }
 signals:
 	void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
 	chig::JsonModule* mModule;
-	QProcess* mProcess;
+	QProcess*		  mProcess;
 };
 
 #endif  // CHIGGUI_SUBPROCESS_OUTPUT_VIEW_HPP

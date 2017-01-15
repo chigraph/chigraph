@@ -2,11 +2,9 @@
 
 #include "functionview.hpp"
 
-class EditCodeDialog : public QDialog
-{
+class EditCodeDialog : public QDialog {
 public:
-	EditCodeDialog(chig::NodeInstance* inst, FunctionView* fview)
-	{
+	EditCodeDialog(chig::NodeInstance* inst, FunctionView* fview) {
 		setWindowTitle(i18n("Edit C Call Node"));
 
 		auto layout = new QVBoxLayout;
@@ -26,14 +24,14 @@ public:
 		okButton->setText(i18n("Ok"));
 		connect(okButton, &QPushButton::clicked, this, [this, textEdit, lineEdit, inst, fview] {
 			std::string function = lineEdit->text().toStdString();
-			std::string code = textEdit->toPlainText().toStdString();
+			std::string code	 = textEdit->toPlainText().toStdString();
 
 			std::unique_ptr<chig::NodeType> ty;
-			chig::Result res = inst->context().nodeTypeFromModule(
+			chig::Result					res = inst->context().nodeTypeFromModule(
 				"c", "func", {{"code", code}, {"function", function}}, &ty);
 			if (!res) {
-				KMessageBox::detailedError(
-					this, "Failed to compile C node", QString::fromStdString(res.dump()));
+				KMessageBox::detailedError(this, "Failed to compile C node",
+										   QString::fromStdString(res.dump()));
 
 				return;
 			}
@@ -45,8 +43,7 @@ public:
 	}
 };
 
-unsigned int ChigraphNodeModel::nPorts(PortType portType) const
-{
+unsigned int ChigraphNodeModel::nPorts(PortType portType) const {
 	if (portType == PortType::In) {
 		return mInst->type().execInputs().size() + mInst->type().dataInputs().size();
 	} else if (portType == PortType::Out) {
@@ -56,17 +53,17 @@ unsigned int ChigraphNodeModel::nPorts(PortType portType) const
 	return 1;  // ?
 }
 
-NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
-{
+NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const {
 	if (pType == PortType::In) {
 		std::pair<std::string, std::string> idandname;
 		if (pIndex >= int(mInst->type().execInputs().size())) {
 			if (pIndex - mInst->type().execInputs().size() >= mInst->type().dataInputs().size())
 				return {};
 
-			idandname = {mInst->type()
-							 .dataInputs()[pIndex - mInst->type().execInputs().size()]
-							 .first.qualifiedName(),
+			idandname = {
+				mInst->type()
+					.dataInputs()[pIndex - mInst->type().execInputs().size()]
+					.first.qualifiedName(),
 				mInst->type().dataInputs()[pIndex - mInst->type().execInputs().size()].second};
 
 		} else {
@@ -89,18 +86,17 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 	return {};
 }
 
-QWidget* ChigraphNodeModel::embeddedWidget()
-{
+QWidget* ChigraphNodeModel::embeddedWidget() {
 	if (mInst->type().name() == "const-bool") {
-		QCheckBox* box = new QCheckBox("");
-		bool checked = mInst->type().toJSON();
+		QCheckBox* box	 = new QCheckBox("");
+		bool	   checked = mInst->type().toJSON();
 		box->setCheckState(checked ? Qt::Checked : Qt::Unchecked);
 
 		connect(box, &QCheckBox::stateChanged, this, [this](int newState) {
 			std::unique_ptr<chig::NodeType> newType;
 
-			mInst->context().nodeTypeFromModule(
-				"lang", "const-bool", newState == Qt::Checked, &newType);
+			mInst->context().nodeTypeFromModule("lang", "const-bool", newState == Qt::Checked,
+												&newType);
 
 			mInst->setType(std::move(newType));
 		});
@@ -109,8 +105,8 @@ QWidget* ChigraphNodeModel::embeddedWidget()
 		return box;
 	}
 	if (mInst->type().name() == "strliteral") {
-		QLineEdit* edit = new QLineEdit();
-		std::string s = mInst->type().toJSON();
+		QLineEdit*  edit = new QLineEdit();
+		std::string s	= mInst->type().toJSON();
 		edit->setText(QString::fromStdString(s));
 
 		edit->setMaximumSize(edit->sizeHint());
@@ -118,8 +114,8 @@ QWidget* ChigraphNodeModel::embeddedWidget()
 		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
 			std::unique_ptr<chig::NodeType> newType;
 
-			mInst->context().nodeTypeFromModule(
-				"lang", "strliteral", s.toUtf8().constData(), &newType);
+			mInst->context().nodeTypeFromModule("lang", "strliteral", s.toUtf8().constData(),
+												&newType);
 
 			mInst->setType(std::move(newType));
 
