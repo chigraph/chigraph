@@ -30,7 +30,12 @@ struct LangModule : ChigModule {
 	DataType typeFromName(gsl::cstring_span<> name) override;
 
 	std::vector<std::string> nodeTypeNames() const override {
-		return {"if", "entry", "exit", "const-int", "strliteral", "const-bool", "int+int"};
+        std::vector<std::string> ret;
+        ret.reserve(nodes.size());
+        
+        std::transform(nodes.begin(), nodes.end(), std::back_inserter(ret), [](auto pair){return pair.first;});
+        
+        return ret;
 	}
 
 	std::vector<std::string> typeNames() const override {

@@ -297,7 +297,10 @@ boost::bimap<unsigned int, NodeInstance*> JsonModule::createLineNumberAssoc() co
 	// create a sorted list of GraphFunctions
 	std::vector<NodeInstance*> nodes;
 	for (const auto& f : functions()) {
-		for (const auto& node : f->graph().nodes()) { nodes.push_back(node.second.get()); }
+		for (const auto& node : f->graph().nodes()) {
+			Expects(node.second != nullptr);
+			nodes.push_back(node.second.get());
+		}
 	}
 
 	std::sort(nodes.begin(), nodes.end(), [](const auto& lhs, const auto& rhs) {

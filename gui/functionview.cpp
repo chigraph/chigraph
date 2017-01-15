@@ -132,7 +132,7 @@ void FunctionView::nodeAdded(Node& n) {
 
 	mFunction->graph().nodes()[ptr->instance().id()] =
 		std::unique_ptr<chig::NodeInstance>(&ptr->instance());
-
+        
 	mNodeMap[&ptr->instance()] = &n;
 }
 
