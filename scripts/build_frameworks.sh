@@ -5,9 +5,7 @@ set -xe
 SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPTSDIR/..
 
-
-buildtype=$1
-generator=$2
+flags=$@
 
 build_framework() {
     framework=$1
@@ -19,14 +17,9 @@ build_framework() {
     mkdir $framework/build
     cd $framework/build
     
-    cmake .. -DCMAKE_PREFIX_PATH=$SCRIPTSDIR/../third_party/kf5 -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX=$SCRIPTSDIR/../third_party/kf5 -G"$generator"
-    if [ $generator = "Unix Makefiles" ]; then
-        make -j`nproc`
-        make install
-    else
-        cmake --build . 
-        cmake --build . --target install
-    fi
+    cmake .. -DCMAKE_PREFIX_PATH=$SCRIPTSDIR/../third_party/kf5 -DCMAKE_INSTALL_PREFIX=$SCRIPTSDIR/../third_party/kf5 $flags 
+    cmake --build . -- 
+    cmake --build . --target install
 }
 cd /tmp
 
