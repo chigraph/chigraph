@@ -285,37 +285,6 @@ struct StringLiteralNodeType : NodeType {
 	std::string	literalString;
 };
 
-struct IntPlusIntNodeType : NodeType {
-	IntPlusIntNodeType(LangModule& mod) : NodeType(mod, "int+int", "add two integers") {
-		setExecInputs({""});
-		setExecOutputs({""});
-
-		setDataInputs({{mod.typeFromName("i32"), "a"}, {mod.typeFromName("i32"), "b"}});
-		setDataOutputs({{mod.typeFromName("i32"), ""}});
-	}
-
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-				   const llvm::DebugLoc&		 nodeLocation, llvm::Function* /*f*/,
-				   const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
-		Expects(io.size() == 3 && codegenInto != nullptr && outputBlocks.size() == 1);
-
-		llvm::IRBuilder<> builder(codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
-
-		auto addResult = builder.CreateAdd(io[0], io[1], "add_result");
-		builder.CreateStore(addResult, io[2]);
-
-		builder.CreateBr(outputBlocks[0]);
-
-		return {};
-	}
-
-	std::unique_ptr<NodeType> clone() const override {
-		return std::make_unique<IntPlusIntNodeType>(*this);
-	}
-};
-
 struct IntToFloatNodeType : NodeType {
 	IntToFloatNodeType(LangModule& mod) : NodeType(mod, "inttofloat", "convert integer to float") {
 		setExecInputs({""});
@@ -348,13 +317,81 @@ struct IntToFloatNodeType : NodeType {
 	}
 };
 
-struct FloatPlusFloatNodeType : NodeType {
-	FloatPlusFloatNodeType(LangModule& mod) : NodeType(mod, "float+float", "add two floats") {
+
+struct FloatToIntNodeType : NodeType {
+	FloatToIntNodeType(LangModule& mod) : NodeType(mod, "floattoint", "convert float to integer") {
 		setExecInputs({""});
 		setExecOutputs({""});
 
-		setDataInputs({{mod.typeFromName("float"), "a"}, {mod.typeFromName("float"), "b"}});
-		setDataOutputs({{mod.typeFromName("float"), ""}});
+		setDataInputs({{mod.typeFromName("float"), ""}});
+		setDataOutputs({{mod.typeFromName("i32"), ""}});
+	}
+
+	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
+				   const llvm::DebugLoc&		 nodeLocation, llvm::Function* /*f*/,
+				   const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
+		Expects(io.size() == 2 && codegenInto != nullptr && outputBlocks.size() == 1);
+
+		llvm::IRBuilder<> builder(codegenInto);
+		builder.SetCurrentDebugLocation(nodeLocation);
+
+		auto casted = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, io[0],
+										 llvm::Type::getFloatTy(context().llvmContext()));
+		builder.CreateStore(casted, io[1]);
+
+		builder.CreateBr(outputBlocks[0]);
+
+		return {};
+	}
+
+	std::unique_ptr<NodeType> clone() const override {
+		return std::make_unique<FloatToIntNodeType>(*this);
+	}
+};
+
+
+enum class BinOp {
+    Add,
+    Subtract,
+    Multiply,
+    Divide
+};
+
+
+struct BinaryOperationNodeType : NodeType {
+    BinaryOperationNodeType(LangModule& mod, DataType ty, BinOp binaryOperation) : NodeType(mod), mBinOp(binaryOperation) {
+		setExecInputs({""});
+		setExecOutputs({""});
+        
+        std::string opStr = [](BinOp b) {
+            switch (b) {
+                case BinOp::Add: return "+";
+                case BinOp::Subtract: return "-";
+                case BinOp::Multiply: return "*";
+                case BinOp::Divide: return "/";
+                default: return "";
+            }
+            return "";
+        }(binaryOperation);
+        
+        setName(ty.unqualifiedName() + opStr + ty.unqualifiedName());
+        
+        std::string opVerb = [](BinOp b) {
+            switch (b) {
+                case BinOp::Add: return "Add";
+                case BinOp::Subtract: return "Subtract";
+                case BinOp::Multiply: return "Multiply";
+                case BinOp::Divide: return "Divide";
+                default: return "";
+            }
+            return "";
+        }(binaryOperation);
+        
+        setDescription(opVerb + " two " + ty.unqualifiedName() + "s");
+
+		setDataInputs({{ty, "a"}, {ty, "b"}});
+		setDataOutputs({{ty, ""}});
 	}
 
 	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
@@ -366,8 +403,19 @@ struct FloatPlusFloatNodeType : NodeType {
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		auto addResult = builder.CreateAdd(io[0], io[1], "add_result");
-		builder.CreateStore(addResult, io[2]);
+		llvm::Value* result = [&](BinOp b){
+            switch(b) {
+                
+                case BinOp::Add: return builder.CreateAdd(io[0], io[1]);
+                case BinOp::Subtract: return builder.CreateSub(io[0], io[1]);
+                case BinOp::Multiply: return builder.CreateMul(io[0], io[1]);
+                case BinOp::Divide: return builder.CreateSDiv(io[0], io[1]);
+                default: return (llvm::Value*)nullptr;
+            }
+            return (llvm::Value*)nullptr;
+        }(mBinOp);
+        
+        builder.CreateStore(result, io[2]);
 
 		builder.CreateBr(outputBlocks[0]);
 
@@ -375,8 +423,10 @@ struct FloatPlusFloatNodeType : NodeType {
 	}
 
 	std::unique_ptr<NodeType> clone() const override {
-		return std::make_unique<FloatPlusFloatNodeType>(*this);
+		return std::make_unique<BinaryOperationNodeType>(*this);
 	}
+	
+	BinOp mBinOp;
 };
 
 LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
@@ -385,16 +435,30 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	// populate them
 	nodes = {
 		{"if"s, [this](const nlohmann::json&,
-					   Result& res) { return std::make_unique<IfNodeType>(*this); }},
-		{"int+int"s, [this](const nlohmann::json&,
-							Result& res) { return std::make_unique<IntPlusIntNodeType>(*this); }},
+					   Result&) { return std::make_unique<IfNodeType>(*this); }},
+		{"i32+i32"s, [this](const nlohmann::json&,
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("i32"), BinOp::Add); }},
+		{"i32-i32"s, [this](const nlohmann::json&,
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("i32"), BinOp::Subtract); }},
+		{"i32*i32"s, [this](const nlohmann::json&,
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("i32"), BinOp::Multiply); }},
+		{"i32/i32"s, [this](const nlohmann::json&,
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("i32"), BinOp::Divide); }},
+		{"float+float"s, [this](const nlohmann::json&,
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("float"), BinOp::Add); }},
+		{"float-float"s, [this](const nlohmann::json&,
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("float"), BinOp::Subtract); }},
+		{"float*float"s, [this](const nlohmann::json&,
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("float"), BinOp::Multiply); }},
+		{"float/float"s, [this](const nlohmann::json&,
+							Result&) { return std::make_unique<BinaryOperationNodeType>(*this, typeFromName("float"), BinOp::Divide); }},
 		{"inttofloat"s,
-		 [this](const nlohmann::json&, Result& res) {
+		 [this](const nlohmann::json&, Result&) {
 			 return std::make_unique<IntToFloatNodeType>(*this);
 		 }},
-		{"float+float"s,
-		 [this](const nlohmann::json&, Result& res) {
-			 return std::make_unique<FloatPlusFloatNodeType>(*this);
+         {"floattoint"s,
+		 [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<FloatToIntNodeType>(*this);
 		 }},
 		{"entry"s,
 		 [this](const nlohmann::json& injson, Result& res) {

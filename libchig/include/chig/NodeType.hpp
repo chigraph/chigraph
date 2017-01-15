@@ -29,7 +29,7 @@ struct NodeType {
 	/// \param mod The module to create the NodeType in
 	/// \param name The name of the NodeType
 	/// \param description The description of the NodeType
-	NodeType(ChigModule& mod, gsl::cstring_span<> name, gsl::cstring_span<> description)
+	NodeType(ChigModule& mod, gsl::cstring_span<> name = "", gsl::cstring_span<> description = "")
 		: mModule{&mod},
 		  mContext{&mod.context()},
 		  mName{gsl::to_string(name)},
@@ -109,6 +109,18 @@ protected:
 	void setExecOutputs(std::vector<std::string> newOutputs) {
 		mExecOutputs = std::move(newOutputs);
 	}
+	
+	/// Set the name of the type
+	/// \param newName The new name
+	void setName(gsl::cstring_span<> newName) {
+        mName = gsl::to_string(newName);
+    }
+    
+    /// Set the description of the node
+    /// \param newDesc The new description
+    void setDescription(gsl::cstring_span<> newDesc) {
+        mDescription = gsl::to_string(newDesc);
+    }
 
 	/// Get the node instance
 	/// \return the node instance
