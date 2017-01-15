@@ -29,7 +29,7 @@ struct NodeType {
 	/// \param mod The module to create the NodeType in
 	/// \param name The name of the NodeType
 	/// \param description The description of the NodeType
-	NodeType(ChigModule& mod, gsl::cstring_span<> name = "", gsl::cstring_span<> description = "")
+	NodeType(ChigModule& mod, gsl::cstring_span<> name = {}, gsl::cstring_span<> description = {})
 		: mModule{&mod},
 		  mContext{&mod.context()},
 		  mName{gsl::to_string(name)},
