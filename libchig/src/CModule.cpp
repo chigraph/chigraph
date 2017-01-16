@@ -103,7 +103,13 @@ struct CFuncNode : NodeType {
 		auto copymod = llvm::CloneModule(llcompiledmod.get());
 
 		// link it in
+
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+        llvm::Linker::LinkModules(mod, copymod.get());
+#else
 		llvm::Linker::linkModules(*mod, std::move(copymod));
+#endif
+        
 		mod->setDataLayout("");
 
 		auto llfunc = mod->getFunction(functocall);
