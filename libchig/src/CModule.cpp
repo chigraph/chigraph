@@ -100,7 +100,7 @@ struct CFuncNode : NodeType {
 				codegenInto != nullptr && outputBlocks.size() == 1);
 
 		// create a copy of the module
-		auto copymod = llvm::CloneModule(llcompiledmod.get());
+		std::unique_ptr<llvm::Module> copymod = llvm::CloneModule(llcompiledmod.get());
 
 		// link it in
 
