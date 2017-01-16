@@ -8,27 +8,120 @@ addons:
       - ubuntu-toolchain-r-test
 matrix: 
   include: 
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release
-    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug
-    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release
+  
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.7
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.7
+    
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.8
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.8
+    
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=55 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=56 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Debug     QT_VERSION=57 LLVM_VERSION=3.9
+    - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  QT_BASE=57 BUILD_TYPE=Release   QT_VERSION=57 LLVM_VERSION=3.9
+    
+
+    
 
 before_install:
-  - 'sudo add-apt-repository ppa:beineri/opt-qt57-trusty -y'
+  - 'sudo add-apt-repository ppa:beineri/opt-qt${QT_VERSION}-trusty -y'
   - "sudo add-apt-repository 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main'"
+  - "sudo add-apt-repository 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main'"
+  - "sudo add-apt-repository 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.7 main'"
+  - "sudo add-apt-repository 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.6 main'"
   - wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
   - sudo apt-get update
 
 install: 
-  - sudo apt-get install qt57base qt57script qt57declarative qt57tools qt57x11extras qt57svg ninja-build libxcb-keysyms1-dev libxml2-utils  clang-3.9 gcc-5 gcc-6 g++-5 g++-6 build-essential llvm-3.9-dev
-  - source /opt/qt57/bin/qt57-env.sh
+  - sudo apt-get install qt${QT_VERSION}base qt${QT_VERSION}script qt${QT_VERSION}declarative qt${QT_VERSION}tools qt${QT_VERSION}x11extras qt${QT_VERSION}svg  ninja-build libxcb-keysyms1-dev libxml2-utils gcc-5 gcc-6 g++-5 g++-6 build-essential clang-3.7 clang-3.8 clang-3.9 llvm-${LLVM_VERSION}-dev
+  - source /opt/qt${QT_VERSION}/bin/qt${QT_VERSION}-env.sh
 
 script:
   - ./scripts/build_frameworks.sh -DCMAKE_BUILD_TYPE="$BUILD_TYPE" -GNinja
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_CONFIG=/usr/lib/llvm-3.9/bin/llvm-config -DCLANG_EXE=`which clang-3.9` -DLLI_EXE=`which lli-3.9`
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_CONFIG=/usr/lib/llvm-3.9/bin/llvm-config -DCLANG_EXE=`which clang-${LLVM_VERSION}` -DLLI_EXE=`which lli-${LLVM_VERSION}`
   - make -j`nproc`
   - CTEST_OUTPUT_ON_FAILURE=1 make test
