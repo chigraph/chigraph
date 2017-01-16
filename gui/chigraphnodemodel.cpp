@@ -157,6 +157,25 @@ QWidget* ChigraphNodeModel::embeddedWidget() {
 
 		return butt;
 	}
+	if (mInst->type().name() == "const-float") {
+        auto edit = new QLineEdit();
+		edit->setValidator(new QDoubleValidator);
+		double val = mInst->type().toJSON();
+		edit->setText(QString::number(val));
+
+		edit->setMaximumSize(edit->sizeHint());
+
+		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
+			std::unique_ptr<chig::NodeType> newType;
+
+			mInst->context().nodeTypeFromModule("lang", "const-float", s.toDouble(), &newType);
+
+			mInst->setType(std::move(newType));
+
+		});
+
+		return edit;
+    }
 
 	return nullptr;
 }
