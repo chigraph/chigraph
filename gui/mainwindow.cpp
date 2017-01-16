@@ -127,7 +127,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	saveAction->setWhatsThis(QStringLiteral("Save the chigraph module"));
 	connect(saveAction, &QAction::triggered, this, &MainWindow::save);
 
-	auto cancelAction = new QAction;
+	auto cancelAction = new QAction(nullptr);
 	cancelAction->setEnabled(false);
 	cancelAction->setText(i18n("Cancel"));
 	cancelAction->setIcon(QIcon::fromTheme("process-stop"));
@@ -149,7 +149,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		}
 	});
 
-	auto runAction = new QAction;
+	auto runAction = new QAction(nullptr);
 	runAction->setText(i18n("&Run"));
 	runAction->setIcon(QIcon::fromTheme("system-run"));
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
@@ -176,13 +176,13 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		cancelAction->setEnabled(true);
 	});
 
-	auto newFunctionAction = new QAction;
+	auto newFunctionAction = new QAction(nullptr);
 	newFunctionAction->setText(i18n("New Function"));
 	newFunctionAction->setIcon(QIcon::fromTheme("list-add"));
 	actColl->addAction(QStringLiteral("new-function"), newFunctionAction);
 	connect(newFunctionAction, &QAction::triggered, this, &MainWindow::newFunction);
 
-	auto newModuleAction = new QAction;
+	auto newModuleAction = new QAction(nullptr);
 	newModuleAction->setText(i18n("New Module"));
 	newModuleAction->setIcon(QIcon::fromTheme("package-new"));
 	actColl->addAction(QStringLiteral("new-module"), newModuleAction);
