@@ -5,20 +5,22 @@ set -xe
 SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPTSDIR/..
 
+kf5dir=$SCRIPTSDIR/../third_party/kf5
+mkdir -p $kf5dir/build
+
 flags=$@
 
 build_framework() {
     framework=$1
     
-    cd /tmp/
-    rm -rf $framework
+    cd $kf5dir/build
     
     git clone https://anongit.kde.org/$framework --depth 1
-    mkdir $framework/build
+    mkdir -p $framework/build
     cd $framework/build
     
-    cmake .. -DCMAKE_PREFIX_PATH=$SCRIPTSDIR/../third_party/kf5 -DCMAKE_INSTALL_PREFIX=$SCRIPTSDIR/../third_party/kf5 $flags 
-    cmake --build . -- 
+    cmake .. -DCMAKE_PREFIX_PATH=$kf5dir -DCMAKE_INSTALL_PREFIX=$kf5dir $flags 
+    cmake --build .
     cmake --build . --target install
 }
 cd /tmp
