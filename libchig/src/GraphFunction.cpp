@@ -260,8 +260,14 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 					output.first.module().debugTypeFromName(output.first.unqualifiedName());
 
 				// TODO: better names
-				auto debugVar = dbuilder->createAutoVariable(
-					diFunc, node->id() + "__" + output.second, diFunc->getFile(), 1, dType);
+                auto debugVar = dbuilder->
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+                    createLocalVariable(llvm::dwarf::DW_TAG_auto_varaible,
+#else
+                    createAutoVariable(
+#endif
+                      diFunc, node->id() + "__" + output.second, diFunc->getFile(), 1, dType);
+
 				dbuilder->insertDeclare(alloc, debugVar, dbuilder->createExpression(),
 										llvm::DebugLoc::get(1, 1, diFunc), allocblock);
 			}
@@ -385,6 +391,8 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU,
 		return res;
 	}
 
+	auto debugFile   = debugBuilder.createFile(debugCU->getFilename(), debugCU->getDirectory());
+    
 	// create function type
 	llvm::DISubroutineType* subroutineType;
 	{
@@ -410,20 +418,28 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU,
 
 		// create type
 		subroutineType =
-			debugBuilder.createSubroutineType(debugBuilder.getOrCreateTypeArray(params));
+			debugBuilder.createSubroutineType(
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+              debugFile,
+#endif
+              debugBuilder.getOrCreateTypeArray(params));
 	}
 
-	// TODO: line numbers?
 	auto mangledName = mangleFunctionName(module().fullName(), name());
-	auto debugFile   = debugBuilder.createFile(debugCU->getFilename(), debugCU->getDirectory());
-	auto debugFunc =
-		debugBuilder.createFunction(debugFile, module().fullName() + ":" + name(), mangledName,
-									debugFile, 0, subroutineType, false, true, 0, 0, false);
-
 	llvm::Function* f =
 		llvm::cast<llvm::Function>(mod->getOrInsertFunction(mangledName, functionType()));
-	f->setSubprogram(debugFunc);
+    
+	// TODO: line numbers?
+	auto debugFunc =
+		debugBuilder.createFunction(debugFile, module().fullName() + ":" + name(), mangledName,
+									debugFile, 0, subroutineType, false, true, 0, 0, false
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+        , f);
+#else
+        );
 
+	f->setSubprogram(debugFunc);
+#endif
 	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
 	llvm::BasicBlock* block	= llvm::BasicBlock::Create(mod->getContext(), name() + "_entry", f);
 	auto			  blockcpy = block;
@@ -444,7 +460,13 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU,
 			// create debug info
 			llvm::DIType* intDebugType;
 			res += context().debugTypeFromModule("lang", "i32", &intDebugType);
-			auto debugParam = debugBuilder.createParameterVariable(debugFunc, "inputexec_id", 0,
+			auto debugParam = debugBuilder.
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+              createLocalVariable(llvm::dwarf::DW_TAG_arg_variable,
+#else
+              createParameterVariable(
+#endif         
+              debugFunc, "inputexec_id", 0,
 																   debugFile, 0, intDebugType);
 			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 									   llvm::DebugLoc::get(1, 1, debugFunc),
@@ -468,7 +490,13 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU,
 		// create DIType*
 		llvm::DIType* dType =
 			tyAndName.first.module().debugTypeFromName(tyAndName.first.unqualifiedName());
-		auto debugParam = debugBuilder.createParameterVariable(debugFunc, tyAndName.second, idx,
+		auto debugParam = debugBuilder.
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+              createLocalVariable(llvm::dwarf::DW_TAG_arg_variable,
+#else
+		createParameterVariable(
+#endif     
+          debugFunc, tyAndName.second, idx,
 															   debugFile, 0, dType);
 		debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 								   llvm::DebugLoc::get(1, 1, debugFunc),
