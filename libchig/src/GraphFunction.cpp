@@ -262,7 +262,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 				// TODO: better names
                 auto debugVar = dbuilder->
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-                    createLocalVariable(llvm::dwarf::DW_TAG_auto_varaible,
+                    createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
 #else
                     createAutoVariable(
 #endif
@@ -462,12 +462,10 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU,
 			res += context().debugTypeFromModule("lang", "i32", &intDebugType);
 			auto debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-              createLocalVariable(llvm::dwarf::DW_TAG_arg_variable,
+              createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc, "inputexec_id", debugFile, 0, intDebugType);
 #else
-              createParameterVariable(
+              createParameterVariable(debugFunc, "inputexec_id", 0, debugFile, 0, intDebugType);
 #endif         
-              debugFunc, "inputexec_id", 0,
-																   debugFile, 0, intDebugType);
 			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 									   llvm::DebugLoc::get(1, 1, debugFunc),
 									   allocblock);  // TODO: "line" numbers
@@ -492,12 +490,11 @@ Result GraphFunction::compile(llvm::Module* mod, llvm::DICompileUnit* debugCU,
 			tyAndName.first.module().debugTypeFromName(tyAndName.first.unqualifiedName());
 		auto debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-              createLocalVariable(llvm::dwarf::DW_TAG_arg_variable,
+              createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc, tyAndName.second, debugFile, 0, dType);
 #else
-		createParameterVariable(
-#endif     
-          debugFunc, tyAndName.second, idx,
+		createParameterVariable(debugFunc, tyAndName.second, idx,
 															   debugFile, 0, dType);
+#endif     
 		debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 								   llvm::DebugLoc::get(1, 1, debugFunc),
 								   allocblock);  // TODO: line numbers
