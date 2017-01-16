@@ -269,7 +269,7 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 		
 		// link it in
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-        llvm::Linker::LinkModules(llmod, compiledDep.get());
+        llvm::Linker::LinkModules(llmod.get(), compiledDep.get());
 #else
 		llvm::Linker::linkModules(*llmod, std::move(compiledDep));
 #endif
