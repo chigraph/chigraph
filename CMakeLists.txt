@@ -17,6 +17,14 @@ set(BUILD_CLAR OFF CACHE BOOL "")
 add_subdirectory(third_party/tiny-process-library)
 add_subdirectory(third_party/boost)
 
+
+find_program(LLVM_CONFIG llvm-config)
+message(STATUS "llvm-config found at ${LLVM_CONFIG}")
+
+execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE LLVM_LIBDIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+message(STATUS "LLVM library directory: ${LLVM_LIBDIR}")
+link_directories(${LLVM_LIBDIR})
+
 add_subdirectory(libchig)
 add_subdirectory(chig)
 
