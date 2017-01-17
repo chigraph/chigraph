@@ -1,7 +1,4 @@
 
-find_program(LLVM_CONFIG llvm-config)
-
-message(STATUS "llvm-config found at ${LLVM_CONFIG}")
 
 find_program(CLANG_EXE clang)
 
@@ -56,10 +53,6 @@ target_compile_features(chigcore PUBLIC cxx_constexpr cxx_rvalue_references cxx_
 execute_process(COMMAND ${LLVM_CONFIG} --includedir OUTPUT_VARIABLE LLVM_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 target_include_directories(chigcore PUBLIC "${LLVM_INCLUDE_DIR}")
-
-execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE LLVM_LIBDIR OUTPUT_STRIP_TRAILING_WHITESPACE)
-message(STATUS "LLVM library directory: ${LLVM_LIBDIR}")
-link_directories(${LLVM_LIBDIR})
 
 execute_process(COMMAND ${LLVM_CONFIG} --libs irreader support bitwriter executionengine native nativecodegen interpreter linker orcjit mcjit codegen selectiondag OUTPUT_VARIABLE LLVM_LIBRARIES OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "LLVM link libraries: ${LLVM_LIBRARIES}")
