@@ -19,8 +19,6 @@
 #include <llvm/ExecutionEngine/JITEventListener.h>
 #include <llvm/ExecutionEngine/MCJIT.h>
 #include <llvm/ExecutionEngine/ObjectCache.h>
-#include <llvm/ExecutionEngine/Orc/OrcRemoteTargetClient.h>
-#include <llvm/ExecutionEngine/OrcMCJITReplacement.h>
 #include <llvm/ExecutionEngine/SectionMemoryManager.h>
 
 #include <llvm/CodeGen/LinkAllCodegenComponents.h>
