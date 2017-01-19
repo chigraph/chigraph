@@ -58,11 +58,9 @@ execute_process(COMMAND ${LLVM_CONFIG} --libs irreader support bitwriter executi
 message(STATUS "LLVM link libraries: ${LLVM_LIBRARIES}")
 target_link_libraries(chigcore PUBLIC ${LLVM_LIBRARIES})
 
-if(UNIX)
-    target_link_libraries(chigcore PUBLIC rt dl curses pthread z m)
-endif()
-
-
+execute_process(COMMAND ${LLVM_CONFIG} --system-libs OUTPUT_VARIABLE LLVM_SYSTEM_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
+message(STATUS "LLVM system libraries: ${LLVM_SYSTEM_LIBS}")
+target_link_libraries(chigcore PUBLIC ${LLVM_SYSTEM_LIBS})
 
 target_link_libraries(chigcore
 PUBLIC
