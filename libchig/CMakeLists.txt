@@ -31,8 +31,6 @@ set(CHIG_PRIVATE_FILES
 	src/NameMangler.cpp
 )
 
-add_definitions("-D__STDC_LIMIT_MACROS")
-add_definitions("-D__STDC_CONSTANT_MACROS")
 
 add_library(chigcore ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
 
