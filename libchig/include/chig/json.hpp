@@ -1047,7 +1047,7 @@ public:
 	*/
 	template <class CompatibleObjectType,
 		typename std::enable_if<std::is_constructible<typename object_t::key_type,
-									typename CompatibleObjectType::key_type>::value and
+									typename CompatibleObjectType::key_type>::value &&
 									std::is_constructible<basic_json,
 										typename CompatibleObjectType::mapped_type>::value,
 			int>::type = 0>
