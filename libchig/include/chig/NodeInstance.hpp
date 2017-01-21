@@ -89,36 +89,43 @@ private:
 	GraphFunction* mFunction = nullptr;
 };
 
+/// \name Connection Manipulation
+/// \brief Functions for connecting and disconnecting nodes
+/// \{
+
 /// Connects two nodes' data connections
 /// \param lhs The node to the left, the node outputting the data
-/// \param connectionInputID The ID of data connection in \c lhs to be connected
+/// \param lhsConnID The ID of data connection in \c lhs to be connected
 /// \param rhs The node to the right, that takes in the data as a parameter
-/// \param connectionOutputID The ID of data input in \c rhs
+/// \param rhsConnID The ID of data input in \c rhs
 /// \return The result
-Result connectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs,
-				   size_t connectionOutputID);
+Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
+				   size_t rhsConnID);
 
 /// Connects two nodes' exec connections
 /// \param lhs The node to the left, the node outputting the connections
-/// \param connectionInputID The ID of exec connection in \c lhs to be connected
+/// \param lhsConnID The ID of exec connection in \c lhs to be connected
 /// \param rhs The node to the right, that takes in the exec as a parameter
-/// \param connectionOutputID The ID of exec input in \c rhs
+/// \param rhsConnID The ID of exec input in \c rhs
 /// \return The result
-Result connectExec(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs,
-				   size_t connectionOutputID);
+Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
+				   size_t rhsConnID);
 
 /// Disconnect a data connection
-/// \param lhs The left hand node
-/// \param connectionInputID The ID of the data connection to disconnect
+/// \param lhs The left hand node	
+/// \param lhsConnID The ID of the data connection to disconnect
 /// \param rhs The node that the data port is connected to
 /// \return The result
-Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs);
+Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs);
 
 /// Disconnect a exec connection
 /// \param lhs The left hand node in the connection
-/// \param connectionInputID The ID of the connection on lhs
+/// \param lhsConnID The ID of the connection on lhs
 /// \return The result
-Result disconnectExec(NodeInstance& lhs, size_t connectionInputID);
+Result disconnectExec(NodeInstance& lhs, size_t lhsConnID);
+
+/// \}
+
 }  // namespace chig
 
 #endif  // CHIG_NODE_INSTANCE_HPP

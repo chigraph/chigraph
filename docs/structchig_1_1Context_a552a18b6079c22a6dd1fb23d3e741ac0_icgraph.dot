@@ -1,0 +1,14 @@
+digraph "chig::Context::debugTypeFromModule"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node15 [label="chig::Context::debugType\lFromModule",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="chig::compileFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30"];
+  Node16 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="chig::JsonModule::generate\lModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635"];
+  Node17 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="chig::JsonModule::typeNames",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d",tooltip="Get the possible DataType names. "];
+}

@@ -9,6 +9,11 @@
 #include <gsl/gsl>
 
 namespace chig {
+
+/// \name Name Mangling
+/// \brief Functions for mangling names into names used natively
+/// \{
+
 /// Mangle a function name
 /// \param fullModuleName The full name of the module. Example github.com/russelltg/test/lib
 /// \param name The name of the function
@@ -17,6 +22,9 @@ std::string mangleFunctionName(gsl::cstring_span<> fullModuleName, gsl::cstring_
 /// Unmangle a function name
 /// \param mangledName The mangled name
 std::pair<std::string, std::string> unmangleFunctionName(gsl::cstring_span<> mangledName);
+
+/// \}
+
 }
 
 #endif  // CHIG_NAME_MANGLER_HPP

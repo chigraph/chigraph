@@ -4,6 +4,8 @@ var dir_16971e61b3ab07f0aa6ba57b2eb7b712 =
     [ "CModule.hpp", "CModule_8hpp_source.html", null ],
     [ "Context.hpp", "Context_8hpp_source.html", null ],
     [ "DataType.hpp", "DataType_8hpp_source.html", null ],
+    [ "FunctionCompiler.hpp", "FunctionCompiler_8hpp_source.html", null ],
+    [ "FunctionValidator.hpp", "FunctionValidator_8hpp_source.html", null ],
     [ "Fwd.hpp", "Fwd_8hpp_source.html", null ],
     [ "Graph.hpp", "Graph_8hpp_source.html", null ],
     [ "GraphFunction.hpp", "GraphFunction_8hpp_source.html", null ],

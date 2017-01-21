@@ -105,8 +105,8 @@ $(document).ready(function(){initNavTree('structchig_1_1NodeInstance.html','');}
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a64f05495e002fca0c458cd3e6718ec36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeInstance.html#a64f05495e002fca0c458cd3e6718ec36">NodeInstance</a> (std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt; nodeType, float posX, float posY, gsl::cstring_span&lt;&gt; nodeID)</td></tr>
-<tr class="separator:a64f05495e002fca0c458cd3e6718ec36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ee27647d679d01276868af2a04163ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeInstance.html#a9ee27647d679d01276868af2a04163ff">NodeInstance</a> (<a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> *func, std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt; nodeType, float posX, float posY, gsl::cstring_span&lt;&gt; nodeID)</td></tr>
+<tr class="separator:a9ee27647d679d01276868af2a04163ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94fa44f7a1bc6dcdd56955c66d0ab6e5"><td class="memItemLeft" align="right" valign="top"><a id="a94fa44f7a1bc6dcdd56955c66d0ab6e5"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeInstance.html#a94fa44f7a1bc6dcdd56955c66d0ab6e5">NodeInstance</a> (<a class="el" href="structchig_1_1NodeInstance.html">NodeInstance</a> &amp;&amp;)=default</td></tr>
 <tr class="memdesc:a94fa44f7a1bc6dcdd56955c66d0ab6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
@@ -119,6 +119,10 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="structchig_1_1Context.html">Context</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeInstance.html#a664d68ae63b0ec095892d17597ef9623">context</a> () const</td></tr>
 <tr class="memdesc:a664d68ae63b0ec095892d17597ef9623"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the containing <a class="el" href="structchig_1_1Context.html">Context</a> object. <br /></td></tr>
 <tr class="separator:a664d68ae63b0ec095892d17597ef9623"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac06ee5988ee5f130088fee83a550f4d2"><td class="memItemLeft" align="right" valign="top"><a id="ac06ee5988ee5f130088fee83a550f4d2"></a>
+<a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2">function</a> () const</td></tr>
+<tr class="memdesc:ac06ee5988ee5f130088fee83a550f4d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the containing <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a>. <br /></td></tr>
+<tr class="separator:ac06ee5988ee5f130088fee83a550f4d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1468afe4799106831566bd283332a516"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeInstance.html#a1468afe4799106831566bd283332a516">id</a> () const</td></tr>
 <tr class="separator:a1468afe4799106831566bd283332a516"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30f5680edfb9a8125c973e565d1d2e90"><td class="memItemLeft" align="right" valign="top"><a id="a30f5680edfb9a8125c973e565d1d2e90"></a>
@@ -166,10 +170,10 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An instance of a node. </p>
 
-<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00013">13</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00012">12</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a64f05495e002fca0c458cd3e6718ec36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64f05495e002fca0c458cd3e6718ec36">&sect;&nbsp;</a></span>NodeInstance()</h2>
+<a id="a9ee27647d679d01276868af2a04163ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ee27647d679d01276868af2a04163ff">&sect;&nbsp;</a></span>NodeInstance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,6 +181,12 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
         <tr>
           <td class="memname">chig::NodeInstance::NodeInstance </td>
           <td>(</td>
+          <td class="paramtype"><a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> *&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt;&#160;</td>
           <td class="paramname"><em>nodeType</em>, </td>
         </tr>
@@ -205,7 +215,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Construct a nodeinstace with a type location and an ID </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Construct a nodeinstace with a type location and an ID, usually called from <a class="el" href="structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5">GraphFunction::insertNode</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nodeType</td><td>The type that the node is </td></tr>
     <tr><td class="paramname">posX</td><td>The X location of the node </td></tr>
@@ -223,7 +233,8 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance_a64f05495e002fca0c458cd3e6718ec36_cgraph.svg" width="352" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><!-- SVG 0 -->
+</div>
 </div>
 
 </div>
@@ -255,14 +266,13 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 
 <p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00058">58</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00199">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00256">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00038">operator=()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00457">chig::GraphFunction::removeNode()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00048">setType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00139">chig::GraphFunction::toJSON()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00577">chig::GraphFunction::validateGraph()</a>.</p>
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00191">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00254">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00041">operator=()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00205">chig::GraphFunction::removeNode()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00051">setType()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00017">chig::validateFunctionConnectionsAreTwoWay()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 0 -->
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance_a1468afe4799106831566bd283332a516_icgraph.svg" width="100%" height="579"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -289,16 +299,15 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="NodeInstance_8cpp_source.html#l00048">48</a> of file <a class="el" href="NodeInstance_8cpp_source.html">NodeInstance.cpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeInstance_8cpp_source.html#l00051">51</a> of file <a class="el" href="NodeInstance_8cpp_source.html">NodeInstance.cpp</a>.</p>
 
-<p>References <a class="el" href="NodeInstance_8cpp_source.html#l00199">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00256">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">outputDataConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00069">outputExecConnections</a>.</p>
+<p>References <a class="el" href="NodeInstance_8cpp_source.html#l00191">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00254">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">outputDataConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00069">outputExecConnections</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 1 -->
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance_ab7b23fb84fff7176f7a6e62ce3762153_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -397,14 +406,13 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 
 <p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00040">40</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00090">chig::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00150">chig::connectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00199">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00256">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00007">NodeInstance()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00038">operator=()</a>, and <a class="el" href="GraphFunction_8cpp_source.html#l00139">chig::GraphFunction::toJSON()</a>.</p>
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00089">chig::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00149">chig::connectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00191">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00254">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00007">NodeInstance()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00041">operator=()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 2 -->
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance_a5c9d6934e14f56ff4317ff08e170e83a_icgraph.svg" width="100%" height="596"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -463,14 +471,13 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 
 <p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00046">46</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00024">NodeInstance()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00038">operator=()</a>.</p>
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00026">NodeInstance()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00041">operator=()</a>.</p>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 3 -->
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance_a556e256f3ec1c2a02c91c63497307201_icgraph.svg" width="368" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -501,14 +508,13 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 
 <p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00049">49</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00038">operator=()</a>.</p>
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00041">operator=()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 4 -->
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance_a4bfa5d5e7626c24dc5ee5bef7ef1459b_icgraph.svg" width="368" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -523,7 +529,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1NodeInstance.html">NodeInstance</a></li>
-    <li class="footer">Generated on Sun Jan 8 2017 19:33:45 for chigraph by
+    <li class="footer">Generated on Sat Jan 21 2017 09:20:37 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>
