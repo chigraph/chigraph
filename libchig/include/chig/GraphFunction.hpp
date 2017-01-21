@@ -50,13 +50,6 @@ struct GraphFunction {
 	/// \return The result
 	Result toJSON(nlohmann::json* toFill) const;
 
-	/// Compile the graph to an \c llvm::Function (usually called from JsonModule::generateModule)
-	/// \param mod The module to codgen into, should already be a valid module
-	/// \param debugCU The compilation unit that the GraphFunction resides in.
-	/// \return The result
-	Result compile(llvm::Module* mod, llvm::DICompileUnit* debugCU,
-				   llvm::DIBuilder& debugBuilder) const;
-
 	/// \name Node Manipulation
 	/// Functions for mainpulating nodes; getting, adding
 	/// \{
@@ -127,10 +120,6 @@ struct GraphFunction {
 	/// This is called from Context::loadModuleFromJson
 	/// \return The result
 	Result loadGraph();
-
-	/// Validate the graph, makeing sure all connections are two-way etc.
-	/// \return The result
-	Result validateGraph() const;
 
 	// TODO: check uses and replace to avoid errors
 	/// \name Data input modifiers

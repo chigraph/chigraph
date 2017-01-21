@@ -16,6 +16,8 @@ set(CHIG_PUBLIC_FILES
 	include/chig/Graph.hpp
 	include/chig/NameMangler.hpp
     include/chig/CModule.hpp
+    include/chig/FunctionValidator.hpp
+    include/chig/FunctionCompiler.hpp
 )
 
 set(CHIG_PRIVATE_FILES
@@ -29,6 +31,8 @@ set(CHIG_PRIVATE_FILES
 	src/Graph.cpp
 	src/Result.cpp
 	src/NameMangler.cpp
+	src/FunctionValidator.cpp
+	src/FunctionCompiler.cpp
 )
 
 
