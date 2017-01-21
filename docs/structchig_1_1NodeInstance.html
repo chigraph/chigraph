@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('structchig_1_1NodeInstance.html','');}
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance__coll__graph.svg" width="592" height="147"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance__coll__graph.svg" width="100%" height="397"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -217,6 +217,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 </div><div class="memdoc">
 <p>Construct a nodeinstace with a type location and an ID, usually called from <a class="el" href="structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5">GraphFunction::insertNode</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">func</td><td>The function this nodeInstance belongs to </td></tr>
     <tr><td class="paramname">nodeType</td><td>The type that the node is </td></tr>
     <tr><td class="paramname">posX</td><td>The X location of the node </td></tr>
     <tr><td class="paramname">posY</td><td>The Y location of the node </td></tr>
@@ -227,14 +228,13 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 
 <p>Definition at line <a class="el" href="NodeInstance_8cpp_source.html#l00007">7</a> of file <a class="el" href="NodeInstance_8cpp_source.html">NodeInstance.cpp</a>.</p>
 
-<p>References <a class="el" href="NodeInstance_8hpp_source.html#l00066">inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">outputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00069">outputExecConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00040">type()</a>.</p>
+<p>References <a class="el" href="NodeInstance_8hpp_source.html#l00067">inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00064">inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00073">outputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00070">outputExecConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00041">type()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance_a9ee27647d679d01276868af2a04163ff_cgraph.svg" width="328" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeInstance_a9ee27647d679d01276868af2a04163ff_cgraph.svg" width="328" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -264,7 +264,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 </div><div class="memdoc">
 <p>Get the ID of the instance, unique to the graph </p><dl class="section return"><dt>Returns</dt><dd>The ID </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00058">58</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00059">59</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00191">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00254">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00041">operator=()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00205">chig::GraphFunction::removeNode()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00051">setType()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00017">chig::validateFunctionConnectionsAreTwoWay()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -301,7 +301,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 
 <p>Definition at line <a class="el" href="NodeInstance_8cpp_source.html#l00051">51</a> of file <a class="el" href="NodeInstance_8cpp_source.html">NodeInstance.cpp</a>.</p>
 
-<p>References <a class="el" href="NodeInstance_8cpp_source.html#l00191">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00254">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">outputDataConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00069">outputExecConnections</a>.</p>
+<p>References <a class="el" href="NodeInstance_8cpp_source.html#l00191">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00254">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00059">id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00067">inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00064">inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00073">outputDataConnections</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00070">outputExecConnections</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
@@ -342,7 +342,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00052">52</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00053">53</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
 </div>
 </div>
@@ -376,7 +376,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00055">55</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00056">56</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
 </div>
 </div>
@@ -404,7 +404,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 </div><div class="memdoc">
 <p>Get the type of the instance </p><dl class="section return"><dt>Returns</dt><dd>The type </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00040">40</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00041">41</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00089">chig::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00149">chig::connectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00191">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00254">chig::disconnectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00007">NodeInstance()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00041">operator=()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -441,7 +441,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 </div><div class="memdoc">
 <p>Get the type of the instance, const version </p><dl class="section return"><dt>Returns</dt><dd>The type </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00043">43</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00044">44</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
 </div>
 </div>
@@ -469,7 +469,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 </div><div class="memdoc">
 <p>Get the X location of the instance </p><dl class="section return"><dt>Returns</dt><dd>The X coordinate </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00046">46</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00047">47</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00026">NodeInstance()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00041">operator=()</a>.</p>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -506,7 +506,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 </div><div class="memdoc">
 <p>Get the Y location of the instance </p><dl class="section return"><dt>Returns</dt><dd>The Y coordinate </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00049">49</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeInstance_8hpp_source.html#l00050">50</a> of file <a class="el" href="NodeInstance_8hpp_source.html">NodeInstance.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00041">operator=()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -529,7 +529,7 @@ std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1NodeInstance.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1NodeInstance.html">NodeInstance</a></li>
-    <li class="footer">Generated on Sat Jan 21 2017 09:35:00 for chigraph by
+    <li class="footer">Generated on Sat Jan 21 2017 10:06:27 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

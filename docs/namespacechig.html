@@ -164,9 +164,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>prettyPrintJso
 <tr class="separator:a07edacf1c8ce45e2a35ec0ee1d6bdb2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32e319a56d723f024b5f47727adaf17c"><td class="memItemLeft" align="right" valign="top">boost::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#a32e319a56d723f024b5f47727adaf17c">workspaceFromChildPath</a> (const boost::filesystem::path &amp;path)</td></tr>
 <tr class="separator:a32e319a56d723f024b5f47727adaf17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55556041de6d2b2fa39f29506da086c7"><td class="memItemLeft" align="right" valign="top"><a id="a55556041de6d2b2fa39f29506da086c7"></a>
-fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChildPath</b> (const fs::path &amp;path)</td></tr>
-<tr class="separator:a55556041de6d2b2fa39f29506da086c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Function Validation</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>Functions for making sure that generated functions are valid (also usable as a linter tools) </p>
 </div></td></tr>
@@ -237,14 +234,16 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 </div><div class="memdoc">
 <p>Compile the graph to an <code>llvm::Function</code> (usually called from <a class="el" href="structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635">JsonModule::generateModule</a>) </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">func</td><td>The function to compile </td></tr>
     <tr><td class="paramname">mod</td><td>The module to codgen into, should already be a valid module </td></tr>
     <tr><td class="paramname">debugCU</td><td>The compilation unit that the <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> resides in. </td></tr>
+    <tr><td class="paramname">debugBuilder</td><td>The debug builder to build debug info </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00192">192</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
+<p>Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00193">193</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
 <p>References <a class="el" href="Result_8hpp_source.html#l00023">chig::Result::addEntry()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00223">chig::GraphFunction::context()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00297">chig::JsonModule::createLineNumberAssoc()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00130">chig::GraphFunction::dataInputs()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00153">chig::GraphFunction::dataOutputs()</a>, <a class="el" href="Context_8cpp_source.html#l00211">chig::Context::debugTypeFromModule()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00175">chig::GraphFunction::entryNode()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00065">chig::ChigModule::fullName()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00352">chig::GraphFunction::functionType()</a>, <a class="el" href="NameMangler_8cpp_source.html#l00006">mangleFunctionName()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00234">chig::GraphFunction::module()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00226">chig::GraphFunction::name()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00009">validateFunction()</a>.</p>
 
@@ -254,16 +253,14 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a4f26546c4bc76c31cc822d0365be0f30_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a4f26546c4bc76c31cc822d0365be0f30_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacechig_a4f26546c4bc76c31cc822d0365be0f30_icgraph.svg" width="638" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacechig_a4f26546c4bc76c31cc822d0365be0f30_icgraph.svg" width="638" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -318,24 +315,22 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 
 <p>Definition at line <a class="el" href="NodeInstance_8cpp_source.html#l00089">89</a> of file <a class="el" href="NodeInstance_8cpp_source.html">NodeInstance.cpp</a>.</p>
 
-<p>References <a class="el" href="NodeType_8hpp_source.html#l00082">chig::NodeType::dataInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00085">chig::NodeType::dataOutputs()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00191">disconnectData()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00078">chig::NodeInstance::function()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">chig::NodeInstance::outputDataConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00063">chig::NodeType::toJSON()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00040">chig::NodeInstance::type()</a>.</p>
+<p>References <a class="el" href="NodeType_8hpp_source.html#l00082">chig::NodeType::dataInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00085">chig::NodeType::dataOutputs()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00191">disconnectData()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00079">chig::NodeInstance::function()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00067">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00073">chig::NodeInstance::outputDataConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00063">chig::NodeType::toJSON()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00041">chig::NodeInstance::type()</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeInstance_8hpp_source.html#l00078">chig::NodeInstance::function()</a>, and <a class="el" href="Graph_8cpp_source.html#l00006">chig::Graph::Graph()</a>.</p>
+<p>Referenced by <a class="el" href="NodeInstance_8hpp_source.html#l00079">chig::NodeInstance::function()</a>, and <a class="el" href="Graph_8cpp_source.html#l00006">chig::Graph::Graph()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad3c2fc880f6843f9a8a0f5ee0d62249d_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad3c2fc880f6843f9a8a0f5ee0d62249d_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad3c2fc880f6843f9a8a0f5ee0d62249d_icgraph.svg" width="100%" height="446"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad3c2fc880f6843f9a8a0f5ee0d62249d_icgraph.svg" width="100%" height="446"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -390,24 +385,22 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 
 <p>Definition at line <a class="el" href="NodeInstance_8cpp_source.html#l00149">149</a> of file <a class="el" href="NodeInstance_8cpp_source.html">NodeInstance.cpp</a>.</p>
 
-<p>References <a class="el" href="NodeInstance_8cpp_source.html#l00254">disconnectExec()</a>, <a class="el" href="NodeType_8hpp_source.html#l00088">chig::NodeType::execInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00091">chig::NodeType::execOutputs()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00078">chig::NodeInstance::function()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00063">chig::NodeInstance::inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00069">chig::NodeInstance::outputExecConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00040">chig::NodeInstance::type()</a>.</p>
+<p>References <a class="el" href="NodeInstance_8cpp_source.html#l00254">disconnectExec()</a>, <a class="el" href="NodeType_8hpp_source.html#l00088">chig::NodeType::execInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00091">chig::NodeType::execOutputs()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00079">chig::NodeInstance::function()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00064">chig::NodeInstance::inputExecConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00070">chig::NodeInstance::outputExecConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00041">chig::NodeInstance::type()</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeInstance_8hpp_source.html#l00078">chig::NodeInstance::function()</a>, and <a class="el" href="Graph_8cpp_source.html#l00006">chig::Graph::Graph()</a>.</p>
+<p>Referenced by <a class="el" href="NodeInstance_8hpp_source.html#l00079">chig::NodeInstance::function()</a>, and <a class="el" href="Graph_8cpp_source.html#l00006">chig::Graph::Graph()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a8a2e0029b591b2c20b39d570753f123f_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a8a2e0029b591b2c20b39d570753f123f_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a8a2e0029b591b2c20b39d570753f123f_icgraph.svg" width="100%" height="505"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a8a2e0029b591b2c20b39d570753f123f_icgraph.svg" width="100%" height="505"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -455,24 +448,22 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 
 <p>Definition at line <a class="el" href="NodeInstance_8cpp_source.html#l00191">191</a> of file <a class="el" href="NodeInstance_8cpp_source.html">NodeInstance.cpp</a>.</p>
 
-<p>References <a class="el" href="NodeType_8hpp_source.html#l00082">chig::NodeType::dataInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00085">chig::NodeType::dataOutputs()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00078">chig::NodeInstance::function()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00072">chig::NodeInstance::outputDataConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00063">chig::NodeType::toJSON()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00040">chig::NodeInstance::type()</a>.</p>
+<p>References <a class="el" href="NodeType_8hpp_source.html#l00082">chig::NodeType::dataInputs()</a>, <a class="el" href="NodeType_8hpp_source.html#l00085">chig::NodeType::dataOutputs()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00079">chig::NodeInstance::function()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00059">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00067">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00073">chig::NodeInstance::outputDataConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00063">chig::NodeType::toJSON()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00041">chig::NodeInstance::type()</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00089">connectData()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00078">chig::NodeInstance::function()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00205">chig::GraphFunction::removeNode()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00051">chig::NodeInstance::setType()</a>.</p>
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00089">connectData()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00079">chig::NodeInstance::function()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00205">chig::GraphFunction::removeNode()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00051">chig::NodeInstance::setType()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a26aa6586df79345493de9fc130291c18_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a26aa6586df79345493de9fc130291c18_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a26aa6586df79345493de9fc130291c18_icgraph.svg" width="100%" height="477"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a26aa6586df79345493de9fc130291c18_icgraph.svg" width="100%" height="477"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -513,24 +504,22 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 
 <p>Definition at line <a class="el" href="NodeInstance_8cpp_source.html#l00254">254</a> of file <a class="el" href="NodeInstance_8cpp_source.html">NodeInstance.cpp</a>.</p>
 
-<p>References <a class="el" href="Result_8hpp_source.html#l00023">chig::Result::addEntry()</a>, <a class="el" href="NodeType_8hpp_source.html#l00091">chig::NodeType::execOutputs()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00069">chig::NodeInstance::outputExecConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00040">chig::NodeInstance::type()</a>.</p>
+<p>References <a class="el" href="Result_8hpp_source.html#l00023">chig::Result::addEntry()</a>, <a class="el" href="NodeType_8hpp_source.html#l00091">chig::NodeType::execOutputs()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00059">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00070">chig::NodeInstance::outputExecConnections</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00041">chig::NodeInstance::type()</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00149">connectExec()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00078">chig::NodeInstance::function()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00205">chig::GraphFunction::removeNode()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00051">chig::NodeInstance::setType()</a>.</p>
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00149">connectExec()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00079">chig::NodeInstance::function()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00205">chig::GraphFunction::removeNode()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00051">chig::NodeInstance::setType()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacechig_ad24a330508033631ef29b2f6e5cf6210_cgraph.svg" width="627" height="266"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacechig_ad24a330508033631ef29b2f6e5cf6210_cgraph.svg" width="627" height="266"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad24a330508033631ef29b2f6e5cf6210_icgraph.svg" width="100%" height="473"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad24a330508033631ef29b2f6e5cf6210_icgraph.svg" width="100%" height="473"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -570,7 +559,7 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 
 <p>Definition at line <a class="el" href="NameMangler_8cpp_source.html#l00006">6</a> of file <a class="el" href="NameMangler_8cpp_source.html">NameMangler.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00192">compileFunction()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00149">chig::JsonModule::generateModule()</a>.</p>
+<p>Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00193">compileFunction()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00149">chig::JsonModule::generateModule()</a>.</p>
 <div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
@@ -721,7 +710,7 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 
 <p>Definition at line <a class="el" href="Result_8hpp_source.html#l00077">77</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
-<p>References <a class="el" href="Result_8cpp_source.html#l00036">chig::Result::dump()</a>.</p>
+<p>References <a class="el" href="Result_8cpp_source.html#l00038">chig::Result::dump()</a>.</p>
 <div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
@@ -830,22 +819,20 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 
 <p>References <a class="el" href="FunctionValidator_8cpp_source.html#l00017">validateFunctionConnectionsAreTwoWay()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00158">validateFunctionNodeInputs()</a>.</p>
 
-<p>Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00192">compileFunction()</a>.</p>
+<p>Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00193">compileFunction()</a>.</p>
 <div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-14-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-14-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_afccf44a2370371aae836862d9731155e_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_afccf44a2370371aae836862d9731155e_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-15-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-15-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_afccf44a2370371aae836862d9731155e_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_afccf44a2370371aae836862d9731155e_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -875,7 +862,7 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 
 <p>Definition at line <a class="el" href="FunctionValidator_8cpp_source.html#l00017">17</a> of file <a class="el" href="FunctionValidator_8cpp_source.html">FunctionValidator.cpp</a>.</p>
 
-<p>References <a class="el" href="Result_8hpp_source.html#l00023">chig::Result::addEntry()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00229">chig::GraphFunction::graph()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00058">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00066">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="Graph_8hpp_source.html#l00057">chig::Graph::nodes()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00069">chig::NodeInstance::outputExecConnections</a>.</p>
+<p>References <a class="el" href="Result_8hpp_source.html#l00023">chig::Result::addEntry()</a>, <a class="el" href="GraphFunction_8hpp_source.html#l00229">chig::GraphFunction::graph()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00059">chig::NodeInstance::id()</a>, <a class="el" href="NodeInstance_8hpp_source.html#l00067">chig::NodeInstance::inputDataConnections</a>, <a class="el" href="Graph_8hpp_source.html#l00057">chig::Graph::nodes()</a>, and <a class="el" href="NodeInstance_8hpp_source.html#l00070">chig::NodeInstance::outputExecConnections</a>.</p>
 
 <p>Referenced by <a class="el" href="FunctionValidator_8cpp_source.html#l00009">validateFunction()</a>.</p>
 <div id="dynsection-16" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -883,16 +870,14 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 <div id="dynsection-16-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-16-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacechig_ae2ff27777b91f651f86d9a8e8ef0b986_cgraph.svg" width="432" height="206"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacechig_ae2ff27777b91f651f86d9a8e8ef0b986_cgraph.svg" width="432" height="206"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-17-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-17-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ae2ff27777b91f651f86d9a8e8ef0b986_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ae2ff27777b91f651f86d9a8e8ef0b986_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -930,16 +915,14 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 <div id="dynsection-18-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-18-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad868894793d664b6ae994f24fc781b4b_cgraph.svg" width="100%" height="586"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad868894793d664b6ae994f24fc781b4b_cgraph.svg" width="100%" height="586"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-19-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-19-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad868894793d664b6ae994f24fc781b4b_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_ad868894793d664b6ae994f24fc781b4b_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -967,13 +950,24 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The workspace path, or an empty path if it wasn't found </dd></dl>
 
-<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00027">chig::Context::Context()</a>, <a class="el" href="Context_8cpp_source.html#l00307">chig::Context::fullModuleName()</a>, and <a class="el" href="Context_8hpp_source.html#l00123">chig::Context::llvmContext()</a>.</p>
+<p>Definition at line <a class="el" href="Context_8cpp_source.html#l00314">314</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p>References <a class="el" href="Context_8cpp_source.html#l00314">workspaceFromChildPath()</a>.</p>
+
+<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00027">chig::Context::Context()</a>, <a class="el" href="Context_8hpp_source.html#l00123">chig::Context::llvmContext()</a>, and <a class="el" href="Context_8cpp_source.html#l00314">workspaceFromChildPath()</a>.</p>
 <div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-20-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-20-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespacechig_a32e319a56d723f024b5f47727adaf17c_icgraph.svg" width="100%" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacechig_a32e319a56d723f024b5f47727adaf17c_cgraph.svg" width="214" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-21" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-21-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacechig_a32e319a56d723f024b5f47727adaf17c_icgraph.svg" width="438" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -984,7 +978,7 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><b>workspaceFromChil
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li>
-    <li class="footer">Generated on Sat Jan 21 2017 09:35:00 for chigraph by
+    <li class="footer">Generated on Sat Jan 21 2017 10:06:27 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

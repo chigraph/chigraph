@@ -12,6 +12,7 @@ namespace chig {
 struct NodeInstance {
 	/// Construct a nodeinstace with a type location and an ID, usually called from
 	/// GraphFunction::insertNode
+	/// \param func The function this nodeInstance belongs to
 	/// \param nodeType The type that the node is
 	/// \param posX The X location of the node
 	/// \param posY The Y location of the node
