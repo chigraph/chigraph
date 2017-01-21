@@ -127,14 +127,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aad81aae17452ddc5fc43809924236385"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac5a649c9a98e72ecc20ecadb30d3e4c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#aac5a649c9a98e72ecc20ecadb30d3e4c">createFunction</a> (gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2">name</a>, std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt; dataIns, std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt; dataOuts, std::vector&lt; std::string &gt; execIns, std::vector&lt; std::string &gt; execOuts, <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> **toFill=nullptr)</td></tr>
 <tr class="separator:aac5a649c9a98e72ecc20ecadb30d3e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a723bf99a12af777cf5c1be06a971abba"><td class="memItemLeft" align="right" valign="top">boost::bimap&lt; unsigned, <a class="el" href="structchig_1_1NodeInstance.html">NodeInstance</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#a723bf99a12af777cf5c1be06a971abba">createLineNumberAssoc</a> () const</td></tr>
+<tr class="separator:a723bf99a12af777cf5c1be06a971abba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0396a8f78544da1f054b19c5d77401b0"><td class="memItemLeft" align="right" valign="top">llvm::DIType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#a0396a8f78544da1f054b19c5d77401b0">debugTypeFromName</a> (gsl::cstring_span&lt;&gt;) override</td></tr>
+<tr class="separator:a0396a8f78544da1f054b19c5d77401b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fc2b8e9bab1d061ec12212ac8c78a40"><td class="memItemLeft" align="right" valign="top">const std::unordered_set&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1ChigModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40">dependencies</a> () const</td></tr>
 <tr class="separator:a0fc2b8e9bab1d061ec12212ac8c78a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad730121a133fbc474fcb71d49f31f7b3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3">fullName</a> () const</td></tr>
 <tr class="separator:ad730121a133fbc474fcb71d49f31f7b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79d7c1863342e3f26363d822fe428ac2"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::unique_ptr&lt; <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#a79d7c1863342e3f26363d822fe428ac2">functions</a> () const</td></tr>
 <tr class="separator:a79d7c1863342e3f26363d822fe428ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1973a9c7967a8a8541ec87b81b1c1784"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#a1973a9c7967a8a8541ec87b81b1c1784">generateModule</a> (std::unique_ptr&lt; llvm::Module &gt; *module) override</td></tr>
-<tr class="separator:a1973a9c7967a8a8541ec87b81b1c1784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a073e960b2d6f07ffaa983a61f8b0f635"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635">generateModule</a> (llvm::Module &amp;module) override</td></tr>
+<tr class="separator:a073e960b2d6f07ffaa983a61f8b0f635"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef854b4e838ba98c1d6973c1f4488b10"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#aef854b4e838ba98c1d6973c1f4488b10">graphFuncFromName</a> (gsl::cstring_span&lt;&gt; <a class="el" href="structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2">name</a>) const</td></tr>
 <tr class="separator:aef854b4e838ba98c1d6973c1f4488b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a702a09a3bf4c8cbefa3ed5d83a0ba0e4"><td class="memItemLeft" align="right" valign="top"><a id="a702a09a3bf4c8cbefa3ed5d83a0ba0e4"></a>
@@ -161,6 +165,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aac85e6b42c18ea9e52979cdbd4dac40c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0301727a42a28a7ec2b7116f6d54e04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04">saveToDisk</a> () const</td></tr>
 <tr class="separator:ae0301727a42a28a7ec2b7116f6d54e04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8633e9bfc529b8a88a6a12c253f99e53"><td class="memItemLeft" align="right" valign="top">boost::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#a8633e9bfc529b8a88a6a12c253f99e53">sourceFilePath</a> () const</td></tr>
+<tr class="separator:a8633e9bfc529b8a88a6a12c253f99e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a200bbbf7eefaffdc40978c01d1053f46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#a200bbbf7eefaffdc40978c01d1053f46">toJSON</a> (nlohmann::json *to_fill) const</td></tr>
 <tr class="separator:a200bbbf7eefaffdc40978c01d1053f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a333bbd9973c79f0ee40bc960c5cf091b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1DataType.html">DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1JsonModule.html#a333bbd9973c79f0ee40bc960c5cf091b">typeFromName</a> (gsl::cstring_span&lt;&gt;) override</td></tr>
@@ -173,7 +179,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Module that holds JSON code. </p>
 
-<p>Definition at line <a class="el" href="JsonModule_8hpp_source.html#l00023">23</a> of file <a class="el" href="JsonModule_8hpp_source.html">JsonModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8hpp_source.html#l00024">24</a> of file <a class="el" href="JsonModule_8hpp_source.html">JsonModule.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae9d14a6f432082a9489d3b5ccf5ae338"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9d14a6f432082a9489d3b5ccf5ae338">&sect;&nbsp;</a></span>JsonModule() <span class="overload">[1/2]</span></h2>
@@ -222,16 +228,15 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00088">88</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00091">91</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8cpp_source.html#l00014">chig::ChigModule::addDependency()</a>, and <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>.</p>
+<p>References <a class="el" href="ChigModule_8cpp_source.html#l00012">chig::ChigModule::addDependency()</a>, and <a class="el" href="Result_8hpp_source.html#l00023">chig::Result::addEntry()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 0 -->
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_ae9d14a6f432082a9489d3b5ccf5ae338_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -276,16 +281,15 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00145">145</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00143">143</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8cpp_source.html#l00014">chig::ChigModule::addDependency()</a>.</p>
+<p>References <a class="el" href="ChigModule_8cpp_source.html#l00012">chig::ChigModule::addDependency()</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 1 -->
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_a02230b2a77afa77a1a5e83db3bc988f9_cgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -322,17 +326,17 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8cpp_source.html#l00014">14</a> of file <a class="el" href="ChigModule_8cpp_source.html">ChigModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8cpp_source.html#l00012">12</a> of file <a class="el" href="ChigModule_8cpp_source.html">ChigModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00064">chig::ChigModule::context()</a>, and <a class="el" href="Context_8cpp_source.html#l00106">chig::Context::loadModule()</a>.</p>
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00068">chig::ChigModule::context()</a>, and <a class="el" href="Context_8cpp_source.html#l00093">chig::Context::loadModule()</a>.</p>
 
-<p>Referenced by <a class="el" href="ChigModule_8hpp_source.html#l00072">chig::ChigModule::dependencies()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00088">JsonModule()</a>.</p>
+<p>Referenced by <a class="el" href="ChigModule_8hpp_source.html#l00076">chig::ChigModule::dependencies()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00091">JsonModule()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 2 -->
+<div class="center"><!-- SVG 0 -->
 </div>
 </div>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -340,7 +344,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 3 -->
+<div class="center"><!-- SVG 1 -->
 </div>
 </div>
 
@@ -370,17 +374,17 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </div><div class="memdoc">
 <p>Get the <a class="el" href="structchig_1_1Context.html">Context</a> that this module belongs to </p><dl class="section return"><dt>Returns</dt><dd>The context </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00064">64</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00068">68</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>References <a class="el" href="structchig_1_1ChigModule.html#aad4b97558b2455201b4db986b3b63840">chig::ChigModule::generateModule()</a>.</p>
+<p>References <a class="el" href="structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4">chig::ChigModule::generateModule()</a>.</p>
 
-<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00014">chig::ChigModule::addDependency()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00030">chig::GraphFunction::GraphFunction()</a>, <a class="el" href="LangModule_8cpp_source.html#l00266">chig::LangModule::LangModule()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00193">saveToDisk()</a>, and <a class="el" href="LangModule_8cpp_source.html#l00452">chig::LangModule::typeFromName()</a>.</p>
+<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00012">chig::ChigModule::addDependency()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00032">chig::GraphFunction::GraphFunction()</a>, <a class="el" href="NodeType_8hpp_source.html#l00032">chig::NodeType::NodeType()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00191">saveToDisk()</a>, <a class="el" href="JsonModule_8hpp_source.html#l00078">sourceFilePath()</a>, and <a class="el" href="LangModule_8cpp_source.html#l00671">chig::LangModule::typeFromName()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 4 -->
+<div class="center"><!-- SVG 2 -->
 </div>
 </div>
 <div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -388,7 +392,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 5 -->
+<div class="center"><!-- SVG 3 -->
 </div>
 </div>
 
@@ -456,25 +460,110 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if a new function was created, false otherwise </dd></dl>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00230">230</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00225">225</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>References <a class="el" href="JsonModule_8cpp_source.html#l00279">graphFuncFromName()</a>.</p>
+<p>References <a class="el" href="JsonModule_8cpp_source.html#l00265">graphFuncFromName()</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8hpp_source.html#l00052">typeNames()</a>.</p>
+<p>Referenced by <a class="el" href="JsonModule_8hpp_source.html#l00078">sourceFilePath()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 6 -->
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_aac5a649c9a98e72ecc20ecadb30d3e4c_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 7 -->
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_aac5a649c9a98e72ecc20ecadb30d3e4c_icgraph.svg" width="454" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a723bf99a12af777cf5c1be06a971abba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a723bf99a12af777cf5c1be06a971abba">&sect;&nbsp;</a></span>createLineNumberAssoc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">boost::bimap&lt; unsigned int, <a class="el" href="structchig_1_1NodeInstance.html">NodeInstance</a> * &gt; chig::JsonModule::createLineNumberAssoc </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Create the associations from line number and function in debug info </p><dl class="section return"><dt>Returns</dt><dd>A bimap of function to line number </dd></dl>
+
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00297">297</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+
+<p>References <a class="el" href="JsonModule_8hpp_source.html#l00112">functions()</a>.</p>
+
+<p>Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00192">chig::compileFunction()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00054">typeNames()</a>.</p>
+<div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 4 -->
+</div>
+</div>
+<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 5 -->
+</div>
+</div>
+
+</div>
+</div>
+<a id="a0396a8f78544da1f054b19c5d77401b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0396a8f78544da1f054b19c5d77401b0">&sect;&nbsp;</a></span>debugTypeFromName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">llvm::DIType* chig::JsonModule::debugTypeFromName </td>
+          <td>(</td>
+          <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Get the debug info for a type from the name </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name of the type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The DIType, or nullptr if failed </dd></dl>
+
+<p>Implements <a class="el" href="structchig_1_1ChigModule.html#a0ae28a670b5a2101b0846ae9c7628b71">chig::ChigModule</a>.</p>
+
+<p>Definition at line <a class="el" href="JsonModule_8hpp_source.html#l00051">51</a> of file <a class="el" href="JsonModule_8hpp_source.html">JsonModule.hpp</a>.</p>
+
+<p>References <a class="el" href="JsonModule_8cpp_source.html#l00289">nodeTypeNames()</a>.</p>
+<div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-12-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 6 -->
 </div>
 </div>
 
@@ -504,25 +593,25 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </div><div class="memdoc">
 <p>Get the dependencies </p><dl class="section return"><dt>Returns</dt><dd>The dependencies </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00072">72</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00076">76</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8cpp_source.html#l00014">chig::ChigModule::addDependency()</a>.</p>
+<p>References <a class="el" href="ChigModule_8cpp_source.html#l00012">chig::ChigModule::addDependency()</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00172">toJSON()</a>.</p>
-<div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00171">toJSON()</a>.</p>
+<div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 7 -->
+</div>
+</div>
+<div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
 <div class="center"><!-- SVG 8 -->
-</div>
-</div>
-<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-11-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 9 -->
 </div>
 </div>
 
@@ -552,15 +641,15 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </div><div class="memdoc">
 <p>Get the full name of the module </p><dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00061">61</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00065">65</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00154">generateModule()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00193">saveToDisk()</a>.</p>
-<div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00192">chig::compileFunction()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00149">generateModule()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00078">sourceFilePath()</a>.</p>
+<div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-12-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 10 -->
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 9 -->
 </div>
 </div>
 
@@ -590,12 +679,22 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </div><div class="memdoc">
 <p>Get functions </p><dl class="section return"><dt>Returns</dt><dd>The functions </dd></dl>
 
-<p>Definition at line <a class="el" href="JsonModule_8hpp_source.html#l00098">98</a> of file <a class="el" href="JsonModule_8hpp_source.html">JsonModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8hpp_source.html#l00112">112</a> of file <a class="el" href="JsonModule_8hpp_source.html">JsonModule.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00297">createLineNumberAssoc()</a>.</p>
+<div id="dynsection-16" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-16-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-16-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 10 -->
+</div>
+</div>
 
 </div>
 </div>
-<a id="a1973a9c7967a8a8541ec87b81b1c1784"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1973a9c7967a8a8541ec87b81b1c1784">&sect;&nbsp;</a></span>generateModule()</h2>
+<a id="a073e960b2d6f07ffaa983a61f8b0f635"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a073e960b2d6f07ffaa983a61f8b0f635">&sect;&nbsp;</a></span>generateModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -606,7 +705,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
         <tr>
           <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> chig::JsonModule::generateModule </td>
           <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; llvm::Module &gt; *&#160;</td>
+          <td class="paramtype">llvm::Module &amp;&#160;</td>
           <td class="paramname"><em>module</em></td><td>)</td>
           <td></td>
         </tr>
@@ -619,32 +718,32 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </div><div class="memdoc">
 <p>Generate a llvm::Module from the module. Usually called by <a class="el" href="structchig_1_1Context.html#a8987940286a7a67313b635891d8f51e8">Context::compileModule</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">module</td><td>The llvm::Module to fill &ndash; must be already filled with dependencies </td></tr>
+    <tr><td class="paramname">module</td><td>The llvm::Module to fill into &ndash; must be already filled with dependencies </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Implements <a class="el" href="structchig_1_1ChigModule.html#aad4b97558b2455201b4db986b3b63840">chig::ChigModule</a>.</p>
+<p>Implements <a class="el" href="structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4">chig::ChigModule</a>.</p>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00154">154</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00149">149</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00061">chig::ChigModule::fullName()</a>, and <a class="el" href="NameMangler_8cpp_source.html#l00007">chig::mangleFunctionName()</a>.</p>
+<p>References <a class="el" href="FunctionCompiler_8cpp_source.html#l00192">chig::compileFunction()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00065">chig::ChigModule::fullName()</a>, <a class="el" href="NameMangler_8cpp_source.html#l00006">chig::mangleFunctionName()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00078">sourceFilePath()</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8hpp_source.html#l00052">typeNames()</a>.</p>
-<div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="JsonModule_8hpp_source.html#l00054">typeNames()</a>.</p>
+<div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div id="dynsection-17-content" class="dyncontent" style="display:none;">
 <div class="center"><!-- SVG 11 -->
 </div>
 </div>
-<div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-18" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-18-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-14-content" class="dyncontent" style="display:none;">
+<div id="dynsection-18-content" class="dyncontent" style="display:none;">
 <div class="center"><!-- SVG 12 -->
 </div>
 </div>
@@ -674,26 +773,24 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1GraphFunction.html">GraphFunction</a> or nullptr if it doesn't exist </dd></dl>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00279">279</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00265">265</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00058">chig::ChigModule::name()</a>.</p>
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00062">chig::ChigModule::name()</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00230">createFunction()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00290">nodeTypeFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00253">removeFunction()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00052">typeNames()</a>.</p>
-<div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00225">createFunction()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00273">nodeTypeFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00245">removeFunction()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00078">sourceFilePath()</a>.</p>
+<div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-15-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 13 -->
+<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_aef854b4e838ba98c1d6973c1f4488b10_cgraph.svg" width="444" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+<div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-16" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-16-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-16-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 14 -->
-</div>
+<div id="dynsection-20-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_aef854b4e838ba98c1d6973c1f4488b10_icgraph.svg" width="100%" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -722,15 +819,15 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </div><div class="memdoc">
 <p>Get the short name of the module (the last bit) </p><dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00058">58</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00062">62</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00279">graphFuncFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00167">chig::CModule::nodeTypeFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00290">nodeTypeFromName()</a>, <a class="el" href="DataType_8hpp_source.html#l00034">chig::DataType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00172">toJSON()</a>.</p>
-<div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00265">graphFuncFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00175">chig::CModule::nodeTypeFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00273">nodeTypeFromName()</a>, <a class="el" href="DataType_8hpp_source.html#l00031">chig::DataType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00042">chig::NodeType::qualifiedName()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00171">toJSON()</a>.</p>
+<div id="dynsection-21" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-21-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-17-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 15 -->
+<div id="dynsection-21-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 13 -->
 </div>
 </div>
 
@@ -787,16 +884,15 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 
 <p>Implements <a class="el" href="structchig_1_1ChigModule.html#a84c7cbef23d7468b644abc26b8aa9173">chig::ChigModule</a>.</p>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00290">290</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00273">273</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00279">graphFuncFromName()</a>, and <a class="el" href="ChigModule_8hpp_source.html#l00058">chig::ChigModule::name()</a>.</p>
-<div id="dynsection-18" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-18-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
+<p>References <a class="el" href="Result_8hpp_source.html#l00023">chig::Result::addEntry()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00265">graphFuncFromName()</a>, and <a class="el" href="ChigModule_8hpp_source.html#l00062">chig::ChigModule::name()</a>.</p>
+<div id="dynsection-22" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-22-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-18-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 16 -->
-</div>
+<div id="dynsection-22-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_a8dc03f06db44974d3f3f510bdd98d4b1_cgraph.svg" width="100%" height="394"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -827,16 +923,15 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 
 <p>Implements <a class="el" href="structchig_1_1ChigModule.html#a777ffcdf5887fac173f12b787a21e508">chig::ChigModule</a>.</p>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00306">306</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00289">289</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8hpp_source.html#l00049">typeFromName()</a>.</p>
-<div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="JsonModule_8hpp_source.html#l00051">debugTypeFromName()</a>.</p>
+<div id="dynsection-23" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-23-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-19-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 17 -->
-</div>
+<div id="dynsection-23-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_a5a0e71b625b60849d760217655254945_icgraph.svg" width="502" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -872,7 +967,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If one was removed </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00083">83</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00087">87</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
 </div>
 </div>
@@ -899,26 +994,24 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if there was a function matching name that was removed </dd></dl>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00253">253</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00245">245</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>References <a class="el" href="JsonModule_8cpp_source.html#l00279">graphFuncFromName()</a>.</p>
+<p>References <a class="el" href="JsonModule_8cpp_source.html#l00265">graphFuncFromName()</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8hpp_source.html#l00052">typeNames()</a>.</p>
-<div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="JsonModule_8hpp_source.html#l00078">sourceFilePath()</a>.</p>
+<div id="dynsection-24" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-24-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-20-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 18 -->
+<div id="dynsection-24-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_aa56ff2175f24086ea8d021be75894cbf_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+<div id="dynsection-25" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-25-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-21" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-21-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-21-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-21-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 19 -->
-</div>
+<div id="dynsection-25-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_aa56ff2175f24086ea8d021be75894cbf_icgraph.svg" width="463" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -945,7 +1038,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00266">266</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00255">255</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
 </div>
 </div>
@@ -965,25 +1058,71 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </div><div class="memdoc">
 <p>Serialize to disk in the context </p><dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00193">193</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00191">191</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>References <a class="el" href="Result_8hpp_source.html#l00024">chig::Result::addEntry()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00064">chig::ChigModule::context()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00061">chig::ChigModule::fullName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00172">toJSON()</a>, and <a class="el" href="Context_8hpp_source.html#l00095">chig::Context::workspacePath()</a>.</p>
+<p>References <a class="el" href="Result_8hpp_source.html#l00023">chig::Result::addEntry()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00068">chig::ChigModule::context()</a>, <a class="el" href="JsonModule_8hpp_source.html#l00078">sourceFilePath()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00171">toJSON()</a>.</p>
 
-<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00058">chig::Context::newJsonModule()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00052">typeNames()</a>.</p>
-<div id="dynsection-22" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-22-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-22-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00050">chig::Context::newJsonModule()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00054">typeNames()</a>.</p>
+<div id="dynsection-26" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-26-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-22-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 20 -->
+<div id="dynsection-26-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_ae0301727a42a28a7ec2b7116f6d54e04_cgraph.svg" width="100%" height="508"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-27" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-27-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-27-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-27-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_ae0301727a42a28a7ec2b7116f6d54e04_icgraph.svg" width="491" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
-<div id="dynsection-23" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-23-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-23-summary" class="dynsummary" style="display:block;">
+<a id="a8633e9bfc529b8a88a6a12c253f99e53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8633e9bfc529b8a88a6a12c253f99e53">&sect;&nbsp;</a></span>sourceFilePath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boost::filesystem::path chig::JsonModule::sourceFilePath </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Get the path to the source file It's not garunteed to exist, because it could have not been saved </p><dl class="section return"><dt>Returns</dt><dd>The path </dd></dl>
+
+<p>Definition at line <a class="el" href="JsonModule_8hpp_source.html#l00078">78</a> of file <a class="el" href="JsonModule_8hpp_source.html">JsonModule.hpp</a>.</p>
+
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00068">chig::ChigModule::context()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00225">createFunction()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00065">chig::ChigModule::fullName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00265">graphFuncFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00245">removeFunction()</a>, and <a class="el" href="Context_8hpp_source.html#l00103">chig::Context::workspacePath()</a>.</p>
+
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00149">generateModule()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00191">saveToDisk()</a>.</p>
+<div id="dynsection-28" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-28-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-28-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-23-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 21 -->
+<div id="dynsection-28-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 14 -->
+</div>
+</div>
+<div id="dynsection-29" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-29-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-29-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-29-content" class="dyncontent" style="display:none;">
+<div class="center"><!-- SVG 15 -->
 </div>
 </div>
 
@@ -1010,28 +1149,26 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00172">172</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
+<p>Definition at line <a class="el" href="JsonModule_8cpp_source.html#l00171">171</a> of file <a class="el" href="JsonModule_8cpp_source.html">JsonModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00072">chig::ChigModule::dependencies()</a>, and <a class="el" href="ChigModule_8hpp_source.html#l00058">chig::ChigModule::name()</a>.</p>
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00076">chig::ChigModule::dependencies()</a>, and <a class="el" href="ChigModule_8hpp_source.html#l00062">chig::ChigModule::name()</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00193">saveToDisk()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00052">typeNames()</a>.</p>
-<div id="dynsection-24" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-24-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-24-summary" class="dynsummary" style="display:block;">
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00191">saveToDisk()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00054">typeNames()</a>.</p>
+<div id="dynsection-30" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-30-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-30-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-24-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 22 -->
+<div id="dynsection-30-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_a200bbbf7eefaffdc40978c01d1053f46_cgraph.svg" width="100%" height="394"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+<div id="dynsection-31" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-31-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-31-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-25" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-25-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-25-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-25-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 23 -->
-</div>
+<div id="dynsection-31-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1JsonModule_a200bbbf7eefaffdc40978c01d1053f46_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1069,17 +1206,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 
 <p>Implements <a class="el" href="structchig_1_1ChigModule.html#a7bb138db48ea320a09312ffd1af0999a">chig::ChigModule</a>.</p>
 
-<p>Definition at line <a class="el" href="JsonModule_8hpp_source.html#l00049">49</a> of file <a class="el" href="JsonModule_8hpp_source.html">JsonModule.hpp</a>.</p>
-
-<p>References <a class="el" href="JsonModule_8cpp_source.html#l00306">nodeTypeNames()</a>.</p>
-<div id="dynsection-26" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-26-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-26-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-26-content" class="dyncontent" style="display:none;">
-<div class="center"><!-- SVG 24 -->
-</div>
-</div>
+<p>Definition at line <a class="el" href="JsonModule_8hpp_source.html#l00050">50</a> of file <a class="el" href="JsonModule_8hpp_source.html">JsonModule.hpp</a>.</p>
 
 </div>
 </div>
@@ -1093,7 +1220,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1JsonModule.html">JsonModule</a></li>
-    <li class="footer">Generated on Sun Jan 8 2017 19:33:45 for chigraph by
+    <li class="footer">Generated on Sat Jan 21 2017 09:20:37 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>
