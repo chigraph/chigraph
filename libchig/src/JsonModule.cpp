@@ -5,6 +5,7 @@
 #include "chig/NodeInstance.hpp"
 #include "chig/NodeType.hpp"
 #include "chig/Result.hpp"
+#include "chig/FunctionCompiler.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/Module.h>
@@ -160,7 +161,7 @@ Result JsonModule::generateModule(llvm::Module& module) {
 								graph->functionType());
 	}
 
-	for (auto& graph : mFunctions) { res += graph->compile(&module, compileUnit, debugBuilder); }
+	for (auto& graph : mFunctions) { res += compileFunction(*graph, &module, compileUnit, debugBuilder); }
 
 	debugBuilder.finalize();
 
@@ -304,7 +305,7 @@ boost::bimap<unsigned int, NodeInstance*> JsonModule::createLineNumberAssoc() co
 	}
 
 	std::sort(nodes.begin(), nodes.end(), [](const auto& lhs, const auto& rhs) {
-		return (lhs->function().name() + ":" + lhs->id()) < (rhs->function().name() + rhs->id());
+		return (lhs->function().name() + ":" + lhs->id()) < (rhs->function().name() + ":" + rhs->id());
 	});
 
 	boost::bimap<unsigned, NodeInstance*> ret;

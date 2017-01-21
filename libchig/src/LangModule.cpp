@@ -632,9 +632,9 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	mDebugTypes["i32"] =
 		llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i32",
 							   32, 32, llvm::dwarf::DW_ATE_signed);
-	mDebugTypes["i1"] =
-		llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i1", 8,
-							   8, llvm::dwarf::DW_ATE_boolean);
+	mDebugTypes["i1"] = nullptr;
+		//llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i1", 8,
+		//					   8, llvm::dwarf::DW_ATE_boolean);
 	mDebugTypes["double"] =
 		llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
 							   "lang:double", 64, 64, llvm::dwarf::DW_ATE_float);

@@ -1,4 +1,5 @@
 #include "chig/NodeInstance.hpp"
+#include "chig/FunctionValidator.hpp"
 
 #include <gsl/gsl>
 
@@ -87,6 +88,9 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 
 Result connectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs,
 				   size_t connectionOutputID) {
+	Expects(&lhs.function() == &rhs.function());
+	
+	
 	Result res = {};
 
 	// make sure the connection exists
@@ -149,6 +153,8 @@ Result connectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rh
 
 Result connectExec(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs,
 				   size_t connectionOutputID) {
+	Expects(&lhs.function() == &rhs.function());
+	
 	Result res = {};
 
 	// make sure the connection exists
@@ -187,11 +193,13 @@ Result connectExec(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rh
 	// connect it!
 	lhs.outputExecConnections[connectionInputID] = {&rhs, connectionOutputID};
 	rhs.inputExecConnections[connectionOutputID].emplace_back(&lhs, connectionOutputID);
-
+	
 	return res;
 }
 
 Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance& rhs) {
+	Expects(&lhs.function() == &rhs.function());
+	
 	Result res = {};
 
 	if (connectionInputID >= lhs.outputDataConnections.size()) {
@@ -248,11 +256,12 @@ Result disconnectData(NodeInstance& lhs, size_t connectionInputID, NodeInstance&
 	// finally actually disconnect it
 	rhs.inputDataConnections[iter->second] = {nullptr, ~0};
 	lhs.outputDataConnections[connectionInputID].erase(iter);
-
+	
 	return res;
 }
 
 Result disconnectExec(NodeInstance& lhs, size_t connectionInputID) {
+	
 	Result res = {};
 
 	if (connectionInputID >= lhs.outputExecConnections.size()) {
