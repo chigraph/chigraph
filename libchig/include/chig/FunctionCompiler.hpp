@@ -13,8 +13,10 @@
 namespace chig {
 
 /// Compile the graph to an \c llvm::Function (usually called from JsonModule::generateModule)
+/// \param func The function to compile
 /// \param mod The module to codgen into, should already be a valid module
 /// \param debugCU The compilation unit that the GraphFunction resides in.
+/// \param debugBuilder The debug builder to build debug info
 /// \return The result
 Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
 				llvm::DIBuilder& debugBuilder);

@@ -19,7 +19,8 @@ struct cache {
 	std::vector<llvm::BasicBlock*> inputBlock;  // one for each exec input
 };
 
-// Codegens a single input to a node
+/// \internal
+/// Codegens a single input to a node
 void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block,
 				   llvm::BasicBlock* allocblock, llvm::Module* mod, llvm::DIBuilder* dbuilder,
 				   llvm::Function* f, llvm::DISubprogram*	diFunc,

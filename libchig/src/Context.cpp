@@ -311,7 +311,7 @@ std::string Context::fullModuleName(gsl::cstring_span<> shortName) const {
 
 	return "";
 }
-fs::path workspaceFromChildPath(const fs::path& path) {
+boost::filesystem::path workspaceFromChildPath(const boost::filesystem::path& path) {
 	fs::path ret = path;
 
 	// initialize workspace directory

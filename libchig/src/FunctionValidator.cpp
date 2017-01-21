@@ -114,8 +114,8 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 	return res;
 	
 }
-
-// alreadyCalled stores the nodes that have been called at this node, and the inputExecIds it has been called at, to avoid infinite loops
+/// \internal
+/// alreadyCalled stores the nodes that have been called at this node, and the inputExecIds it has been called at, to avoid infinite loops
 Result validatePath(const NodeInstance& inst, int inExecId, 
  					std::unordered_map<const NodeInstance*, std::vector<int> /*in Exec id*/> alreadyCalled) {
 	

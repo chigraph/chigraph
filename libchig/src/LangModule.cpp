@@ -350,7 +350,7 @@ struct FloatToIntNodeType : NodeType {
 	}
 };
 
-
+/// \internal
 enum class BinOp {
     Add,
     Subtract,

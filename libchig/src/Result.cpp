@@ -1,6 +1,8 @@
 #include "chig/Result.hpp"
 
 namespace chig {
+	
+/// \internal
 std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 	std::string indentString(indentLevel * 2, ' ');
 
