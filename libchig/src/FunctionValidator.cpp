@@ -90,6 +90,10 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 		id = 0ull;
 		for (const auto& connection : node.second->outputExecConnections) {
 			bool connectsBack = false;
+			
+			if(connection.first == nullptr) {
+				continue;
+			}
 			for (const auto& remoteConnection :
 				 connection.first->inputExecConnections[connection.second]) {
 				if (remoteConnection.second == id && remoteConnection.first == node.second.get()) {
@@ -136,7 +140,7 @@ Result validatePath(const NodeInstance& inst, int inExecId,
 			// TODO: handle this
 		}
 		
-		if(alreadyCalled.find(conn.first) == alreadyCalled.end()) {
+		if(!conn.first->type().pure() && alreadyCalled.find(conn.first) == alreadyCalled.end()) {
 			res.addEntry("EUKN", "Node that accepts data from another node is called first", {{"nodeid", inst.id()}, {"othernodeid", conn.first->id()}});
 		}
 	}

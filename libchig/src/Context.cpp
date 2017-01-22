@@ -285,17 +285,25 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 
 	// verify the created module
 	if (res) {
-		std::string				 err;
-		llvm::raw_string_ostream os(err);
-		if (llvm::verifyModule(*llmod, &os)) {
+		bool errored;
+		std::string  err;
+		{
+			llvm::raw_string_ostream os(err);
+			errored = llvm::verifyModule(*llmod, &os);
+		}
+		
+		if(errored) {
+			
 			std::string moduleStr;
 			{
 				llvm::raw_string_ostream printerStr{moduleStr};
 				llmod->print(printerStr, nullptr);
 			}
+			
 			res.addEntry(
 				"EINT", "Internal compiler error: Invalid module created",
 				{{"Error", err}, {"Full Name", gsl::to_string(fullName)}, {"Module", moduleStr}});
+		
 		}
 	}
 

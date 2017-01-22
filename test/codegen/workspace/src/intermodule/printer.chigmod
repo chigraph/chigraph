@@ -1,108 +1,122 @@
 {
-  "dependencies":[
-    "c",
-    "lang"
+  "dependencies": [
+    "lang",
+    "c"
   ],
-  "graphs":[
+  "graphs": [
     {
-      "connections":[
+      "connections": [
         {
-          "input":[
+          "input": [
             "puts",
             0
           ],
-          "output":[
+          "output": [
             "exit",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         },
         {
-          "input":[
+          "input": [
             "entry",
             0
           ],
-          "output":[
+          "output": [
             "puts",
             0
           ],
-          "type":"data"
+          "type": "data"
         },
         {
-          "input":[
+          "input": [
             "puts",
             0
           ],
-          "output":[
+          "output": [
             "exit",
             0
           ],
-          "type":"data"
+          "type": "data"
         },
         {
-          "input":[
+          "input": [
             "entry",
             0
           ],
-          "output":[
+          "output": [
             "puts",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         }
       ],
-      "data_inputs":[
+      "data_inputs": [
         {
-          "str":"lang:i8*"
+          "str": "lang:i8*"
         }
       ],
-      "name":"docall",
-      "nodes":{
-        "entry":{
-          "data":{"data": [
-            {
-              "str":"lang:i8*"
-            }
-          ], "exec": [""]},
-          "location":[
-            -269,
-            -10
+      "data_outputs": [
+        {
+          "out": "lang:i32"
+        }
+      ],
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "name": "docall",
+      "nodes": {
+        "entry": {
+          "data": {
+            "data": [
+              {
+                "str": "lang:i8*"
+              }
+            ],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            -198.151992797852,
+            7.28000020980835
           ],
-          "type":"lang:entry"
+          "type": "lang:entry"
         },
-        "exit":{
-          "data":{"data": [
-            {
-              "out":"lang:i32"
-            }
-          ], "exec": [""]},
-          "location":[
+        "exit": {
+          "data": {
+            "data": [
+              {
+                "out": "lang:i32"
+              }
+            ],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
             321,
             28
           ],
-          "type":"lang:exit"
+          "type": "lang:exit"
         },
-        "puts":{
-          "data":{
-            "code":"#include <stdio.h> \n int doputs(const char* mystr) { return puts(mystr); }",
-            "function":"doputs"
+        "puts": {
+          "data": {
+            "code": "#include <stdio.h> \n int doputs(const char* mystr) { return puts(mystr); }",
+            "function": "doputs"
           },
-          "location":[
+          "location": [
             12,
             13
           ],
-          "type":"c:func"
+          "type": "c:func"
         }
       },
-      "data_outputs":[
-        {
-          "out":"lang:i32"
-        }
-      ],
-      "exec_inputs": [""],
-      "exec_outputs": [""],
-      "type":"function"
+      "type": "function"
     }
   ],
-  "name":"printer"
+  "name": "printer"
 }

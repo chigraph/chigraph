@@ -125,8 +125,8 @@ struct ConstIntNodeType : NodeType {
 struct ConstFloatNodeType : NodeType {
 	ConstFloatNodeType(LangModule& mod, double num)
 		: NodeType(mod, "const-float", "Float Literal"), number(num) {
-		setExecInputs({""});
-		setExecOutputs({""});
+		
+		makePure();
 
 		setDataOutputs({{mod.typeFromName("i32"), "out"}});
 	}
@@ -158,10 +158,10 @@ struct ConstFloatNodeType : NodeType {
 struct ConstBoolNodeType : NodeType {
 	ConstBoolNodeType(LangModule& mod, bool num)
 		: NodeType{mod, "const-bool", "Boolean literal"}, value{num} {
-		setExecInputs({""});
-		setExecOutputs({""});
+		
+		makePure();
 
-		setDataOutputs({{mod.typeFromName("i1"), "out"}});
+		setDataOutputs({{mod.typeFromName("i1"), ""}});
 	}
 
 	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
@@ -251,10 +251,10 @@ struct StringLiteralNodeType : NodeType {
 	StringLiteralNodeType(LangModule& mod, std::string str)
 		: NodeType(mod, "strliteral", "exit from a function; think return"),
 		  literalString(std::move(str)) {
-		setExecInputs({""});
-		setExecOutputs({""});
+		
+		makePure();
 
-		setDataOutputs({{mod.typeFromName("i8*"), "string"}});
+		setDataOutputs({{mod.typeFromName("i8*"), ""}});
 	}
 
 	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
@@ -361,8 +361,7 @@ enum class BinOp {
 
 struct BinaryOperationNodeType : NodeType {
     BinaryOperationNodeType(LangModule& mod, DataType ty, BinOp binaryOperation) : NodeType(mod), mBinOp(binaryOperation) {
-		setExecInputs({""});
-		setExecOutputs({""});
+		makePure();
         
         std::string opStr = [](BinOp b) {
             switch (b) {

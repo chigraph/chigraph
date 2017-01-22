@@ -13,26 +13,72 @@
 
 namespace chig {
 
+namespace {
 
-struct cache {
+struct Cache {
+	// only used for pure nodes
+	NodeInstance* lastNodeCodegenned = nullptr;
 	std::vector<llvm::Value*>	  outputs;
 	std::vector<llvm::BasicBlock*> inputBlock;  // one for each exec input
 };
 
-/// \internal
-/// Codegens a single input to a node
-void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block,
-				   llvm::BasicBlock* allocblock, llvm::Module* mod, llvm::DIBuilder* dbuilder,
-				   llvm::Function* f, llvm::DISubprogram*	diFunc,
-				   std::unordered_map<NodeInstance*, cache>& nodeCache, Result& res,
-				   boost::bimap<unsigned, NodeInstance*>& nodeLocations) {
-	llvm::IRBuilder<> builder(block);
+
+struct codegenMetadata {
+	llvm::BasicBlock* allocBlock;
+	llvm::Module* mod;
+	llvm::DIBuilder* dbuilder;
+	llvm::Function* f;
+	llvm::DISubprogram* diFunc;
+	std::unordered_map<NodeInstance*, Cache> nodeCache;
+	boost::bimap<unsigned, NodeInstance*> nodeLocations;
+};
+
+}
+
+/// \return The output connections that need codegen and the output blocks
+std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(NodeInstance* node, llvm::BasicBlock* pureTerminator, NodeInstance* lastImpure, unsigned execInputID, llvm::BasicBlock* block, codegenMetadata& data, Result& res) {
+	
+	llvm::IRBuilder<> pureBuilder(block);
+	
+	auto codeBlock = llvm::BasicBlock::Create(node->context().llvmContext(), node->id() + "_code", data.f);
+	llvm::IRBuilder<> builder(codeBlock);
 
 	// get inputs and outputs
 	std::vector<llvm::Value*> io;
 
 	// add inputs
 	{
+		// process pures -- call them again if they're out of date
+		{
+			std::vector<NodeInstance*> pureDependencies;
+			std::vector<llvm::BasicBlock*> pureBBs;
+			for (const auto& param : node->inputDataConnections) {
+				if(param.first->type().pure()) {
+					auto impure = node->type().pure() ? lastImpure : node;
+					const auto& cache = data.nodeCache[param.first];
+					if (cache.lastNodeCodegenned != impure) {
+						pureDependencies.push_back(param.first);
+						pureBBs.push_back(llvm::BasicBlock::Create(node->context().llvmContext(), param.first->id() + "____" + impure->id(), data.f));
+					}
+				}
+			}
+			pureBBs.push_back(codeBlock);
+			
+			for (auto idx = 0ull; idx < pureDependencies.size(); ++idx) {
+				auto pureNode = pureDependencies[idx];
+				auto pureCodegenInto = pureBBs[idx];
+				auto pureTerminatorBlock = pureBBs[idx + 1];
+				
+				auto impure = node->type().pure() ? lastImpure : node;
+				codegenNode(pureNode, pureTerminatorBlock, impure, execInputID, pureCodegenInto, data, res);
+			}
+			if(pureDependencies.empty()) {
+				pureBuilder.CreateBr(codeBlock);
+			} else {
+				pureBuilder.CreateBr(pureBBs[0]);
+			}
+		}
+		
 		size_t inputID = 0;
 		for (auto& param : node->inputDataConnections) {
 			// make sure everything is A-OK
@@ -42,15 +88,14 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 							  {"input ID", inputID},
 							  {"nodetype", node->type().qualifiedName()}});
 
-				return;
+				return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}};
 			}
-
-			auto cacheiter = nodeCache.find(param.first);
-
-			if (cacheiter == nodeCache.end()) {
+			
+			auto cacheiter = data.nodeCache.find(param.first);
+			if (cacheiter == data.nodeCache.end()) {
 				res.addEntry("EUKN", "Failed to find in cache", {{"nodeid", param.first->id()}});
 
-				return;
+				return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}};
 			}
 
 			auto& cacheObject = cacheiter->second;
@@ -60,7 +105,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 							  {"input ID", inputID},
 							  {"nodetype", node->type().qualifiedName()}});
 
-				return;
+				return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}};
 			}
 
 			// get pointers to the objects
@@ -79,17 +124,15 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 					 {"Node ID", node->id()},
 					 {"Input ID", inputID}});
 			}
-
-			++inputID;
 		}
 	}
 
 	// get outputs
 	{
-		llvm::IRBuilder<> allocBuilder(allocblock);
+		llvm::IRBuilder<> allocBuilder(data.allocBlock);
 
 		// create outputs
-		auto& outputCache = nodeCache[node].outputs;
+		auto& outputCache = data.nodeCache[node].outputs;
 
 		for (auto& output : node->type().dataOutputs()) {
 			// TODO: research address spaces
@@ -105,16 +148,16 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 					output.first.module().debugTypeFromName(output.first.unqualifiedName());
 
 				// TODO: better names
-                auto debugVar = dbuilder->
+                auto debugVar = data.dbuilder->
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
                     createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
 #else
                     createAutoVariable(
 #endif
-                      diFunc, node->id() + "__" + output.second, diFunc->getFile(), 1, dType);
+                      data.diFunc, node->id() + "__" + output.second, data.diFunc->getFile(), 1, dType);
 
-				dbuilder->insertDeclare(alloc, debugVar, dbuilder->createExpression(),
-										llvm::DebugLoc::get(1, 1, diFunc), allocblock);
+				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
+										llvm::DebugLoc::get(1, 1, data.diFunc), data.allocBlock);
 			}
 
 			// make sure the type is right
@@ -131,8 +174,8 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 	// add this block to the cache
 	if (node->type().qualifiedName() != "lang:entry") {
-		nodeCache[node].inputBlock.resize(node->inputExecConnections.size(), nullptr);
-		nodeCache[node].inputBlock[execInputID] = block;
+		data.nodeCache[node].inputBlock.resize(node->type().pure() ? 1 : node->inputExecConnections.size(), nullptr);
+		data.nodeCache[node].inputBlock[execInputID] = block;
 	}
 
 	// create output blocks
@@ -146,7 +189,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 		size_t		  remotePortIdx;
 		std::tie(remoteNode, remotePortIdx) = node->outputExecConnections[idx];
 
-		auto remoteCache = nodeCache[remoteNode];  // this will construct it if it doesn't exist
+		auto remoteCache = data.nodeCache[remoteNode];  // this will construct it if it doesn't exist
 		if (remoteCache.inputBlock.size() > remotePortIdx &&
 			remoteCache.inputBlock[remotePortIdx] != nullptr) {
 			// this means it's already in the cache
@@ -154,7 +197,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			needsCodegen.push_back(false);
 		} else {
 			auto outBlock =
-				llvm::BasicBlock::Create(f->getContext(), node->type().execOutputs()[idx], f);
+				llvm::BasicBlock::Create(data.f->getContext(), node->type().execOutputs()[idx], data.f);
 			outputBlocks.push_back(outBlock);
 			needsCodegen.push_back(true);  // these need codegen
 			if (node->outputExecConnections[idx].first != nullptr) {
@@ -164,27 +207,47 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 			}
 		}
 	}
+	if(node->type().pure()) {
+		outputBlocks.push_back(pureTerminator);
+	}
 
 	// codegen
-	res += node->type().codegen(execInputID, mod,
-								llvm::DebugLoc::get(nodeLocations.right.at(node), 1, diFunc), f, io,
-								block, outputBlocks);
-	if (!res) { return; }
+	res += node->type().codegen(execInputID, data.mod,
+								llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc), data.f, io,
+								codeBlock, outputBlocks);
+	if (!res) { 
+				return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}}; }
 
 	// TODO: sequence nodes
 	for (auto& bb : unusedBlocks) {
 		llvm::IRBuilder<> builder(bb);
 
 		builder.CreateRet(
-			llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(mod->getContext()), 0, true));
+			llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(data.mod->getContext()), 0, true));
 	}
+	
+	data.nodeCache[node].lastNodeCodegenned = lastImpure;
+	
+	return {needsCodegen, outputBlocks};
+}
 
+/// \internal
+/// Codegens a single input to a node
+/// All of these nodes are garunteed to be impure
+void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block,
+				   codegenMetadata& data,
+				    Result& res) {
+	
+
+	boost::dynamic_bitset<> needsCodegen;
+	std::vector<llvm::BasicBlock*> outputBlocks;
+	std::tie(needsCodegen, outputBlocks) = codegenNode(node, nullptr, nullptr, execInputID, block, data, res);
+	
 	// recurse!
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
 		if (output.first != nullptr && needsCodegen[idx]) {
-			codegenHelper(output.first, output.second, outputBlocks[idx], allocblock, mod, dbuilder,
-						  f, diFunc, nodeCache, res, nodeLocations);
+			codegenHelper(output.first, output.second, outputBlocks[idx], data, res);
 		}
 	}
 }
@@ -292,15 +355,13 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 	f->setSubprogram(debugFunc);
 #endif
-	llvm::BasicBlock* allocblock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
-	llvm::BasicBlock* block	= llvm::BasicBlock::Create(mod->getContext(), func.name() + "_entry", f);
+	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
+	llvm::BasicBlock* block	= llvm::BasicBlock::Create(mod->getContext(), entry->id(), f);
 	auto			  blockcpy = block;
 
 	// follow "linked list"
 	unsigned execInputID =
 		entry->outputExecConnections[0].second;  // the exec connection to codegen from
-
-	std::unordered_map<NodeInstance*, cache> nodeCache;
 
 	// set argument names
 	auto idx = 0ull;
@@ -320,7 +381,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 #endif         
 			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 									   llvm::DebugLoc::get(1, 1, debugFunc),
-									   allocblock);  // TODO: "line" numbers
+									   allocBlock);  // TODO: "line" numbers
 
 			++idx;
 			continue;
@@ -349,16 +410,18 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 #endif     
 		debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 								   llvm::DebugLoc::get(1, 1, debugFunc),
-								   allocblock);  // TODO: line numbers
+								   allocBlock);  // TODO: line numbers
 
 		++idx;
 	}
 
 	auto nodeLocations = func.module().createLineNumberAssoc();
-	codegenHelper(entry, execInputID, block, allocblock, mod, &debugBuilder, f, debugFunc,
-				  nodeCache, res, nodeLocations);
-
-	llvm::IRBuilder<> allocbuilder(allocblock);
+	codegenMetadata codeMetadata{allocBlock, mod, &debugBuilder, f, debugFunc,
+		std::unordered_map<NodeInstance*, Cache>{}, nodeLocations};
+	
+	codegenHelper(entry, execInputID, block, codeMetadata, res);
+	
+	llvm::IRBuilder<> allocbuilder(allocBlock);
 	allocbuilder.CreateBr(blockcpy);
 
 	return res;

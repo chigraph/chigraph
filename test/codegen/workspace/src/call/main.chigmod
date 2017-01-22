@@ -1,22 +1,11 @@
 {
   "dependencies": [
-    "lang",
-    "c"
+    "c",
+    "lang"
   ],
   "graphs": [
     {
       "connections": [
-        {
-          "input": [
-            "strliteral",
-            0
-          ],
-          "output": [
-            "call",
-            0
-          ],
-          "type": "exec"
-        },
         {
           "input": [
             "itoa",
@@ -89,7 +78,7 @@
             0
           ],
           "output": [
-            "strliteral",
+            "call",
             0
           ],
           "type": "exec"
@@ -129,8 +118,8 @@
             ]
           },
           "location": [
-            248.693511962891,
-            69.1177444458008
+            319.54150390625,
+            55.2937431335449
           ],
           "type": "lang:entry"
         },
@@ -142,8 +131,8 @@
             ]
           },
           "location": [
-            1454.97436523438,
-            78.672004699707
+            1451.51831054688,
+            90.7680053710938
           ],
           "type": "lang:exit"
         },
@@ -161,8 +150,8 @@
         "strliteral": {
           "data": "Yay happy!",
           "location": [
-            411,
-            54
+            529.68798828125,
+            200.880004882812
           ],
           "type": "lang:strliteral"
         }
