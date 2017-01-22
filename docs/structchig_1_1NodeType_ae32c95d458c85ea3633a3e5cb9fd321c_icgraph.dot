@@ -1,0 +1,35 @@
+digraph "chig::NodeType::toJSON"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node167 [label="chig::NodeType::toJSON",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node167 -> Node168 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node168 [label="chig::connectData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d"];
+  Node168 -> Node169 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node169 [label="chig::NodeInstance\l::function",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2",tooltip="Get the containing GraphFunction. "];
+  Node169 -> Node168 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node169 -> Node170 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node170 [label="chig::connectExec",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a8a2e0029b591b2c20b39d570753f123f"];
+  Node170 -> Node169 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node170 -> Node171 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node171 [label="chig::Graph::Graph",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1Graph.html#a1b1c12b94544f6bb8eb7b807ef2c0f7e"];
+  Node169 -> Node172 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node172 [label="chig::disconnectData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a26aa6586df79345493de9fc130291c18"];
+  Node172 -> Node168 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node172 -> Node169 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node172 -> Node173 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node173 [label="chig::GraphFunction\l::removeNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e"];
+  Node173 -> Node174 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node174 [label="chig::GraphFunction\l::insertNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5"];
+  Node174 -> Node175 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node175 [label="chig::GraphFunction\l::getOrInsertEntryNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917"];
+  Node175 -> Node174 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node174 -> Node176 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node176 [label="chig::GraphFunction\l::insertNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede"];
+  Node172 -> Node177 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node177 [label="chig::NodeInstance\l::setType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153"];
+  Node168 -> Node171 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node167 -> Node172 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

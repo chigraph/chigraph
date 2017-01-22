@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['workspacefromchildpath',['workspaceFromChildPath',['../namespacechig.html#a32e319a56d723f024b5f47727adaf17c',1,'chig']]],
-  ['workspacepath',['workspacePath',['../structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f',1,'chig::Context']]]
+  ['valid',['valid',['../structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22',1,'chig::DataType']]],
+  ['validatefunction',['validateFunction',['../namespacechig.html#afccf44a2370371aae836862d9731155e',1,'chig']]],
+  ['validatefunctionconnectionsaretwoway',['validateFunctionConnectionsAreTwoWay',['../namespacechig.html#ae2ff27777b91f651f86d9a8e8ef0b986',1,'chig']]],
+  ['validatefunctionnodeinputs',['validateFunctionNodeInputs',['../namespacechig.html#ad868894793d664b6ae994f24fc781b4b',1,'chig']]]
 ];
