@@ -37,7 +37,7 @@ signals:
 	void paramDeleted(int idx);
 
 private:
-	QListWidget*	  mParamList;
+	QListWidget*      mParamList;
 	chig::JsonModule* mMod = nullptr;
 };
 

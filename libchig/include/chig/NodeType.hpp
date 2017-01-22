@@ -30,10 +30,10 @@ struct NodeType {
 	/// \param name The name of the NodeType
 	/// \param description The description of the NodeType
 	NodeType(ChigModule& mod, gsl::cstring_span<> name = {}, gsl::cstring_span<> description = {})
-		: mModule{&mod},
-		  mContext{&mod.context()},
-		  mName{gsl::to_string(name)},
-		  mDescription{gsl::to_string(description)} {}
+	    : mModule{&mod},
+	      mContext{&mod.context()},
+	      mName{gsl::to_string(name)},
+	      mDescription{gsl::to_string(description)} {}
 	/// Destructor
 	virtual ~NodeType() = default;
 
@@ -54,9 +54,9 @@ struct NodeType {
 	/// numOutputExecs.
 	/// \return The Result
 	virtual Result codegen(size_t execInputID, llvm::Module* modToCodegenInto,
-						   const llvm::DebugLoc& nodeLocation, llvm::Function* f,
-						   const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-						   const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
+	                       const llvm::DebugLoc& nodeLocation, llvm::Function* f,
+	                       const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	                       const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
 
 	/// Create the JSON necessary to store the object.
 	/// \return The json obejct
@@ -89,7 +89,7 @@ struct NodeType {
 	/// Get the execution outputs for the node
 	/// \return The names of the outputs. The size is the input count.
 	gsl::span<const std::string> execOutputs() const { return mExecOutputs; }
-	
+
 	/// Get if this node is pure
 	/// \return If it's pure
 	bool pure() { return mPure; }
@@ -113,29 +113,26 @@ protected:
 	void setExecOutputs(std::vector<std::string> newOutputs) {
 		mExecOutputs = std::move(newOutputs);
 	}
-	
+
 	/// Set the name of the type
 	/// \param newName The new name
-	void setName(gsl::cstring_span<> newName) {
-        mName = gsl::to_string(newName);
-    }
-    
-    /// Set the description of the node
-    /// \param newDesc The new description
-    void setDescription(gsl::cstring_span<> newDesc) {
-        mDescription = gsl::to_string(newDesc);
-    }
-    
-    /// Make this node pure
-    /// For more info on what this means, see https://en.wikipedia.org/wiki/Pure_function
-    /// Also, UE4 implements it https://docs.unrealengine.com/latest/INT/Engine/Blueprints/UserGuide/Functions/#purevsstopimpure
-    /// Pure nodes only have no inexecs and no outexecs
-    /// When they are called they are backpropagated and all called
-    /// They should usually be cheap and sideaffectless
-    void makePure() {
+	void setName(gsl::cstring_span<> newName) { mName = gsl::to_string(newName); }
+
+	/// Set the description of the node
+	/// \param newDesc The new description
+	void setDescription(gsl::cstring_span<> newDesc) { mDescription = gsl::to_string(newDesc); }
+
+	/// Make this node pure
+	/// For more info on what this means, see https://en.wikipedia.org/wiki/Pure_function
+	/// Also, UE4 implements it
+	/// https://docs.unrealengine.com/latest/INT/Engine/Blueprints/UserGuide/Functions/#purevsstopimpure
+	/// Pure nodes only have no inexecs and no outexecs
+	/// When they are called they are backpropagated and all called
+	/// They should usually be cheap and sideaffectless
+	void makePure() {
 		setExecInputs({});
 		setExecOutputs({});
-		
+
 		mPure = true;
 	}
 
@@ -145,7 +142,7 @@ protected:
 
 private:
 	ChigModule* mModule;
-	Context*	mContext;
+	Context*    mContext;
 	std::string mName, mDescription;
 
 	NodeInstance* mNodeInstance = nullptr;
@@ -155,7 +152,7 @@ private:
 
 	std::vector<std::string> mExecInputs;
 	std::vector<std::string> mExecOutputs;
-	
+
 	bool mPure = false;
 };
 }

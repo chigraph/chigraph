@@ -9,7 +9,8 @@
 namespace chig {
 
 /// \name Function Validation
-/// \brief Functions for making sure that generated functions are valid (also usable as a linter tools)
+/// \brief Functions for making sure that generated functions are valid (also usable as a linter
+/// tools)
 /// \{
 
 /// Validate that a function is compilable. If this succeeds, then it should be compilable
@@ -29,7 +30,6 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func);
 Result validateFunctionNodeInputs(const GraphFunction& func);
 
 /// \}
-
 }
 
-#endif // CHIG_FUNCTION_VALIDATOR_HPP
+#endif  // CHIG_FUNCTION_VALIDATOR_HPP

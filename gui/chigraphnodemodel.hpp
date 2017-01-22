@@ -30,10 +30,10 @@ class FunctionView;
 class ChigraphNodeModel : public NodeDataModel {
 public:
 	ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fview_)
-		: mInst{inst_}, mFunctionView{fview_} {}
+	    : mInst{inst_}, mFunctionView{fview_} {}
 
 	chig::NodeInstance& instance() const { return *mInst; }
-	QString				caption() const override {
+	QString             caption() const override {
 		auto str = QString::fromStdString(mInst->type().qualifiedName());
 		return str;
 	}
@@ -47,15 +47,15 @@ public:
 
 	virtual NodeDataType dataType(PortType pType, PortIndex pIndex) const override;
 
-	virtual void					  setInData(std::shared_ptr<NodeData>, PortIndex) override {}
+	virtual void                      setInData(std::shared_ptr<NodeData>, PortIndex) override {}
 	virtual std::shared_ptr<NodeData> outData(PortIndex /*port*/) override { return nullptr; }
-	virtual QWidget*				  embeddedWidget() override;
+	virtual QWidget*                  embeddedWidget() override;
 	// We don't need saving...chigraph has its own serialization
 	void save(Properties&) const override {}
 
 private:
 	chig::NodeInstance* mInst;
-	FunctionView*		mFunctionView;
+	FunctionView*       mFunctionView;
 };
 
 #endif  // CHIG_GUI_CHIGNODEGUI_HPP

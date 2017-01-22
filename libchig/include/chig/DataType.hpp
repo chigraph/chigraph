@@ -17,8 +17,8 @@ struct DataType {
 	/// \param typeName The ID of the type in the module
 	/// \param llvmtype The underlying type
 	DataType(ChigModule* chigMod = nullptr, std::string typeName = {},
-			 llvm::Type* llvmtype = nullptr)
-		: mModule(chigMod), mName{typeName}, mLLVMType{llvmtype} {}
+	         llvm::Type* llvmtype = nullptr)
+	    : mModule(chigMod), mName{typeName}, mLLVMType{llvmtype} {}
 
 	/// Get the module this is a part of
 	/// \return The module

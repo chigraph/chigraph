@@ -8,23 +8,23 @@ TEST_CASE("Name Mangler", "") {
 	using namespace std::string_literals;
 
 	REQUIRE(mangleFunctionName("github.com/russelltg/test/lib", "docall") ==
-			"github_dcom_srusselltg_stest_slib_mdocall");
+	        "github_dcom_srusselltg_stest_slib_mdocall");
 
 	REQUIRE(mangleFunctionName("github.com/russelltg/test/main", "main") == "main");
 
 	REQUIRE(mangleFunctionName("github.com/russelltg/test/main", "maina") ==
-			"github_dcom_srusselltg_stest_smain_mmaina");
+	        "github_dcom_srusselltg_stest_smain_mmaina");
 
 	REQUIRE(mangleFunctionName("github.com/rus__selltg/test/lib", "docall") ==
-			"github_dcom_srus____selltg_stest_slib_mdocall");
+	        "github_dcom_srus____selltg_stest_slib_mdocall");
 
 	REQUIRE(mangleFunctionName("", "docall") == "_mdocall");
 
 	REQUIRE(mangleFunctionName("github.com/russelltg/test/lib", "") ==
-			"github_dcom_srusselltg_stest_slib_m");
+	        "github_dcom_srusselltg_stest_slib_m");
 
 	REQUIRE(mangleFunctionName("_github.com/russelltg/test/lib_", "doca_ll") ==
-			"__github_dcom_srusselltg_stest_slib___mdoca_ll");
+	        "__github_dcom_srusselltg_stest_slib___mdoca_ll");
 
 	// test demangling
 	auto pair = unmangleFunctionName("github_dcom_srusselltg_stest_slib_mdocall");

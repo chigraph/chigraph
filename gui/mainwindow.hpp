@@ -29,9 +29,9 @@ public:
 	~MainWindow();
 
 	chig::JsonModule* currentModule() const { return mModule; }
-	chig::Context&	context() const { return *mChigContext; }
+	chig::Context&    context() const { return *mChigContext; }
 public slots:
-	void openWorkspaceDialog();	// this one opens a dialog
+	void openWorkspaceDialog();           // this one opens a dialog
 	void openWorkspace(const QUrl& url);  // and this one doesn't
 	void openModule(const QString& fullName);
 	void newFunctionSelected(chig::GraphFunction* func);
@@ -57,7 +57,7 @@ private:
 
 	// context & module
 	std::unique_ptr<chig::Context> mChigContext = nullptr;
-	chig::JsonModule*			   mModule		= nullptr;
+	chig::JsonModule*              mModule      = nullptr;
 };
 
 #endif  // CHIGGUI_MAINWINDOW_H

@@ -16,15 +16,15 @@
 class ParamListItem : public QListWidgetItem {
 public:
 	ParamListItem(ParamListWidget* container, chig::DataType ty, QString name)
-		: QListWidgetItem(nullptr, QListWidgetItem::UserType),
-		  mDataType{std::move(ty)},
-		  mName{std::move(name)},
-		  mContainer{container} {
+	    : QListWidgetItem(nullptr, QListWidgetItem::UserType),
+	      mDataType{std::move(ty)},
+	      mName{std::move(name)},
+	      mContainer{container} {
 		updateName();
 	}
 
 	chig::DataType dataType() const { return mDataType; }
-	QString		   name() const { return mName; }
+	QString        name() const { return mName; }
 	void setDataType(chig::DataType newDataType) {
 		mDataType = std::move(newDataType);
 		updateName();
@@ -42,7 +42,7 @@ private:
 	}
 
 	chig::DataType   mDataType;
-	QString			 mName;
+	QString          mName;
 	ParamListWidget* mContainer;
 };
 
@@ -70,16 +70,16 @@ QStringList createTypeOptions(chig::JsonModule* mod) {
 }
 
 boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(QWidget* parent,
-																	chig::JsonModule* mod) {
+                                                                    chig::JsonModule* mod) {
 	bool ok;
 	auto qualtype = QInputDialog::getItem(parent, i18n("Select Type"), i18n("Type"),
-										  createTypeOptions(mod), 0, true, &ok);
+	                                      createTypeOptions(mod), 0, true, &ok);
 
 	// if the user pressed cancel then just return
 	if (!ok) { return {}; }
 
 	auto name = QInputDialog::getText(parent, i18n("Parameter Name"), i18n("Name"),
-									  QLineEdit::Normal, {}, &ok);
+	                                  QLineEdit::Normal, {}, &ok);
 	if (!ok) { return {}; }
 
 	std::string module, type;
@@ -88,7 +88,7 @@ boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(QWidget* par
 	chig::Result   res = mod->context().typeFromModule(module, type, &dtype);
 	if (!res) {
 		KMessageBox::detailedError(parent, "Failed to get data type",
-								   QString::fromStdString(res.dump()), "Failure!");
+		                           QString::fromStdString(res.dump()), "Failure!");
 		return {};
 	}
 
@@ -112,8 +112,8 @@ ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(paren
 			if (mMod == nullptr) { return; }
 
 			chig::DataType type;
-			QString		   name;
-			auto		   opt = getDataNamePair(this, mMod);
+			QString        name;
+			auto           opt = getDataNamePair(this, mMod);
 			if (!opt) { return; }
 
 			std::tie(type, name) = *opt;
@@ -148,8 +148,8 @@ ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(paren
 		int row = idx.row();
 
 		chig::DataType type;
-		QString		   name;
-		auto		   opt = getDataNamePair(this, mMod);
+		QString        name;
+		auto           opt = getDataNamePair(this, mMod);
 
 		if (!opt) { return; }
 

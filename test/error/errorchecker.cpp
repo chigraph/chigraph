@@ -18,7 +18,7 @@ int checkForErrors(Result res, const char* expectedErr) {
 			return 0;
 		} else {
 			std::cerr << "Expected error " << expectedErr << " but got "
-					  << res.result_json[0]["errorcode"] << std::endl;
+			          << res.result_json[0]["errorcode"] << std::endl;
 			return -1;
 		}
 	}
@@ -27,8 +27,8 @@ int checkForErrors(Result res, const char* expectedErr) {
 }
 
 int main(int argc, char** argv) {
-	const char* mode		= argv[1];
-	const char* file		= argv[2];
+	const char* mode        = argv[1];
+	const char* file        = argv[2];
 	const char* expectedErr = argv[3];
 
 	std::ifstream ifile(file);
@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 	Result  res;
 
 	if (strcmp(mode, "mod") == 0) {
-		auto		mod		   = std::make_unique<JsonModule>(c, "main", newData, &res);
+		auto        mod        = std::make_unique<JsonModule>(c, "main", newData, &res);
 		std::string moduleName = mod->name();
 
 		int ret = checkForErrors(res, expectedErr);
@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
 	} else if (strcmp(mode, "func") == 0) {
 		auto deps = std::vector<std::string>{"lang", "c"};
 		auto uMod = std::make_unique<JsonModule>(c, "main",
-												 gsl::span<std::string>(deps.data(), deps.size()));
+		                                         gsl::span<std::string>(deps.data(), deps.size()));
 		auto modPtr = uMod.get();
 		c.addModule(std::move(uMod));
 		auto graphFunc = std::make_unique<GraphFunction>(*modPtr, newData, res);
