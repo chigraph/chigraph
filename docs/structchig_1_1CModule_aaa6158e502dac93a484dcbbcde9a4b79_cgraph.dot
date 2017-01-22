@@ -1,0 +1,12 @@
+digraph "chig::CModule::nodeTypeFromName"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node78 [label="chig::CModule::nodeTypeFromName",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node78 -> Node79 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="chig::Result::addEntry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491"];
+  Node78 -> Node80 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node80 [label="chig::ChigModule::name",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2"];
+}

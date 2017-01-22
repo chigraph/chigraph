@@ -1,0 +1,9 @@
+digraph "chig::NodeType"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node13 [label="chig::NodeType",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node14 -> Node13 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" NodeInstance" ,fontname="Helvetica"];
+  Node14 [label="friend",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}
