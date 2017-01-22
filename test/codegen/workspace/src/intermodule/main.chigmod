@@ -1,179 +1,164 @@
 {
-  "dependencies":[
-    "lang",
+  "dependencies": [
+    "intermodule/printer",
     "c",
-    "intermodule/printer"
+    "lang"
   ],
-  "graphs":[
+  "graphs": [
     {
-      "connections":[
+      "connections": [
         {
-          "input":[
-            "strliteral",
-            0
-          ],
-          "output":[
-            "call",
-            0
-          ],
-          "type":"exec"
-        },
-        {
-          "input":[
+          "input": [
             "itoa",
             0
           ],
-          "output":[
+          "output": [
             "call2",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         },
         {
-          "input":[
+          "input": [
             "call",
             0
           ],
-          "output":[
+          "output": [
             "itoa",
             0
           ],
-          "type":"data"
+          "type": "data"
         },
         {
-          "input":[
+          "input": [
             "call",
             0
           ],
-          "output":[
+          "output": [
             "itoa",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         },
         {
-          "input":[
+          "input": [
             "strliteral",
             0
           ],
-          "output":[
+          "output": [
             "call",
             0
           ],
-          "type":"data"
+          "type": "data"
         },
         {
-          "input":[
+          "input": [
             "call2",
             0
           ],
-          "output":[
+          "output": [
             "exit",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         },
         {
-          "input":[
+          "input": [
             "itoa",
             0
           ],
-          "output":[
+          "output": [
             "call2",
             0
           ],
-          "type":"data"
+          "type": "data"
         },
         {
-          "input":[
+          "input": [
             "entry",
             0
           ],
-          "output":[
-            "strliteral",
+          "output": [
+            "call",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         }
       ],
-      "data_inputs":[
-
+      "data_inputs": [],
+      "data_outputs": [],
+      "exec_inputs": [
+        ""
       ],
-      "name":"main",
-      "nodes":{
-        "call":{
-          "data":null,
-          "location":[
+      "exec_outputs": [
+        ""
+      ],
+      "name": "main",
+      "nodes": {
+        "call": {
+          "data": null,
+          "location": [
             975,
             100
           ],
-          "type":"printer:docall"
+          "type": "printer:docall"
         },
-        "call2":{
-          "data":null,
-          "location":[
+        "call2": {
+          "data": null,
+          "location": [
             1336,
             93
           ],
-          "type":"printer:docall"
+          "type": "printer:docall"
         },
-        "entry":{
-          "data":{
-            "data":[
-
-            ],
-            "exec":[
+        "entry": {
+          "data": {
+            "data": [],
+            "exec": [
               ""
             ]
           },
-          "location":[
-            509,
-            104
+          "location": [
+            591,
+            96
           ],
-          "type":"lang:entry"
+          "type": "lang:entry"
         },
-        "exit":{
-          "data":{
-            "data":[
-
-            ],
-            "exec":[
+        "exit": {
+          "data": {
+            "data": [],
+            "exec": [
               ""
             ]
           },
-          "location":[
+          "location": [
             1516.83996582031,
             92.6800003051758
           ],
-          "type":"lang:exit"
+          "type": "lang:exit"
         },
-        "itoa":{
-          "data":{
-            "code":"#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
-            "function":"doitoa"
+        "itoa": {
+          "data": {
+            "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
+            "function": "doitoa"
           },
-          "location":[
+          "location": [
             1138,
             94
           ],
-          "type":"c:func"
+          "type": "c:func"
         },
-        "strliteral":{
-          "data":"Yay happy!",
-          "location":[
-            643,
-            91
+        "strliteral": {
+          "data": "Yay happy!",
+          "location": [
+            666,
+            231
           ],
-          "type":"lang:strliteral"
+          "type": "lang:strliteral"
         }
       },
-      "data_outputs":[
-
-      ],
-      "exec_inputs": [""],
-      "exec_outputs": [""],
-      "type":"function"
+      "type": "function"
     }
   ],
-  "name":"main"
+  "name": "main"
 }

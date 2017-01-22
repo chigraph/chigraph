@@ -23,7 +23,7 @@ namespace chig {
 /// A generic node type. All user made types are of JsonNo  deType type, which is defined in
 /// JsonModule.cpp. This allows for easy extension of the language.
 struct NodeType {
-	friend class NodeInstance;
+	friend NodeInstance;
 
 	/// Constructor
 	/// \param mod The module to create the NodeType in
@@ -89,6 +89,10 @@ struct NodeType {
 	/// Get the execution outputs for the node
 	/// \return The names of the outputs. The size is the input count.
 	gsl::span<const std::string> execOutputs() const { return mExecOutputs; }
+	
+	/// Get if this node is pure
+	/// \return If it's pure
+	bool pure() { return mPure; }
 
 protected:
 	/// Set the data inputs for the NodeType
@@ -121,6 +125,19 @@ protected:
     void setDescription(gsl::cstring_span<> newDesc) {
         mDescription = gsl::to_string(newDesc);
     }
+    
+    /// Make this node pure
+    /// For more info on what this means, see https://en.wikipedia.org/wiki/Pure_function
+    /// Also, UE4 implements it https://docs.unrealengine.com/latest/INT/Engine/Blueprints/UserGuide/Functions/#purevsstopimpure
+    /// Pure nodes only have no inexecs and no outexecs
+    /// When they are called they are backpropagated and all called
+    /// They should usually be cheap and sideaffectless
+    void makePure() {
+		setExecInputs({});
+		setExecOutputs({});
+		
+		mPure = true;
+	}
 
 	/// Get the node instance
 	/// \return the node instance
@@ -138,6 +155,8 @@ private:
 
 	std::vector<std::string> mExecInputs;
 	std::vector<std::string> mExecOutputs;
+	
+	bool mPure = false;
 };
 }
 

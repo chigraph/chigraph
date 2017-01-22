@@ -1,141 +1,136 @@
 {
-  "dependencies":[
-    "lang",
-    "c"
+  "dependencies": [
+    "c",
+    "lang"
   ],
-  "graphs":[
+  "graphs": [
     {
-      "connections":[
+      "connections": [
         {
-          "input":[
-            "str",
-            0
-          ],
-          "output":[
-            "puts",
-            0
-          ],
-          "type":"exec"
-        },
-        {
-          "input":[
+          "input": [
             "entry",
             0
           ],
-          "output":[
-            "str",
+          "output": [
+            "puts",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         },
         {
-          "input":[
+          "input": [
             "itoa",
             0
           ],
-          "output":[
+          "output": [
             "exit",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         },
         {
-          "input":[
+          "input": [
             "puts",
             0
           ],
-          "output":[
+          "output": [
             "itoa",
             0
           ],
-          "type":"data"
+          "type": "data"
         },
         {
-          "input":[
+          "input": [
             "puts",
             0
           ],
-          "output":[
+          "output": [
             "itoa",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         },
         {
-          "input":[
+          "input": [
             "str",
             0
           ],
-          "output":[
+          "output": [
             "puts",
             0
           ],
-          "type":"data"
+          "type": "data"
         }
       ],
-      "data_inputs":[
-
+      "data_inputs": [],
+      "data_outputs": [],
+      "exec_inputs": [
+        ""
       ],
-      "name":"main",
-      "nodes":{
-        "entry":{
-          "data":{"data": [
-
-          ], "exec": [""]},
-          "location":[
-            46,
-            95
-          ],
-          "type":"lang:entry"
-        },
-        "exit":{
-          "data":{"data": [
-
-          ], "exec": [""]},
-          "location":[
-            860,
-            99
-          ],
-          "type":"lang:exit"
-        },
-        "itoa":{
-          "data":{
-            "code":"#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
-            "function":"doitoa"
+      "exec_outputs": [
+        ""
+      ],
+      "name": "main",
+      "nodes": {
+        "entry": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
           },
-          "location":[
-            668,
-            99
+          "location": [
+            174,
+            101
           ],
-          "type":"c:func"
+          "type": "lang:entry"
         },
-        "puts":{
-          "data":{
-            "code":"#include <stdio.h>\n int doputs(const char* arg) { \nreturn puts(arg);\n}",
-            "function":"doputs"
+        "exit": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
           },
-          "location":[
+          "location": [
+            979,
+            103
+          ],
+          "type": "lang:exit"
+        },
+        "itoa": {
+          "data": {
+            "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
+            "function": "doitoa"
+          },
+          "location": [
+            735,
+            105
+          ],
+          "type": "c:func"
+        },
+        "puts": {
+          "data": {
+            "code": "#include <stdio.h>\n int doputs(const char* arg) { \nreturn puts(arg);\n}",
+            "function": "doputs"
+          },
+          "location": [
             486,
             104
           ],
-          "type":"c:func"
+          "type": "c:func"
         },
-        "str":{
-          "data":"hello",
-          "location":[
-            207,
-            90
+        "str": {
+          "data": "hello",
+          "location": [
+            223,
+            235
           ],
-          "type":"lang:strliteral"
+          "type": "lang:strliteral"
         }
       },
-      "data_outputs":[
-
-      ],
-      "exec_outputs": [""],
-      "exec_inputs": [""],
-      "type":"function"
+      "type": "function"
     }
   ],
-  "name":"main"
+  "name": "main"
 }
