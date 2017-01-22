@@ -6,9 +6,9 @@
 #include "chig/Fwd.hpp"
 #include "chig/Result.hpp"
 
-#include <llvm/IR/Module.h>
-#include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/DIBuilder.h>
+#include <llvm/IR/DebugInfo.h>
+#include <llvm/IR/Module.h>
 
 namespace chig {
 
@@ -19,8 +19,7 @@ namespace chig {
 /// \param debugBuilder The debug builder to build debug info
 /// \return The result
 Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
-				llvm::DIBuilder& debugBuilder);
-
+                       llvm::DIBuilder& debugBuilder);
 }
 
-#endif // CHIG_FUNCTION_COMPILER_HPP
+#endif  // CHIG_FUNCTION_COMPILER_HPP

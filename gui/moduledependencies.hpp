@@ -17,7 +17,7 @@ class ModuleDependencies : public QListWidget {
 
 public:
 	ModuleDependencies(QWidget* parent = nullptr);
-	~ModuleDependencies()			   = default;
+	~ModuleDependencies()              = default;
 
 	chig::JsonModule* module() const { return mModule; }
 public slots:

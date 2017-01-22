@@ -38,7 +38,7 @@ struct ChigModule {
 	/// \param toFill The NodeType object to fill
 	/// \return The result
 	virtual Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
-									std::unique_ptr<NodeType>* toFill) = 0;
+	                                std::unique_ptr<NodeType>* toFill) = 0;
 
 	/// Get a DataType from the name
 	/// \param name The name of the type
@@ -91,7 +91,7 @@ struct ChigModule {
 private:
 	std::string mFullName;
 	std::string mName;
-	Context*	mContext;
+	Context*    mContext;
 
 	std::unordered_set<std::string> mDependencies;
 };

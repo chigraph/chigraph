@@ -36,7 +36,7 @@ struct Graph {
 	/// \param name The name of the type
 	/// \return A vector of NodeInstance
 	std::vector<NodeInstance*> nodesWithType(gsl::cstring_span<> module,
-											 gsl::cstring_span<> name) const noexcept;
+	                                         gsl::cstring_span<> name) const noexcept;
 
 	/// Add a node to the graph
 	/// \param type The type of the node
@@ -46,7 +46,7 @@ struct Graph {
 	/// \param toFill The NodeInstance object to fill into, optional
 	/// \return The Result.
 	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
-					  NodeInstance** toFill = nullptr);
+	                  NodeInstance** toFill = nullptr);
 
 	/// Get the context
 	/// \return The context
@@ -62,9 +62,9 @@ struct Graph {
 
 private:
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>
-		mNodes;  /// Storage for the nodes
+	    mNodes;  /// Storage for the nodes
 
-	Context*	   mContext;
+	Context*       mContext;
 	GraphFunction* mFunction;
 };
 }

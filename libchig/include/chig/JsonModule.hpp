@@ -37,7 +37,7 @@ struct JsonModule : public ChigModule {
 
 	// No copy or move -- pointer only
 	JsonModule(const JsonModule&) = delete;
-	JsonModule(JsonModule&&)	  = delete;
+	JsonModule(JsonModule&&)      = delete;
 	JsonModule& operator=(const JsonModule&) = delete;
 	JsonModule& operator=(JsonModule&&) = delete;
 
@@ -45,9 +45,9 @@ struct JsonModule : public ChigModule {
 	///////////////////////
 
 	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
-							std::unique_ptr<NodeType>* toFill) override;
+	                        std::unique_ptr<NodeType>* toFill) override;
 
-	DataType	  typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
+	DataType      typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
 	llvm::DIType* debugTypeFromName(gsl::cstring_span<> /*name*/) override { return nullptr; }
 	std::vector<std::string> nodeTypeNames() const override;  // TODO: implement
 
@@ -88,10 +88,10 @@ struct JsonModule : public ChigModule {
 	/// \param toFill The new GraphFunction, optional
 	/// \return True if a new function was created, false otherwise
 	bool createFunction(gsl::cstring_span<> name,
-						std::vector<std::pair<DataType, std::string>> dataIns,
-						std::vector<std::pair<DataType, std::string>> dataOuts,
-						std::vector<std::string> execIns, std::vector<std::string> execOuts,
-						GraphFunction** toFill = nullptr);
+	                    std::vector<std::pair<DataType, std::string>> dataIns,
+	                    std::vector<std::pair<DataType, std::string>> dataOuts,
+	                    std::vector<std::string> execIns, std::vector<std::string> execOuts,
+	                    GraphFunction** toFill = nullptr);
 
 	/// Remove a function from the module
 	/// \param name The name of the function to remove

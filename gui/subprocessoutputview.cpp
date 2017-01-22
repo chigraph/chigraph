@@ -14,11 +14,11 @@
 SubprocessOutputView::SubprocessOutputView(chig::JsonModule* module) : mModule(module) {
 	// compile!
 	std::unique_ptr<llvm::Module> llmod;
-	chig::Result				  res = module->context().compileModule(module->fullName(), &llmod);
+	chig::Result                  res = module->context().compileModule(module->fullName(), &llmod);
 
 	if (!res) {
 		KMessageBox::detailedError(this, "Failed to compile module",
-								   QString::fromStdString(res.dump()));
+		                           QString::fromStdString(res.dump()));
 
 		return;
 	}
@@ -40,17 +40,17 @@ SubprocessOutputView::SubprocessOutputView(chig::JsonModule* module) : mModule(m
 	setReadOnly(true);
 
 	connect(mProcess, &QProcess::readyReadStandardOutput, this,
-			[this] { appendPlainText(mProcess->readAllStandardOutput().constData()); });
+	        [this] { appendPlainText(mProcess->readAllStandardOutput().constData()); });
 
 	connect(mProcess, &QProcess::readyReadStandardOutput, this, [this] {
 		appendHtml("<span style='color:red'>" +
-				   QString(mProcess->readAllStandardOutput().constData()).toHtmlEscaped() +
-				   "</span>");
+		           QString(mProcess->readAllStandardOutput().constData()).toHtmlEscaped() +
+		           "</span>");
 	});
 
 	connect(mProcess,
-			static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this,
-			&SubprocessOutputView::processFinished);
+	        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this,
+	        &SubprocessOutputView::processFinished);
 }
 
 void SubprocessOutputView::cancelProcess() { mProcess->kill(); }
