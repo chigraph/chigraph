@@ -53,4 +53,4 @@ SubprocessOutputView::SubprocessOutputView(chig::JsonModule* module) : mModule(m
 	        &SubprocessOutputView::processFinished);
 }
 
-void SubprocessOutputView::cancelProcess() { mProcess->kill(); }
+void SubprocessOutputView::cancelProcess() { if(mProcess != nullptr) { mProcess->kill(); } }

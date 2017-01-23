@@ -1,108 +1,103 @@
 {
-  "dependencies":[
-    "lang",
-    "c"
+  "dependencies": [
+    "c",
+    "lang"
   ],
-  "graphs":[
+  "graphs": [
     {
-      "connections":[
+      "connections": [
         {
-          "input":[
+          "input": [
             "printf",
             0
           ],
-          "output":[
+          "output": [
             "exit",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         },
         {
-          "input":[
+          "input": [
             "cint",
             0
           ],
-          "output":[
+          "output": [
             "printf",
             0
           ],
-          "type":"data"
+          "type": "data"
         },
         {
-          "input":[
+          "input": [
             "entry",
             0
           ],
-          "output":[
-            "cint",
-            0
-          ],
-          "type":"exec"
-        },
-        {
-          "input":[
-            "cint",
-            0
-          ],
-          "output":[
+          "output": [
             "printf",
             0
           ],
-          "type":"exec"
+          "type": "exec"
         }
       ],
-      "data_inputs":[
-
+      "data_inputs": [],
+      "data_outputs": [],
+      "exec_inputs": [
+        ""
       ],
-      "name":"main",
-      "nodes":{
-        "cint":{
-          "data":42,
-          "location":[
-            -337.115203857422,
-            26.4559993743896
+      "exec_outputs": [
+        ""
+      ],
+      "name": "main",
+      "nodes": {
+        "cint": {
+          "data": 42,
+          "location": [
+            -345.145599365234,
+            190.387191772461
           ],
-          "type":"lang:const-int"
+          "type": "lang:const-int"
         },
-        "entry":{
-          "data":{"data": [
-			
-          ], "exec": [""]},
-          "location":[
-            -508.335998535156,
-            19.3680000305176
-          ],
-          "type":"lang:entry"
-        },
-        "exit":{
-          "data":{"data": [
-
-          ], "exec": [""]},
-          "location":[
-            204,
-            29
-          ],
-          "type":"lang:exit"
-        },
-        "printf":{
-          "data":{
-            "code":"#include <stdio.h> \n void printint(int i){printf(\"%i\", i); }",
-            "function":"printint"
+        "entry": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
           },
-          "location":[
+          "location": [
+            -299.872009277344,
+            17.2208003997803
+          ],
+          "type": "lang:entry"
+        },
+        "exit": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            171,
+            61
+          ],
+          "type": "lang:exit"
+        },
+        "printf": {
+          "data": {
+            "code": "#include <stdio.h> \n void printint(int i){printf(\"%i\", i); }",
+            "function": "printint"
+          },
+          "location": [
             -54.3120002746582,
             33.9119987487793
           ],
-          "type":"c:func"
+          "type": "c:func"
         }
       },
-      "data_outputs":[
-
-      ],
-      "exec_inputs": [""],
-      "exec_outputs": [""],
-      "type":"function"
+      "type": "function"
     }
   ],
-  "name":"main"
+  "name": "main"
 }

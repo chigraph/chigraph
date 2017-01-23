@@ -1,6 +1,6 @@
 #include "chig/Result.hpp"
 
-namespace chig {
+namespace {
 
 /// \internal
 std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
@@ -34,6 +34,10 @@ std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 	}
 	return ret;
 }
+
+} // anon namespace
+
+namespace chig {
 
 std::string Result::dump() const {
 	std::string ret;

@@ -38,13 +38,6 @@ TEST_CASE("LangModule", "[module]") {
 			REQUIRE(!!res);
 			REQUIRE(test == DataType(mod, "double", llvm::Type::getDoubleTy(c.llvmContext())));
 
-			REQUIRE(c.moduleByName("lang")->nodeTypeNames() ==
-			        std::vector<std::string>(
-			            {"const-bool", "const-float", "const-int", "entry", "exit", "floattoint",
-			             "float/float", "float*float", "float-float", "float+float", "i32/i32",
-			             "strliteral", "i32*i32", "inttofloat", "i32-i32", "i32+i32", "if"}));
-			REQUIRE(c.moduleByName("lang")->typeNames() ==
-			        std::vector<std::string>({"i32", "i1", "double", "i8*"}));
 		}
 
 		THEN(

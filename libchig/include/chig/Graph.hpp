@@ -5,7 +5,7 @@
 
 #include <unordered_map>
 
-#include "chig/Context.hpp"
+#include "chig/Fwd.hpp"
 #include "chig/NodeInstance.hpp"
 #include "chig/Result.hpp"
 #include "chig/ToString.hpp"
@@ -18,7 +18,7 @@ namespace chig {
 /// Normally not used by the user, used through GraphFunction
 struct Graph {
 	/// Default constructor, creates an empty graph
-	Graph() {}
+	Graph(GraphFunction& func);
 
 	/// Normal constructor (don't call this, let GraphFunction call it)
 	/// \param func The context object

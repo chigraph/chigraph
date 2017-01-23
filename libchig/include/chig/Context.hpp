@@ -72,6 +72,11 @@ struct Context {
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
 	/// \return True if the module was added (it didn't exist before)
 	bool addModule(std::unique_ptr<ChigModule> modToAdd) noexcept;
+	
+	/// Unloads a module
+	/// \param fullName The full name of the module to unload
+	/// \return True if a module was unloaded
+	bool unloadModule(gsl::cstring_span<> fullName);
 
 	/// Gets a DataType from a module
 	/// \param module The name of the module, "lang" if nullptr

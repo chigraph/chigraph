@@ -1,5 +1,6 @@
 {
   "dependencies": [
+    "intprinter",
     "lang",
     "c"
   ],
@@ -12,52 +13,52 @@
             0
           ],
           "output": [
-            "puts",
+            "{9f0bfa5e-3a81-4a7f-bcc6-c3a0e7e3e8c7}",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "itoa",
+            "{9f0bfa5e-3a81-4a7f-bcc6-c3a0e7e3e8c7}",
             0
           ],
           "output": [
-            "exit",
+            "{bdd47573-061d-4890-90b4-eeb33bc951cb}",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "puts",
+            "{97066280-4950-4e82-a86f-b47c3426ac22}",
             0
           ],
           "output": [
-            "itoa",
+            "{9f0bfa5e-3a81-4a7f-bcc6-c3a0e7e3e8c7}",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "puts",
+            "{8cf4d701-6aba-44b9-9b60-1e7877ff1343}",
             0
           ],
           "output": [
-            "itoa",
+            "{97066280-4950-4e82-a86f-b47c3426ac22}",
             0
           ],
-          "type": "exec"
+          "type": "data"
         },
         {
           "input": [
-            "str",
+            "{aacafb6e-93c7-4461-9bd6-2728f8079d44}",
             0
           ],
           "output": [
-            "puts",
-            0
+            "{97066280-4950-4e82-a86f-b47c3426ac22}",
+            1
           ],
           "type": "data"
         }
@@ -80,12 +81,44 @@
             ]
           },
           "location": [
-            174,
-            101
+            213,
+            109
           ],
           "type": "lang:entry"
         },
-        "exit": {
+        "{8cf4d701-6aba-44b9-9b60-1e7877ff1343}": {
+          "data": 1024,
+          "location": [
+            59,
+            219
+          ],
+          "type": "lang:const-int"
+        },
+        "{97066280-4950-4e82-a86f-b47c3426ac22}": {
+          "data": null,
+          "location": [
+            352,
+            242
+          ],
+          "type": "lang:i32/i32"
+        },
+        "{9f0bfa5e-3a81-4a7f-bcc6-c3a0e7e3e8c7}": {
+          "data": null,
+          "location": [
+            516,
+            115
+          ],
+          "type": "intprinter:printint"
+        },
+        "{aacafb6e-93c7-4461-9bd6-2728f8079d44}": {
+          "data": 16,
+          "location": [
+            61,
+            354
+          ],
+          "type": "lang:const-int"
+        },
+        "{bdd47573-061d-4890-90b4-eeb33bc951cb}": {
           "data": {
             "data": [],
             "exec": [
@@ -93,40 +126,10 @@
             ]
           },
           "location": [
-            979,
-            103
+            753,
+            112
           ],
           "type": "lang:exit"
-        },
-        "itoa": {
-          "data": {
-            "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
-            "function": "doitoa"
-          },
-          "location": [
-            735,
-            105
-          ],
-          "type": "c:func"
-        },
-        "puts": {
-          "data": {
-            "code": "#include <stdio.h>\n int doputs(const char* arg) { \nreturn puts(arg);\n}",
-            "function": "doputs"
-          },
-          "location": [
-            486,
-            104
-          ],
-          "type": "c:func"
-        },
-        "str": {
-          "data": "hello",
-          "location": [
-            223,
-            235
-          ],
-          "type": "lang:strliteral"
         }
       },
       "type": "function"

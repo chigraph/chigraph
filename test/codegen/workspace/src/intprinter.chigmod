@@ -1,0 +1,340 @@
+{
+  "dependencies": [
+    "c",
+    "lang"
+  ],
+  "graphs": [
+    {
+      "connections": [
+        {
+          "input": [
+            "{d6a93602-9d43-44d0-97c3-70c21d4a774c}",
+            0
+          ],
+          "output": [
+            "{bad8a6cf-de69-4b1d-93c9-11eed7b84d0a}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{d6a93602-9d43-44d0-97c3-70c21d4a774c}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{d6a93602-9d43-44d0-97c3-70c21d4a774c}",
+            0
+          ],
+          "type": "exec"
+        }
+      ],
+      "data_inputs": [
+        {
+          "in": "lang:i32"
+        }
+      ],
+      "data_outputs": [],
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "name": "printint",
+      "nodes": {
+        "entry": {
+          "data": {
+            "data": [
+              {
+                "in": "lang:i32"
+              }
+            ],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            224,
+            202
+          ],
+          "type": "lang:entry"
+        },
+        "{bad8a6cf-de69-4b1d-93c9-11eed7b84d0a}": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            690.799987792969,
+            196.199996948242
+          ],
+          "type": "lang:exit"
+        },
+        "{d6a93602-9d43-44d0-97c3-70c21d4a774c}": {
+          "data": {
+            "code": "#include <stdio.h> \n\nvoid intprinter_printint(int val) { \n  printf(\"%i\", val);\n}",
+            "function": "intprinter_printint"
+          },
+          "location": [
+            467,
+            193
+          ],
+          "type": "c:func"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "connections": [
+        {
+          "input": [
+            "{7249bd0c-dd3c-452f-b122-8154cbed7a49}",
+            0
+          ],
+          "output": [
+            "{cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{b83b78df-d5c7-44a4-bfb3-3e624d636863}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "{b83b78df-d5c7-44a4-bfb3-3e624d636863}",
+            0
+          ],
+          "output": [
+            "{cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "{b83b78df-d5c7-44a4-bfb3-3e624d636863}",
+            1
+          ],
+          "output": [
+            "{c99bebb3-7a41-4d42-9b5d-f7e2f82871c1}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{b83b78df-d5c7-44a4-bfb3-3e624d636863}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{d3c52688-e910-47ec-9715-504704c37a90}",
+            0
+          ],
+          "output": [
+            "{c99bebb3-7a41-4d42-9b5d-f7e2f82871c1}",
+            0
+          ],
+          "type": "data"
+        }
+      ],
+      "data_inputs": [
+        {
+          "": "lang:i1"
+        }
+      ],
+      "data_outputs": [],
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "name": "printbool",
+      "nodes": {
+        "entry": {
+          "data": {
+            "data": [
+              {
+                "": "lang:i1"
+              }
+            ],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            215,
+            155
+          ],
+          "type": "lang:entry"
+        },
+        "{7249bd0c-dd3c-452f-b122-8154cbed7a49}": {
+          "data": 1,
+          "location": [
+            727,
+            172
+          ],
+          "type": "lang:const-int"
+        },
+        "{b83b78df-d5c7-44a4-bfb3-3e624d636863}": {
+          "data": null,
+          "location": [
+            400,
+            169
+          ],
+          "type": "lang:if"
+        },
+        "{c99bebb3-7a41-4d42-9b5d-f7e2f82871c1}": {
+          "data": null,
+          "location": [
+            978,
+            240
+          ],
+          "type": "intprinter:printint"
+        },
+        "{cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe}": {
+          "data": null,
+          "location": [
+            937,
+            20
+          ],
+          "type": "intprinter:printint"
+        },
+        "{d3c52688-e910-47ec-9715-504704c37a90}": {
+          "data": 0,
+          "location": [
+            735,
+            327
+          ],
+          "type": "lang:const-int"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "connections": [
+        {
+          "input": [
+            "{856cba7e-59b5-4172-9b36-783581cde081}",
+            0
+          ],
+          "output": [
+            "{a6427f85-d271-4631-81d5-692b10d3c872}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{856cba7e-59b5-4172-9b36-783581cde081}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{856cba7e-59b5-4172-9b36-783581cde081}",
+            0
+          ],
+          "type": "exec"
+        }
+      ],
+      "data_inputs": [
+        {
+          "": "lang:float"
+        }
+      ],
+      "data_outputs": [],
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "name": "printfloat",
+      "nodes": {
+        "entry": {
+          "data": {
+            "data": [
+              {
+                "": "lang:float"
+              }
+            ],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            365,
+            233
+          ],
+          "type": "lang:entry"
+        },
+        "{856cba7e-59b5-4172-9b36-783581cde081}": {
+          "data": {
+            "code": "#include <stdio.h>\n\nvoid intprinter_printfloat(float f) {\n  printf(\"%f\", f);\n}",
+            "function": "intprinter_printfloat"
+          },
+          "location": [
+            612,
+            246
+          ],
+          "type": "c:func"
+        },
+        "{a6427f85-d271-4631-81d5-692b10d3c872}": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            801,
+            263
+          ],
+          "type": "lang:exit"
+        }
+      },
+      "type": "function"
+    }
+  ],
+  "name": "intprinter"
+}

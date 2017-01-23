@@ -23,6 +23,12 @@ public:
 public slots:
 	void setModule(chig::JsonModule* mod) {
 		clear();
+		for(const auto& dep : mod->dependencies()) {
+			if(dep == "c" || dep == "lang") {
+				continue;
+			}
+			addItem(QString::fromStdString(dep));
+		}
 		addNewDepItem();
 		mModule = mod;
 	}
@@ -35,7 +41,7 @@ private:
 
 	chig::JsonModule* mModule = nullptr;
 
-	QListWidgetItem* mAddDepItem;
+	QListWidgetItem* mAddDepItem = nullptr;
 };
 
 #endif  // CHIGGUI_MODULE_DEPENDENCIES_HPP
