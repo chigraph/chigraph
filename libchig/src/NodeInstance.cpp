@@ -28,7 +28,8 @@ NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
 	  mX{other.x()},
 	  mY{other.y()},
 	  mId{std::move(id)},
-	  mContext{&other.context()} {
+	  mContext{&other.context()},
+	  mFunction{&other.function()} {
 	mType->mNodeInstance = this;
 
 	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
@@ -88,11 +89,16 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 
 Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
 				   size_t rhsConnID) {
-	Expects(&lhs.function() == &rhs.function());
 	
 	
 	Result res = {};
 
+	if(&lhs.function() != &rhs.function()) {
+		res.addEntry("EUKN", "Cannot connect two nodes of different graphs", {}); // TODO: better errors
+		return res;
+	}
+	
+	
 	// make sure the connection exists
 	// the input to the connection is the output to the node
 	if (lhsConnID >= lhs.outputDataConnections.size()) {
@@ -148,10 +154,14 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
 
 Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
 				   size_t rhsConnID) {
-	Expects(&lhs.function() == &rhs.function());
 	
 	Result res = {};
 
+	if(&lhs.function() != &rhs.function()) {
+		res.addEntry("EUKN", "Cannot connect two nodes of different graphs", {}); // TODO: better errors
+		return res;
+	}
+	
 	// make sure the connection exists
 	if (lhsConnID >= lhs.outputExecConnections.size()) {
 		auto execOutputs = nlohmann::json::array();
@@ -189,10 +199,14 @@ Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
 }
 
 Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
-	Expects(&lhs.function() == &rhs.function());
-	
+		
 	Result res = {};
 
+	if(&lhs.function() != &rhs.function()) {
+		res.addEntry("EUKN", "Cannot disconect two nodes of different graphs", {}); // TODO: better errors
+		return res;
+	}
+	
 	if (lhsConnID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
 		for (auto& output : lhs.type().dataOutputs()) {
