@@ -1,0 +1,10 @@
+digraph "chig::NodeType::pure"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node131 [label="chig::NodeType::pure",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node131 -> Node132 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node132 [label="chig::codegenNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad2853d231b924a6ae29a1c1f889d2eb3"];
+}

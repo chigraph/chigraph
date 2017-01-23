@@ -18,7 +18,7 @@ struct NodeInstance {
 	/// \param posY The Y location of the node
 	/// \param nodeID The unique ID for the node
 	NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX, float posY,
-				 gsl::cstring_span<> nodeID);
+	             gsl::cstring_span<> nodeID);
 
 	/// Move constructor
 	NodeInstance(NodeInstance&&) = default;
@@ -86,7 +86,7 @@ private:
 
 	std::string mId;
 
-	Context*	   mContext;
+	Context*       mContext;
 	GraphFunction* mFunction = nullptr;
 };
 
@@ -100,8 +100,7 @@ private:
 /// \param rhs The node to the right, that takes in the data as a parameter
 /// \param rhsConnID The ID of data input in \c rhs
 /// \return The result
-Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
-				   size_t rhsConnID);
+Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID);
 
 /// Connects two nodes' exec connections
 /// \param lhs The node to the left, the node outputting the connections
@@ -109,11 +108,10 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
 /// \param rhs The node to the right, that takes in the exec as a parameter
 /// \param rhsConnID The ID of exec input in \c rhs
 /// \return The result
-Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
-				   size_t rhsConnID);
+Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID);
 
 /// Disconnect a data connection
-/// \param lhs The left hand node	
+/// \param lhs The left hand node
 /// \param lhsConnID The ID of the data connection to disconnect
 /// \param rhs The node that the data port is connected to
 /// \return The result

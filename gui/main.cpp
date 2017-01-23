@@ -12,14 +12,14 @@ int main(int argc, char** argv) {
 	KLocalizedString::setApplicationDomain("chiggui");
 
 	KAboutData aboutData(QStringLiteral("chiggui"), i18n("Chigraph GUI"), QStringLiteral("1.0"),
-						 i18n("Chigraph Graphical User Interface"), KAboutLicense::GPL,
-						 i18n("(c) 2016 Russell Greene"), QStringLiteral(""),
-						 QStringLiteral("https://github.com/russelltg/chigraph"),
-						 QStringLiteral("https://github.com/russelltg/chigraph/issues"));
+	                     i18n("Chigraph Graphical User Interface"), KAboutLicense::GPL,
+	                     i18n("(c) 2016 Russell Greene"), QStringLiteral(""),
+	                     QStringLiteral("https://github.com/russelltg/chigraph"),
+	                     QStringLiteral("https://github.com/russelltg/chigraph/issues"));
 
 	aboutData.addAuthor(
-		i18n("Russell Greene"), i18n("Programmer"), QStringLiteral("russellgreene8@gmail.com"),
-		QStringLiteral("https://github.com/russelltg"), QStringLiteral("russelltg"));
+	    i18n("Russell Greene"), i18n("Programmer"), QStringLiteral("russellgreene8@gmail.com"),
+	    QStringLiteral("https://github.com/russelltg"), QStringLiteral("russelltg"));
 
 	KAboutData::setApplicationData(aboutData);
 

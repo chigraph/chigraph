@@ -23,7 +23,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 		REQUIRE(jmod != nullptr);
 
 		GraphFunction* func;
-		bool		   created = jmod->createFunction("hello", {}, {}, {""}, {""}, &func);
+		bool           created = jmod->createFunction("hello", {}, {}, {""}, {""}, &func);
 		REQUIRE(created == true);
 		REQUIRE(func != nullptr);
 
@@ -56,11 +56,11 @@ TEST_CASE("JsonSerializer", "[json]") {
 
 		WHEN("We create some nodes and try to dump json") {
 			std::vector<std::pair<DataType, std::string>> inputs = {
-				{lmod->typeFromName("i1"), "in1"}};
+			    {lmod->typeFromName("i1"), "in1"}};
 
 			std::unique_ptr<NodeType> toFill;
-			Result					  res = c.nodeTypeFromModule(
-				"lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
+			Result                    res = c.nodeTypeFromModule(
+			    "lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
 			REQUIRE(!!res);
 			NodeInstance* entry;
 			res += func->insertNode(std::move(toFill), 32, 32, "entry", &entry);

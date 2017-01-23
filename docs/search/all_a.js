@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['makepure',['makePure',['../structchig_1_1NodeType.html#a6a5ac2f06d651e5dd6c010f1626d2baf',1,'chig::NodeType']]],
   ['manglefunctionname',['mangleFunctionName',['../namespacechig.html#a2a1a14d23516a3c3d5df010cb9d14edf',1,'chig']]],
   ['modifydatainput',['modifyDataInput',['../structchig_1_1GraphFunction.html#a452c6ff0834f1acdb6740267ef468250',1,'chig::GraphFunction']]],
   ['modifydataoutput',['modifyDataOutput',['../structchig_1_1GraphFunction.html#a3765dc838314ff13457ac933b043f711',1,'chig::GraphFunction']]],

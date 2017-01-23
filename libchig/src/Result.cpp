@@ -1,7 +1,7 @@
 #include "chig/Result.hpp"
 
 namespace chig {
-	
+
 /// \internal
 std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 	std::string indentString(indentLevel * 2, ' ');
@@ -40,7 +40,7 @@ std::string Result::dump() const {
 	if (result_json.size() != 0) {
 		for (auto error : result_json) {
 			if (error.find("errorcode") == error.end() || !error["errorcode"].is_string() ||
-				error.find("overview") == error.end() || !error["overview"].is_string()) {
+			    error.find("overview") == error.end() || !error["overview"].is_string()) {
 				return "";
 			}
 			std::string ec   = error["errorcode"];

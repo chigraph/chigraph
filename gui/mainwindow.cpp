@@ -55,11 +55,11 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	docker->setWidget(functionsPane);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
 	connect(functionsPane, &FunctionsPane::functionSelected, this,
-			&MainWindow::newFunctionSelected);
+	        &MainWindow::newFunctionSelected);
 	connect(this, &MainWindow::newFunctionCreated, functionsPane,
-			[functionsPane](chig::GraphFunction* func) {
-				functionsPane->updateModule(&func->module());
-			});
+	        [functionsPane](chig::GraphFunction* func) {
+		        functionsPane->updateModule(&func->module());
+		    });
 
 	// setup module browser
 	docker = new QDockWidget(i18n("Modules"), this);
@@ -70,8 +70,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(this, &MainWindow::workspaceOpened, moduleBrowser, &ModuleBrowser::loadWorkspace);
 	connect(moduleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
 	connect(
-		this, &MainWindow::newModuleCreated, moduleBrowser,
-		[moduleBrowser](chig::JsonModule* mod) { moduleBrowser->loadWorkspace(mod->context()); });
+	    this, &MainWindow::newModuleCreated, moduleBrowser,
+	    [moduleBrowser](chig::JsonModule* mod) { moduleBrowser->loadWorkspace(mod->context()); });
 
 	mFunctionTabs = new QTabWidget(this);
 	mFunctionTabs->setMovable(true);
@@ -157,21 +157,21 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(runAction, &QAction::triggered, this, [this, outputView, cancelAction] {
 		auto view = new SubprocessOutputView(currentModule());
 		connect(view, &SubprocessOutputView::processFinished, this,
-				[outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
-					QString statusStr =
-						QString(" (%1, %2)")
-							.arg(exitStatus == QProcess::NormalExit ? "exited" : "crashed",
-								 QString::number(exitCode));
-					outputView->setTabText(
-						outputView->indexOf(view),
-						QString::fromStdString(view->module()->fullName()) + statusStr);
+		        [outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
+			        QString statusStr =
+			            QString(" (%1, %2)")
+			                .arg(exitStatus == QProcess::NormalExit ? "exited" : "crashed",
+			                     QString::number(exitCode));
+			        outputView->setTabText(
+			            outputView->indexOf(view),
+			            QString::fromStdString(view->module()->fullName()) + statusStr);
 
-					// disable it
-					if (outputView->currentWidget() == view) { cancelAction->setEnabled(false); }
-				});
+			        // disable it
+			        if (outputView->currentWidget() == view) { cancelAction->setEnabled(false); }
+			    });
 		// add the tab to the beginning
 		int newTabID = outputView->insertTab(
-			0, view, QString::fromStdString(currentModule()->fullName()) + i18n(" (running)"));
+		    0, view, QString::fromStdString(currentModule()->fullName()) + i18n(" (running)"));
 		outputView->setCurrentIndex(newTabID);
 		cancelAction->setEnabled(true);
 	});
@@ -208,14 +208,14 @@ void MainWindow::save() {
 		chig::Result res = mModule->saveToDisk();
 		if (!res) {
 			KMessageBox::detailedError(this, i18n("Failed to save module!"),
-									   QString::fromStdString(res.dump()));
+			                           QString::fromStdString(res.dump()));
 		}
 	}
 }
 
 void MainWindow::openWorkspaceDialog() {
 	QString workspace = QFileDialog::getOpenFileName(
-		this, i18n("Chigraph Workspace"), QDir::homePath(), {}, nullptr, QFileDialog::ShowDirsOnly);
+	    this, i18n("Chigraph Workspace"), QDir::homePath(), {}, nullptr, QFileDialog::ShowDirsOnly);
 
 	if (workspace == "") { return; }
 
@@ -234,18 +234,19 @@ void MainWindow::openWorkspace(const QUrl& url) {
 
 void MainWindow::openModule(const QString& fullName) {
 	chig::ChigModule* cmod;
-	chig::Result	  res = context().loadModule(fullName.toStdString(), &cmod);
+	chig::Result      res = context().loadModule(fullName.toStdString(), &cmod);
 
 	if (!res) {
-		KMessageBox::detailedError(this, R"(Failed to load JsonModule from file ")" + fullName + R"(")",
-								   QString::fromStdString(res.dump()), "Error Loading");
+		KMessageBox::detailedError(this,
+		                           R"(Failed to load JsonModule from file ")" + fullName + R"(")",
+		                           QString::fromStdString(res.dump()), "Error Loading");
 
 		return;
 	}
 
 	mModule = dynamic_cast<chig::JsonModule*>(cmod);
-    Expects(mModule != nullptr);
-    
+	Expects(mModule != nullptr);
+
 	setWindowTitle(QString::fromStdString(mModule->fullName()));
 
 	// call signal
@@ -256,7 +257,7 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func) {
 	Expects(func);
 
 	QString qualifiedFunctionName =
-		QString::fromStdString(func->module().fullName() + ":" + func->name());
+	    QString::fromStdString(func->module().fullName() + ":" + func->name());
 
 	// see if it's already open
 	auto funcViewIter = mOpenFunctions.find(qualifiedFunctionName);
@@ -266,8 +267,8 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func) {
 	}
 	// if it's not already open, we'll have to create our own
 
-	auto view							  = new FunctionView(func, mFunctionTabs);
-	int  idx							  = mFunctionTabs->addTab(view, qualifiedFunctionName);
+	auto view                             = new FunctionView(func, mFunctionTabs);
+	int  idx                              = mFunctionTabs->addTab(view, qualifiedFunctionName);
 	mOpenFunctions[qualifiedFunctionName] = view;
 	mFunctionTabs->setTabText(idx, qualifiedFunctionName);
 	mFunctionTabs->setCurrentWidget(view);
@@ -304,7 +305,7 @@ void MainWindow::newModule() {
 	// can't do this without a workspace
 	if (context().workspacePath().empty()) {
 		KMessageBox::error(this, i18n("Cannot create a module without a workspace to place it in"),
-						   i18n("Failed to create module"));
+		                   i18n("Failed to create module"));
 		return;
 	}
 

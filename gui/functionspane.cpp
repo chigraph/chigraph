@@ -13,10 +13,10 @@
 class FunctionListItem : public QListWidgetItem {
 public:
 	FunctionListItem(chig::GraphFunction* func)
-		: QListWidgetItem(QIcon::fromTheme(QStringLiteral("code-class")),
-						  QString::fromStdString(func->module().fullName() + ":" + func->name()),
-						  nullptr, QListWidgetItem::UserType),
-		  mFunc{func} {}
+	    : QListWidgetItem(QIcon::fromTheme(QStringLiteral("code-class")),
+	                      QString::fromStdString(func->module().fullName() + ":" + func->name()),
+	                      nullptr, QListWidgetItem::UserType),
+	      mFunc{func} {}
 
 	chig::GraphFunction* mFunc;
 };
@@ -38,19 +38,19 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 
 		QMenu contextMenu;
 		contextMenu.addAction(QIcon::fromTheme(QStringLiteral("edit-delete")), i18n("Delete"),
-							  [this, p, funcItem] {
+		                      [this, p, funcItem] {
 
-								  Expects(funcItem->type() == QListWidgetItem::UserType);
+			                      Expects(funcItem->type() == QListWidgetItem::UserType);
 
-								  auto casted = dynamic_cast<FunctionListItem*>(funcItem);
-								  if (casted == nullptr) { return; }
+			                      auto casted = dynamic_cast<FunctionListItem*>(funcItem);
+			                      if (casted == nullptr) { return; }
 
-								  chig::JsonModule* mod = &casted->mFunc->module();
-								  casted->mFunc->module().removeFunction(casted->mFunc);
+			                      chig::JsonModule* mod = &casted->mFunc->module();
+			                      casted->mFunc->module().removeFunction(casted->mFunc);
 
-								  updateModule(mod);
+			                      updateModule(mod);
 
-							  });  // TODO: shortcut
+			                  });  // TODO: shortcut
 		contextMenu.exec(global);
 	});
 }
@@ -67,10 +67,8 @@ void FunctionsPane::updateModule(chig::JsonModule* mod) {
 void FunctionsPane::selectItem(QListWidgetItem* newitem) {
 	Expects(newitem->type() == QListWidgetItem::UserType);
 
-    auto casted = dynamic_cast<FunctionListItem*>(newitem);
-    if(casted == nullptr) {
-        return;
-    }
-    
+	auto casted = dynamic_cast<FunctionListItem*>(newitem);
+	if (casted == nullptr) { return; }
+
 	functionSelected(casted->mFunc);
 }

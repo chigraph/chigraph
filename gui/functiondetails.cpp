@@ -19,7 +19,7 @@ FunctionDetails::FunctionDetails(QWidget* parent) : QWidget(parent) {
 
 void FunctionDetails::loadFunction(FunctionView* func) {
 	mFuncView = func;
-	mFunc	 = func->function();
+	mFunc     = func->function();
 
 	ins->clear();
 	outs->clear();
@@ -77,7 +77,8 @@ void FunctionDetails::inputDeleted(int idx) {
 	if (entry == nullptr) { return; }
 	mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(entry));
 }
-void FunctionDetails::outputChanged(int idx, const chig::DataType& newType, const QString& newName) {
+void FunctionDetails::outputChanged(int idx, const chig::DataType& newType,
+                                    const QString& newName) {
 	mFunc->modifyDataOutput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
 
 	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {

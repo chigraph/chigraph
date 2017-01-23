@@ -82,36 +82,36 @@ std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
 
 		if (lgraph["name"] != rgraph["name"]) {
 			return "graph name in graph #" + std::to_string(iter) + " not equal; serialized: " +
-				   lgraph["name"].dump(-1) + "  original: " + rgraph["name"].dump(-1);
+			       lgraph["name"].dump(-1) + "  original: " + rgraph["name"].dump(-1);
 		}
 		if (lgraph["nodes"].dump(-1) != rgraph["nodes"].dump(-1)) {
 			return "graph nodes in graph #" + std::to_string(iter) +
-				   " not equal; \nserialized: \n" + lgraph["nodes"].dump(-1) + "\n\noriginal:\n" +
-				   rgraph["nodes"].dump(-1);
+			       " not equal; \nserialized: \n" + lgraph["nodes"].dump(-1) + "\n\noriginal:\n" +
+			       rgraph["nodes"].dump(-1);
 		}
 		if (lgraph["type"] != rgraph["type"]) {
 			return "graph name in graph #" + std::to_string(iter) + "not equal; serialized: " +
-				   lgraph["type"].dump(-1) + "  original: " + rgraph["type"].dump(-1);
+			       lgraph["type"].dump(-1) + "  original: " + rgraph["type"].dump(-1);
 		}
 		if (lgraph["data_inputs"] != rgraph["data_inputs"]) {
 			return "graph data inputs in graph #" + std::to_string(iter) +
-				   "not equal; serialized: " + lgraph["inputs"].dump(-1) + "  original: " +
-				   rgraph["inputs"].dump(-1);
+			       "not equal; serialized: " + lgraph["inputs"].dump(-1) + "  original: " +
+			       rgraph["inputs"].dump(-1);
 		}
 		if (lgraph["data_outputs"] != rgraph["data_outputs"]) {
 			return "graph data outputs in graph #" + std::to_string(iter) +
-				   "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " +
-				   rgraph["outputs"].dump(-1);
+			       "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " +
+			       rgraph["outputs"].dump(-1);
 		}
 		if (lgraph["exec_inputs"] != rgraph["exec_inputs"]) {
 			return "graph exec inputs in graph #" + std::to_string(iter) +
-				   "not equal; serialized: " + lgraph["inputs"].dump(-1) + "  original: " +
-				   rgraph["inputs"].dump(-1);
+			       "not equal; serialized: " + lgraph["inputs"].dump(-1) + "  original: " +
+			       rgraph["inputs"].dump(-1);
 		}
 		if (lgraph["exec_outputs"] != rgraph["exec_outputs"]) {
 			return "graph exec outputs in graph #" + std::to_string(iter) +
-				   "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " +
-				   rgraph["outputs"].dump(-1);
+			       "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " +
+			       rgraph["outputs"].dump(-1);
 		}
 	}
 
@@ -158,9 +158,9 @@ int main(int argc, char** argv) {
 
 	int expectedreturncode = j["expectedret"];
 
-	auto		 modfile = moduleDir / "main.chigmod";
+	auto         modfile = moduleDir / "main.chigmod";
 	fs::ifstream inmodfile(modfile);
-	json		 chigmodule;
+	json         chigmodule;
 	inmodfile >> chigmodule;
 
 	// chig compile + lli
@@ -168,14 +168,14 @@ int main(int argc, char** argv) {
 		std::string generatedir, chigstderr;
 		// go through chig compile
 		Process chigexe(
-			(fs::current_path() / "chig compile main.chigmod").string(), moduleDir.string(),
-			[&generatedir](const char* bytes, size_t n) { generatedir.append(bytes, n); },
-			[&chigstderr](const char* bytes, size_t n) { chigstderr.append(bytes, n); });
+		    (fs::current_path() / "chig compile main.chigmod").string(), moduleDir.string(),
+		    [&generatedir](const char* bytes, size_t n) { generatedir.append(bytes, n); },
+		    [&chigstderr](const char* bytes, size_t n) { chigstderr.append(bytes, n); });
 
 		// check stderr and return code
 		if (chigexe.get_exit_status() != 0) {
 			std::cerr << "Failed to generate module with chig compile: \n"
-					  << chigstderr << std::endl;
+			          << chigstderr << std::endl;
 			return 1;
 		}
 
@@ -183,9 +183,9 @@ int main(int argc, char** argv) {
 
 		// now go through lli
 		Process lliexe(CHIG_LLI_EXE, "",
-					   [&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
-					   [&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); },
-					   true);
+		               [&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
+		               [&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); },
+		               true);
 		lliexe.write(generatedir);
 		lliexe.close_stdin();
 
@@ -193,27 +193,27 @@ int main(int argc, char** argv) {
 
 		if (retcodelli != expectedreturncode) {
 			std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was "
-					  << expectedreturncode << std::endl
-					  << "stdout: \"" << llistdout << "\"" << std::endl
-					  << "stderr: \"" << llistderr << "\"" << std::endl;
+			          << expectedreturncode << std::endl
+			          << "stdout: \"" << llistdout << "\"" << std::endl
+			          << "stderr: \"" << llistderr << "\"" << std::endl;
 
 			return 1;
 		}
 
 		if (llistdout != expectedcout) {
 			std::cerr << "(lli ll) Unexpected stdout: " << llistdout << " expected was "
-					  << expectedcout << std::endl
-					  << "retcode: \"" << retcodelli << "\"" << std::endl
-					  << "stderr: \"" << llistderr << "\"" << std::endl;
+			          << expectedcout << std::endl
+			          << "retcode: \"" << retcodelli << "\"" << std::endl
+			          << "stderr: \"" << llistderr << "\"" << std::endl;
 
 			return 1;
 		}
 
 		if (llistderr != expectedcerr) {
 			std::cerr << "(lli ll) Unexpected stderr: " << stderr << " expected was "
-					  << expectedcerr << std::endl
-					  << "retcode: \"" << retcodelli << "\"" << std::endl
-					  << "stdout: \"" << llistdout << "\"" << std::endl;
+			          << expectedcerr << std::endl
+			          << "retcode: \"" << retcodelli << "\"" << std::endl
+			          << "stdout: \"" << llistdout << "\"" << std::endl;
 
 			return 1;
 		}
@@ -225,35 +225,35 @@ int main(int argc, char** argv) {
 
 		// this program is to be started where chigc is
 		Process chigexe(
-			(fs::current_path() / "chig run main.chigmod").string(), moduleDir.string(),
-			[&generatedstdout](const char* bytes, size_t n) { generatedstdout.append(bytes, n); },
-			[&generatedstderr](const char* bytes, size_t n) { generatedstderr.append(bytes, n); });
+		    (fs::current_path() / "chig run main.chigmod").string(), moduleDir.string(),
+		    [&generatedstdout](const char* bytes, size_t n) { generatedstdout.append(bytes, n); },
+		    [&generatedstderr](const char* bytes, size_t n) { generatedstderr.append(bytes, n); });
 
 		int retcode = chigexe.get_exit_status();
 
 		if (retcode != expectedreturncode) {
 			std::cerr << "(chig run) Unexpected retcode: " << retcode << " expected was "
-					  << expectedreturncode << std::endl
-					  << "stdout: \"" << generatedstdout << "\"" << std::endl
-					  << "stderr: \"" << generatedstderr << "\"" << std::endl;
+			          << expectedreturncode << std::endl
+			          << "stdout: \"" << generatedstdout << "\"" << std::endl
+			          << "stderr: \"" << generatedstderr << "\"" << std::endl;
 
 			return 1;
 		}
 
 		if (generatedstdout != expectedcout) {
 			std::cerr << "(chig run) Unexpected stdout: " << generatedstdout << " expected was "
-					  << expectedcout << std::endl
-					  << "retcode: \"" << retcode << "\"" << std::endl
-					  << "stderr: \"" << generatedstderr << "\"" << std::endl;
+			          << expectedcout << std::endl
+			          << "retcode: \"" << retcode << "\"" << std::endl
+			          << "stderr: \"" << generatedstderr << "\"" << std::endl;
 
 			return 1;
 		}
 
 		if (generatedstderr != expectedcerr) {
 			std::cerr << "(chig run) Unexpected stderr: " << generatedstderr << " expected was "
-					  << expectedcerr << std::endl
-					  << "retcode: \"" << retcode << "\"" << std::endl
-					  << "stdout: \"" << generatedstdout << "\"" << std::endl;
+			          << expectedcerr << std::endl
+			          << "retcode: \"" << retcode << "\"" << std::endl
+			          << "stdout: \"" << generatedstdout << "\"" << std::endl;
 
 			return 1;
 		}
@@ -263,9 +263,9 @@ int main(int argc, char** argv) {
 	{
 		Result r;
 
-		Context		c{moduleDir};
+		Context     c{moduleDir};
 		std::string fullName =
-			(fs::relative(moduleDir, c.workspacePath() / "src") / "main").string();
+		    (fs::relative(moduleDir, c.workspacePath() / "src") / "main").string();
 
 		// test serialization and deserialization
 		JsonModule* deserialized;
@@ -292,9 +292,9 @@ int main(int argc, char** argv) {
 		std::string err = areJsonEqual(serializedmodule, chigmodule);
 		if (!err.empty()) {
 			std::cerr << "Serialization and deserialization failed. error: " + err +
-							 "\n\n======ORIGINAL=======\n\n\n"
-					  << chigmodule.dump(-1) << "\n\n\n\n======SERIALIZED=====\n\n\n\n"
-					  << serializedmodule.dump(-1) << std::endl;
+			                 "\n\n======ORIGINAL=======\n\n\n"
+			          << chigmodule.dump(-1) << "\n\n\n\n======SERIALIZED=====\n\n\n\n"
+			          << serializedmodule.dump(-1) << std::endl;
 			return 1;
 		}
 	}
@@ -305,14 +305,14 @@ int main(int argc, char** argv) {
 		std::string generatedir, chigstderr;
 		// go through chig compile
 		Process chigexe(
-			(fs::current_path() / "chig compile -tbc main.chigmod").string(), moduleDir.string(),
-			[&generatedir](const char* bytes, size_t n) { generatedir.append(bytes, n); },
-			[&chigstderr](const char* bytes, size_t n) { chigstderr.append(bytes, n); });
+		    (fs::current_path() / "chig compile -tbc main.chigmod").string(), moduleDir.string(),
+		    [&generatedir](const char* bytes, size_t n) { generatedir.append(bytes, n); },
+		    [&chigstderr](const char* bytes, size_t n) { chigstderr.append(bytes, n); });
 
 		// check stderr and return code
 		if (chigexe.get_exit_status() != 0) {
 			std::cerr << "Failed to generate module with chig compile: \n"
-					  << chigstderr << std::endl;
+			          << chigstderr << std::endl;
 			return 1;
 		}
 
@@ -320,9 +320,9 @@ int main(int argc, char** argv) {
 
 		// now go through lli
 		Process lliexe(CHIG_LLI_EXE, "",
-					   [&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
-					   [&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); },
-					   true);
+		               [&llistdout](const char* bytes, size_t n) { llistdout.append(bytes, n); },
+		               [&llistderr](const char* bytes, size_t n) { llistderr.append(bytes, n); },
+		               true);
 		lliexe.write(generatedir);
 		lliexe.close_stdin();
 
@@ -330,27 +330,27 @@ int main(int argc, char** argv) {
 
 		if (retcodelli != expectedreturncode) {
 			std::cerr << "(lli bc) Unexpected retcode: " << retcodelli << " expected was "
-					  << expectedreturncode << std::endl
-					  << "stdout: \"" << llistdout << "\"" << std::endl
-					  << "stderr: \"" << llistderr << "\"" << std::endl;
+			          << expectedreturncode << std::endl
+			          << "stdout: \"" << llistdout << "\"" << std::endl
+			          << "stderr: \"" << llistderr << "\"" << std::endl;
 
 			return 1;
 		}
 
 		if (llistdout != expectedcout) {
 			std::cerr << "(lli bc) Unexpected stdout: " << llistdout << " expected was "
-					  << expectedcout << std::endl
-					  << "retcode: \"" << retcodelli << "\"" << std::endl
-					  << "stderr: \"" << llistderr << "\"" << std::endl;
+			          << expectedcout << std::endl
+			          << "retcode: \"" << retcodelli << "\"" << std::endl
+			          << "stderr: \"" << llistderr << "\"" << std::endl;
 
 			return 1;
 		}
 
 		if (llistderr != expectedcerr) {
 			std::cerr << "(lli bc) Unexpected stderr: " << stderr << " expected was "
-					  << expectedcerr << std::endl
-					  << "retcode: \"" << retcodelli << "\"" << std::endl
-					  << "stdout: \"" << llistdout << "\"" << std::endl;
+			          << expectedcerr << std::endl
+			          << "retcode: \"" << retcodelli << "\"" << std::endl
+			          << "stdout: \"" << llistdout << "\"" << std::endl;
 
 			return 1;
 		}

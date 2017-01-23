@@ -1,11 +1,11 @@
 #include "chig/JsonModule.hpp"
 
+#include "chig/FunctionCompiler.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/NameMangler.hpp"
 #include "chig/NodeInstance.hpp"
 #include "chig/NodeType.hpp"
 #include "chig/Result.hpp"
-#include "chig/FunctionCompiler.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/Module.h>
@@ -17,8 +17,8 @@ namespace fs = boost::filesystem;
 namespace chig {
 struct JsonFuncCallNodeType : public NodeType {
 	JsonFuncCallNodeType(JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
-		: NodeType(json_module, funcname, ""),
-		  JModule(&json_module)  // TODO: description
+	    : NodeType(json_module, funcname, ""),
+	      JModule(&json_module)  // TODO: description
 	{
 		Result& res = *resPtr;
 
@@ -26,8 +26,8 @@ struct JsonFuncCallNodeType : public NodeType {
 
 		if (mygraph == nullptr) {
 			res.addEntry(
-				"EUKN", "Graph doesn't exist in module",
-				{{"Module Name", JModule->name()}, {"Requested Name", gsl::to_string(funcname)}});
+			    "EUKN", "Graph doesn't exist in module",
+			    {{"Module Name", JModule->name()}, {"Requested Name", gsl::to_string(funcname)}});
 			return;
 		}
 
@@ -40,9 +40,9 @@ struct JsonFuncCallNodeType : public NodeType {
 	}
 
 	Result codegen(size_t execInputID, llvm::Module* mod, const llvm::DebugLoc& nodeLocation,
-				   llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
-				   llvm::BasicBlock*				  codegenInto,
-				   const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
+	               llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
+	               llvm::BasicBlock*                  codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Result res = {};
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -51,14 +51,14 @@ struct JsonFuncCallNodeType : public NodeType {
 
 		if (func == nullptr) {
 			res.addEntry("EUKN", "Could not find function in llvm module",
-						 {{"Requested Function", name()}});
+			             {{"Requested Function", name()}});
 			return res;
 		}
 
 		// add the execInputID to the argument list
 		std::vector<llvm::Value*> passingIO;
 		passingIO.push_back(llvm::ConstantInt::get(
-			llvm::IntegerType::getInt32Ty(context().llvmContext()), execInputID));
+		    llvm::IntegerType::getInt32Ty(context().llvmContext()), execInputID));
 
 		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
 
@@ -71,14 +71,14 @@ struct JsonFuncCallNodeType : public NodeType {
 		auto id = 0ull;
 		for (auto out : outputBlocks) {
 			switchInst->addCase(
-				llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id),
-				out);
+			    llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id),
+			    out);
 		}
 
 		return res;
 	}
 
-	nlohmann::json			  toJSON() const override { return {}; }
+	nlohmann::json            toJSON() const override { return {}; }
 	std::unique_ptr<NodeType> clone() const override {
 		Result res = {};  // there shouldn't be an error but check anywayss
 		// TODO: better way to do this?
@@ -89,8 +89,8 @@ struct JsonFuncCallNodeType : public NodeType {
 };
 
 JsonModule::JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data,
-					   Result* res)
-	: ChigModule(cont, fullName) {
+                       Result* res)
+    : ChigModule(cont, fullName) {
 	Expects(res != nullptr);
 
 	// load dependencies
@@ -141,7 +141,7 @@ JsonModule::JsonModule(Context& cont, std::string fullName, const nlohmann::json
 }
 
 JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies)
-	: ChigModule(cont, fullName) {
+    : ChigModule(cont, fullName) {
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) { addDependency(dep); }
 }
@@ -151,17 +151,19 @@ Result JsonModule::generateModule(llvm::Module& module) {
 
 	// debug info
 	llvm::DIBuilder debugBuilder(module);
-	auto			compileUnit = debugBuilder.createCompileUnit(
-		llvm::dwarf::DW_LANG_C, sourceFilePath().filename().string(),
-		sourceFilePath().parent_path().string(), "Chigraph Compiler", false, "", 0);
+	auto            compileUnit = debugBuilder.createCompileUnit(
+	    llvm::dwarf::DW_LANG_C, sourceFilePath().filename().string(),
+	    sourceFilePath().parent_path().string(), "Chigraph Compiler", false, "", 0);
 
 	// create prototypes
 	for (auto& graph : mFunctions) {
 		module.getOrInsertFunction(mangleFunctionName(fullName(), graph->name()),
-								graph->functionType());
+		                           graph->functionType());
 	}
 
-	for (auto& graph : mFunctions) { res += compileFunction(*graph, &module, compileUnit, debugBuilder); }
+	for (auto& graph : mFunctions) {
+		res += compileFunction(*graph, &module, compileUnit, debugBuilder);
+	}
 
 	debugBuilder.finalize();
 
@@ -170,15 +172,15 @@ Result JsonModule::generateModule(llvm::Module& module) {
 
 Result JsonModule::toJSON(nlohmann::json* to_fill) const {
 	auto& ret = *to_fill;
-	ret		  = nlohmann::json::object();
+	ret       = nlohmann::json::object();
 
 	Result res = {};
 
-	ret["name"]			= name();
+	ret["name"]         = name();
 	ret["dependencies"] = dependencies();
 
 	auto& graphsjson = ret["graphs"];
-	graphsjson		 = nlohmann::json::array();
+	graphsjson       = nlohmann::json::array();
 	for (auto& graph : mFunctions) {
 		nlohmann::json to_fill = {};
 		res += graph->toJSON(&to_fill);
@@ -205,7 +207,7 @@ Result JsonModule::saveToDisk() const {
 
 	} catch (std::exception& e) {
 		res.addEntry("EUKN", "Failed to create directoires in workspace",
-					 {{"Module File", modulePath.string()}});
+		             {{"Module File", modulePath.string()}});
 		return res;
 	}
 
@@ -223,10 +225,10 @@ Result JsonModule::saveToDisk() const {
 }
 
 bool JsonModule::createFunction(gsl::cstring_span<> name,
-								std::vector<std::pair<DataType, std::string> > dataIns,
-								std::vector<std::pair<DataType, std::string> > dataOuts,
-								std::vector<std::string> execIns, std::vector<std::string> execOuts,
-								GraphFunction** toFill) {
+                                std::vector<std::pair<DataType, std::string> > dataIns,
+                                std::vector<std::pair<DataType, std::string> > dataOuts,
+                                std::vector<std::string> execIns, std::vector<std::string> execOuts,
+                                GraphFunction** toFill) {
 	// make sure there already isn't one by this name
 	auto foundFunc = graphFuncFromName(name);
 	if (foundFunc != nullptr) {
@@ -235,8 +237,8 @@ bool JsonModule::createFunction(gsl::cstring_span<> name,
 	}
 
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, std::move(dataIns),
-														 std::move(dataOuts), std::move(execIns),
-														 std::move(execOuts)));
+	                                                     std::move(dataOuts), std::move(execIns),
+	                                                     std::move(execOuts)));
 	if (toFill != nullptr) { *toFill = mFunctions[mFunctions.size() - 1].get(); }
 
 	return true;
@@ -256,7 +258,7 @@ void JsonModule::removeFunction(GraphFunction* func) {
 	Expects(func != nullptr);
 
 	auto iter = std::find_if(mFunctions.begin(), mFunctions.end(),
-							 [func](auto& uPtr) { return uPtr.get() == func; });
+	                         [func](auto& uPtr) { return uPtr.get() == func; });
 	if (iter == mFunctions.end()) { return; }
 
 	mFunctions.erase(iter);
@@ -264,22 +266,22 @@ void JsonModule::removeFunction(GraphFunction* func) {
 
 GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const {
 	auto iter = std::find_if(mFunctions.begin(), mFunctions.end(),
-							 [&](auto& ptr) { return ptr->name() == name; });
+	                         [&](auto& ptr) { return ptr->name() == name; });
 
 	if (iter != mFunctions.end()) { return iter->get(); }
 	return nullptr;
 }
 
 Result JsonModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/,
-									std::unique_ptr<NodeType>* toFill) {
+                                    std::unique_ptr<NodeType>* toFill) {
 	Result res = {};
 
 	auto graph = graphFuncFromName(name);
 
 	if (graph == nullptr) {
 		res.addEntry(
-			"EUKN", "Graph not found in module",
-			{{"Module Name", gsl::to_string(name)}, {"Requested Graph", gsl::to_string(name)}});
+		    "EUKN", "Graph not found in module",
+		    {{"Module Name", gsl::to_string(name)}, {"Requested Graph", gsl::to_string(name)}});
 	}
 
 	*toFill = std::make_unique<JsonFuncCallNodeType>(*this, name, &res);
@@ -289,7 +291,7 @@ Result JsonModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::js
 std::vector<std::string> JsonModule::nodeTypeNames() const {
 	std::vector<std::string> ret;
 	std::transform(mFunctions.begin(), mFunctions.end(), std::back_inserter(ret),
-				   [](auto& gPtr) { return gPtr->name(); });
+	               [](auto& gPtr) { return gPtr->name(); });
 
 	return ret;
 }
@@ -305,7 +307,8 @@ boost::bimap<unsigned int, NodeInstance*> JsonModule::createLineNumberAssoc() co
 	}
 
 	std::sort(nodes.begin(), nodes.end(), [](const auto& lhs, const auto& rhs) {
-		return (lhs->function().name() + ":" + lhs->id()) < (rhs->function().name() + ":" + rhs->id());
+		return (lhs->function().name() + ":" + lhs->id()) <
+		       (rhs->function().name() + ":" + rhs->id());
 	});
 
 	boost::bimap<unsigned, NodeInstance*> ret;

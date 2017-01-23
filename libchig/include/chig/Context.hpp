@@ -33,7 +33,7 @@ struct Context {
 
 	// no move or copy, doesn't make sense
 	Context(const Context& context) = delete;
-	Context(Context&&)				= delete;
+	Context(Context&&)              = delete;
 
 	/// Gets the module by the name
 	/// \param moduleName The name of the module to find
@@ -65,7 +65,7 @@ struct Context {
 	/// \param json The JSON data
 	/// \param toFill The JsonModule* to fill into, optional
 	Result addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json,
-							 JsonModule** toFill = nullptr);
+	                         JsonModule** toFill = nullptr);
 
 	/// Adds a custom module to the Context
 	/// This usually doesn't get called, use the \c gsl::string_span<> overload instead
@@ -79,7 +79,7 @@ struct Context {
 	/// \param toFill The type to fill
 	/// \return The result
 	Result typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
-						  DataType* toFill) noexcept;
+	                      DataType* toFill) noexcept;
 
 	/// Gets a llvm::Type from a module
 	/// \param module The name of the module, "lang" if nullptr
@@ -87,7 +87,7 @@ struct Context {
 	/// \param toFill The type to fill
 	/// \return The result
 	Result debugTypeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
-							   llvm::DIType** toFill) noexcept;
+	                           llvm::DIType** toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
 	/// \param moduleName The module name.
@@ -95,8 +95,8 @@ struct Context {
 	/// \param data The JSON data that is used to construct the NodeType.
 	/// \param toFill The point to fill
 	Result nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
-							  const nlohmann::json&		 data,
-							  std::unique_ptr<NodeType>* toFill) noexcept;
+	                          const nlohmann::json&      data,
+	                          std::unique_ptr<NodeType>* toFill) noexcept;
 
 	/// Get the workspace path of the Context
 	/// \return The workspace path
@@ -134,7 +134,7 @@ private:
 
 	// This cache is only for use during compilation to not duplicate modules
 	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/>
-		mCompileCache;
+	    mCompileCache;
 };
 
 /// Get the workspace directory from a child of the workspace directory

@@ -1,6 +1,6 @@
 #include "chig/FunctionValidator.hpp"
-#include "chig/GraphFunction.hpp"
 #include "chig/Graph.hpp"
+#include "chig/GraphFunction.hpp"
 
 #include <unordered_map>
 
@@ -10,12 +10,11 @@ Result validateFunction(const GraphFunction& func) {
 	Result res;
 	res += validateFunctionConnectionsAreTwoWay(func);
 	res += validateFunctionNodeInputs(func);
-	
+
 	return res;
 }
-	
+
 Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
-	
 	Result res;
 	// make sure all connections connect back
 
@@ -23,12 +22,14 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 		// go through input data
 		auto id = 0ull;
 		for (const auto& conn : node.second->inputDataConnections) {
-			
-			if(conn.first == nullptr) {
-				res.addEntry("EUKN", "Node is missing an input data connection", {{"nodeid", node.second->id()}, {"nodetype", node.second->type().qualifiedName()}, {"requested id", id}});
+			if (conn.first == nullptr) {
+				res.addEntry("EUKN", "Node is missing an input data connection",
+				             {{"nodeid", node.second->id()},
+				              {"nodetype", node.second->type().qualifiedName()},
+				              {"requested id", id}});
 				continue;
 			}
-			
+
 			// make sure it connects  back
 			bool connectsBack = false;
 			for (const auto& remoteConn : conn.first->outputDataConnections[conn.second]) {
@@ -39,9 +40,9 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 			}
 			if (!connectsBack) {
 				res.addEntry("EUKN", "Data connection doesn't connect back",
-							 {{"Left Node", conn.first->id()},
-							  {"Right Node", node.second->id()},
-							  {"Right input ID", id}});
+				             {{"Left Node", conn.first->id()},
+				              {"Right Node", node.second->id()},
+				              {"Right input ID", id}});
 			}
 			++id;
 		}
@@ -52,18 +53,20 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 			// this connection type can make multiple connections, so two for loops are needed
 			for (const auto& connection : outputDataSlot) {
 				Expects(connection.first != nullptr);
-				
-				if(connection.first->inputDataConnections.size() <= connection.second) {
-					res.addEntry("EUKN", "Input data port not found in node", {{"nodeid", connection.first->id()}, {"requested id", connection.second}});
+
+				if (connection.first->inputDataConnections.size() <= connection.second) {
+					res.addEntry(
+					    "EUKN", "Input data port not found in node",
+					    {{"nodeid", connection.first->id()}, {"requested id", connection.second}});
 					continue;
 				}
-				
+
 				auto& remoteConn = connection.first->inputDataConnections[connection.second];
 				if (remoteConn.first != node.second.get() || remoteConn.second != id) {
 					res.addEntry("EUKN", "Data connection doesn't connect back",
-								 {{"Left Node", node.second->id()},
-								  {"Right Node", connection.first->id()},
-								  {"Right input ID", connection.second}});
+					             {{"Left Node", node.second->id()},
+					              {"Right Node", connection.first->id()},
+					              {"Right input ID", connection.second}});
 				}
 			}
 			++id;
@@ -77,10 +80,10 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 				auto& remoteConn = connection.first->outputExecConnections[connection.second];
 				if (remoteConn.first != node.second.get() || remoteConn.second != id) {
 					res.addEntry(
-						"EUKN", "Exec connection doesn't connect back",
-						{{"Left Node", connection.first->id()},
-						 {"Right Node", node.second->id()},
-						 {"Left output ID", connection.second}});  // TODO: better diagnostics
+					    "EUKN", "Exec connection doesn't connect back",
+					    {{"Left Node", connection.first->id()},
+					     {"Right Node", node.second->id()},
+					     {"Left output ID", connection.second}});  // TODO: better diagnostics
 				}
 			}
 			++id;
@@ -90,12 +93,10 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 		id = 0ull;
 		for (const auto& connection : node.second->outputExecConnections) {
 			bool connectsBack = false;
-			
-			if(connection.first == nullptr) {
-				continue;
-			}
+
+			if (connection.first == nullptr) { continue; }
 			for (const auto& remoteConnection :
-				 connection.first->inputExecConnections[connection.second]) {
+			     connection.first->inputExecConnections[connection.second]) {
 				if (remoteConnection.second == id && remoteConnection.first == node.second.get()) {
 					connectsBack = true;
 					break;
@@ -104,9 +105,9 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 
 			if (!connectsBack) {
 				res.addEntry("EUKN", "Exec connection doesn't connect back",
-							 {{"Left Node", node.second->id()},
-							  {"Right Node", connection.first->id()},
-							  {"Left output ID", id}});
+				             {{"Left Node", node.second->id()},
+				              {"Right Node", connection.first->id()},
+				              {"Left output ID", id}});
 			}
 
 			++id;
@@ -116,73 +117,68 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 	// make sure all entires have the right type
 
 	return res;
-	
 }
 /// \internal
-/// alreadyCalled stores the nodes that have been called at this node, and the inputExecIds it has been called at, to avoid infinite loops
-Result validatePath(const NodeInstance& inst, int inExecId, 
- 					std::unordered_map<const NodeInstance*, std::vector<int> /*in Exec id*/> alreadyCalled) {
-	
+/// alreadyCalled stores the nodes that have been called at this node, and the inputExecIds it has
+/// been called at, to avoid infinite loops
+Result validatePath(
+    const NodeInstance& inst, int                                            inExecId,
+    std::unordered_map<const NodeInstance*, std::vector<int> /*in Exec id*/> alreadyCalled) {
 	Result res;
-	
+
 	// if we've already been here, then return, it's a loop
 	{
 		auto iter = alreadyCalled.find(&inst);
-		if(iter != alreadyCalled.end() && std::find(iter->second.begin(), iter->second.end(), inExecId) != iter->second.end()) {
+		if (iter != alreadyCalled.end() &&
+		    std::find(iter->second.begin(), iter->second.end(), inExecId) != iter->second.end()) {
 			return res;
 		}
 	}
-	
+
 	// make sure the inputs are already in processed
-	for(const auto& conn : inst.inputDataConnections) {
-		if(conn.first == nullptr) {
+	for (const auto& conn : inst.inputDataConnections) {
+		if (conn.first == nullptr) {
 			continue;
 			// TODO: handle this
 		}
-		
-		if(!conn.first->type().pure() && alreadyCalled.find(conn.first) == alreadyCalled.end()) {
-			res.addEntry("EUKN", "Node that accepts data from another node is called first", {{"nodeid", inst.id()}, {"othernodeid", conn.first->id()}});
+
+		if (!conn.first->type().pure() && alreadyCalled.find(conn.first) == alreadyCalled.end()) {
+			res.addEntry("EUKN", "Node that accepts data from another node is called first",
+			             {{"nodeid", inst.id()}, {"othernodeid", conn.first->id()}});
 		}
 	}
-	
+
 	alreadyCalled[&inst].push_back(inExecId);
-	
+
 	// call this on the nodes this calls
-	for(const auto& conn : inst.outputExecConnections) {
-		if(conn.first == nullptr) {
-			continue;
-		}
+	for (const auto& conn : inst.outputExecConnections) {
+		if (conn.first == nullptr) { continue; }
 		res += validatePath(*conn.first, conn.second, alreadyCalled);
 	}
-	
+
 	return res;
-	
 }
 
 Result validateFunctionNodeInputs(const GraphFunction& func) {
 	Result res;
-	
+
 	auto entry = func.entryNode();
-	
-	if(entry == nullptr) {
+
+	if (entry == nullptr) {
 		return res;
 		// TODO: should this be an error?
 	}
-	
+
 	std::unordered_map<const NodeInstance*, std::vector<int>> alreadyCalled;
 	alreadyCalled.emplace(entry, std::vector<int>{});
-	
+
 	// no need to create a processed because you can't create a loop with entry in it
-	
-	for(const auto& conn : entry->outputExecConnections) {
-		if (conn.first == nullptr) {
-			continue;
-		}
+
+	for (const auto& conn : entry->outputExecConnections) {
+		if (conn.first == nullptr) { continue; }
 		res += validatePath(*conn.first, conn.second, alreadyCalled);
 	}
-	
+
 	return res;
 }
-
 }
-

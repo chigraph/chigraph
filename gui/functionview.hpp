@@ -48,7 +48,7 @@ private:
 
 	// this contains absolute port ids
 	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
-		conns;
+	    conns;
 };
 
 #endif  // CHIGGUI_FUNCTIONVIEW_HPP

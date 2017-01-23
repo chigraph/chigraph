@@ -13,8 +13,8 @@ TEST_CASE("LoadUnloadModule", "[module]") {
 	c.searchPaths.push_back("../");
 
 	assert(c.modules.size() == 1);  // lang and add_test.bc and add_tester.bc
-									//	assert(c.modules[1].get() == mod);
-									//	assert(c.getModuleByName("add_test.bc") == mod);
+	                                //	assert(c.modules[1].get() == mod);
+	                                //	assert(c.getModuleByName("add_test.bc") == mod);
 	assert(c.getModuleByName("yourmum") == nullptr);
 
 	//	assert(c.unloadModule(mod));

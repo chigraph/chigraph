@@ -5,13 +5,13 @@
 
 namespace chig {
 NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX,
-						   float posY, gsl::cstring_span<> nodeID)
-	: mType{std::move(nodeType)},
-	  mX{posX},
-	  mY{posY},
-	  mId{gsl::to_string(nodeID)},
-	  mContext{&mType->context()},
-	  mFunction{func} {
+                           float posY, gsl::cstring_span<> nodeID)
+    : mType{std::move(nodeType)},
+      mX{posX},
+      mY{posY},
+      mId{gsl::to_string(nodeID)},
+      mContext{&mType->context()},
+      mFunction{func} {
 	Expects(mType != nullptr);  // it's ok to initialize a NodeInstance without a function.
 
 	mType->mNodeInstance = this;
@@ -24,10 +24,10 @@ NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeTy
 }
 
 NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
-	: mType(other.type().clone()),
-	  mX{other.x()},
-	  mY{other.y()},
-	  mId{std::move(id)},
+    : mType(other.type().clone()),
+      mX{other.x()},
+      mY{other.y()},
+      mId{std::move(id)},
 	  mContext{&other.context()},
 	  mFunction{&other.function()} {
 	mType->mNodeInstance = this;
@@ -40,11 +40,11 @@ NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
 }
 
 NodeInstance& NodeInstance::operator=(const NodeInstance& other) {
-	mType				 = other.type().clone();
+	mType                = other.type().clone();
 	mType->mNodeInstance = this;
-	mX					 = other.x();
-	mY					 = other.y();
-	mId					 = other.id() + "_";
+	mX                   = other.x();
+	mY                   = other.y();
+	mId                  = other.id() + "_";
 
 	return *this;
 }
@@ -83,14 +83,12 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 	}
 	outputDataConnections.resize(newType->dataOutputs().size());
 
-	mType				 = std::move(newType);
+	mType                = std::move(newType);
 	mType->mNodeInstance = this;
 }
 
-Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
-				   size_t rhsConnID) {
-	
-	
+Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID) {
+
 	Result res = {};
 
 	if(&lhs.function() != &rhs.function()) {
@@ -108,10 +106,10 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
 		}
 
 		res.addEntry("E22", "Output Data connection doesn't exist in node",
-					 {{"Requested ID", lhsConnID},
-					  {"Node Type", lhs.type().qualifiedName()},
-					  {"Node JSON", rhs.type().toJSON()},
-					  {"Node Output Data Connections", dataOutputs}});
+		             {{"Requested ID", lhsConnID},
+		              {"Node Type", lhs.type().qualifiedName()},
+		              {"Node JSON", rhs.type().toJSON()},
+		              {"Node Output Data Connections", dataOutputs}});
 	}
 	if (rhsConnID >= rhs.inputDataConnections.size()) {
 		auto dataInputs = nlohmann::json::array();
@@ -120,30 +118,28 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
 		}
 
 		res.addEntry("E23", "Input Data connection doesn't exist in node",
-					 {{"Requested ID", rhsConnID},
-					  {"Node Type", rhs.type().qualifiedName()},
-					  {"Node JSON", rhs.type().toJSON()},
-					  {"Node Input Data Connections", dataInputs}});
+		             {{"Requested ID", rhsConnID},
+		              {"Node Type", rhs.type().qualifiedName()},
+		              {"Node JSON", rhs.type().toJSON()},
+		              {"Node Input Data Connections", dataInputs}});
 	}
 
 	// if there are errors, back out
 	if (!res) { return res; }
 	// make sure the connection is of the right type
-	if (lhs.type().dataOutputs()[lhsConnID].first !=
-		rhs.type().dataInputs()[rhsConnID].first) {
-		res.addEntry(
-			"E24", "Connecting data nodes with different types is invalid",
-			{{"Left Hand Type", lhs.type().dataOutputs()[lhsConnID].first.qualifiedName()},
-			 {"Right Hand Type", rhs.type().dataInputs()[rhsConnID].first.qualifiedName()},
-			 {"Left Node JSON", rhs.type().toJSON()},
-			 {"Right Node JSON", rhs.type().toJSON()}});
+	if (lhs.type().dataOutputs()[lhsConnID].first != rhs.type().dataInputs()[rhsConnID].first) {
+		res.addEntry("E24", "Connecting data nodes with different types is invalid",
+		             {{"Left Hand Type", lhs.type().dataOutputs()[lhsConnID].first.qualifiedName()},
+		              {"Right Hand Type", rhs.type().dataInputs()[rhsConnID].first.qualifiedName()},
+		              {"Left Node JSON", rhs.type().toJSON()},
+		              {"Right Node JSON", rhs.type().toJSON()}});
 		return res;
 	}
 
 	// if we are replacing a connection, disconnect it
 	if (rhs.inputDataConnections[rhsConnID].first != nullptr) {
 		res += disconnectData(lhs, lhsConnID, rhs);
-		if(!res) { return res; }
+		if (!res) { return res; }
 	}
 
 	lhs.outputDataConnections[lhsConnID].emplace_back(&rhs, rhsConnID);
@@ -152,9 +148,8 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
 	return res;
 }
 
-Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
-				   size_t rhsConnID) {
-	
+Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID) {
+
 	Result res = {};
 
 	if(&lhs.function() != &rhs.function()) {
@@ -168,33 +163,33 @@ Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs,
 		for (auto& output : lhs.type().execOutputs()) { execOutputs.push_back(output); }
 
 		res.addEntry("E22", "Output exec connection doesn't exist in node",
-					 {{"Requested ID", lhsConnID},
-					  {"Node Type", lhs.type().qualifiedName()},
-					  {"Node Output Exec Connections", execOutputs}});
+		             {{"Requested ID", lhsConnID},
+		              {"Node Type", lhs.type().qualifiedName()},
+		              {"Node Output Exec Connections", execOutputs}});
 	}
 	if (rhsConnID >= rhs.inputExecConnections.size()) {
 		auto execInputs = nlohmann::json::array();
 		for (auto& output : rhs.type().execInputs()) { execInputs.push_back(output); }
 
 		res.addEntry("E23", "Input exec connection doesn't exist in node",
-					 {{"Requested ID", lhsConnID},
-					  {"Node Type", rhs.type().qualifiedName()},
-					  {"Node Input Exec Connections", execInputs}
+		             {{"Requested ID", lhsConnID},
+		              {"Node Type", rhs.type().qualifiedName()},
+		              {"Node Input Exec Connections", execInputs}
 
-					 });
+		             });
 	}
 
 	if (!res) { return res; }
 	// if we are replacing a connection, disconnect it
 	if (lhs.outputExecConnections[lhsConnID].first != nullptr) {
 		res += disconnectExec(lhs, lhsConnID);
-		if(!res) { return res; }
+		if (!res) { return res; }
 	}
 
 	// connect it!
 	lhs.outputExecConnections[lhsConnID] = {&rhs, rhsConnID};
 	rhs.inputExecConnections[rhsConnID].emplace_back(&lhs, lhsConnID);
-	
+
 	return res;
 }
 
@@ -214,24 +209,23 @@ Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
 		}
 
 		res.addEntry("E22", "Output data connection in node doesn't exist",
-					 {{"Requested ID", lhsConnID},
-					  {"Node Type", lhs.type().qualifiedName()},
-					  {"Node JSON", rhs.type().toJSON()},
-					  {"Node Output Data Connections", dataOutputs}});
+		             {{"Requested ID", lhsConnID},
+		              {"Node Type", lhs.type().qualifiedName()},
+		              {"Node JSON", rhs.type().toJSON()},
+		              {"Node Output Data Connections", dataOutputs}});
 
 		return res;
 	}
 
 	// find the connection
 	auto iter = std::find_if(lhs.outputDataConnections[lhsConnID].begin(),
-							 lhs.outputDataConnections[lhsConnID].end(),
-							 [&](auto& pair) { return pair.first == &rhs; });
+	                         lhs.outputDataConnections[lhsConnID].end(),
+	                         [&](auto& pair) { return pair.first == &rhs; });
 
 	if (iter == lhs.outputDataConnections[lhsConnID].end()) {
-		res.addEntry("EUKN", "Cannot disconnect from connection that doesn't exist",
-					 {{"Left node ID", lhs.id()},
-					  {"Right node ID", rhs.id()},
-					  {"Left dock ID", lhsConnID}});
+		res.addEntry(
+		    "EUKN", "Cannot disconnect from connection that doesn't exist",
+		    {{"Left node ID", lhs.id()}, {"Right node ID", rhs.id()}, {"Left dock ID", lhsConnID}});
 
 		return res;
 	}
@@ -243,17 +237,17 @@ Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
 		}
 
 		res.addEntry("E23", "Input Data connection doesn't exist in node",
-					 {{"Requested ID", iter->second},
-					  {"Node Type", rhs.type().qualifiedName()},
-					  {"Node JSON", rhs.type().toJSON()},
-					  {"Node Input Data Connections", dataInputs}});
+		             {{"Requested ID", iter->second},
+		              {"Node Type", rhs.type().qualifiedName()},
+		              {"Node JSON", rhs.type().toJSON()},
+		              {"Node Input Data Connections", dataInputs}});
 
 		return res;
 	}
 
 	if (rhs.inputDataConnections[iter->second] != std::make_pair(&lhs, lhsConnID)) {
 		res.addEntry("EUKN", "Cannot disconnect from connection that doesn't exist",
-					 {{"Left node ID", lhs.id()}, {"Right node ID", rhs.id()}});
+		             {{"Left node ID", lhs.id()}, {"Right node ID", rhs.id()}});
 
 		return res;
 	}
@@ -261,12 +255,11 @@ Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
 	// finally actually disconnect it
 	rhs.inputDataConnections[iter->second] = {nullptr, ~0};
 	lhs.outputDataConnections[lhsConnID].erase(iter);
-	
+
 	return res;
 }
 
 Result disconnectExec(NodeInstance& lhs, size_t lhsConnID) {
-	
 	Result res = {};
 
 	if (lhsConnID >= lhs.outputExecConnections.size()) {
@@ -274,21 +267,20 @@ Result disconnectExec(NodeInstance& lhs, size_t lhsConnID) {
 		for (auto& output : lhs.type().execOutputs()) { execOutputs.push_back(output); }
 
 		res.addEntry("E22", "Output exec connection doesn't exist in node",
-					 {{"Requested ID", lhsConnID},
-					  {"Node Type", lhs.type().qualifiedName()},
-					  {"Node Output Exec Connections", execOutputs}});
+		             {{"Requested ID", lhsConnID},
+		              {"Node Type", lhs.type().qualifiedName()},
+		              {"Node Output Exec Connections", execOutputs}});
 	}
 
 	auto& lhsconn  = lhs.outputExecConnections[lhsConnID];
 	auto& rhsconns = lhsconn.first->inputExecConnections[lhsconn.second];
 
-	auto iter = std::find_if(rhsconns.begin(), rhsconns.end(), [&](auto pair) {
-		return pair == std::make_pair(&lhs, lhsConnID);
-	});
+	auto iter = std::find_if(rhsconns.begin(), rhsconns.end(),
+	                         [&](auto pair) { return pair == std::make_pair(&lhs, lhsConnID); });
 
 	if (iter == rhsconns.end()) {
 		res.addEntry("EUKN", "Cannot disconnect an exec connection that doesn't connect back",
-					 {{"Left node ID", lhs.id()}, {"Left node dock id", lhsConnID}});
+		             {{"Left node ID", lhs.id()}, {"Left node dock id", lhsConnID}});
 		return res;
 	}
 

@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['unmanglefunctionname',['unmangleFunctionName',['../namespacechig.html#a8c77ed648dc5624eb8160a69e46bc77a',1,'chig']]],
-  ['unqualifiedname',['unqualifiedName',['../structchig_1_1DataType.html#a977054d97d25af626109f372a793f4a6',1,'chig::DataType']]]
+  ['tojson',['toJson',['../structchig_1_1Graph.html#ab9e1ddbe7cb9ca59a3bb2d2191dd1d35',1,'chig::Graph::toJson()'],['../structchig_1_1GraphFunction.html#a5a8768d5514a31104f0b3a9b5553099c',1,'chig::GraphFunction::toJSON()'],['../structchig_1_1JsonModule.html#a200bbbf7eefaffdc40978c01d1053f46',1,'chig::JsonModule::toJSON()'],['../structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c',1,'chig::NodeType::toJSON()']]],
+  ['type',['type',['../structchig_1_1NodeInstance.html#a5c9d6934e14f56ff4317ff08e170e83a',1,'chig::NodeInstance::type()'],['../structchig_1_1NodeInstance.html#a016cbfd361afbebd45bfee6b4522062d',1,'chig::NodeInstance::type() const']]],
+  ['typefrommodule',['typeFromModule',['../structchig_1_1Context.html#aa484ef2c16aaa4d97a21632af4122bd8',1,'chig::Context']]],
+  ['typefromname',['typeFromName',['../structchig_1_1ChigModule.html#a7bb138db48ea320a09312ffd1af0999a',1,'chig::ChigModule::typeFromName()'],['../structchig_1_1CModule.html#ab1c1117ae887ae98edfede6347280004',1,'chig::CModule::typeFromName()'],['../structchig_1_1JsonModule.html#a333bbd9973c79f0ee40bc960c5cf091b',1,'chig::JsonModule::typeFromName()'],['../structchig_1_1LangModule.html#a8c6c7b9ada9f7dc770842e9a065ca1b2',1,'chig::LangModule::typeFromName()']]],
+  ['typenames',['typeNames',['../structchig_1_1ChigModule.html#a79c78be088a51529132f2fd6c37bdb11',1,'chig::ChigModule::typeNames()'],['../structchig_1_1CModule.html#a93686f0f5199b7dc81f1ed7d722b00a8',1,'chig::CModule::typeNames()'],['../structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d',1,'chig::JsonModule::typeNames()'],['../structchig_1_1LangModule.html#ae3a2d8f60f99e64cbba858d99a0c0f86',1,'chig::LangModule::typeNames()']]]
 ];

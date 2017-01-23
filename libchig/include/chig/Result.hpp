@@ -24,7 +24,7 @@ struct Result {
 		Expects(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
 
 		result_json.push_back(
-			nlohmann::json({{"errorcode", ec}, {"overview", overview}, {"data", data}}));
+		    nlohmann::json({{"errorcode", ec}, {"overview", overview}, {"data", data}}));
 		if (ec[0] == 'E') success = false;
 	}
 
