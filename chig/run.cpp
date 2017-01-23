@@ -37,7 +37,7 @@ int run(const std::vector<std::string>& opts) {
 
 	po::options_description run_opts;
 	run_opts.add_options()("input-file", po::value<std::string>(),
-						   "The input file, - for stdin. Should be a chig module");
+	                       "The input file, - for stdin. Should be a chig module");
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1);

@@ -45,19 +45,19 @@ It's free!
 Chigraph is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) so anyone can use it for free, even in proprietary settings (solong you attribute me)
 
 # Documentation
-Documentation is hosted on github pages, [here](https://russelltg.github.io/chigraph).
+Documentation is hosted on github pages, [here](https://chigraph.github.io/chigraph).
 
 # Installation
 
 ##Download installers/appimage
-Installers and appimages are avaliable from the [releases page](https://github.com/russelltg/chigraph/releases) (coming soon) for those who don't want to build from sources.
+Installers and appimages are avaliable from the [releases page](https://github.com/chigraph/chigraph/releases) (coming soon) for those who don't want to build from sources.
 
 ##Building from source
 See the [guide on building from source](doc/building.md)
 
 # Get Involved
 Getting involved is easy!
-If you don't know where to get started, start looking at [filed github issues](https://github.com/russelltg/chigraph/issues) for inspiration. Then just file a PR!
+If you don't know where to get started, start looking at [filed github issues](https://github.com/chigraph/chigraph/issues) for inspiration. Then just file a PR!
 
 If you have any questions, you're more than welcome to email me: [russellgreene8@gmail.com](mailto:russellgreene8@gmail.com)
 

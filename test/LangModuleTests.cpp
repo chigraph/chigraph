@@ -22,13 +22,13 @@ TEST_CASE("LangModule", "[module]") {
 			res = c.typeFromModule("lang", "i32*", &test);
 			REQUIRE(!!res);
 			REQUIRE(test ==
-					DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llvmContext())));
+			        DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llvmContext())));
 
 			res = c.typeFromModule("lang", "i32**", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == DataType(mod, "i32**",
-									 llvm::PointerType::get(
-										 llvm::IntegerType::getInt32PtrTy(c.llvmContext()), 0)));
+			                         llvm::PointerType::get(
+			                             llvm::IntegerType::getInt32PtrTy(c.llvmContext()), 0)));
 
 			res = c.typeFromModule("lang", "i8", &test);
 			REQUIRE(!!res);
@@ -39,17 +39,17 @@ TEST_CASE("LangModule", "[module]") {
 			REQUIRE(test == DataType(mod, "double", llvm::Type::getDoubleTy(c.llvmContext())));
 
 			REQUIRE(c.moduleByName("lang")->nodeTypeNames() ==
-					std::vector<std::string>(
-     {"const-bool", "const-float", "const-int", "entry", "exit", "floattoint",
-  "float/float", "float*float", "float-float", "float+float", "i32/i32",
-  "strliteral", "i32*i32", "inttofloat", "i32-i32", "i32+i32", "if"}));
+			        std::vector<std::string>(
+			            {"const-bool", "const-float", "const-int", "entry", "exit", "floattoint",
+			             "float/float", "float*float", "float-float", "float+float", "i32/i32",
+			             "strliteral", "i32*i32", "inttofloat", "i32-i32", "i32+i32", "if"}));
 			REQUIRE(c.moduleByName("lang")->typeNames() ==
-					std::vector<std::string>({"i32", "i1", "double", "i8*"}));
+			        std::vector<std::string>({"i32", "i1", "double", "i8*"}));
 		}
 
 		THEN(
-			"We try to get associated types with incorrect parameters, it returns the correct "
-			"errors") {
+		    "We try to get associated types with incorrect parameters, it returns the correct "
+		    "errors") {
 			DataType test;
 			Result   res;
 
@@ -75,9 +75,9 @@ TEST_CASE("LangModule", "[module]") {
 		}
 
 		WHEN("We try to get if node") {
-			Result					  res;
+			Result                    res;
 			std::unique_ptr<NodeType> ifNode = nullptr;
-			res								 = c.nodeTypeFromModule("lang", "if", {}, &ifNode);
+			res                              = c.nodeTypeFromModule("lang", "if", {}, &ifNode);
 			REQUIRE(!!res);
 
 			THEN("It should be totally valid") {
@@ -113,10 +113,10 @@ TEST_CASE("LangModule", "[module]") {
 			std::unique_ptr<NodeType> entryNode = nullptr;
 
 			res = c.nodeTypeFromModule(
-				"lang", "entry",
-				nlohmann::json::parse(
-					R"end( { "data": [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}], "exec": [""]  } )end"),
-				&entryNode);
+			    "lang", "entry",
+			    nlohmann::json::parse(
+			        R"end( { "data": [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}], "exec": [""]  } )end"),
+			    &entryNode);
 			REQUIRE(!!res);
 
 			THEN("It should be totally valid") {

@@ -24,14 +24,14 @@ public:
 		okButton->setText(i18n("Ok"));
 		connect(okButton, &QPushButton::clicked, this, [this, textEdit, lineEdit, inst, fview] {
 			std::string function = lineEdit->text().toStdString();
-			std::string code	 = textEdit->toPlainText().toStdString();
+			std::string code     = textEdit->toPlainText().toStdString();
 
 			std::unique_ptr<chig::NodeType> ty;
-			chig::Result					res = inst->context().nodeTypeFromModule(
-				"c", "func", {{"code", code}, {"function", function}}, &ty);
+			chig::Result                    res = inst->context().nodeTypeFromModule(
+			    "c", "func", {{"code", code}, {"function", function}}, &ty);
 			if (!res) {
 				KMessageBox::detailedError(this, "Failed to compile C node",
-										   QString::fromStdString(res.dump()));
+				                           QString::fromStdString(res.dump()));
 
 				return;
 			}
@@ -60,24 +60,24 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 		if (pIndex >= int(mInst->type().execInputs().size())) {
 			if (pIndex - mInst->type().execInputs().size() >= mInst->type().dataInputs().size()) {
 				return {};
-            }
+			}
 
 			idandname = {
-				mInst->type()
-					.dataInputs()[pIndex - mInst->type().execInputs().size()]
-					.first.qualifiedName(),
-				mInst->type().dataInputs()[pIndex - mInst->type().execInputs().size()].second};
+			    mInst->type()
+			        .dataInputs()[pIndex - mInst->type().execInputs().size()]
+			        .first.qualifiedName(),
+			    mInst->type().dataInputs()[pIndex - mInst->type().execInputs().size()].second};
 
 		} else {
 			idandname = {"exec", mInst->type().execInputs()[pIndex]};
 		}
 		return {QString::fromStdString(idandname.first), QString::fromStdString(idandname.second)};
-	} 
+	}
 	if (pType == PortType::Out) {
 		std::pair<std::string, std::string> idandname;
 		if (pIndex >= int(mInst->type().execOutputs().size())) {
 			auto dataOutput =
-				mInst->type().dataOutputs()[pIndex - mInst->type().execOutputs().size()];
+			    mInst->type().dataOutputs()[pIndex - mInst->type().execOutputs().size()];
 			idandname = {dataOutput.first.qualifiedName(), dataOutput.second};
 
 		} else {
@@ -91,15 +91,15 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 
 QWidget* ChigraphNodeModel::embeddedWidget() {
 	if (mInst->type().name() == "const-bool") {
-		QCheckBox* box	 = new QCheckBox("");
-		bool	   checked = mInst->type().toJSON();
+		QCheckBox* box     = new QCheckBox("");
+		bool       checked = mInst->type().toJSON();
 		box->setCheckState(checked ? Qt::Checked : Qt::Unchecked);
 
 		connect(box, &QCheckBox::stateChanged, this, [this](int newState) {
 			std::unique_ptr<chig::NodeType> newType;
 
 			mInst->context().nodeTypeFromModule("lang", "const-bool", newState == Qt::Checked,
-												&newType);
+			                                    &newType);
 
 			mInst->setType(std::move(newType));
 		});
@@ -108,8 +108,8 @@ QWidget* ChigraphNodeModel::embeddedWidget() {
 		return box;
 	}
 	if (mInst->type().name() == "strliteral") {
-		auto edit = new QLineEdit();
-		std::string s	= mInst->type().toJSON();
+		auto        edit = new QLineEdit();
+		std::string s    = mInst->type().toJSON();
 		edit->setText(QString::fromStdString(s));
 
 		edit->setMaximumSize(edit->sizeHint());
@@ -118,7 +118,7 @@ QWidget* ChigraphNodeModel::embeddedWidget() {
 			std::unique_ptr<chig::NodeType> newType;
 
 			mInst->context().nodeTypeFromModule("lang", "strliteral", s.toUtf8().constData(),
-												&newType);
+			                                    &newType);
 
 			mInst->setType(std::move(newType));
 
@@ -158,7 +158,7 @@ QWidget* ChigraphNodeModel::embeddedWidget() {
 		return butt;
 	}
 	if (mInst->type().name() == "const-float") {
-        auto edit = new QLineEdit();
+		auto edit = new QLineEdit();
 		edit->setValidator(new QDoubleValidator);
 		double val = mInst->type().toJSON();
 		edit->setText(QString::number(val));
@@ -175,7 +175,7 @@ QWidget* ChigraphNodeModel::embeddedWidget() {
 		});
 
 		return edit;
-    }
+	}
 
 	return nullptr;
 }

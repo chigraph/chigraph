@@ -24,7 +24,6 @@ std::string mangleFunctionName(gsl::cstring_span<> fullModuleName, gsl::cstring_
 std::pair<std::string, std::string> unmangleFunctionName(gsl::cstring_span<> mangledName);
 
 /// \}
-
 }
 
 #endif  // CHIG_NAME_MANGLER_HPP

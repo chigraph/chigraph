@@ -17,7 +17,7 @@ constexpr static int ModuleTreeItemType = 1001;
 class ModuleTreeItem : public QTreeWidgetItem {
 public:
 	ModuleTreeItem(QTreeWidgetItem* parent, fs::path path)
-		: QTreeWidgetItem(parent, ModuleTreeItemType), mName{std::move(path)} {
+	    : QTreeWidgetItem(parent, ModuleTreeItemType), mName{std::move(path)} {
 		setText(0, QString::fromStdString(mName.filename().string()));
 		setIcon(0, QIcon::fromTheme(QStringLiteral("package-available")));
 	}
@@ -31,15 +31,15 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
 	setSortingEnabled(true);
 	header()->close();
 	connect(this, &QTreeWidget::itemDoubleClicked, this,
-			[this](QTreeWidgetItem* item, int /*column*/) {
-				if (item->type() != ModuleTreeItemType) {  // don't do module folders or modules
-					return;
-				}
-				ModuleTreeItem* casted = dynamic_cast<ModuleTreeItem*>(item);
-                Expects(casted != nullptr);
+	        [this](QTreeWidgetItem* item, int /*column*/) {
+		        if (item->type() != ModuleTreeItemType) {  // don't do module folders or modules
+			        return;
+		        }
+		        ModuleTreeItem* casted = dynamic_cast<ModuleTreeItem*>(item);
+		        Expects(casted != nullptr);
 
-				moduleSelected(QString::fromStdString(casted->mName.string()));
-			});
+		        moduleSelected(QString::fromStdString(casted->mName.string()));
+		    });
 }
 
 void ModuleBrowser::loadWorkspace(chig::Context& context) {
@@ -52,7 +52,7 @@ void ModuleBrowser::loadWorkspace(chig::Context& context) {
 
 	std::unordered_map<std::string, QTreeWidgetItem*> topLevels;
 	std::unordered_map<QTreeWidgetItem*, std::unordered_map<std::string, QTreeWidgetItem*>>
-		children;
+	    children;
 
 	for (auto moduleName : modules) {
 		fs::path module = moduleName;
@@ -60,8 +60,8 @@ void ModuleBrowser::loadWorkspace(chig::Context& context) {
 		auto iter = module.begin();
 
 		// consume the first
-		std::string		 topLevelName = module.begin()->string();
-		QTreeWidgetItem* topLevel	 = nullptr;
+		std::string      topLevelName = module.begin()->string();
+		QTreeWidgetItem* topLevel     = nullptr;
 		if (topLevels.find(topLevelName) != topLevels.end()) {
 			topLevel = topLevels[topLevelName];
 		} else {
@@ -73,7 +73,7 @@ void ModuleBrowser::loadWorkspace(chig::Context& context) {
 				topLevel = new ModuleTreeItem(nullptr, module);
 			} else {
 				topLevel =
-					new QTreeWidgetItem(QStringList() << QString::fromStdString(topLevelName));
+				    new QTreeWidgetItem(QStringList() << QString::fromStdString(topLevelName));
 			}
 			addTopLevelItem(topLevel);
 			topLevels[topLevelName] = topLevel;
@@ -99,7 +99,7 @@ void ModuleBrowser::loadWorkspace(chig::Context& context) {
 					newTopLevel = new ModuleTreeItem(topLevel, module);
 				} else {
 					newTopLevel = new QTreeWidgetItem(
-						topLevel, QStringList() << QString::fromStdString(name));
+					    topLevel, QStringList() << QString::fromStdString(name));
 				}
 				// store in cache
 				children[topLevel][name] = newTopLevel;

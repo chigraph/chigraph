@@ -23,11 +23,11 @@ int main(int argc, char** argv) {
 	namespace po = boost::program_options;
 
 	po::options_description general(
-		"chig: Chigraph command line. Usage: chig <command> <arguments>", 50);
+	    "chig: Chigraph command line. Usage: chig <command> <arguments>", 50);
 
 	general.add_options()("help,h", "Produce Help Message")("command", po::value<std::string>(),
-															"which command")(
-		"subargs", po::value<std::vector<std::string>>(), "arguments for command");
+	                                                        "which command")(
+	    "subargs", po::value<std::vector<std::string>>(), "arguments for command");
 
 	po::positional_options_description pos;
 	pos.add("command", 1).add("subargs", -1);
@@ -35,10 +35,10 @@ int main(int argc, char** argv) {
 	po::variables_map vm;
 
 	po::parsed_options parsed = po::command_line_parser(argc, argv)
-									.options(general)
-									.positional(pos)
-									.allow_unregistered()
-									.run();
+	                                .options(general)
+	                                .positional(pos)
+	                                .allow_unregistered()
+	                                .run();
 
 	po::store(parsed, vm);
 
@@ -59,15 +59,11 @@ int main(int argc, char** argv) {
 	std::string cmd = vm["command"].as<std::string>();
 
 	std::vector<std::string> opts =
-		po::collect_unrecognized(parsed.options, po::include_positional);
+	    po::collect_unrecognized(parsed.options, po::include_positional);
 	opts.erase(opts.begin());  // remove the command
 
-	if (cmd == "compile") {
-		return compile(opts);
-	} 
-	if (cmd == "run") {
-		return run(opts);
-	}
+	if (cmd == "compile") { return compile(opts); }
+	if (cmd == "run") { return run(opts); }
 	// TODO: write other ones
 
 	std::cerr << "Unrecognized command: " << cmd << std::endl;
