@@ -40,7 +40,7 @@ struct LangModule : ChigModule {
 	}
 
 	std::vector<std::string> typeNames() const override {
-		return {"i32", "i1", "double", "i8*"};  // TODO: do i need more?
+		return {"i32", "i1", "float", "i8*"};  // TODO: do i need more?
 	}
 
 	Result generateModule(llvm::Module& /*module*/) override { return {}; };

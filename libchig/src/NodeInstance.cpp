@@ -12,7 +12,7 @@ NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeTy
       mId{gsl::to_string(nodeID)},
       mContext{&mType->context()},
       mFunction{func} {
-	Expects(mType != nullptr);  // it's ok to initialize a NodeInstance without a function.
+	Expects(mType != nullptr && mFunction != nullptr);
 
 	mType->mNodeInstance = this;
 
@@ -30,6 +30,9 @@ NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
       mId{std::move(id)},
 	  mContext{&other.context()},
 	  mFunction{&other.function()} {
+	
+	Expects(mType != nullptr && mFunction != nullptr);
+		  
 	mType->mNodeInstance = this;
 
 	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
@@ -66,14 +69,23 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 	}
 	outputExecConnections.resize(newType->execOutputs().size(), std::make_pair(nullptr, ~0));
 
-	// trash all data connections TODO: don't actually trash them all keep good ones
+	auto id = 0ull;
 	for (const auto& conn : inputDataConnections) {
-		if (conn.first != nullptr) { disconnectData(*conn.first, conn.second, *this); }
+		if (!(conn.first != nullptr && newType->dataInputs().size() > id && type().dataInputs()[id].first == newType->dataInputs()[id].first)) { 
+			disconnectData(*conn.first, conn.second, *this); 
+		}
+		++id;
 	}
 	inputDataConnections.resize(newType->dataInputs().size(), std::make_pair(nullptr, ~0));
 
-	size_t id = 0ull;
+	id = 0ull;
 	for (const auto& connSlot : outputDataConnections) {
+		
+		// keep the connections if they're still good
+		if(newType->dataOutputs().size() > id && type().dataOutputs()[id].first == newType->dataOutputs()[id].first) {
+			continue;
+		}
+		
 		while (!connSlot.empty()) {
 			Expects(connSlot[0].first);
 

@@ -33,37 +33,8 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	// create the registry
 	//////////////////////
 
-	auto reg = std::make_shared<DataModelRegistry>();
-
-	// register dependencies + our own mod
-	auto deps = mFunction->module().dependencies();
-	deps.insert(mFunction->module().fullName());
-	for (auto modName : deps) {
-		auto module = mFunction->context().moduleByFullName(modName);
-		Expects(module != nullptr);
-
-		for (auto typeName : module->nodeTypeNames()) {
-			// create that node type unless it's entry or exit
-			if (modName == "lang" && (typeName == "entry" || typeName == "exit")) { continue; }
-
-			std::unique_ptr<chig::NodeType> ty;
-			module->nodeTypeFromName(typeName, {}, &ty);
-
-			auto name = ty->qualifiedName();  // cache the name because ty is moved from
-			reg->registerModel(std::make_unique<ChigraphNodeModel>(
-				new chig::NodeInstance(mFunction, std::move(ty), 0, 0, name),
-			    this));  // TODO: this is a memory leak
-		}
-	}
-	// register functions in this module
-	// register exit -- it has to be the speical kind of exit for this function
-	std::unique_ptr<chig::NodeType> ty;
-	mFunction->createExitNodeType(&ty);
-
-	reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "lang:exit"), this));
-
-	mScene = new FlowScene(reg);
+	
+	mScene = new FlowScene(createRegistry());
 
 	mView = new FlowView(mScene);
 
@@ -322,6 +293,10 @@ void FunctionView::refreshGuiForNode(Node* node) {
 	}
 }
 
+void FunctionView::refreshRegistry() {
+	mScene->setRegistry(createRegistry());
+}
+
 Node* FunctionView::guiNodeFromChigNode(chig::NodeInstance* inst) {
 	auto iter = mNodeMap.find(inst);
 	if (iter != mNodeMap.end()) { return iter->second; }
@@ -332,4 +307,38 @@ chig::NodeInstance* FunctionView::chigNodeFromGuiNode(Node* node) {
 	auto nodeGui = dynamic_cast<ChigraphNodeModel*>(node->nodeDataModel());
 	if (nodeGui == nullptr) { return nullptr; }
 	return &nodeGui->instance();
+}
+
+std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
+	auto reg = std::make_shared<DataModelRegistry>();
+
+	// register dependencies + our own mod
+	auto deps = mFunction->module().dependencies();
+	deps.insert(mFunction->module().fullName());
+	for (auto modName : deps) {
+		auto module = mFunction->context().moduleByFullName(modName);
+		Expects(module != nullptr);
+
+		for (auto typeName : module->nodeTypeNames()) {
+			// create that node type unless it's entry or exit
+			if (modName == "lang" && (typeName == "entry" || typeName == "exit")) { continue; }
+
+			std::unique_ptr<chig::NodeType> ty;
+			module->nodeTypeFromName(typeName, {}, &ty);
+
+			auto name = ty->qualifiedName();  // cache the name because ty is moved from
+			reg->registerModel(std::make_unique<ChigraphNodeModel>(
+				new chig::NodeInstance(mFunction, std::move(ty), 0, 0, name),
+			    this));  // TODO: this is a memory leak
+		}
+	}
+	// register functions in this module
+	// register exit -- it has to be the speical kind of exit for this function
+	std::unique_ptr<chig::NodeType> ty;
+	mFunction->createExitNodeType(&ty);
+
+	reg->registerModel(std::make_unique<ChigraphNodeModel>(
+		new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "lang:exit"), this));
+
+	return reg;
 }

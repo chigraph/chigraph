@@ -169,6 +169,11 @@ Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::
 
 	// load graphs
 	res += cPtr->loadGraphs();
+	
+	// if we failed, remove the module
+	if (!res) {
+		unloadModule(cPtr->fullName());
+	}
 
 	return res;
 }
@@ -185,6 +190,21 @@ bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept {
 	Expects(modToAdd == nullptr);
 
 	return true;
+}
+
+bool Context::unloadModule(gsl::cstring_span<> fullName) {
+	
+	// find the module, and if we see it then delete it
+	for(auto idx = 0ull; idx < mModules.size(); ++idx) {
+		if(mModules[idx]->fullName() == fullName) {
+			mModules.erase(mModules.begin() + idx);
+			return true;
+		}
+	}
+	
+	// if we get here it wasn't removed
+	return false;
+	
 }
 
 Result Context::typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
@@ -222,7 +242,7 @@ Result Context::debugTypeFromModule(gsl::cstring_span<> module, gsl::cstring_spa
 
 	*toFill = mod->debugTypeFromName(name);
 	if (*toFill == nullptr) {
-		res.addEntry("E37", "Could not find type in module",
+		res.addEntry("E37", "Could not find debug type in module",
 		             {{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
 	}
 

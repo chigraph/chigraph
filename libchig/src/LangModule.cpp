@@ -8,6 +8,8 @@
 #include <gsl/gsl_assert>
 
 namespace chig {
+
+namespace {
 /// NodeType for conditionals
 struct IfNodeType : NodeType {
 	IfNodeType(LangModule& mod) : NodeType(mod, "if", "branch on a bools") {
@@ -91,10 +93,9 @@ struct EntryNodeType : NodeType {
 struct ConstIntNodeType : NodeType {
 	ConstIntNodeType(LangModule& mod, int num)
 	    : NodeType(mod, "const-int", "Int literal"), number(num) {
-		setExecInputs({""});
-		setExecOutputs({""});
+		makePure();
 
-		setDataOutputs({{mod.typeFromName("i32"), "out"}});
+		setDataOutputs({{mod.typeFromName("i32"), ""}});
 	}
 
 	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
@@ -127,7 +128,7 @@ struct ConstFloatNodeType : NodeType {
 	    : NodeType(mod, "const-float", "Float Literal"), number(num) {
 		makePure();
 
-		setDataOutputs({{mod.typeFromName("i32"), "out"}});
+		setDataOutputs({{mod.typeFromName("float"), ""}});
 	}
 
 	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
@@ -351,7 +352,7 @@ enum class BinOp { Add, Subtract, Multiply, Divide };
 
 struct BinaryOperationNodeType : NodeType {
 	BinaryOperationNodeType(LangModule& mod, DataType ty, BinOp binaryOperation)
-	    : NodeType(mod), mBinOp(binaryOperation) {
+	    : NodeType(mod), mBinOp(binaryOperation), mType{ty} {
 		makePure();
 
 		std::string opStr = [](BinOp b) {
@@ -393,17 +394,35 @@ struct BinaryOperationNodeType : NodeType {
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		llvm::Value* result = [&](BinOp b) {
-			switch (b) {
-			case BinOp::Add: return builder.CreateAdd(io[0], io[1]);
-			case BinOp::Subtract: return builder.CreateSub(io[0], io[1]);
-			case BinOp::Multiply: return builder.CreateMul(io[0], io[1]);
-			case BinOp::Divide: return builder.CreateSDiv(io[0], io[1]);
-			default: return (llvm::Value*)nullptr;
-			}
-			return (llvm::Value*)nullptr;
-		}(mBinOp);
+		
+		llvm::Value* result = nullptr;
+		if(mType.unqualifiedName() == "i32") {
+		
+		
+			result = [&](BinOp b) {
+				switch (b) {
+				case BinOp::Add: return builder.CreateAdd(io[0], io[1]);
+				case BinOp::Subtract: return builder.CreateSub(io[0], io[1]);
+				case BinOp::Multiply: return builder.CreateMul(io[0], io[1]);
+				case BinOp::Divide: return builder.CreateSDiv(io[0], io[1]);
+				default: return (llvm::Value*)nullptr;
+				}
+				return (llvm::Value*)nullptr;
+			}(mBinOp);
 
+		} else {
+			result = [&](BinOp b) {
+				switch (b) {
+				case BinOp::Add: return builder.CreateFAdd(io[0], io[1]);
+				case BinOp::Subtract: return builder.CreateFSub(io[0], io[1]);
+				case BinOp::Multiply: return builder.CreateFMul(io[0], io[1]);
+				case BinOp::Divide: return builder.CreateFDiv(io[0], io[1]);
+				default: return (llvm::Value*)nullptr;
+				}
+				return (llvm::Value*)nullptr;
+			}(mBinOp);
+		}
+		
 		builder.CreateStore(result, io[2]);
 
 		builder.CreateBr(outputBlocks[0]);
@@ -416,7 +435,109 @@ struct BinaryOperationNodeType : NodeType {
 	}
 
 	BinOp mBinOp;
+	DataType mType;
 };
+
+enum class CmpOp { Lt, Gt, Let, Get, Eq, Neq };
+
+struct CompareNodeType : NodeType {
+	CompareNodeType(LangModule& mod, DataType ty, CmpOp op) : NodeType(mod), mCompOp(op), mType{ty} {
+		makePure();
+		
+		std::string opStr = [](CmpOp b) {
+			switch (b) {
+			case CmpOp::Lt: return "<";
+			case CmpOp::Gt: return ">";
+			case CmpOp::Let: return "<=";
+			case CmpOp::Get: return ">=";
+			case CmpOp::Eq: return "==";
+			case CmpOp::Neq: return "!=";
+			default: return "";
+			}
+			return "";
+		}(mCompOp);
+		
+		setName(ty.unqualifiedName() + opStr + ty.unqualifiedName());
+		
+		std::string opVerb = [](CmpOp b) {
+			switch (b) {
+			case CmpOp::Lt: return "less than";
+			case CmpOp::Gt: return "greater than";
+			case CmpOp::Let: return "less than or equal to";
+			case CmpOp::Get: return "greater than or equal to";
+			case CmpOp::Eq: return "equal to";
+			case CmpOp::Neq: return "not equal to";
+			default: return "";
+			}
+			return "";
+		}(mCompOp);
+		
+		setDescription("Check if one " + ty.unqualifiedName() + " is " + opVerb + " than another " + ty.unqualifiedName());
+		
+		setDataInputs({{ty, "a"}, {ty, "b"}});
+		setDataOutputs({{mod.typeFromName("i1"), ""}});
+		
+	}
+	
+	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
+	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
+		Expects(io.size() == 3 && codegenInto != nullptr && outputBlocks.size() == 1);
+
+		llvm::IRBuilder<> builder(codegenInto);
+		builder.SetCurrentDebugLocation(nodeLocation);
+
+		llvm::Value* result = nullptr;
+		if(mType.unqualifiedName() == "i32") {
+		
+			result = [&](CmpOp b) -> llvm::Value* {
+				switch (b) {
+				case CmpOp::Lt: return builder.CreateICmpSLT(io[0], io[1]);
+				case CmpOp::Gt: return builder.CreateICmpSGT(io[0], io[1]);
+				case CmpOp::Let: return builder.CreateICmpSLE(io[0], io[1]);
+				case CmpOp::Get: return builder.CreateICmpSLE(io[0], io[1]);
+				case CmpOp::Eq: return builder.CreateICmpEQ(io[0], io[1]);
+				case CmpOp::Neq: return builder.CreateICmpNE(io[0], io[1]);
+				default: return nullptr;
+				}
+				return nullptr;
+			}(mCompOp);
+		
+		} else {
+					
+			result = [&](CmpOp b) -> llvm::Value* {
+				switch (b) {
+				case CmpOp::Lt: return builder.CreateFCmpULT(io[0], io[1]);
+				case CmpOp::Gt: return builder.CreateFCmpUGT(io[0], io[1]);
+				case CmpOp::Let: return builder.CreateFCmpULE(io[0], io[1]);
+				case CmpOp::Get: return builder.CreateFCmpULE(io[0], io[1]);
+				case CmpOp::Eq: return builder.CreateFCmpUEQ(io[0], io[1]);
+				case CmpOp::Neq: return builder.CreateFCmpUNE(io[0], io[1]);
+				default: return nullptr;
+				}
+				return nullptr;
+			}(mCompOp);
+		
+		}
+
+		builder.CreateStore(result, io[2]);
+
+		builder.CreateBr(outputBlocks[0]);
+
+		return {};
+	}
+	
+	std::unique_ptr<NodeType> clone() const override {
+		return std::make_unique<CompareNodeType>(*this);
+	}
+	
+	CmpOp mCompOp;
+	DataType mType;
+};
+
+} // anon namespace
+
 
 LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	using namespace std::string_literals;
@@ -465,6 +586,42 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("float"), BinOp::Divide);
 		 }},
+		 {"i32<i32"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Lt);
+		}},
+		 {"i32>i32"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Gt);
+		}},
+		 {"i32<=i32"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Let);
+		}},
+		 {"i32>=i32"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Get);
+		}},
+		 {"i32==i32"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Eq);
+		}},
+		 {"i32!=i32"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Neq);
+		}},
+		 {"float<float"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Lt);
+		}},
+		 {"float>float"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Gt);
+		}},
+		 {"float<=float"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Let);
+		}},
+		 {"float>=float"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Get);
+		}},
+		 {"float==float"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Eq);
+		}},
+		 {"float!=float"s, [this](const nlohmann::json&, Result&) {
+			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Neq);
+		}},
 	    {"inttofloat"s, [this](const nlohmann::json&,
 	                           Result&) { return std::make_unique<IntToFloatNodeType>(*this); }},
 	    {"floattoint"s, [this](const nlohmann::json&,
@@ -602,10 +759,10 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 
 		     float num = 0;
 
-		     if (data.is_number_float()) {
+		     if (data.is_number()) {
 			     num = data;
 		     } else {
-			     res.addEntry("WUKN", "Data for lang:const-float must be a float",
+			     res.addEntry("WUKN", "Data for lang:const-float must be a number",
 			                  {{"Given Data", data}});
 		     }
 
@@ -644,9 +801,9 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	mDebugTypes["i1"] =
 	    llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i1", 8,
 	                           8, llvm::dwarf::DW_ATE_boolean);
-	mDebugTypes["double"] =
+	mDebugTypes["float"] =
 	    llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
-	                           "lang:double", 64, 64, llvm::dwarf::DW_ATE_float);
+	                           "lang:float", 64, 64, llvm::dwarf::DW_ATE_float);
 	auto charType = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
 	                                       "lang:i8", 8, 8, llvm::dwarf::DW_ATE_unsigned_char);
 	mDebugTypes["i8*"] = llvm::DIDerivedType::get(

@@ -23,13 +23,14 @@ GraphFunction::GraphFunction(JsonModule& mod, gsl::cstring_span<>          name,
       mDataInputs(std::move(dataIns)),
       mDataOutputs(std::move(dataOuts)),
       mExecInputs(std::move(execIns)),
-      mExecOutputs(std::move(execOuts)) {
+      mExecOutputs(std::move(execOuts)),
+      mGraph{*this} {
 	// TODO: check that it has at least 1 exec input and output
 }
 
 GraphFunction::~GraphFunction() = default;
 
-GraphFunction::GraphFunction(JsonModule& module, const nlohmann::json& data, Result& res) {
+GraphFunction::GraphFunction(JsonModule& module, const nlohmann::json& data, Result& res) : mGraph{*this} {
 	if (!data.is_object()) {
 		res.addEntry("E1", "Graph json isn't a JSON object", {});
 		return;

@@ -3,6 +3,8 @@
 
 using namespace chig;
 
+Graph::Graph(GraphFunction& func) : mContext{&func.context()}, mFunction{&func} {}
+
 Graph::Graph(GraphFunction& func, const nlohmann::json& data, Result& res)
     : mContext{&func.context()}, mFunction{&func} {
 	// read the nodes
