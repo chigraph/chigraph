@@ -1,7 +1,7 @@
 Chigraph API Documentation                    {#mainpage}
 =========================
 
-![](@ref /chigraph512.png)
+![](@ref chigraph512.png)
 
 This is the API documentation for the libchig API. You are at the right place if you:
 
