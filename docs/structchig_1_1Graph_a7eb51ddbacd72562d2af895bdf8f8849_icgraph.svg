@@ -9,78 +9,78 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 84)">
 <title>chig::Graph::insertNode</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-84 448,-84 448,4 -4,4"/>
-<!-- Node27 -->
+<!-- Node35 -->
 <g id="node1" class="node">
-<title>Node27</title>
+<title>Node35</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-28 0,-47 131,-47 131,-28 0,-28"/>
 <text text-anchor="middle" x="65.5" y="-35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Graph::insertNode</text>
 </g>
-<!-- Node28 -->
+<!-- Node36 -->
 <g id="node2" class="node">
-<title>Node28</title>
-<g id="a_node2"><a xlink:href="structchig_1_1Graph.html#aec41aa72e581609226c6e709ecc9018d" target="_top" xlink:title="Default constructor, creates an empty graph. ">
+<title>Node36</title>
+<g id="a_node2"><a xlink:href="structchig_1_1Graph.html#a1b1c12b94544f6bb8eb7b807ef2c0f7e" target="_top" xlink:title="Normal constructor (don&#39;t call this, let GraphFunction call it) ">
 <polygon fill="#ffffff" stroke="#000000" points="170,-50 170,-69 277,-69 277,-50 170,-50"/>
 <text text-anchor="middle" x="223.5" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Graph::Graph</text>
 </a>
 </g>
 </g>
-<!-- Node27&#45;&gt;Node28 -->
+<!-- Node35&#45;&gt;Node36 -->
 <g id="edge1" class="edge">
-<title>Node27&#45;&gt;Node28</title>
+<title>Node35&#45;&gt;Node36</title>
 <path fill="none" stroke="#191970" d="M141.1742,-48.0369C150.8558,-49.385 160.6042,-50.7424 169.8362,-52.0278"/>
 <polygon fill="#191970" stroke="#191970" points="141.5208,-44.5515 131.1336,-46.6389 140.5553,-51.4846 141.5208,-44.5515"/>
 </g>
-<!-- Node29 -->
+<!-- Node37 -->
 <g id="node3" class="node">
-<title>Node29</title>
-<g id="a_node3"><a xlink:href="structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" target="_top" xlink:title="chig::GraphFunction\l::insertNode">
+<title>Node37</title>
+<g id="a_node3"><a xlink:href="structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" target="_top" xlink:title="Add a node to the graph. ">
 <polygon fill="#ffffff" stroke="#000000" points="167,-.5 167,-30.5 280,-30.5 280,-.5 167,-.5"/>
 <text text-anchor="start" x="175" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="223.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::insertNode</text>
 </a>
 </g>
 </g>
-<!-- Node27&#45;&gt;Node29 -->
+<!-- Node35&#45;&gt;Node37 -->
 <g id="edge2" class="edge">
-<title>Node27&#45;&gt;Node29</title>
+<title>Node35&#45;&gt;Node37</title>
 <path fill="none" stroke="#191970" d="M141.2225,-26.9564C149.8584,-25.7539 158.5465,-24.5442 166.8733,-23.3847"/>
 <polygon fill="#191970" stroke="#191970" points="140.5553,-23.5154 131.1336,-28.3611 141.5208,-30.4485 140.5553,-23.5154"/>
 </g>
-<!-- Node30 -->
+<!-- Node38 -->
 <g id="node4" class="node">
-<title>Node30</title>
-<g id="a_node4"><a xlink:href="structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" target="_top" xlink:title="chig::GraphFunction\l::insertNode">
+<title>Node38</title>
+<g id="a_node4"><a xlink:href="structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" target="_top" xlink:title="Add a node to the graph using module, type, and json. ">
 <polygon fill="#ffffff" stroke="#000000" points="323.5,-49.5 323.5,-79.5 436.5,-79.5 436.5,-49.5 323.5,-49.5"/>
 <text text-anchor="start" x="331.5" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="380" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::insertNode</text>
 </a>
 </g>
 </g>
-<!-- Node29&#45;&gt;Node30 -->
+<!-- Node37&#45;&gt;Node38 -->
 <g id="edge3" class="edge">
-<title>Node29&#45;&gt;Node30</title>
+<title>Node37&#45;&gt;Node38</title>
 <path fill="none" stroke="#191970" d="M281.3504,-33.6129C297.9883,-38.8222 315.9489,-44.4457 331.9271,-49.4484"/>
 <polygon fill="#191970" stroke="#191970" points="282.3211,-30.2494 271.7322,-30.6014 280.2295,-36.9296 282.3211,-30.2494"/>
 </g>
-<!-- Node31 -->
+<!-- Node39 -->
 <g id="node5" class="node">
-<title>Node31</title>
-<g id="a_node5"><a xlink:href="structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" target="_top" xlink:title="chig::GraphFunction\l::getOrInsertEntryNode">
+<title>Node39</title>
+<g id="a_node5"><a xlink:href="structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" target="_top" xlink:title="Creates an entry node if it doesn&#39;t already exist, else just return it. ">
 <polygon fill="#ffffff" stroke="#000000" points="316,-.5 316,-30.5 444,-30.5 444,-.5 316,-.5"/>
 <text text-anchor="start" x="324" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="380" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::getOrInsertEntryNode</text>
 </a>
 </g>
 </g>
-<!-- Node29&#45;&gt;Node31 -->
+<!-- Node37&#45;&gt;Node39 -->
 <g id="edge4" class="edge">
-<title>Node29&#45;&gt;Node31</title>
+<title>Node37&#45;&gt;Node39</title>
 <path fill="none" stroke="#191970" d="M290.2454,-8.8153C298.7427,-8.7182 307.4251,-8.7294 315.8798,-8.8488"/>
 <polygon fill="#191970" stroke="#191970" points="289.9399,-5.3198 280.0001,-8.9873 290.0575,-12.3188 289.9399,-5.3198"/>
 </g>
-<!-- Node31&#45;&gt;Node29 -->
+<!-- Node39&#45;&gt;Node37 -->
 <g id="edge5" class="edge">
-<title>Node31&#45;&gt;Node29</title>
+<title>Node39&#45;&gt;Node37</title>
 <path fill="none" stroke="#191970" d="M305.7643,-22.2421C297.0999,-22.2762 288.3697,-22.1998 280.0001,-22.0127"/>
 <polygon fill="#191970" stroke="#191970" points="305.9117,-25.741 315.8798,-22.1512 305.8487,-18.7413 305.9117,-25.741"/>
 </g>

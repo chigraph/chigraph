@@ -1,3 +1,5 @@
+/// \file FunctionValidator.cpp
+
 #include "chig/FunctionValidator.hpp"
 #include "chig/Graph.hpp"
 #include "chig/GraphFunction.hpp"
@@ -118,6 +120,9 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 
 	return res;
 }
+
+namespace {
+
 /// \internal
 /// alreadyCalled stores the nodes that have been called at this node, and the inputExecIds it has
 /// been called at, to avoid infinite loops
@@ -158,6 +163,7 @@ Result validatePath(
 
 	return res;
 }
+} // anon namespace
 
 Result validateFunctionNodeInputs(const GraphFunction& func) {
 	Result res;

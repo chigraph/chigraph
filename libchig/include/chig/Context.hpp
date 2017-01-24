@@ -1,3 +1,6 @@
+/// \file chig/Context.hpp
+/// Defines the Context class and related functions
+
 #ifndef CHIG_CONTEXT_HPP
 #define CHIG_CONTEXT_HPP
 
@@ -48,6 +51,7 @@ struct Context {
 
 	/// Create a new JSONModule with the given full name
 	/// \param fullName The new name
+	/// \return The created JsonModule
 	JsonModule* newJsonModule(gsl::cstring_span<> fullName);
 
 	/// Get the list of modules in the workspace
@@ -64,6 +68,7 @@ struct Context {
 	/// \param fullName The full path of the module, including URL
 	/// \param json The JSON data
 	/// \param toFill The JsonModule* to fill into, optional
+	/// \return The Result
 	Result addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json,
 	                         JsonModule** toFill = nullptr);
 
@@ -99,6 +104,7 @@ struct Context {
 	/// \param typeName The name of the node type
 	/// \param data The JSON data that is used to construct the NodeType.
 	/// \param toFill The point to fill
+	/// \return The Result
 	Result nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
 	                          const nlohmann::json&      data,
 	                          std::unique_ptr<NodeType>* toFill) noexcept;

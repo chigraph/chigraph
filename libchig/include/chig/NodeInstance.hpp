@@ -1,3 +1,7 @@
+/// \file chig/NodeInstance.hpp
+/// Defines the NodeInstance class and related functions
+
+
 #ifndef CHIG_NODE_INSTANCE_HPP
 #define CHIG_NODE_INSTANCE_HPP
 

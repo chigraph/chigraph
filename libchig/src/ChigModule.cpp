@@ -1,3 +1,6 @@
+/// \file ChigModule.cpp
+
+
 #include "chig/ChigModule.hpp"
 
 #include "chig/Context.hpp"

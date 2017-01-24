@@ -1,3 +1,7 @@
+/// \file chig/FunctionValidator.hpp
+/// Defines functions for validating GraphFunction objects
+
+
 #pragma once
 
 #ifndef CHIG_FUNCTION_VALIDATOR_HPP

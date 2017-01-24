@@ -1,3 +1,5 @@
+/// \file Result.cpp
+
 #include "chig/Result.hpp"
 
 namespace {

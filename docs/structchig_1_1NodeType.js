@@ -22,6 +22,5 @@ var structchig_1_1NodeType =
     [ "setExecInputs", "structchig_1_1NodeType.html#af2c90f6feb76c07a1a60aec4e6f44b18", null ],
     [ "setExecOutputs", "structchig_1_1NodeType.html#af0820866c93d3c2975aea01d582501a6", null ],
     [ "setName", "structchig_1_1NodeType.html#ab293155e9460646933fa7f41e426a2f3", null ],
-    [ "toJSON", "structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c", null ],
-    [ "NodeInstance", "structchig_1_1NodeType.html#a9dbf6e0542dd15b21e20f2695a07d675", null ]
+    [ "toJSON", "structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c", null ]
 ];

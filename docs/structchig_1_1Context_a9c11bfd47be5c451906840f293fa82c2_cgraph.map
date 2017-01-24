@@ -1,17 +1,17 @@
 <map id="chig::Context::newJsonModule" name="chig::Context::newJsonModule">
-<area shape="rect" id="node2" href="$structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04" title="chig::JsonModule::saveToDisk" alt="" coords="253,299,455,326"/>
-<area shape="rect" id="node3" href="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" title="chig::ChigModule::context" alt="" coords="1259,51,1432,78"/>
-<area shape="rect" id="node5" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="chig::Result::addEntry" alt="" coords="1495,436,1645,463"/>
-<area shape="rect" id="node6" href="$structchig_1_1JsonModule.html#a8633e9bfc529b8a88a6a12c253f99e53" title="chig::JsonModule::source\lFilePath" alt="" coords="507,204,677,245"/>
-<area shape="rect" id="node13" href="$structchig_1_1JsonModule.html#a200bbbf7eefaffdc40978c01d1053f46" title="chig::JsonModule::toJSON" alt="" coords="503,386,681,412"/>
-<area shape="rect" id="node4" href="$structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" title="chig::ChigModule::generate\lModule" alt="" coords="1480,44,1660,85"/>
-<area shape="rect" id="node7" href="$structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f" title="chig::Context::workspacePath" alt="" coords="737,102,933,128"/>
-<area shape="rect" id="node8" href="$structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3" title="chig::ChigModule::fullName" alt="" coords="744,335,925,362"/>
-<area shape="rect" id="node9" href="$structchig_1_1JsonModule.html#aac5a649c9a98e72ecc20ecadb30d3e4c" title="chig::JsonModule::create\lFunction" alt="" coords="751,204,919,245"/>
-<area shape="rect" id="node10" href="$structchig_1_1JsonModule.html#aef854b4e838ba98c1d6973c1f4488b10" title="chig::JsonModule::graphFunc\lFromName" alt="" coords="1003,237,1196,278"/>
-<area shape="rect" id="node12" href="$structchig_1_1JsonModule.html#aa56ff2175f24086ea8d021be75894cbf" title="chig::JsonModule::remove\lFunction" alt="" coords="747,269,922,310"/>
-<area shape="rect" id="node11" href="$structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2" title="chig::ChigModule::name" alt="" coords="1264,436,1427,463"/>
-<area shape="rect" id="node14" href="$structchig_1_1ChigModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40" title="chig::ChigModule::dependencies" alt="" coords="729,386,940,412"/>
-<area shape="rect" id="node15" href="$structchig_1_1ChigModule.html#acec829296a8677186fcd6f0beae3d3a1" title="chig::ChigModule::addDependency" alt="" coords="988,386,1211,412"/>
-<area shape="rect" id="node16" href="$structchig_1_1Context.html#a2ee400680060a0891bdffc7109016fec" title="chig::Context::loadModule" alt="" coords="1259,386,1432,412"/>
+<area shape="rect" id="node2" href="$structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04" title="Serialize to disk in the context. " alt="" coords="271,286,485,312"/>
+<area shape="rect" id="node3" href="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" title="Get the Context that this module belongs to. " alt="" coords="1339,38,1529,64"/>
+<area shape="rect" id="node5" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. " alt="" coords="1595,423,1759,450"/>
+<area shape="rect" id="node6" href="$structchig_1_1JsonModule.html#a8633e9bfc529b8a88a6a12c253f99e53" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="534,190,717,232"/>
+<area shape="rect" id="node13" href="$structchig_1_1JsonModule.html#a200bbbf7eefaffdc40978c01d1053f46" title="Serialize to JSON. " alt="" coords="533,372,717,399"/>
+<area shape="rect" id="node4" href="$structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" title="Generate a llvm::Module from the module. " alt="" coords="1577,30,1776,72"/>
+<area shape="rect" id="node7" href="$structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f" title="Get the workspace path of the Context. " alt="" coords="773,88,988,115"/>
+<area shape="rect" id="node8" href="$structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3" title="Get the full name of the module. " alt="" coords="780,322,981,348"/>
+<area shape="rect" id="node9" href="$structchig_1_1JsonModule.html#aac5a649c9a98e72ecc20ecadb30d3e4c" title="Create a new function if it does&#39;t already exist. " alt="" coords="791,190,971,232"/>
+<area shape="rect" id="node10" href="$structchig_1_1JsonModule.html#aef854b4e838ba98c1d6973c1f4488b10" title="Get a function from the name. " alt="" coords="1064,224,1271,265"/>
+<area shape="rect" id="node12" href="$structchig_1_1JsonModule.html#aa56ff2175f24086ea8d021be75894cbf" title="Remove a function from the module. " alt="" coords="786,256,975,297"/>
+<area shape="rect" id="node11" href="$structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2" title="Get the short name of the module (the last bit) " alt="" coords="1345,423,1523,450"/>
+<area shape="rect" id="node14" href="$structchig_1_1ChigModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40" title="Get the dependencies. " alt="" coords="765,372,996,399"/>
+<area shape="rect" id="node15" href="$structchig_1_1ChigModule.html#acec829296a8677186fcd6f0beae3d3a1" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="1044,372,1291,399"/>
+<area shape="rect" id="node16" href="$structchig_1_1Context.html#a2ee400680060a0891bdffc7109016fec" title="Load a module from disk. " alt="" coords="1339,372,1529,399"/>
 </map>

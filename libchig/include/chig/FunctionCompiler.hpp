@@ -1,3 +1,6 @@
+/// \file chig/FunctionCompiler.hpp
+/// Defines functions for compiling GraphFunction objects
+
 #pragma once
 
 #ifndef CHIG_FUNCTION_COMPILER_HPP

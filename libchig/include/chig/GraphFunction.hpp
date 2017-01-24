@@ -1,3 +1,7 @@
+/// \file chig/GraphFunction.hpp
+/// Declares the GraphFunction class
+
+
 #ifndef CHIG_GRAPH_FUNCTION_HPP
 #define CHIG_GRAPH_FUNCTION_HPP
 
@@ -80,6 +84,7 @@ struct GraphFunction {
 	/// \param y The y location of the node
 	/// \param id The node ID
 	/// \param toFill The NodeInstance to fill to, optional
+	/// \return The Result
 	Result insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
 	                  const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
 	                  NodeInstance** toFill = nullptr);
@@ -251,6 +256,10 @@ private:
 	Graph          mGraph;
 };
 
+/// Parse a colonated pair
+/// Example: lang:i32 would turn into {lang, i32}
+/// \param in The colonated pair
+/// \return {first, second}
 inline std::pair<std::string, std::string> parseColonPair(const std::string& in) {
 	size_t colonID = in.find(':');
 	if (colonID == std::string::npos) { return {}; }
@@ -259,6 +268,6 @@ inline std::pair<std::string, std::string> parseColonPair(const std::string& in)
 
 	return {module, name};
 }
-}
+} // namespace chig
 
 #endif  // CHIG_GRAPH_FUNCTION_HPP

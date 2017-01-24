@@ -1,16 +1,16 @@
 <map id="chig::ChigModule::generateModule" name="chig::ChigModule::generateModule">
-<area shape="rect" id="node2" href="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" title="chig::ChigModule::context" alt="" coords="233,194,407,221"/>
-<area shape="rect" id="node3" href="$structchig_1_1ChigModule.html#acec829296a8677186fcd6f0beae3d3a1" title="chig::ChigModule::addDependency" alt="" coords="455,114,677,141"/>
-<area shape="rect" id="node7" href="$structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04" title="chig::JsonModule::saveToDisk" alt="" coords="1211,122,1412,149"/>
-<area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#ad38700422a7466162b80969280ab5870" title="chig::GraphFunction\l::GraphFunction" alt="" coords="497,216,635,257"/>
-<area shape="rect" id="node11" href="$structchig_1_1NodeType.html#a83c7ce04c8c7b38c1a3fac17bf0dbe3d" title="chig::NodeType::NodeType" alt="" coords="476,282,656,309"/>
-<area shape="rect" id="node12" href="$structchig_1_1JsonModule.html#a8633e9bfc529b8a88a6a12c253f99e53" title="chig::JsonModule::source\lFilePath" alt="" coords="988,5,1159,47"/>
-<area shape="rect" id="node14" href="$structchig_1_1LangModule.html#a8c6c7b9ada9f7dc770842e9a065ca1b2" title="chig::LangModule::typeFromName" alt="" coords="455,333,677,359"/>
-<area shape="rect" id="node4" href="$structchig_1_1ChigModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40" title="chig::ChigModule::dependencies" alt="" coords="725,63,936,90"/>
-<area shape="rect" id="node9" href="$structchig_1_1JsonModule.html#ae9d14a6f432082a9489d3b5ccf5ae338" title="chig::JsonModule::JsonModule" alt="" coords="729,114,932,141"/>
-<area shape="rect" id="node5" href="$structchig_1_1JsonModule.html#a200bbbf7eefaffdc40978c01d1053f46" title="chig::JsonModule::toJSON" alt="" coords="984,71,1163,98"/>
-<area shape="rect" id="node6" href="$structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d" title="Get the possible DataType names. " alt="" coords="1461,71,1659,98"/>
-<area shape="rect" id="node8" href="$structchig_1_1Context.html#a9c11bfd47be5c451906840f293fa82c2" title="chig::Context::newJsonModule" alt="" coords="1460,122,1660,149"/>
-<area shape="rect" id="node13" href="$structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635" title="chig::JsonModule::generate\lModule" alt="" coords="1220,5,1403,47"/>
-<area shape="rect" id="node15" href="$structchig_1_1LangModule.html#adab4150aa733a4aa66bc0ede5654dcaa" title="Default constructor, usually called from Context::loadModule(&quot;lang&quot;) " alt="" coords="729,333,932,359"/>
+<area shape="rect" id="node2" href="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" title="Get the Context that this module belongs to. " alt="" coords="252,204,443,231"/>
+<area shape="rect" id="node3" href="$structchig_1_1ChigModule.html#acec829296a8677186fcd6f0beae3d3a1" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="491,95,737,121"/>
+<area shape="rect" id="node7" href="$structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04" title="Serialize to disk in the context. " alt="" coords="1296,124,1511,151"/>
+<area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#ad38700422a7466162b80969280ab5870" title="Constructs a GraphFunction from a JOSN object. " alt="" coords="539,197,689,238"/>
+<area shape="rect" id="node11" href="$structchig_1_1LangModule.html#adab4150aa733a4aa66bc0ede5654dcaa" title="Default constructor, usually called from Context::loadModule(&quot;lang&quot;) " alt="" coords="790,288,1011,315"/>
+<area shape="rect" id="node12" href="$structchig_1_1NodeType.html#a83c7ce04c8c7b38c1a3fac17bf0dbe3d" title="Constructor. " alt="" coords="515,364,713,391"/>
+<area shape="rect" id="node13" href="$structchig_1_1JsonModule.html#a8633e9bfc529b8a88a6a12c253f99e53" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="1065,7,1247,49"/>
+<area shape="rect" id="node15" href="$structchig_1_1LangModule.html#a8c6c7b9ada9f7dc770842e9a065ca1b2" title="Get a DataType from the name. " alt="" coords="492,263,736,289"/>
+<area shape="rect" id="node4" href="$structchig_1_1ChigModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40" title="Get the dependencies. " alt="" coords="785,95,1016,121"/>
+<area shape="rect" id="node9" href="$structchig_1_1JsonModule.html#ae9d14a6f432082a9489d3b5ccf5ae338" title="Constructor for a json module. " alt="" coords="794,44,1007,71"/>
+<area shape="rect" id="node5" href="$structchig_1_1JsonModule.html#a200bbbf7eefaffdc40978c01d1053f46" title="Serialize to JSON. " alt="" coords="1064,95,1248,121"/>
+<area shape="rect" id="node6" href="$structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d" title="Get the possible DataType names. " alt="" coords="1560,73,1775,100"/>
+<area shape="rect" id="node8" href="$structchig_1_1Context.html#a9c11bfd47be5c451906840f293fa82c2" title="Create a new JSONModule with the given full name. " alt="" coords="1559,124,1776,151"/>
+<area shape="rect" id="node14" href="$structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635" title="Generate a llvm::Module from the module. " alt="" coords="1305,7,1502,49"/>
 </map>

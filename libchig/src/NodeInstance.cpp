@@ -1,3 +1,5 @@
+/// \file NodeInstance.cpp
+
 #include "chig/NodeInstance.hpp"
 #include "chig/FunctionValidator.hpp"
 

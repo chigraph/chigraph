@@ -1,3 +1,6 @@
+/// \file chig/CModule.hpp
+/// Defines the CModule class
+
 #pragma once
 
 #ifndef CHIG_CMODULE_HPP

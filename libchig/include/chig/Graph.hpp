@@ -1,3 +1,7 @@
+/// \file chig/Graph.hpp
+/// Defines the internal Graph structure
+
+
 #pragma once
 
 #ifndef CHIG_GRAPH_HPP

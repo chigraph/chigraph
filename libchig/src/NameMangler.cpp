@@ -1,3 +1,5 @@
+/// \file NameMangler.cpp
+
 #include "chig/NameMangler.hpp"
 
 #include <vector>

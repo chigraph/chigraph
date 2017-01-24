@@ -1,14 +1,19 @@
 <map id="chig::NodeInstance::id" name="chig::NodeInstance::id">
-<area shape="rect" id="node2" href="$namespacechig.html#a5977e55ae63e7f16a0ac342e2311e1b6" title="chig::disconnectData" alt="" coords="220,57,379,83"/>
-<area shape="rect" id="node4" href="$structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e" title="chig::GraphFunction\l::removeNode" alt="" coords="458,136,609,177"/>
-<area shape="rect" id="node8" href="$structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153" title="chig::NodeInstance\l::setType" alt="" coords="460,5,607,47"/>
-<area shape="rect" id="node9" href="$namespacechig.html#a215d31f09c52ea11a74173e7ac1392bb" title="chig::disconnectExec" alt="" coords="220,107,379,134"/>
-<area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#af4417b3cb4bb432656d8d929a81a07f8" title="chig::GraphFunction\l::fromJSON" alt="" coords="224,260,375,301"/>
-<area shape="rect" id="node12" href="$structchig_1_1NodeInstance.html#a3c1b4ddc0c288cbacf6e4aaa7810a349" title="Copy assignment operator. " alt="" coords="226,325,373,367"/>
-<area shape="rect" id="node13" href="$structchig_1_1GraphFunction.html#ab1f0121edf211dbd98bb49a2d4fe5260" title="chig::GraphFunction\l::validateGraph" alt="" coords="458,201,609,243"/>
-<area shape="rect" id="node3" href="$structchig_1_1NodeInstance.html#a664d68ae63b0ec095892d17597ef9623" title="Get the containing Context object. " alt="" coords="460,71,607,112"/>
-<area shape="rect" id="node5" href="$structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" title="chig::GraphFunction\l::insertNode" alt="" coords="688,169,839,211"/>
-<area shape="rect" id="node6" href="$structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" title="chig::GraphFunction\l::getOrInsertEntryNode" alt="" coords="887,169,1057,211"/>
-<area shape="rect" id="node7" href="$structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" title="chig::GraphFunction\l::insertNode" alt="" coords="897,235,1047,276"/>
-<area shape="rect" id="node11" href="$structchig_1_1JsonModule.html#ae9d14a6f432082a9489d3b5ccf5ae338" title="chig::JsonModule::JsonModule" alt="" coords="427,267,640,294"/>
+<area shape="rect" id="node2" href="$namespacechig.html#a26aa6586df79345493de9fc130291c18" title="Disconnect a data connection. " alt="" coords="263,80,422,107"/>
+<area shape="rect" id="node7" href="$structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e" title="Remove a node from the function. " alt="" coords="521,299,671,341"/>
+<area shape="rect" id="node11" href="$structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153" title="Set the type of the node instance. " alt="" coords="523,131,669,173"/>
+<area shape="rect" id="node12" href="$namespacechig.html#ad24a330508033631ef29b2f6e5cf6210" title="Disconnect a exec connection. " alt="" coords="263,197,422,224"/>
+<area shape="rect" id="node13" href="$structchig_1_1NodeInstance.html#a3c1b4ddc0c288cbacf6e4aaa7810a349" title="Copy assignment operator. " alt="" coords="269,299,416,341"/>
+<area shape="rect" id="node14" href="$namespacechig.html#ae2ff27777b91f651f86d9a8e8ef0b986" title="Make sure that connections connect back and that they have the same types. " alt="" coords="220,365,465,406"/>
+<area shape="rect" id="node3" href="$namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d" title="Connects two nodes&#39; data connections. " alt="" coords="527,5,665,32"/>
+<area shape="rect" id="node4" href="$structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2" title="Get the containing GraphFunction. " alt="" coords="735,61,882,102"/>
+<area shape="rect" id="node6" href="$structchig_1_1Graph.html#a1b1c12b94544f6bb8eb7b807ef2c0f7e" title="Normal constructor (don&#39;t call this, let GraphFunction call it) " alt="" coords="1220,39,1363,65"/>
+<area shape="rect" id="node5" href="$namespacechig.html#a8a2e0029b591b2c20b39d570753f123f" title="Connects two nodes&#39; exec connections. " alt="" coords="968,68,1107,95"/>
+<area shape="rect" id="node8" href="$structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" title="Add a node to the graph. " alt="" coords="733,299,884,341"/>
+<area shape="rect" id="node9" href="$structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" title="Creates an entry node if it doesn&#39;t already exist, else just return it. " alt="" coords="952,299,1123,341"/>
+<area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" title="Add a node to the graph using module, type, and json. " alt="" coords="962,234,1113,275"/>
+<area shape="rect" id="node15" href="$namespacechig.html#afccf44a2370371aae836862d9731155e" title="Validate that a function is compilable. " alt="" coords="513,372,679,399"/>
+<area shape="rect" id="node16" href="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="727,372,891,399"/>
+<area shape="rect" id="node17" href="$structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635" title="Generate a llvm::Module from the module. " alt="" coords="939,365,1136,406"/>
+<area shape="rect" id="node18" href="$structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d" title="Get the possible DataType names. " alt="" coords="1184,372,1399,399"/>
 </map>

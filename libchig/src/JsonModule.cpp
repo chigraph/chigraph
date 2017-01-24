@@ -1,3 +1,5 @@
+/// \file JsonModule.cpp
+
 #include "chig/JsonModule.hpp"
 
 #include "chig/FunctionCompiler.hpp"

@@ -1,3 +1,5 @@
+/// \file LangModule.cpp
+
 #include "chig/LangModule.hpp"
 #include "chig/Context.hpp"
 

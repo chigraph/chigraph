@@ -1,14 +1,17 @@
 <map id="chig::GraphFunction::dataInputs" name="chig::GraphFunction::dataInputs">
-<area shape="rect" id="node2" href="$structchig_1_1GraphFunction.html#ac808aecb5fec9cd3a2a1f59e18c90eee" title="chig::GraphFunction\l::compile" alt="" coords="1082,65,1233,106"/>
-<area shape="rect" id="node3" href="$structchig_1_1GraphFunction.html#abc41f524da8fd9b7308cb7abaa2b28c9" title="chig::GraphFunction\l::createEntryNodeType" alt="" coords="204,261,375,302"/>
-<area shape="rect" id="node9" href="$structchig_1_1GraphFunction.html#af4417b3cb4bb432656d8d929a81a07f8" title="chig::GraphFunction\l::fromJSON" alt="" coords="846,403,997,445"/>
-<area shape="rect" id="node12" href="$structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848" title="chig::GraphFunction\l::functionType" alt="" coords="846,94,997,135"/>
-<area shape="rect" id="node13" href="$structchig_1_1GraphFunction.html#aa47e30665a08b671950c4e8411c7a4ba" title="chig::GraphFunction\l::entryNode" alt="" coords="214,173,365,214"/>
-<area shape="rect" id="node4" href="$structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" title="chig::GraphFunction\l::getOrInsertEntryNode" alt="" coords="621,282,792,323"/>
-<area shape="rect" id="node5" href="$structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" title="chig::GraphFunction\l::insertNode" alt="" coords="1082,282,1233,323"/>
-<area shape="rect" id="node7" href="$structchig_1_1GraphFunction.html#a3765dc838314ff13457ac933b043f711" title="chig::GraphFunction\l::modifyDataOutput" alt="" coords="423,173,573,214"/>
-<area shape="rect" id="node6" href="$structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" title="chig::GraphFunction\l::insertNode" alt="" coords="1312,282,1463,323"/>
-<area shape="rect" id="node8" href="$structchig_1_1GraphFunction.html#ae734c04f29489efeb96227a20e2ada22" title="chig::GraphFunction\l::dataOutputs" alt="" coords="631,153,782,194"/>
-<area shape="rect" id="node11" href="$structchig_1_1GraphFunction.html#ac7c52122fef0c74d9d0ee04af9a741c4" title="chig::GraphFunction\l::createExitNodeType" alt="" coords="840,211,1003,253"/>
-<area shape="rect" id="node10" href="$structchig_1_1JsonModule.html#ae9d14a6f432082a9489d3b5ccf5ae338" title="chig::JsonModule::JsonModule" alt="" coords="1051,411,1264,437"/>
+<area shape="rect" id="node2" href="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="883,57,1047,84"/>
+<area shape="rect" id="node5" href="$structchig_1_1GraphFunction.html#abc41f524da8fd9b7308cb7abaa2b28c9" title="Create a fresh NodeType for an entry. " alt="" coords="204,238,375,279"/>
+<area shape="rect" id="node11" href="$structchig_1_1GraphFunction.html#a5a8768d5514a31104f0b3a9b5553099c" title="Serialize the GraphFunction to JSON (usually called from JsonModule::toJson) " alt="" coords="889,443,1040,485"/>
+<area shape="rect" id="node13" href="$structchig_1_1GraphFunction.html#aa47e30665a08b671950c4e8411c7a4ba" title="Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two e..." alt="" coords="214,83,365,125"/>
+<area shape="rect" id="node16" href="$structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848" title="Get the LLVM function type for the function. " alt="" coords="677,134,827,175"/>
+<area shape="rect" id="node3" href="$structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635" title="Generate a llvm::Module from the module. " alt="" coords="1095,50,1292,91"/>
+<area shape="rect" id="node4" href="$structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d" title="Get the possible DataType names. " alt="" coords="1340,57,1555,84"/>
+<area shape="rect" id="node6" href="$structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" title="Creates an entry node if it doesn&#39;t already exist, else just return it. " alt="" coords="437,205,607,246"/>
+<area shape="rect" id="node7" href="$structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" title="Add a node to the graph. " alt="" coords="1118,205,1269,246"/>
+<area shape="rect" id="node9" href="$structchig_1_1GraphFunction.html#ae355b017f2859dabff4fa17791317d77" title="Modify an exec output (change docstring) " alt="" coords="447,270,597,311"/>
+<area shape="rect" id="node8" href="$structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" title="Add a node to the graph using module, type, and json. " alt="" coords="1372,205,1523,246"/>
+<area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#ae155f716b072ef5f8e3ba064ae7ef8c0" title="Get the function exec outputs. " alt="" coords="677,326,827,367"/>
+<area shape="rect" id="node12" href="$structchig_1_1GraphFunction.html#ac7c52122fef0c74d9d0ee04af9a741c4" title="Create a fresh NodeType for an exit. " alt="" coords="883,275,1046,317"/>
+<area shape="rect" id="node14" href="$namespacechig.html#ad868894793d664b6ae994f24fc781b4b" title="The make sure that nodes are called before their outputs are used. " alt="" coords="423,83,621,125"/>
+<area shape="rect" id="node15" href="$namespacechig.html#afccf44a2370371aae836862d9731155e" title="Validate that a function is compilable. " alt="" coords="669,83,835,109"/>
 </map>

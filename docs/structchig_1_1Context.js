@@ -18,5 +18,6 @@ var structchig_1_1Context =
     [ "nodeTypeFromModule", "structchig_1_1Context.html#ab1cfbdb1646a75316dfa60f117576f37", null ],
     [ "numModules", "structchig_1_1Context.html#a92c913aaa730281508e2048807472cee", null ],
     [ "typeFromModule", "structchig_1_1Context.html#aa484ef2c16aaa4d97a21632af4122bd8", null ],
+    [ "unloadModule", "structchig_1_1Context.html#ac10b22215a14a3da5de09d4460d5f093", null ],
     [ "workspacePath", "structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f", null ]
 ];
