@@ -1,3 +1,5 @@
+/// \file CModule.cpp
+
 #include "chig/CModule.hpp"
 #include "chig/Config.hpp"
 

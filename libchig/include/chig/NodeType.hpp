@@ -1,3 +1,7 @@
+/// \file chig/NodeType.hpp
+/// Defines the NodeType class
+
+
 #ifndef CHIG_NODE_TYPE_HPP
 #define CHIG_NODE_TYPE_HPP
 
@@ -23,8 +27,10 @@ namespace chig {
 /// A generic node type. All user made types are of JsonNo  deType type, which is defined in
 /// JsonModule.cpp. This allows for easy extension of the language.
 struct NodeType {
+private:
 	friend NodeInstance;
-
+public:
+    
 	/// Constructor
 	/// \param mod The module to create the NodeType in
 	/// \param name The name of the NodeType

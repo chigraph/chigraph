@@ -1,3 +1,6 @@
+/// \file chig/ChigModule.hpp
+/// Defines the ChigModule class
+
 #ifndef CHIG_CHIG_MODULE_HPP
 #define CHIG_CHIG_MODULE_HPP
 
@@ -24,7 +27,7 @@ namespace chig {
 /// An abstract class that represents a module of code in Chigraph
 /// Can be compiled to a llvm::Module
 struct ChigModule {
-	/// Default constructor. This is usually run by Context::addModule
+	/// Default constructor. This is usually run by Context::loadModule
 	/// \param contextArg The context to create the module insides
 	/// \param moduleFullName The full name of the module
 	ChigModule(Context& contextArg, std::string moduleFullName);

@@ -1,6 +1,6 @@
 var structchig_1_1Graph =
 [
-    [ "Graph", "structchig_1_1Graph.html#aec41aa72e581609226c6e709ecc9018d", null ],
+    [ "Graph", "structchig_1_1Graph.html#a6ffb229f7e518a977c5801e2b09e4def", null ],
     [ "Graph", "structchig_1_1Graph.html#a1b1c12b94544f6bb8eb7b807ef2c0f7e", null ],
     [ "context", "structchig_1_1Graph.html#a8e87178e56af2c155deedf1385d1d183", null ],
     [ "insertNode", "structchig_1_1Graph.html#a7eb51ddbacd72562d2af895bdf8f8849", null ],

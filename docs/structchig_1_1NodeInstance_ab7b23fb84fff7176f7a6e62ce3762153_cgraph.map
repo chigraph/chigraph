@@ -1,17 +1,21 @@
 <map id="chig::NodeInstance::setType" name="chig::NodeInstance::setType">
-<area shape="rect" id="node2" href="$namespacechig.html#a5977e55ae63e7f16a0ac342e2311e1b6" title="chig::disconnectData" alt="" coords="200,187,359,213"/>
-<area shape="rect" id="node6" href="$structchig_1_1NodeInstance.html#a1468afe4799106831566bd283332a516" title="chig::NodeInstance::id" alt="" coords="437,5,603,32"/>
-<area shape="rect" id="node15" href="$namespacechig.html#a215d31f09c52ea11a74173e7ac1392bb" title="chig::disconnectExec" alt="" coords="200,107,359,133"/>
-<area shape="rect" id="node3" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="chig::Result::addEntry" alt="" coords="438,107,602,133"/>
-<area shape="rect" id="node4" href="$structchig_1_1NodeType.html#a3dfb8b1b093b9de0ee59e8eee7ab84e1" title="chig::NodeType::dataInputs" alt="" coords="420,275,620,301"/>
-<area shape="rect" id="node5" href="$structchig_1_1NodeType.html#a7eb591e0e93940aeef541d9d37679b61" title="chig::NodeType::dataOutputs" alt="" coords="415,325,625,352"/>
-<area shape="rect" id="node7" href="$structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3" title="chig::NodeType::qualifiedName" alt="" coords="407,157,633,184"/>
-<area shape="rect" id="node12" href="$structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c" title="chig::NodeType::toJSON" alt="" coords="432,376,608,403"/>
-<area shape="rect" id="node14" href="$structchig_1_1NodeInstance.html#a5c9d6934e14f56ff4317ff08e170e83a" title="chig::NodeInstance\l::type" alt="" coords="447,209,593,250"/>
-<area shape="rect" id="node8" href="$structchig_1_1NodeType.html#ad18d6f37b20e92bcd580bcf7c7504e64" title="chig::NodeType::module" alt="" coords="685,233,865,260"/>
-<area shape="rect" id="node9" href="$structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2" title="chig::ChigModule::name" alt="" coords="685,81,864,108"/>
-<area shape="rect" id="node10" href="$structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53" title="chig::NodeType::name" alt="" coords="691,132,859,159"/>
-<area shape="rect" id="node11" href="$structchig_1_1NodeType.html#ad61ce1a20fa6b174027cbbdd43782d9c" title="chig::NodeType::codegen" alt="" coords="681,183,868,209"/>
-<area shape="rect" id="node13" href="$structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513" title="chig::NodeType::clone" alt="" coords="691,376,858,403"/>
-<area shape="rect" id="node16" href="$structchig_1_1NodeType.html#afc4ee5b526c87f79a4b4e2a902e209a8" title="chig::NodeType::execOutputs" alt="" coords="413,56,627,83"/>
+<area shape="rect" id="node2" href="$structchig_1_1NodeType.html#a3dfb8b1b093b9de0ee59e8eee7ab84e1" title="Get the data inputs for the node. " alt="" coords="793,97,993,123"/>
+<area shape="rect" id="node3" href="$structchig_1_1NodeType.html#a7eb591e0e93940aeef541d9d37679b61" title="Get the data outputs for the node. " alt="" coords="788,46,999,73"/>
+<area shape="rect" id="node4" href="$namespacechig.html#a26aa6586df79345493de9fc130291c18" title="Disconnect a data connection. " alt="" coords="200,401,359,427"/>
+<area shape="rect" id="node15" href="$structchig_1_1NodeInstance.html#a5c9d6934e14f56ff4317ff08e170e83a" title="Get the type of the instance. " alt="" coords="1087,647,1233,688"/>
+<area shape="rect" id="node17" href="$namespacechig.html#ad24a330508033631ef29b2f6e5cf6210" title="Disconnect a exec connection. " alt="" coords="814,603,973,630"/>
+<area shape="rect" id="node19" href="$structchig_1_1NodeInstance.html#a1468afe4799106831566bd283332a516" title="Get the ID of the instance, unique to the graph. " alt="" coords="1077,806,1243,833"/>
+<area shape="rect" id="node5" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. " alt="" coords="1078,274,1242,301"/>
+<area shape="rect" id="node6" href="$structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2" title="Get the containing GraphFunction. " alt="" coords="407,452,553,493"/>
+<area shape="rect" id="node8" href="$structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3" title="Get the qualified name of the node type, like module.name():name() " alt="" coords="1047,429,1273,455"/>
+<area shape="rect" id="node13" href="$structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c" title="Create the JSON necessary to store the object. " alt="" coords="805,147,981,174"/>
+<area shape="rect" id="node7" href="$namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d" title="Connects two nodes&#39; data connections. " alt="" coords="601,299,740,326"/>
+<area shape="rect" id="node16" href="$namespacechig.html#a8a2e0029b591b2c20b39d570753f123f" title="Connects two nodes&#39; exec connections. " alt="" coords="601,481,740,507"/>
+<area shape="rect" id="node9" href="$structchig_1_1NodeType.html#ad18d6f37b20e92bcd580bcf7c7504e64" title="Get the ChigModule this NodeType belongs to. " alt="" coords="1325,353,1505,379"/>
+<area shape="rect" id="node10" href="$structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2" title="Get the short name of the module (the last bit) " alt="" coords="1325,403,1504,430"/>
+<area shape="rect" id="node11" href="$structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53" title="Get the name of the NodeType in the ChigModule. " alt="" coords="1331,454,1499,481"/>
+<area shape="rect" id="node12" href="$structchig_1_1NodeType.html#a2d6fbd28daa967f8d8a3b57351137b9b" title="A virtual function that is called when this node needs to be called. " alt="" coords="1321,505,1508,531"/>
+<area shape="rect" id="node14" href="$structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513" title="Clones the type. " alt="" coords="1077,147,1243,174"/>
+<area shape="rect" id="node18" href="$structchig_1_1NodeType.html#afc4ee5b526c87f79a4b4e2a902e209a8" title="Get the execution outputs for the node. " alt="" coords="1053,526,1267,553"/>
+<area shape="rect" id="node20" href="$structchig_1_1NodeType.html#ad5ef2ca8fec103e87c31ed39564fa050" title="Get the execution inputs for the node. " alt="" coords="792,553,995,579"/>
 </map>

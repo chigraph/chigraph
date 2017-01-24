@@ -9,40 +9,40 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 35)">
 <title>chig::LangModule::typeFromName</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-35 551,-35 551,4 -4,4"/>
-<!-- Node77 -->
+<!-- Node85 -->
 <g id="node1" class="node">
-<title>Node77</title>
+<title>Node85</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-6 0,-25 183,-25 183,-6 0,-6"/>
 <text text-anchor="middle" x="91.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::LangModule::typeFromName</text>
 </g>
-<!-- Node78 -->
+<!-- Node86 -->
 <g id="node2" class="node">
-<title>Node78</title>
-<g id="a_node2"><a xlink:href="structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" target="_top" xlink:title="chig::ChigModule::context">
+<title>Node86</title>
+<g id="a_node2"><a xlink:href="structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" target="_top" xlink:title="Get the Context that this module belongs to. ">
 <polygon fill="#ffffff" stroke="#000000" points="219,-6 219,-25 362,-25 362,-6 219,-6"/>
 <text text-anchor="middle" x="290.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::context</text>
 </a>
 </g>
 </g>
-<!-- Node77&#45;&gt;Node78 -->
+<!-- Node85&#45;&gt;Node86 -->
 <g id="edge1" class="edge">
-<title>Node77&#45;&gt;Node78</title>
+<title>Node85&#45;&gt;Node86</title>
 <path fill="none" stroke="#191970" d="M183.1367,-15.5C191.6217,-15.5 200.1833,-15.5 208.5729,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="208.7043,-19.0001 218.7042,-15.5 208.7042,-12.0001 208.7043,-19.0001"/>
 </g>
-<!-- Node79 -->
+<!-- Node87 -->
 <g id="node3" class="node">
-<title>Node79</title>
-<g id="a_node3"><a xlink:href="structchig_1_1ChigModule.html#aad4b97558b2455201b4db986b3b63840" target="_top" xlink:title="chig::ChigModule::generate\lModule">
+<title>Node87</title>
+<g id="a_node3"><a xlink:href="structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" target="_top" xlink:title="Generate a llvm::Module from the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="398,-.5 398,-30.5 547,-30.5 547,-.5 398,-.5"/>
 <text text-anchor="start" x="406" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::generate</text>
 <text text-anchor="middle" x="472.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Module</text>
 </a>
 </g>
 </g>
-<!-- Node78&#45;&gt;Node79 -->
+<!-- Node86&#45;&gt;Node87 -->
 <g id="edge2" class="edge">
-<title>Node78&#45;&gt;Node79</title>
+<title>Node86&#45;&gt;Node87</title>
 <path fill="none" stroke="#191970" d="M362.17,-15.5C370.6066,-15.5 379.2756,-15.5 387.8685,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="387.9024,-19.0001 397.9023,-15.5 387.9023,-12.0001 387.9024,-19.0001"/>
 </g>

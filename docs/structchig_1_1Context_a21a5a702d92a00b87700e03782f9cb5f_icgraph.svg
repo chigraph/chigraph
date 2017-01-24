@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 709;
+var viewWidth = 759;
 var viewHeight = 94;
 var sectionId = 'dynsection-16';
 </script>
@@ -54,110 +54,110 @@ var sectionId = 'dynsection-16';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chig::Context::workspacePath</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-90 705,-90 705,4 -4,4"/>
-<!-- Node85 -->
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-90 755,-90 755,4 -4,4"/>
+<!-- Node89 -->
 <g id="node1" class="node">
-<title>Node85</title>
-<polygon fill="#bfbfbf" stroke="#000000" points="0,-44.5 0,-63.5 147,-63.5 147,-44.5 0,-44.5"/>
-<text text-anchor="middle" x="73.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::workspacePath</text>
-</g>
-<!-- Node86 -->
-<g id="node2" class="node">
-<title>Node86</title>
-<g id="a_node2"><a xlink:href="structchig_1_1Context.html#aa4fb30ced50d32c629ad50669b8b1e05" target="_top" xlink:title="chig::Context::hasWorkspace">
-<polygon fill="#ffffff" stroke="#000000" points="183,-66.5 183,-85.5 328,-85.5 328,-66.5 183,-66.5"/>
-<text text-anchor="middle" x="255.5" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::hasWorkspace</text>
-</a>
-</g>
-</g>
-<!-- Node85&#45;&gt;Node86 -->
-<g id="edge1" class="edge">
-<title>Node85&#45;&gt;Node86</title>
-<path fill="none" stroke="#191970" d="M157.0693,-64.1018C165.6965,-65.1446 174.4133,-66.1983 182.9068,-67.225"/>
-<polygon fill="#191970" stroke="#191970" points="157.3495,-60.6103 147.0018,-62.8848 156.5094,-67.5597 157.3495,-60.6103"/>
-</g>
-<!-- Node87 -->
-<g id="node3" class="node">
-<title>Node87</title>
-<g id="a_node3"><a xlink:href="structchig_1_1JsonModule.html#a8633e9bfc529b8a88a6a12c253f99e53" target="_top" xlink:title="chig::JsonModule::source\lFilePath">
-<polygon fill="#ffffff" stroke="#000000" points="191.5,-17 191.5,-47 319.5,-47 319.5,-17 191.5,-17"/>
-<text text-anchor="start" x="199.5" y="-35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::source</text>
-<text text-anchor="middle" x="255.5" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">FilePath</text>
-</a>
-</g>
-</g>
-<!-- Node85&#45;&gt;Node87 -->
-<g id="edge2" class="edge">
-<title>Node85&#45;&gt;Node87</title>
-<path fill="none" stroke="#191970" d="M157.0717,-43.8979C168.5988,-42.5045 180.2859,-41.0918 191.3866,-39.75"/>
-<polygon fill="#191970" stroke="#191970" points="156.5094,-40.4403 147.0018,-45.1152 157.3495,-47.3897 156.5094,-40.4403"/>
-</g>
-<!-- Node88 -->
-<g id="node4" class="node">
-<title>Node88</title>
-<g id="a_node4"><a xlink:href="structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635" target="_top" xlink:title="chig::JsonModule::generate\lModule">
-<polygon fill="#ffffff" stroke="#000000" points="371,-39 371,-69 508,-69 508,-39 371,-39"/>
-<text text-anchor="start" x="379" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::generate</text>
-<text text-anchor="middle" x="439.5" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Module</text>
-</a>
-</g>
-</g>
-<!-- Node87&#45;&gt;Node88 -->
-<g id="edge3" class="edge">
-<title>Node87&#45;&gt;Node88</title>
-<path fill="none" stroke="#191970" d="M329.8532,-40.8901C343.4292,-42.5133 357.5379,-44.2002 370.9361,-45.8021"/>
-<polygon fill="#191970" stroke="#191970" points="329.9408,-37.3757 319.596,-39.6636 329.1097,-44.3262 329.9408,-37.3757"/>
+<title>Node89</title>
+<polygon fill="#bfbfbf" stroke="#000000" points="0,-44.5 0,-63.5 161,-63.5 161,-44.5 0,-44.5"/>
+<text text-anchor="middle" x="80.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::workspacePath</text>
 </g>
 <!-- Node90 -->
-<g id="node6" class="node">
+<g id="node2" class="node">
 <title>Node90</title>
-<g id="a_node6"><a xlink:href="structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04" target="_top" xlink:title="chig::JsonModule::saveToDisk">
-<polygon fill="#ffffff" stroke="#000000" points="364,-.5 364,-19.5 515,-19.5 515,-.5 364,-.5"/>
-<text text-anchor="middle" x="439.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::saveToDisk</text>
+<g id="a_node2"><a xlink:href="structchig_1_1Context.html#aa4fb30ced50d32c629ad50669b8b1e05" target="_top" xlink:title="Check if this context has a workspace bound to it – same as !workspacePath().empty() ...">
+<polygon fill="#ffffff" stroke="#000000" points="197,-66.5 197,-85.5 355,-85.5 355,-66.5 197,-66.5"/>
+<text text-anchor="middle" x="276" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::hasWorkspace</text>
 </a>
 </g>
 </g>
-<!-- Node87&#45;&gt;Node90 -->
-<g id="edge5" class="edge">
-<title>Node87&#45;&gt;Node90</title>
-<path fill="none" stroke="#191970" d="M329.8033,-23.1159C341.0524,-21.7709 352.6682,-20.3821 363.9435,-19.0339"/>
-<polygon fill="#191970" stroke="#191970" points="329.1097,-19.6738 319.596,-24.3364 329.9408,-26.6243 329.1097,-19.6738"/>
-</g>
-<!-- Node89 -->
-<g id="node5" class="node">
-<title>Node89</title>
-<g id="a_node5"><a xlink:href="structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d" target="_top" xlink:title="Get the possible DataType names. ">
-<polygon fill="#ffffff" stroke="#000000" points="551.5,-41.5 551.5,-60.5 700.5,-60.5 700.5,-41.5 551.5,-41.5"/>
-<text text-anchor="middle" x="626" y="-48.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::typeNames</text>
-</a>
-</g>
-</g>
-<!-- Node88&#45;&gt;Node89 -->
-<g id="edge4" class="edge">
-<title>Node88&#45;&gt;Node89</title>
-<path fill="none" stroke="#191970" d="M518.4593,-52.7299C529.3162,-52.5552 540.4377,-52.3763 551.2163,-52.203"/>
-<polygon fill="#191970" stroke="#191970" points="518.0936,-49.2352 508.1512,-52.8957 518.2062,-56.2343 518.0936,-49.2352"/>
-</g>
-<!-- Node90&#45;&gt;Node89 -->
-<g id="edge6" class="edge">
-<title>Node90&#45;&gt;Node89</title>
-<path fill="none" stroke="#191970" d="M492.5593,-21.6645C521.0718,-27.9327 555.7836,-35.5637 582.6563,-41.4714"/>
-<polygon fill="#191970" stroke="#191970" points="493.2739,-18.2381 482.7556,-19.5093 491.7709,-25.0748 493.2739,-18.2381"/>
+<!-- Node89&#45;&gt;Node90 -->
+<g id="edge1" class="edge">
+<title>Node89&#45;&gt;Node90</title>
+<path fill="none" stroke="#191970" d="M171.151,-64.2011C179.7158,-65.1649 188.3536,-66.137 196.7997,-67.0874"/>
+<polygon fill="#191970" stroke="#191970" points="171.4747,-60.7156 161.146,-63.0753 170.6919,-67.6717 171.4747,-60.7156"/>
 </g>
 <!-- Node91 -->
-<g id="node7" class="node">
+<g id="node3" class="node">
 <title>Node91</title>
-<g id="a_node7"><a xlink:href="structchig_1_1Context.html#a9c11bfd47be5c451906840f293fa82c2" target="_top" xlink:title="chig::Context::newJsonModule">
-<polygon fill="#ffffff" stroke="#000000" points="551,-.5 551,-19.5 701,-19.5 701,-.5 551,-.5"/>
-<text text-anchor="middle" x="626" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::newJsonModule</text>
+<g id="a_node3"><a xlink:href="structchig_1_1JsonModule.html#a8633e9bfc529b8a88a6a12c253f99e53" target="_top" xlink:title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved...">
+<polygon fill="#ffffff" stroke="#000000" points="207.5,-17 207.5,-47 344.5,-47 344.5,-17 207.5,-17"/>
+<text text-anchor="start" x="215.5" y="-35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::source</text>
+<text text-anchor="middle" x="276" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">FilePath</text>
 </a>
 </g>
 </g>
-<!-- Node90&#45;&gt;Node91 -->
+<!-- Node89&#45;&gt;Node91 -->
+<g id="edge2" class="edge">
+<title>Node89&#45;&gt;Node91</title>
+<path fill="none" stroke="#191970" d="M171.2906,-43.7832C183.4274,-42.4174 195.708,-41.0354 207.379,-39.7221"/>
+<polygon fill="#191970" stroke="#191970" points="170.6919,-40.3283 161.146,-44.9247 171.4747,-47.2844 170.6919,-40.3283"/>
+</g>
+<!-- Node92 -->
+<g id="node4" class="node">
+<title>Node92</title>
+<g id="a_node4"><a xlink:href="structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635" target="_top" xlink:title="Generate a llvm::Module from the module. ">
+<polygon fill="#ffffff" stroke="#000000" points="397.5,-39 397.5,-69 545.5,-69 545.5,-39 397.5,-39"/>
+<text text-anchor="start" x="405.5" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::generate</text>
+<text text-anchor="middle" x="471.5" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Module</text>
+</a>
+</g>
+</g>
+<!-- Node91&#45;&gt;Node92 -->
+<g id="edge3" class="edge">
+<title>Node91&#45;&gt;Node92</title>
+<path fill="none" stroke="#191970" d="M354.7746,-40.8647C368.8338,-42.4468 383.4377,-44.0902 397.3617,-45.6571"/>
+<polygon fill="#191970" stroke="#191970" points="354.9798,-37.3657 344.6511,-39.7254 354.1969,-44.3218 354.9798,-37.3657"/>
+</g>
+<!-- Node94 -->
+<g id="node6" class="node">
+<title>Node94</title>
+<g id="a_node6"><a xlink:href="structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04" target="_top" xlink:title="Serialize to disk in the context. ">
+<polygon fill="#ffffff" stroke="#000000" points="391,-.5 391,-19.5 552,-19.5 552,-.5 391,-.5"/>
+<text text-anchor="middle" x="471.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::saveToDisk</text>
+</a>
+</g>
+</g>
+<!-- Node91&#45;&gt;Node94 -->
+<g id="edge5" class="edge">
+<title>Node91&#45;&gt;Node94</title>
+<path fill="none" stroke="#191970" d="M354.5976,-23.1553C366.5703,-21.8079 378.9419,-20.4157 390.9555,-19.0638"/>
+<polygon fill="#191970" stroke="#191970" points="354.1969,-19.6782 344.6511,-24.2746 354.9798,-26.6343 354.1969,-19.6782"/>
+</g>
+<!-- Node93 -->
+<g id="node5" class="node">
+<title>Node93</title>
+<g id="a_node5"><a xlink:href="structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d" target="_top" xlink:title="Get the possible DataType names. ">
+<polygon fill="#ffffff" stroke="#000000" points="589,-41.5 589,-60.5 750,-60.5 750,-41.5 589,-41.5"/>
+<text text-anchor="middle" x="669.5" y="-48.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::typeNames</text>
+</a>
+</g>
+</g>
+<!-- Node92&#45;&gt;Node93 -->
+<g id="edge4" class="edge">
+<title>Node92&#45;&gt;Node93</title>
+<path fill="none" stroke="#191970" d="M555.5766,-52.7261C566.6341,-52.5586 577.9459,-52.3872 588.943,-52.2206"/>
+<polygon fill="#191970" stroke="#191970" points="555.4553,-49.2275 545.5095,-52.8786 555.5614,-56.2266 555.4553,-49.2275"/>
+</g>
+<!-- Node94&#45;&gt;Node93 -->
+<g id="edge6" class="edge">
+<title>Node94&#45;&gt;Node93</title>
+<path fill="none" stroke="#191970" d="M527.4349,-21.5825C557.7797,-27.866 594.8293,-35.5379 623.4836,-41.4714"/>
+<polygon fill="#191970" stroke="#191970" points="527.9248,-18.1098 517.4229,-19.5093 526.5054,-24.9643 527.9248,-18.1098"/>
+</g>
+<!-- Node95 -->
+<g id="node7" class="node">
+<title>Node95</title>
+<g id="a_node7"><a xlink:href="structchig_1_1Context.html#a9c11bfd47be5c451906840f293fa82c2" target="_top" xlink:title="Create a new JSONModule with the given full name. ">
+<polygon fill="#ffffff" stroke="#000000" points="588,-.5 588,-19.5 751,-19.5 751,-.5 588,-.5"/>
+<text text-anchor="middle" x="669.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::newJsonModule</text>
+</a>
+</g>
+</g>
+<!-- Node94&#45;&gt;Node95 -->
 <g id="edge7" class="edge">
-<title>Node90&#45;&gt;Node91</title>
-<path fill="none" stroke="#191970" d="M525.131,-10C533.7355,-10 542.4271,-10 550.9101,-10"/>
-<polygon fill="#191970" stroke="#191970" points="525.0879,-6.5001 515.0878,-10 525.0878,-13.5001 525.0879,-6.5001"/>
+<title>Node94&#45;&gt;Node95</title>
+<path fill="none" stroke="#191970" d="M562.0414,-10C570.6126,-10 579.2691,-10 587.7512,-10"/>
+<polygon fill="#191970" stroke="#191970" points="562.0342,-6.5001 552.0342,-10 562.0341,-13.5001 562.0342,-6.5001"/>
 </g>
 </g>
 </svg>

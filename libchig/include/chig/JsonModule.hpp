@@ -1,3 +1,7 @@
+/// \file chig/JsonModule.hpp
+/// Defines the JsonModule class
+
+
 #ifndef CHIG_JSON_MODULE_HPP
 #define CHIG_JSON_MODULE_HPP
 

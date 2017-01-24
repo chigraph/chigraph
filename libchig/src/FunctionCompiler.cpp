@@ -1,3 +1,6 @@
+/// \file FunctionCompiler.cpp
+
+
 #include "chig/FunctionCompiler.hpp"
 #include "chig/FunctionValidator.hpp"
 #include "chig/GraphFunction.hpp"

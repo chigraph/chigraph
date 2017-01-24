@@ -1,3 +1,5 @@
+/// \file GraphFunction.cpp
+
 #include "chig/GraphFunction.hpp"
 #include "chig/FunctionValidator.hpp"
 #include "chig/JsonModule.hpp"

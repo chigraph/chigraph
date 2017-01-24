@@ -1,8 +1,13 @@
 <map id="chig::Graph::nodes" name="chig::Graph::nodes">
-<area shape="rect" id="node2" href="$structchig_1_1Graph.html#a7eb51ddbacd72562d2af895bdf8f8849" title="chig::Graph::insertNode" alt="" coords="196,19,371,46"/>
-<area shape="rect" id="node7" href="$structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e" title="chig::GraphFunction\l::removeNode" alt="" coords="208,71,359,112"/>
-<area shape="rect" id="node3" href="$structchig_1_1Graph.html#aec41aa72e581609226c6e709ecc9018d" title="Default constructor, creates an empty graph. " alt="" coords="423,19,565,46"/>
-<area shape="rect" id="node4" href="$structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" title="chig::GraphFunction\l::insertNode" alt="" coords="419,71,569,112"/>
-<area shape="rect" id="node5" href="$structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" title="chig::GraphFunction\l::insertNode" alt="" coords="627,5,778,47"/>
-<area shape="rect" id="node6" href="$structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" title="chig::GraphFunction\l::getOrInsertEntryNode" alt="" coords="617,71,788,112"/>
+<area shape="rect" id="node2" href="$structchig_1_1Graph.html#a7eb51ddbacd72562d2af895bdf8f8849" title="Add a node to the graph. " alt="" coords="231,19,406,46"/>
+<area shape="rect" id="node7" href="$structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e" title="Remove a node from the function. " alt="" coords="243,71,394,112"/>
+<area shape="rect" id="node8" href="$namespacechig.html#ae2ff27777b91f651f86d9a8e8ef0b986" title="Make sure that connections connect back and that they have the same types. " alt="" coords="196,136,441,177"/>
+<area shape="rect" id="node3" href="$structchig_1_1Graph.html#a1b1c12b94544f6bb8eb7b807ef2c0f7e" title="Normal constructor (don&#39;t call this, let GraphFunction call it) " alt="" coords="501,19,643,46"/>
+<area shape="rect" id="node4" href="$structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5" title="Add a node to the graph. " alt="" coords="497,71,647,112"/>
+<area shape="rect" id="node5" href="$structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede" title="Add a node to the graph using module, type, and json. " alt="" coords="713,5,863,47"/>
+<area shape="rect" id="node6" href="$structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917" title="Creates an entry node if it doesn&#39;t already exist, else just return it. " alt="" coords="703,71,873,112"/>
+<area shape="rect" id="node9" href="$namespacechig.html#afccf44a2370371aae836862d9731155e" title="Validate that a function is compilable. " alt="" coords="489,143,655,170"/>
+<area shape="rect" id="node10" href="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="706,143,870,170"/>
+<area shape="rect" id="node11" href="$structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635" title="Generate a llvm::Module from the module. " alt="" coords="921,136,1119,177"/>
+<area shape="rect" id="node12" href="$structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d" title="Get the possible DataType names. " alt="" coords="1167,143,1381,170"/>
 </map>

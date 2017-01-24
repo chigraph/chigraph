@@ -1,3 +1,5 @@
+/// \file Graph.cpp
+
 #include "chig/Graph.hpp"
 #include <chig/GraphFunction.hpp>
 

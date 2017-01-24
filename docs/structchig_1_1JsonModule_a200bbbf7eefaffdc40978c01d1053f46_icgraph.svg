@@ -48,67 +48,67 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 542;
 var viewHeight = 66;
-var sectionId = 'dynsection-25';
+var sectionId = 'dynsection-31';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chig::JsonModule::toJSON</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-62 538,-62 538,4 -4,4"/>
-<!-- Node181 -->
+<!-- Node228 -->
 <g id="node1" class="node">
-<title>Node181</title>
+<title>Node228</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-19.5 0,-38.5 138,-38.5 138,-19.5 0,-19.5"/>
 <text text-anchor="middle" x="69" y="-26.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::toJSON</text>
 </g>
-<!-- Node182 -->
+<!-- Node229 -->
 <g id="node2" class="node">
-<title>Node182</title>
-<g id="a_node2"><a xlink:href="structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04" target="_top" xlink:title="chig::JsonModule::saveToDisk">
+<title>Node229</title>
+<g id="a_node2"><a xlink:href="structchig_1_1JsonModule.html#ae0301727a42a28a7ec2b7116f6d54e04" target="_top" xlink:title="Serialize to disk in the context. ">
 <polygon fill="#ffffff" stroke="#000000" points="174,-38.5 174,-57.5 335,-57.5 335,-38.5 174,-38.5"/>
 <text text-anchor="middle" x="254.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::saveToDisk</text>
 </a>
 </g>
 </g>
-<!-- Node181&#45;&gt;Node182 -->
+<!-- Node228&#45;&gt;Node229 -->
 <g id="edge1" class="edge">
-<title>Node181&#45;&gt;Node182</title>
+<title>Node228&#45;&gt;Node229</title>
 <path fill="none" stroke="#191970" d="M148.2816,-37.1205C156.7284,-37.9857 165.3274,-38.8664 173.7904,-39.7332"/>
 <polygon fill="#191970" stroke="#191970" points="148.378,-33.6121 138.0734,-36.0749 147.6647,-40.5757 148.378,-33.6121"/>
 </g>
-<!-- Node184 -->
+<!-- Node231 -->
 <g id="node4" class="node">
-<title>Node184</title>
-<g id="a_node4"><a xlink:href="structchig_1_1JsonModule.html#a51d5244f14c8b1e94cdd3985e3ae3db3" target="_top" xlink:title="Get the possible DataType names. ">
+<title>Node231</title>
+<g id="a_node4"><a xlink:href="structchig_1_1JsonModule.html#ac0085e28a8ff704511c0a4bb1f8eb42d" target="_top" xlink:title="Get the possible DataType names. ">
 <polygon fill="#ffffff" stroke="#000000" points="372,-.5 372,-19.5 533,-19.5 533,-.5 372,-.5"/>
 <text text-anchor="middle" x="452.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::JsonModule::typeNames</text>
 </a>
 </g>
 </g>
-<!-- Node181&#45;&gt;Node184 -->
+<!-- Node228&#45;&gt;Node231 -->
 <g id="edge4" class="edge">
-<title>Node181&#45;&gt;Node184</title>
+<title>Node228&#45;&gt;Node231</title>
 <path fill="none" stroke="#191970" d="M148.2568,-25.0733C213.6279,-21.8346 305.9852,-17.2589 371.7602,-14.0001"/>
 <polygon fill="#191970" stroke="#191970" points="147.8196,-21.5906 138.005,-25.5812 148.166,-28.582 147.8196,-21.5906"/>
 </g>
-<!-- Node183 -->
+<!-- Node230 -->
 <g id="node3" class="node">
-<title>Node183</title>
-<g id="a_node3"><a xlink:href="structchig_1_1Context.html#a9c11bfd47be5c451906840f293fa82c2" target="_top" xlink:title="chig::Context::newJsonModule">
+<title>Node230</title>
+<g id="a_node3"><a xlink:href="structchig_1_1Context.html#a9c11bfd47be5c451906840f293fa82c2" target="_top" xlink:title="Create a new JSONModule with the given full name. ">
 <polygon fill="#ffffff" stroke="#000000" points="371,-38.5 371,-57.5 534,-57.5 534,-38.5 371,-38.5"/>
 <text text-anchor="middle" x="452.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::newJsonModule</text>
 </a>
 </g>
 </g>
-<!-- Node182&#45;&gt;Node183 -->
+<!-- Node229&#45;&gt;Node230 -->
 <g id="edge2" class="edge">
-<title>Node182&#45;&gt;Node183</title>
+<title>Node229&#45;&gt;Node230</title>
 <path fill="none" stroke="#191970" d="M345.0414,-48C353.6126,-48 362.2691,-48 370.7512,-48"/>
 <polygon fill="#191970" stroke="#191970" points="345.0342,-44.5001 335.0342,-48 345.0341,-51.5001 345.0342,-44.5001"/>
 </g>
-<!-- Node182&#45;&gt;Node184 -->
+<!-- Node229&#45;&gt;Node231 -->
 <g id="edge3" class="edge">
-<title>Node182&#45;&gt;Node184</title>
+<title>Node229&#45;&gt;Node231</title>
 <path fill="none" stroke="#191970" d="M314.3659,-36.5106C342.6171,-31.0886 375.9357,-24.6942 402.7714,-19.5439"/>
 <polygon fill="#191970" stroke="#191970" points="313.3693,-33.1379 304.2082,-38.46 314.6887,-40.0124 313.3693,-33.1379"/>
 </g>

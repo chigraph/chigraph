@@ -1,27 +1,26 @@
 <map id="chig::GraphFunction::createExitNodeType" name="chig::GraphFunction::createExitNodeType">
-<area shape="rect" id="node2" href="$structchig_1_1GraphFunction.html#a1e937f70e87b2d783211f31a6ddfb91c" title="chig::GraphFunction\l::context" alt="" coords="867,5,1018,47"/>
-<area shape="rect" id="node3" href="$structchig_1_1GraphFunction.html#ae734c04f29489efeb96227a20e2ada22" title="chig::GraphFunction\l::dataOutputs" alt="" coords="216,349,367,391"/>
-<area shape="rect" id="node21" href="$structchig_1_1Context.html#ab1cfbdb1646a75316dfa60f117576f37" title="chig::Context::nodeTypeFrom\lModule" alt="" coords="836,563,1049,604"/>
-<area shape="rect" id="node23" href="$structchig_1_1GraphFunction.html#ae155f716b072ef5f8e3ba064ae7ef8c0" title="chig::GraphFunction\l::execOutputs" alt="" coords="216,645,367,687"/>
-<area shape="rect" id="node4" href="$structchig_1_1GraphFunction.html#af76e111d051ead319035f83785b932e2" title="chig::GraphFunction\l::addDataOutput" alt="" coords="417,281,567,323"/>
-<area shape="rect" id="node5" href="$structchig_1_1GraphFunction.html#ae6fc3833c6e0631177efb4e35e7f59e4" title="chig::GraphFunction\l::removeDataOutput" alt="" coords="415,347,569,388"/>
-<area shape="rect" id="node6" href="$structchig_1_1GraphFunction.html#a3765dc838314ff13457ac933b043f711" title="chig::GraphFunction\l::modifyDataOutput" alt="" coords="417,412,567,453"/>
-<area shape="rect" id="node7" href="$structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22" title="Check if the DataType is valid. " alt="" coords="1309,265,1469,291"/>
-<area shape="rect" id="node8" href="$structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37" title="chig::GraphFunction\l::name" alt="" coords="1314,381,1465,423"/>
-<area shape="rect" id="node9" href="$structchig_1_1GraphFunction.html#aa47e30665a08b671950c4e8411c7a4ba" title="chig::GraphFunction\l::entryNode" alt="" coords="627,383,778,424"/>
-<area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#a5a5eed54a181b865e7bd842a40f5e1f1" title="chig::GraphFunction\l::graph" alt="" coords="867,441,1018,483"/>
-<area shape="rect" id="node20" href="$structchig_1_1GraphFunction.html#abc41f524da8fd9b7308cb7abaa2b28c9" title="chig::GraphFunction\l::createEntryNodeType" alt="" coords="617,317,788,359"/>
-<area shape="rect" id="node11" href="$structchig_1_1Graph.html#a41afa4af0758e9665d4acba867175369" title="chig::Graph::nodesWithType" alt="" coords="840,390,1045,417"/>
-<area shape="rect" id="node12" href="$structchig_1_1GraphFunction.html#ad871a4642c83ead67062eb907b55443f" title="chig::GraphFunction\l::dataInputs" alt="" coords="867,324,1018,365"/>
-<area shape="rect" id="node16" href="$structchig_1_1GraphFunction.html#a217197f9e54f57cd7a8751a335f4710b" title="chig::GraphFunction\l::execInputs" alt="" coords="867,253,1018,295"/>
-<area shape="rect" id="node13" href="$structchig_1_1GraphFunction.html#a58da0f0d53f153a37bb4ba7bdc00df75" title="chig::GraphFunction\l::addDataInput" alt="" coords="1104,449,1255,491"/>
-<area shape="rect" id="node14" href="$structchig_1_1GraphFunction.html#a9698f54861e9997f2690e10e0e8316c8" title="chig::GraphFunction\l::removeDataInput" alt="" coords="1104,384,1255,425"/>
-<area shape="rect" id="node15" href="$structchig_1_1GraphFunction.html#a452c6ff0834f1acdb6740267ef468250" title="chig::GraphFunction\l::modifyDataInput" alt="" coords="1104,319,1255,360"/>
-<area shape="rect" id="node17" href="$structchig_1_1GraphFunction.html#a61a90781bcdc650d6b2446dd16d8a079" title="chig::GraphFunction\l::addExecInput" alt="" coords="1104,253,1255,295"/>
-<area shape="rect" id="node18" href="$structchig_1_1GraphFunction.html#a390ce7b4174a06ecd00ae7c72af9e157" title="chig::GraphFunction\l::removeExecInput" alt="" coords="1104,123,1255,164"/>
-<area shape="rect" id="node19" href="$structchig_1_1GraphFunction.html#a66359dd63933d9c37b00d3894c979b11" title="chig::GraphFunction\l::modifyExecInput" alt="" coords="1104,188,1255,229"/>
-<area shape="rect" id="node22" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="chig::Result::addEntry" alt="" coords="1097,570,1261,597"/>
-<area shape="rect" id="node24" href="$structchig_1_1GraphFunction.html#abbe7b69cdd8a02210fd2d5a580f1f80a" title="chig::GraphFunction\l::addExecOutput" alt="" coords="417,613,567,655"/>
-<area shape="rect" id="node25" href="$structchig_1_1GraphFunction.html#a90a589106d823501ecb6450636a19e64" title="chig::GraphFunction\l::removeExecOutput" alt="" coords="415,679,569,720"/>
-<area shape="rect" id="node26" href="$structchig_1_1GraphFunction.html#ae355b017f2859dabff4fa17791317d77" title="chig::GraphFunction\l::modifyExecOutput" alt="" coords="417,744,567,785"/>
+<area shape="rect" id="node2" href="$structchig_1_1GraphFunction.html#a1e937f70e87b2d783211f31a6ddfb91c" title="Get the context. " alt="" coords="902,71,1053,112"/>
+<area shape="rect" id="node3" href="$structchig_1_1GraphFunction.html#ae734c04f29489efeb96227a20e2ada22" title="Get the function data outputs in the format {type, docstring}. " alt="" coords="902,485,1053,527"/>
+<area shape="rect" id="node9" href="$structchig_1_1GraphFunction.html#ae155f716b072ef5f8e3ba064ae7ef8c0" title="Get the function exec outputs. " alt="" coords="216,267,367,308"/>
+<area shape="rect" id="node24" href="$structchig_1_1Context.html#ab1cfbdb1646a75316dfa60f117576f37" title="Gets a NodeType from the JSON and name. " alt="" coords="871,391,1084,432"/>
+<area shape="rect" id="node4" href="$structchig_1_1GraphFunction.html#af76e111d051ead319035f83785b932e2" title="Add an data output to the end of the argument list. " alt="" coords="1139,449,1289,491"/>
+<area shape="rect" id="node5" href="$structchig_1_1GraphFunction.html#ae6fc3833c6e0631177efb4e35e7f59e4" title="Remove an data output from the argument list. " alt="" coords="1137,515,1291,556"/>
+<area shape="rect" id="node6" href="$structchig_1_1GraphFunction.html#a3765dc838314ff13457ac933b043f711" title="Modify an data output (change it&#39;s type and docstring) " alt="" coords="1139,580,1289,621"/>
+<area shape="rect" id="node7" href="$structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22" title="Check if the DataType is valid. " alt="" coords="1344,387,1504,414"/>
+<area shape="rect" id="node8" href="$structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37" title="Get the name of the function. " alt="" coords="1349,485,1499,527"/>
+<area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#abbe7b69cdd8a02210fd2d5a580f1f80a" title="Add an exec output to the end of the argument list. " alt="" coords="417,267,567,308"/>
+<area shape="rect" id="node11" href="$structchig_1_1GraphFunction.html#a90a589106d823501ecb6450636a19e64" title="Remove an exec output from the argument list. " alt="" coords="415,332,569,373"/>
+<area shape="rect" id="node12" href="$structchig_1_1GraphFunction.html#ae355b017f2859dabff4fa17791317d77" title="Modify an exec output (change docstring) " alt="" coords="417,201,567,243"/>
+<area shape="rect" id="node13" href="$structchig_1_1GraphFunction.html#a5a5eed54a181b865e7bd842a40f5e1f1" title="Get the graph. " alt="" coords="645,201,795,243"/>
+<area shape="rect" id="node14" href="$structchig_1_1Graph.html#a41afa4af0758e9665d4acba867175369" title="Gets the nodes with a given type. " alt="" coords="617,267,823,294"/>
+<area shape="rect" id="node15" href="$structchig_1_1GraphFunction.html#abc41f524da8fd9b7308cb7abaa2b28c9" title="Create a fresh NodeType for an entry. " alt="" coords="635,136,805,177"/>
+<area shape="rect" id="node16" href="$structchig_1_1GraphFunction.html#ad871a4642c83ead67062eb907b55443f" title="Get the function data inputs in the format {type, docstring}. " alt="" coords="902,235,1053,276"/>
+<area shape="rect" id="node20" href="$structchig_1_1GraphFunction.html#a217197f9e54f57cd7a8751a335f4710b" title="Get the function exec inputs. " alt="" coords="902,136,1053,177"/>
+<area shape="rect" id="node17" href="$structchig_1_1GraphFunction.html#a58da0f0d53f153a37bb4ba7bdc00df75" title="Add an input to the end of the argument list. " alt="" coords="1139,201,1289,243"/>
+<area shape="rect" id="node18" href="$structchig_1_1GraphFunction.html#a9698f54861e9997f2690e10e0e8316c8" title="Remove an input from the argument list. " alt="" coords="1139,267,1289,308"/>
+<area shape="rect" id="node19" href="$structchig_1_1GraphFunction.html#a452c6ff0834f1acdb6740267ef468250" title="Modify an input (change it&#39;s type and docstring) " alt="" coords="1139,332,1289,373"/>
+<area shape="rect" id="node21" href="$structchig_1_1GraphFunction.html#a61a90781bcdc650d6b2446dd16d8a079" title="Add an exec input to the end of the argument list. " alt="" coords="1139,5,1289,47"/>
+<area shape="rect" id="node22" href="$structchig_1_1GraphFunction.html#a390ce7b4174a06ecd00ae7c72af9e157" title="Remove an exec input from the argument list. " alt="" coords="1139,71,1289,112"/>
+<area shape="rect" id="node23" href="$structchig_1_1GraphFunction.html#a66359dd63933d9c37b00d3894c979b11" title="Modify an exec input (change docstring) " alt="" coords="1139,136,1289,177"/>
+<area shape="rect" id="node25" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. " alt="" coords="1132,398,1296,425"/>
 </map>

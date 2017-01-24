@@ -1,3 +1,7 @@
+/// \file chig/LangModule.hpp
+/// Defines the LangModule class
+
+
 #ifndef CHIG_LANG_MODULE_HPP
 #define CHIG_LANG_MODULE_HPP
 

@@ -1,3 +1,6 @@
+/// \file chig/Result.hpp
+/// Defines the Result class and related functions
+
 #ifndef CHIG_RESULT_HPP
 #define CHIG_RESULT_HPP
 
@@ -42,6 +45,9 @@ struct Result {
 	std::string dump() const;
 };
 
+/// \name Result operators
+/// \{
+
 /// Append two Result objects
 /// \param lhs The left error
 /// \param rhs The right error
@@ -79,6 +85,9 @@ inline std::ostream& operator<<(std::ostream& lhs, const Result& rhs) {
 
 	return lhs;
 }
-}
+
+/// \}
+
+} // namespace chig
 
 #endif  // CHIG_RESULT_HPP

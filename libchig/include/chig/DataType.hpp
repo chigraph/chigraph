@@ -1,3 +1,6 @@
+/// \file chig/DataType.hpp
+/// Defines the DataType class
+
 #pragma once
 
 #ifndef CHIG_DATA_TYPE_HPP
