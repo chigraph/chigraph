@@ -1,6 +1,7 @@
 var NAVTREE =
 [
   [ "chigraph", "index.html", [
+    [ "Chigraph API Documentation", "index.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -27,7 +28,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "CModule_8cpp.html",
-"structchig_1_1JsonModule.html#aef854b4e838ba98c1d6973c1f4488b10"
+"structchig_1_1JsonModule.html#ae9d14a6f432082a9489d3b5ccf5ae338"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
