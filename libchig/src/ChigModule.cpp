@@ -2,7 +2,7 @@
 
 
 #include "chig/ChigModule.hpp"
-
+#include "chig/Result.hpp"
 #include "chig/Context.hpp"
 
 namespace chig {

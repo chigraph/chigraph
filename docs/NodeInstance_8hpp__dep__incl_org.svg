@@ -9,170 +9,146 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 192)">
 <title>include/chig/NodeInstance.hpp</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-192 785,-192 785,4 -4,4"/>
-<!-- Node31 -->
+<!-- Node25 -->
 <g id="node1" class="node">
+<title>Node25</title>
+<polygon fill="#bfbfbf" stroke="#000000" points="391,-168.5 391,-187.5 557,-187.5 557,-168.5 391,-168.5"/>
+<text text-anchor="middle" x="474" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">include/chig/NodeInstance.hpp</text>
+</g>
+<!-- Node26 -->
+<g id="node2" class="node">
+<title>Node26</title>
+<g id="a_node2"><a xlink:href="Graph_8hpp.html" target="_top" xlink:title="Defines the internal Graph structure. ">
+<polygon fill="#ffffff" stroke="#000000" points="339,-112.5 339,-131.5 467,-131.5 467,-112.5 339,-112.5"/>
+<text text-anchor="middle" x="403" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">include/chig/Graph.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node25&#45;&gt;Node26 -->
+<g id="edge1" class="edge">
+<title>Node25&#45;&gt;Node26</title>
+<path fill="none" stroke="#191970" d="M453.623,-161.928C441.2129,-152.1397 425.77,-139.9595 415.2255,-131.6427"/>
+<polygon fill="#191970" stroke="#191970" points="451.6136,-164.8007 461.6327,-168.2455 455.9486,-159.3046 451.6136,-164.8007"/>
+</g>
+<!-- Node34 -->
+<g id="node10" class="node">
+<title>Node34</title>
+<g id="a_node10"><a xlink:href="NodeInstance_8cpp.html" target="_top" xlink:title="src/NodeInstance.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="485.5,-112.5 485.5,-131.5 606.5,-131.5 606.5,-112.5 485.5,-112.5"/>
+<text text-anchor="middle" x="546" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/NodeInstance.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node25&#45;&gt;Node34 -->
+<g id="edge9" class="edge">
+<title>Node25&#45;&gt;Node34</title>
+<path fill="none" stroke="#191970" d="M494.664,-161.928C507.2489,-152.1397 522.9092,-139.9595 533.6023,-131.6427"/>
+<polygon fill="#191970" stroke="#191970" points="492.2862,-159.3434 486.5414,-168.2455 496.5838,-164.8688 492.2862,-159.3434"/>
+</g>
+<!-- Node27 -->
+<g id="node3" class="node">
+<title>Node27</title>
+<g id="a_node3"><a xlink:href="GraphFunction_8hpp.html" target="_top" xlink:title="Declares the GraphFunction class. ">
+<polygon fill="#ffffff" stroke="#000000" points="318,-56.5 318,-75.5 488,-75.5 488,-56.5 318,-56.5"/>
+<text text-anchor="middle" x="403" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">include/chig/GraphFunction.hpp</text>
+</a>
+</g>
+</g>
+<!-- Node26&#45;&gt;Node27 -->
+<g id="edge2" class="edge">
+<title>Node26&#45;&gt;Node27</title>
+<path fill="none" stroke="#191970" d="M403,-102.1575C403,-93.155 403,-82.9199 403,-75.6427"/>
+<polygon fill="#191970" stroke="#191970" points="399.5001,-102.2455 403,-112.2455 406.5001,-102.2456 399.5001,-102.2455"/>
+</g>
+<!-- Node28 -->
+<g id="node4" class="node">
+<title>Node28</title>
+<g id="a_node4"><a xlink:href="Context_8cpp.html" target="_top" xlink:title="src/Context.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="0,-.5 0,-19.5 92,-19.5 92,-.5 0,-.5"/>
+<text text-anchor="middle" x="46" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/Context.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node27&#45;&gt;Node28 -->
+<g id="edge3" class="edge">
+<title>Node27&#45;&gt;Node28</title>
+<path fill="none" stroke="#191970" d="M326.9788,-55.0372C265.8513,-46.0738 177.8056,-32.829 101,-20 98.1282,-19.5203 95.1742,-19.0157 92.1967,-18.4987"/>
+<polygon fill="#191970" stroke="#191970" points="326.5294,-58.5087 336.9309,-56.4936 327.5431,-51.5825 326.5294,-58.5087"/>
+</g>
+<!-- Node29 -->
+<g id="node5" class="node">
+<title>Node29</title>
+<g id="a_node5"><a xlink:href="FunctionCompiler_8cpp.html" target="_top" xlink:title="src/FunctionCompiler.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="110,-.5 110,-19.5 250,-19.5 250,-.5 110,-.5"/>
+<text text-anchor="middle" x="180" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionCompiler.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node27&#45;&gt;Node29 -->
+<g id="edge4" class="edge">
+<title>Node27&#45;&gt;Node29</title>
+<path fill="none" stroke="#191970" d="M355.1426,-53.982C314.1111,-43.6781 255.7924,-29.0331 217.9246,-19.5237"/>
+<polygon fill="#191970" stroke="#191970" points="354.367,-57.3958 364.9183,-56.4369 356.0719,-50.6066 354.367,-57.3958"/>
+</g>
+<!-- Node30 -->
+<g id="node6" class="node">
+<title>Node30</title>
+<g id="a_node6"><a xlink:href="FunctionValidator_8cpp.html" target="_top" xlink:title="src/FunctionValidator.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="268,-.5 268,-19.5 408,-19.5 408,-.5 268,-.5"/>
+<text text-anchor="middle" x="338" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionValidator.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node27&#45;&gt;Node30 -->
+<g id="edge5" class="edge">
+<title>Node27&#45;&gt;Node30</title>
+<path fill="none" stroke="#191970" d="M384.0165,-49.645C372.7121,-39.9058 358.753,-27.8795 349.1924,-19.6427"/>
+<polygon fill="#191970" stroke="#191970" points="381.8173,-52.3701 391.6779,-56.2455 386.3862,-47.0668 381.8173,-52.3701"/>
+</g>
+<!-- Node31 -->
+<g id="node7" class="node">
 <title>Node31</title>
-<polygon fill="#bfbfbf" stroke="#000000" points="446,-168.5 446,-187.5 612,-187.5 612,-168.5 446,-168.5"/>
-<text text-anchor="middle" x="529" y="-175.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">include/chig/NodeInstance.hpp</text>
+<g id="a_node7"><a xlink:href="Graph_8cpp.html" target="_top" xlink:title="src/Graph.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="426.5,-.5 426.5,-19.5 509.5,-19.5 509.5,-.5 426.5,-.5"/>
+<text text-anchor="middle" x="468" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/Graph.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node27&#45;&gt;Node31 -->
+<g id="edge6" class="edge">
+<title>Node27&#45;&gt;Node31</title>
+<path fill="none" stroke="#191970" d="M421.9835,-49.645C433.2879,-39.9058 447.247,-27.8795 456.8076,-19.6427"/>
+<polygon fill="#191970" stroke="#191970" points="419.6138,-47.0668 414.3221,-56.2455 424.1827,-52.3701 419.6138,-47.0668"/>
 </g>
 <!-- Node32 -->
-<g id="node2" class="node">
+<g id="node8" class="node">
 <title>Node32</title>
-<g id="a_node2"><a xlink:href="Graph_8hpp.html" target="_top" xlink:title="Defines the internal Graph structure. ">
-<polygon fill="#ffffff" stroke="#000000" points="390,-112.5 390,-131.5 518,-131.5 518,-112.5 390,-112.5"/>
-<text text-anchor="middle" x="454" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">include/chig/Graph.hpp</text>
+<g id="a_node8"><a xlink:href="GraphFunction_8cpp.html" target="_top" xlink:title="src/GraphFunction.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="527.5,-.5 527.5,-19.5 652.5,-19.5 652.5,-.5 527.5,-.5"/>
+<text text-anchor="middle" x="590" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/GraphFunction.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node31&#45;&gt;Node32 -->
-<g id="edge1" class="edge">
-<title>Node31&#45;&gt;Node32</title>
-<path fill="none" stroke="#191970" d="M507.8523,-162.2097C494.6799,-152.3743 478.16,-140.0394 466.9143,-131.6427"/>
-<polygon fill="#191970" stroke="#191970" points="505.8291,-165.0671 515.936,-168.2455 510.0172,-159.4581 505.8291,-165.0671"/>
+<!-- Node27&#45;&gt;Node32 -->
+<g id="edge7" class="edge">
+<title>Node27&#45;&gt;Node32</title>
+<path fill="none" stroke="#191970" d="M444.8877,-53.4561C479.2143,-43.1765 527.0565,-28.8494 558.273,-19.5011"/>
+<polygon fill="#191970" stroke="#191970" points="443.722,-50.1515 435.1464,-56.3733 445.7302,-56.8573 443.722,-50.1515"/>
 </g>
-<!-- Node35 -->
-<g id="node5" class="node">
-<title>Node35</title>
-<g id="a_node5"><a xlink:href="FunctionCompiler_8cpp.html" target="_top" xlink:title="src/FunctionCompiler.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="0,-.5 0,-19.5 140,-19.5 140,-.5 0,-.5"/>
-<text text-anchor="middle" x="70" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionCompiler.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node31&#45;&gt;Node35 -->
-<g id="edge11" class="edge">
-<title>Node31&#45;&gt;Node35</title>
-<path fill="none" stroke="#191970" d="M486.2173,-165.5976C456.5154,-156.7694 416.1269,-144.3305 381,-132 271.8234,-93.6759 143.9373,-40.9925 92.8056,-19.6044"/>
-<polygon fill="#191970" stroke="#191970" points="485.2754,-168.9689 495.8574,-168.4478 487.2601,-162.2561 485.2754,-168.9689"/>
-</g>
-<!-- Node39 -->
+<!-- Node33 -->
 <g id="node9" class="node">
-<title>Node39</title>
+<title>Node33</title>
 <g id="a_node9"><a xlink:href="JsonModule_8cpp.html" target="_top" xlink:title="src/JsonModule.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="671,-.5 671,-19.5 781,-19.5 781,-.5 671,-.5"/>
 <text text-anchor="middle" x="726" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/JsonModule.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node31&#45;&gt;Node39 -->
-<g id="edge12" class="edge">
-<title>Node31&#45;&gt;Node39</title>
-<path fill="none" stroke="#191970" d="M544.963,-160.905C558.002,-147.2236 577.1312,-127.7827 595,-112 636.0472,-75.745 688.3253,-37.1201 712.5529,-19.6139"/>
-<polygon fill="#191970" stroke="#191970" points="542.3709,-158.5521 538.0452,-168.2237 547.458,-163.3606 542.3709,-158.5521"/>
-</g>
-<!-- Node40 -->
-<g id="node10" class="node">
-<title>Node40</title>
-<g id="a_node10"><a xlink:href="NodeInstance_8cpp.html" target="_top" xlink:title="src/NodeInstance.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="604.5,-112.5 604.5,-131.5 725.5,-131.5 725.5,-112.5 604.5,-112.5"/>
-<text text-anchor="middle" x="665" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/NodeInstance.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node31&#45;&gt;Node40 -->
-<g id="edge13" class="edge">
-<title>Node31&#45;&gt;Node40</title>
-<path fill="none" stroke="#191970" d="M561.7399,-164.5189C586.5083,-154.3201 619.905,-140.5685 641.9258,-131.5011"/>
-<polygon fill="#191970" stroke="#191970" points="560.2934,-161.3293 552.3792,-168.3733 562.9587,-167.8021 560.2934,-161.3293"/>
-</g>
-<!-- Node33 -->
-<g id="node3" class="node">
-<title>Node33</title>
-<g id="a_node3"><a xlink:href="GraphFunction_8hpp.html" target="_top" xlink:title="Declares the GraphFunction class. ">
-<polygon fill="#ffffff" stroke="#000000" points="340,-56.5 340,-75.5 510,-75.5 510,-56.5 340,-56.5"/>
-<text text-anchor="middle" x="425" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">include/chig/GraphFunction.hpp</text>
-</a>
-</g>
-</g>
-<!-- Node32&#45;&gt;Node33 -->
-<g id="edge2" class="edge">
-<title>Node32&#45;&gt;Node33</title>
-<path fill="none" stroke="#191970" d="M444.3353,-103.3372C439.5313,-94.0605 433.9277,-83.2398 429.9935,-75.6427"/>
-<polygon fill="#191970" stroke="#191970" points="441.242,-104.9751 448.9486,-112.2455 447.458,-101.7561 441.242,-104.9751"/>
-</g>
-<!-- Node36 -->
-<g id="node6" class="node">
-<title>Node36</title>
-<g id="a_node6"><a xlink:href="FunctionValidator_8cpp.html" target="_top" xlink:title="src/FunctionValidator.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="158,-.5 158,-19.5 298,-19.5 298,-.5 158,-.5"/>
-<text text-anchor="middle" x="228" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionValidator.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node32&#45;&gt;Node36 -->
-<g id="edge9" class="edge">
-<title>Node32&#45;&gt;Node36</title>
-<path fill="none" stroke="#191970" d="M413.4956,-109.2746C389.0599,-101.0083 357.6118,-89.3134 331,-76 297.0011,-58.991 260.1901,-33.5002 241.1219,-19.7046"/>
-<polygon fill="#191970" stroke="#191970" points="412.5719,-112.6558 423.1654,-112.4913 414.7815,-106.0137 412.5719,-112.6558"/>
-</g>
-<!-- Node37 -->
-<g id="node7" class="node">
-<title>Node37</title>
-<g id="a_node7"><a xlink:href="Graph_8cpp.html" target="_top" xlink:title="src/Graph.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="569.5,-.5 569.5,-19.5 652.5,-19.5 652.5,-.5 569.5,-.5"/>
-<text text-anchor="middle" x="611" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/Graph.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node32&#45;&gt;Node37 -->
-<g id="edge10" class="edge">
-<title>Node32&#45;&gt;Node37</title>
-<path fill="none" stroke="#191970" d="M476.1865,-106.3518C488.7607,-97.4698 504.7759,-86.1351 519,-76 547.0157,-56.0379 579.7203,-32.5259 597.6115,-19.6457"/>
-<polygon fill="#191970" stroke="#191970" points="473.8642,-103.7069 467.7134,-112.3335 477.9013,-109.4254 473.8642,-103.7069"/>
-</g>
-<!-- Node34 -->
-<g id="node4" class="node">
-<title>Node34</title>
-<g id="a_node4"><a xlink:href="Context_8cpp.html" target="_top" xlink:title="src/Context.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="316,-.5 316,-19.5 408,-19.5 408,-.5 316,-.5"/>
-<text text-anchor="middle" x="362" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/Context.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node33&#45;&gt;Node34 -->
-<g id="edge3" class="edge">
-<title>Node33&#45;&gt;Node34</title>
-<path fill="none" stroke="#191970" d="M406.2808,-49.3607C395.3818,-39.6727 382.0245,-27.7995 372.848,-19.6427"/>
-<polygon fill="#191970" stroke="#191970" points="404.2268,-52.2178 414.0262,-56.2455 408.8774,-46.9859 404.2268,-52.2178"/>
-</g>
-<!-- Node33&#45;&gt;Node35 -->
-<g id="edge4" class="edge">
-<title>Node33&#45;&gt;Node35</title>
-<path fill="none" stroke="#191970" d="M354.1366,-54.8215C288.6231,-44.487 192.3128,-29.2944 130.3733,-19.5237"/>
-<polygon fill="#191970" stroke="#191970" points="353.9534,-58.3359 364.3767,-56.4369 355.0442,-51.4214 353.9534,-58.3359"/>
-</g>
-<!-- Node33&#45;&gt;Node36 -->
-<g id="edge5" class="edge">
-<title>Node33&#45;&gt;Node36</title>
-<path fill="none" stroke="#191970" d="M381.3371,-53.5882C345.1431,-43.2996 294.4506,-28.8895 261.4236,-19.5011"/>
-<polygon fill="#191970" stroke="#191970" points="380.5585,-57.0055 391.1345,-56.3733 382.4726,-50.2723 380.5585,-57.0055"/>
-</g>
-<!-- Node33&#45;&gt;Node37 -->
-<g id="edge6" class="edge">
-<title>Node33&#45;&gt;Node37</title>
-<path fill="none" stroke="#191970" d="M466.6637,-53.4561C500.8067,-43.1765 548.3931,-28.8494 579.4427,-19.5011"/>
-<polygon fill="#191970" stroke="#191970" points="465.5409,-50.1389 456.9745,-56.3733 467.559,-56.8417 465.5409,-50.1389"/>
-</g>
-<!-- Node38 -->
-<g id="node8" class="node">
-<title>Node38</title>
-<g id="a_node8"><a xlink:href="GraphFunction_8cpp.html" target="_top" xlink:title="src/GraphFunction.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="426.5,-.5 426.5,-19.5 551.5,-19.5 551.5,-.5 426.5,-.5"/>
-<text text-anchor="middle" x="489" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/GraphFunction.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node33&#45;&gt;Node38 -->
-<g id="edge7" class="edge">
-<title>Node33&#45;&gt;Node38</title>
-<path fill="none" stroke="#191970" d="M443.6914,-49.645C454.8219,-39.9058 468.5663,-27.8795 477.9798,-19.6427"/>
-<polygon fill="#191970" stroke="#191970" points="441.369,-47.0264 436.1479,-56.2455 445.9785,-52.2945 441.369,-47.0264"/>
-</g>
-<!-- Node33&#45;&gt;Node39 -->
+<!-- Node27&#45;&gt;Node33 -->
 <g id="edge8" class="edge">
-<title>Node33&#45;&gt;Node39</title>
-<path fill="none" stroke="#191970" d="M486.461,-54.5654C541.9745,-44.2373 622.7247,-29.214 674.8103,-19.5237"/>
-<polygon fill="#191970" stroke="#191970" points="485.5928,-51.1668 476.4017,-56.4369 486.8732,-58.0487 485.5928,-51.1668"/>
+<title>Node27&#45;&gt;Node33</title>
+<path fill="none" stroke="#191970" d="M468.2131,-54.6937C527.8045,-44.3621 614.9445,-29.2542 671.0688,-19.5237"/>
+<polygon fill="#191970" stroke="#191970" points="467.4138,-51.28 458.1587,-56.4369 468.6096,-58.1771 467.4138,-51.28"/>
 </g>
 </g>
 </svg>

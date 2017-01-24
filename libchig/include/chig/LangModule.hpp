@@ -7,14 +7,9 @@
 
 #pragma once
 
+#include "chig/Result.hpp"
 #include "chig/ChigModule.hpp"
-#include "chig/Context.hpp"
-#include "chig/DataType.hpp"
-#include "chig/NodeType.hpp"
 
-#include <functional>
-#include <memory>
-#include <string>
 #include <unordered_map>
 
 namespace chig {

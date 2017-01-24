@@ -152,7 +152,7 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module. </p>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00029">29</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00024">24</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9ca770c02ec9efb90379bef900497bb1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ca770c02ec9efb90379bef900497bb1">&sect;&nbsp;</a></span>ChigModule()</h2>
@@ -221,9 +221,9 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 
 <p>Definition at line <a class="el" href="ChigModule_8cpp_source.html#l00015">15</a> of file <a class="el" href="ChigModule_8cpp_source.html">ChigModule.cpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00071">context()</a>, and <a class="el" href="Context_8cpp_source.html#l00096">chig::Context::loadModule()</a>.</p>
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00066">context()</a>, and <a class="el" href="Context_8cpp_source.html#l00093">chig::Context::loadModule()</a>.</p>
 
-<p>Referenced by <a class="el" href="ChigModule_8hpp_source.html#l00079">dependencies()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00093">chig::JsonModule::JsonModule()</a>.</p>
+<p>Referenced by <a class="el" href="ChigModule_8hpp_source.html#l00074">dependencies()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00091">chig::JsonModule::JsonModule()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -269,11 +269,11 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 <p>Get the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> that this module belongs to. </p>
 <dl class="section return"><dt>Returns</dt><dd>The context </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00071">71</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00066">66</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
 <p>References <a class="el" href="structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4">generateModule()</a>.</p>
 
-<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00015">addDependency()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00035">chig::GraphFunction::GraphFunction()</a>, <a class="el" href="LangModule_8cpp_source.html#l00544">chig::LangModule::LangModule()</a>, <a class="el" href="NodeType_8hpp_source.html#l00038">chig::NodeType::NodeType()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00195">chig::JsonModule::saveToDisk()</a>, <a class="el" href="JsonModule_8hpp_source.html#l00082">chig::JsonModule::sourceFilePath()</a>, and <a class="el" href="LangModule_8cpp_source.html#l00839">chig::LangModule::typeFromName()</a>.</p>
+<p>Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00015">addDependency()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00035">chig::GraphFunction::GraphFunction()</a>, <a class="el" href="LangModule_8cpp_source.html#l00545">chig::LangModule::LangModule()</a>, <a class="el" href="NodeType_8hpp_source.html#l00033">chig::NodeType::NodeType()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00193">chig::JsonModule::saveToDisk()</a>, <a class="el" href="JsonModule_8hpp_source.html#l00071">chig::JsonModule::sourceFilePath()</a>, and <a class="el" href="LangModule_8cpp_source.html#l00840">chig::LangModule::typeFromName()</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
@@ -326,9 +326,9 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The DIType, or nullptr if failed </dd></dl>
 
-<p>Implemented in <a class="el" href="structchig_1_1JsonModule.html#a0396a8f78544da1f054b19c5d77401b0">chig::JsonModule</a>, <a class="el" href="structchig_1_1LangModule.html#ac88b0a2158bd0236ab53608cac64cb92">chig::LangModule</a>, and <a class="el" href="structchig_1_1CModule.html#a176beacd16c30d095bf8b5b31bf499a3">chig::CModule</a>.</p>
+<p>Implemented in <a class="el" href="structchig_1_1JsonModule.html#a0396a8f78544da1f054b19c5d77401b0">chig::JsonModule</a>, <a class="el" href="structchig_1_1CModule.html#a176beacd16c30d095bf8b5b31bf499a3">chig::CModule</a>, and <a class="el" href="structchig_1_1LangModule.html#ac88b0a2158bd0236ab53608cac64cb92">chig::LangModule</a>.</p>
 
-<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00234">chig::Context::debugTypeFromModule()</a>.</p>
+<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00231">chig::Context::debugTypeFromModule()</a>.</p>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
@@ -365,11 +365,11 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 <p>Get the dependencies. </p>
 <dl class="section return"><dt>Returns</dt><dd>The dependencies </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00079">79</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00074">74</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
 <p>References <a class="el" href="ChigModule_8cpp_source.html#l00015">addDependency()</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00175">chig::JsonModule::toJSON()</a>.</p>
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00173">chig::JsonModule::toJSON()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -415,9 +415,9 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 <p>Get the full name of the module. </p>
 <dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00068">68</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00063">63</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00144">chig::Context::addModuleFromJson()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00267">chig::compileFunction()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00151">chig::JsonModule::generateModule()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00082">chig::JsonModule::sourceFilePath()</a>.</p>
+<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00141">chig::Context::addModuleFromJson()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00268">chig::compileFunction()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00149">chig::JsonModule::generateModule()</a>, and <a class="el" href="JsonModule_8hpp_source.html#l00071">chig::JsonModule::sourceFilePath()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
@@ -464,7 +464,7 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 
 <p>Implemented in <a class="el" href="structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635">chig::JsonModule</a>, <a class="el" href="structchig_1_1LangModule.html#adf8c5c75b170ca07f9b0cf6c7b6e34ff">chig::LangModule</a>, and <a class="el" href="structchig_1_1CModule.html#a96a5a3b26231a11e91cab54f7cbdce09">chig::CModule</a>.</p>
 
-<p>Referenced by <a class="el" href="ChigModule_8hpp_source.html#l00071">context()</a>.</p>
+<p>Referenced by <a class="el" href="ChigModule_8hpp_source.html#l00066">context()</a>.</p>
 <div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
@@ -501,9 +501,9 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 <p>Get the short name of the module (the last bit) </p>
 <dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00065">65</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00060">60</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00269">chig::JsonModule::graphFuncFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00177">chig::CModule::nodeTypeFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00277">chig::JsonModule::nodeTypeFromName()</a>, <a class="el" href="DataType_8hpp_source.html#l00034">chig::DataType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00048">chig::NodeType::qualifiedName()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00175">chig::JsonModule::toJSON()</a>.</p>
+<p>Referenced by <a class="el" href="JsonModule_8cpp_source.html#l00267">chig::JsonModule::graphFuncFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00178">chig::CModule::nodeTypeFromName()</a>, <a class="el" href="JsonModule_8cpp_source.html#l00275">chig::JsonModule::nodeTypeFromName()</a>, <a class="el" href="DataType_8hpp_source.html#l00033">chig::DataType::qualifiedName()</a>, <a class="el" href="NodeType_8hpp_source.html#l00043">chig::NodeType::qualifiedName()</a>, and <a class="el" href="JsonModule_8cpp_source.html#l00173">chig::JsonModule::toJSON()</a>.</p>
 <div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
@@ -566,7 +566,7 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p>Implemented in <a class="el" href="structchig_1_1JsonModule.html#a8dc03f06db44974d3f3f510bdd98d4b1">chig::JsonModule</a>, <a class="el" href="structchig_1_1LangModule.html#a37aba881a58ba961fbf9c77196dc810e">chig::LangModule</a>, and <a class="el" href="structchig_1_1CModule.html#aaa6158e502dac93a484dcbbcde9a4b79">chig::CModule</a>.</p>
+<p>Implemented in <a class="el" href="structchig_1_1JsonModule.html#a8dc03f06db44974d3f3f510bdd98d4b1">chig::JsonModule</a>, <a class="el" href="structchig_1_1CModule.html#aaa6158e502dac93a484dcbbcde9a4b79">chig::CModule</a>, and <a class="el" href="structchig_1_1LangModule.html#a37aba881a58ba961fbf9c77196dc810e">chig::LangModule</a>.</p>
 
 </div>
 </div>
@@ -596,7 +596,7 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 <p>Get the possible node type names. </p>
 <dl class="section return"><dt>Returns</dt><dd>A std::vector of the possible names </dd></dl>
 
-<p>Implemented in <a class="el" href="structchig_1_1JsonModule.html#a5a0e71b625b60849d760217655254945">chig::JsonModule</a>, <a class="el" href="structchig_1_1LangModule.html#a5e64061d5bb9dc4da2da1dcebd2ccb40">chig::LangModule</a>, and <a class="el" href="structchig_1_1CModule.html#a31269b0f3d999787f50a10152abd2597">chig::CModule</a>.</p>
+<p>Implemented in <a class="el" href="structchig_1_1JsonModule.html#a5a0e71b625b60849d760217655254945">chig::JsonModule</a>, <a class="el" href="structchig_1_1CModule.html#a31269b0f3d999787f50a10152abd2597">chig::CModule</a>, and <a class="el" href="structchig_1_1LangModule.html#a5e64061d5bb9dc4da2da1dcebd2ccb40">chig::LangModule</a>.</p>
 
 </div>
 </div>
@@ -633,7 +633,7 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If one was removed </dd></dl>
 
-<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00090">90</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ChigModule_8hpp_source.html#l00085">85</a> of file <a class="el" href="ChigModule_8hpp_source.html">ChigModule.hpp</a>.</p>
 
 </div>
 </div>
@@ -670,9 +670,9 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The data type, or an invalid <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a> if failed </dd></dl>
 
-<p>Implemented in <a class="el" href="structchig_1_1JsonModule.html#a333bbd9973c79f0ee40bc960c5cf091b">chig::JsonModule</a>, <a class="el" href="structchig_1_1LangModule.html#a8c6c7b9ada9f7dc770842e9a065ca1b2">chig::LangModule</a>, and <a class="el" href="structchig_1_1CModule.html#ab1c1117ae887ae98edfede6347280004">chig::CModule</a>.</p>
+<p>Implemented in <a class="el" href="structchig_1_1JsonModule.html#a333bbd9973c79f0ee40bc960c5cf091b">chig::JsonModule</a>, <a class="el" href="structchig_1_1CModule.html#ab1c1117ae887ae98edfede6347280004">chig::CModule</a>, and <a class="el" href="structchig_1_1LangModule.html#a8c6c7b9ada9f7dc770842e9a065ca1b2">chig::LangModule</a>.</p>
 
-<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00213">chig::Context::typeFromModule()</a>.</p>
+<p>Referenced by <a class="el" href="Context_8cpp_source.html#l00210">chig::Context::typeFromModule()</a>.</p>
 <div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
@@ -693,7 +693,7 @@ virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" vali
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a></li>
-    <li class="footer">Generated on Mon Jan 23 2017 22:33:27 for chigraph by
+    <li class="footer">Generated on Mon Jan 23 2017 23:13:51 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

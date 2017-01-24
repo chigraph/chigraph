@@ -1,11 +1,8 @@
 /// \file Context.cpp
 
-
-#include "chig/Context.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/JsonModule.hpp"
 #include "chig/LangModule.hpp"
-#include "chig/NodeType.hpp"
 
 #include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/IR/Verifier.h>

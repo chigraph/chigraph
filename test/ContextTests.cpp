@@ -2,6 +2,8 @@
 
 #include <chig/Context.hpp>
 #include <chig/LangModule.hpp>
+#include <chig/DataType.hpp>
+#include <chig/NodeType.hpp>
 
 #include <llvm/IR/DerivedTypes.h>
 

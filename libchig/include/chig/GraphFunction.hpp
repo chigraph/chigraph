@@ -7,22 +7,7 @@
 
 #pragma once
 
-#include "chig/Fwd.hpp"
 #include "chig/Graph.hpp"
-#include "chig/ToString.hpp"
-#include "chig/json.hpp"
-
-#include <llvm/IR/DIBuilder.h>
-#include <llvm/IR/Module.h>
-
-#include <memory>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
-#include <gsl/gsl>
-
-#include <boost/optional.hpp>
 
 namespace chig {
 /// this is an AST-like representation of a function in a graph

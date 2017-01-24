@@ -5,12 +5,10 @@
 #include "chig/FunctionCompiler.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/NameMangler.hpp"
-#include "chig/NodeInstance.hpp"
-#include "chig/NodeType.hpp"
-#include "chig/Result.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/Module.h>
+#include <llvm/IR/IRBuilder.h>
 
 #include <boost/filesystem.hpp>
 

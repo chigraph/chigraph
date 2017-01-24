@@ -7,7 +7,6 @@
 #define CHIG_DATA_TYPE_HPP
 
 #include "chig/ChigModule.hpp"
-#include "chig/Fwd.hpp"
 
 #include <llvm/IR/Type.h>
 

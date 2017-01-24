@@ -7,10 +7,8 @@
 #pragma once
 
 #include <memory>
-#include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
 
 #include "chig/Fwd.hpp"
 #include "chig/ToString.hpp"
@@ -19,7 +17,6 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Type.h>
-#include <llvm/Support/raw_os_ostream.h>
 
 #include <gsl/gsl>
 

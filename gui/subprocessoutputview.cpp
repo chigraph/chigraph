@@ -8,8 +8,10 @@
 #include <KMessageBox>
 
 #include <llvm/Bitcode/ReaderWriter.h>
+#include <llvm/Support/raw_ostream.h>
 
 #include <chig/Config.hpp>
+#include <chig/Result.hpp>
 
 SubprocessOutputView::SubprocessOutputView(chig::JsonModule* module) : mModule(module) {
 	// compile!

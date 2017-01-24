@@ -11,7 +11,6 @@
 #include <unordered_map>
 
 #include "chig/ChigModule.hpp"
-#include "chig/DataType.hpp"
 #include "chig/Fwd.hpp"
 #include "chig/NodeType.hpp"
 #include "chig/json.hpp"

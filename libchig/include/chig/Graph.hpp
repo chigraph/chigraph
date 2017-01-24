@@ -7,13 +7,7 @@
 #ifndef CHIG_GRAPH_HPP
 #define CHIG_GRAPH_HPP
 
-#include <unordered_map>
-
-#include "chig/Fwd.hpp"
 #include "chig/NodeInstance.hpp"
-#include "chig/Result.hpp"
-#include "chig/ToString.hpp"
-#include "chig/json.hpp"
 
 #include <boost/bimap.hpp>
 

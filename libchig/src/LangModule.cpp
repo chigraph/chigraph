@@ -1,11 +1,12 @@
 /// \file LangModule.cpp
 
 #include "chig/LangModule.hpp"
-#include "chig/Context.hpp"
+#include "chig/NodeType.hpp"
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/DebugInfoMetadata.h>
+#include <llvm/IR/IRBuilder.h>
 #include <llvm/Support/SourceMgr.h>
 #include <gsl/gsl_assert>
 

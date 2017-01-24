@@ -1,7 +1,6 @@
 /// \file FunctionValidator.cpp
 
 #include "chig/FunctionValidator.hpp"
-#include "chig/Graph.hpp"
 #include "chig/GraphFunction.hpp"
 
 #include <unordered_map>
