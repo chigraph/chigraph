@@ -10,17 +10,12 @@
 #include "chig/Context.hpp"
 #include "chig/DataType.hpp"
 #include "chig/Result.hpp"
-#include "chig/json.hpp"
 
 #include <iterator>
 #include <utility>
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/Function.h>
-#include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/Instructions.h>
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
 #include <llvm/IR/Value.h>
 
 namespace chig {
@@ -55,7 +50,7 @@ public:
 	/// This vector will always have the size of `inputs.size() + outputs.size()` and starts with
 	/// the inputs.
 	/// The types are gaurenteed to be the same as inputs and outputs
-	/// \param codegenInto The IRBuilder object that is used to place calls into
+	/// \param codegenInto The BasicBlock object that is used to place calls into
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
 	/// numOutputExecs.
 	/// \return The Result

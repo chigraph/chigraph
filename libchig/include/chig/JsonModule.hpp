@@ -8,20 +8,9 @@
 #pragma once
 
 #include "chig/DataType.hpp"
-#include "chig/Fwd.hpp"
-#include "chig/ToString.hpp"
-#include "chig/json.hpp"
-
-#include "chig/ChigModule.hpp"
-#include "chig/NodeType.hpp"
-
-#include <gsl/gsl>
+#include "chig/Context.hpp"
 
 #include <boost/bimap.hpp>
-
-#include <iostream>
-#include <unordered_set>
-#include <vector>
 
 namespace chig {
 /// Module that holds JSON code

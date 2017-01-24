@@ -7,20 +7,15 @@
 #pragma once
 
 #include "chig/Fwd.hpp"
-#include "chig/Result.hpp"
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
-#include <cstdlib>
-#include <functional>
-#include <string>
-#include <unordered_map>
+#include <gsl/gsl>
+
 #include <unordered_set>
-#include <vector>
 
 #include <llvm/IR/Module.h>
 
-#include <gsl/gsl>
 
 /// The namespace where chigraph lives
 namespace chig {

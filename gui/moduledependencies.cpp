@@ -1,5 +1,7 @@
 #include "moduledependencies.hpp"
 
+#include <chig/Result.hpp>
+
 ModuleDependencies::ModuleDependencies(QWidget* parent) : QListWidget(parent) {
 	connect(this, &QListWidget::itemDoubleClicked, this, [this](QListWidgetItem* item) {
 		if (item != mAddDepItem) { return; }
