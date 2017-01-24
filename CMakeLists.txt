@@ -47,6 +47,7 @@ find_package(Doxygen)
 if(DOXYGEN_FOUND)
 	
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile)
+	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/images/chigraph512.png ${CMAKE_CURRENT_SOURCE_DIR}/docs/chigraph512.png COPYONLY)
 	
 	add_custom_target(doc
 		COMMAND ${DOXYGEN_EXECUTABLE}
