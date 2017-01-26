@@ -38,7 +38,7 @@ Hello World!
 ##chiggui
 Chiggui is the graphical user interface for writing chigraph modules, written in Qt5 and KF5. It's cross-platform, easy to use, and simple. 
 
-![screenshot](...)
+![screenshot](doc/screenshots/if.png)
 
 # Licensing
 It's free!
