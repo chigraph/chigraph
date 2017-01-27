@@ -51,7 +51,7 @@ You can leave out the last 4 parameters if they are all installed in a standard 
 
 Some example CMake calls:
 
-Debug with all default locations (works on arch, ubuntu yakkety):
+Debug with all default locations (works on arch, ubuntu yakkety or xenial):
 ```bash
 cmake .. -DCMAKE_BUILD_TYPE=Debug
 ```
