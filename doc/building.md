@@ -12,7 +12,7 @@ The external dependencies of chigraph are:
 
 ### Linux
 
-#### Ubuntu/Mint:
+#### Ubuntu/Mint (Xenial or newer):
 ```bash
 sudo apt-get update
 sudo apt-get install git llvm-3.8-dev  qtbase5-dev qtdeclarative5-dev qtscript5-dev libqt5x11extras5-dev libqt5svg5-dev cmake extra-cmake-modules gettext libkf5xmlgui-dev
@@ -57,7 +57,7 @@ You can leave out the last 4 parameters if they are all installed in a standard 
 
 Some example CMake calls:
 
-Debug with all default locations (works on arch, ubuntu yakkety):
+Debug with all default locations (works on arch, ubuntu yakkety or xenial):
 ```bash
 cmake .. -DCMAKE_BUILD_TYPE=Debug
 ```
