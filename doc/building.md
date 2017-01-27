@@ -14,8 +14,8 @@ The external dependencies of chigraph are:
 
 #### Ubuntu/Mint:
 ```bash
-apt-get update
-apt-get install git llvm-3.8-dev  qtbase5-dev qtdeclarative5-dev qtscript5-dev libqt5x11extras5-dev libqt5svg5-dev cmake extra-cmake-modules gettext libkf5xmlgui-dev
+sudo apt-get update
+sudo apt-get install git llvm-3.8-dev  qtbase5-dev qtdeclarative5-dev qtscript5-dev libqt5x11extras5-dev libqt5svg5-dev cmake extra-cmake-modules gettext libkf5xmlgui-dev
 
 ```
 If your version doesn't supply new enough llvm versions, use [LLVM's ppa](https://apt.llvm.org)
@@ -25,6 +25,12 @@ I personally use Arch for most of chigraph's development, so this is pretty guar
 sudo pacman -Sy
 sudo pacman -S llvm qt5 kf5 cmake git
 ```
+
+#### OpenSUSE
+```bash
+sudo zypper install llvm-devel clang libqt5-qtbase-devel libqt5-qtdeclarative-devel libqt5-qtscript-devel libqt5-qtsvg-devel libqt5-qttools-devel libqt5-qtx11extras-devel kxmlgui-develk textwidgets-devel extra-cmake-modules git gettext-tools
+```
+
 #### Other distributions
 If you're not sure how to install qt5 and llvm on your system, then download the prebuilt binaries for each.
 
