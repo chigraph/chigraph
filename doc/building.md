@@ -12,7 +12,7 @@ The external dependencies of chigraph are:
 
 ### Linux
 
-#### Ubuntu/Mint:
+#### Ubuntu/Mint (Xenial or newer):
 ```bash
 apt-get update
 apt-get install git llvm-3.8-dev  qtbase5-dev qtdeclarative5-dev qtscript5-dev libqt5x11extras5-dev libqt5svg5-dev cmake extra-cmake-modules gettext libkf5xmlgui-dev
