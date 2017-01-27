@@ -1,5 +1,7 @@
 # Building chigraph from source
-Currently, the only way to get chigraph is to build from source. Here we go!
+Currently, the only way to get chigraph is to build from source. 
+
+As of now, only linux x86_64 has been tested, but work is being done on getting it to work on macOS and Windows. Here we go! 
 
 ## Installing dependencies
 The external dependencies of chigraph are:
