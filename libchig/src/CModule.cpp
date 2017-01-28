@@ -8,6 +8,7 @@
 #include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/SourceMgr.h>
+#include <llvm/Support/raw_ostream.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/Transforms/Utils/Cloning.h>
 
