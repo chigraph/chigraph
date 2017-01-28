@@ -13,8 +13,8 @@ addons:
       - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main'
       - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main'
       - key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
-      - 'ppa:beineri/opt-qt562-trusty'
-      - 'ppa:beineri/opt-qt571-trusty'
+      - sourceline: 'ppa:beineri/opt-qt562-trusty'
+      - sourceline: 'ppa:beineri/opt-qt571-trusty'
       
 matrix: 
   include: 
