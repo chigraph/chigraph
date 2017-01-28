@@ -114,7 +114,6 @@ int run(const std::vector<std::string>& opts) {
 		return 1;
 	}
 
-	EE->runFunctionAsMain(entry, {}, nullptr);
+	return EE->runFunctionAsMain(entry, {}, nullptr);
 
-	return 0;
 }

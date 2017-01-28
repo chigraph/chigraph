@@ -29,7 +29,7 @@ add_subdirectory(libchig)
 add_subdirectory(chig)
 
 if(CG_BUILD_GUI)
-	set(BUILD_EXAMPLES OFF)
+	set(BUILD_EXAMPLES OFF CACHE BOOL "")
 	add_subdirectory(third_party/nodeeditor)
 	add_subdirectory(gui)
 endif()
