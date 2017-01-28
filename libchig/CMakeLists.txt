@@ -64,6 +64,13 @@ execute_process(COMMAND ${LLVM_CONFIG} --system-libs OUTPUT_VARIABLE LLVM_SYSTEM
 message(STATUS "LLVM system libraries: ${LLVM_SYSTEM_LIBS}")
 target_link_libraries(chigcore PUBLIC ${LLVM_SYSTEM_LIBS})
 
+target_compile_definitions(chigcore PUBLIC 
+  -D_GNU_SOURCE 
+  -D__STDC_CONSTANT_MACROS 
+  -D__STDC_FORMAT_MACROS 
+  -D__STDC_LIMIT_MACROS
+)
+
 target_link_libraries(chigcore
 PUBLIC
 	tiny-process-library
