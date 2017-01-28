@@ -21,7 +21,7 @@ addons:
 matrix: 
   include: 
   
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.9 EXTRA_FLAGS="-DCMAKE_CXX_FLAGS='-fprofile-arcs -ftest-coverage'" TEST_COV=YES
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.9 TEST_COV=YES
     - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=562 LLVM_VERSION=3.9
     - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.9
     - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=562 LLVM_VERSION=3.9
@@ -94,7 +94,7 @@ script:
   - ./scripts/build_frameworks.sh -DCMAKE_BUILD_TYPE=$BUILD_TYPE -GNinja -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config -DCLANG_EXE=`which clang-${LLVM_VERSION}` -DLLI_EXE=`which lli-${LLVM_VERSION}` -GNinja $EXTRA_FLAGS
+  - 'if [ -n "$TEST_COV" ]; then cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config -DCLANG_EXE=`which clang-${LLVM_VERSION}` -DLLI_EXE=`which lli-${LLVM_VERSION}` -GNinja -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage"; else; cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER -DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config -DCLANG_EXE=`which clang-${LLVM_VERSION}` -DLLI_EXE=`which lli-${LLVM_VERSION}` -GNinja; fi'
   - ninja
   - CTEST_OUTPUT_ON_FAILURE=1 ninja test
   - 'if [ -n "$TEST_COV" ]; then pip install --user cpp-coveralls && coveralls; fi' 
