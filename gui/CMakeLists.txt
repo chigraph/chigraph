@@ -6,7 +6,7 @@ set(CMAKE_AUTORCC ON)
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDECompilerSettings)
+#include(KDECompilerSettings)
 include(FeatureSummary)
 
 # find qt
