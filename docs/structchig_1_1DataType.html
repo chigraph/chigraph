@@ -97,9 +97,12 @@ $(document).ready(function(){initNavTree('structchig_1_1DataType.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a97a69583222a0a581a9adb084b826119"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a97a69583222a0a581a9adb084b826119">DataType</a> (<a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> *chigMod=nullptr, std::string typeName={}, llvm::Type *llvmtype=nullptr)</td></tr>
-<tr class="memdesc:a97a69583222a0a581a9adb084b826119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a97a69583222a0a581a9adb084b826119">More...</a><br /></td></tr>
-<tr class="separator:a97a69583222a0a581a9adb084b826119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a9f30e6eb74a9e5ce45ef97897b849e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a0a9f30e6eb74a9e5ce45ef97897b849e">DataType</a> (<a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> *chigMod=nullptr, std::string typeName={}, llvm::Type *llvmtype=nullptr, llvm::DIType *debugTy=nullptr)</td></tr>
+<tr class="memdesc:a0a9f30e6eb74a9e5ce45ef97897b849e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a0a9f30e6eb74a9e5ce45ef97897b849e">More...</a><br /></td></tr>
+<tr class="separator:a0a9f30e6eb74a9e5ce45ef97897b849e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a142025e9029ce73bd3e192e53e6d85"><td class="memItemLeft" align="right" valign="top">llvm::DIType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a4a142025e9029ce73bd3e192e53e6d85">debugType</a> () const</td></tr>
+<tr class="memdesc:a4a142025e9029ce73bd3e192e53e6d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the debug type.  <a href="#a4a142025e9029ce73bd3e192e53e6d85">More...</a><br /></td></tr>
+<tr class="separator:a4a142025e9029ce73bd3e192e53e6d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b053e3ef3585abbc0453f59c25383b9"><td class="memItemLeft" align="right" valign="top">llvm::Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a3b053e3ef3585abbc0453f59c25383b9">llvmType</a> () const</td></tr>
 <tr class="memdesc:a3b053e3ef3585abbc0453f59c25383b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying <code>llvm::Type</code>.  <a href="#a3b053e3ef3585abbc0453f59c25383b9">More...</a><br /></td></tr>
 <tr class="separator:a3b053e3ef3585abbc0453f59c25383b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,8 +131,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00016">16</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a97a69583222a0a581a9adb084b826119"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97a69583222a0a581a9adb084b826119">&sect;&nbsp;</a></span>DataType()</h2>
+<a id="a0a9f30e6eb74a9e5ce45ef97897b849e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a9f30e6eb74a9e5ce45ef97897b849e">&sect;&nbsp;</a></span>DataType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,7 +156,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">llvm::Type *&#160;</td>
-          <td class="paramname"><em>llvmtype</em> = <code>nullptr</code>&#160;</td>
+          <td class="paramname"><em>llvmtype</em> = <code>nullptr</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">llvm::DIType *&#160;</td>
+          <td class="paramname"><em>debugTy</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -183,6 +192,46 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4a142025e9029ce73bd3e192e53e6d85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a142025e9029ce73bd3e192e53e6d85">&sect;&nbsp;</a></span>debugType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">llvm::DIType* chig::DataType::debugType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the debug type. </p>
+<dl class="section return"><dt>Returns</dt><dd>The debug type </dd></dl>
+
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00039">39</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00264">chig::compileFunction()</a>.</p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a4a142025e9029ce73bd3e192e53e6d85_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+
+</div>
+</div>
 <a id="a3b053e3ef3585abbc0453f59c25383b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b053e3ef3585abbc0453f59c25383b9">&sect;&nbsp;</a></span>llvmType()</h2>
 
@@ -276,7 +325,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If they are inequal </dd></dl>
 
-<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00049">49</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00052">52</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -313,7 +362,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If they are equal </dd></dl>
 
-<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00042">42</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00045">45</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -345,12 +394,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p>Definition at line <a class="el" href="DataType_8hpp_source.html#l00033">33</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00060">chig::ChigModule::name()</a>.</p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00054">chig::ChigModule::name()</a>.</p>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a918a4163252b17b6971b3cf98497d537_cgraph.svg" width="462" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
@@ -396,7 +445,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1DataType.html">DataType</a></li>
-    <li class="footer">Generated on Thu Jan 26 2017 19:42:53 for chigraph by
+    <li class="footer">Generated on Sun Jan 29 2017 10:33:30 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

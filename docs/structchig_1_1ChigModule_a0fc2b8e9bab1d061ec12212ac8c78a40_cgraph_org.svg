@@ -9,60 +9,60 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 73.5)">
 <title>chig::ChigModule::dependencies</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-73.5 762,-73.5 762,4 -4,4"/>
-<!-- Node30 -->
+<!-- Node28 -->
 <g id="node1" class="node">
-<title>Node30</title>
+<title>Node28</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-22.5 0,-41.5 173,-41.5 173,-22.5 0,-22.5"/>
 <text text-anchor="middle" x="86.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::dependencies</text>
 </g>
-<!-- Node31 -->
+<!-- Node29 -->
 <g id="node2" class="node">
-<title>Node31</title>
+<title>Node29</title>
 <g id="a_node2"><a xlink:href="structchig_1_1ChigModule.html#acec829296a8677186fcd6f0beae3d3a1" target="_top" xlink:title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded...">
 <polygon fill="#ffffff" stroke="#000000" points="209,-22.5 209,-41.5 394,-41.5 394,-22.5 209,-22.5"/>
 <text text-anchor="middle" x="301.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::addDependency</text>
 </a>
 </g>
 </g>
-<!-- Node30&#45;&gt;Node31 -->
+<!-- Node28&#45;&gt;Node29 -->
 <g id="edge1" class="edge">
-<title>Node30&#45;&gt;Node31</title>
+<title>Node28&#45;&gt;Node29</title>
 <path fill="none" stroke="#191970" d="M173.0194,-32C181.49,-32 190.1414,-32 198.7521,-32"/>
 <polygon fill="#191970" stroke="#191970" points="198.8284,-35.5001 208.8284,-32 198.8283,-28.5001 198.8284,-35.5001"/>
 </g>
-<!-- Node32 -->
+<!-- Node30 -->
 <g id="node3" class="node">
-<title>Node32</title>
+<title>Node30</title>
 <g id="a_node3"><a xlink:href="structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" target="_top" xlink:title="Get the Context that this module belongs to. ">
 <polygon fill="#ffffff" stroke="#000000" points="430,-42.5 430,-61.5 573,-61.5 573,-42.5 430,-42.5"/>
 <text text-anchor="middle" x="501.5" y="-49.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::context</text>
 </a>
 </g>
 </g>
-<!-- Node31&#45;&gt;Node32 -->
+<!-- Node29&#45;&gt;Node30 -->
 <g id="edge2" class="edge">
-<title>Node31&#45;&gt;Node32</title>
+<title>Node29&#45;&gt;Node30</title>
 <path fill="none" stroke="#191970" d="M394.1816,-41.2682C402.6809,-42.1181 411.2512,-42.9751 419.6449,-43.8145"/>
 <polygon fill="#191970" stroke="#191970" points="419.4806,-47.3154 429.7793,-44.8279 420.1772,-40.3502 419.4806,-47.3154"/>
 </g>
-<!-- Node34 -->
+<!-- Node32 -->
 <g id="node5" class="node">
-<title>Node34</title>
+<title>Node32</title>
 <g id="a_node5"><a xlink:href="structchig_1_1Context.html#a2ee400680060a0891bdffc7109016fec" target="_top" xlink:title="Load a module from disk. ">
 <polygon fill="#ffffff" stroke="#000000" points="430,-3.5 430,-22.5 573,-22.5 573,-3.5 430,-3.5"/>
 <text text-anchor="middle" x="501.5" y="-10.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::loadModule</text>
 </a>
 </g>
 </g>
-<!-- Node31&#45;&gt;Node34 -->
+<!-- Node29&#45;&gt;Node32 -->
 <g id="edge4" class="edge">
-<title>Node31&#45;&gt;Node34</title>
+<title>Node29&#45;&gt;Node32</title>
 <path fill="none" stroke="#191970" d="M394.1816,-23.1952C402.6809,-22.3878 411.2512,-21.5736 419.6449,-20.7762"/>
 <polygon fill="#191970" stroke="#191970" points="420.1551,-24.2436 429.7793,-19.8135 419.4931,-17.275 420.1551,-24.2436"/>
 </g>
-<!-- Node33 -->
+<!-- Node31 -->
 <g id="node4" class="node">
-<title>Node33</title>
+<title>Node31</title>
 <g id="a_node4"><a xlink:href="structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" target="_top" xlink:title="Generate a llvm::Module from the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="609,-39 609,-69 758,-69 758,-39 609,-39"/>
 <text text-anchor="start" x="617" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::generate</text>
@@ -70,24 +70,24 @@
 </a>
 </g>
 </g>
-<!-- Node32&#45;&gt;Node33 -->
+<!-- Node30&#45;&gt;Node31 -->
 <g id="edge3" class="edge">
-<title>Node32&#45;&gt;Node33</title>
+<title>Node30&#45;&gt;Node31</title>
 <path fill="none" stroke="#191970" d="M573.17,-52.7876C581.6066,-52.8803 590.2756,-52.9756 598.8685,-53.07"/>
 <polygon fill="#191970" stroke="#191970" points="598.8644,-56.5701 608.9023,-53.1802 598.9414,-49.5705 598.8644,-56.5701"/>
 </g>
-<!-- Node35 -->
+<!-- Node33 -->
 <g id="node6" class="node">
-<title>Node35</title>
+<title>Node33</title>
 <g id="a_node6"><a xlink:href="structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" target="_top" xlink:title="Add a entry to the result, either a warning or an error. ">
 <polygon fill="#ffffff" stroke="#000000" points="622,-.5 622,-19.5 745,-19.5 745,-.5 622,-.5"/>
 <text text-anchor="middle" x="683.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Result::addEntry</text>
 </a>
 </g>
 </g>
-<!-- Node34&#45;&gt;Node35 -->
+<!-- Node32&#45;&gt;Node33 -->
 <g id="edge5" class="edge">
-<title>Node34&#45;&gt;Node35</title>
+<title>Node32&#45;&gt;Node33</title>
 <path fill="none" stroke="#191970" d="M573.17,-11.8186C585.8855,-11.609 599.1289,-11.3907 611.844,-11.1811"/>
 <polygon fill="#191970" stroke="#191970" points="611.967,-14.6797 621.9079,-11.0153 611.8515,-7.6806 611.967,-14.6797"/>
 </g>

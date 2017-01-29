@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['jsonmodule',['JsonModule',['../structchig_1_1JsonModule.html',1,'chig']]]
+  ['langmodule',['LangModule',['../structchig_1_1LangModule.html',1,'chig']]]
 ];

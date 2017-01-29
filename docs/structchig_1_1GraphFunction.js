@@ -1,7 +1,6 @@
 var structchig_1_1GraphFunction =
 [
-    [ "GraphFunction", "structchig_1_1GraphFunction.html#a18c5a468a48ea9468af4755e00aea293", null ],
-    [ "GraphFunction", "structchig_1_1GraphFunction.html#ad38700422a7466162b80969280ab5870", null ],
+    [ "GraphFunction", "structchig_1_1GraphFunction.html#a549eae86b185e69b2664d05ceff3e31d", null ],
     [ "~GraphFunction", "structchig_1_1GraphFunction.html#ac65f801cb810bd956c4ebc8f93e0c494", null ],
     [ "addDataInput", "structchig_1_1GraphFunction.html#a58da0f0d53f153a37bb4ba7bdc00df75", null ],
     [ "addDataOutput", "structchig_1_1GraphFunction.html#af76e111d051ead319035f83785b932e2", null ],
@@ -17,21 +16,20 @@ var structchig_1_1GraphFunction =
     [ "execOutputs", "structchig_1_1GraphFunction.html#ae155f716b072ef5f8e3ba064ae7ef8c0", null ],
     [ "functionType", "structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848", null ],
     [ "getOrInsertEntryNode", "structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917", null ],
-    [ "graph", "structchig_1_1GraphFunction.html#a5a5eed54a181b865e7bd842a40f5e1f1", null ],
-    [ "graph", "structchig_1_1GraphFunction.html#acd70a962eb70d049fe278074afe0d136", null ],
     [ "insertNode", "structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5", null ],
     [ "insertNode", "structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede", null ],
-    [ "loadGraph", "structchig_1_1GraphFunction.html#a9d343eff733249e7c3c6115ba4ebe9a4", null ],
     [ "modifyDataInput", "structchig_1_1GraphFunction.html#a452c6ff0834f1acdb6740267ef468250", null ],
     [ "modifyDataOutput", "structchig_1_1GraphFunction.html#a3765dc838314ff13457ac933b043f711", null ],
     [ "modifyExecInput", "structchig_1_1GraphFunction.html#a66359dd63933d9c37b00d3894c979b11", null ],
     [ "modifyExecOutput", "structchig_1_1GraphFunction.html#ae355b017f2859dabff4fa17791317d77", null ],
-    [ "module", "structchig_1_1GraphFunction.html#a1a331d17f2229f78a0b9c9407f500b07", null ],
+    [ "module", "structchig_1_1GraphFunction.html#a2eddb58def91a9e0fce7212db3834827", null ],
     [ "name", "structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37", null ],
+    [ "nodes", "structchig_1_1GraphFunction.html#a13cb6ea56ea3161cf0983a3922ac3b06", null ],
+    [ "nodes", "structchig_1_1GraphFunction.html#a79cbfaf26d9a966ae8048c81dc09777e", null ],
+    [ "nodesWithType", "structchig_1_1GraphFunction.html#ac4c14204d36773082b3fe93b48be4279", null ],
     [ "removeDataInput", "structchig_1_1GraphFunction.html#a9698f54861e9997f2690e10e0e8316c8", null ],
     [ "removeDataOutput", "structchig_1_1GraphFunction.html#ae6fc3833c6e0631177efb4e35e7f59e4", null ],
     [ "removeExecInput", "structchig_1_1GraphFunction.html#a390ce7b4174a06ecd00ae7c72af9e157", null ],
     [ "removeExecOutput", "structchig_1_1GraphFunction.html#a90a589106d823501ecb6450636a19e64", null ],
-    [ "removeNode", "structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e", null ],
-    [ "toJSON", "structchig_1_1GraphFunction.html#a5a8768d5514a31104f0b3a9b5553099c", null ]
+    [ "removeNode", "structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e", null ]
 ];

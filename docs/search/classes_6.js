@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['result',['Result',['../structchig_1_1Result.html',1,'chig']]]
+  ['structtype',['StructType',['../structchig_1_1StructType.html',1,'chig']]]
 ];

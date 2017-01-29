@@ -4,7 +4,6 @@ var structchig_1_1CModule =
     [ "~CModule", "structchig_1_1CModule.html#a98afa304d275f26ee1e69de418a59166", null ],
     [ "addDependency", "structchig_1_1CModule.html#acec829296a8677186fcd6f0beae3d3a1", null ],
     [ "context", "structchig_1_1CModule.html#aad81aae17452ddc5fc43809924236385", null ],
-    [ "debugTypeFromName", "structchig_1_1CModule.html#a176beacd16c30d095bf8b5b31bf499a3", null ],
     [ "dependencies", "structchig_1_1CModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40", null ],
     [ "fullName", "structchig_1_1CModule.html#ad730121a133fbc474fcb71d49f31f7b3", null ],
     [ "generateModule", "structchig_1_1CModule.html#a96a5a3b26231a11e91cab54f7cbdce09", null ],
