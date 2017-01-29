@@ -5,7 +5,7 @@ set -xe
 mkdir build
 cd build
 
-if [ "$TRAVIS_OS_NAME" == "linux"]; then
+if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
 	covflags=""
 	if [ -n "$TEST_COV" ]; then 
