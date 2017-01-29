@@ -2,7 +2,7 @@
 
 set -xe
 
-if [ "$TRAVIS_OS_NAME" == "linux"]; then
+if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
 	sudo apt-get update
 	sudo apt-get install qt${QT_VERSION:0:2}base qt${QT_VERSION:0:2}script \
