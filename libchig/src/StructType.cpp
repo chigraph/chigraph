@@ -4,6 +4,6 @@
 
 namespace chig {
 
-StructType::StructType(GraphModule& mod, std::vector<std::string, DataType> types)
+StructType::StructType(GraphModule& mod, std::vector<std::pair<std::string, DataType>> types)
     : mModule{&mod}, mContext{&mod.context()} {}
 }

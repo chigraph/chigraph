@@ -150,8 +150,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			// create debug info
 			{
 				// get type
-				llvm::DIType* dType =
-				    output.first.module().debugTypeFromName(output.first.unqualifiedName());
+				llvm::DIType* dType = output.first.debugType();
 
 				// TODO: better names
 				auto debugVar = data.dbuilder->
@@ -325,19 +324,16 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		std::vector<llvm::Metadata*> params;
 		{
 			// ret first
-			llvm::DIType* intType;
-			res += func.context().debugTypeFromModule("lang", "i32", &intType);
-			params.push_back(intType);
+			DataType intType;
+			res += func.context().typeFromModule("lang", "i32", &intType);
+			params.push_back(intType.debugType());
 
 			// then first in inputexec id
-			params.push_back(intType);
+			params.push_back(intType.debugType());
 
 			// add paramters
 			for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
-				llvm::DIType* debugTy;
-				res += func.context().debugTypeFromModule(dType.first.module().name(),
-				                                          dType.first.unqualifiedName(), &debugTy);
-				params.push_back(debugTy);
+				params.push_back(dType.first.debugType());
 			}
 		}
 
@@ -381,15 +377,15 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			arg.setName("inputexec_id");
 
 			// create debug info
-			llvm::DIType* intDebugType;
-			res += func.context().debugTypeFromModule("lang", "i32", &intDebugType);
+			DataType intDataType;
+			res += func.context().typeFromModule("lang", "i32", &intDataType);
 			auto debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
-			                                      "inputexec_id", debugFile, 0, intDebugType);
+			                                      "inputexec_id", debugFile, 0, intDataType.debugType());
 #else
 			                  createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
-			                                          intDebugType);
+			                                          intDataType.debugType());
 #endif
 			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 			                           llvm::DebugLoc::get(1, 1, debugFunc),
@@ -411,8 +407,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		// create debug info
 
 		// create DIType*
-		llvm::DIType* dType =
-		    tyAndName.first.module().debugTypeFromName(tyAndName.first.unqualifiedName());
+		llvm::DIType* dType = tyAndName.first.debugType();
 		auto debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,

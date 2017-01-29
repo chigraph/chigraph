@@ -33,7 +33,6 @@ struct GraphModule : public ChigModule {
 	                        std::unique_ptr<NodeType>* toFill) override;
 
 	DataType      typeFromName(gsl::cstring_span<> /*name*/) override { return {}; }
-	llvm::DIType* debugTypeFromName(gsl::cstring_span<> /*name*/) override { return nullptr; }
 	std::vector<std::string> nodeTypeNames() const override;  // TODO: implement
 
 	std::vector<std::string> typeNames() const override { return {}; }  // TODO: implement

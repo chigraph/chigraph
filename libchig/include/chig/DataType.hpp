@@ -19,8 +19,8 @@ struct DataType {
 	/// \param typeName The ID of the type in the module
 	/// \param llvmtype The underlying type
 	DataType(ChigModule* chigMod = nullptr, std::string typeName = {},
-	         llvm::Type* llvmtype = nullptr)
-	    : mModule(chigMod), mName{typeName}, mLLVMType{llvmtype} {}
+	         llvm::Type* llvmtype = nullptr, llvm::DIType* debugTy = nullptr)
+	    : mModule(chigMod), mName{typeName}, mLLVMType{llvmtype}, mDIType{debugTy} {}
 
 	/// Get the module this is a part of
 	/// \return The module
@@ -34,8 +34,11 @@ struct DataType {
 	/// Get the underlying \c llvm::Type
 	/// \return the \c llvm::Type
 	llvm::Type* llvmType() const { return mLLVMType; }
+	/// Get the debug type 
+	/// \return The debug type
+	llvm::DIType* debugType() const { return mDIType; }
 	/// Check if the DataType is valid
-	bool valid() const { return mModule != nullptr && mName != "" && mLLVMType != nullptr; }
+	bool valid() const { return mModule != nullptr && mName != "" && mLLVMType != nullptr && mDIType != nullptr; }
 	/// Equality check
 	/// \param other The DataType to check equality against
 	/// \return If they are equal
@@ -52,6 +55,7 @@ private:
 	ChigModule* mModule;
 	std::string mName;
 	llvm::Type* mLLVMType;
+	llvm::DIType* mDIType;
 };
 }
 

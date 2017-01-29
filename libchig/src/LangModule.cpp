@@ -848,12 +848,6 @@ Result LangModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::js
 	return res;
 }
 
-llvm::DIType* LangModule::debugTypeFromName(gsl::cstring_span<> name) {
-	auto iter = mDebugTypes.find(gsl::to_string(name));
-	if (iter != mDebugTypes.end()) { return iter->second; }
-	return nullptr;
-}
-
 // the lang module just has the basic llvm types.
 DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 	using namespace std::string_literals;
@@ -864,9 +858,13 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 	auto tmpModule = llvm::parseAssemblyString(IR, err, context().llvmContext());
 	if (!tmpModule) { return nullptr; }
 
+	// get debug type
+	auto iter = mDebugTypes.find(gsl::to_string(name));
+	if(iter == mDebugTypes.end()) { return {}; }
+	
 	// returns the pointer type, so get the contained type
-	return {this, gsl::to_string(name),
-	        tmpModule->getNamedValue("G")->getType()->getContainedType(0)};
+	return DataType{this, gsl::to_string(name),
+	        tmpModule->getNamedValue("G")->getType()->getContainedType(0), iter->second};
 }
 
 }  // namespace chig
