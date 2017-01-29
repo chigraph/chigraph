@@ -4,6 +4,7 @@
 #include "chig/FunctionValidator.hpp"
 #include "chig/JsonModule.hpp"
 #include "chig/NameMangler.hpp"
+#include "chig/NodeInstance.hpp"
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/DIBuilder.h>
@@ -25,157 +26,15 @@ GraphFunction::GraphFunction(JsonModule& mod, gsl::cstring_span<>          name,
       mDataInputs(std::move(dataIns)),
       mDataOutputs(std::move(dataOuts)),
       mExecInputs(std::move(execIns)),
-      mExecOutputs(std::move(execOuts)),
-      mGraph{*this} {
+      mExecOutputs(std::move(execOuts)) {
 	// TODO: check that it has at least 1 exec input and output
 }
 
 GraphFunction::~GraphFunction() = default;
 
-GraphFunction::GraphFunction(JsonModule& module, const nlohmann::json& data, Result& res) : mGraph{*this} {
-	if (!data.is_object()) {
-		res.addEntry("E1", "Graph json isn't a JSON object", {});
-		return;
-	}
-	// make sure it has a type element
-	if (data.find("type") == data.end()) {
-		res.addEntry("E2", R"(JSON in graph doesn't have a "type" element)", {});
-		return;
-	}
-	if (data["type"] != "function") {
-		res.addEntry("E3", "JSON in graph doesn't have a function type", {});
-		return;
-	}
-	// make sure there is a name
-	if (data.find("name") == data.end()) {
-		res.addEntry("E4", "JSON in graph doesn't have a name parameter", {});
-		return;
-	}
-	std::string name = data["name"];
-
-	if (data.find("data_inputs") == data.end() || !data["data_inputs"].is_array()) {
-		res.addEntry("E43", "JSON in graph doesn't have an data_inputs array", {});
-		return;
-	}
-
-	std::vector<std::pair<DataType, std::string>> datainputs;
-	for (auto param : data["data_inputs"]) {
-		for (auto iter = param.begin(); iter != param.end(); ++iter) {
-			std::string qualifiedType = iter.value();
-			std::string docString     = iter.key();
-
-			std::string moduleName, name;
-			std::tie(moduleName, name) = parseColonPair(qualifiedType);
-
-			DataType ty;
-			res += module.context().typeFromModule(moduleName, name, &ty);
-
-			if (!res) { return; }
-
-			datainputs.emplace_back(ty, docString);
-		}
-	}
-
-	if (data.find("data_outputs") == data.end() || !data["data_outputs"].is_array()) {
-		res.addEntry("E44", "JSON in graph doesn't have an data_outputs array", {});
-		return;
-	}
-
-	std::vector<std::pair<DataType, std::string>> dataoutputs;
-	for (auto param : data["data_outputs"]) {
-		for (auto iter = param.begin(); iter != param.end(); ++iter) {
-			std::string qualifiedType = iter.value();
-			std::string docString     = iter.key();
-
-			std::string moduleName, name;
-			std::tie(moduleName, name) = parseColonPair(qualifiedType);
-
-			DataType ty;
-			res += module.context().typeFromModule(moduleName, name, &ty);
-
-			if (!res) { return; }
-
-			dataoutputs.emplace_back(ty, docString);
-		}
-	}
-
-	// get exec I/O
-	if (data.find("exec_inputs") == data.end() || !data["exec_inputs"].is_array()) {
-		res.addEntry("EUKN", "JSON in graph doesn't have an exec_inputs array", {});
-		return;
-	}
-
-	std::vector<std::string> execinputs;
-	for (const auto& param : data["exec_inputs"]) {
-		std::string name = param;
-
-		execinputs.emplace_back(name);
-	}
-
-	if (data.find("exec_outputs") == data.end() || !data["exec_outputs"].is_array()) {
-		res.addEntry("EUKN", "JSON in graph doesn't have an data_outputs array", {});
-		return;
-	}
-
-	std::vector<std::string> execoutputs;
-	for (const auto& param : data["exec_outputs"]) {
-		std::string name = param;
-
-		execoutputs.emplace_back(name);
-	}
-
-	// construct it
-	mModule      = &module;
-	mContext     = &module.context();
-	mName        = name;
-	mDataInputs  = std::move(datainputs);
-	mDataOutputs = std::move(dataoutputs);
-	mExecInputs  = std::move(execinputs);
-	mExecOutputs = std::move(execoutputs);
-
-	mSource = data;
-}
-
-Result GraphFunction::toJSON(nlohmann::json* toFill) const {
-	Result res;
-
-	*toFill        = nlohmann::json{};
-	auto& jsonData = *toFill;
-
-	jsonData["type"] = "function";
-	jsonData["name"] = name();
-
-	auto& datainputsjson = jsonData["data_inputs"];
-	datainputsjson       = nlohmann::json::array();
-
-	for (auto& in : dataInputs()) {
-		datainputsjson.push_back({{in.second, in.first.qualifiedName()}});
-	}
-
-	auto& dataoutputsjson = jsonData["data_outputs"];
-	dataoutputsjson       = nlohmann::json::array();
-
-	for (auto& out : dataOutputs()) {
-		dataoutputsjson.push_back({{out.second, out.first.qualifiedName()}});
-	}
-
-	auto& execinputsjson = jsonData["exec_inputs"];
-	execinputsjson       = nlohmann::json::array();
-
-	for (auto& in : execInputs()) { execinputsjson.push_back(in); }
-
-	auto& execoutputsjson = jsonData["exec_outputs"];
-	execoutputsjson       = nlohmann::json::array();
-
-	for (auto& out : execOutputs()) { execoutputsjson.push_back(out); }
-
-	res += graph().toJson(toFill);
-
-	return res;
-}
 
 NodeInstance* GraphFunction::entryNode() const noexcept {
-	auto matching = graph().nodesWithType("lang", "entry");
+	auto matching = nodesWithType("lang", "entry");
 
 	if (matching.size() == 1) {
 		auto span = matching[0]->type().dataOutputs();
@@ -191,6 +50,45 @@ NodeInstance* GraphFunction::entryNode() const noexcept {
 		return matching[0];
 	}
 	return nullptr;
+}
+
+Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
+	                  NodeInstance** toFill) {
+		Result res;
+
+		// make sure the ID doesn't exist
+		if (nodes().find(gsl::to_string(id)) != nodes().end()) {
+			res.addEntry("EUKN", "Cannot have two nodes with the same ID",
+						{{"Requested ID", gsl::to_string(id)}});
+			return res;
+		}
+
+		auto ptr = std::make_unique<NodeInstance>(this, std::move(type), x, y, id);
+
+		auto emplaced = mNodes.emplace(gsl::to_string(id), std::move(ptr)).first;
+
+		if (toFill != nullptr) { *toFill = emplaced->second.get(); }
+
+		return res;
+	}
+
+
+std::vector<NodeInstance*> GraphFunction::nodesWithType(gsl::cstring_span<> module,
+                                                gsl::cstring_span<> name) const noexcept {
+	auto typeFinder = [&](auto& pair) {
+		return pair.second->type().module().name() == module && pair.second->type().name() == name;
+	};
+
+	std::vector<NodeInstance*> ret;
+	auto                       iter = std::find_if(mNodes.begin(), mNodes.end(), typeFinder);
+	while (iter != mNodes.end()) {
+		ret.emplace_back(iter->second.get());
+
+		std::advance(iter, 1);  // don't process the same one twice!
+		iter = std::find_if(iter, mNodes.end(), typeFinder);
+	}
+
+	return ret;
 }
 
 Result GraphFunction::insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
@@ -238,7 +136,7 @@ Result GraphFunction::removeNode(NodeInstance* nodeToRemove) {
 		++ID;
 	}
 	// then delete the node
-	graph().nodes().erase(nodeToRemove->id());
+	nodes().erase(nodeToRemove->id());
 
 	return res;
 }
@@ -292,13 +190,6 @@ Result GraphFunction::getOrInsertEntryNode(float x, float y, gsl::cstring_span<>
 	res += createEntryNodeType(&entryNodeType);
 
 	res += insertNode(std::move(entryNodeType), x, y, id, toFill);
-
-	return res;
-}
-
-Result GraphFunction::loadGraph() {
-	Result res;
-	mGraph = Graph(*this, mSource, res);
 
 	return res;
 }
@@ -410,7 +301,7 @@ void GraphFunction::modifyExecOutput(int idx, gsl::cstring_span<> name) {
 }
 
 void GraphFunction::updateEntries() {
-	auto matching = graph().nodesWithType("lang", "entry");
+	auto matching = nodesWithType("lang", "entry");
 
 	for (auto entry : matching) {
 		if (entry == nullptr) { return; }
@@ -423,7 +314,7 @@ void GraphFunction::updateEntries() {
 }
 
 void GraphFunction::updateExits() {
-	for (const auto& exitNode : graph().nodesWithType("lang", "exit")) {
+	for (const auto& exitNode : nodesWithType("lang", "exit")) {
 		std::unique_ptr<NodeType> exitNodeType;
 		createExitNodeType(&exitNodeType);
 

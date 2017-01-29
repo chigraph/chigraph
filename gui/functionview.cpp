@@ -41,7 +41,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	hlayout->addWidget(mView);
 
 	// create nodes
-	for (auto& node : mFunction->graph().nodes()) {
+	for (auto& node : mFunction->nodes()) {
 		auto& guinode =
 		    mScene->createNode(std::make_unique<ChigraphNodeModel>(node.second.get(), this));
 
@@ -51,7 +51,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	}
 
 	// create connections
-	for (auto& node : mFunction->graph().nodes()) {
+	for (auto& node : mFunction->nodes()) {
 		auto thisNode = mNodeMap[node.second.get()];
 
 		size_t connId = 0;
@@ -101,7 +101,7 @@ void FunctionView::nodeAdded(Node& n) {
 	// if it already exists then don't
 	if (mNodeMap.find(&ptr->instance()) != mNodeMap.end()) { return; }
 
-	mFunction->graph().nodes()[ptr->instance().id()] =
+	mFunction->nodes()[ptr->instance().id()] =
 	    std::unique_ptr<chig::NodeInstance>(&ptr->instance());
 
 	mNodeMap[&ptr->instance()] = &n;

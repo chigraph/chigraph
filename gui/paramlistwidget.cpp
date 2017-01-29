@@ -12,6 +12,7 @@
 #include <chig/DataType.hpp>
 
 #include <chig/GraphFunction.hpp>
+#include <chig/Result.hpp>
 
 class ParamListItem : public QListWidgetItem {
 public:

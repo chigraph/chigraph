@@ -13,11 +13,12 @@ set(CHIG_PUBLIC_FILES
 	include/chig/NodeInstance.hpp
 	include/chig/NodeType.hpp
 	include/chig/Result.hpp
-	include/chig/Graph.hpp
 	include/chig/NameMangler.hpp
     include/chig/CModule.hpp
     include/chig/FunctionValidator.hpp
     include/chig/FunctionCompiler.hpp
+    include/chig/JsonDeserializer.hpp
+    include/chig/JsonSerializer.hpp
 )
 
 set(CHIG_PRIVATE_FILES
@@ -28,11 +29,12 @@ set(CHIG_PRIVATE_FILES
 	src/JsonModule.cpp
 	src/ChigModule.cpp
 	src/CModule.cpp
-	src/Graph.cpp
 	src/Result.cpp
 	src/NameMangler.cpp
 	src/FunctionValidator.cpp
 	src/FunctionCompiler.cpp
+	src/JsonDeserializer.cpp
+	src/JsonSerializer.cpp
 )
 
 

@@ -81,20 +81,20 @@ void FunctionDetails::outputChanged(int idx, const chig::DataType& newType,
                                     const QString& newName) {
 	mFunc->modifyDataOutput(idx, newType, gsl::cstring_span<>(newName.toStdString()));
 
-	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
+	for (const auto& exit : mFunc->nodesWithType("lang", "exit")) {
 		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));
 	}
 }
 void FunctionDetails::outputAdded(const chig::DataType& type, const QString& name) {
 	mFunc->addDataOutput(type, name.toStdString(), mFunc->dataInputs().size() - 1);
 
-	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
+	for (const auto& exit : mFunc->nodesWithType("lang", "exit")) {
 		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));
 	}
 }
 void FunctionDetails::outputDeleted(int idx) {
 	mFunc->removeDataOutput(idx);
-	for (const auto& exit : mFunc->graph().nodesWithType("lang", "exit")) {
+	for (const auto& exit : mFunc->nodesWithType("lang", "exit")) {
 		mFuncView->refreshGuiForNode(mFuncView->guiNodeFromChigNode(exit));
 	}
 }
