@@ -2,7 +2,7 @@
 
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/JsonSerializer.hpp>
 #include <chig/NodeInstance.hpp>
@@ -19,7 +19,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 		REQUIRE(lmod != nullptr);
 		REQUIRE(lmod == static_cast<LangModule*>(c.moduleByName("lang")));
 
-		auto jmod = c.newJsonModule("main/main");
+		auto jmod = c.newGraphModule("main/main");
 		jmod->addDependency("lang");
 		REQUIRE(jmod != nullptr);
 

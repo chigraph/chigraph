@@ -7,7 +7,7 @@
 #include "../src/Node.hpp"
 #include "../src/NodeGraphicsObject.hpp"
 
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 #include <chig/NodeInstance.hpp>
 
 #include <nodes/ConnectionStyle>

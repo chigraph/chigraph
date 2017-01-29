@@ -13,7 +13,7 @@
 #include <chig/Config.hpp>
 #include <chig/Result.hpp>
 
-SubprocessOutputView::SubprocessOutputView(chig::JsonModule* module) : mModule(module) {
+SubprocessOutputView::SubprocessOutputView(chig::GraphModule* module) : mModule(module) {
 	// compile!
 	std::unique_ptr<llvm::Module> llmod;
 	chig::Result                  res = module->context().compileModule(module->fullName(), &llmod);

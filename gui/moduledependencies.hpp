@@ -10,7 +10,7 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 
 class ModuleDependencies : public QListWidget {
 	Q_OBJECT
@@ -19,9 +19,9 @@ public:
 	ModuleDependencies(QWidget* parent = nullptr);
 	~ModuleDependencies()              = default;
 
-	chig::JsonModule* module() const { return mModule; }
+	chig::GraphModule* module() const { return mModule; }
 public slots:
-	void setModule(chig::JsonModule* mod) {
+	void setModule(chig::GraphModule* mod) {
 		clear();
 		for(const auto& dep : mod->dependencies()) {
 			if(dep == "c" || dep == "lang") {
@@ -39,7 +39,7 @@ signals:
 private:
 	void addNewDepItem();
 
-	chig::JsonModule* mModule = nullptr;
+	chig::GraphModule* mModule = nullptr;
 
 	QListWidgetItem* mAddDepItem = nullptr;
 };

@@ -2,7 +2,7 @@
 
 #include "chig/GraphFunction.hpp"
 #include "chig/FunctionValidator.hpp"
-#include "chig/JsonModule.hpp"
+#include "chig/GraphModule.hpp"
 #include "chig/NameMangler.hpp"
 #include "chig/NodeInstance.hpp"
 
@@ -16,7 +16,7 @@
 #include <boost/range/join.hpp>
 
 namespace chig {
-GraphFunction::GraphFunction(JsonModule& mod, gsl::cstring_span<>          name,
+GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<>          name,
                              std::vector<std::pair<DataType, std::string>> dataIns,
                              std::vector<std::pair<DataType, std::string>> dataOuts,
                              std::vector<std::string> execIns, std::vector<std::string> execOuts)

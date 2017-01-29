@@ -6,21 +6,21 @@
 #include <QPlainTextEdit>
 #include <QProcess>
 
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 
 class SubprocessOutputView : public QPlainTextEdit {
 	Q_OBJECT
 public:
-	SubprocessOutputView(chig::JsonModule* module);
+	SubprocessOutputView(chig::GraphModule* module);
 	void cancelProcess();
 
-	chig::JsonModule* module() const { return mModule; }
+	chig::GraphModule* module() const { return mModule; }
 	bool              running() const { return mProcess != nullptr && mProcess->state() == QProcess::Running; }
 signals:
 	void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
-	chig::JsonModule* mModule;
+	chig::GraphModule* mModule;
 	QProcess*         mProcess = nullptr;
 };
 

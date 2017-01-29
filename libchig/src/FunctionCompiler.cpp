@@ -4,7 +4,7 @@
 #include "chig/FunctionCompiler.hpp"
 #include "chig/FunctionValidator.hpp"
 #include "chig/GraphFunction.hpp"
-#include "chig/JsonModule.hpp"
+#include "chig/GraphModule.hpp"
 #include "chig/NameMangler.hpp"
 #include "chig/NodeInstance.hpp"
 

@@ -10,7 +10,7 @@ struct Context;
 struct DataType;
 struct GraphFunction;
 struct Graph;
-struct JsonModule;
+struct GraphModule;
 struct LangModule;
 struct NodeInstance;
 struct NodeType;

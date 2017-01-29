@@ -46,10 +46,10 @@ struct Context {
 	/// found
 	ChigModule* moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept;
 
-	/// Create a new JSONModule with the given full name
+	/// Create a new GraphModule with the given full name
 	/// \param fullName The new name
-	/// \return The created JsonModule
-	JsonModule* newJsonModule(gsl::cstring_span<> fullName);
+	/// \return The created GraphModule
+	GraphModule* newGraphModule(gsl::cstring_span<> fullName);
 
 	/// Get the list of modules in the workspace
 	/// \return The module list
@@ -64,10 +64,10 @@ struct Context {
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param fullName The full path of the module, including URL
 	/// \param json The JSON data
-	/// \param toFill The JsonModule* to fill into, optional
+	/// \param toFill The GraphModule* to fill into, optional
 	/// \return The Result
 	Result addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json,
-	                         JsonModule** toFill = nullptr);
+	                         GraphModule** toFill = nullptr);
 
 	/// Adds a custom module to the Context
 	/// This usually doesn't get called, use the \c gsl::string_span<> overload instead

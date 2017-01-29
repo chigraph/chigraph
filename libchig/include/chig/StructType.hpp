@@ -11,19 +11,19 @@
 
 namespace chig {
 
-/// A class holding a compound type defined in a JsonModule
+/// A class holding a compound type defined in a GraphModule
 struct StructType {
 	
-	StructType(JsonModule& mod, std::vector<std::string, DataType> types);
+	StructType(GraphModule& mod, std::vector<std::string, DataType> types);
 	
 	
 	Context& context() const { return *mContext; }
 	
-	JsonModule& module() const {return *mModule;}
+	GraphModule& module() const {return *mModule;}
 	
 private:
 	
-	JsonModule* mModule;
+	GraphModule* mModule;
 	Context* mContext;
 	
 	std::vector<std::string, DataType> mTypes
