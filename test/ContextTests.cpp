@@ -95,9 +95,9 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 
 				checkTy("i32");
 				checkTy("i1");
-				checkTy("i32*");
-				checkTy("i32**");
-				checkTy("double");
+				checkTy("i32");
+				checkTy("i8*");
+				checkTy("float");
 			}
 
 			THEN("getType should fail for incorrect modules and types") {

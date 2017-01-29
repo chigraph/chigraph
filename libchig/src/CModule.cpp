@@ -80,9 +80,10 @@ struct CFuncNode : NodeType {
 		// get arguments
 		std::vector<std::pair<DataType, std::string>> dInputs;
 		for (const auto& argument : llfunc->args()) {
+			DataType ty;
+			context().typeFromModule("lang", stringifyLLVMType(argument.getType()), &ty);
 			dInputs.emplace_back(
-			    DataType(context().moduleByFullName("lang"), stringifyLLVMType(argument.getType()),
-			             argument.getType()),
+			    ty,
 			    argument.getName());
 		}
 		setDataInputs(std::move(dInputs));
@@ -91,8 +92,10 @@ struct CFuncNode : NodeType {
 		auto ret = llfunc->getReturnType();
 
 		if (!ret->isVoidTy()) {
+			DataType ty;
+			context().typeFromModule("lang", stringifyLLVMType(ret), &ty);
 			setDataOutputs(
-			    {{{context().moduleByFullName("lang"), stringifyLLVMType(ret), ret}, ""}});
+			    {{ty, ""}});
 		}
 	}
 
