@@ -105,7 +105,7 @@ Then, compile KDE frameworks 5:
 ```bash
 ./scripts/build_frameworks.sh \
 	-DCMAKE_BUILD_TYPE=Debug \ 
-	-DCMAKE_PREFIX_PATH=‘/usr/local/opt/qt5;/usr/local/opt/gettext’ \
+	-DCMAKE_PREFIX_PATH='/usr/local/opt/qt5;/usr/local/opt/gettext' \
 	-DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison # -GNinja if you installed ninja
 ```
 
