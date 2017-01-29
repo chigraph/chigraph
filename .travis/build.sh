@@ -10,7 +10,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	covflags=""
 	if [ -n "$TEST_COV" ]; then 
 
-		covflags="-DCMAKE_CXX_FLAGS='-fprofile-arcs -ftest-coverage'"
+		covflags='-DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage"'
 
 	fi 
 
