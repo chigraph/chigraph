@@ -10,6 +10,10 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	
 	source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh
 	
+	export QTDIR=/opt/qt${QT_VERSION:0:2}
+	export PATH=$QTDIR/bin:$PATH
+	export LD_LIBRARY_PATH=$QTDIR/lib/x86_64-linux-gnu:$QTDIR/lib:$LD_LIBRARY_PATH
+	
 	./scripts/build_frameworks.sh -DCMAKE_BUILD_TYPE=$BUILD_TYPE -GNinja \
 		-DCMAKE_CXX_COMPILER=$CXX_COMPILER -DCMAKE_C_COMPILER=$C_COMPILER
 	
