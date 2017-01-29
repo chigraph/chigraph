@@ -27,7 +27,7 @@ if [ "$TRAVIS_OS_NAME" == "linux"]; then
 
 	if [ -n "$TEST_COV" ]; then 
 		pip install --user cpp-coveralls 
-		coveralls --exclude .. --include ../libchig --include ../chig --exclude ../libchig/include/json.hpp
+		coveralls --exclude ../test --exclude ../doc --exclude ../gui --include ../libchig --include ../chig --exclude ../libchig/include/json.hpp
 	fi
 
 else 
