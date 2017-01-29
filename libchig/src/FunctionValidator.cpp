@@ -163,7 +163,7 @@ Result validatePath(
 
 	return res;
 }
-} // anon namespace
+}  // anon namespace
 
 Result validateFunctionNodeInputs(const GraphFunction& func) {
 	Result res;

@@ -37,7 +37,7 @@ signals:
 	void paramDeleted(int idx);
 
 private:
-	QListWidget*      mParamList;
+	QListWidget*       mParamList;
 	chig::GraphModule* mMod = nullptr;
 };
 

@@ -4,14 +4,14 @@
 
 #include "chig/FunctionCompiler.hpp"
 #include "chig/GraphFunction.hpp"
-#include "chig/NameMangler.hpp"
-#include "chig/NodeType.hpp"
 #include "chig/JsonSerializer.hpp"
+#include "chig/NameMangler.hpp"
 #include "chig/NodeInstance.hpp"
+#include "chig/NodeType.hpp"
 
 #include <llvm/IR/DIBuilder.h>
-#include <llvm/IR/Module.h>
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Module.h>
 
 #include <boost/filesystem.hpp>
 
@@ -153,10 +153,10 @@ Result GraphModule::saveToDisk() const {
 }
 
 bool GraphModule::createFunction(gsl::cstring_span<> name,
-                                std::vector<std::pair<DataType, std::string> > dataIns,
-                                std::vector<std::pair<DataType, std::string> > dataOuts,
-                                std::vector<std::string> execIns, std::vector<std::string> execOuts,
-                                GraphFunction** toFill) {
+                                 std::vector<std::pair<DataType, std::string> > dataIns,
+                                 std::vector<std::pair<DataType, std::string> > dataOuts,
+                                 std::vector<std::string> execIns,
+                                 std::vector<std::string> execOuts, GraphFunction** toFill) {
 	// make sure there already isn't one by this name
 	auto foundFunc = graphFuncFromName(name);
 	if (foundFunc != nullptr) {
@@ -201,7 +201,7 @@ GraphFunction* GraphModule::graphFuncFromName(gsl::cstring_span<> name) const {
 }
 
 Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/,
-                                    std::unique_ptr<NodeType>* toFill) {
+                                     std::unique_ptr<NodeType>* toFill) {
 	Result res = {};
 
 	auto graph = graphFuncFromName(name);
@@ -246,6 +246,5 @@ boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() c
 
 	return ret;
 }
-
 
 }  // namespace chig

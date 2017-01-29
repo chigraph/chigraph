@@ -1,8 +1,8 @@
 #include "chig/JsonSerializer.hpp"
-#include "chig/GraphFunction.hpp"
 #include "chig/DataType.hpp"
-#include "chig/NodeInstance.hpp"
+#include "chig/GraphFunction.hpp"
 #include "chig/GraphModule.hpp"
+#include "chig/NodeInstance.hpp"
 
 namespace chig {
 
@@ -35,7 +35,7 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 	execoutputsjson       = nlohmann::json::array();
 
 	for (auto& out : func.execOutputs()) { execoutputsjson.push_back(out); }
-	
+
 	// serialize the nodes
 	auto& jsonNodes = jsonData["nodes"];
 	jsonNodes       = nlohmann::json::object();  // make sure even if it's empty it's an object
@@ -86,11 +86,9 @@ nlohmann::json graphModuleToJson(const GraphModule& mod) {
 
 	auto& graphsjson = data["graphs"];
 	graphsjson       = nlohmann::json::array();
-	for (auto& graph : mod.functions()) {
-		graphsjson.push_back(graphFunctionToJson(*graph));
-	}
+	for (auto& graph : mod.functions()) { graphsjson.push_back(graphFunctionToJson(*graph)); }
 
 	return data;
 }
 
-} // namespace chig
+}  // namespace chig

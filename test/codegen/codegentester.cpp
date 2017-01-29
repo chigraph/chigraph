@@ -3,9 +3,9 @@
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
 #include <chig/GraphModule.hpp>
+#include <chig/JsonSerializer.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/NodeType.hpp>
-#include <chig/JsonSerializer.hpp>
 #include <chig/Result.hpp>
 
 #include <process.hpp>

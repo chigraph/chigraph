@@ -30,11 +30,10 @@ NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
       mX{other.x()},
       mY{other.y()},
       mId{std::move(id)},
-	  mContext{&other.context()},
-	  mFunction{&other.function()} {
-	
+      mContext{&other.context()},
+      mFunction{&other.function()} {
 	Expects(mType != nullptr && mFunction != nullptr);
-		  
+
 	mType->mNodeInstance = this;
 
 	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
@@ -73,8 +72,9 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 
 	auto id = 0ull;
 	for (const auto& conn : inputDataConnections) {
-		if (!(conn.first != nullptr && newType->dataInputs().size() > id && type().dataInputs()[id].first == newType->dataInputs()[id].first)) { 
-			disconnectData(*conn.first, conn.second, *this); 
+		if (!(conn.first != nullptr && newType->dataInputs().size() > id &&
+		      type().dataInputs()[id].first == newType->dataInputs()[id].first)) {
+			disconnectData(*conn.first, conn.second, *this);
 		}
 		++id;
 	}
@@ -82,12 +82,12 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 
 	id = 0ull;
 	for (const auto& connSlot : outputDataConnections) {
-		
 		// keep the connections if they're still good
-		if(newType->dataOutputs().size() > id && type().dataOutputs()[id].first == newType->dataOutputs()[id].first) {
+		if (newType->dataOutputs().size() > id &&
+		    type().dataOutputs()[id].first == newType->dataOutputs()[id].first) {
 			continue;
 		}
-		
+
 		while (!connSlot.empty()) {
 			Expects(connSlot[0].first);
 
@@ -102,15 +102,14 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 }
 
 Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID) {
-
 	Result res = {};
 
-	if(&lhs.function() != &rhs.function()) {
-		res.addEntry("EUKN", "Cannot connect two nodes of different graphs", {}); // TODO: better errors
+	if (&lhs.function() != &rhs.function()) {
+		res.addEntry("EUKN", "Cannot connect two nodes of different graphs",
+		             {});  // TODO: better errors
 		return res;
 	}
-	
-	
+
 	// make sure the connection exists
 	// the input to the connection is the output to the node
 	if (lhsConnID >= lhs.outputDataConnections.size()) {
@@ -163,14 +162,14 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_
 }
 
 Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID) {
-
 	Result res = {};
 
-	if(&lhs.function() != &rhs.function()) {
-		res.addEntry("EUKN", "Cannot connect two nodes of different graphs", {}); // TODO: better errors
+	if (&lhs.function() != &rhs.function()) {
+		res.addEntry("EUKN", "Cannot connect two nodes of different graphs",
+		             {});  // TODO: better errors
 		return res;
 	}
-	
+
 	// make sure the connection exists
 	if (lhsConnID >= lhs.outputExecConnections.size()) {
 		auto execOutputs = nlohmann::json::array();
@@ -208,14 +207,14 @@ Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_
 }
 
 Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
-		
 	Result res = {};
 
-	if(&lhs.function() != &rhs.function()) {
-		res.addEntry("EUKN", "Cannot disconect two nodes of different graphs", {}); // TODO: better errors
+	if (&lhs.function() != &rhs.function()) {
+		res.addEntry("EUKN", "Cannot disconect two nodes of different graphs",
+		             {});  // TODO: better errors
 		return res;
 	}
-	
+
 	if (lhsConnID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
 		for (auto& output : lhs.type().dataOutputs()) {

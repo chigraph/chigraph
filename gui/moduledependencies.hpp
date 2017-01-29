@@ -23,10 +23,8 @@ public:
 public slots:
 	void setModule(chig::GraphModule* mod) {
 		clear();
-		for(const auto& dep : mod->dependencies()) {
-			if(dep == "c" || dep == "lang") {
-				continue;
-			}
+		for (const auto& dep : mod->dependencies()) {
+			if (dep == "c" || dep == "lang") { continue; }
 			addItem(QString::fromStdString(dep));
 		}
 		addNewDepItem();

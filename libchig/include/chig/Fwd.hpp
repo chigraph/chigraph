@@ -18,4 +18,4 @@ struct Result;
 struct DataType;
 }
 
-#endif 
+#endif

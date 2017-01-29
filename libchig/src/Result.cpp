@@ -37,7 +37,7 @@ std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 	return ret;
 }
 
-} // anon namespace
+}  // anon namespace
 
 namespace chig {
 

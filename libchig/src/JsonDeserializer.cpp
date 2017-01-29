@@ -1,22 +1,20 @@
 #include "chig/JsonDeserializer.hpp"
 
-#include "chig/Result.hpp"
-#include "chig/GraphModule.hpp"
 #include "chig/Context.hpp"
 #include "chig/GraphFunction.hpp"
+#include "chig/GraphModule.hpp"
 #include "chig/NodeInstance.hpp"
+#include "chig/Result.hpp"
 
 namespace chig {
 
-Result jsonToGraphModule(Context& createInside, const nlohmann::json& input, gsl::cstring_span<> fullName, GraphModule** toFill) {
-
+Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
+                         gsl::cstring_span<> fullName, GraphModule** toFill) {
 	Result res;
-	
+
 	// create the module
 	auto createdModule = createInside.newGraphModule(fullName);
-	if(toFill != nullptr) {
-		*toFill = createdModule;
-	}
+	if (toFill != nullptr) { *toFill = createdModule; }
 
 	// load dependencies
 	{
@@ -52,38 +50,35 @@ Result jsonToGraphModule(Context& createInside, const nlohmann::json& input, gsl
 			res.addEntry("E42", "graph element isn't an array", {{"Actual Data", *iter}});
 			return res;
 		}
-		
+
 		std::vector<GraphFunction*> functions;
 		functions.resize(iter->size());
-		
+
 		// create forward declarations
 		auto id = 0ull;
 		for (const auto& graph : *iter) {
-			
-			res += createGraphFunctionDeclarationFromJson(*createdModule, graph, &functions[id]);			
+			res += createGraphFunctionDeclarationFromJson(*createdModule, graph, &functions[id]);
 
 			++id;
 		}
-		
-		if (!res) {
-			return res;
-		}
-		
+
+		if (!res) { return res; }
+
 		// load the graphs
 		id = 0;
-		for(const auto& graph : *iter) {
-			
+		for (const auto& graph : *iter) {
 			res += jsonToGraphFunction(*functions[id], graph);
-			
+
 			++id;
 		}
 	}
 	return res;
 }
 
-Result createGraphFunctionDeclarationFromJson(GraphModule& createInside, const nlohmann::json& input, GraphFunction** toFill) {
+Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside,
+                                              const nlohmann::json& input, GraphFunction** toFill) {
 	Result res;
-	
+
 	if (!input.is_object()) {
 		res.addEntry("E1", "Graph json isn't a JSON object", {});
 		return res;
@@ -177,14 +172,13 @@ Result createGraphFunctionDeclarationFromJson(GraphModule& createInside, const n
 
 	// construct it
 	createInside.createFunction(name, datainputs, dataoutputs, execinputs, execoutputs, toFill);
-	
+
 	return res;
 }
 
 Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& input) {
-	
 	Result res;
-	
+
 	// read the nodes
 	if (input.find("nodes") == input.end() || !input["nodes"].is_object()) {
 		res.addEntry("E5", "JSON in graph doesn't have nodes object", {});
@@ -214,7 +208,8 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 		}
 
 		std::unique_ptr<NodeType> nodeType;
-		res += createInside.context().nodeTypeFromModule(moduleName, typeName, node["data"], &nodeType);
+		res += createInside.context().nodeTypeFromModule(moduleName, typeName, node["data"],
+		                                                 &nodeType);
 		if (!res) { continue; }
 
 		auto testIter = node.find("location");
@@ -236,7 +231,8 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 			continue;
 		}
 
-		createInside.insertNode(std::move(nodeType), node["location"][0], node["location"][1], nodeid);
+		createInside.insertNode(std::move(nodeType), node["location"][0], node["location"][1],
+		                        nodeid);
 	}
 
 	size_t connID = 0;
@@ -311,11 +307,11 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 			// connect
 			// these functions do bounds checking, it's okay
 			if (isData) {
-				res += connectData(*createInside.nodes()[InputNodeID], InputConnectionID, *createInside.nodes()[OutputNodeID],
-				                   OutputConnectionID);
+				res += connectData(*createInside.nodes()[InputNodeID], InputConnectionID,
+				                   *createInside.nodes()[OutputNodeID], OutputConnectionID);
 			} else {
-				res += connectExec(*createInside.nodes()[InputNodeID], InputConnectionID, *createInside.nodes()[OutputNodeID],
-				                   OutputConnectionID);
+				res += connectExec(*createInside.nodes()[InputNodeID], InputConnectionID,
+				                   *createInside.nodes()[OutputNodeID], OutputConnectionID);
 			}
 
 			++connID;
@@ -323,5 +319,4 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 	}
 	return res;
 }
-
 }

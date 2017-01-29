@@ -16,7 +16,6 @@
 
 #include <llvm/IR/Module.h>
 
-
 /// The namespace where chigraph lives
 namespace chig {
 /// An abstract class that represents a module of code in Chigraph

@@ -17,7 +17,6 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func);
 /// \param mod The module to serialize
 /// \return The serialized module
 nlohmann::json graphModuleToJson(const GraphModule& mod);
-
 }
 
-#endif // CHIG_JSON_SERIALIZER_HPP
+#endif  // CHIG_JSON_SERIALIZER_HPP

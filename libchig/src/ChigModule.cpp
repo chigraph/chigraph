@@ -1,9 +1,8 @@
 /// \file ChigModule.cpp
 
-
 #include "chig/ChigModule.hpp"
-#include "chig/Result.hpp"
 #include "chig/Context.hpp"
+#include "chig/Result.hpp"
 
 namespace chig {
 ChigModule::ChigModule(Context& contextArg, std::string moduleFullName)

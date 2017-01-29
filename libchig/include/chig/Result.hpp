@@ -88,6 +88,6 @@ inline std::ostream& operator<<(std::ostream& lhs, const Result& rhs) {
 
 /// \}
 
-} // namespace chig
+}  // namespace chig
 
 #endif  // CHIG_RESULT_HPP

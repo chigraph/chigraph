@@ -1,7 +1,6 @@
 /// \file chig/GraphFunction.hpp
 /// Declares the GraphFunction class
 
-
 #ifndef CHIG_GRAPH_FUNCTION_HPP
 #define CHIG_GRAPH_FUNCTION_HPP
 
@@ -14,7 +13,7 @@
 
 #include <unordered_map>
 
-#include <llvm/IR/DerivedTypes.h> // for FunctionType
+#include <llvm/IR/DerivedTypes.h>  // for FunctionType
 
 #include <boost/optional.hpp>
 
@@ -29,7 +28,7 @@ struct GraphFunction {
 	/// \param dataOuts The data outputs of the function
 	/// \param execIns The exec inputs to the function
 	/// \param execOuts The exec outputs to the function
-	GraphFunction(GraphModule& mod, gsl::cstring_span<>          name,
+	GraphFunction(GraphModule& mod, gsl::cstring_span<>         name,
 	              std::vector<std::pair<DataType, std::string>> dataIns,
 	              std::vector<std::pair<DataType, std::string>> dataOuts,
 	              std::vector<std::string> execIns, std::vector<std::string> execOuts);
@@ -49,7 +48,7 @@ struct GraphFunction {
 	const std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() const {
 		return mNodes;
 	}
-	
+
 	/// Gets the node with type lang:entry
 	/// returns nullptr on failure
 	/// Also returns nullptr if there are two entry nodes, which is illegal
@@ -65,15 +64,13 @@ struct GraphFunction {
 	/// \return The result
 	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
 	                  NodeInstance** toFill = nullptr);
-	
-	
+
 	/// Gets the nodes with a given type
 	/// \param module The module the type is in
 	/// \param name The name of the type
 	/// \return A vector of NodeInstance
 	std::vector<NodeInstance*> nodesWithType(gsl::cstring_span<> module,
 	                                         gsl::cstring_span<> name) const noexcept;
-
 
 	/// Add a node to the graph using module, type, and json
 	/// \param moduleName The name of the module that typeName is in
@@ -232,19 +229,17 @@ private:
 	void updateExits();
 
 	GraphModule* mModule;
-	Context*    mContext;
-	std::string mName;  /// the name of the function
+	Context*     mContext;
+	std::string  mName;  /// the name of the function
 
 	std::vector<std::pair<DataType, std::string>> mDataInputs;
 	std::vector<std::pair<DataType, std::string>> mDataOutputs;
 
 	std::vector<std::string> mExecInputs;
 	std::vector<std::string> mExecOutputs;
-	
-	
+
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>
 	    mNodes;  /// Storage for the nodes
-
 };
 
 /// Parse a colonated pair
@@ -259,6 +254,6 @@ inline std::pair<std::string, std::string> parseColonPair(const std::string& in)
 
 	return {module, name};
 }
-} // namespace chig
+}  // namespace chig
 
 #endif  // CHIG_GRAPH_FUNCTION_HPP

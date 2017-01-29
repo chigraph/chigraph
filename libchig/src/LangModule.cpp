@@ -397,11 +397,8 @@ struct BinaryOperationNodeType : NodeType {
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		
 		llvm::Value* result = nullptr;
-		if(mType.unqualifiedName() == "i32") {
-		
-		
+		if (mType.unqualifiedName() == "i32") {
 			result = [&](BinOp b) {
 				switch (b) {
 				case BinOp::Add: return builder.CreateAdd(io[0], io[1]);
@@ -425,7 +422,7 @@ struct BinaryOperationNodeType : NodeType {
 				return (llvm::Value*)nullptr;
 			}(mBinOp);
 		}
-		
+
 		builder.CreateStore(result, io[2]);
 
 		builder.CreateBr(outputBlocks[0]);
@@ -437,16 +434,17 @@ struct BinaryOperationNodeType : NodeType {
 		return std::make_unique<BinaryOperationNodeType>(*this);
 	}
 
-	BinOp mBinOp;
+	BinOp    mBinOp;
 	DataType mType;
 };
 
 enum class CmpOp { Lt, Gt, Let, Get, Eq, Neq };
 
 struct CompareNodeType : NodeType {
-	CompareNodeType(LangModule& mod, DataType ty, CmpOp op) : NodeType(mod), mCompOp(op), mType{ty} {
+	CompareNodeType(LangModule& mod, DataType ty, CmpOp op)
+	    : NodeType(mod), mCompOp(op), mType{ty} {
 		makePure();
-		
+
 		std::string opStr = [](CmpOp b) {
 			switch (b) {
 			case CmpOp::Lt: return "<";
@@ -459,9 +457,9 @@ struct CompareNodeType : NodeType {
 			}
 			return "";
 		}(mCompOp);
-		
+
 		setName(ty.unqualifiedName() + opStr + ty.unqualifiedName());
-		
+
 		std::string opVerb = [](CmpOp b) {
 			switch (b) {
 			case CmpOp::Lt: return "less than";
@@ -474,14 +472,14 @@ struct CompareNodeType : NodeType {
 			}
 			return "";
 		}(mCompOp);
-		
-		setDescription("Check if one " + ty.unqualifiedName() + " is " + opVerb + " than another " + ty.unqualifiedName());
-		
+
+		setDescription("Check if one " + ty.unqualifiedName() + " is " + opVerb + " than another " +
+		               ty.unqualifiedName());
+
 		setDataInputs({{ty, "a"}, {ty, "b"}});
 		setDataOutputs({{mod.typeFromName("i1"), ""}});
-		
 	}
-	
+
 	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
 	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
@@ -492,8 +490,7 @@ struct CompareNodeType : NodeType {
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		llvm::Value* result = nullptr;
-		if(mType.unqualifiedName() == "i32") {
-		
+		if (mType.unqualifiedName() == "i32") {
 			result = [&](CmpOp b) -> llvm::Value* {
 				switch (b) {
 				case CmpOp::Lt: return builder.CreateICmpSLT(io[0], io[1]);
@@ -506,9 +503,8 @@ struct CompareNodeType : NodeType {
 				}
 				return nullptr;
 			}(mCompOp);
-		
+
 		} else {
-					
 			result = [&](CmpOp b) -> llvm::Value* {
 				switch (b) {
 				case CmpOp::Lt: return builder.CreateFCmpULT(io[0], io[1]);
@@ -521,7 +517,6 @@ struct CompareNodeType : NodeType {
 				}
 				return nullptr;
 			}(mCompOp);
-		
 		}
 
 		builder.CreateStore(result, io[2]);
@@ -530,17 +525,16 @@ struct CompareNodeType : NodeType {
 
 		return {};
 	}
-	
+
 	std::unique_ptr<NodeType> clone() const override {
 		return std::make_unique<CompareNodeType>(*this);
 	}
-	
-	CmpOp mCompOp;
+
+	CmpOp    mCompOp;
 	DataType mType;
 };
 
-} // anon namespace
-
+}  // anon namespace
 
 LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	using namespace std::string_literals;
@@ -589,42 +583,66 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("float"), BinOp::Divide);
 		 }},
-		 {"i32<i32"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Lt);
-		}},
-		 {"i32>i32"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Gt);
-		}},
-		 {"i32<=i32"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Let);
-		}},
-		 {"i32>=i32"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Get);
-		}},
-		 {"i32==i32"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Eq);
-		}},
-		 {"i32!=i32"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"), CmpOp::Neq);
-		}},
-		 {"float<float"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Lt);
-		}},
-		 {"float>float"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Gt);
-		}},
-		 {"float<=float"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Let);
-		}},
-		 {"float>=float"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Get);
-		}},
-		 {"float==float"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Eq);
-		}},
-		 {"float!=float"s, [this](const nlohmann::json&, Result&) {
-			 return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"), CmpOp::Neq);
-		}},
+	    {"i32<i32"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
+		                                              CmpOp::Lt);
+		 }},
+	    {"i32>i32"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
+		                                              CmpOp::Gt);
+		 }},
+	    {"i32<=i32"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
+		                                              CmpOp::Let);
+		 }},
+	    {"i32>=i32"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
+		                                              CmpOp::Get);
+		 }},
+	    {"i32==i32"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
+		                                              CmpOp::Eq);
+		 }},
+	    {"i32!=i32"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
+		                                              CmpOp::Neq);
+		 }},
+	    {"float<float"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
+		                                              CmpOp::Lt);
+		 }},
+	    {"float>float"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
+		                                              CmpOp::Gt);
+		 }},
+	    {"float<=float"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
+		                                              CmpOp::Let);
+		 }},
+	    {"float>=float"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
+		                                              CmpOp::Get);
+		 }},
+	    {"float==float"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
+		                                              CmpOp::Eq);
+		 }},
+	    {"float!=float"s,
+	     [this](const nlohmann::json&, Result&) {
+		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
+		                                              CmpOp::Neq);
+		 }},
 	    {"inttofloat"s, [this](const nlohmann::json&,
 	                           Result&) { return std::make_unique<IntToFloatNodeType>(*this); }},
 	    {"floattoint"s, [this](const nlohmann::json&,
@@ -805,8 +823,8 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	    llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i1", 8,
 	                           8, llvm::dwarf::DW_ATE_boolean);
 	mDebugTypes["float"] =
-	    llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
-	                           "lang:float", 64, 64, llvm::dwarf::DW_ATE_float);
+	    llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:float",
+	                           64, 64, llvm::dwarf::DW_ATE_float);
 	auto charType = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
 	                                       "lang:i8", 8, 8, llvm::dwarf::DW_ATE_unsigned_char);
 	mDebugTypes["i8*"] = llvm::DIDerivedType::get(
