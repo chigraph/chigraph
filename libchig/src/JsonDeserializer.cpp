@@ -106,20 +106,19 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 
 	std::vector<std::pair<DataType, std::string>> datainputs;
 	for (auto param : input["data_inputs"]) {
-		for (auto iter = param.begin(); iter != param.end(); ++iter) {
-			std::string qualifiedType = iter.value();
-			std::string docString     = iter.key();
+		std::string qualifiedType, docString;
+		std::tie(qualifiedType, docString) = parseObjectPair(param);
+		
+		std::string moduleName, name;
+		std::tie(moduleName, name) = parseColonPair(qualifiedType);
 
-			std::string moduleName, name;
-			std::tie(moduleName, name) = parseColonPair(qualifiedType);
+		DataType ty;
+		res += createInside.context().typeFromModule(moduleName, name, &ty);
 
-			DataType ty;
-			res += createInside.context().typeFromModule(moduleName, name, &ty);
+		if (!res) { return res; }
 
-			if (!res) { return res; }
-
-			datainputs.emplace_back(ty, docString);
-		}
+		datainputs.emplace_back(ty, docString);
+		
 	}
 
 	if (input.find("data_outputs") == input.end() || !input["data_outputs"].is_array()) {
@@ -129,20 +128,20 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 
 	std::vector<std::pair<DataType, std::string>> dataoutputs;
 	for (auto param : input["data_outputs"]) {
-		for (auto iter = param.begin(); iter != param.end(); ++iter) {
-			std::string qualifiedType = iter.value();
-			std::string docString     = iter.key();
+		
+		std::string qualifiedType, docString;
+		std::tie(qualifiedType, docString) = parseObjectPair(param);
+	
+		std::string moduleName, name;
+		std::tie(moduleName, name) = parseColonPair(qualifiedType);
 
-			std::string moduleName, name;
-			std::tie(moduleName, name) = parseColonPair(qualifiedType);
+		DataType ty;
+		res += createInside.context().typeFromModule(moduleName, name, &ty);
 
-			DataType ty;
-			res += createInside.context().typeFromModule(moduleName, name, &ty);
+		if (!res) { return res; }
 
-			if (!res) { return res; }
-
-			dataoutputs.emplace_back(ty, docString);
-		}
+		dataoutputs.emplace_back(ty, docString);
+	
 	}
 
 	// get exec I/O
@@ -319,4 +318,27 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 	}
 	return res;
 }
+
+std::pair<std::string, std::string> parseObjectPair(const nlohmann::json& object) {
+	if (!object.is_object()) {
+		return {};
+	}
+	
+	auto iter = object.begin();
+	if(iter == object.end()) {
+		return {};
+	}
+	
+	std::string key = iter.key();
+	std::string val = iter.value();
+	
+	// make sure it's the only element
+	++iter;
+	if (iter != object.end()) {
+		return {};
+	}
+	
+	return {key, val};
+}
+
 }

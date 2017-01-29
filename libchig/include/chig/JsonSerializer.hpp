@@ -8,6 +8,9 @@
 
 namespace chig {
 
+/// \name Json Serialization/Deserialization
+/// \{
+
 /// Serialize a GraphFunction to json
 /// \param func The function to serialize
 /// \return The serialized function
@@ -17,6 +20,8 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func);
 /// \param mod The module to serialize
 /// \return The serialized module
 nlohmann::json graphModuleToJson(const GraphModule& mod);
+
+/// \}
 }
 
 #endif  // CHIG_JSON_SERIALIZER_HPP
