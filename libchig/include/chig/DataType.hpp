@@ -43,7 +43,7 @@ struct DataType {
 	/// \param other The DataType to check equality against
 	/// \return If they are equal
 	bool operator==(const DataType& other) const {
-		return mModule == other.mModule && mName == other.mName && mLLVMType == other.mLLVMType;
+		return mModule == other.mModule && mName == other.mName && mLLVMType == other.mLLVMType && mDIType == other.mDIType;
 	}
 
 	/// Inequality check

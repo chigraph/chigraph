@@ -326,6 +326,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			// ret first
 			DataType intType;
 			res += func.context().typeFromModule("lang", "i32", &intType);
+			Expects(intType.valid());
 			params.push_back(intType.debugType());
 
 			// then first in inputexec id
@@ -379,6 +380,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			// create debug info
 			DataType intDataType;
 			res += func.context().typeFromModule("lang", "i32", &intDataType);
+			Expects(intDataType.valid());
 			auto debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,

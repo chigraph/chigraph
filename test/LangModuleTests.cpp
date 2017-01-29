@@ -19,26 +19,25 @@ TEST_CASE("LangModule", "[module]") {
 
 			res = c.typeFromModule("lang", "i32", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "i32", llvm::IntegerType::getInt32Ty(c.llvmContext())));
+			REQUIRE(test.llvmType() == llvm::IntegerType::getInt32Ty(c.llvmContext()));
+			REQUIRE(&test.module() == mod);
+			REQUIRE(test.unqualifiedName() == "i32");
+			REQUIRE(test.qualifiedName() == "lang:i32");
 
-			res = c.typeFromModule("lang", "i32*", &test);
+			res = c.typeFromModule("lang", "i8*", &test);
 			REQUIRE(!!res);
-			REQUIRE(test ==
-			        DataType(mod, "i32*", llvm::IntegerType::getInt32PtrTy(c.llvmContext())));
+			REQUIRE(test.llvmType() == llvm::IntegerType::getInt8PtrTy(c.llvmContext()));
+			REQUIRE(&test.module() == mod);
+			REQUIRE(test.unqualifiedName() == "i8*");
+			REQUIRE(test.qualifiedName() == "lang:i8*");
 
-			res = c.typeFromModule("lang", "i32**", &test);
-			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "i32**",
-			                         llvm::PointerType::get(
-			                             llvm::IntegerType::getInt32PtrTy(c.llvmContext()), 0)));
 
-			res = c.typeFromModule("lang", "i8", &test);
+			res = c.typeFromModule("lang", "float", &test);
 			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "i8", llvm::IntegerType::getInt8Ty(c.llvmContext())));
-
-			res = c.typeFromModule("lang", "double", &test);
-			REQUIRE(!!res);
-			REQUIRE(test == DataType(mod, "double", llvm::Type::getDoubleTy(c.llvmContext())));
+			REQUIRE(test.llvmType() == llvm::IntegerType::getFloatTy(c.llvmContext()));
+			REQUIRE(&test.module() == mod);
+			REQUIRE(test.unqualifiedName() == "float");
+			REQUIRE(test.qualifiedName() == "lang:float");
 		}
 
 		THEN(
@@ -109,7 +108,7 @@ TEST_CASE("LangModule", "[module]") {
 			res = c.nodeTypeFromModule(
 			    "lang", "entry",
 			    nlohmann::json::parse(
-			        R"end( { "data": [{"hello": "lang:i32"}, {"hello2": "lang:i32*"}], "exec": [""]  } )end"),
+			        R"end( { "data": [{"hello": "lang:i32"}, {"hello2": "lang:i8*"}], "exec": [""]  } )end"),
 			    &entryNode);
 			REQUIRE(!!res);
 
