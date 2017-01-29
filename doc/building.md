@@ -10,7 +10,7 @@ The external dependencies of chigraph are:
 - A compiler supporting C++14 (clang 3.7+, gcc 4.8+)
 - git (to clone chigraph)
 - CMake 3.0+
-- LLVM 3.7+
+- LLVM 3.7+ (the tests only pass with 3.9, but the interface works fine with 3.7 and 3.8)
 - Qt 5.6+
 - KDE Frameworks 5
 
