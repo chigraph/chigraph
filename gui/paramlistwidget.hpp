@@ -7,7 +7,7 @@
 #include <QWidget>
 
 #include <chig/DataType.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 
 class ParamListWidget : public QWidget {
 	Q_OBJECT
@@ -28,7 +28,7 @@ public:
 	int paramCount() const;
 
 	void clear() { mParamList->clear(); }
-	void setModule(chig::JsonModule* mod) { mMod = mod; }
+	void setModule(chig::GraphModule* mod) { mMod = mod; }
 signals:
 
 	void paramChanged(int idx, const chig::DataType& newType, const QString& newName);
@@ -38,7 +38,7 @@ signals:
 
 private:
 	QListWidget*      mParamList;
-	chig::JsonModule* mMod = nullptr;
+	chig::GraphModule* mMod = nullptr;
 };
 
 #endif  // CHIGGUI_PARAMLISTWIDGET_HPP

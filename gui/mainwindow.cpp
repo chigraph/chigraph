@@ -28,7 +28,7 @@
 #include <chig/Config.hpp>
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/json.hpp>
 
@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(moduleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
 	connect(
 	    this, &MainWindow::newModuleCreated, moduleBrowser,
-	    [moduleBrowser](chig::JsonModule* mod) { moduleBrowser->loadWorkspace(mod->context()); });
+	    [moduleBrowser](chig::GraphModule* mod) { moduleBrowser->loadWorkspace(mod->context()); });
 
 	mFunctionTabs = new QTabWidget(this);
 	mFunctionTabs->setMovable(true);
@@ -254,7 +254,7 @@ void MainWindow::openModule(const QString& fullName) {
 		return;
 	}
 
-	mModule = dynamic_cast<chig::JsonModule*>(cmod);
+	mModule = dynamic_cast<chig::GraphModule*>(cmod);
 	Expects(mModule != nullptr);
 
 	setWindowTitle(QString::fromStdString(mModule->fullName()));
@@ -322,7 +322,7 @@ void MainWindow::newModule() {
 	// TODO: validator
 	auto fullName = QInputDialog::getText(this, i18n("New Module"), i18n("Full Module Name"));
 
-	auto mod = context().newJsonModule(fullName.toStdString());
+	auto mod = context().newGraphModule(fullName.toStdString());
 
 	// add lang and c
 	mod->addDependency("lang");

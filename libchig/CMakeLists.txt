@@ -8,7 +8,7 @@ set(CHIG_PUBLIC_FILES
 	include/chig/ChigModule.hpp
 	include/chig/Context.hpp
 	include/chig/GraphFunction.hpp
-	include/chig/JsonModule.hpp
+	include/chig/GraphModule.hpp
 	include/chig/LangModule.hpp
 	include/chig/NodeInstance.hpp
 	include/chig/NodeType.hpp
@@ -26,7 +26,7 @@ set(CHIG_PRIVATE_FILES
 	src/NodeInstance.cpp
 	src/GraphFunction.cpp
 	src/LangModule.cpp
-	src/JsonModule.cpp
+	src/GraphModule.cpp
 	src/ChigModule.cpp
 	src/CModule.cpp
 	src/Result.cpp

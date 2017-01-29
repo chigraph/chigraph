@@ -1,6 +1,6 @@
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/NodeType.hpp>
 #include <chig/Result.hpp>

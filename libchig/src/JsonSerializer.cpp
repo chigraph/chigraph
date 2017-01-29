@@ -2,7 +2,7 @@
 #include "chig/GraphFunction.hpp"
 #include "chig/DataType.hpp"
 #include "chig/NodeInstance.hpp"
-#include "chig/JsonModule.hpp"
+#include "chig/GraphModule.hpp"
 
 namespace chig {
 
@@ -78,7 +78,7 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 	return jsonData;
 }
 
-nlohmann::json jsonModuleToJson(const JsonModule& mod) {
+nlohmann::json graphModuleToJson(const GraphModule& mod) {
 	nlohmann::json data;
 
 	data["name"]         = mod.name();

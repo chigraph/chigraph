@@ -4,7 +4,7 @@
 
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/json.hpp>
 #include <chig/JsonDeserializer.hpp>
@@ -46,8 +46,8 @@ int main(int argc, char** argv) {
 	Result  res;
 
 	if (strcmp(mode, "mod") == 0) {
-		JsonModule* mod;
-		res += deserializeJsonModule(c, newData, "main", &mod);
+		GraphModule* mod;
+		res += jsonToGraphModule(c, newData, "main", &mod);
 		std::string moduleName = mod->name();
 
 		int ret = checkForErrors(res, expectedErr);
@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
 	} else if (strcmp(mode, "func") == 0) {
 		auto deps = std::vector<std::string>{"lang", "c"};
 		
-		auto mod = c.newJsonModule("main");
+		auto mod = c.newGraphModule("main");
 		for(const auto& dep : deps) {
 			mod->addDependency(dep);
 		}
@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
 		int ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;
 
-		res += deserializeGraphFunction(*func, newData);
+		res += jsonToGraphFunction(*func, newData);
 		
 		ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;

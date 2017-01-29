@@ -1,19 +1,19 @@
 #include "chig/JsonDeserializer.hpp"
 
 #include "chig/Result.hpp"
-#include "chig/JsonModule.hpp"
+#include "chig/GraphModule.hpp"
 #include "chig/Context.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/NodeInstance.hpp"
 
 namespace chig {
 
-Result deserializeJsonModule(Context& createInside, const nlohmann::json& input, gsl::cstring_span<> fullName, JsonModule** toFill) {
+Result jsonToGraphModule(Context& createInside, const nlohmann::json& input, gsl::cstring_span<> fullName, GraphModule** toFill) {
 
 	Result res;
 	
 	// create the module
-	auto createdModule = createInside.newJsonModule(fullName);
+	auto createdModule = createInside.newGraphModule(fullName);
 	if(toFill != nullptr) {
 		*toFill = createdModule;
 	}
@@ -73,7 +73,7 @@ Result deserializeJsonModule(Context& createInside, const nlohmann::json& input,
 		id = 0;
 		for(const auto& graph : *iter) {
 			
-			res += deserializeGraphFunction(*functions[id], graph);
+			res += jsonToGraphFunction(*functions[id], graph);
 			
 			++id;
 		}
@@ -81,7 +81,7 @@ Result deserializeJsonModule(Context& createInside, const nlohmann::json& input,
 	return res;
 }
 
-Result createGraphFunctionDeclarationFromJson(JsonModule& createInside, const nlohmann::json& input, GraphFunction** toFill) {
+Result createGraphFunctionDeclarationFromJson(GraphModule& createInside, const nlohmann::json& input, GraphFunction** toFill) {
 	Result res;
 	
 	if (!input.is_object()) {
@@ -181,7 +181,7 @@ Result createGraphFunctionDeclarationFromJson(JsonModule& createInside, const nl
 	return res;
 }
 
-Result deserializeGraphFunction(GraphFunction& createInside, const nlohmann::json& input) {
+Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& input) {
 	
 	Result res;
 	

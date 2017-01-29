@@ -1,6 +1,6 @@
-/// \file JsonModule.cpp
+/// \file GraphModule.cpp
 
-#include "chig/JsonModule.hpp"
+#include "chig/GraphModule.hpp"
 
 #include "chig/FunctionCompiler.hpp"
 #include "chig/GraphFunction.hpp"
@@ -18,8 +18,8 @@
 namespace fs = boost::filesystem;
 
 namespace chig {
-struct JsonFuncCallNodeType : public NodeType {
-	JsonFuncCallNodeType(JsonModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
+struct GraphFuncCallType : public NodeType {
+	GraphFuncCallType(GraphModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
 	    : NodeType(json_module, funcname, ""),
 	      JModule(&json_module)  // TODO: description
 	{
@@ -85,19 +85,19 @@ struct JsonFuncCallNodeType : public NodeType {
 	std::unique_ptr<NodeType> clone() const override {
 		Result res = {};  // there shouldn't be an error but check anywayss
 		// TODO: better way to do this?
-		return std::make_unique<JsonFuncCallNodeType>(*JModule, name(), &res);
+		return std::make_unique<GraphFuncCallType>(*JModule, name(), &res);
 	}
 
-	JsonModule* JModule;
+	GraphModule* JModule;
 };
 
-JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies)
+GraphModule::GraphModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies)
     : ChigModule(cont, fullName) {
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) { addDependency(dep); }
 }
 
-Result JsonModule::generateModule(llvm::Module& module) {
+Result GraphModule::generateModule(llvm::Module& module) {
 	Result res = {};
 
 	// debug info
@@ -121,7 +121,7 @@ Result JsonModule::generateModule(llvm::Module& module) {
 	return res;
 }
 
-Result JsonModule::saveToDisk() const {
+Result GraphModule::saveToDisk() const {
 	Result res;
 
 	// can't serialize without a workspace...
@@ -143,7 +143,7 @@ Result JsonModule::saveToDisk() const {
 	}
 
 	// serialize
-	nlohmann::json toFill = jsonModuleToJson(*this);
+	nlohmann::json toFill = graphModuleToJson(*this);
 
 	// save
 	fs::ofstream ostr(modulePath);
@@ -152,7 +152,7 @@ Result JsonModule::saveToDisk() const {
 	return res;
 }
 
-bool JsonModule::createFunction(gsl::cstring_span<> name,
+bool GraphModule::createFunction(gsl::cstring_span<> name,
                                 std::vector<std::pair<DataType, std::string> > dataIns,
                                 std::vector<std::pair<DataType, std::string> > dataOuts,
                                 std::vector<std::string> execIns, std::vector<std::string> execOuts,
@@ -172,7 +172,7 @@ bool JsonModule::createFunction(gsl::cstring_span<> name,
 	return true;
 }
 
-bool JsonModule::removeFunction(gsl::cstring_span<> name) {
+bool GraphModule::removeFunction(gsl::cstring_span<> name) {
 	auto funcPtr = graphFuncFromName(name);
 
 	if (funcPtr == nullptr) { return false; }
@@ -182,7 +182,7 @@ bool JsonModule::removeFunction(gsl::cstring_span<> name) {
 	return true;
 }
 
-void JsonModule::removeFunction(GraphFunction* func) {
+void GraphModule::removeFunction(GraphFunction* func) {
 	Expects(func != nullptr);
 
 	auto iter = std::find_if(mFunctions.begin(), mFunctions.end(),
@@ -192,7 +192,7 @@ void JsonModule::removeFunction(GraphFunction* func) {
 	mFunctions.erase(iter);
 }
 
-GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const {
+GraphFunction* GraphModule::graphFuncFromName(gsl::cstring_span<> name) const {
 	auto iter = std::find_if(mFunctions.begin(), mFunctions.end(),
 	                         [&](auto& ptr) { return ptr->name() == name; });
 
@@ -200,7 +200,7 @@ GraphFunction* JsonModule::graphFuncFromName(gsl::cstring_span<> name) const {
 	return nullptr;
 }
 
-Result JsonModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/,
+Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/,
                                     std::unique_ptr<NodeType>* toFill) {
 	Result res = {};
 
@@ -212,11 +212,11 @@ Result JsonModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::js
 		    {{"Module Name", gsl::to_string(name)}, {"Requested Graph", gsl::to_string(name)}});
 	}
 
-	*toFill = std::make_unique<JsonFuncCallNodeType>(*this, name, &res);
+	*toFill = std::make_unique<GraphFuncCallType>(*this, name, &res);
 	return res;
 }
 
-std::vector<std::string> JsonModule::nodeTypeNames() const {
+std::vector<std::string> GraphModule::nodeTypeNames() const {
 	std::vector<std::string> ret;
 	std::transform(mFunctions.begin(), mFunctions.end(), std::back_inserter(ret),
 	               [](auto& gPtr) { return gPtr->name(); });
@@ -224,7 +224,7 @@ std::vector<std::string> JsonModule::nodeTypeNames() const {
 	return ret;
 }
 
-boost::bimap<unsigned int, NodeInstance*> JsonModule::createLineNumberAssoc() const {
+boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() const {
 	// create a sorted list of GraphFunctions
 	std::vector<NodeInstance*> nodes;
 	for (const auto& f : functions()) {

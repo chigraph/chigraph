@@ -7,7 +7,7 @@
 #include <nodes/FlowView>
 
 #include <chig/GraphFunction.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 #include <chig/NodeInstance.hpp>
 
 #include <memory>

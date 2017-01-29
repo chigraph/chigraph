@@ -8,7 +8,7 @@
 #include <chig/CModule.hpp>
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/NodeType.hpp>
 #include <chig/Result.hpp>
@@ -79,7 +79,7 @@ int compile(const std::vector<std::string>& opts) {
 
 	Context c{workspacePath};
 	// load it as a module
-	JsonModule* cmodule;
+	GraphModule* cmodule;
 	res += c.addModuleFromJson("main", read_json, &cmodule);
 
 	if (!res) {

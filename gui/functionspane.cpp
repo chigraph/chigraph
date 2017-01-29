@@ -45,7 +45,7 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 			                      auto casted = dynamic_cast<FunctionListItem*>(funcItem);
 			                      if (casted == nullptr) { return; }
 
-			                      chig::JsonModule* mod = &casted->mFunc->module();
+			                      chig::GraphModule* mod = &casted->mFunc->module();
 			                      casted->mFunc->module().removeFunction(casted->mFunc);
 
 			                      updateModule(mod);
@@ -55,7 +55,7 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 	});
 }
 
-void FunctionsPane::updateModule(chig::JsonModule* mod) {
+void FunctionsPane::updateModule(chig::GraphModule* mod) {
 	Expects(mod != nullptr);
 
 	clear();

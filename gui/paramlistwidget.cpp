@@ -58,7 +58,7 @@ ParamListItem* paramFromIdx(int idx, QListWidget* list) {
 	return casted;
 }
 
-QStringList createTypeOptions(chig::JsonModule* mod) {
+QStringList createTypeOptions(chig::GraphModule* mod) {
 	QStringList ret;
 
 	for (auto dep : mod->dependencies()) {
@@ -71,7 +71,7 @@ QStringList createTypeOptions(chig::JsonModule* mod) {
 }
 
 boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(QWidget* parent,
-                                                                    chig::JsonModule* mod) {
+                                                                    chig::GraphModule* mod) {
 	bool ok;
 	auto qualtype = QInputDialog::getItem(parent, i18n("Select Type"), i18n("Type"),
 	                                      createTypeOptions(mod), 0, true, &ok);

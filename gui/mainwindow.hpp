@@ -16,7 +16,7 @@
 
 #include <chig/ChigModule.hpp>
 #include <chig/Context.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 
 #include <QProcess>
 
@@ -28,7 +28,7 @@ public:
 	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
-	chig::JsonModule* currentModule() const { return mModule; }
+	chig::GraphModule* currentModule() const { return mModule; }
 	chig::Context&    context() const { return *mChigContext; }
 public slots:
 	void openWorkspaceDialog();           // this one opens a dialog
@@ -42,10 +42,10 @@ public slots:
 
 signals:
 	void workspaceOpened(chig::Context& workspace);
-	void moduleOpened(chig::JsonModule* mod);
+	void moduleOpened(chig::GraphModule* mod);
 	void functionOpened(FunctionView* func);
 
-	void newModuleCreated(chig::JsonModule* newModule);
+	void newModuleCreated(chig::GraphModule* newModule);
 	void newFunctionCreated(chig::GraphFunction* func);
 
 private:
@@ -57,7 +57,7 @@ private:
 
 	// context & module
 	std::unique_ptr<chig::Context> mChigContext = nullptr;
-	chig::JsonModule*              mModule      = nullptr;
+	chig::GraphModule*              mModule      = nullptr;
 };
 
 #endif  // CHIGGUI_MAINWINDOW_H

@@ -2,7 +2,7 @@
 #include <chig/Config.hpp>
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/NodeType.hpp>
 #include <chig/JsonSerializer.hpp>
@@ -269,7 +269,7 @@ int main(int argc, char** argv) {
 		    (fs::relative(moduleDir, c.workspacePath() / "src") / "main").string();
 
 		// test serialization and deserialization
-		JsonModule* deserialized;
+		GraphModule* deserialized;
 		{
 			ChigModule* cMod = nullptr;
 			r += c.loadModule(fullName, &cMod);
@@ -279,10 +279,10 @@ int main(int argc, char** argv) {
 				return 1;
 			}
 
-			deserialized = dynamic_cast<JsonModule*>(cMod);
+			deserialized = dynamic_cast<GraphModule*>(cMod);
 		}
 
-		nlohmann::json serializedmodule = jsonModuleToJson(*deserialized);
+		nlohmann::json serializedmodule = graphModuleToJson(*deserialized);
 
 		if (!r) {
 			std::cerr << "Error deserializing module: \n\n" << r << std::endl;

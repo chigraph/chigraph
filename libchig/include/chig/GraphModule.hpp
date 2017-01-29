@@ -1,9 +1,9 @@
-/// \file chig/JsonModule.hpp
-/// Defines the JsonModule class
+/// \file chig/GraphModule.hpp
+/// Defines the GraphModule class
 
 
-#ifndef CHIG_JSON_MODULE_HPP
-#define CHIG_JSON_MODULE_HPP
+#ifndef CHIG_GRAPH_MODULE_HPP
+#define CHIG_GRAPH_MODULE_HPP
 
 #pragma once
 
@@ -13,20 +13,20 @@
 #include <boost/bimap.hpp>
 
 namespace chig {
-/// Module that holds JSON code
-struct JsonModule : public ChigModule {
+/// Module that holds graph functions
+struct GraphModule : public ChigModule {
 	
-	/// Construct a JsonModule
+	/// Construct a GraphModule
 	/// \param cont The context
 	/// \param fullName The full name of the module
 	/// \param dependencies The dependencies
-	JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies);
+	GraphModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies);
 
 	// No copy or move -- pointer only
-	JsonModule(const JsonModule&) = delete;
-	JsonModule(JsonModule&&)      = delete;
-	JsonModule& operator=(const JsonModule&) = delete;
-	JsonModule& operator=(JsonModule&&) = delete;
+	GraphModule(const GraphModule&) = delete;
+	GraphModule(GraphModule&&)      = delete;
+	GraphModule& operator=(const GraphModule&) = delete;
+	GraphModule& operator=(GraphModule&&) = delete;
 
 	// ChigModule interface
 	///////////////////////
@@ -93,6 +93,6 @@ struct JsonModule : public ChigModule {
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
 };
-}
+} // namespace chig
 
-#endif  // CHIG_JSON_MODULE_HPP
+#endif  // CHIG_GRAPH_MODULE_HPP

@@ -29,7 +29,7 @@ struct GraphFunction {
 	/// \param dataOuts The data outputs of the function
 	/// \param execIns The exec inputs to the function
 	/// \param execOuts The exec outputs to the function
-	GraphFunction(JsonModule& mod, gsl::cstring_span<>          name,
+	GraphFunction(GraphModule& mod, gsl::cstring_span<>          name,
 	              std::vector<std::pair<DataType, std::string>> dataIns,
 	              std::vector<std::pair<DataType, std::string>> dataOuts,
 	              std::vector<std::string> execIns, std::vector<std::string> execOuts);
@@ -223,15 +223,15 @@ struct GraphFunction {
 	/// Get the name of the function
 	/// \return The name of the function
 	std::string name() const { return mName; }
-	/// Get the JsonModule that contains this GraphFunction
-	/// \return The JsonModule.
-	JsonModule& module() const { return *mModule; }
+	/// Get the GraphModule that contains this GraphFunction
+	/// \return The GraphModule.
+	GraphModule& module() const { return *mModule; }
 
 private:
 	void updateEntries();  // update the entry node to work with
 	void updateExits();
 
-	JsonModule* mModule;
+	GraphModule* mModule;
 	Context*    mContext;
 	std::string mName;  /// the name of the function
 

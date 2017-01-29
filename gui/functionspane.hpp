@@ -5,7 +5,7 @@
 
 #include <QListWidget>
 
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 
 class MainWindow;
 
@@ -16,7 +16,7 @@ public:
 
 public slots:
 
-	void updateModule(chig::JsonModule* mod);
+	void updateModule(chig::GraphModule* mod);
 
 private slots:
 

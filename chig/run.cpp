@@ -5,7 +5,7 @@
 #include <chig/CModule.hpp>
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
-#include <chig/JsonModule.hpp>
+#include <chig/GraphModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/NodeType.hpp>
 #include <chig/Result.hpp>
@@ -55,7 +55,7 @@ int run(const std::vector<std::string>& opts) {
 	Context c{fs::current_path()};
 
 	// load module
-	JsonModule* jmod = nullptr;
+	GraphModule* jmod = nullptr;
 
 	Result res;
 
@@ -75,7 +75,7 @@ int run(const std::vector<std::string>& opts) {
 		ChigModule* cMod;
 		res += c.loadModule(moduleName.string(), &cMod);
 
-		jmod = dynamic_cast<JsonModule*>(cMod);
+		jmod = dynamic_cast<GraphModule*>(cMod);
 	}
 
 	if (!res) {

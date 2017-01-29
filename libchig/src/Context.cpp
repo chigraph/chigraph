@@ -1,7 +1,7 @@
 /// \file Context.cpp
 
 #include "chig/GraphFunction.hpp"
-#include "chig/JsonModule.hpp"
+#include "chig/GraphModule.hpp"
 #include "chig/LangModule.hpp"
 #include "chig/JsonDeserializer.hpp"
 
@@ -48,12 +48,12 @@ ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const 
 	return nullptr;
 }
 
-JsonModule* Context::newJsonModule(gsl::cstring_span<> fullName) {
+GraphModule* Context::newGraphModule(gsl::cstring_span<> fullName) {
 	// create the module
-	JsonModule* mod = nullptr;
+	GraphModule* mod = nullptr;
 	{
 		auto uMod =
-		    std::make_unique<JsonModule>(*this, gsl::to_string(fullName), gsl::span<std::string>());
+		    std::make_unique<GraphModule>(*this, gsl::to_string(fullName), gsl::span<std::string>());
 
 		mod = uMod.get();
 		addModule(std::move(uMod));
@@ -126,7 +126,7 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 		inFile >> readJson;
 	}
 
-	JsonModule* toFillJson = nullptr;
+	GraphModule* toFillJson = nullptr;
 	res += addModuleFromJson(name, readJson, &toFillJson);
 	if (toFill != nullptr) { *toFill = toFillJson; }
 
@@ -134,7 +134,7 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 }
 
 Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json,
-                                  JsonModule** toFill) {
+                                  GraphModule** toFill) {
 	Result res;
 
 	// make sure it's not already added
@@ -142,7 +142,7 @@ Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::
 		auto mod = moduleByFullName(fullName);
 		if (mod != nullptr) {
 			if (toFill != nullptr) {
-				auto casted = dynamic_cast<JsonModule*>(mod);
+				auto casted = dynamic_cast<GraphModule*>(mod);
 				if (casted != nullptr) { *toFill = casted; }
 			}
 			return {};
@@ -150,8 +150,8 @@ Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::
 	}
 
 	// Create the module
-	JsonModule* jMod = nullptr;
-	res += deserializeJsonModule(*this, json, fullName, &jMod);
+	GraphModule* jMod = nullptr;
+	res += jsonToGraphModule(*this, json, fullName, &jMod);
 	if (toFill != nullptr) {
 		*toFill = jMod;
 	}
