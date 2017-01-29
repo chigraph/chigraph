@@ -62,7 +62,7 @@ target_link_libraries(chigcore PUBLIC ${LLVM_LIBRARIES})
 
 execute_process(COMMAND ${LLVM_CONFIG} --system-libs OUTPUT_VARIABLE LLVM_SYSTEM_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "LLVM system libraries: ${LLVM_SYSTEM_LIBS}")
-target_link_libraries(chigcore PUBLIC ${LLVM_SYSTEM_LIBS})
+target_link_libraries(chigcore PUBLIC ${LLVM_SYSTEM_LIBS} ffi)
 
 target_compile_definitions(chigcore PUBLIC 
   -D_GNU_SOURCE 
