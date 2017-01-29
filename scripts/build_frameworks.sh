@@ -8,25 +8,30 @@ cd $SCRIPTSDIR/..
 kf5dir=$SCRIPTSDIR/../third_party/kf5
 mkdir -p $kf5dir/build
 
+version=5.30.0
+sversion=${version:0:4}
+
 flags=$@
 
 build_framework() {
     framework=$1
     
     cd $kf5dir/build
-    
-    git clone https://anongit.kde.org/$framework --depth 1
-    mkdir -p $framework/build
-    cd $framework/build
+
+    foldername=$framework-$version
+
+    wget http://download.kde.org/stable/frameworks/$sversion/$foldername.tar.xz
+    tar xf $foldername.tar.xz
+    mkdir -p $foldername/build
+    cd $foldername/build
     
     cmake .. -DCMAKE_PREFIX_PATH=$kf5dir -DCMAKE_INSTALL_PREFIX=$kf5dir $flags 
     cmake --build .
     cmake --build . --target install
 }
-cd /tmp
 
 build_helper() {
-    ( (build_framework $1)  &> kf5.log) || cat kf5.log
+    ( (build_framework $1)  &> kf5.log) || (cat kf5.log && exits)
 }
 
 build_helper extra-cmake-modules
