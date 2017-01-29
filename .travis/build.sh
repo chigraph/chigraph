@@ -14,13 +14,13 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
 	fi 
 
-	cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE \ 
-		-DCMAKE_CXX_COMPILER=$CXX_COMPILER \ 
-		-DCMAKE_C_COMPILER=$C_COMPILER \ 
-		-DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config \ 
-		-DCLANG_EXE=`which clang-${LLVM_VERSION}` \ 
-		-DLLI_EXE=`which lli-${LLVM_VERSION}` \ 
-		-GNinja $covflags \ 
+	cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+		-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
+		-DCMAKE_C_COMPILER=$C_COMPILER \
+		-DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config \
+		-DCLANG_EXE=`which clang-${LLVM_VERSION}` \
+		-DLLI_EXE=`which lli-${LLVM_VERSION}` \
+		-GNinja $covflags \
 
 	ninja
 	CTEST_OUTPUT_ON_FAILURE=1 ninja test
