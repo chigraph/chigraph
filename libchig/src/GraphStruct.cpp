@@ -4,6 +4,7 @@
 
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/DebugInfoMetadata.h>
+#include <llvm/IR/DIBuilder.h>
 
 namespace chig {
 
@@ -54,8 +55,13 @@ DataType GraphStruct::dataType() const {
 	}
 	auto llType = llvm::StructType::create(types, name());
 	
+	
 	// create debug type
-	llvm::DICompositeType::get(context().llvmContext(), llvm::dwarf::DW_TAG_structure_type, name(), nullptr, 0, llvm::DIScopeRef::get(llvm::getNonCompileUnitScope(Context)), nullptr, )
+	llvm::DIBuilder dbuilder;
+	
+	for(const auto& type : types()) {
+		dbuilder.createMemberType(nullptr, name(), nullptr, 0, type.debugType()->getSizeInBits(), )
+	}
 	
 }
 
