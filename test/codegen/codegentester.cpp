@@ -5,6 +5,7 @@
 #include <chig/JsonModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/NodeType.hpp>
+#include <chig/JsonSerializer.hpp>
 #include <chig/Result.hpp>
 
 #include <process.hpp>
@@ -281,8 +282,7 @@ int main(int argc, char** argv) {
 			deserialized = dynamic_cast<JsonModule*>(cMod);
 		}
 
-		nlohmann::json serializedmodule;
-		r += deserialized->toJSON(&serializedmodule);
+		nlohmann::json serializedmodule = jsonModuleToJson(*deserialized);
 
 		if (!r) {
 			std::cerr << "Error deserializing module: \n\n" << r << std::endl;

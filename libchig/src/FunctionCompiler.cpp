@@ -6,6 +6,7 @@
 #include "chig/GraphFunction.hpp"
 #include "chig/JsonModule.hpp"
 #include "chig/NameMangler.hpp"
+#include "chig/NodeInstance.hpp"
 
 #include <boost/bimap.hpp>
 #include <boost/dynamic_bitset.hpp>

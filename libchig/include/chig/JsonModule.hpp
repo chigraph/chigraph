@@ -15,14 +15,8 @@
 namespace chig {
 /// Module that holds JSON code
 struct JsonModule : public ChigModule {
-	/// Constructor for a json module
-	/// \param fullName Full path for the module
-	/// \param json_data The JSON
-	/// \param cont The context
-	/// \param res The result to fill if there are errors
-	JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data, Result* res);
-
-	/// Construct a JsonModule from scratch, no json
+	
+	/// Construct a JsonModule
 	/// \param cont The context
 	/// \param fullName The full name of the module
 	/// \param dependencies The dependencies
@@ -52,14 +46,6 @@ struct JsonModule : public ChigModule {
 	/// Create the associations from line number and function in debug info
 	/// \return A bimap of function to line number
 	boost::bimap<unsigned, NodeInstance*> createLineNumberAssoc() const;
-
-	/// Load the graphs (usually called by Context::addModule)
-	Result loadGraphs();
-
-	/// Serialize to JSON
-	/// \param to_fill The JSON to fill
-	/// \return The Result
-	Result toJSON(nlohmann::json* to_fill) const;
 
 	/// Serialize to disk in the context
 	/// \return The Result

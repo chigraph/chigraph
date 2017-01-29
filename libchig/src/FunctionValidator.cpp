@@ -2,6 +2,7 @@
 
 #include "chig/FunctionValidator.hpp"
 #include "chig/GraphFunction.hpp"
+#include "chig/NodeInstance.hpp"
 
 #include <unordered_map>
 
@@ -19,7 +20,7 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 	Result res;
 	// make sure all connections connect back
 
-	for (const auto& node : func.graph().nodes()) {
+	for (const auto& node : func.nodes()) {
 		// go through input data
 		auto id = 0ull;
 		for (const auto& conn : node.second->inputDataConnections) {

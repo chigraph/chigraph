@@ -7,7 +7,16 @@
 
 #pragma once
 
-#include "chig/Graph.hpp"
+#include "chig/Fwd.hpp"
+#include "chig/json.hpp"
+
+#include <gsl/gsl>
+
+#include <unordered_map>
+
+#include <llvm/IR/DerivedTypes.h> // for FunctionType
+
+#include <boost/optional.hpp>
 
 namespace chig {
 /// this is an AST-like representation of a function in a graph
@@ -25,24 +34,22 @@ struct GraphFunction {
 	              std::vector<std::pair<DataType, std::string>> dataOuts,
 	              std::vector<std::string> execIns, std::vector<std::string> execOuts);
 
-	/// Constructs a GraphFunction from a JOSN object
-	/// \param data The JSON object to read from
-	/// \param module The module to create the GraphFunction with
-	/// \param res The result
-	GraphFunction(JsonModule& module, const nlohmann::json& data, Result& res);
-
 	/// Destructor
 	~GraphFunction();
-
-	/// Serialize the GraphFunction to JSON (usually called from JsonModule::toJson)
-	/// \param toFill The JSON object representing the graph
-	/// \return The result
-	Result toJSON(nlohmann::json* toFill) const;
 
 	/// \name Node Manipulation
 	/// Functions for mainpulating nodes; getting, adding
 	/// \{
 
+	/// Get the nodes in the function
+	/// Usually called by connectData or connectExec or GraphFunction
+	/// \return The nodes, mapped by id, value
+	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() { return mNodes; }
+	/// \copydoc Graph::nodes
+	const std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() const {
+		return mNodes;
+	}
+	
 	/// Gets the node with type lang:entry
 	/// returns nullptr on failure
 	/// Also returns nullptr if there are two entry nodes, which is illegal
@@ -57,9 +64,16 @@ struct GraphFunction {
 	/// \param toFill The nodeInstance to fill to, optional.
 	/// \return The result
 	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
-	                  NodeInstance** toFill = nullptr) {
-		return graph().insertNode(std::move(type), x, y, id, toFill);
-	}
+	                  NodeInstance** toFill = nullptr);
+	
+	
+	/// Gets the nodes with a given type
+	/// \param module The module the type is in
+	/// \param name The name of the type
+	/// \return A vector of NodeInstance
+	std::vector<NodeInstance*> nodesWithType(gsl::cstring_span<> module,
+	                                         gsl::cstring_span<> name) const noexcept;
+
 
 	/// Add a node to the graph using module, type, and json
 	/// \param moduleName The name of the module that typeName is in
@@ -105,11 +119,6 @@ struct GraphFunction {
 	/// Get the LLVM function type for the function
 	/// \return The function type
 	llvm::FunctionType* functionType() const;
-
-	/// Load the graph from the source json
-	/// This is called from Context::loadModuleFromJson
-	/// \return The result
-	Result loadGraph();
 
 	// TODO: check uses and replace to avoid errors
 	/// \name Data input modifiers
@@ -214,11 +223,6 @@ struct GraphFunction {
 	/// Get the name of the function
 	/// \return The name of the function
 	std::string name() const { return mName; }
-	/// Get the graph
-	/// \return The graph
-	const Graph& graph() const { return mGraph; }
-	/// \copydoc chig::GraphFunction::graph() const
-	Graph& graph() { return mGraph; }
 	/// Get the JsonModule that contains this GraphFunction
 	/// \return The JsonModule.
 	JsonModule& module() const { return *mModule; }
@@ -236,9 +240,11 @@ private:
 
 	std::vector<std::string> mExecInputs;
 	std::vector<std::string> mExecOutputs;
+	
+	
+	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>
+	    mNodes;  /// Storage for the nodes
 
-	nlohmann::json mSource = {};
-	Graph          mGraph;
 };
 
 /// Parse a colonated pair

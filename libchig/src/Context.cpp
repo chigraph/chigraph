@@ -3,6 +3,7 @@
 #include "chig/GraphFunction.hpp"
 #include "chig/JsonModule.hpp"
 #include "chig/LangModule.hpp"
+#include "chig/JsonDeserializer.hpp"
 
 #include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/IR/Verifier.h>
@@ -56,12 +57,6 @@ JsonModule* Context::newJsonModule(gsl::cstring_span<> fullName) {
 
 		mod = uMod.get();
 		addModule(std::move(uMod));
-	}
-
-	// if we have a workspace bound, then serialize
-	if (hasWorkspace()) {
-		Result r = mod->saveToDisk();
-		Expects(r.success);  // It's default constructed, so it really shoudln't fail.
 	}
 
 	return mod;
@@ -155,24 +150,16 @@ Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::
 	}
 
 	// Create the module
-	JsonModule* cPtr = nullptr;
-	{
-		// parse module
-		auto jmod = std::make_unique<JsonModule>(*this, gsl::to_string(fullName), json, &res);
-		if (!res) { return res; }
-		if (toFill != nullptr) { *toFill = jmod.get(); }
-
-		cPtr       = jmod.get();
-		bool added = addModule(std::move(jmod));
-		Expects(added);  // it really should be added
+	JsonModule* jMod = nullptr;
+	res += deserializeJsonModule(*this, json, fullName, &jMod);
+	if (toFill != nullptr) {
+		*toFill = jMod;
 	}
-
-	// load graphs
-	res += cPtr->loadGraphs();
+	
 	
 	// if we failed, remove the module
 	if (!res) {
-		unloadModule(cPtr->fullName());
+		unloadModule(jMod->fullName());
 	}
 
 	return res;

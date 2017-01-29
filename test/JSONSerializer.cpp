@@ -4,6 +4,7 @@
 #include <chig/GraphFunction.hpp>
 #include <chig/JsonModule.hpp>
 #include <chig/LangModule.hpp>
+#include <chig/JsonSerializer.hpp>
 #include <chig/NodeInstance.hpp>
 
 using namespace chig;
@@ -28,11 +29,8 @@ TEST_CASE("JsonSerializer", "[json]") {
 		REQUIRE(func != nullptr);
 
 		auto requireWorks = [&](nlohmann::json expected) {
-			nlohmann::json ret;
+			nlohmann::json ret = graphFunctionToJson(*func);
 
-			res = func->toJSON(&ret);
-
-			REQUIRE(!!res);
 			REQUIRE(ret == expected);
 
 		};

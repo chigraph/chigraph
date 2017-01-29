@@ -7,6 +7,7 @@
 #include <chig/JsonModule.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/json.hpp>
+#include <chig/JsonDeserializer.hpp>
 
 using namespace chig;
 using namespace nlohmann;
@@ -45,18 +46,13 @@ int main(int argc, char** argv) {
 	Result  res;
 
 	if (strcmp(mode, "mod") == 0) {
-		auto        mod        = std::make_unique<JsonModule>(c, "main", newData, &res);
+		JsonModule* mod;
+		res += deserializeJsonModule(c, newData, "main", &mod);
 		std::string moduleName = mod->name();
 
 		int ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;
 
-		res += mod->loadGraphs();
-
-		ret = checkForErrors(res, expectedErr);
-		if (ret != 1) return ret;
-
-		c.addModule(std::move(mod));
 		std::unique_ptr<llvm::Module> llmod = nullptr;
 		res += c.compileModule(moduleName, &llmod);
 
@@ -67,17 +63,20 @@ int main(int argc, char** argv) {
 
 	} else if (strcmp(mode, "func") == 0) {
 		auto deps = std::vector<std::string>{"lang", "c"};
-		auto uMod = std::make_unique<JsonModule>(c, "main",
-		                                         gsl::span<std::string>(deps.data(), deps.size()));
-		auto modPtr = uMod.get();
-		c.addModule(std::move(uMod));
-		auto graphFunc = std::make_unique<GraphFunction>(*modPtr, newData, res);
+		
+		auto mod = c.newJsonModule("main");
+		for(const auto& dep : deps) {
+			mod->addDependency(dep);
+		}
+		
+		GraphFunction* func;
+		res += createGraphFunctionDeclarationFromJson(*mod, newData, &func);
 
 		int ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;
 
-		res += graphFunc->loadGraph();
-
+		res += deserializeGraphFunction(*func, newData);
+		
 		ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;
 

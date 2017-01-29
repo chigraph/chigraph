@@ -141,7 +141,27 @@
 					}
 				}
 			}
+		},
+		"types": {
+			"type": "object",
+			"description": "The custom structures this module defines",
+			"patternProperties": {
+				"*": {
+					"type": "array",
+					"description": "A custom data type",
+					"items": {
+						"type": "object",
+						"patternProperties": {
+							"*": {
+								"type": "string"
+							}
+						},
+						"maxProperties": 1,
+						"minProperties": 1
+					}
+				}
+			}
 		}
 	},
-	"required": ["graphs"]
+	"required": ["graphs", "dependencies"]
 }

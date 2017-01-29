@@ -5,6 +5,9 @@
 #include "chig/FunctionCompiler.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/NameMangler.hpp"
+#include "chig/NodeType.hpp"
+#include "chig/JsonSerializer.hpp"
+#include "chig/NodeInstance.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/Module.h>
@@ -88,58 +91,6 @@ struct JsonFuncCallNodeType : public NodeType {
 	JsonModule* JModule;
 };
 
-JsonModule::JsonModule(Context& cont, std::string fullName, const nlohmann::json& json_data,
-                       Result* res)
-    : ChigModule(cont, fullName) {
-	Expects(res != nullptr);
-
-	// load dependencies
-	{
-		auto iter = json_data.find("dependencies");
-		if (iter == json_data.end()) {
-			res->addEntry("E38", "No dependencies element in module", {});
-			return;
-		}
-		if (!iter->is_array()) {
-			res->addEntry("E39", "dependencies element isn't an array", {});
-			return;
-		}
-
-		for (const auto& dep : *iter) {
-			if (!dep.is_string()) {
-				res->addEntry("E40", "dependency isn't a string", {{"Actual Data", dep}});
-				continue;
-			}
-			*res += addDependency(dep);
-
-			if (!*res) { return; }
-		}
-	}
-
-	// load graphs
-	{
-		auto iter = json_data.find("graphs");
-		if (iter == json_data.end()) {
-			res->addEntry("E41", "no graphs element in module", {});
-			return;
-		}
-		if (!iter->is_array()) {
-			res->addEntry("E42", "graph element isn't an array", {{"Actual Data", *iter}});
-			return;
-		}
-		mFunctions.reserve(iter->size());
-		for (const auto& graph : *iter) {
-			auto newf = std::make_unique<GraphFunction>(*this, graph, *res);
-
-			if (!*res) { return; }
-
-			Expects(newf != nullptr);
-
-			mFunctions.push_back(std::move(newf));
-		}
-	}
-}
-
 JsonModule::JsonModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies)
     : ChigModule(cont, fullName) {
 	// load the dependencies from the context
@@ -170,26 +121,6 @@ Result JsonModule::generateModule(llvm::Module& module) {
 	return res;
 }
 
-Result JsonModule::toJSON(nlohmann::json* to_fill) const {
-	auto& ret = *to_fill;
-	ret       = nlohmann::json::object();
-
-	Result res = {};
-
-	ret["name"]         = name();
-	ret["dependencies"] = dependencies();
-
-	auto& graphsjson = ret["graphs"];
-	graphsjson       = nlohmann::json::array();
-	for (auto& graph : mFunctions) {
-		nlohmann::json to_fill = {};
-		res += graph->toJSON(&to_fill);
-		graphsjson.push_back(to_fill);
-	}
-
-	return res;
-}
-
 Result JsonModule::saveToDisk() const {
 	Result res;
 
@@ -212,10 +143,7 @@ Result JsonModule::saveToDisk() const {
 	}
 
 	// serialize
-	nlohmann::json toFill{};
-	res += toJSON(&toFill);
-
-	if (!res) { return res; }
+	nlohmann::json toFill = jsonModuleToJson(*this);
 
 	// save
 	fs::ofstream ostr(modulePath);
@@ -300,7 +228,7 @@ boost::bimap<unsigned int, NodeInstance*> JsonModule::createLineNumberAssoc() co
 	// create a sorted list of GraphFunctions
 	std::vector<NodeInstance*> nodes;
 	for (const auto& f : functions()) {
-		for (const auto& node : f->graph().nodes()) {
+		for (const auto& node : f->nodes()) {
 			Expects(node.second != nullptr);
 			nodes.push_back(node.second.get());
 		}
@@ -319,15 +247,5 @@ boost::bimap<unsigned int, NodeInstance*> JsonModule::createLineNumberAssoc() co
 	return ret;
 }
 
-Result JsonModule::loadGraphs() {
-	Result res = {};
-
-	for (auto& graph : mFunctions) {
-		Expects(graph != nullptr);
-		res += graph->loadGraph();
-	}
-
-	return res;
-}
 
 }  // namespace chig
