@@ -2,8 +2,8 @@
 
 #include "chig/GraphFunction.hpp"
 #include "chig/GraphModule.hpp"
-#include "chig/LangModule.hpp"
 #include "chig/JsonDeserializer.hpp"
+#include "chig/LangModule.hpp"
 
 #include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/IR/Verifier.h>
@@ -52,8 +52,8 @@ GraphModule* Context::newGraphModule(gsl::cstring_span<> fullName) {
 	// create the module
 	GraphModule* mod = nullptr;
 	{
-		auto uMod =
-		    std::make_unique<GraphModule>(*this, gsl::to_string(fullName), gsl::span<std::string>());
+		auto uMod = std::make_unique<GraphModule>(*this, gsl::to_string(fullName),
+		                                          gsl::span<std::string>());
 
 		mod = uMod.get();
 		addModule(std::move(uMod));
@@ -152,15 +152,10 @@ Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::
 	// Create the module
 	GraphModule* jMod = nullptr;
 	res += jsonToGraphModule(*this, json, fullName, &jMod);
-	if (toFill != nullptr) {
-		*toFill = jMod;
-	}
-	
-	
+	if (toFill != nullptr) { *toFill = jMod; }
+
 	// if we failed, remove the module
-	if (!res) {
-		unloadModule(jMod->fullName());
-	}
+	if (!res) { unloadModule(jMod->fullName()); }
 
 	return res;
 }
@@ -180,18 +175,16 @@ bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept {
 }
 
 bool Context::unloadModule(gsl::cstring_span<> fullName) {
-	
 	// find the module, and if we see it then delete it
-	for(auto idx = 0ull; idx < mModules.size(); ++idx) {
-		if(mModules[idx]->fullName() == fullName) {
+	for (auto idx = 0ull; idx < mModules.size(); ++idx) {
+		if (mModules[idx]->fullName() == fullName) {
 			mModules.erase(mModules.begin() + idx);
 			return true;
 		}
 	}
-	
+
 	// if we get here it wasn't removed
 	return false;
-	
 }
 
 Result Context::typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,

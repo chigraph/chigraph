@@ -1,21 +1,19 @@
 /// \file chig/GraphModule.hpp
 /// Defines the GraphModule class
 
-
 #ifndef CHIG_GRAPH_MODULE_HPP
 #define CHIG_GRAPH_MODULE_HPP
 
 #pragma once
 
-#include "chig/DataType.hpp"
 #include "chig/Context.hpp"
+#include "chig/DataType.hpp"
 
 #include <boost/bimap.hpp>
 
 namespace chig {
 /// Module that holds graph functions
 struct GraphModule : public ChigModule {
-	
 	/// Construct a GraphModule
 	/// \param cont The context
 	/// \param fullName The full name of the module
@@ -93,6 +91,6 @@ struct GraphModule : public ChigModule {
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
 };
-} // namespace chig
+}  // namespace chig
 
 #endif  // CHIG_GRAPH_MODULE_HPP

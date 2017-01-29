@@ -16,7 +16,7 @@
 #include <boost/range/join.hpp>
 
 namespace chig {
-GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<>          name,
+GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<>         name,
                              std::vector<std::pair<DataType, std::string>> dataIns,
                              std::vector<std::pair<DataType, std::string>> dataOuts,
                              std::vector<std::string> execIns, std::vector<std::string> execOuts)
@@ -31,7 +31,6 @@ GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<>          name
 }
 
 GraphFunction::~GraphFunction() = default;
-
 
 NodeInstance* GraphFunction::entryNode() const noexcept {
 	auto matching = nodesWithType("lang", "entry");
@@ -52,29 +51,28 @@ NodeInstance* GraphFunction::entryNode() const noexcept {
 	return nullptr;
 }
 
-Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
-	                  NodeInstance** toFill) {
-		Result res;
+Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y,
+                                 gsl::cstring_span<> id, NodeInstance** toFill) {
+	Result res;
 
-		// make sure the ID doesn't exist
-		if (nodes().find(gsl::to_string(id)) != nodes().end()) {
-			res.addEntry("EUKN", "Cannot have two nodes with the same ID",
-						{{"Requested ID", gsl::to_string(id)}});
-			return res;
-		}
-
-		auto ptr = std::make_unique<NodeInstance>(this, std::move(type), x, y, id);
-
-		auto emplaced = mNodes.emplace(gsl::to_string(id), std::move(ptr)).first;
-
-		if (toFill != nullptr) { *toFill = emplaced->second.get(); }
-
+	// make sure the ID doesn't exist
+	if (nodes().find(gsl::to_string(id)) != nodes().end()) {
+		res.addEntry("EUKN", "Cannot have two nodes with the same ID",
+		             {{"Requested ID", gsl::to_string(id)}});
 		return res;
 	}
 
+	auto ptr = std::make_unique<NodeInstance>(this, std::move(type), x, y, id);
+
+	auto emplaced = mNodes.emplace(gsl::to_string(id), std::move(ptr)).first;
+
+	if (toFill != nullptr) { *toFill = emplaced->second.get(); }
+
+	return res;
+}
 
 std::vector<NodeInstance*> GraphFunction::nodesWithType(gsl::cstring_span<> module,
-                                                gsl::cstring_span<> name) const noexcept {
+                                                        gsl::cstring_span<> name) const noexcept {
 	auto typeFinder = [&](auto& pair) {
 		return pair.second->type().module().name() == module && pair.second->type().name() == name;
 	};

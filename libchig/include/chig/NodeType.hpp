@@ -1,7 +1,6 @@
 /// \file chig/NodeType.hpp
 /// Defines the NodeType class
 
-
 #ifndef CHIG_NODE_TYPE_HPP
 #define CHIG_NODE_TYPE_HPP
 
@@ -24,8 +23,8 @@ namespace chig {
 struct NodeType {
 private:
 	friend NodeInstance;
+
 public:
-    
 	/// Constructor
 	/// \param mod The module to create the NodeType in
 	/// \param name The name of the NodeType

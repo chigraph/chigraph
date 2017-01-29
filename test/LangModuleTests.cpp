@@ -1,8 +1,8 @@
 #include <catch.hpp>
 
 #include <chig/Context.hpp>
-#include <chig/LangModule.hpp>
 #include <chig/DataType.hpp>
+#include <chig/LangModule.hpp>
 #include <chig/NodeType.hpp>
 
 using namespace chig;
@@ -39,7 +39,6 @@ TEST_CASE("LangModule", "[module]") {
 			res = c.typeFromModule("lang", "double", &test);
 			REQUIRE(!!res);
 			REQUIRE(test == DataType(mod, "double", llvm::Type::getDoubleTy(c.llvmContext())));
-
 		}
 
 		THEN(

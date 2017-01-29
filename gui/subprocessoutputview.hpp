@@ -15,13 +15,13 @@ public:
 	void cancelProcess();
 
 	chig::GraphModule* module() const { return mModule; }
-	bool              running() const { return mProcess != nullptr && mProcess->state() == QProcess::Running; }
+	bool running() const { return mProcess != nullptr && mProcess->state() == QProcess::Running; }
 signals:
 	void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
 	chig::GraphModule* mModule;
-	QProcess*         mProcess = nullptr;
+	QProcess*          mProcess = nullptr;
 };
 
 #endif  // CHIGGUI_SUBPROCESS_OUTPUT_VIEW_HPP

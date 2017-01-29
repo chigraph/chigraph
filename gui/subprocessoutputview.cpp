@@ -55,4 +55,6 @@ SubprocessOutputView::SubprocessOutputView(chig::GraphModule* module) : mModule(
 	        &SubprocessOutputView::processFinished);
 }
 
-void SubprocessOutputView::cancelProcess() { if(mProcess != nullptr) { mProcess->kill(); } }
+void SubprocessOutputView::cancelProcess() {
+	if (mProcess != nullptr) { mProcess->kill(); }
+}

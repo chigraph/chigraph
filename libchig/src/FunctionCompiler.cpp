@@ -1,6 +1,5 @@
 /// \file FunctionCompiler.cpp
 
-
 #include "chig/FunctionCompiler.hpp"
 #include "chig/FunctionValidator.hpp"
 #include "chig/GraphFunction.hpp"
@@ -36,7 +35,6 @@ struct codegenMetadata {
 	std::unordered_map<NodeInstance*, Cache> nodeCache;
 	boost::bimap<unsigned, NodeInstance*>    nodeLocations;
 };
-
 
 /// \return The output connections that need codegen and the output blocks
 std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
@@ -251,10 +249,8 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	std::tie(needsCodegen, outputBlocks) =
 	    codegenNode(node, nullptr, nullptr, execInputID, block, data, res);
 
-	if(!res) {
-		return;
-	}
-		
+	if (!res) { return; }
+
 	// recurse!
 	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
 		auto& output = node->outputExecConnections[idx];
@@ -264,7 +260,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	}
 }
 
-} // anon namespace
+}  // anon namespace
 
 Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
                        llvm::DIBuilder& debugBuilder) {

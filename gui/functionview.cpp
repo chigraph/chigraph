@@ -33,7 +33,6 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	// create the registry
 	//////////////////////
 
-	
 	mScene = new FlowScene(createRegistry());
 
 	mView = new FlowView(mScene);
@@ -293,9 +292,7 @@ void FunctionView::refreshGuiForNode(Node* node) {
 	}
 }
 
-void FunctionView::refreshRegistry() {
-	mScene->setRegistry(createRegistry());
-}
+void FunctionView::refreshRegistry() { mScene->setRegistry(createRegistry()); }
 
 Node* FunctionView::guiNodeFromChigNode(chig::NodeInstance* inst) {
 	auto iter = mNodeMap.find(inst);
@@ -328,7 +325,7 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 
 			auto name = ty->qualifiedName();  // cache the name because ty is moved from
 			reg->registerModel(std::make_unique<ChigraphNodeModel>(
-				new chig::NodeInstance(mFunction, std::move(ty), 0, 0, name),
+			    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, name),
 			    this));  // TODO: this is a memory leak
 		}
 	}
@@ -338,7 +335,7 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 	mFunction->createExitNodeType(&ty);
 
 	reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "lang:exit"), this));
+	    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "lang:exit"), this));
 
 	return reg;
 }

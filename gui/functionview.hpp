@@ -27,7 +27,7 @@ public:
 
 	// refresh I/O for the node
 	void refreshGuiForNode(Node* node);
-	
+
 	void refreshRegistry();
 
 	chig::GraphFunction* function() const { return mFunction; }
@@ -51,7 +51,7 @@ private:
 	// this contains absolute port ids
 	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
 	    conns;
-		
+
 	std::shared_ptr<DataModelRegistry> createRegistry();
 };
 

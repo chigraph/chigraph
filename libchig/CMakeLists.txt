@@ -19,6 +19,7 @@ set(CHIG_PUBLIC_FILES
     include/chig/FunctionCompiler.hpp
     include/chig/JsonDeserializer.hpp
     include/chig/JsonSerializer.hpp
+    include/chig/StructType.hpp
 )
 
 set(CHIG_PRIVATE_FILES
@@ -35,6 +36,7 @@ set(CHIG_PRIVATE_FILES
 	src/FunctionCompiler.cpp
 	src/JsonDeserializer.cpp
 	src/JsonSerializer.cpp
+	src/StructType.cpp
 )
 
 

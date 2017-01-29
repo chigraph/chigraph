@@ -101,14 +101,12 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	docker->setWidget(mModuleDeps);
 	addDockWidget(Qt::RightDockWidgetArea, docker);
 	connect(this, &MainWindow::moduleOpened, mModuleDeps, &ModuleDependencies::setModule);
-	connect(mModuleDeps, &ModuleDependencies::dependencyAdded, this, [this]{
+	connect(mModuleDeps, &ModuleDependencies::dependencyAdded, this, [this] {
 		auto count = mFunctionTabs->count();
-		for(auto idx = 0; idx < count; ++idx) {
+		for (auto idx = 0; idx < count; ++idx) {
 			auto view = dynamic_cast<FunctionView*>(mFunctionTabs->widget(idx));
-			
-			if(view) {
-				view->refreshRegistry();
-			}
+
+			if (view) { view->refreshRegistry(); }
 		}
 	});
 
@@ -224,8 +222,8 @@ void MainWindow::save() {
 }
 
 void MainWindow::openWorkspaceDialog() {
-	QString workspace = QFileDialog::getExistingDirectory(
-	    this, i18n("Chigraph Workspace"), QDir::homePath(), {});
+	QString workspace =
+	    QFileDialog::getExistingDirectory(this, i18n("Chigraph Workspace"), QDir::homePath(), {});
 
 	if (workspace == "") { return; }
 

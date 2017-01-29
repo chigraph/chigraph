@@ -5,9 +5,9 @@
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
 #include <chig/GraphModule.hpp>
+#include <chig/JsonDeserializer.hpp>
 #include <chig/LangModule.hpp>
 #include <chig/json.hpp>
-#include <chig/JsonDeserializer.hpp>
 
 using namespace chig;
 using namespace nlohmann;
@@ -63,12 +63,10 @@ int main(int argc, char** argv) {
 
 	} else if (strcmp(mode, "func") == 0) {
 		auto deps = std::vector<std::string>{"lang", "c"};
-		
+
 		auto mod = c.newGraphModule("main");
-		for(const auto& dep : deps) {
-			mod->addDependency(dep);
-		}
-		
+		for (const auto& dep : deps) { mod->addDependency(dep); }
+
 		GraphFunction* func;
 		res += createGraphFunctionDeclarationFromJson(*mod, newData, &func);
 
@@ -76,7 +74,7 @@ int main(int argc, char** argv) {
 		if (ret != 1) return ret;
 
 		res += jsonToGraphFunction(*func, newData);
-		
+
 		ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;
 
