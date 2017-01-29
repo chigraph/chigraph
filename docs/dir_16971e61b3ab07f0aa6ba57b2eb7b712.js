@@ -9,11 +9,12 @@ var dir_16971e61b3ab07f0aa6ba57b2eb7b712 =
     [ "FunctionCompiler.hpp", "FunctionCompiler_8hpp.html", "FunctionCompiler_8hpp" ],
     [ "FunctionValidator.hpp", "FunctionValidator_8hpp.html", "FunctionValidator_8hpp" ],
     [ "Fwd.hpp", "Fwd_8hpp.html", null ],
-    [ "Graph.hpp", "Graph_8hpp.html", "Graph_8hpp" ],
     [ "GraphFunction.hpp", "GraphFunction_8hpp.html", "GraphFunction_8hpp" ],
-    [ "JsonModule.hpp", "JsonModule_8hpp.html", [
-      [ "JsonModule", "structchig_1_1JsonModule.html", "structchig_1_1JsonModule" ]
+    [ "GraphModule.hpp", "GraphModule_8hpp.html", [
+      [ "GraphModule", "structchig_1_1GraphModule.html", "structchig_1_1GraphModule" ]
     ] ],
+    [ "JsonDeserializer.hpp", "JsonDeserializer_8hpp_source.html", null ],
+    [ "JsonSerializer.hpp", "JsonSerializer_8hpp_source.html", null ],
     [ "LangModule.hpp", "LangModule_8hpp.html", [
       [ "LangModule", "structchig_1_1LangModule.html", "structchig_1_1LangModule" ]
     ] ],
@@ -23,5 +24,6 @@ var dir_16971e61b3ab07f0aa6ba57b2eb7b712 =
       [ "NodeType", "structchig_1_1NodeType.html", "structchig_1_1NodeType" ]
     ] ],
     [ "Result.hpp", "Result_8hpp.html", "Result_8hpp" ],
+    [ "StructType.hpp", "StructType_8hpp_source.html", null ],
     [ "ToString.hpp", "ToString_8hpp_source.html", null ]
 ];

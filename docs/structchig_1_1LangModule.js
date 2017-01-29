@@ -4,7 +4,6 @@ var structchig_1_1LangModule =
     [ "~LangModule", "structchig_1_1LangModule.html#a097f06eb0ba03f27fa3c8cab690c8bea", null ],
     [ "addDependency", "structchig_1_1LangModule.html#acec829296a8677186fcd6f0beae3d3a1", null ],
     [ "context", "structchig_1_1LangModule.html#aad81aae17452ddc5fc43809924236385", null ],
-    [ "debugTypeFromName", "structchig_1_1LangModule.html#ac88b0a2158bd0236ab53608cac64cb92", null ],
     [ "dependencies", "structchig_1_1LangModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40", null ],
     [ "fullName", "structchig_1_1LangModule.html#ad730121a133fbc474fcb71d49f31f7b3", null ],
     [ "generateModule", "structchig_1_1LangModule.html#adf8c5c75b170ca07f9b0cf6c7b6e34ff", null ],

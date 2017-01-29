@@ -92,8 +92,9 @@ $(document).ready(function(){initNavTree('FunctionCompiler_8cpp.html','');});
 <div class="textblock"><code>#include &quot;<a class="el" href="FunctionCompiler_8hpp_source.html">chig/FunctionCompiler.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="FunctionValidator_8hpp_source.html">chig/FunctionValidator.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="GraphFunction_8hpp_source.html">chig/GraphFunction.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="JsonModule_8hpp_source.html">chig/JsonModule.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="GraphModule_8hpp_source.html">chig/GraphModule.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="NameMangler_8hpp_source.html">chig/NameMangler.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="NodeInstance_8hpp_source.html">chig/NodeInstance.hpp</a>&quot;</code><br />
 <code>#include &lt;boost/bimap.hpp&gt;</code><br />
 <code>#include &lt;boost/dynamic_bitset.hpp&gt;</code><br />
 <code>#include &lt;boost/range/join.hpp&gt;</code><br />
@@ -119,7 +120,7 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4f26546c4bc76c31cc822d0365be0f30"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30">chig::compileFunction</a> (const GraphFunction &amp;func, llvm::Module *mod, llvm::DICompileUnit *debugCU, llvm::DIBuilder &amp;debugBuilder)</td></tr>
-<tr class="memdesc:a4f26546c4bc76c31cc822d0365be0f30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile the graph to an <code>llvm::Function</code> (usually called from <a class="el" href="structchig_1_1JsonModule.html#a073e960b2d6f07ffaa983a61f8b0f635" title="Generate a llvm::Module from the module. ">JsonModule::generateModule</a>)  <a href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30">More...</a><br /></td></tr>
+<tr class="memdesc:a4f26546c4bc76c31cc822d0365be0f30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile the graph to an <code>llvm::Function</code> (usually called from JsonModule::generateModule)  <a href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30">More...</a><br /></td></tr>
 <tr class="separator:a4f26546c4bc76c31cc822d0365be0f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -128,7 +129,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="FunctionCompiler_8cpp.html">FunctionCompiler.cpp</a></li>
-    <li class="footer">Generated on Thu Jan 26 2017 19:42:53 for chigraph by
+    <li class="footer">Generated on Sun Jan 29 2017 10:33:30 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>
