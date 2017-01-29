@@ -9,6 +9,7 @@ struct ChigModule;
 struct Context;
 struct DataType;
 struct GraphFunction;
+struct GraphStruct;
 struct Graph;
 struct GraphModule;
 struct LangModule;

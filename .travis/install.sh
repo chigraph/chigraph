@@ -8,7 +8,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	sudo apt-get install qt${QT_VERSION:0:2}base qt${QT_VERSION:0:2}script qt${QT_VERSION:0:2}declarative qt${QT_VERSION:0:2}tools qt${QT_VERSION:0:2}x11extras qt${QT_VERSION:0:2}svg  ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils gcc-5 gcc-6 g++-5 g++-6 build-essential clang-3.7 clang-3.8 clang-3.9 llvm-${LLVM_VERSION}-dev python-pip
 		
 	
-	source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh
+	#source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh
 	
 	export QTDIR=/opt/qt${QT_VERSION:0:2}
 	export PATH=$QTDIR/bin:$PATH

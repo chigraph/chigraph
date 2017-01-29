@@ -9,6 +9,9 @@
 #include <gsl/gsl>
 
 namespace chig {
+	
+/// \name Json Serialization/Deserialization
+/// \{
 
 /// Load a GraphModule from json
 /// \param createInside The Context to create the module in
@@ -29,6 +32,13 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 /// \param createInside The GraphFunction to create the graph for
 /// \input The JSON to load
 Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& input);
+
+/// Parse something that looks like: {"hello": "there"} into {"hello", "there"}
+/// \param object The json object
+/// \return {"key", "value"}
+std::pair<std::string, std::string> parseObjectPair(const nlohmann::json& object);
+
+/// \}
 
 }  // namespace chig
 

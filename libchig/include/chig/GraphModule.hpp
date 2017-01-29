@@ -54,6 +54,9 @@ struct GraphModule : public ChigModule {
 	boost::filesystem::path sourceFilePath() const {
 		return context().workspacePath() / "src" / (fullName() + ".chigmod");
 	}
+	
+	/// \name Function Creation and Manipulation
+	/// \{
 
 	/// Create a new function if it does't already exist
 	/// \param name The name of the new function
@@ -86,6 +89,28 @@ struct GraphModule : public ChigModule {
 	/// Get functions
 	/// \return The functions
 	const std::vector<std::unique_ptr<GraphFunction>>& functions() const { return mFunctions; }
+	
+	///\}
+	
+	/// \name Struct Creation and Manipulation
+	/// \{
+	
+	/// Create a new struct in the module
+	/// \param name The name of the struct
+	/// \inserted True if the struct was new, optional
+	/// \return The new struct
+	GraphStruct* getOrCreateStruct(std::string name, bool* inserted = nullptr);
+	
+	/// Remove a struct from the module by name
+	/// \param name The name of the struct to remove
+	/// \return True if a struct was actually removed
+	bool removeStruct(gsl::cstring_span<> name);
+	
+	/// Remove a struct from the module by pointer
+	/// \param tyToDel Struct to delete, must be in this module
+	void removeStruct(GraphStruct* tyToDel);
+	
+	/// \}
 
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
