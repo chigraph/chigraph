@@ -101,7 +101,7 @@ matrix:
     
 
 install: 
-  - ./.travis/install.sh
+  - source ./.travis/install.sh
 
 script:
-  - ./.travis/build.sh
+  - source ./.travis/build.sh
