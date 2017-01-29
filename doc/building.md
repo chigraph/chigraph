@@ -1,18 +1,18 @@
 # Building chigraph from source
 Currently, the only way to get chigraph is to build from source. 
 
-As of now, only linux x86_64 has been tested, but work is being done on getting it to work on macOS and Windows. Here we go! 
+As of now, only linux x86_64 and macOS Sierra have been tested, but work is being done on getting it to work on Windows. Here we go! 
 
-## Installing dependencies
+## Linux
+
+### Installing dependencies
 The external dependencies of chigraph are:
 - A compiler supporting C++14 (clang 3.7+, gcc 4.8+)
 - git (to clone chigraph)
 - CMake 3.0+
-- LLVM 3.7+
+- LLVM 3.7+ (the tests only pass with 3.9, but the interface works fine with 3.7 and 3.8)
 - Qt 5.6+
 - KDE Frameworks 5
-
-### Linux
 
 #### Ubuntu/Mint (Xenial or newer):
 ```bash
@@ -41,7 +41,7 @@ You can get qt binaries [here](https://download.qt.io/archive/qt/5.8/5.8.0/) and
 If you can't get ahold of a binary package of KDE Frameworks 5, run `./scripts/build_frameworks.sh` to build on in tree (automatically configured to work)
 
 
-## Compiling Chigraph
+### Compiling Chigraph
 In order to compile chigraph, first generate the project files with cmake:
 ```bash
 git clone https://github.com/chigraph/chigraph --recursive 
@@ -81,5 +81,48 @@ To test that everything is sane and working, it's a good idea to quickly run the
 ```bash
 cmake --build . --target test
 ```
+
+## macOS
+I've only personally tested chigraph on Sierra (10.12.3) but I'd assume it works fine on other versions.
+
+### Installing dependencies
+ 
+First, [install brew](http://brew.sh)
+
+Then, it's as easy as:
+```bash
+brew install cmake llvm wget qt5 bison gettext # [ninja]
+```
+It's optional to install `ninja`, which is a slightly faster build system.
+
+Clone chigraph...
+```bash
+git clone https://github.com/chigraph/chigraph --recrusive
+cd chigraph
+```
+
+Then, compile KDE frameworks 5:
+```bash
+./scripts/build_frameworks.sh \
+	-DCMAKE_BUILD_TYPE=Debug \ 
+	-DCMAKE_PREFIX_PATH='/usr/local/opt/qt5;/usr/local/opt/gettext' \
+	-DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison # -GNinja if you installed ninja
+```
+
+### Compiling chigraph
+Finally compile chigraph:
+```
+mkdir build && cd build
+cmake .. -DCMAKE_PREFIX_PATH='/usr/local/opt/qt5/;/usr/local/opt/gettext' \
+	-DCMAKE_BUILD_TYPE=Debug \
+	-DLLVM_CONFIG=/usr/local/opt/llvm/bin/llvm-config \
+	-DLLI_EXE=/usr/local/opt/llvm/bin/lli # -GNinja if you installed it
+cmake --build .
+```
+Then run it!
+```bash
+open ./gui/chiggui.app
+```
+
 
 Any errors? [File an issue!](https://github.com/chigraph/chigraph/issues/new)
