@@ -170,6 +170,7 @@ struct CFuncNode : NodeType {
 };
 
 CModule::CModule(Context& ctx) : ChigModule(ctx, "c") {}
+
 DataType                  CModule::typeFromName(gsl::cstring_span<> /*typeName*/) {
 	// TODO: implement
 

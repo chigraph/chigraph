@@ -42,11 +42,6 @@ struct ChigModule {
 	/// \return The data type, or an invalid DataType if failed
 	virtual DataType typeFromName(gsl::cstring_span<> name) = 0;
 
-	/// Get the debug info for a type from the name
-	/// \param name The name of the type
-	/// \return The DIType, or nullptr if failed
-	virtual llvm::DIType* debugTypeFromName(gsl::cstring_span<> name) = 0;
-
 	/// Get the possible node type names
 	/// \return A std::vector of the possible names
 	virtual std::vector<std::string> nodeTypeNames() const = 0;

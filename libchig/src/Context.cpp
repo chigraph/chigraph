@@ -208,27 +208,6 @@ Result Context::typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> n
 	return res;
 }
 
-Result Context::debugTypeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
-                                    llvm::DIType** toFill) noexcept {
-	Expects(toFill != nullptr);
-
-	Result res;
-
-	ChigModule* mod = moduleByName(module);
-	if (mod == nullptr) {
-		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(module)}});
-		return res;
-	}
-
-	*toFill = mod->debugTypeFromName(name);
-	if (*toFill == nullptr) {
-		res.addEntry("E37", "Could not find debug type in module",
-		             {{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
-	}
-
-	return res;
-}
-
 Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
                                    const nlohmann::json&      data,
                                    std::unique_ptr<NodeType>* toFill) noexcept {

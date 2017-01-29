@@ -13,7 +13,7 @@ namespace chig {
 
 /// A class holding a compound type defined in a GraphModule
 struct StructType {
-	StructType(GraphModule& mod, std::vector<std::string, DataType> types);
+	StructType(GraphModule& mod, std::vector<std::pair<std::string, DataType>> types);
 
 	Context& context() const { return *mContext; }
 
@@ -23,7 +23,7 @@ private:
 	GraphModule* mModule;
 	Context*     mContext;
 
-	std::vector<std::string, DataType> mTypes
+	std::vector<std::pair<std::string, DataType>> mTypes;
 };
 }
 
