@@ -7,20 +7,26 @@ cd build
 
 if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
-	covflags=""
 	if [ -n "$TEST_COV" ]; then 
 
-		covflags="-DCMAKE_CXX_FLAGS='-fprofile-arcs -ftest-coverage'"
+		cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+			-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
+			-DCMAKE_C_COMPILER=$C_COMPILER \
+			-DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config \
+			-DCLANG_EXE=`which clang-${LLVM_VERSION}` \
+			-DLLI_EXE=`which lli-${LLVM_VERSION}` \
+			-GNinja -DCMAKE_CXX_FLAGS='-fprofile-arcs -ftest-coverage'
+	else
 
-	fi 
-
-	cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
-		-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
-		-DCMAKE_C_COMPILER=$C_COMPILER \
-		-DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config \
-		-DCLANG_EXE=`which clang-${LLVM_VERSION}` \
-		-DLLI_EXE=`which lli-${LLVM_VERSION}` \
-		-GNinja $covflags \
+		cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+			-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
+			-DCMAKE_C_COMPILER=$C_COMPILER \
+			-DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config \
+			-DCLANG_EXE=`which clang-${LLVM_VERSION}` \
+			-DLLI_EXE=`which lli-${LLVM_VERSION}` \
+			-GNinja 
+			
+	fi
 
 	ninja
 	CTEST_OUTPUT_ON_FAILURE=1 ninja test
