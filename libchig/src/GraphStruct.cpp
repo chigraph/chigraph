@@ -12,7 +12,7 @@ GraphStruct::GraphStruct(GraphModule& mod, std::string name)
     : mModule{&mod}, mContext{&mod.context()}, mName{name} {}
 
 void GraphStruct::addType(DataType ty, std::string name, size_t addBefore) {
-	Expects(addBefore <= nodes.size() && ty.valid() && !name.empty);
+	Expects(addBefore <= types().size() && ty.valid() && !name.empty());
 	
 	
 	mTypes.emplace_back(name, ty);
@@ -22,7 +22,7 @@ void GraphStruct::addType(DataType ty, std::string name, size_t addBefore) {
 }
 
 void GraphStruct::modifyType(size_t id, DataType newTy, std::string newName) {
-	Expects(id < nodes.size() && newTy.valid() && !newName.empty());
+	Expects(id < types().size() && newTy.valid() && !newName.empty());
 	
 	mTypes[id] = {newName, newTy};
 	
@@ -31,7 +31,7 @@ void GraphStruct::modifyType(size_t id, DataType newTy, std::string newName) {
 }
 
 void GraphStruct::removeType(size_t id) {
-	Expects(id < nodes.size());
+	Expects(id < types().size());
 	
 	mTypes.erase(mTypes.begin() + id);
 
@@ -48,20 +48,16 @@ DataType GraphStruct::dataType() const {
 	}
 	
 	// create llvm::Type
-	std::vector<llvm::Type*> types; 
-	types.reserve(types().size());
+	std::vector<llvm::Type*> llTypes; 
+	llTypes.reserve(types().size());
 	for(const auto& type : types()) {
-		types.push_back(type.second.llvmType());
+		llTypes.push_back(type.second.llvmType());
 	}
-	auto llType = llvm::StructType::create(types, name());
+	auto llType = llvm::StructType::create(llTypes, name());
 	
 	
 	// create debug type
-	llvm::DIBuilder dbuilder;
 	
-	for(const auto& type : types()) {
-		dbuilder.createMemberType(nullptr, name(), nullptr, 0, type.debugType()->getSizeInBits(), )
-	}
 	
 }
 
