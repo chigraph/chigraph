@@ -101,7 +101,8 @@ matrix:
     
 
 install: 
-  - source ./.travis/install.sh
+  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh; fi'
+  - ./.travis/install.sh
 
 script:
-  - source ./.travis/build.sh
+  - ./.travis/build.sh
