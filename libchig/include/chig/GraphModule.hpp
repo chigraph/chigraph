@@ -64,13 +64,13 @@ struct GraphModule : public ChigModule {
 	/// \param dataOuts The data outputs to the function
 	/// \param execIns The exec inputs to the function
 	/// \param execOuts The exec outputs to the function
-	/// \param toFill The new GraphFunction, optional
-	/// \return True if a new function was created, false otherwise
-	bool createFunction(gsl::cstring_span<> name,
+	/// \param inserted Pointer of a bool to fill; sets to true if it was inserted and false if it already existed
+	/// \return The function
+	GraphFunction* getOrCreateFunction(gsl::cstring_span<> name,
 	                    std::vector<std::pair<DataType, std::string>> dataIns,
 	                    std::vector<std::pair<DataType, std::string>> dataOuts,
 	                    std::vector<std::string> execIns, std::vector<std::string> execOuts,
-	                    GraphFunction** toFill = nullptr);
+	                    bool* inserted = nullptr);
 
 	/// Remove a function from the module
 	/// \param name The name of the function to remove
@@ -95,6 +95,15 @@ struct GraphModule : public ChigModule {
 	/// \name Struct Creation and Manipulation
 	/// \{
 	
+	const std::vector<std::unique_ptr<GraphStruct>>& structs() const {
+		return mStructs;
+	}
+	
+	/// Get a struct by name
+	/// \param name The name of the struct
+	/// \return The struct or nullptr if not found
+	GraphStruct* structFromName(gsl::cstring_span<> name) const;
+	
 	/// Create a new struct in the module
 	/// \param name The name of the struct
 	/// \inserted True if the struct was new, optional
@@ -103,7 +112,7 @@ struct GraphModule : public ChigModule {
 	
 	/// Remove a struct from the module by name
 	/// \param name The name of the struct to remove
-	/// \return True if a struct was actually removed
+	/// \return True if a struct was actually removed, false if no struct by that name existed
 	bool removeStruct(gsl::cstring_span<> name);
 	
 	/// Remove a struct from the module by pointer
@@ -114,6 +123,7 @@ struct GraphModule : public ChigModule {
 
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
+	std::vector<std::unique_ptr<GraphStruct>> mStructs;
 };
 }  // namespace chig
 

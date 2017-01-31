@@ -16,7 +16,7 @@ struct GraphStruct {
 	
 	/// GraphType constructor; don't use this use GraphModule::newStruct
 	/// \param mod Module to add to
-	/// \param Name name of the type
+	/// \param name name of the type
 	GraphStruct(GraphModule& mod, std::string name);
 
 	/// Get the context

@@ -8,6 +8,7 @@
 #include "chig/NameMangler.hpp"
 #include "chig/NodeInstance.hpp"
 #include "chig/NodeType.hpp"
+#include "chig/GraphStruct.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
@@ -152,24 +153,25 @@ Result GraphModule::saveToDisk() const {
 	return res;
 }
 
-bool GraphModule::createFunction(gsl::cstring_span<> name,
+GraphFunction* GraphModule::getOrCreateFunction(gsl::cstring_span<> name,
                                  std::vector<std::pair<DataType, std::string> > dataIns,
                                  std::vector<std::pair<DataType, std::string> > dataOuts,
                                  std::vector<std::string> execIns,
-                                 std::vector<std::string> execOuts, GraphFunction** toFill) {
+                                 std::vector<std::string> execOuts, bool* inserted) {
 	// make sure there already isn't one by this name
 	auto foundFunc = graphFuncFromName(name);
 	if (foundFunc != nullptr) {
-		if (toFill != nullptr) { *toFill = foundFunc; }
-		return false;
+		if (inserted != nullptr) { *inserted = false; }
+		return foundFunc;
 	}
 
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, std::move(dataIns),
 	                                                     std::move(dataOuts), std::move(execIns),
 	                                                     std::move(execOuts)));
-	if (toFill != nullptr) { *toFill = mFunctions[mFunctions.size() - 1].get(); }
+	
+	if(inserted != nullptr) { *inserted = true; }
+	return mFunctions[mFunctions.size() - 1].get();
 
-	return true;
 }
 
 bool GraphModule::removeFunction(gsl::cstring_span<> name) {
@@ -246,5 +248,53 @@ boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() c
 
 	return ret;
 }
+
+GraphStruct* GraphModule::structFromName(gsl::cstring_span<> name) const {
+	
+	for(const auto& str : structs()) {
+		if(str->name() == name) {
+			return str.get();
+		}
+	} 
+	return nullptr;
+}
+
+GraphStruct* GraphModule::getOrCreateStruct(std::string name, bool* inserted) {
+	auto str = structFromName(name);
+	
+	if(str != nullptr) {
+		if(inserted != nullptr) { *inserted = false; }
+		return str;
+	}
+	
+	mStructs.push_back(std::make_unique<GraphStruct>(*this, std::move(name)));
+	
+	if (inserted != nullptr) { *inserted = true; }
+	return mStructs[mStructs.size() - 1].get();
+}
+
+bool GraphModule::removeStruct(gsl::cstring_span<> name) {
+	for(auto iter = structs().begin(); iter != structs().end(); ++iter) {
+		if((*iter)->name() == name) {
+			mStructs.erase(iter);
+			return true;
+		}
+	}
+	return false;
+}
+
+void GraphModule::removeStruct(GraphStruct* tyToDel) {
+	Expects(&tyToDel->module() == this);
+	
+	for(auto iter = structs().begin(); iter != structs().end(); ++iter) {
+		if(iter->get() == tyToDel) {
+			mStructs.erase(iter);
+			return;
+		}
+	}
+	Expects(false);
+}
+
+
 
 }  // namespace chig

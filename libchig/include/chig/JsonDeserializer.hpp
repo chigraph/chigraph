@@ -33,6 +33,12 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 /// \input The JSON to load
 Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& input);
 
+/// Load a GraphStruct from json
+/// \param mod The module to create it inside
+/// \param input The JSON to load
+/// \param toFill The object to fill, optional
+Result jsonToGraphStruct(GraphModule& mod, gsl::cstring_span<> name, const nlohmann::json& input, GraphStruct** toFill = nullptr);
+
 /// Parse something that looks like: {"hello": "there"} into {"hello", "there"}
 /// \param object The json object
 /// \return {"key", "value"}

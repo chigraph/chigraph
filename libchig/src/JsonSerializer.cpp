@@ -3,6 +3,7 @@
 #include "chig/GraphFunction.hpp"
 #include "chig/GraphModule.hpp"
 #include "chig/NodeInstance.hpp"
+#include "chig/GraphStruct.hpp"
 
 namespace chig {
 
@@ -88,7 +89,25 @@ nlohmann::json graphModuleToJson(const GraphModule& mod) {
 	graphsjson       = nlohmann::json::array();
 	for (auto& graph : mod.functions()) { graphsjson.push_back(graphFunctionToJson(*graph)); }
 
+	auto& structsJson = data["types"];
+	for(const auto& str : mod.structs()) {
+		structsJson[str->name()] = graphStructToJson(*str);
+	}
+	
 	return data;
+}
+
+
+nlohmann::json graphStructToJson(const GraphStruct& struc) {
+	
+	nlohmann::json ret = nlohmann::json::array();
+	
+	for(const auto& elem : struc.types()) {
+		ret.push_back({{elem.first, elem.second.qualifiedName()}});
+	}
+	
+	return ret;
+	
 }
 
 }  // namespace chig

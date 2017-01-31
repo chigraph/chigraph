@@ -301,8 +301,7 @@ void MainWindow::newFunction() {
 
 	if (newName == "") { return; }
 
-	chig::GraphFunction* func;
-	currentModule()->createFunction(newName.toStdString(), {}, {}, {""}, {""}, &func);
+	chig::GraphFunction* func = currentModule()->getOrCreateFunction(newName.toStdString(), {}, {}, {""}, {""});
 	func->getOrInsertEntryNode(0, 0, "entry");
 
 	newFunctionCreated(func);
