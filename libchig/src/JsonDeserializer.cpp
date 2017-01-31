@@ -4,6 +4,7 @@
 #include "chig/GraphFunction.hpp"
 #include "chig/GraphModule.hpp"
 #include "chig/NodeInstance.hpp"
+#include "chig/GraphStruct.hpp"
 #include "chig/Result.hpp"
 
 namespace chig {
@@ -72,6 +73,25 @@ Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
 			++id;
 		}
 	}
+	
+	// load types
+	{
+		auto iter = input.find("types");
+		if(iter == input.end() || iter->is_object()) {
+			res.addEntry("EUKN", "No types object in module", {{}});
+			return res;
+		}
+		
+		// declare them
+		for(auto tyIter = iter->begin(); tyIter != iter->end(); ++tyIter) {
+			createdModule->getOrCreateStruct(tyIter.key());
+		}
+		// load them
+		for(auto tyIter = iter->begin(); tyIter != iter->end(); ++tyIter) {
+			res += jsonToGraphStruct(*createdModule, tyIter.key(), tyIter.value());
+		}
+	}
+	
 	return res;
 }
 
@@ -106,8 +126,8 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 
 	std::vector<std::pair<DataType, std::string>> datainputs;
 	for (auto param : input["data_inputs"]) {
-		std::string qualifiedType, docString;
-		std::tie(qualifiedType, docString) = parseObjectPair(param);
+		std::string docString, qualifiedType;
+		std::tie(docString, qualifiedType) = parseObjectPair(param);
 		
 		std::string moduleName, name;
 		std::tie(moduleName, name) = parseColonPair(qualifiedType);
@@ -129,8 +149,8 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 	std::vector<std::pair<DataType, std::string>> dataoutputs;
 	for (auto param : input["data_outputs"]) {
 		
-		std::string qualifiedType, docString;
-		std::tie(qualifiedType, docString) = parseObjectPair(param);
+		std::string docString, qualifiedType;
+		std::tie(docString, qualifiedType) = parseObjectPair(param);
 	
 		std::string moduleName, name;
 		std::tie(moduleName, name) = parseColonPair(qualifiedType);
@@ -170,7 +190,8 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 	}
 
 	// construct it
-	createInside.createFunction(name, datainputs, dataoutputs, execinputs, execoutputs, toFill);
+	auto created = createInside.getOrCreateFunction(name, datainputs, dataoutputs, execinputs, execoutputs);
+	if(toFill != nullptr) { *toFill = created; }
 
 	return res;
 }
@@ -317,6 +338,50 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 		}
 	}
 	return res;
+}
+
+Result jsonToGraphStruct(GraphModule& mod, gsl::cstring_span<> name, const nlohmann::json& input, GraphStruct** toFill) {
+	
+	Result res;
+	
+	if(!input.is_array()) { 
+		res.addEntry("EUKN", "Graph Struct json has to be an array", {{"Given JSON", input}});
+		return res;
+	}
+	
+	auto createdStruct = mod.getOrCreateStruct(gsl::to_string(name));
+	if(toFill != nullptr) { *toFill = createdStruct; }
+	
+	for (const auto& str : input) {
+		if(!str.is_object()) {
+			res.addEntry("EUKN", "Graph Struct entry must be an object", {{"Given JSON", str}});
+			continue;
+		}
+		
+		if(str.size() != 1) {
+			res.addEntry("EUKN", "Graph Struct entry must have size of 1", {{"Size", str.size()}});
+			continue;
+		}
+		
+		std::string docstring, qualifiedType;
+		std::tie(docstring, qualifiedType) = parseObjectPair(str);
+		
+		// parse the type
+		std::string typeModuleName, typeName;
+		std::tie(typeModuleName, typeName) = parseColonPair(qualifiedType);
+		
+		DataType ty;
+		res += mod.context().typeFromModule(typeModuleName, name, &ty);
+		
+		if(!res) {
+			continue;
+		}
+		
+		createdStruct->addType(ty, docstring, createdStruct->types().size());
+	}
+	
+	return res;
+	
 }
 
 std::pair<std::string, std::string> parseObjectPair(const nlohmann::json& object) {
