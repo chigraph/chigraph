@@ -40,7 +40,7 @@ void GraphStruct::removeType(size_t id) {
 }
 
 
-DataType GraphStruct::dataType() const {
+DataType GraphStruct::dataType() {
 	
 	// if we have already calculated this, use that
 	if(mDataType.valid()) {
@@ -50,14 +50,28 @@ DataType GraphStruct::dataType() const {
 	// create llvm::Type
 	std::vector<llvm::Type*> llTypes; 
 	llTypes.reserve(types().size());
+	
+	std::vector<llvm::Metadata*> diTypes;
+	diTypes.reserve(types().size());
+	
+	size_t currentOffset = 0;
 	for(const auto& type : types()) {
+		auto debugType = type.second.debugType();
+		
 		llTypes.push_back(type.second.llvmType());
+		
+		auto member = llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member, type.first, nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8, currentOffset, 0, nullptr);
+		diTypes.push_back(member);
+		
+		currentOffset += debugType->getSizeInBits();
 	}
 	auto llType = llvm::StructType::create(llTypes, name());
 	
+	auto diStructType = llvm::DICompositeType::get(context().llvmContext(), llvm::dwarf::DW_TAG_structure_type, name(), nullptr, 0, nullptr, nullptr, currentOffset, 8, 0, 0, llvm::MDTuple::get(context().llvmContext(), diTypes), 0, nullptr, {}, "");
 	
-	// create debug type
+	mDataType = DataType(&module(), name(), llType, diStructType);
 	
+	return mDataType;
 	
 }
 

@@ -52,7 +52,7 @@ struct GraphStruct {
 	void removeType(size_t id);
 	
 	/// Get the DataType of the struct
-	DataType dataType() const;
+	DataType dataType();
 	
 private:
 	GraphModule* mModule;
