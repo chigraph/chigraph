@@ -33,8 +33,15 @@ struct GraphFunction {
 	              std::vector<std::pair<DataType, std::string>> dataOuts,
 	              std::vector<std::string> execIns, std::vector<std::string> execOuts);
 
+	
+	GraphFunction(const GraphFunction&) = delete;
+	GraphFunction(GraphFunction&&) = delete;
+	
+	GraphFunction& operator=(const GraphFunction&) = delete;
+	GraphFunction& operator=(GraphFunction&&) = delete;
+	
 	/// Destructor
-	~GraphFunction();
+	~GraphFunction() = default;
 
 	/// \name Node Manipulation
 	/// Functions for mainpulating nodes; getting, adding

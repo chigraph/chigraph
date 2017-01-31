@@ -30,8 +30,6 @@ GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<>         name,
 	// TODO: check that it has at least 1 exec input and output
 }
 
-GraphFunction::~GraphFunction() = default;
-
 NodeInstance* GraphFunction::entryNode() const noexcept {
 	auto matching = nodesWithType("lang", "entry");
 
