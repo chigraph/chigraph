@@ -159,10 +159,15 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 
 	auto runAction = new QAction(nullptr);
 	runAction->setText(i18n("&Run"));
-	runAction->setIcon(QIcon::fromTheme("system-run"));
+	runAction->setIcon(QIcon::fromTheme(QStringLiteral("system-run")));
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
 	actColl->addAction(QStringLiteral("run"), runAction);
 	connect(runAction, &QAction::triggered, this, [this, outputView, cancelAction] {
+		if(currentModule() == nullptr) {
+			KMessageBox::error(this, i18n("Load a module first!"), i18n("run: error"));
+			return;
+		}
+		
 		auto view = new SubprocessOutputView(currentModule());
 		connect(view, &SubprocessOutputView::processFinished, this,
 		        [outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
