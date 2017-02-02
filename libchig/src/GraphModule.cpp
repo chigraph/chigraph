@@ -19,6 +19,8 @@
 namespace fs = boost::filesystem;
 
 namespace chig {
+	
+namespace {
 struct GraphFuncCallType : public NodeType {
 	GraphFuncCallType(GraphModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
 	    : NodeType(json_module, funcname, ""),
@@ -84,18 +86,127 @@ struct GraphFuncCallType : public NodeType {
 
 	nlohmann::json            toJSON() const override { return {}; }
 	std::unique_ptr<NodeType> clone() const override {
-		Result res = {};  // there shouldn't be an error but check anywayss
-		// TODO: better way to do this?
+		Result res = {};  // there shouldn't be an error but check anyways
 		return std::make_unique<GraphFuncCallType>(*JModule, name(), &res);
 	}
 
 	GraphModule* JModule;
 };
 
+struct MakeStructNodeType : public NodeType {
+	MakeStructNodeType(GraphStruct& ty) : NodeType(ty.module()), mStruct{&ty} {
+		setName("_make_" + ty.name());
+		setDescription("Make a " + ty.name() + " structure");
+		makePure();
+		
+		// set inputs
+		{
+			std::vector<std::pair<DataType, std::string>> ins;
+			for(const auto& elem : ty.types()) {
+				ins.emplace_back(elem.second, elem.first);
+			}
+			setDataInputs(std::move(ins));
+		}
+		
+		// set output to just be the struct
+		setDataOutputs({{ty.dataType(), ""}});
+	}
+	
+	
+	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation,
+	               llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
+	               llvm::BasicBlock*                  codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
+		
+		llvm::IRBuilder<> builder{codegenInto};
+		builder.SetCurrentDebugLocation(nodeLocation);
+		
+		llvm::Value* out = io[io.size() - 1]; // output goes last
+		for(auto id = 0; id < io.size() - 1; ++id) {
+			auto ptr = builder.CreateGEP(mStruct->dataType().llvmType(), out, llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id));
+			builder.CreateStore(io[id], ptr);
+		}
+		
+		builder.CreateBr(outputBlocks[0]);
+		
+		return {};
+	}
+	
+	nlohmann::json            toJSON() const override { return {}; }
+	std::unique_ptr<NodeType> clone() const override {
+		return std::make_unique<MakeStructNodeType>(*mStruct);
+	}
+	
+	GraphStruct* mStruct;
+};
+
+struct BreakStructNodeType : public NodeType {
+	BreakStructNodeType(GraphStruct& ty) : NodeType(ty.module()), mStruct{&ty} {
+		setName("_break_" + ty.name());
+		setDescription("Break a " + ty.name() + " structure");
+		makePure();
+		
+		// set input to just be the struct
+		setDataInputs({{ty.dataType(), ""}});
+		
+		// set outputs
+		{
+			std::vector<std::pair<DataType, std::string>> ins;
+			for(const auto& elem : ty.types()) {
+				ins.emplace_back(elem.second, elem.first);
+			}
+			setDataOutputs(std::move(ins));
+		}
+		
+	}
+	
+	
+	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation,
+	               llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
+	               llvm::BasicBlock*                  codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
+		
+		llvm::IRBuilder<> builder{codegenInto};
+		builder.SetCurrentDebugLocation(nodeLocation);
+		
+		llvm::Value* in = io[0]; // input goes first
+		for(auto id = 1; id < io.size(); ++id) {
+			auto ptr = builder.CreateGEP(mStruct->dataType().llvmType(), in, llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id));
+			auto val = builder.CreateLoad(ptr);
+			builder.CreateStore(val, io[id]);
+		}
+		
+		builder.CreateBr(outputBlocks[0]);
+		
+		return {};
+	}
+	
+	nlohmann::json            toJSON() const override { return {}; }
+	std::unique_ptr<NodeType> clone() const override {
+		return std::make_unique<BreakStructNodeType>(*mStruct);
+	}
+	
+	GraphStruct* mStruct;
+};
+
+} // anon namespace
+
 GraphModule::GraphModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies)
     : ChigModule(cont, fullName) {
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) { addDependency(dep); }
+}
+
+std::vector<std::string> GraphModule::typeNames() const {
+	std::vector<std::string> ret;
+	ret.reserve(structs().size());
+	
+	for(const auto& ty : structs()) {
+		ret.push_back(ty->name());
+		ret.push_back(ty->name());
+	}
+	
+	return ret;
 }
 
 Result GraphModule::generateModule(llvm::Module& module) {
@@ -218,10 +329,26 @@ Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::j
 	return res;
 }
 
+DataType GraphModule::typeFromName(gsl::cstring_span<> name) {
+	auto func = structFromName(name);
+	
+	if(func == nullptr) {
+		return {};
+	}
+	
+	return func->dataType();
+}
+
+
 std::vector<std::string> GraphModule::nodeTypeNames() const {
 	std::vector<std::string> ret;
 	std::transform(mFunctions.begin(), mFunctions.end(), std::back_inserter(ret),
 	               [](auto& gPtr) { return gPtr->name(); });
+	
+	for(const auto& str : structs()) {
+		ret.push_back("_make_" + str->name());
+		ret.push_back("_break_" + str->name());
+	}
 
 	return ret;
 }

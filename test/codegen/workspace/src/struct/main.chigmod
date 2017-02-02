@@ -1,0 +1,44 @@
+{
+  "dependencies": [
+    "lang",
+    "c",
+    "intprinter"
+  ],
+  "graphs": [
+    {
+      "connections": [],
+      "data_inputs": [],
+      "data_outputs": [],
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "name": "main",
+      "nodes": {
+        "entry": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            -5058.5029296875,
+            -2730.76440429688
+          ],
+          "type": "lang:entry"
+        }
+      },
+      "type": "function"
+    }
+  ],
+  "name": "main",
+  "types": {
+    "intpair": [
+      {"left": "lang:i32"},
+      {"right": "lang:i32"}
+    ]
+  }
+}
