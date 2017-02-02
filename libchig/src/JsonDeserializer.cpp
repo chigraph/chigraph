@@ -77,7 +77,7 @@ Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
 	// load types
 	{
 		auto iter = input.find("types");
-		if(iter == input.end() || iter->is_object()) {
+		if(iter == input.end() || !iter->is_object()) {
 			res.addEntry("EUKN", "No types object in module", {{}});
 			return res;
 		}
