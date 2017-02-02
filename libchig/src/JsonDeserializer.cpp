@@ -371,7 +371,7 @@ Result jsonToGraphStruct(GraphModule& mod, gsl::cstring_span<> name, const nlohm
 		std::tie(typeModuleName, typeName) = parseColonPair(qualifiedType);
 		
 		DataType ty;
-		res += mod.context().typeFromModule(typeModuleName, name, &ty);
+		res += mod.context().typeFromModule(typeModuleName, typeName, &ty);
 		
 		if(!res) {
 			continue;

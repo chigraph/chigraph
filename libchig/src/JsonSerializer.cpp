@@ -90,6 +90,7 @@ nlohmann::json graphModuleToJson(const GraphModule& mod) {
 	for (auto& graph : mod.functions()) { graphsjson.push_back(graphFunctionToJson(*graph)); }
 
 	auto& structsJson = data["types"];
+	structsJson = nlohmann::json::object();
 	for(const auto& str : mod.structs()) {
 		structsJson[str->name()] = graphStructToJson(*str);
 	}
