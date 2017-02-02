@@ -13,6 +13,7 @@ var dir_16971e61b3ab07f0aa6ba57b2eb7b712 =
     [ "GraphModule.hpp", "GraphModule_8hpp.html", [
       [ "GraphModule", "structchig_1_1GraphModule.html", "structchig_1_1GraphModule" ]
     ] ],
+    [ "GraphStruct.hpp", "GraphStruct_8hpp_source.html", null ],
     [ "JsonDeserializer.hpp", "JsonDeserializer_8hpp_source.html", null ],
     [ "JsonSerializer.hpp", "JsonSerializer_8hpp_source.html", null ],
     [ "LangModule.hpp", "LangModule_8hpp.html", [
@@ -24,6 +25,5 @@ var dir_16971e61b3ab07f0aa6ba57b2eb7b712 =
       [ "NodeType", "structchig_1_1NodeType.html", "structchig_1_1NodeType" ]
     ] ],
     [ "Result.hpp", "Result_8hpp.html", "Result_8hpp" ],
-    [ "StructType.hpp", "StructType_8hpp_source.html", null ],
     [ "ToString.hpp", "ToString_8hpp_source.html", null ]
 ];

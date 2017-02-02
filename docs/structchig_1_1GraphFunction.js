@@ -1,7 +1,9 @@
 var structchig_1_1GraphFunction =
 [
     [ "GraphFunction", "structchig_1_1GraphFunction.html#a549eae86b185e69b2664d05ceff3e31d", null ],
-    [ "~GraphFunction", "structchig_1_1GraphFunction.html#ac65f801cb810bd956c4ebc8f93e0c494", null ],
+    [ "GraphFunction", "structchig_1_1GraphFunction.html#a65a343b24326c7ee560daeb3da36a86c", null ],
+    [ "GraphFunction", "structchig_1_1GraphFunction.html#a031cb6238f17b19ad3e416839c54290b", null ],
+    [ "~GraphFunction", "structchig_1_1GraphFunction.html#afc6fa83b9cdf76140487b2c9653f0375", null ],
     [ "addDataInput", "structchig_1_1GraphFunction.html#a58da0f0d53f153a37bb4ba7bdc00df75", null ],
     [ "addDataOutput", "structchig_1_1GraphFunction.html#af76e111d051ead319035f83785b932e2", null ],
     [ "addExecInput", "structchig_1_1GraphFunction.html#a61a90781bcdc650d6b2446dd16d8a079", null ],
@@ -27,6 +29,8 @@ var structchig_1_1GraphFunction =
     [ "nodes", "structchig_1_1GraphFunction.html#a13cb6ea56ea3161cf0983a3922ac3b06", null ],
     [ "nodes", "structchig_1_1GraphFunction.html#a79cbfaf26d9a966ae8048c81dc09777e", null ],
     [ "nodesWithType", "structchig_1_1GraphFunction.html#ac4c14204d36773082b3fe93b48be4279", null ],
+    [ "operator=", "structchig_1_1GraphFunction.html#a5b8bd1e5451a35b6e08911610c5dfbb0", null ],
+    [ "operator=", "structchig_1_1GraphFunction.html#af3576c762e066f733a136410c703b167", null ],
     [ "removeDataInput", "structchig_1_1GraphFunction.html#a9698f54861e9997f2690e10e0e8316c8", null ],
     [ "removeDataOutput", "structchig_1_1GraphFunction.html#ae6fc3833c6e0631177efb4e35e7f59e4", null ],
     [ "removeExecInput", "structchig_1_1GraphFunction.html#a390ce7b4174a06ecd00ae7c72af9e157", null ],

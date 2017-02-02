@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 1016;
+var viewWidth = 1126;
 var viewHeight = 84;
 var sectionId = 'dynsection-1';
 </script>
@@ -54,117 +54,132 @@ var sectionId = 'dynsection-1';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>include/chig/NodeInstance.hpp</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-80 1011.5,-80 1011.5,4 -4,4"/>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-80 1121.5,-80 1121.5,4 -4,4"/>
 <!-- Node25 -->
 <g id="node1" class="node">
 <title>Node25</title>
-<polygon fill="#bfbfbf" stroke="#000000" points="436,-56.5 436,-75.5 602,-75.5 602,-56.5 436,-56.5"/>
-<text text-anchor="middle" x="519" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">include/chig/NodeInstance.hpp</text>
+<polygon fill="#bfbfbf" stroke="#000000" points="476,-56.5 476,-75.5 642,-75.5 642,-56.5 476,-56.5"/>
+<text text-anchor="middle" x="559" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">include/chig/NodeInstance.hpp</text>
 </g>
 <!-- Node26 -->
 <g id="node2" class="node">
 <title>Node26</title>
-<g id="a_node2"><a xlink:href="FunctionCompiler_8cpp.html" target="_top" xlink:title="src/FunctionCompiler.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="0,-.5 0,-19.5 140,-19.5 140,-.5 0,-.5"/>
-<text text-anchor="middle" x="70" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionCompiler.cpp</text>
+<g id="a_node2"><a xlink:href="Context_8cpp.html" target="_top" xlink:title="src/Context.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="0,-.5 0,-19.5 92,-19.5 92,-.5 0,-.5"/>
+<text text-anchor="middle" x="46" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/Context.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node25&#45;&gt;Node26 -->
 <g id="edge1" class="edge">
 <title>Node25&#45;&gt;Node26</title>
-<path fill="none" stroke="#191970" d="M431.7707,-55.2108C356.7893,-45.9232 245.767,-32.1397 149,-20 146.1194,-19.6386 143.1798,-19.2692 140.2102,-18.8956"/>
-<polygon fill="#191970" stroke="#191970" points="431.7521,-58.7351 442.1065,-56.4908 432.6125,-51.7882 431.7521,-58.7351"/>
+<path fill="none" stroke="#191970" d="M465.4017,-58.7984C372.6521,-51.145 226.6598,-37.7053 101,-20 98.1169,-19.5938 95.1543,-19.1454 92.1703,-18.6704"/>
+<polygon fill="#191970" stroke="#191970" points="465.3517,-62.3059 475.6042,-59.6346 465.9236,-55.3293 465.3517,-62.3059"/>
 </g>
 <!-- Node27 -->
 <g id="node3" class="node">
 <title>Node27</title>
-<g id="a_node3"><a xlink:href="FunctionValidator_8cpp.html" target="_top" xlink:title="src/FunctionValidator.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="158,-.5 158,-19.5 298,-19.5 298,-.5 158,-.5"/>
-<text text-anchor="middle" x="228" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionValidator.cpp</text>
+<g id="a_node3"><a xlink:href="FunctionCompiler_8cpp.html" target="_top" xlink:title="src/FunctionCompiler.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="110,-.5 110,-19.5 250,-19.5 250,-.5 110,-.5"/>
+<text text-anchor="middle" x="180" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionCompiler.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node25&#45;&gt;Node27 -->
 <g id="edge2" class="edge">
 <title>Node25&#45;&gt;Node27</title>
-<path fill="none" stroke="#191970" d="M459.2465,-54.501C405.5879,-44.175 327.7397,-29.1939 277.4891,-19.5237"/>
-<polygon fill="#191970" stroke="#191970" points="458.8247,-57.984 469.306,-56.4369 460.1476,-51.1101 458.8247,-57.984"/>
+<path fill="none" stroke="#191970" d="M484.2076,-54.9489C414.2501,-44.6122 310.854,-29.3346 244.4548,-19.5237"/>
+<polygon fill="#191970" stroke="#191970" points="483.874,-58.4375 494.2782,-56.4369 484.8972,-51.5127 483.874,-58.4375"/>
 </g>
 <!-- Node28 -->
 <g id="node4" class="node">
 <title>Node28</title>
-<g id="a_node4"><a xlink:href="GraphFunction_8cpp.html" target="_top" xlink:title="src/GraphFunction.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="316.5,-.5 316.5,-19.5 441.5,-19.5 441.5,-.5 316.5,-.5"/>
-<text text-anchor="middle" x="379" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/GraphFunction.cpp</text>
+<g id="a_node4"><a xlink:href="FunctionValidator_8cpp.html" target="_top" xlink:title="src/FunctionValidator.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="268,-.5 268,-19.5 408,-19.5 408,-.5 268,-.5"/>
+<text text-anchor="middle" x="338" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionValidator.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node25&#45;&gt;Node28 -->
 <g id="edge3" class="edge">
 <title>Node25&#45;&gt;Node28</title>
-<path fill="none" stroke="#191970" d="M485.6351,-52.6541C460.1048,-42.4419 425.5216,-28.6086 402.7528,-19.5011"/>
-<polygon fill="#191970" stroke="#191970" points="484.3485,-55.909 494.9331,-56.3733 486.9483,-49.4096 484.3485,-55.909"/>
+<path fill="none" stroke="#191970" d="M511.3137,-53.9166C470.664,-43.6162 413.0333,-29.013 375.5845,-19.5237"/>
+<polygon fill="#191970" stroke="#191970" points="510.7065,-57.3733 521.2599,-56.4369 512.4259,-50.5877 510.7065,-57.3733"/>
 </g>
 <!-- Node29 -->
 <g id="node5" class="node">
 <title>Node29</title>
-<g id="a_node5"><a xlink:href="GraphModule_8cpp.html" target="_top" xlink:title="src/GraphModule.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="459.5,-.5 459.5,-19.5 578.5,-19.5 578.5,-.5 459.5,-.5"/>
-<text text-anchor="middle" x="519" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/GraphModule.cpp</text>
+<g id="a_node5"><a xlink:href="GraphFunction_8cpp.html" target="_top" xlink:title="src/GraphFunction.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="426.5,-.5 426.5,-19.5 551.5,-19.5 551.5,-.5 426.5,-.5"/>
+<text text-anchor="middle" x="489" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/GraphFunction.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node25&#45;&gt;Node29 -->
 <g id="edge4" class="edge">
 <title>Node25&#45;&gt;Node29</title>
-<path fill="none" stroke="#191970" d="M519,-46.1575C519,-37.155 519,-26.9199 519,-19.6427"/>
-<polygon fill="#191970" stroke="#191970" points="515.5001,-46.2455 519,-56.2455 522.5001,-46.2456 515.5001,-46.2455"/>
+<path fill="none" stroke="#191970" d="M538.91,-49.928C526.6747,-40.1397 511.4493,-27.9595 501.0533,-19.6427"/>
+<polygon fill="#191970" stroke="#191970" points="536.8118,-52.7316 546.8069,-56.2455 541.1847,-47.2655 536.8118,-52.7316"/>
 </g>
 <!-- Node30 -->
 <g id="node6" class="node">
 <title>Node30</title>
-<g id="a_node6"><a xlink:href="JsonDeserializer_8cpp_source.html" target="_top" xlink:title="src/JsonDeserializer.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="596.5,-.5 596.5,-19.5 729.5,-19.5 729.5,-.5 596.5,-.5"/>
-<text text-anchor="middle" x="663" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/JsonDeserializer.cpp</text>
+<g id="a_node6"><a xlink:href="GraphModule_8cpp.html" target="_top" xlink:title="src/GraphModule.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="569.5,-.5 569.5,-19.5 688.5,-19.5 688.5,-.5 569.5,-.5"/>
+<text text-anchor="middle" x="629" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/GraphModule.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node25&#45;&gt;Node30 -->
 <g id="edge5" class="edge">
 <title>Node25&#45;&gt;Node30</title>
-<path fill="none" stroke="#191970" d="M553.3182,-52.6541C579.578,-42.4419 615.1492,-28.6086 638.5685,-19.5011"/>
-<polygon fill="#191970" stroke="#191970" points="551.806,-49.4867 543.7545,-56.3733 554.3431,-56.0108 551.806,-49.4867"/>
+<path fill="none" stroke="#191970" d="M579.09,-49.928C591.3253,-40.1397 606.5507,-27.9595 616.9467,-19.6427"/>
+<polygon fill="#191970" stroke="#191970" points="576.8153,-47.2655 571.1931,-56.2455 581.1882,-52.7316 576.8153,-47.2655"/>
 </g>
 <!-- Node31 -->
 <g id="node7" class="node">
 <title>Node31</title>
-<g id="a_node7"><a xlink:href="JsonSerializer_8cpp_source.html" target="_top" xlink:title="src/JsonSerializer.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="748,-.5 748,-19.5 868,-19.5 868,-.5 748,-.5"/>
-<text text-anchor="middle" x="808" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/JsonSerializer.cpp</text>
+<g id="a_node7"><a xlink:href="JsonDeserializer_8cpp_source.html" target="_top" xlink:title="src/JsonDeserializer.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="706.5,-.5 706.5,-19.5 839.5,-19.5 839.5,-.5 706.5,-.5"/>
+<text text-anchor="middle" x="773" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/JsonDeserializer.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node25&#45;&gt;Node31 -->
 <g id="edge6" class="edge">
 <title>Node25&#45;&gt;Node31</title>
-<path fill="none" stroke="#191970" d="M578.3428,-54.501C631.6327,-44.175 708.9458,-29.1939 758.8511,-19.5237"/>
-<polygon fill="#191970" stroke="#191970" points="577.504,-51.0984 568.3525,-56.4369 578.8357,-57.9706 577.504,-51.0984"/>
+<path fill="none" stroke="#191970" d="M605.6766,-53.7856C645.0414,-43.4845 700.5851,-28.9497 736.6921,-19.5011"/>
+<polygon fill="#191970" stroke="#191970" points="604.5761,-50.4556 595.7879,-56.3733 606.3482,-57.2276 604.5761,-50.4556"/>
 </g>
 <!-- Node32 -->
 <g id="node8" class="node">
 <title>Node32</title>
-<g id="a_node8"><a xlink:href="NodeInstance_8cpp.html" target="_top" xlink:title="src/NodeInstance.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="886.5,-.5 886.5,-19.5 1007.5,-19.5 1007.5,-.5 886.5,-.5"/>
-<text text-anchor="middle" x="947" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/NodeInstance.cpp</text>
+<g id="a_node8"><a xlink:href="JsonSerializer_8cpp_source.html" target="_top" xlink:title="src/JsonSerializer.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="858,-.5 858,-19.5 978,-19.5 978,-.5 858,-.5"/>
+<text text-anchor="middle" x="918" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/JsonSerializer.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node25&#45;&gt;Node32 -->
 <g id="edge7" class="edge">
 <title>Node25&#45;&gt;Node32</title>
-<path fill="none" stroke="#191970" d="M605.5175,-55.2302C678.0527,-46.1177 784.3352,-32.5716 877,-20 880.0412,-19.5874 883.156,-19.16 886.3009,-18.7247"/>
-<polygon fill="#191970" stroke="#191970" points="604.9977,-51.7679 595.5114,-56.486 605.8695,-58.7134 604.9977,-51.7679"/>
+<path fill="none" stroke="#191970" d="M630.2997,-54.878C696.8749,-44.493 795.1289,-29.1665 857.8439,-19.3837"/>
+<polygon fill="#191970" stroke="#191970" points="629.6474,-51.4374 620.3064,-56.4369 630.7264,-58.3537 629.6474,-51.4374"/>
+</g>
+<!-- Node33 -->
+<g id="node9" class="node">
+<title>Node33</title>
+<g id="a_node9"><a xlink:href="NodeInstance_8cpp.html" target="_top" xlink:title="src/NodeInstance.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="996.5,-.5 996.5,-19.5 1117.5,-19.5 1117.5,-.5 996.5,-.5"/>
+<text text-anchor="middle" x="1057" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/NodeInstance.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node25&#45;&gt;Node33 -->
+<g id="edge8" class="edge">
+<title>Node25&#45;&gt;Node33</title>
+<path fill="none" stroke="#191970" d="M652.4377,-56.9037C739.2172,-48.2312 871.9789,-34.3924 987,-20 990.0453,-19.6189 993.1634,-19.217 996.311,-18.8017"/>
+<polygon fill="#191970" stroke="#191970" points="651.9536,-53.4345 642.3501,-57.9092 652.648,-60.4 651.9536,-53.4345"/>
 </g>
 </g>
 </svg>
