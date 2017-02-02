@@ -8,8 +8,8 @@ var hierarchy =
     [ "chig::Context", "structchig_1_1Context.html", null ],
     [ "chig::DataType", "structchig_1_1DataType.html", null ],
     [ "chig::GraphFunction", "structchig_1_1GraphFunction.html", null ],
+    [ "chig::GraphStruct", "structchig_1_1GraphStruct.html", null ],
     [ "chig::NodeInstance", "structchig_1_1NodeInstance.html", null ],
     [ "chig::NodeType", "structchig_1_1NodeType.html", null ],
-    [ "chig::Result", "structchig_1_1Result.html", null ],
-    [ "chig::StructType", "structchig_1_1StructType.html", null ]
+    [ "chig::Result", "structchig_1_1Result.html", null ]
 ];

@@ -9,69 +9,69 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 100)">
 <title>chig::Context::hasWorkspace</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-100 524,-100 524,4 -4,4"/>
-<!-- Node51 -->
+<!-- Node55 -->
 <g id="node1" class="node">
-<title>Node51</title>
+<title>Node55</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-38.5 0,-57.5 158,-57.5 158,-38.5 0,-38.5"/>
 <text text-anchor="middle" x="79" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::hasWorkspace</text>
 </g>
-<!-- Node52 -->
+<!-- Node56 -->
 <g id="node2" class="node">
-<title>Node52</title>
+<title>Node56</title>
 <g id="a_node2"><a xlink:href="structchig_1_1Context.html#a8987940286a7a67313b635891d8f51e8" target="_top" xlink:title="Compile a module to a llvm::Module. ">
 <polygon fill="#ffffff" stroke="#000000" points="197,-76.5 197,-95.5 358,-95.5 358,-76.5 197,-76.5"/>
 <text text-anchor="middle" x="277.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::compileModule</text>
 </a>
 </g>
 </g>
-<!-- Node51&#45;&gt;Node52 -->
+<!-- Node55&#45;&gt;Node56 -->
 <g id="edge1" class="edge">
-<title>Node51&#45;&gt;Node52</title>
+<title>Node55&#45;&gt;Node56</title>
 <path fill="none" stroke="#191970" d="M128.8337,-57.54C155.7339,-62.6896 189.1362,-69.084 217.4614,-74.5065"/>
 <polygon fill="#191970" stroke="#191970" points="217.166,-78.0134 227.6458,-76.4561 218.4822,-71.1382 217.166,-78.0134"/>
 </g>
-<!-- Node54 -->
+<!-- Node58 -->
 <g id="node4" class="node">
-<title>Node54</title>
+<title>Node58</title>
 <g id="a_node4"><a xlink:href="structchig_1_1Context.html#a80a87a895374988b5fe678fe0c664758" target="_top" xlink:title="Get the full module name from a short one. ">
 <polygon fill="#ffffff" stroke="#000000" points="194,-38.5 194,-57.5 361,-57.5 361,-38.5 194,-38.5"/>
 <text text-anchor="middle" x="277.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::fullModuleName</text>
 </a>
 </g>
 </g>
-<!-- Node51&#45;&gt;Node54 -->
+<!-- Node55&#45;&gt;Node58 -->
 <g id="edge3" class="edge">
-<title>Node51&#45;&gt;Node54</title>
+<title>Node55&#45;&gt;Node58</title>
 <path fill="none" stroke="#191970" d="M158.0228,-48C166.493,-48 175.1685,-48 183.788,-48"/>
 <polygon fill="#191970" stroke="#191970" points="183.8654,-51.5001 193.8654,-48 183.8653,-44.5001 183.8654,-51.5001"/>
 </g>
-<!-- Node55 -->
+<!-- Node59 -->
 <g id="node5" class="node">
-<title>Node55</title>
+<title>Node59</title>
 <g id="a_node5"><a xlink:href="structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f" target="_top" xlink:title="Get the workspace path of the Context. ">
 <polygon fill="#ffffff" stroke="#000000" points="197,-.5 197,-19.5 358,-19.5 358,-.5 197,-.5"/>
 <text text-anchor="middle" x="277.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::workspacePath</text>
 </a>
 </g>
 </g>
-<!-- Node51&#45;&gt;Node55 -->
+<!-- Node55&#45;&gt;Node59 -->
 <g id="edge4" class="edge">
-<title>Node51&#45;&gt;Node55</title>
+<title>Node55&#45;&gt;Node59</title>
 <path fill="none" stroke="#191970" d="M128.8337,-38.46C155.7339,-33.3104 189.1362,-26.916 217.4614,-21.4935"/>
 <polygon fill="#191970" stroke="#191970" points="218.4822,-24.8618 227.6458,-19.5439 217.166,-17.9866 218.4822,-24.8618"/>
 </g>
-<!-- Node53 -->
+<!-- Node57 -->
 <g id="node3" class="node">
-<title>Node53</title>
+<title>Node57</title>
 <g id="a_node3"><a xlink:href="structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" target="_top" xlink:title="Add a entry to the result, either a warning or an error. ">
 <polygon fill="#ffffff" stroke="#000000" points="397,-76.5 397,-95.5 520,-95.5 520,-76.5 397,-76.5"/>
 <text text-anchor="middle" x="458.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Result::addEntry</text>
 </a>
 </g>
 </g>
-<!-- Node52&#45;&gt;Node53 -->
+<!-- Node56&#45;&gt;Node57 -->
 <g id="edge2" class="edge">
-<title>Node52&#45;&gt;Node53</title>
+<title>Node56&#45;&gt;Node57</title>
 <path fill="none" stroke="#191970" d="M358.207,-86C367.7608,-86 377.4618,-86 386.8776,-86"/>
 <polygon fill="#191970" stroke="#191970" points="386.9622,-89.5001 396.9622,-86 386.9622,-82.5001 386.9622,-89.5001"/>
 </g>

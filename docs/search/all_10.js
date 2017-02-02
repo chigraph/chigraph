@@ -12,6 +12,6 @@ var searchData=
   ['sety',['setY',['../structchig_1_1NodeInstance.html#afc3a13b2848e7cd3360b46c3aee48d8e',1,'chig::NodeInstance']]],
   ['sourcefilepath',['sourceFilePath',['../structchig_1_1GraphModule.html#a2b80440a0bdf4c760a12ea0309d68060',1,'chig::GraphModule']]],
   ['stringifyllvmtype',['stringifyLLVMType',['../namespacechig.html#a6ef9d45891ba99268d7c5215ab6c66a6',1,'chig']]],
-  ['structtype',['StructType',['../structchig_1_1StructType.html',1,'chig']]],
+  ['structfromname',['structFromName',['../structchig_1_1GraphModule.html#a64831f6b192140fb9014025717df72ac',1,'chig::GraphModule']]],
   ['success',['success',['../structchig_1_1Result.html#a6d818cb55e17942f46bf8a293c7874b1',1,'chig::Result']]]
 ];
