@@ -45,15 +45,15 @@ struct GraphFuncCallType : public NodeType {
 		setExecOutputs(mygraph->execOutputs());
 	}
 
-	Result codegen(size_t execInputID, llvm::Module* mod, const llvm::DebugLoc& nodeLocation,
-	               llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t execInputID, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io,
 	               llvm::BasicBlock*                  codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Result res = {};
 
 		llvm::IRBuilder<> builder(codegenInto);
 
-		auto func = mod->getFunction(mangleFunctionName(module().fullName(), name()));
+		auto func = codegenInto->getModule()->getFunction(mangleFunctionName(module().fullName(), name()));
 
 		if (func == nullptr) {
 			res.addEntry("EUKN", "Could not find function in llvm module",
@@ -113,8 +113,8 @@ struct MakeStructNodeType : public NodeType {
 	}
 	
 	
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation,
-	               llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io,
 	               llvm::BasicBlock*                  codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		
@@ -123,7 +123,7 @@ struct MakeStructNodeType : public NodeType {
 		
 		llvm::Value* out = io[io.size() - 1]; // output goes last
 		for(auto id = 0; id < io.size() - 1; ++id) {
-			auto ptr = builder.CreateGEP(mStruct->dataType().llvmType(), out, llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id));
+			auto ptr = builder.CreateStructGEP(mStruct->dataType().llvmType(), out, id);
 			builder.CreateStore(io[id], ptr);
 		}
 		
@@ -161,17 +161,22 @@ struct BreakStructNodeType : public NodeType {
 	}
 	
 	
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation,
-	               llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io,
 	               llvm::BasicBlock*                  codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 		
-		llvm::Value* in = io[0]; // input goes first
+		// create temp struct
+		auto tempStruct = builder.CreateAlloca(mStruct->dataType().llvmType());
+		builder.CreateStore(io[0], tempStruct);
+		
 		for(auto id = 1; id < io.size(); ++id) {
-			auto ptr = builder.CreateGEP(mStruct->dataType().llvmType(), in, llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id));
+			auto ptr = builder.CreateStructGEP(nullptr, tempStruct, id - 1);
+			std::string s = stringifyLLVMType(ptr->getType());
+			
 			auto val = builder.CreateLoad(ptr);
 			builder.CreateStore(val, io[id]);
 		}
@@ -320,6 +325,25 @@ Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::j
 	auto graph = graphFuncFromName(name);
 
 	if (graph == nullptr) {
+		
+		// if it wasn't found, then see if it's a struct breaker or maker
+		std::string nameStr = gsl::to_string(name);
+		if(nameStr.substr(0, 6) == "_make_") {
+			auto str = structFromName(nameStr.substr(6));
+			if(str != nullptr) {
+				*toFill = std::make_unique<MakeStructNodeType>(*str);
+				return res;
+			}
+		}
+		if(nameStr.substr(0, 7) == "_break_") {
+			auto str = structFromName(nameStr.substr(7));
+			if(str != nullptr) {
+				*toFill = std::make_unique<BreakStructNodeType>(*str);
+				return res;
+			}
+		}
+		
+		// if we get here than it's for sure not a thing
 		res.addEntry(
 		    "EUKN", "Graph not found in module",
 		    {{"Module Name", gsl::to_string(name)}, {"Requested Graph", gsl::to_string(name)}});

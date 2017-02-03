@@ -28,9 +28,7 @@ struct Cache {
 
 struct codegenMetadata {
 	llvm::BasicBlock*   allocBlock;
-	llvm::Module*       mod;
 	llvm::DIBuilder*    dbuilder;
-	llvm::Function*     f;
 	llvm::DISubprogram* diFunc;
 	std::unordered_map<NodeInstance*, Cache> nodeCache;
 	boost::bimap<unsigned, NodeInstance*>    nodeLocations;
@@ -40,10 +38,14 @@ struct codegenMetadata {
 std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
     NodeInstance* node, llvm::BasicBlock* pureTerminator, NodeInstance* lastImpure,
     unsigned execInputID, llvm::BasicBlock* block, codegenMetadata& data, Result& res) {
+	
 	llvm::IRBuilder<> pureBuilder(block);
-
+	auto f = data.allocBlock->getParent();
+	auto mod = data.allocBlock->getModule();
+	
+	
 	auto codeBlock =
-	    llvm::BasicBlock::Create(node->context().llvmContext(), node->id() + "_code", data.f);
+	    llvm::BasicBlock::Create(node->context().llvmContext(), node->id() + "_code", f);
 	llvm::IRBuilder<> builder(codeBlock);
 
 	// get inputs and outputs
@@ -63,7 +65,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 						pureDependencies.push_back(param.first);
 						pureBBs.push_back(llvm::BasicBlock::Create(
 						    node->context().llvmContext(),
-						    param.first->id() + "____" + impure->id(), data.f));
+						    param.first->id() + "____" + impure->id(), f));
 					}
 				}
 			}
@@ -205,8 +207,8 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			outputBlocks.push_back(remoteCache.inputBlock[remotePortIdx]);
 			needsCodegen.push_back(false);
 		} else {
-			auto outBlock = llvm::BasicBlock::Create(data.f->getContext(),
-			                                         node->type().execOutputs()[idx], data.f);
+			auto outBlock = llvm::BasicBlock::Create(f->getContext(),
+			                                         node->type().execOutputs()[idx], f);
 			outputBlocks.push_back(outBlock);
 			needsCodegen.push_back(true);  // these need codegen
 			if (node->outputExecConnections[idx].first != nullptr) {
@@ -220,9 +222,8 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 
 	// codegen
 	res +=
-	    node->type().codegen(execInputID, data.mod,
-	                         llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc),
-	                         data.f, io, codeBlock, outputBlocks);
+	    node->type().codegen(execInputID,
+	                         llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc), io, codeBlock, outputBlocks);
 	if (!res) { return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}}; }
 
 	// TODO: sequence nodes
@@ -230,7 +231,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 		llvm::IRBuilder<> builder(bb);
 
 		builder.CreateRet(
-		    llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(data.mod->getContext()), 0, true));
+		    llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(mod->getContext()), 0, true));
 	}
 
 	data.nodeCache[node].lastNodeCodegenned = lastImpure;
@@ -428,7 +429,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 	auto            nodeLocations = func.module().createLineNumberAssoc();
 	codegenMetadata codeMetadata{
-	    allocBlock,   mod, &debugBuilder, f, debugFunc, std::unordered_map<NodeInstance*, Cache>{},
+	    allocBlock, &debugBuilder, debugFunc, std::unordered_map<NodeInstance*, Cache>{},
 	    nodeLocations};
 
 	codegenHelper(entry, execInputID, block, codeMetadata, res);

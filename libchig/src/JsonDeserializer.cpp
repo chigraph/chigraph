@@ -40,6 +40,25 @@ Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
 		}
 	}
 
+	
+	// load types
+	{
+		auto iter = input.find("types");
+		if(iter == input.end() || !iter->is_object()) {
+			res.addEntry("EUKN", "No types object in module", {{}});
+			return res;
+		}
+		
+		// declare them
+		for(auto tyIter = iter->begin(); tyIter != iter->end(); ++tyIter) {
+			createdModule->getOrCreateStruct(tyIter.key());
+		}
+		// load them
+		for(auto tyIter = iter->begin(); tyIter != iter->end(); ++tyIter) {
+			res += jsonToGraphStruct(*createdModule, tyIter.key(), tyIter.value());
+		}
+	}
+	
 	// load graphs
 	{
 		auto iter = input.find("graphs");
@@ -71,24 +90,6 @@ Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
 			res += jsonToGraphFunction(*functions[id], graph);
 
 			++id;
-		}
-	}
-	
-	// load types
-	{
-		auto iter = input.find("types");
-		if(iter == input.end() || !iter->is_object()) {
-			res.addEntry("EUKN", "No types object in module", {{}});
-			return res;
-		}
-		
-		// declare them
-		for(auto tyIter = iter->begin(); tyIter != iter->end(); ++tyIter) {
-			createdModule->getOrCreateStruct(tyIter.key());
-		}
-		// load them
-		for(auto tyIter = iter->begin(); tyIter != iter->end(); ++tyIter) {
-			res += jsonToGraphStruct(*createdModule, tyIter.key(), tyIter.value());
 		}
 	}
 	

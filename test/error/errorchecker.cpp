@@ -19,7 +19,7 @@ int checkForErrors(Result res, const char* expectedErr) {
 			return 0;
 		} else {
 			std::cerr << "Expected error " << expectedErr << " but got "
-			          << res.result_json[0]["errorcode"] << std::endl;
+			          << res.result_json[0]["errorcode"] << std::endl << res <<  std::endl;
 			return -1;
 		}
 	}
