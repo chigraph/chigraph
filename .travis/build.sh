@@ -15,7 +15,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 			-DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config \
 			-DCLANG_EXE=`which clang-${LLVM_VERSION}` \
 			-DLLI_EXE=`which lli-${LLVM_VERSION}` \
-			-GNinja -DCMAKE_CXX_FLAGS='-fprofile-arcs -ftest-coverage'
+			-GNinja -DCMAKE_CXX_FLAGS='--coverage'
 	else
 
 		cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
@@ -33,7 +33,8 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
 	if [ -n "$TEST_COV" ]; then 
 		pip install --user cpp-coveralls 
-		coveralls --exclude ../test --exclude ../doc --exclude ../gui --include ../libchig --include ../chig --exclude ../libchig/include/json.hpp
+		coveralls -r .. --exclude /usr --exclude third_party --exclude gui --exclude test --exclude build --include libchig --include chig -b .     
+
 	fi
 
 else 
