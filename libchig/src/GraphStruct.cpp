@@ -66,7 +66,7 @@ DataType GraphStruct::dataType() {
 #else
 											   type.first, 
 #endif
-										 nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8, currentOffset, 0, nullptr)
+										 nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8, currentOffset, 0, nullptr);
 		diTypes.push_back(member);
 		
 		currentOffset += debugType->getSizeInBits();
