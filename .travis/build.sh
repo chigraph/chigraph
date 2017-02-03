@@ -2,14 +2,11 @@
 
 set -xe
 
-mkdir build
-cd build
-
 if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
 	if [ -n "$TEST_COV" ]; then 
 
-		cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+		cmake . -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 			-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
 			-DCMAKE_C_COMPILER=$C_COMPILER \
 			-DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config \
@@ -18,7 +15,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 			-GNinja -DCMAKE_CXX_FLAGS='--coverage'
 	else
 
-		cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
+		cmake . -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 			-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
 			-DCMAKE_C_COMPILER=$C_COMPILER \
 			-DLLVM_CONFIG=/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config \
@@ -33,7 +30,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
 	if [ -n "$TEST_COV" ]; then 
 		pip install --user cpp-coveralls 
-		coveralls -r .. --exclude /usr --exclude third_party --exclude gui --exclude test --exclude build --include libchig --include chig -b .     
+		coveralls --exclude /usr --exclude third_party --exclude gui --exclude test --exclude build --include libchig --include chig --exclude libchig/include/chig/json.hpp    
 
 	fi
 
