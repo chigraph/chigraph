@@ -4,7 +4,7 @@
       "submodules": ["third_party/nodeeditor"],
       "buildenv": "xenial-amd64",
       "builddeps": ["llvm", "llvm-dev", "clang", "qtbase5-dev", "qtdeclarative5-dev", "qtscript5-dev", "libqt5x11extras5-dev", "libqt5svg5-dev", "cmake", "extra-cmake-modules", "gettext", "libkf5xmlgui-dev", "ninja-build"],
-      "buildcmd": ["cmake . -DCMAKE_BUILD_TYPE=Debug -GNinja", "ninja", "ninja test"]
+      "buildcmd": ["apt-get update", "apt-get upgrade -yy", "cmake . -DCMAKE_BUILD_TYPE=Debug -GNinja", "ninja", "ninja test"]
     }
   }
 }
