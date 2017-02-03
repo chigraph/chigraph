@@ -8,7 +8,7 @@ cd $SCRIPTSDIR/..
 kf5dir=$SCRIPTSDIR/../third_party/kf5
 mkdir -p $kf5dir/build
 
-version=5.26.0
+version=5.30.0
 sversion=${version:0:4}
 
 flags=$@
