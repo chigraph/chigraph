@@ -32,6 +32,8 @@ int main(int argc, char** argv) {
 	parser.process(app);
 
 	aboutData.processCommandLine(&parser);
+	
+	QIcon::setThemeName("breeze-dark");
 
 	auto win = new MainWindow();
 	win->show();
