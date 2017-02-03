@@ -1,7 +1,7 @@
 
 ![chigraph logo](doc/images/chigraph.png)
 
-[![Build Status](https://travis-ci.org/chigraph/chigraph.svg?branch=master)](https://travis-ci.org/chigraph/chigraph)
+[![Build Status](https://travis-ci.org/chigraph/chigraph.svg?branch=master)](https://travis-ci.org/chigraph/chigraph) [![Coverage Status](https://coveralls.io/repos/github/chigraph/chigraph/badge.svg)](https://coveralls.io/github/chigraph/chigraph)
 
 # What is chigraph?
 Chigraph,  pronunced chai-graph, is a new systems programming language. It's fast. It's scalable. And, more importantly, it's easy to learn. How does it achieve such goals? By scrapping the age-old standard of text (not entirely though).
