@@ -1,10 +1,9 @@
 {
   "dependencies": [
-    "intprinter",
+    "lang",
     "c",
-    "lang"
+    "intprinter"
   ],
-  "types": {},
   "graphs": [
     {
       "connections": [
@@ -119,8 +118,8 @@
         "{d9ad6f4e-e987-43e0-8dc9-db53552833a4}": {
           "data": 1125,
           "location": [
-            157,
-            278
+            153,
+            277
           ],
           "type": "lang:const-int"
         },
@@ -136,5 +135,6 @@
       "type": "function"
     }
   ],
-  "name": "main"
+  "name": "main",
+  "types": {}
 }

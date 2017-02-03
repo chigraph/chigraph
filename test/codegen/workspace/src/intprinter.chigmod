@@ -3,7 +3,6 @@
     "c",
     "lang"
   ],
-  "types": {},
   "graphs": [
     {
       "connections": [
@@ -226,8 +225,8 @@
         "{cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe}": {
           "data": null,
           "location": [
-            937,
-            20
+            994,
+            23
           ],
           "type": "intprinter:printint"
         },
@@ -328,14 +327,109 @@
             ]
           },
           "location": [
-            801,
-            263
+            813,
+            241
           ],
           "type": "lang:exit"
         }
       },
       "type": "function"
+    },
+    {
+      "connections": [
+        {
+          "input": [
+            "{d28e119d-5458-45aa-8034-fcca232d45f9}",
+            0
+          ],
+          "output": [
+            "{28ef2fa4-86c7-4895-86d4-0dbb921ac7f2}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{d28e119d-5458-45aa-8034-fcca232d45f9}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{d28e119d-5458-45aa-8034-fcca232d45f9}",
+            0
+          ],
+          "type": "exec"
+        }
+      ],
+      "data_inputs": [
+        {
+          "To Print": "lang:i8*"
+        }
+      ],
+      "data_outputs": [],
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "name": "printstr",
+      "nodes": {
+        "entry": {
+          "data": {
+            "data": [
+              {
+                "To Print": "lang:i8*"
+              }
+            ],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            148,
+            213
+          ],
+          "type": "lang:entry"
+        },
+        "{28ef2fa4-86c7-4895-86d4-0dbb921ac7f2}": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            574,
+            229
+          ],
+          "type": "lang:exit"
+        },
+        "{d28e119d-5458-45aa-8034-fcca232d45f9}": {
+          "data": {
+            "code": "#include <stdio.h>\n\nvoid intprinter_printstr(const char* s) {\n  printf(\"%s\", s);\n}",
+            "function": "intprinter_printstr"
+          },
+          "location": [
+            353,
+            213
+          ],
+          "type": "c:func"
+        }
+      },
+      "type": "function"
     }
   ],
-  "name": "intprinter"
+  "name": "intprinter",
+  "types": {}
 }

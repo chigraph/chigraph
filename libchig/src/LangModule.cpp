@@ -53,7 +53,7 @@ struct EntryNodeType : NodeType {
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == dataOutputs().size() && codegenInto != nullptr &&
-		        outputBlocks.size() == 1);
+		        outputBlocks.size() == execOutputs().size());
 
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -67,8 +67,13 @@ struct EntryNodeType : NodeType {
 			++arg_iter;
 		}
 
-		builder.CreateBr(outputBlocks[0]);
-
+		auto inExecID = &*codegenInto->getParent()->arg_begin();
+		auto switchInst = builder.CreateSwitch(inExecID, outputBlocks[0], execOutputs().size());
+		
+		for(auto id = 0ull; id < execOutputs().size(); ++id) {
+			switchInst->addCase(llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id), outputBlocks[id]);
+			
+		}
 		return {};
 	}
 

@@ -25,6 +25,7 @@ set(GUI_SRCS
 	subprocessoutputview.cpp
 	modulebrowser.cpp
 	moduledependencies.cpp
+	execparamlistwidget.cpp
 )
 
 set(GUI_RESOURCES
@@ -41,6 +42,7 @@ set(GUI_HEADERS
 	functiondetails.hpp
 	modulebrowser.hpp
 	moduledependencies.hpp
+	execparamlistwidget.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})

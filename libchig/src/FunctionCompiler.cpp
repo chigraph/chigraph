@@ -367,10 +367,6 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	llvm::BasicBlock* block      = llvm::BasicBlock::Create(mod->getContext(), entry->id(), f);
 	auto              blockcpy   = block;
 
-	// follow "linked list"
-	unsigned execInputID =
-	    entry->outputExecConnections[0].second;  // the exec connection to codegen from
-
 	// set argument names
 	auto idx = 0ull;
 	for (auto& arg : f->getArgumentList()) {
@@ -432,7 +428,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	    allocBlock, &debugBuilder, debugFunc, std::unordered_map<NodeInstance*, Cache>{},
 	    nodeLocations};
 
-	codegenHelper(entry, execInputID, block, codeMetadata, res);
+	codegenHelper(entry, 0, block, codeMetadata, res);
 
 	llvm::IRBuilder<> allocbuilder(allocBlock);
 	allocbuilder.CreateBr(blockcpy);
