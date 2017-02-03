@@ -62,7 +62,7 @@ DataType GraphStruct::dataType() {
 		
 		auto member = llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member, 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 8
-											  llvm::MDString(context().llvmContext(), type.first) 
+											  llvm::MDString::get(context().llvmContext(), type.first) 
 #else
 											   type.first, 
 #endif
