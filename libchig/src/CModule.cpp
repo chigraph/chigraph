@@ -99,11 +99,11 @@ struct CFuncNode : NodeType {
 		}
 	}
 
-	Result codegen(size_t /*inID*/, llvm::Module* mod, const llvm::DebugLoc& nodeLocation,
-	               llvm::Function* /*f*/, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t /*inID*/, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io,
 	               llvm::BasicBlock*                  codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
-		Expects(io.size() == dataInputs().size() + dataOutputs().size() && mod != nullptr &&
+		Expects(io.size() == dataInputs().size() + dataOutputs().size() &&
 		        codegenInto != nullptr && outputBlocks.size() == 1);
 
 		// create a copy of the module
@@ -112,14 +112,14 @@ struct CFuncNode : NodeType {
 // link it in
 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-		llvm::Linker::LinkModules(mod, copymod);
+		llvm::Linker::LinkModules(codegenInto->getModule(), copymod);
 #else
-		llvm::Linker::linkModules(*mod, std::move(copymod));
+		llvm::Linker::linkModules(*codegenInto->getModule(), std::move(copymod));
 #endif
 
-		mod->setDataLayout("");
+		codegenInto->getModule()->setDataLayout("");
 
-		auto llfunc = mod->getFunction(functocall);
+		auto llfunc = codegenInto->getModule()->getFunction(functocall);
 		Expects(llfunc != nullptr);
 
 		llvm::IRBuilder<> builder(codegenInto);

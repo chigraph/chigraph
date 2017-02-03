@@ -1,12 +1,134 @@
 {
   "dependencies": [
-    "lang",
+    "intprinter",
     "c",
-    "intprinter"
+    "lang"
   ],
   "graphs": [
     {
-      "connections": [],
+      "connections": [
+        {
+          "input": [
+            "{f981aee5-d2d3-493a-a116-b196e919e354}",
+            0
+          ],
+          "output": [
+            "{fc51039b-29aa-4fc1-a27e-b6e387aa6315}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{d3ed0750-c87d-43c5-a392-c3ad139bc065}",
+            0
+          ],
+          "output": [
+            "{f981aee5-d2d3-493a-a116-b196e919e354}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{07c1a315-6e94-481c-aab4-19fec16d4ce9}",
+            1
+          ],
+          "output": [
+            "{f981aee5-d2d3-493a-a116-b196e919e354}",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{df9dfc12-9384-4ba5-9858-b071e26981ea}",
+            0
+          ],
+          "output": [
+            "{fc51039b-29aa-4fc1-a27e-b6e387aa6315}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "{0f76cb0d-1056-4f5a-9ee4-f405e5eb50f3}",
+            0
+          ],
+          "output": [
+            "{df9dfc12-9384-4ba5-9858-b071e26981ea}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{df9dfc12-9384-4ba5-9858-b071e26981ea}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "{07c1a315-6e94-481c-aab4-19fec16d4ce9}",
+            0
+          ],
+          "output": [
+            "{0f76cb0d-1056-4f5a-9ee4-f405e5eb50f3}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{4afa2448-3287-49fd-aeb0-88bdc33c01b7}",
+            0
+          ],
+          "output": [
+            "{0f76cb0d-1056-4f5a-9ee4-f405e5eb50f3}",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{27abf71a-0d06-40c0-a936-b150be3cdd24}",
+            0
+          ],
+          "output": [
+            "{07c1a315-6e94-481c-aab4-19fec16d4ce9}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{4afa2448-3287-49fd-aeb0-88bdc33c01b7}",
+            0
+          ],
+          "output": [
+            "{27abf71a-0d06-40c0-a936-b150be3cdd24}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{d3ed0750-c87d-43c5-a392-c3ad139bc065}",
+            0
+          ],
+          "output": [
+            "{27abf71a-0d06-40c0-a936-b150be3cdd24}",
+            1
+          ],
+          "type": "data"
+        }
+      ],
       "data_inputs": [],
       "data_outputs": [],
       "exec_inputs": [
@@ -25,10 +147,74 @@
             ]
           },
           "location": [
-            -5058.5029296875,
-            -2730.76440429688
+            -46.1903381347656,
+            72.9763259887695
           ],
           "type": "lang:entry"
+        },
+        "{07c1a315-6e94-481c-aab4-19fec16d4ce9}": {
+          "data": null,
+          "location": [
+            691.450744628906,
+            198.991333007812
+          ],
+          "type": "main:_break_intpair"
+        },
+        "{0f76cb0d-1056-4f5a-9ee4-f405e5eb50f3}": {
+          "data": null,
+          "location": [
+            959.477600097656,
+            300.484619140625
+          ],
+          "type": "lang:i32==i32"
+        },
+        "{27abf71a-0d06-40c0-a936-b150be3cdd24}": {
+          "data": null,
+          "location": [
+            473.837432861328,
+            203.064697265625
+          ],
+          "type": "main:_make_intpair"
+        },
+        "{4afa2448-3287-49fd-aeb0-88bdc33c01b7}": {
+          "data": 4634,
+          "location": [
+            73.8110046386719,
+            263.59130859375
+          ],
+          "type": "lang:const-int"
+        },
+        "{d3ed0750-c87d-43c5-a392-c3ad139bc065}": {
+          "data": 623,
+          "location": [
+            72.9777526855469,
+            408.257934570312
+          ],
+          "type": "lang:const-int"
+        },
+        "{df9dfc12-9384-4ba5-9858-b071e26981ea}": {
+          "data": null,
+          "location": [
+            1227.802734375,
+            118.106895446777
+          ],
+          "type": "intprinter:printbool"
+        },
+        "{f981aee5-d2d3-493a-a116-b196e919e354}": {
+          "data": null,
+          "location": [
+            953.430725097656,
+            461.151306152344
+          ],
+          "type": "lang:i32==i32"
+        },
+        "{fc51039b-29aa-4fc1-a27e-b6e387aa6315}": {
+          "data": null,
+          "location": [
+            1528.08752441406,
+            274.187286376953
+          ],
+          "type": "intprinter:printbool"
         }
       },
       "type": "function"
@@ -37,8 +223,12 @@
   "name": "main",
   "types": {
     "intpair": [
-      {"left": "lang:i32"},
-      {"right": "lang:i32"}
+      {
+        "left": "lang:i32"
+      },
+      {
+        "right": "lang:i32"
+      }
     ]
   }
 }

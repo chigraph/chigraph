@@ -1,10 +1,9 @@
 {
   "dependencies": [
-    "intprinter",
+    "lang",
     "c",
-    "lang"
+    "intprinter"
   ],
-  "types": {},
   "graphs": [
     {
       "connections": [
@@ -401,8 +400,8 @@
             ]
           },
           "location": [
-            -1286.96423339844,
-            213.180267333984
+            -1265.46508789062,
+            231.096176147461
           ],
           "type": "lang:entry"
         },
@@ -497,8 +496,8 @@
         "{72a55c85-9cb8-4736-80d0-a2ec4c462d26}": {
           "data": null,
           "location": [
-            1166,
-            213
+            1181.61804199219,
+            214.419815063477
           ],
           "type": "intprinter:printbool"
         },
@@ -594,5 +593,6 @@
       "type": "function"
     }
   ],
-  "name": "main"
+  "name": "main",
+  "types": {}
 }

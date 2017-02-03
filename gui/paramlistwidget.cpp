@@ -60,7 +60,13 @@ ParamListItem* paramFromIdx(int idx, QListWidget* list) {
 
 QStringList createTypeOptions(chig::GraphModule* mod) {
 	QStringList ret;
-
+	
+	// add the module
+	for (const auto& ty : mod->typeNames()) {
+		ret << QString::fromStdString(mod->name() + ":" + ty);
+	}
+	
+	// and its dependencies
 	for (auto dep : mod->dependencies()) {
 		auto depMod = mod->context().moduleByFullName(dep);
 		for (const auto& type : depMod->typeNames()) {

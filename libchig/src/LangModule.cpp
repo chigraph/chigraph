@@ -22,8 +22,8 @@ struct IfNodeType : NodeType {
 		setDataInputs({{mod.typeFromName("i1"), "condition"}});
 	}
 
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	Result codegen(size_t /*execInputID*/,
+	               const llvm::DebugLoc&         nodeLocation,
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 2);
@@ -48,18 +48,18 @@ struct EntryNodeType : NodeType {
 		setDataOutputs(std::move(dataInputs));
 	}
 
-	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc& nodeLocation, llvm::Function* f,
+	Result codegen(size_t /*inputExecID*/,
+	               const llvm::DebugLoc& nodeLocation,
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
-		Expects(f != nullptr && io.size() == dataOutputs().size() && codegenInto != nullptr &&
+		Expects(io.size() == dataOutputs().size() && codegenInto != nullptr &&
 		        outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		// store the arguments
-		auto arg_iter = f->arg_begin();
+		auto arg_iter = codegenInto->getParent()->arg_begin();
 		++arg_iter;  // skip the first argument, which is the input exec ID
 		for (const auto& iovalue : io) {
 			builder.CreateStore(&*arg_iter, iovalue);
@@ -101,8 +101,8 @@ struct ConstIntNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i32"), ""}});
 	}
 
-	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	Result codegen(size_t /*inputExecID*/,
+	               const llvm::DebugLoc&         nodeLocation,
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -134,8 +134,8 @@ struct ConstFloatNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("float"), ""}});
 	}
 
-	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	Result codegen(size_t /*inputExecID*/, 
+	               const llvm::DebugLoc&         nodeLocation,
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -166,8 +166,8 @@ struct ConstBoolNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i1"), ""}});
 	}
 
-	Result codegen(size_t /*inputExecID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	Result codegen(size_t /*inputExecID*/,
+	               const llvm::DebugLoc&         nodeLocation,
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -202,17 +202,18 @@ struct ExitNodeType : NodeType {
 		setDataInputs(std::move(dataOutputs));
 	}
 
-	Result codegen(size_t execInputID, llvm::Module* /*mod*/, const llvm::DebugLoc& nodeLocation,
-	               llvm::Function* f, const gsl::span<llvm::Value*> io,
+	Result codegen(size_t execInputID, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io,
 	               llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> /*outputBlocks*/) const override {
-		Expects(execInputID < execInputs().size() && f != nullptr &&
+		Expects(execInputID < execInputs().size() &&
 		        io.size() == dataInputs().size() && codegenInto != nullptr);
 
 		// assign the return types
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
+		llvm::Function* f = codegenInto->getParent();
 		size_t ret_start =
 		    f->arg_size() - io.size();  // returns are after args, find where returns start
 		auto arg_iter = f->arg_begin();
@@ -258,8 +259,8 @@ struct StringLiteralNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i8*"), ""}});
 	}
 
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	Result codegen(size_t /*execInputID*/,
+	               const llvm::DebugLoc&         nodeLocation,
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -295,8 +296,8 @@ struct IntToFloatNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("float"), ""}});
 	}
 
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	Result codegen(size_t /*execInputID*/,
+	               const llvm::DebugLoc&         nodeLocation, 
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 2 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -327,8 +328,8 @@ struct FloatToIntNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i32"), ""}});
 	}
 
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	Result codegen(size_t /*execInputID*/,
+	               const llvm::DebugLoc&         nodeLocation,
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 2 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -388,8 +389,8 @@ struct BinaryOperationNodeType : NodeType {
 		setDataOutputs({{ty, ""}});
 	}
 
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	Result codegen(size_t /*execInputID*/,
+	               const llvm::DebugLoc&         nodeLocation, 
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 3 && codegenInto != nullptr && outputBlocks.size() == 1);
@@ -480,8 +481,8 @@ struct CompareNodeType : NodeType {
 		setDataOutputs({{mod.typeFromName("i1"), ""}});
 	}
 
-	Result codegen(size_t /*execInputID*/, llvm::Module* /*mod*/,
-	               const llvm::DebugLoc&         nodeLocation, llvm::Function* /*f*/,
+	Result codegen(size_t /*execInputID*/,
+	               const llvm::DebugLoc&         nodeLocation, 
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
 		Expects(io.size() == 3 && codegenInto != nullptr && outputBlocks.size() == 1);
