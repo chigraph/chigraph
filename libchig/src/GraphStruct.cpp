@@ -60,7 +60,13 @@ DataType GraphStruct::dataType() {
 		
 		llTypes.push_back(type.second.llvmType());
 		
-		auto member = llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member, type.first, nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8, currentOffset, 0, nullptr);
+		auto member = llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member, 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+											  llvm::MDString(context().llvmContext(), type.first) 
+#else
+											   type.first, 
+#endif
+										 nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8, currentOffset, 0, nullptr);
 		diTypes.push_back(member);
 		
 		currentOffset += debugType->getSizeInBits();
