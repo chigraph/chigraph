@@ -52,6 +52,7 @@ struct GraphFuncCallType : public NodeType {
 		Result res = {};
 
 		llvm::IRBuilder<> builder(codegenInto);
+		builder.SetCurrentDebugLocation(nodeLocation);
 
 		auto func = codegenInto->getModule()->getFunction(mangleFunctionName(module().fullName(), name()));
 
@@ -69,7 +70,6 @@ struct GraphFuncCallType : public NodeType {
 		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
 
 		auto ret = builder.CreateCall(func, passingIO, "call_function");
-		ret->setDebugLoc(nodeLocation);
 
 		// create switch on return
 		auto switchInst = builder.CreateSwitch(ret, outputBlocks[0]);  // TODO: better default
@@ -79,6 +79,7 @@ struct GraphFuncCallType : public NodeType {
 			switchInst->addCase(
 			    llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id),
 			    out);
+			++id;
 		}
 
 		return res;

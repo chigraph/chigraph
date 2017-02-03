@@ -8,6 +8,7 @@
 #include <chig/GraphFunction.hpp>
 
 #include "paramlistwidget.hpp"
+#include "execparamlistwidget.hpp"
 
 class FunctionView;
 
@@ -28,6 +29,14 @@ private slots:
 	void outputChanged(int idx, const chig::DataType& newType, const QString& newName);
 	void outputAdded(const chig::DataType& type, const QString& name);
 	void outputDeleted(int idx);
+	
+	void execInputChanged(int idx, const QString& newName);
+	void execInputAdded(const QString& name);
+	void execInputDeleted(int idx);
+
+	void execOutputChanged(int idx, const QString& newName);
+	void execOutputAdded(const QString& name);
+	void execOutputDeleted(int idx);
 
 private:
 	FunctionView*        mFuncView = nullptr;
@@ -35,6 +44,9 @@ private:
 
 	ParamListWidget* ins;
 	ParamListWidget* outs;
+	
+	ExecParamListWidget* execins;
+	ExecParamListWidget* execouts;
 };
 
 #endif  // CHIGGUI_FUNCTIONDETAILS_HPP
