@@ -144,7 +144,7 @@ struct GraphFunction {
 	/// \param idx The index to change
 	/// \param type The new type. Use {} to keep it's current type
 	/// \param name The new name. Use {} to keep it's current name
-	void modifyDataInput(int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name);
+	void modifyDataInput(int idx, const DataType& type, boost::optional<std::string> name);
 
 	/// \}
 
@@ -169,7 +169,7 @@ struct GraphFunction {
 	/// \param idx The index to change
 	/// \param type The new type. Use {} to keep it's current type
 	/// \param name The new name. Use {} to keep it's current name
-	void modifyDataOutput(int idx, const DataType& type, boost::optional<gsl::cstring_span<>> name);
+	void modifyDataOutput(int idx, const DataType& type, boost::optional<std::string> name);
 
 	/// \}
 

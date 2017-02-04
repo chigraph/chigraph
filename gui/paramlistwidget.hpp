@@ -4,41 +4,30 @@
 #define CHIGGUI_PARAMLISTWIDGET_HPP
 
 #include <QListWidget>
-#include <QWidget>
+#include <QTableView>
 
-#include <chig/DataType.hpp>
-#include <chig/GraphModule.hpp>
+class FunctionView;
 
 class ParamListWidget : public QWidget {
 	Q_OBJECT
 
-	friend class ParamListItem;
-
 public:
-	ParamListWidget(QString title, QWidget* parent = nullptr);
+	enum Type {
+		Input,
+		Output
+	};
+	
+	ParamListWidget(QWidget* parent = nullptr);
 
-	chig::DataType typeForIdx(int idx) const;
-	QString nameForIdx(int idx) const;
-
-	void addParam(const chig::DataType& type, const QString& name, int after);
-	void deleteParam(int idx);
-
-	void modifyParam(int idx, const chig::DataType& type, const QString& name);
-
-	int paramCount() const;
-
-	void clear() { mParamList->clear(); }
-	void setModule(chig::GraphModule* mod) { mMod = mod; }
-signals:
-
-	void paramChanged(int idx, const chig::DataType& newType, const QString& newName);
-
-	void paramAdded(const chig::DataType& type, const QString& name);
-	void paramDeleted(int idx);
-
+	void setFunction(FunctionView* func, Type ty);
+	
 private:
+	void refreshEntry();
+	void refreshExits();
+	
 	QListWidget*       mParamList;
-	chig::GraphModule* mMod = nullptr;
+	FunctionView* mFunc = nullptr;
+	Type mType;
 };
 
 #endif  // CHIGGUI_PARAMLISTWIDGET_HPP

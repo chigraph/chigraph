@@ -206,10 +206,10 @@ void GraphFunction::removeDataInput(int idx) {
 }
 
 void GraphFunction::modifyDataInput(int idx, const DataType& type,
-                                    boost::optional<gsl::cstring_span<>> name) {
+                                    boost::optional<std::string> name) {
 	if (idx < mDataInputs.size()) {
 		if (type.valid()) { mDataInputs[idx].type = type; }
-		if (name) { mDataInputs[idx].name = gsl::to_string(*name); }
+		if (name) { mDataInputs[idx].name = *name; }
 	}
 	updateEntries();
 }
@@ -230,10 +230,10 @@ void GraphFunction::removeDataOutput(int idx) {
 }
 
 void GraphFunction::modifyDataOutput(int idx, const DataType& type,
-                                     boost::optional<gsl::cstring_span<>> name) {
+                                     boost::optional<std::string> name) {
 	if (idx < mDataOutputs.size()) {
 		if (type.valid()) { mDataOutputs[idx].type = type; }
-		if (name) { mDataOutputs[idx].name = gsl::to_string(*name); }
+		if (name) { mDataOutputs[idx].name = *name; }
 	}
 	updateExits();
 }
