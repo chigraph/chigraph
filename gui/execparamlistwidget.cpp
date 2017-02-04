@@ -8,6 +8,8 @@
 #include <KLocalizedString>
 
 ExecParamListWidget::ExecParamListWidget(QString title, QWidget* parent) : QWidget(parent) {
+
+	
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 

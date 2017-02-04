@@ -3,10 +3,15 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QLabel>
 
 #include <KLocalizedString>
 
-FunctionDetails::FunctionDetails(QWidget* parent) : QWidget(parent) {
+FunctionDetails::FunctionDetails(QWidget* parent) : QScrollArea(parent) {
+	
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	setWidgetResizable(false);
+	
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 

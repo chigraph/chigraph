@@ -3,7 +3,7 @@
 #ifndef CHIGGUI_FUNCTIONDETAILS_HPP
 #define CHIGGUI_FUNCTIONDETAILS_HPP
 
-#include <QWidget>
+#include <QScrollArea>
 
 #include <chig/GraphFunction.hpp>
 
@@ -12,7 +12,7 @@
 
 class FunctionView;
 
-class FunctionDetails : public QWidget {
+class FunctionDetails : public QScrollArea {
 	Q_OBJECT
 public:
 	FunctionDetails(QWidget* parent = nullptr);

@@ -103,6 +103,7 @@ boost::optional<std::pair<chig::DataType, QString>> getDataNamePair(QWidget* par
 }
 
 ParamListWidget::ParamListWidget(QString title, QWidget* parent) : QWidget(parent) {
+	
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 

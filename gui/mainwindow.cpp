@@ -60,6 +60,9 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	        [functionsPane](chig::GraphFunction* func) {
 		        functionsPane->updateModule(&func->module());
 		    });
+	connect(this, &MainWindow::moduleOpened, docker, [docker](chig::GraphModule* mod){
+		docker->setWindowTitle(i18n("Functions") + " - " + QString::fromStdString(mod->fullName()));
+	});
 
 	// setup module browser
 	docker = new QDockWidget(i18n("Modules"), this);
@@ -72,6 +75,9 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(
 	    this, &MainWindow::newModuleCreated, moduleBrowser,
 	    [moduleBrowser](chig::GraphModule* mod) { moduleBrowser->loadWorkspace(mod->context()); });
+	connect(this, &MainWindow::workspaceOpened, docker, [docker](chig::Context& ctx){
+		docker->setWindowTitle(i18n("Modules") + " - " + QString::fromStdString(ctx.workspacePath().string()));
+	});
 
 	mFunctionTabs = new QTabWidget(this);
 	mFunctionTabs->setMovable(true);
@@ -94,6 +100,20 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	docker->setWidget(functionDetails);
 	addDockWidget(Qt::RightDockWidgetArea, docker);
 	connect(this, &MainWindow::functionOpened, functionDetails, &FunctionDetails::loadFunction);
+	connect(this, &MainWindow::functionOpened, docker, [docker](FunctionView* func) {
+		docker->setWindowTitle(i18n("Function Details") + " - " + QString::fromStdString(func->function()->name()));
+	});
+	connect(mFunctionTabs, &QTabWidget::currentChanged, functionDetails, [this, docker, functionDetails](int newLoc) {
+		
+		auto funcView = dynamic_cast<FunctionView*>(mFunctionTabs->widget(newLoc));
+		
+		if (funcView != nullptr) {
+			
+			functionDetails->loadFunction(funcView);
+			docker->setWindowTitle(i18n("Function Details") + " - " + QString::fromStdString(funcView->function()->name()));
+		}
+	});
+	
 
 	docker = new QDockWidget(i18n("Module Dependencies"), this);
 	docker->setObjectName("Module Dependencies");
@@ -108,6 +128,9 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 
 			if (view) { view->refreshRegistry(); }
 		}
+	});
+	connect(this, &MainWindow::moduleOpened, docker, [docker](chig::GraphModule* mod){
+		docker->setWindowTitle(i18n("Module Dependencies") + " - " + QString::fromStdString(mod->fullName()));
 	});
 
 	/// Setup actions

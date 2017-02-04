@@ -347,7 +347,7 @@ Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::j
 		// if we get here than it's for sure not a thing
 		res.addEntry(
 		    "EUKN", "Graph not found in module",
-		    {{"Module Name", gsl::to_string(name)}, {"Requested Graph", gsl::to_string(name)}});
+		    {{"Module Name", fullName()}, {"Requested Graph", gsl::to_string(name)}});
 	}
 
 	*toFill = std::make_unique<GraphFuncCallType>(*this, name, &res);
