@@ -77,10 +77,10 @@ public:
 	Context& context() const { return *mContext; }
 	/// Get the data inputs for the node
 	/// \return The data inputs in the format of {{DataType, description}, ...}
-	gsl::span<const std::pair<DataType, std::string>> dataInputs() const { return mDataInputs; }
+	const std::vector<NamedDataType>& dataInputs() const { return mDataInputs; }
 	/// Get the data outputs for the node
 	/// \return The data outputs in the format of {{DataType, description}, ...}
-	gsl::span<const std::pair<DataType, std::string>> dataOutputs() const { return mDataOutputs; }
+	const std::vector<NamedDataType>& dataOutputs() const { return mDataOutputs; }
 	/// Get the execution inputs for the node
 	/// \return The names of the inputs. The size of this vector is the size of inputs.
 	gsl::span<const std::string> execInputs() const { return mExecInputs; }
@@ -95,12 +95,12 @@ public:
 protected:
 	/// Set the data inputs for the NodeType
 	/// \param newInputs The new inputs
-	void setDataInputs(std::vector<std::pair<DataType, std::string>> newInputs) {
+	void setDataInputs(std::vector<NamedDataType> newInputs) {
 		mDataInputs = std::move(newInputs);
 	}
 	/// Set the data outputs for the NodeType
 	/// \param newOutputs The new outputs
-	void setDataOutputs(std::vector<std::pair<DataType, std::string>> newOutputs) {
+	void setDataOutputs(std::vector<NamedDataType> newOutputs) {
 		mDataOutputs = std::move(newOutputs);
 	}
 	/// Set the exec inputs for the NodeType
@@ -145,8 +145,8 @@ private:
 
 	NodeInstance* mNodeInstance = nullptr;
 
-	std::vector<std::pair<DataType, std::string>> mDataInputs;
-	std::vector<std::pair<DataType, std::string>> mDataOutputs;
+	std::vector<NamedDataType> mDataInputs;
+	std::vector<NamedDataType> mDataOutputs;
 
 	std::vector<std::string> mExecInputs;
 	std::vector<std::string> mExecOutputs;

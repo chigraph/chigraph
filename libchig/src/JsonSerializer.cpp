@@ -17,14 +17,14 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 	datainputsjson       = nlohmann::json::array();
 
 	for (auto& in : func.dataInputs()) {
-		datainputsjson.push_back({{in.second, in.first.qualifiedName()}});
+		datainputsjson.push_back({{in.name, in.type.qualifiedName()}});
 	}
 
 	auto& dataoutputsjson = jsonData["data_outputs"];
 	dataoutputsjson       = nlohmann::json::array();
 
 	for (auto& out : func.dataOutputs()) {
-		dataoutputsjson.push_back({{out.second, out.first.qualifiedName()}});
+		dataoutputsjson.push_back({{out.name, out.type.qualifiedName()}});
 	}
 
 	auto& execinputsjson = jsonData["exec_inputs"];
@@ -104,7 +104,7 @@ nlohmann::json graphStructToJson(const GraphStruct& struc) {
 	nlohmann::json ret = nlohmann::json::array();
 	
 	for(const auto& elem : struc.types()) {
-		ret.push_back({{elem.first, elem.second.qualifiedName()}});
+		ret.push_back({{elem.name, elem.type.qualifiedName()}});
 	}
 	
 	return ret;

@@ -33,7 +33,7 @@ struct GraphStruct {
 	
 	/// Get the types the struct contains
 	/// \return The types
-	const std::vector<std::pair<std::string, DataType>>& types() const { return mTypes; }
+	const std::vector<NamedDataType>& types() const { return mTypes; }
 	
 	/// Add a new type to the struct
 	/// \param ty The type
@@ -58,7 +58,7 @@ private:
 	GraphModule* mModule;
 	Context*     mContext;
 
-	std::vector<std::pair<std::string, DataType>> mTypes;
+	std::vector<NamedDataType> mTypes;
 	
 	std::string mName;
 	

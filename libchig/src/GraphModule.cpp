@@ -101,16 +101,10 @@ struct MakeStructNodeType : public NodeType {
 		makePure();
 		
 		// set inputs
-		{
-			std::vector<std::pair<DataType, std::string>> ins;
-			for(const auto& elem : ty.types()) {
-				ins.emplace_back(elem.second, elem.first);
-			}
-			setDataInputs(std::move(ins));
-		}
+		setDataInputs(ty.types());
 		
 		// set output to just be the struct
-		setDataOutputs({{ty.dataType(), ""}});
+		setDataOutputs({{"", ty.dataType()}});
 	}
 	
 	
@@ -148,16 +142,11 @@ struct BreakStructNodeType : public NodeType {
 		makePure();
 		
 		// set input to just be the struct
-		setDataInputs({{ty.dataType(), ""}});
+		setDataInputs({{"", ty.dataType()}});
 		
 		// set outputs
-		{
-			std::vector<std::pair<DataType, std::string>> ins;
-			for(const auto& elem : ty.types()) {
-				ins.emplace_back(elem.second, elem.first);
-			}
-			setDataOutputs(std::move(ins));
-		}
+		setDataOutputs(ty.types());
+		
 		
 	}
 	
@@ -271,8 +260,8 @@ Result GraphModule::saveToDisk() const {
 }
 
 GraphFunction* GraphModule::getOrCreateFunction(gsl::cstring_span<> name,
-                                 std::vector<std::pair<DataType, std::string> > dataIns,
-                                 std::vector<std::pair<DataType, std::string> > dataOuts,
+                                 std::vector<NamedDataType> dataIns,
+                                 std::vector<NamedDataType> dataOuts,
                                  std::vector<std::string> execIns,
                                  std::vector<std::string> execOuts, bool* inserted) {
 	// make sure there already isn't one by this name

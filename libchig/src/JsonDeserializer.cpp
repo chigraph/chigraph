@@ -125,7 +125,7 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 		return res;
 	}
 
-	std::vector<std::pair<DataType, std::string>> datainputs;
+	std::vector<NamedDataType> datainputs;
 	for (auto param : input["data_inputs"]) {
 		std::string docString, qualifiedType;
 		std::tie(docString, qualifiedType) = parseObjectPair(param);
@@ -138,7 +138,7 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 
 		if (!res) { return res; }
 
-		datainputs.emplace_back(ty, docString);
+		datainputs.emplace_back(docString, ty);
 		
 	}
 
@@ -147,7 +147,7 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 		return res;
 	}
 
-	std::vector<std::pair<DataType, std::string>> dataoutputs;
+	std::vector<NamedDataType> dataoutputs;
 	for (auto param : input["data_outputs"]) {
 		
 		std::string docString, qualifiedType;
@@ -161,7 +161,7 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 
 		if (!res) { return res; }
 
-		dataoutputs.emplace_back(ty, docString);
+		dataoutputs.emplace_back(docString, ty);
 	
 	}
 

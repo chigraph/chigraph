@@ -73,7 +73,7 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 	auto id = 0ull;
 	for (const auto& conn : inputDataConnections) {
 		if (!(conn.first != nullptr && newType->dataInputs().size() > id &&
-		      type().dataInputs()[id].first == newType->dataInputs()[id].first)) {
+		      type().dataInputs()[id].type == newType->dataInputs()[id].type)) {
 			disconnectData(*conn.first, conn.second, *this);
 		}
 		++id;
@@ -84,7 +84,7 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 	for (const auto& connSlot : outputDataConnections) {
 		// keep the connections if they're still good
 		if (newType->dataOutputs().size() > id &&
-		    type().dataOutputs()[id].first == newType->dataOutputs()[id].first) {
+		    type().dataOutputs()[id].type == newType->dataOutputs()[id].type) {
 			continue;
 		}
 
@@ -115,7 +115,7 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_
 	if (lhsConnID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
 		for (auto& output : lhs.type().dataOutputs()) {
-			dataOutputs.push_back({{output.second, output.first.qualifiedName()}});
+			dataOutputs.push_back({{output.name, output.type.qualifiedName()}});
 		}
 
 		res.addEntry("E22", "Output Data connection doesn't exist in node",
@@ -127,7 +127,7 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_
 	if (rhsConnID >= rhs.inputDataConnections.size()) {
 		auto dataInputs = nlohmann::json::array();
 		for (auto& output : rhs.type().dataInputs()) {
-			dataInputs.push_back({{output.second, output.first.qualifiedName()}});
+			dataInputs.push_back({{output.name, output.type.qualifiedName()}});
 		}
 
 		res.addEntry("E23", "Input Data connection doesn't exist in node",
@@ -140,10 +140,10 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_
 	// if there are errors, back out
 	if (!res) { return res; }
 	// make sure the connection is of the right type
-	if (lhs.type().dataOutputs()[lhsConnID].first != rhs.type().dataInputs()[rhsConnID].first) {
+	if (lhs.type().dataOutputs()[lhsConnID].type != rhs.type().dataInputs()[rhsConnID].type) {
 		res.addEntry("E24", "Connecting data nodes with different types is invalid",
-		             {{"Left Hand Type", lhs.type().dataOutputs()[lhsConnID].first.qualifiedName()},
-		              {"Right Hand Type", rhs.type().dataInputs()[rhsConnID].first.qualifiedName()},
+		             {{"Left Hand Type", lhs.type().dataOutputs()[lhsConnID].type.qualifiedName()},
+		              {"Right Hand Type", rhs.type().dataInputs()[rhsConnID].type.qualifiedName()},
 		              {"Left Node JSON", rhs.type().toJSON()},
 		              {"Right Node JSON", rhs.type().toJSON()}});
 		return res;
@@ -218,7 +218,7 @@ Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
 	if (lhsConnID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
 		for (auto& output : lhs.type().dataOutputs()) {
-			dataOutputs.push_back({{output.second, output.first.qualifiedName()}});
+			dataOutputs.push_back({{output.name, output.type.qualifiedName()}});
 		}
 
 		res.addEntry("E22", "Output data connection in node doesn't exist",
@@ -246,7 +246,7 @@ Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
 	if (rhs.inputDataConnections.size() <= iter->second) {
 		auto dataInputs = nlohmann::json::array();
 		for (auto& output : rhs.type().dataInputs()) {
-			dataInputs.push_back({{output.second, output.first.qualifiedName()}});
+			dataInputs.push_back({{output.name, output.type.qualifiedName()}});
 		}
 
 		res.addEntry("E23", "Input Data connection doesn't exist in node",

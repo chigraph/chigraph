@@ -65,8 +65,8 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 			idandname = {
 			    mInst->type()
 			        .dataInputs()[pIndex - mInst->type().execInputs().size()]
-			        .first.qualifiedName(),
-			    mInst->type().dataInputs()[pIndex - mInst->type().execInputs().size()].second};
+			        .type.qualifiedName(),
+			    mInst->type().dataInputs()[pIndex - mInst->type().execInputs().size()].name};
 
 		} else {
 			idandname = {"exec", mInst->type().execInputs()[pIndex]};
@@ -78,7 +78,7 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 		if (pIndex >= int(mInst->type().execOutputs().size())) {
 			auto dataOutput =
 			    mInst->type().dataOutputs()[pIndex - mInst->type().execOutputs().size()];
-			idandname = {dataOutput.first.qualifiedName(), dataOutput.second};
+			idandname = {dataOutput.type.qualifiedName(), dataOutput.name};
 
 		} else {
 			idandname = {"exec", mInst->type().execOutputs()[pIndex]};

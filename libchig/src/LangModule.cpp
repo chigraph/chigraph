@@ -19,7 +19,7 @@ struct IfNodeType : NodeType {
 		setExecInputs({""});
 		setExecOutputs({"True", "False"});
 
-		setDataInputs({{mod.typeFromName("i1"), "condition"}});
+		setDataInputs({{"condition", mod.typeFromName("i1")}});
 	}
 
 	Result codegen(size_t /*execInputID*/,
@@ -40,7 +40,7 @@ struct IfNodeType : NodeType {
 };
 
 struct EntryNodeType : NodeType {
-	EntryNodeType(LangModule& mod, std::vector<std::pair<DataType, std::string>> dataInputs,
+	EntryNodeType(LangModule& mod, std::vector<NamedDataType> dataInputs,
 	              std::vector<std::string> execInputs)
 	    : NodeType(mod, "entry", "entry to a function") {
 		setExecOutputs(std::move(execInputs));
@@ -87,7 +87,7 @@ struct EntryNodeType : NodeType {
 		auto& data = ret["data"];
 		data       = nlohmann::json::array();
 		for (auto& pair : dataOutputs()) {
-			data.push_back({{pair.second, pair.first.qualifiedName()}});
+			data.push_back({{pair.name, pair.type.qualifiedName()}});
 		}
 
 		auto& exec = ret["exec"];
@@ -103,7 +103,7 @@ struct ConstIntNodeType : NodeType {
 	    : NodeType(mod, "const-int", "Int literal"), number(num) {
 		makePure();
 
-		setDataOutputs({{mod.typeFromName("i32"), ""}});
+		setDataOutputs({{"", mod.typeFromName("i32")}});
 	}
 
 	Result codegen(size_t /*inputExecID*/,
@@ -136,7 +136,7 @@ struct ConstFloatNodeType : NodeType {
 	    : NodeType(mod, "const-float", "Float Literal"), number(num) {
 		makePure();
 
-		setDataOutputs({{mod.typeFromName("float"), ""}});
+		setDataOutputs({{"", mod.typeFromName("float")}});
 	}
 
 	Result codegen(size_t /*inputExecID*/, 
@@ -168,7 +168,7 @@ struct ConstBoolNodeType : NodeType {
 	    : NodeType{mod, "const-bool", "Boolean literal"}, value{num} {
 		makePure();
 
-		setDataOutputs({{mod.typeFromName("i1"), ""}});
+		setDataOutputs({{"", mod.typeFromName("i1")}});
 	}
 
 	Result codegen(size_t /*inputExecID*/,
@@ -198,7 +198,7 @@ struct ConstBoolNodeType : NodeType {
 };
 
 struct ExitNodeType : NodeType {
-	ExitNodeType(LangModule& mod, std::vector<std::pair<DataType, std::string>> dataOutputs,
+	ExitNodeType(LangModule& mod, std::vector<NamedDataType> dataOutputs,
 	             std::vector<std::string> execOutputs)
 	    : NodeType{mod, "exit", "Return from a function"} {
 		// outputs to the function are inputs to the node
@@ -244,7 +244,7 @@ struct ExitNodeType : NodeType {
 		auto& data = ret["data"];
 		data       = nlohmann::json::array();
 		for (auto& pair : dataInputs()) {
-			data.push_back({{pair.second, pair.first.qualifiedName()}});
+			data.push_back({{pair.name, pair.type.qualifiedName()}});
 		}
 
 		auto& exec = ret["exec"];
@@ -261,7 +261,7 @@ struct StringLiteralNodeType : NodeType {
 	      literalString(std::move(str)) {
 		makePure();
 
-		setDataOutputs({{mod.typeFromName("i8*"), ""}});
+		setDataOutputs({{"", mod.typeFromName("i8*")}});
 	}
 
 	Result codegen(size_t /*execInputID*/,
@@ -297,8 +297,8 @@ struct IntToFloatNodeType : NodeType {
 		setExecInputs({""});
 		setExecOutputs({""});
 
-		setDataInputs({{mod.typeFromName("i32"), ""}});
-		setDataOutputs({{mod.typeFromName("float"), ""}});
+		setDataInputs({{"", mod.typeFromName("i32")}});
+		setDataOutputs({{"", mod.typeFromName("float")}});
 	}
 
 	Result codegen(size_t /*execInputID*/,
@@ -329,8 +329,8 @@ struct FloatToIntNodeType : NodeType {
 		setExecInputs({""});
 		setExecOutputs({""});
 
-		setDataInputs({{mod.typeFromName("float"), ""}});
-		setDataOutputs({{mod.typeFromName("i32"), ""}});
+		setDataInputs({{"", mod.typeFromName("float")}});
+		setDataOutputs({{"", mod.typeFromName("i32")}});
 	}
 
 	Result codegen(size_t /*execInputID*/,
@@ -390,8 +390,8 @@ struct BinaryOperationNodeType : NodeType {
 
 		setDescription(opVerb + " two " + ty.unqualifiedName() + "s");
 
-		setDataInputs({{ty, "a"}, {ty, "b"}});
-		setDataOutputs({{ty, ""}});
+		setDataInputs({{"a", ty}, {"b", ty}});
+		setDataOutputs({{"", ty}});
 	}
 
 	Result codegen(size_t /*execInputID*/,
@@ -482,8 +482,8 @@ struct CompareNodeType : NodeType {
 		setDescription("Check if one " + ty.unqualifiedName() + " is " + opVerb + " than another " +
 		               ty.unqualifiedName());
 
-		setDataInputs({{ty, "a"}, {ty, "b"}});
-		setDataOutputs({{mod.typeFromName("i1"), ""}});
+		setDataInputs({{"a", ty}, {"b", ty}});
+		setDataOutputs({{"", mod.typeFromName("i1")}});
 	}
 
 	Result codegen(size_t /*execInputID*/,
@@ -657,7 +657,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	     [this](const nlohmann::json& injson, Result& res) {
 
 		     // transform the JSON data into this data structure
-		     std::vector<std::pair<DataType, std::string>> dataInputs;
+		     std::vector<NamedDataType> dataInputs;
 
 		     if (injson.find("data") != injson.end()) {
 			     auto& data = injson["data"];
@@ -680,7 +680,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 
 					     if (!res) { continue; }
 
-					     dataInputs.emplace_back(cty, docString);
+					     dataInputs.emplace_back(docString, cty);
 				     }
 
 			     } else {
@@ -714,7 +714,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	    {"exit"s,
 	     [this](const nlohmann::json& injson, Result& res) {
 		     // transform the JSON data into this data structure
-		     std::vector<std::pair<DataType, std::string>> dataOutputs;
+		     std::vector<NamedDataType> dataOutputs;
 
 		     if (injson.find("data") != injson.end()) {
 			     auto& data = injson["data"];
@@ -735,7 +735,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 					     // TODO: maybe not discard res
 					     context().typeFromModule(module, type, &cty);
 
-					     dataOutputs.emplace_back(cty, docString);
+					     dataOutputs.emplace_back(docString, cty);
 				     }
 
 			     } else {

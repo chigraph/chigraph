@@ -56,15 +56,15 @@ DataType GraphStruct::dataType() {
 	
 	size_t currentOffset = 0;
 	for(const auto& type : types()) {
-		auto debugType = type.second.debugType();
+		auto debugType = type.type.debugType();
 		
-		llTypes.push_back(type.second.llvmType());
+		llTypes.push_back(type.type.llvmType());
 		
 		auto member = llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member, 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 8
-											  llvm::MDString::get(context().llvmContext(), type.first),
+											  llvm::MDString::get(context().llvmContext(), type.name),
 #else
-											   type.first, 
+											   type.name, 
 #endif
 										 nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8, currentOffset, 0, nullptr);
 		diTypes.push_back(member);
