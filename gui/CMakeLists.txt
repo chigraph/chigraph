@@ -10,7 +10,7 @@ include(KDECMakeSettings)
 include(FeatureSummary)
 
 # find qt
-find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt5 5.6.0 REQUIRED COMPONENTS Core Widgets)
 
 find_package(KF5 REQUIRED COMPONENTS CoreAddons I18n XmlGui WidgetsAddons TextWidgets IconThemes)
 
