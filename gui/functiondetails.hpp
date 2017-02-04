@@ -22,14 +22,6 @@ public slots:
 
 private slots:
 
-	void inputChanged(int idx, const chig::DataType& newType, const QString& newName);
-	void inputAdded(const chig::DataType& type, const QString& name);
-	void inputDeleted(int idx);
-
-	void outputChanged(int idx, const chig::DataType& newType, const QString& newName);
-	void outputAdded(const chig::DataType& type, const QString& name);
-	void outputDeleted(int idx);
-	
 	void execInputChanged(int idx, const QString& newName);
 	void execInputAdded(const QString& name);
 	void execInputDeleted(int idx);
