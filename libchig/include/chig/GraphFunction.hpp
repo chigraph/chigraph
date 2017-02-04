@@ -29,8 +29,8 @@ struct GraphFunction {
 	/// \param execIns The exec inputs to the function
 	/// \param execOuts The exec outputs to the function
 	GraphFunction(GraphModule& mod, gsl::cstring_span<>         name,
-	              std::vector<std::pair<DataType, std::string>> dataIns,
-	              std::vector<std::pair<DataType, std::string>> dataOuts,
+	              std::vector<NamedDataType> dataIns,
+	              std::vector<NamedDataType> dataOuts,
 	              std::vector<std::string> execIns, std::vector<std::string> execOuts);
 
 	
@@ -130,7 +130,7 @@ struct GraphFunction {
 
 	/// Get the function data inputs in the format {type, docstring}
 	/// \return The inputs
-	const std::vector<std::pair<DataType, std::string>>& dataInputs() const { return mDataInputs; }
+	const std::vector<NamedDataType>& dataInputs() const { return mDataInputs; }
 	/// Add an input to the end of the argument list
 	/// \param type The new input type
 	/// \param name The name of the input (just for documentation)
@@ -153,7 +153,7 @@ struct GraphFunction {
 
 	/// Get the function data outputs in the format {type, docstring}
 	/// \return The outputs
-	const std::vector<std::pair<DataType, std::string>>& dataOutputs() const {
+	const std::vector<NamedDataType>& dataOutputs() const {
 		return mDataOutputs;
 	}
 	/// Add an data output to the end of the argument list
@@ -239,8 +239,8 @@ private:
 	Context*     mContext;
 	std::string  mName;  /// the name of the function
 
-	std::vector<std::pair<DataType, std::string>> mDataInputs;
-	std::vector<std::pair<DataType, std::string>> mDataOutputs;
+	std::vector<NamedDataType> mDataInputs;
+	std::vector<NamedDataType> mDataOutputs;
 
 	std::vector<std::string> mExecInputs;
 	std::vector<std::string> mExecOutputs;

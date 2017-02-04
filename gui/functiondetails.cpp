@@ -62,11 +62,11 @@ void FunctionDetails::loadFunction(FunctionView* func) {
 	execouts->setModule(&mFunc->module());
 
 	for (auto in : mFunc->dataInputs()) {
-		ins->addParam(in.first, QString::fromStdString(in.second), ins->paramCount() - 1);
+		ins->addParam(in.type, QString::fromStdString(in.name), ins->paramCount() - 1);
 	}
 
 	for (auto out : mFunc->dataOutputs()) {
-		outs->addParam(out.first, QString::fromStdString(out.second), ins->paramCount() - 1);
+		outs->addParam(out.type, QString::fromStdString(out.name), ins->paramCount() - 1);
 	}
 	
 	for (const auto& in : mFunc->execInputs()) {

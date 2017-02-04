@@ -57,6 +57,21 @@ private:
 	llvm::Type* mLLVMType;
 	llvm::DIType* mDIType;
 };
+
+struct NamedDataType {
+	NamedDataType(std::string n = {}, DataType ty = {}) : name{std::move(n)}, type{std::move(ty)} {}
+	
+	bool operator==(const NamedDataType& other) const {
+		return name == other.name && type == other.type;
+	}
+	bool operator!=(const NamedDataType& other) const {
+		return !(*this == other);
+	}
+	
+	std::string name;
+	DataType type;
+};
+
 }
 
 #endif  // CHIG_DATA_TYPE_HPP

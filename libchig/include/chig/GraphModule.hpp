@@ -67,8 +67,8 @@ struct GraphModule : public ChigModule {
 	/// \param inserted Pointer of a bool to fill; sets to true if it was inserted and false if it already existed
 	/// \return The function
 	GraphFunction* getOrCreateFunction(gsl::cstring_span<> name,
-	                    std::vector<std::pair<DataType, std::string>> dataIns,
-	                    std::vector<std::pair<DataType, std::string>> dataOuts,
+						std::vector<NamedDataType> dataIns,
+						std::vector<NamedDataType> dataOuts,
 	                    std::vector<std::string> execIns, std::vector<std::string> execOuts,
 	                    bool* inserted = nullptr);
 
@@ -124,6 +124,7 @@ struct GraphModule : public ChigModule {
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
 	std::vector<std::unique_ptr<GraphStruct>> mStructs;
+	std::vector<NamedDataType> mLocalVariable;
 };
 }  // namespace chig
 

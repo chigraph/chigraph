@@ -123,11 +123,11 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 
 			// make sure it's the right type
 			if (io[io.size() - 1]->getType() !=
-			    node->type().dataInputs()[inputID].first.llvmType()) {
+			    node->type().dataInputs()[inputID].type.llvmType()) {
 				res.addEntry(
 				    "EINT", "Internal codegen error: unexpected type in cache.",
 				    {{"Expected LLVM type",
-				      stringifyLLVMType(node->type().dataInputs()[inputID].first.llvmType())},
+				      stringifyLLVMType(node->type().dataInputs()[inputID].type.llvmType())},
 				     {"Found type", stringifyLLVMType(io[io.size() - 1]->getType())},
 				     {"Node ID", node->id()},
 				     {"Input ID", inputID}});
@@ -144,15 +144,15 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 
 		for (auto& output : node->type().dataOutputs()) {
 			// TODO: research address spaces
-			llvm::AllocaInst* alloc = allocBuilder.CreateAlloca(output.first.llvmType(), nullptr,
-			                                                    node->id() + "__" + output.second);
+			llvm::AllocaInst* alloc = allocBuilder.CreateAlloca(output.type.llvmType(), nullptr,
+			                                                    node->id() + "__" + output.name);
 			outputCache.push_back(alloc);
 			io.push_back(alloc);
 
 			// create debug info
 			{
 				// get type
-				llvm::DIType* dType = output.first.debugType();
+				llvm::DIType* dType = output.type.debugType();
 
 				// TODO: better names
 				auto debugVar = data.dbuilder->
@@ -161,7 +161,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 #else
 				                createAutoVariable(
 #endif
-				                                    data.diFunc, node->id() + "__" + output.second,
+				                                    data.diFunc, node->id() + "__" + output.name,
 				                                    data.diFunc->getFile(), 1, dType);
 
 				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
@@ -170,11 +170,11 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			}
 
 			// make sure the type is right
-			if (llvm::PointerType::get(output.first.llvmType(), 0) != alloc->getType()) {
+			if (llvm::PointerType::get(output.type.llvmType(), 0) != alloc->getType()) {
 				res.addEntry(
 				    "EINT", "Internal codegen error: unexpected type returned from alloca.",
 				    {{"Expected LLVM type",
-				      stringifyLLVMType(llvm::PointerType::get(output.first.llvmType(), 0))},
+				      stringifyLLVMType(llvm::PointerType::get(output.type.llvmType(), 0))},
 				     {"Yielded type", stringifyLLVMType(alloc->getType())},
 				     {"Node ID", node->id()}});
 			}
@@ -283,13 +283,13 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	                entry->type().dataOutputs().begin())) {
 		nlohmann::json inFunc = nlohmann::json::array();
 		for (auto& in : func.dataInputs()) {
-			inFunc.push_back({{in.second, in.first.qualifiedName()}});
+			inFunc.push_back({{in.name, in.type.qualifiedName()}});
 		}
 
 		nlohmann::json inEntry = nlohmann::json::array();
 		for (auto& in :
 		     entry->type().dataOutputs()) {  // outputs to entry are inputs to the function
-			inEntry.push_back({{in.second, in.first.qualifiedName()}});
+			inEntry.push_back({{in.name, in.type.qualifiedName()}});
 		}
 
 		res.addEntry("EUKN", "Inputs to function doesn't match function inputs",
@@ -302,13 +302,13 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	                func.dataOutputs().begin())) {
 		nlohmann::json outFunc = nlohmann::json::array();
 		for (auto& out : func.dataOutputs()) {
-			outFunc.push_back({{out.second, out.first.qualifiedName()}});
+			outFunc.push_back({{out.name, out.type.qualifiedName()}});
 		}
 
 		nlohmann::json outEntry = nlohmann::json::array();
 		for (auto& out : func.dataOutputs()) {
 			// inputs to the exit are outputs to the function
-			outEntry.push_back({{out.second, out.first.qualifiedName()}});
+			outEntry.push_back({{out.name, out.type.qualifiedName()}});
 		}
 
 		res.addEntry("EUKN", "Outputs to function doesn't match function exit",
@@ -335,7 +335,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 			// add paramters
 			for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
-				params.push_back(dType.first.debugType());
+				params.push_back(dType.type.debugType());
 			}
 		}
 
@@ -394,25 +394,25 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			continue;
 		}
 
-		std::pair<DataType, std::string> tyAndName;
+		NamedDataType tyAndName;
 		// all the - 1's is becaues the first is the inputexec_id
 		if (idx - 1 < func.dataInputs().size()) {
 			tyAndName = func.dataInputs()[idx - 1];
 		} else {
 			tyAndName = func.dataOutputs()[idx - 1 - entry->type().dataOutputs().size()];
 		}
-		arg.setName(tyAndName.second);
+		arg.setName(tyAndName.name);
 
 		// create debug info
 
 		// create DIType*
-		llvm::DIType* dType = tyAndName.first.debugType();
+		llvm::DIType* dType = tyAndName.type.debugType();
 		auto debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
-		                                      tyAndName.second, debugFile, 0, dType);
+		                                      tyAndName.name, debugFile, 0, dType);
 #else
-		                  createParameterVariable(debugFunc, tyAndName.second,
+		                  createParameterVariable(debugFunc, tyAndName.name,
 		                                          idx + 1,  // + 1 because it starts at 1
 		                                          debugFile, 0, dType);
 #endif
