@@ -68,6 +68,8 @@ struct NamedDataType {
 		return !(*this == other);
 	}
 	
+	bool valid() const { return type.valid(); }
+	
 	std::string name;
 	DataType type;
 };

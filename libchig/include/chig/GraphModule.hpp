@@ -106,7 +106,7 @@ struct GraphModule : public ChigModule {
 	
 	/// Create a new struct in the module
 	/// \param name The name of the struct
-	/// \inserted True if the struct was new, optional
+	/// \param inserted True if the struct was new, optional
 	/// \return The new struct
 	GraphStruct* getOrCreateStruct(std::string name, bool* inserted = nullptr);
 	
@@ -124,7 +124,6 @@ struct GraphModule : public ChigModule {
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
 	std::vector<std::unique_ptr<GraphStruct>> mStructs;
-	std::vector<NamedDataType> mLocalVariable;
 };
 }  // namespace chig
 

@@ -102,7 +102,7 @@ struct CFuncNode : NodeType {
 	Result codegen(size_t /*inID*/, const llvm::DebugLoc& nodeLocation,
 	               const gsl::span<llvm::Value*> io,
 	               llvm::BasicBlock*                  codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
+	               const gsl::span<llvm::BasicBlock*> outputBlocks, std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
 		Expects(io.size() == dataInputs().size() + dataOutputs().size() &&
 		        codegenInto != nullptr && outputBlocks.size() == 1);
 
