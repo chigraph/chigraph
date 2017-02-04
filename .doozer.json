@@ -3,7 +3,7 @@
     "xenial-amd64/gcc/debug": {
       "submodules": ["third_party/nodeeditor"],
       "buildenv": "xenial-amd64",
-      "builddeps": ["wget", "llvm", "llvm-dev", "libxcb-keysyms1-dev", "clang", "libxrender-dev", "qtbase5-dev", "qttools5-dev-tools", "qttools5-dev", "qtdeclarative5-dev", "qtscript5-dev", "libqt5x11extras5-dev", "libqt5svg5-dev", "cmake", "extra-cmake-modules", "gettext", "ninja-build", "build-essential"],
+      "builddeps": ["wget", "flex", "bison", "llvm", "llvm-dev", "libxcb-keysyms1-dev", "clang", "libxrender-dev", "qtbase5-dev", "qttools5-dev-tools", "qttools5-dev", "qtdeclarative5-dev", "qtscript5-dev", "libqt5x11extras5-dev", "libqt5svg5-dev", "cmake", "extra-cmake-modules", "gettext", "ninja-build", "build-essential"],
       "buildcmd": ["./scripts/build_frameworks.sh -DCMAKE_BUILD_TYPE=Debug -GNinja", "cmake . -DCMAKE_BUILD_TYPE=Debug -GNinja", "ninja", "ninja test"]
     }
   }
