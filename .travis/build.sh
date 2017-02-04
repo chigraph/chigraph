@@ -36,7 +36,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
 else 
 	
-	cmake .. \
+	cmake . \
 		-DCMAKE_PREFIX_PATH='/usr/local/opt/qt5/;/usr/local/opt/gettext' \
 		-DCMAKE_BUILD_TYPE=Debug \
 		-DLLVM_CONFIG=/usr/local/opt/llvm/bin/llvm-config \
