@@ -218,6 +218,30 @@ struct GraphFunction {
 
 	/// \}
 
+		
+	/// \name Local Variable Manipulation functions
+	/// \{
+	
+	/// Get a local varaible by name
+	/// \param name The name of the variable
+	/// \return The local or {} if not found
+	NamedDataType localVariableFromName(gsl::cstring_span<> name) const;
+	
+	/// Create a new local varaible in the module
+	/// \param name The name of the local variable
+	/// \param type The type of the local
+	/// \param inserted True if the local varaiable was new, optional
+	/// \return The new local variable or the already existing one
+	NamedDataType getOrCreateLocalVaraible(std::string name, DataType type, bool* inserted = nullptr);
+	
+	/// Remove a local variable from the module by name
+	/// \param name The name of the local variable to remove
+	/// \return True if a local was actually removed, false if no local by that name existed
+	bool removeLocalVaraible(gsl::cstring_span<> name);
+	
+	/// \}
+
+	
 	// Various getters
 	//////////////////
 
@@ -244,6 +268,8 @@ private:
 
 	std::vector<std::string> mExecInputs;
 	std::vector<std::string> mExecOutputs;
+	
+	std::vector<NamedDataType> mLocalVariables;
 
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>
 	    mNodes;  /// Storage for the nodes

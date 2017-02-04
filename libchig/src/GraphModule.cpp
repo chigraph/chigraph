@@ -48,7 +48,7 @@ struct GraphFuncCallType : public NodeType {
 	Result codegen(size_t execInputID, const llvm::DebugLoc& nodeLocation,
 	               const gsl::span<llvm::Value*> io,
 	               llvm::BasicBlock*                  codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
+	               const gsl::span<llvm::BasicBlock*> outputBlocks, std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
 		Result res = {};
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -64,8 +64,7 @@ struct GraphFuncCallType : public NodeType {
 
 		// add the execInputID to the argument list
 		std::vector<llvm::Value*> passingIO;
-		passingIO.push_back(llvm::ConstantInt::get(
-		    llvm::IntegerType::getInt32Ty(context().llvmContext()), execInputID));
+		passingIO.push_back(builder.getInt32(execInputID));
 
 		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
 
@@ -76,8 +75,7 @@ struct GraphFuncCallType : public NodeType {
 
 		auto id = 0ull;
 		for (auto out : outputBlocks) {
-			switchInst->addCase(
-			    llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(context().llvmContext()), id),
+			switchInst->addCase(builder.getInt32(id),
 			    out);
 			++id;
 		}
@@ -111,7 +109,7 @@ struct MakeStructNodeType : public NodeType {
 	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	               const gsl::span<llvm::Value*> io,
 	               llvm::BasicBlock*                  codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
+	               const gsl::span<llvm::BasicBlock*> outputBlocks, std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
 		
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -154,7 +152,7 @@ struct BreakStructNodeType : public NodeType {
 	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	               const gsl::span<llvm::Value*> io,
 	               llvm::BasicBlock*                  codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks) const override {
+	               const gsl::span<llvm::BasicBlock*> outputBlocks, std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
 		
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -182,6 +180,113 @@ struct BreakStructNodeType : public NodeType {
 	}
 	
 	GraphStruct* mStruct;
+};
+
+struct SetLocalNodeType : public NodeType {
+	SetLocalNodeType(ChigModule& mod, NamedDataType ty) : NodeType(mod), mDataType{std::move(ty)} {
+		setName("_set_" + ty.name);
+		setDescription("Set " + ty.name);
+		
+		setDataInputs({{"", ty.type}});
+		
+		setExecInputs({""});
+		setExecOutputs({""});
+		
+	}
+		
+	
+	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io,
+	               llvm::BasicBlock*                  codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks, std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+		
+		
+		llvm::IRBuilder<> builder{codegenInto};
+		builder.SetCurrentDebugLocation(nodeLocation);
+		
+					   
+		llvm::Value* local = nullptr;
+		
+		// see if it's already in the cache
+		auto iter = compileCache.find(mDataType.name);
+		if (iter != compileCache.end()) {
+			local  = static_cast<llvm::Value*>(iter->second.get());
+		}
+		
+		if (local == nullptr) {
+			// create a new one!
+			local = builder.CreateAlloca(mDataType.type.llvmType());
+			
+			compileCache[mDataType.name] = std::make_shared<llvm::Value*>(local);
+		}
+		
+		// set the value!
+		builder.CreateStore(io[0], local);
+		
+		builder.CreateBr(outputBlocks[0]);
+		
+		return {};
+	}
+	
+	nlohmann::json            toJSON() const override { return {}; }
+	std::unique_ptr<NodeType> clone() const override {
+		return std::make_unique<SetLocalNodeType>(module(), mDataType);
+	}
+	
+	NamedDataType mDataType;
+};
+
+struct GetLocalNodeType : public NodeType {
+	GetLocalNodeType(ChigModule& mod, NamedDataType ty) : NodeType(mod), mDataType{std::move(ty)} {
+		setName("_get_" + ty.name);
+		setDescription("Get " + ty.name);
+		
+		setDataOutputs({{"", ty.type}});
+		
+		makePure();
+		
+	}
+		
+	
+	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io,
+	               llvm::BasicBlock*                  codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks, std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+		
+		
+		llvm::IRBuilder<> builder{codegenInto};
+		builder.SetCurrentDebugLocation(nodeLocation);
+		
+					   
+		llvm::Value* local = nullptr;
+		
+		// see if it's already in the cache
+		auto iter = compileCache.find(mDataType.name);
+		if (iter != compileCache.end()) {
+			
+			local  = static_cast<llvm::Value*>(iter->second.get());
+		}
+		
+		if (local == nullptr) {
+			// create a new one!
+			local = builder.CreateAlloca(mDataType.type.llvmType());
+			
+			compileCache[mDataType.name] = std::make_shared<llvm::Value*>(local);
+		}
+		
+		builder.CreateStore(builder.CreateLoad(local), io[0]);
+		
+		builder.CreateBr(outputBlocks[0]);
+		
+		return {};
+	}
+	
+	nlohmann::json            toJSON() const override { return {}; }
+	std::unique_ptr<NodeType> clone() const override {
+		return std::make_unique<GetLocalNodeType>(module(), mDataType);
+	}
+	
+	NamedDataType mDataType;
 };
 
 } // anon namespace

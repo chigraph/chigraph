@@ -32,6 +32,7 @@ struct codegenMetadata {
 	llvm::DISubprogram* diFunc;
 	std::unordered_map<NodeInstance*, Cache> nodeCache;
 	boost::bimap<unsigned, NodeInstance*>    nodeLocations;
+	std::unordered_map<std::string, std::shared_ptr<void>> compileCache;
 };
 
 /// \return The output connections that need codegen and the output blocks
@@ -223,7 +224,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 	// codegen
 	res +=
 	    node->type().codegen(execInputID,
-	                         llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc), io, codeBlock, outputBlocks);
+	                         llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc), io, codeBlock, outputBlocks, data.compileCache);
 	if (!res) { return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}}; }
 
 	// TODO: sequence nodes

@@ -49,12 +49,13 @@ public:
 	/// The types are gaurenteed to be the same as inputs and outputs
 	/// \param codegenInto The BasicBlock object that is used to place calls into
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
+	/// \param compileCache Cache for use of nodes
 	/// numOutputExecs.
 	/// \return The Result
 	virtual Result codegen(size_t execInputID,
 	                       const llvm::DebugLoc& nodeLocation,
 	                       const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	                       const gsl::span<llvm::BasicBlock*> outputBlocks) const = 0;
+	                       const gsl::span<llvm::BasicBlock*> outputBlocks, std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const = 0;
 
 	/// Create the JSON necessary to store the object.
 	/// \return The json obejct
