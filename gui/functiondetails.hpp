@@ -7,8 +7,8 @@
 
 #include <chig/GraphFunction.hpp>
 
-#include "paramlistwidget.hpp"
 #include "execparamlistwidget.hpp"
+#include "paramlistwidget.hpp"
 
 class FunctionView;
 
@@ -20,14 +20,13 @@ public:
 public slots:
 	void loadFunction(FunctionView* func);
 
-
 private:
 	FunctionView*        mFuncView = nullptr;
 	chig::GraphFunction* mFunc     = nullptr;
 
 	ParamListWidget* ins;
 	ParamListWidget* outs;
-	
+
 	ExecParamListWidget* execins;
 	ExecParamListWidget* execouts;
 };

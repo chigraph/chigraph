@@ -23,7 +23,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 		jmod->addDependency("lang");
 		REQUIRE(jmod != nullptr);
 
-		bool           created;
+		bool created;
 		auto func = jmod->getOrCreateFunction("hello", {}, {}, {""}, {""}, &created);
 		REQUIRE(created == true);
 		REQUIRE(func != nullptr);

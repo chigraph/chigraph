@@ -2,8 +2,8 @@
 #include "chig/DataType.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/GraphModule.hpp"
-#include "chig/NodeInstance.hpp"
 #include "chig/GraphStruct.hpp"
+#include "chig/NodeInstance.hpp"
 
 namespace chig {
 
@@ -90,25 +90,20 @@ nlohmann::json graphModuleToJson(const GraphModule& mod) {
 	for (auto& graph : mod.functions()) { graphsjson.push_back(graphFunctionToJson(*graph)); }
 
 	auto& structsJson = data["types"];
-	structsJson = nlohmann::json::object();
-	for(const auto& str : mod.structs()) {
-		structsJson[str->name()] = graphStructToJson(*str);
-	}
-	
+	structsJson       = nlohmann::json::object();
+	for (const auto& str : mod.structs()) { structsJson[str->name()] = graphStructToJson(*str); }
+
 	return data;
 }
 
-
 nlohmann::json graphStructToJson(const GraphStruct& struc) {
-	
 	nlohmann::json ret = nlohmann::json::array();
-	
-	for(const auto& elem : struc.types()) {
+
+	for (const auto& elem : struc.types()) {
 		ret.push_back({{elem.name, elem.type.qualifiedName()}});
 	}
-	
+
 	return ret;
-	
 }
 
 }  // namespace chig

@@ -30,8 +30,8 @@ struct codegenMetadata {
 	llvm::BasicBlock*   allocBlock;
 	llvm::DIBuilder*    dbuilder;
 	llvm::DISubprogram* diFunc;
-	std::unordered_map<NodeInstance*, Cache> nodeCache;
-	boost::bimap<unsigned, NodeInstance*>    nodeLocations;
+	std::unordered_map<NodeInstance*, Cache>               nodeCache;
+	boost::bimap<unsigned, NodeInstance*>                  nodeLocations;
 	std::unordered_map<std::string, std::shared_ptr<void>> compileCache;
 };
 
@@ -39,12 +39,10 @@ struct codegenMetadata {
 std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
     NodeInstance* node, llvm::BasicBlock* pureTerminator, NodeInstance* lastImpure,
     unsigned execInputID, llvm::BasicBlock* block, codegenMetadata& data, Result& res) {
-	
 	llvm::IRBuilder<> pureBuilder(block);
-	auto f = data.allocBlock->getParent();
-	auto mod = data.allocBlock->getModule();
-	
-	
+	auto              f   = data.allocBlock->getParent();
+	auto              mod = data.allocBlock->getModule();
+
 	auto codeBlock =
 	    llvm::BasicBlock::Create(node->context().llvmContext(), node->id() + "_code", f);
 	llvm::IRBuilder<> builder(codeBlock);
@@ -64,9 +62,9 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 					const auto& cache  = data.nodeCache[param.first];
 					if (cache.lastNodeCodegenned != impure) {
 						pureDependencies.push_back(param.first);
-						pureBBs.push_back(llvm::BasicBlock::Create(
-						    node->context().llvmContext(),
-						    param.first->id() + "____" + impure->id(), f));
+						pureBBs.push_back(
+						    llvm::BasicBlock::Create(node->context().llvmContext(),
+						                             param.first->id() + "____" + impure->id(), f));
 					}
 				}
 			}
@@ -208,8 +206,8 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			outputBlocks.push_back(remoteCache.inputBlock[remotePortIdx]);
 			needsCodegen.push_back(false);
 		} else {
-			auto outBlock = llvm::BasicBlock::Create(f->getContext(),
-			                                         node->type().execOutputs()[idx], f);
+			auto outBlock =
+			    llvm::BasicBlock::Create(f->getContext(), node->type().execOutputs()[idx], f);
 			outputBlocks.push_back(outBlock);
 			needsCodegen.push_back(true);  // these need codegen
 			if (node->outputExecConnections[idx].first != nullptr) {
@@ -222,9 +220,9 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 	if (node->type().pure()) { outputBlocks.push_back(pureTerminator); }
 
 	// codegen
-	res +=
-	    node->type().codegen(execInputID,
-	                         llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc), io, codeBlock, outputBlocks, data.compileCache);
+	res += node->type().codegen(
+	    execInputID, llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc), io,
+	    codeBlock, outputBlocks, data.compileCache);
 	if (!res) { return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}}; }
 
 	// TODO: sequence nodes
@@ -379,13 +377,14 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			DataType intDataType;
 			res += func.context().typeFromModule("lang", "i32", &intDataType);
 			Expects(intDataType.valid());
-			auto debugParam = debugBuilder.
+			auto debugParam =
+			    debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
-			                                      "inputexec_id", debugFile, 0, intDataType.debugType());
+			    createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc, "inputexec_id",
+			                        debugFile, 0, intDataType.debugType());
 #else
-			                  createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
-			                                          intDataType.debugType());
+			    createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
+			                            intDataType.debugType());
 #endif
 			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 			                           llvm::DebugLoc::get(1, 1, debugFunc),
@@ -407,8 +406,8 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		// create debug info
 
 		// create DIType*
-		llvm::DIType* dType = tyAndName.type.debugType();
-		auto debugParam = debugBuilder.
+		llvm::DIType* dType      = tyAndName.type.debugType();
+		auto          debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
 		                                      tyAndName.name, debugFile, 0, dType);
@@ -425,9 +424,8 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	}
 
 	auto            nodeLocations = func.module().createLineNumberAssoc();
-	codegenMetadata codeMetadata{
-	    allocBlock, &debugBuilder, debugFunc, std::unordered_map<NodeInstance*, Cache>{},
-	    nodeLocations};
+	codegenMetadata codeMetadata{allocBlock, &debugBuilder, debugFunc,
+	                             std::unordered_map<NodeInstance*, Cache>{}, nodeLocations};
 
 	codegenHelper(entry, 0, block, codeMetadata, res);
 

@@ -73,7 +73,7 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 	auto id = 0ull;
 	for (const auto& conn : inputDataConnections) {
 		if (conn.first != nullptr && newType->dataInputs().size() > id &&
-		      !(type().dataInputs()[id].type == newType->dataInputs()[id].type)) {
+		    !(type().dataInputs()[id].type == newType->dataInputs()[id].type)) {
 			disconnectData(*conn.first, conn.second, *this);
 		}
 		++id;

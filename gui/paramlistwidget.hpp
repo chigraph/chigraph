@@ -12,22 +12,19 @@ class ParamListWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	enum Type {
-		Input,
-		Output
-	};
-	
+	enum Type { Input, Output };
+
 	ParamListWidget(QWidget* parent = nullptr);
 
 	void setFunction(FunctionView* func, Type ty);
-	
+
 private:
 	void refreshEntry();
 	void refreshExits();
-	
-	QListWidget*       mParamList;
+
+	QListWidget*  mParamList;
 	FunctionView* mFunc = nullptr;
-	Type mType;
+	Type          mType;
 };
 
 #endif  // CHIGGUI_PARAMLISTWIDGET_HPP
