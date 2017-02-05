@@ -98,7 +98,10 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	docker = new QDockWidget(i18n("Function Details"), this);
 	docker->setObjectName("Function Details");
 	auto functionDetails = new FunctionDetails;
-	docker->setWidget(functionDetails);
+	auto scroll = new QScrollArea;
+	scroll->setWidget(functionDetails);
+	scroll->setWidgetResizable(true);
+	docker->setWidget(scroll);
 	addDockWidget(Qt::RightDockWidgetArea, docker);
 	connect(this, &MainWindow::functionOpened, docker, [docker](FunctionView* func) {
 		docker->setWindowTitle(i18n("Function Details") + " - " + QString::fromStdString(func->function()->name()));

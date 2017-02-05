@@ -9,6 +9,7 @@
 
 FunctionDetails::FunctionDetails(QWidget* parent) : QWidget(parent) {
 	
+	setSizePolicy({QSizePolicy::Expanding, QSizePolicy::Expanding});
 	
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
