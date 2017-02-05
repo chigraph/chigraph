@@ -267,7 +267,7 @@ void GraphFunction::addExecInput(gsl::cstring_span<> name, int addAfter) {
 }
 
 void GraphFunction::removeExecInput(int idx) {
-	if (idx < mExecOutputs.size()) { mExecOutputs.erase(mExecOutputs.begin() + idx); }
+	if (idx < mExecInputs.size()) { mExecInputs.erase(mExecInputs.begin() + idx); }
 	updateEntries();
 }
 

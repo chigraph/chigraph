@@ -97,15 +97,39 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 			if (mType == Input) {
 				mFunc->function()->removeDataInput(id);
 				refreshEntry();
+				setFunction(mFunc, mType);
 			} else {
-				mFunc->function()->removeDataInput(id);
+				mFunc->function()->removeDataOutput(id);
 				refreshExits();
+				setFunction(mFunc, mType);
 			}
 		});
 		layout->addWidget(deleteButton, id, 2);
 		
 		++id;
 	}
+	
+	
+	// create the "new" button
+	auto newButton = new QPushButton(QIcon::fromTheme("list-add"), {});
+	connect(newButton, &QPushButton::pressed, this, [this] {
+		if (mType == Input) {
+			
+			mFunc->function()->addDataInput(mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "",  mFunc->function()->dataInputs().size() - 1);
+			refreshEntry();
+			
+			setFunction(mFunc, mType); // TODO: not the most efficient way...
+		} else {
+			
+			mFunc->function()->addDataOutput(mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "", mFunc->function()->dataOutputs().size() - 1);
+			refreshExits();
+			
+			setFunction(mFunc, mType);
+		}
+		
+	});
+	layout->addWidget(newButton, id, 2);
+	
 	
 	
 }

@@ -1,39 +1,33 @@
 #pragma once
 
-#ifndef CHIGGUI_EXEC_PARAM_LIST_WIDGET_HPP
-#define CHIGGUI_EXEC_PARAM_LIST_WIDGET_HPP
+#ifndef CHIGGUI_EXECPARAMLISTWIDGET_HPP
+#define CHIGGUI_EXECPARAMLISTWIDGET_HPP
 
-#include <QWidget>
 #include <QListWidget>
+#include <QTableView>
 
-#include <chig/Fwd.hpp>
+class FunctionView;
 
 class ExecParamListWidget : public QWidget {
 	Q_OBJECT
+
 public:
-	ExecParamListWidget(QString title, QWidget* parent = nullptr);
+	enum Type {
+		Input,
+		Output
+	};
+	
+	ExecParamListWidget(QWidget* parent = nullptr);
 
-	QString nameForIdx(int idx) const;
-
-	void addExec(const QString& name, int after);
-	void deleteExec(int idx);
-
-	void modifyExec(int idx, const QString& name);
-
-	int execCount() const;
-
-	void clear() { mParamList->clear(); }
-	void setModule(chig::GraphModule* mod) { mMod = mod; }
-signals:
-
-	void execChanged(int idx, const QString& newName);
-
-	void execAdded(const QString& name);
-	void execDeleted(int idx);
-
+	void setFunction(FunctionView* func, Type ty);
+	
 private:
+	void refreshEntry();
+	void refreshExits();
+	
 	QListWidget*       mParamList;
-	chig::GraphModule* mMod = nullptr;
+	FunctionView* mFunc = nullptr;
+	Type mType;
 };
 
-#endif // CHIGGUI_EXEC_PARAM_LIST_WIDGET_HPP
+#endif  // CHIGGUI_EXECPARAMLISTWIDGET_HPP

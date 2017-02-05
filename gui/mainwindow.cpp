@@ -21,6 +21,7 @@
 #include <QInputDialog>
 #include <QPlainTextEdit>
 #include <QProcess>
+#include <QScrollArea>
 #include <QSplitter>
 #include <QTextStream>
 
