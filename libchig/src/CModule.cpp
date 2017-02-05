@@ -82,9 +82,7 @@ struct CFuncNode : NodeType {
 		for (const auto& argument : llfunc->args()) {
 			DataType ty;
 			context().typeFromModule("lang", stringifyLLVMType(argument.getType()), &ty);
-			dInputs.emplace_back(
-			    argument.getName(),
-				ty);
+			dInputs.emplace_back(argument.getName(), ty);
 		}
 		setDataInputs(std::move(dInputs));
 
@@ -94,17 +92,16 @@ struct CFuncNode : NodeType {
 		if (!ret->isVoidTy()) {
 			DataType ty;
 			context().typeFromModule("lang", stringifyLLVMType(ret), &ty);
-			setDataOutputs(
-			    {{"", ty}});
+			setDataOutputs({{"", ty}});
 		}
 	}
 
-	Result codegen(size_t /*inID*/, const llvm::DebugLoc& nodeLocation,
-	               const gsl::span<llvm::Value*> io,
-	               llvm::BasicBlock*                  codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks, std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
-		Expects(io.size() == dataInputs().size() + dataOutputs().size() &&
-		        codegenInto != nullptr && outputBlocks.size() == 1);
+	Result codegen(
+	    size_t /*inID*/, const llvm::DebugLoc& nodeLocation, const gsl::span<llvm::Value*> io,
+	    llvm::BasicBlock* codegenInto, const gsl::span<llvm::BasicBlock*> outputBlocks,
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+		Expects(io.size() == dataInputs().size() + dataOutputs().size() && codegenInto != nullptr &&
+		        outputBlocks.size() == 1);
 
 		// create a copy of the module
 		auto copymod = llvm::CloneModule(llcompiledmod.get());
@@ -174,7 +171,7 @@ struct CFuncNode : NodeType {
 
 CModule::CModule(Context& ctx) : ChigModule(ctx, "c") {}
 
-DataType                  CModule::typeFromName(gsl::cstring_span<> /*typeName*/) {
+DataType CModule::typeFromName(gsl::cstring_span<> /*typeName*/) {
 	// TODO: implement
 
 	return {};

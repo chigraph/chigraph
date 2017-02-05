@@ -2,8 +2,8 @@
 
 #include "chig/GraphFunction.hpp"
 #include "chig/GraphModule.hpp"
-#include "chig/JsonDeserializer.hpp"
 #include "chig/GraphStruct.hpp"
+#include "chig/JsonDeserializer.hpp"
 #include "chig/LangModule.hpp"
 #include "chig/NodeInstance.hpp"
 

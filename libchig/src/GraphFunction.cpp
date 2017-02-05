@@ -16,10 +16,10 @@
 #include <boost/range/join.hpp>
 
 namespace chig {
-GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<>         name,
+GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<> name,
                              std::vector<NamedDataType> dataIns,
-                             std::vector<NamedDataType> dataOuts,
-                             std::vector<std::string> execIns, std::vector<std::string> execOuts)
+                             std::vector<NamedDataType> dataOuts, std::vector<std::string> execIns,
+                             std::vector<std::string> execOuts)
     : mModule{&mod},
       mContext{&mod.context()},
       mName{gsl::to_string(name)},
@@ -318,40 +318,38 @@ void GraphFunction::updateExits() {
 	}
 }
 
-
 NamedDataType GraphFunction::localVariableFromName(gsl::cstring_span<> name) const {
-	for(auto local : mLocalVariables) {
-		if (local.name == name) {
-			return local;
-		}
+	for (auto local : mLocalVariables) {
+		if (local.name == name) { return local; }
 	}
-	
+
 	return {};
 }
 
-NamedDataType GraphFunction::getOrCreateLocalVaraible(std::string name, DataType type, bool* inserted) {
+NamedDataType GraphFunction::getOrCreateLocalVaraible(std::string name, DataType type,
+                                                      bool* inserted) {
 	auto local = localVariableFromName(name);
-	
-	if(local.valid()) {
-		if(inserted != nullptr) { *inserted = false; }
+
+	if (local.valid()) {
+		if (inserted != nullptr) { *inserted = false; }
 		return local;
 	}
-	
+
 	mLocalVariables.emplace_back(name, type);
-	if(inserted != nullptr) {*inserted = true;}
-	
+	if (inserted != nullptr) { *inserted = true; }
+
 	return mLocalVariables[mLocalVariables.size() - 1];
 }
 
 bool GraphFunction::removeLocalVaraible(gsl::cstring_span<> name) {
-	auto iter = std::find_if(mLocalVariables.begin(), mLocalVariables.end(), [&](auto& toTest) { return toTest.name == name; } );
-	
+	auto iter = std::find_if(mLocalVariables.begin(), mLocalVariables.end(),
+	                         [&](auto& toTest) { return toTest.name == name; });
+
 	if (iter != mLocalVariables.end()) {
 		mLocalVariables.erase(iter);
 		return true;
 	}
 	return false;
 }
-	
 
 }  // namespace chig

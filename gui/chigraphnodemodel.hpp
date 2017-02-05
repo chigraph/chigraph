@@ -55,7 +55,7 @@ public:
 private:
 	chig::NodeInstance* mInst;
 	FunctionView*       mFunctionView;
-	QWidget* mEmbedded = nullptr;
+	QWidget*            mEmbedded = nullptr;
 };
 
 #endif  // CHIG_GUI_CHIGNODEGUI_HPP

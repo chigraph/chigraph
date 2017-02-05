@@ -34,16 +34,19 @@ struct DataType {
 	/// Get the underlying \c llvm::Type
 	/// \return the \c llvm::Type
 	llvm::Type* llvmType() const { return mLLVMType; }
-	/// Get the debug type 
+	/// Get the debug type
 	/// \return The debug type
 	llvm::DIType* debugType() const { return mDIType; }
 	/// Check if the DataType is valid
-	bool valid() const { return mModule != nullptr && mName != "" && mLLVMType != nullptr && mDIType != nullptr; }
+	bool valid() const {
+		return mModule != nullptr && mName != "" && mLLVMType != nullptr && mDIType != nullptr;
+	}
 	/// Equality check
 	/// \param other The DataType to check equality against
 	/// \return If they are equal
 	bool operator==(const DataType& other) const {
-		return mModule == other.mModule && mName == other.mName && mLLVMType == other.mLLVMType && mDIType == other.mDIType;
+		return mModule == other.mModule && mName == other.mName && mLLVMType == other.mLLVMType &&
+		       mDIType == other.mDIType;
 	}
 
 	/// Inequality check
@@ -52,28 +55,25 @@ struct DataType {
 	bool operator!=(const DataType& other) const { return !(*this == other); }
 
 private:
-	ChigModule* mModule;
-	std::string mName;
-	llvm::Type* mLLVMType;
+	ChigModule*   mModule;
+	std::string   mName;
+	llvm::Type*   mLLVMType;
 	llvm::DIType* mDIType;
 };
 
 struct NamedDataType {
 	NamedDataType(std::string n = {}, DataType ty = {}) : name{std::move(n)}, type{std::move(ty)} {}
-	
+
 	bool operator==(const NamedDataType& other) const {
 		return name == other.name && type == other.type;
 	}
-	bool operator!=(const NamedDataType& other) const {
-		return !(*this == other);
-	}
-	
-	bool valid() const { return type.valid(); }
-	
-	std::string name;
-	DataType type;
-};
+	bool operator!=(const NamedDataType& other) const { return !(*this == other); }
 
+	bool valid() const { return type.valid(); }
+
+	std::string name;
+	DataType    type;
+};
 }
 
 #endif  // CHIG_DATA_TYPE_HPP

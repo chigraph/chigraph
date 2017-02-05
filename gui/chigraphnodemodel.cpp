@@ -40,19 +40,17 @@ public:
 			inst->setType(std::move(ty));
 
 			close();
-			
+
 		});
-		
-		connect(this, &QDialog::accepted, this, [fview, inst]{
-			
-			fview->refreshGuiForNode(fview->guiNodeFromChigNode(inst));
-		});
+
+		connect(this, &QDialog::accepted, this,
+		        [fview, inst] { fview->refreshGuiForNode(fview->guiNodeFromChigNode(inst)); });
 	}
 };
 
 ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fview_)
-	    : mInst{inst_}, mFunctionView{fview_} {
-			if (mInst->type().name() == "const-bool") {
+    : mInst{inst_}, mFunctionView{fview_} {
+	if (mInst->type().name() == "const-bool") {
 		QCheckBox* box     = new QCheckBox("");
 		bool       checked = mInst->type().toJSON();
 		box->setCheckState(checked ? Qt::Checked : Qt::Unchecked);
@@ -68,8 +66,7 @@ ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fv
 
 		box->setMaximumSize(box->sizeHint());
 		mEmbedded = box;
-	}
-	else if (mInst->type().name() == "strliteral") {
+	} else if (mInst->type().name() == "strliteral") {
 		auto        edit = new QLineEdit();
 		std::string s    = mInst->type().toJSON();
 		edit->setText(QString::fromStdString(s));
@@ -87,8 +84,7 @@ ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fv
 		});
 
 		mEmbedded = edit;
-	}
-	else if (mInst->type().name() == "const-int") {
+	} else if (mInst->type().name() == "const-int") {
 		auto edit = new QLineEdit();
 		edit->setValidator(new QIntValidator);
 		int val = mInst->type().toJSON();
@@ -106,8 +102,7 @@ ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fv
 		});
 
 		mEmbedded = edit;
-	}
-	else if (mInst->type().name() == "func") {
+	} else if (mInst->type().name() == "func") {
 		QPushButton* butt = new QPushButton(i18n("Edit code"));
 		connect(butt, &QPushButton::clicked, this, [this] {
 			auto dialog = new EditCodeDialog(mInst, mFunctionView);
@@ -118,8 +113,7 @@ ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fv
 		butt->setMaximumSize(butt->sizeHint());
 
 		mEmbedded = butt;
-	}
-	else if (mInst->type().name() == "const-float") {
+	} else if (mInst->type().name() == "const-float") {
 		auto edit = new QLineEdit();
 		edit->setValidator(new QDoubleValidator);
 		double val = mInst->type().toJSON();
@@ -138,7 +132,6 @@ ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fv
 
 		mEmbedded = edit;
 	}
-
 }
 
 unsigned int ChigraphNodeModel::nPorts(PortType portType) const {
@@ -187,6 +180,4 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 	return {};
 }
 
-QWidget* ChigraphNodeModel::embeddedWidget() {
-	return mEmbedded;
-}
+QWidget* ChigraphNodeModel::embeddedWidget() { return mEmbedded; }

@@ -28,18 +28,16 @@ struct GraphFunction {
 	/// \param dataOuts The data outputs of the function
 	/// \param execIns The exec inputs to the function
 	/// \param execOuts The exec outputs to the function
-	GraphFunction(GraphModule& mod, gsl::cstring_span<>         name,
-	              std::vector<NamedDataType> dataIns,
-	              std::vector<NamedDataType> dataOuts,
-	              std::vector<std::string> execIns, std::vector<std::string> execOuts);
+	GraphFunction(GraphModule& mod, gsl::cstring_span<> name, std::vector<NamedDataType> dataIns,
+	              std::vector<NamedDataType> dataOuts, std::vector<std::string> execIns,
+	              std::vector<std::string> execOuts);
 
-	
 	GraphFunction(const GraphFunction&) = delete;
-	GraphFunction(GraphFunction&&) = delete;
-	
+	GraphFunction(GraphFunction&&)      = delete;
+
 	GraphFunction& operator=(const GraphFunction&) = delete;
 	GraphFunction& operator=(GraphFunction&&) = delete;
-	
+
 	/// Destructor
 	~GraphFunction() = default;
 
@@ -153,9 +151,7 @@ struct GraphFunction {
 
 	/// Get the function data outputs in the format {type, docstring}
 	/// \return The outputs
-	const std::vector<NamedDataType>& dataOutputs() const {
-		return mDataOutputs;
-	}
+	const std::vector<NamedDataType>& dataOutputs() const { return mDataOutputs; }
 	/// Add an data output to the end of the argument list
 	/// \param type The new output type
 	/// \param name The name of the output (just for documentation)
@@ -218,30 +214,29 @@ struct GraphFunction {
 
 	/// \}
 
-		
 	/// \name Local Variable Manipulation functions
 	/// \{
-	
+
 	/// Get a local varaible by name
 	/// \param name The name of the variable
 	/// \return The local or {} if not found
 	NamedDataType localVariableFromName(gsl::cstring_span<> name) const;
-	
+
 	/// Create a new local varaible in the module
 	/// \param name The name of the local variable
 	/// \param type The type of the local
 	/// \param inserted True if the local varaiable was new, optional
 	/// \return The new local variable or the already existing one
-	NamedDataType getOrCreateLocalVaraible(std::string name, DataType type, bool* inserted = nullptr);
-	
+	NamedDataType getOrCreateLocalVaraible(std::string name, DataType type,
+	                                       bool* inserted = nullptr);
+
 	/// Remove a local variable from the module by name
 	/// \param name The name of the local variable to remove
 	/// \return True if a local was actually removed, false if no local by that name existed
 	bool removeLocalVaraible(gsl::cstring_span<> name);
-	
+
 	/// \}
 
-	
 	// Various getters
 	//////////////////
 
@@ -268,7 +263,7 @@ private:
 
 	std::vector<std::string> mExecInputs;
 	std::vector<std::string> mExecOutputs;
-	
+
 	std::vector<NamedDataType> mLocalVariables;
 
 	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>

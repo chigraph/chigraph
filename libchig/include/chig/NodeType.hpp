@@ -52,10 +52,10 @@ public:
 	/// \param compileCache Cache for use of nodes
 	/// numOutputExecs.
 	/// \return The Result
-	virtual Result codegen(size_t execInputID,
-	                       const llvm::DebugLoc& nodeLocation,
-	                       const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	                       const gsl::span<llvm::BasicBlock*> outputBlocks, std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const = 0;
+	virtual Result codegen(
+	    size_t execInputID, const llvm::DebugLoc& nodeLocation, const gsl::span<llvm::Value*> io,
+	    llvm::BasicBlock* codegenInto, const gsl::span<llvm::BasicBlock*> outputBlocks,
+	    std::unordered_map<std::string, std::shared_ptr<void>>&           compileCache) const = 0;
 
 	/// Create the JSON necessary to store the object.
 	/// \return The json obejct
@@ -96,9 +96,7 @@ public:
 protected:
 	/// Set the data inputs for the NodeType
 	/// \param newInputs The new inputs
-	void setDataInputs(std::vector<NamedDataType> newInputs) {
-		mDataInputs = std::move(newInputs);
-	}
+	void setDataInputs(std::vector<NamedDataType> newInputs) { mDataInputs = std::move(newInputs); }
 	/// Set the data outputs for the NodeType
 	/// \param newOutputs The new outputs
 	void setDataOutputs(std::vector<NamedDataType> newOutputs) {

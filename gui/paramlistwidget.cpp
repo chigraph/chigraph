@@ -1,28 +1,26 @@
 #include "paramlistwidget.hpp"
 
-#include <QGridLayout>
-#include <QLineEdit>
 #include <QComboBox>
-#include <QPushButton>
+#include <QGridLayout>
 #include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <KMessageBox>
 
 #include <chig/GraphFunction.hpp>
 
-#include "functionview.hpp"
 #include "execparamlistwidget.hpp"
+#include "functionview.hpp"
 
 namespace {
 
 QStringList createTypeOptions(const chig::GraphModule& mod) {
 	QStringList ret;
-	
+
 	// add the module
-	for (const auto& ty : mod.typeNames()) {
-		ret << QString::fromStdString(mod.name() + ":" + ty);
-	}
-	
+	for (const auto& ty : mod.typeNames()) { ret << QString::fromStdString(mod.name() + ":" + ty); }
+
 	// and its dependencies
 	for (auto dep : mod.dependencies()) {
 		auto depMod = mod.context().moduleByFullName(dep);
@@ -33,30 +31,25 @@ QStringList createTypeOptions(const chig::GraphModule& mod) {
 	return ret;
 }
 
-} // anon namespace
+}  // anon namespace
 
+ParamListWidget::ParamListWidget(QWidget* parent) : QWidget(parent) {}
 
-ParamListWidget::ParamListWidget(QWidget* parent) : QWidget(parent) {
-	
-}
+void ParamListWidget::setFunction(FunctionView* func, Type ty) {
+	mFunc = func;
+	mType = ty;
 
-void ParamListWidget::setFunction(FunctionView* func, Type ty) { 
-	mFunc = func; 
-	mType = ty; 
-	
-	if (layout()) {
-		deleteLayout(layout());
-	}
-	
+	if (layout()) { deleteLayout(layout()); }
+
 	auto layout = new QGridLayout;
 	setLayout(layout);
-	
+
 	// populate it
-	auto& typeVec = ty == Input ? mFunc->function()->dataInputs() : mFunc->function()->dataOutputs();
-	
+	auto& typeVec =
+	    ty == Input ? mFunc->function()->dataInputs() : mFunc->function()->dataOutputs();
+
 	auto id = 0;
 	for (const auto& param : typeVec) {
-		
 		auto edit = new QLineEdit;
 		edit->setText(QString::fromStdString(param.name));
 		connect(edit, &QLineEdit::textChanged, this, [this, id](const QString& newText) {
@@ -69,18 +62,19 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 			}
 		});
 		layout->addWidget(edit, id, 0);
-		
+
 		auto combo = new QComboBox;
 		combo->addItems(createTypeOptions(mFunc->function()->module()));
 		combo->setCurrentText(QString::fromStdString(param.type.qualifiedName()));
 		connect(combo, &QComboBox::currentTextChanged, this, [this, id](const QString& newType) {
 			std::string mod, name;
 			std::tie(mod, name) = chig::parseColonPair(newType.toStdString());
-			
+
 			chig::DataType ty;
-			auto res = mFunc->function()->context().typeFromModule(mod, name, &ty);
-			if(!res) {
-				KMessageBox::detailedError(this, i18n("Failed to get type"), QString::fromStdString(res.dump()));
+			auto           res = mFunc->function()->context().typeFromModule(mod, name, &ty);
+			if (!res) {
+				KMessageBox::detailedError(this, i18n("Failed to get type"),
+				                           QString::fromStdString(res.dump()));
 				return;
 			}
 			if (mType == Input) {
@@ -90,12 +84,12 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 				mFunc->function()->modifyDataOutput(id, ty, {});
 				refreshExits();
 			}
-			
+
 		});
 		layout->addWidget(combo, id, 1);
-		
+
 		auto deleteButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-remove")), {});
-		connect(deleteButton, &QAbstractButton::clicked, this, [this, id](bool){
+		connect(deleteButton, &QAbstractButton::clicked, this, [this, id](bool) {
 			if (mType == Input) {
 				mFunc->function()->removeDataInput(id);
 				refreshEntry();
@@ -107,48 +101,43 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 			}
 		});
 		layout->addWidget(deleteButton, id, 2);
-		
+
 		++id;
 	}
-	
+
 	// create the "new" button
 	auto newButton = new QPushButton(QIcon::fromTheme("list-add"), {});
 	newButton->setSizePolicy({QSizePolicy::Maximum, QSizePolicy::Maximum});
 	connect(newButton, &QAbstractButton::clicked, this, [this](bool) {
 		if (mType == Input) {
-			
-			mFunc->function()->addDataInput(mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "",  mFunc->function()->dataInputs().size() - 1);
+			mFunc->function()->addDataInput(
+			    mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "",
+			    mFunc->function()->dataInputs().size() - 1);
 			refreshEntry();
-			
-			setFunction(mFunc, mType); // TODO: not the most efficient way...
+
+			setFunction(mFunc, mType);  // TODO: not the most efficient way...
 		} else {
-			
-			mFunc->function()->addDataOutput(mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "", mFunc->function()->dataOutputs().size() - 1);
+			mFunc->function()->addDataOutput(
+			    mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "",
+			    mFunc->function()->dataOutputs().size() - 1);
 			refreshExits();
-			
+
 			setFunction(mFunc, mType);
 		}
-		
+
 	});
 	layout->addWidget(newButton, id, 2, Qt::AlignRight);
-	
-	
-	
 }
 
-
-
 void ParamListWidget::refreshEntry() {
-	
 	auto entry = mFunc->function()->entryNode();
 	if (entry == nullptr) { return; }
 	mFunc->refreshGuiForNode(mFunc->guiNodeFromChigNode(entry));
 }
 void ParamListWidget::refreshExits() {
-	
 	for (const auto& exit : mFunc->function()->nodesWithType("lang", "exit")) {
 		mFunc->refreshGuiForNode(mFunc->guiNodeFromChigNode(exit));
 	}
-	
+
 	mFunc->refreshRegistry();
 }
