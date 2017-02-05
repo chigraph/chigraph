@@ -4,12 +4,14 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QPushButton>
+#include <QLabel>
 
 #include <KMessageBox>
 
 #include <chig/GraphFunction.hpp>
 
 #include "functionview.hpp"
+#include "execparamlistwidget.hpp"
 
 namespace {
 
@@ -43,7 +45,7 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 	mType = ty; 
 	
 	if (layout()) {
-		delete layout();
+		deleteLayout(layout());
 	}
 	
 	auto layout = new QGridLayout;
@@ -108,7 +110,6 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 		
 		++id;
 	}
-	
 	
 	// create the "new" button
 	auto newButton = new QPushButton(QIcon::fromTheme("list-add"), {});

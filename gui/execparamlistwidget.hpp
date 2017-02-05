@@ -5,8 +5,24 @@
 
 #include <QListWidget>
 #include <QTableView>
+#include <QLayoutItem>
+#include <QLayout>
 
 class FunctionView;
+
+inline void deleteLayout(QLayout* layout) {
+	QLayoutItem * item;
+	QLayout * sublayout;
+	QWidget * widget;
+	while ((item = layout->takeAt(0))) {
+		if ((sublayout = item->layout()) != 0) {deleteLayout(sublayout);}
+		else if ((widget = item->widget()) != 0) {widget->hide(); delete widget;}
+		else {delete item;}
+	}
+
+	delete layout;
+
+}
 
 class ExecParamListWidget : public QWidget {
 	Q_OBJECT
