@@ -69,7 +69,7 @@ void ExecParamListWidget::setFunction(FunctionView* func, Type ty) {
 		layout->addWidget(edit, id, 0);
 		
 		auto deleteButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-remove")), {});
-		connect(deleteButton, &QPushButton::pressed, this, [this, id]{
+		connect(deleteButton, &QAbstractButton::clicked, this, [this, id](bool){
 			if (mType == Input) {
 				mFunc->function()->removeExecInput(id);
 				refreshEntry();
@@ -87,7 +87,8 @@ void ExecParamListWidget::setFunction(FunctionView* func, Type ty) {
 	
 	// create the "new" button
 	auto newButton = new QPushButton(QIcon::fromTheme("list-add"), {});
-	connect(newButton, &QPushButton::pressed, this, [this] {
+	newButton->setSizePolicy({QSizePolicy::Maximum, QSizePolicy::Maximum});
+	connect(newButton, &QAbstractButton::clicked, this, [this](bool) {
 		if (mType == Input) {
 			
 			mFunc->function()->addExecInput("", mFunc->function()->execInputs().size() - 1);
@@ -103,7 +104,7 @@ void ExecParamListWidget::setFunction(FunctionView* func, Type ty) {
 		}
 		
 	});
-	layout->addWidget(newButton, id, 1);
+	layout->addWidget(newButton, id, 1, Qt::AlignRight);
 	
 	
 }
