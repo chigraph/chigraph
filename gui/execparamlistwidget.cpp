@@ -43,7 +43,7 @@ void ExecParamListWidget::setFunction(FunctionView* func, Type ty) {
 	mType = ty; 
 	
 	if (layout()) {
-		delete layout();
+		deleteLayout(layout());
 	}
 	
 	auto layout = new QGridLayout;
