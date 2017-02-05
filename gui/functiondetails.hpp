@@ -3,7 +3,7 @@
 #ifndef CHIGGUI_FUNCTIONDETAILS_HPP
 #define CHIGGUI_FUNCTIONDETAILS_HPP
 
-#include <QScrollArea>
+#include <QWidget>
 
 #include <chig/GraphFunction.hpp>
 
@@ -12,7 +12,7 @@
 
 class FunctionView;
 
-class FunctionDetails : public QScrollArea {
+class FunctionDetails : public QWidget {
 	Q_OBJECT
 public:
 	FunctionDetails(QWidget* parent = nullptr);
@@ -20,15 +20,6 @@ public:
 public slots:
 	void loadFunction(FunctionView* func);
 
-private slots:
-
-	void execInputChanged(int idx, const QString& newName);
-	void execInputAdded(const QString& name);
-	void execInputDeleted(int idx);
-
-	void execOutputChanged(int idx, const QString& newName);
-	void execOutputAdded(const QString& name);
-	void execOutputDeleted(int idx);
 
 private:
 	FunctionView*        mFuncView = nullptr;
