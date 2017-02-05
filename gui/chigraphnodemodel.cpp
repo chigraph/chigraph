@@ -2,6 +2,8 @@
 
 #include "functionview.hpp"
 
+#include "../src/NodeGraphicsObject.hpp"
+
 class EditCodeDialog : public QDialog {
 public:
 	EditCodeDialog(chig::NodeInstance* inst, FunctionView* fview) {
@@ -36,12 +38,108 @@ public:
 				return;
 			}
 			inst->setType(std::move(ty));
-			fview->refreshGuiForNode(fview->guiNodeFromChigNode(inst));
 
 			close();
+			
+		});
+		
+		connect(this, &QDialog::accepted, this, [fview, inst]{
+			
+			fview->refreshGuiForNode(fview->guiNodeFromChigNode(inst));
 		});
 	}
 };
+
+ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fview_)
+	    : mInst{inst_}, mFunctionView{fview_} {
+			if (mInst->type().name() == "const-bool") {
+		QCheckBox* box     = new QCheckBox("");
+		bool       checked = mInst->type().toJSON();
+		box->setCheckState(checked ? Qt::Checked : Qt::Unchecked);
+
+		connect(box, &QCheckBox::stateChanged, this, [this](int newState) {
+			std::unique_ptr<chig::NodeType> newType;
+
+			mInst->context().nodeTypeFromModule("lang", "const-bool", newState == Qt::Checked,
+			                                    &newType);
+
+			mInst->setType(std::move(newType));
+		});
+
+		box->setMaximumSize(box->sizeHint());
+		mEmbedded = box;
+	}
+	else if (mInst->type().name() == "strliteral") {
+		auto        edit = new QLineEdit();
+		std::string s    = mInst->type().toJSON();
+		edit->setText(QString::fromStdString(s));
+
+		edit->setMaximumSize(edit->sizeHint());
+
+		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
+			std::unique_ptr<chig::NodeType> newType;
+
+			mInst->context().nodeTypeFromModule("lang", "strliteral", s.toUtf8().constData(),
+			                                    &newType);
+
+			mInst->setType(std::move(newType));
+
+		});
+
+		mEmbedded = edit;
+	}
+	else if (mInst->type().name() == "const-int") {
+		auto edit = new QLineEdit();
+		edit->setValidator(new QIntValidator);
+		int val = mInst->type().toJSON();
+		edit->setText(QString::number(val));
+
+		edit->setMaximumSize(edit->sizeHint());
+
+		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
+			std::unique_ptr<chig::NodeType> newType;
+
+			mInst->context().nodeTypeFromModule("lang", "const-int", s.toInt(), &newType);
+
+			mInst->setType(std::move(newType));
+
+		});
+
+		mEmbedded = edit;
+	}
+	else if (mInst->type().name() == "func") {
+		QPushButton* butt = new QPushButton(i18n("Edit code"));
+		connect(butt, &QPushButton::clicked, this, [this] {
+			auto dialog = new EditCodeDialog(mInst, mFunctionView);
+
+			dialog->exec();
+		});
+
+		butt->setMaximumSize(butt->sizeHint());
+
+		mEmbedded = butt;
+	}
+	else if (mInst->type().name() == "const-float") {
+		auto edit = new QLineEdit();
+		edit->setValidator(new QDoubleValidator);
+		double val = mInst->type().toJSON();
+		edit->setText(QString::number(val));
+
+		edit->setMaximumSize(edit->sizeHint());
+
+		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
+			std::unique_ptr<chig::NodeType> newType;
+
+			mInst->context().nodeTypeFromModule("lang", "const-float", s.toDouble(), &newType);
+
+			mInst->setType(std::move(newType));
+
+		});
+
+		mEmbedded = edit;
+	}
+
+}
 
 unsigned int ChigraphNodeModel::nPorts(PortType portType) const {
 	if (portType == PortType::In) {
@@ -90,92 +188,5 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 }
 
 QWidget* ChigraphNodeModel::embeddedWidget() {
-	if (mInst->type().name() == "const-bool") {
-		QCheckBox* box     = new QCheckBox("");
-		bool       checked = mInst->type().toJSON();
-		box->setCheckState(checked ? Qt::Checked : Qt::Unchecked);
-
-		connect(box, &QCheckBox::stateChanged, this, [this](int newState) {
-			std::unique_ptr<chig::NodeType> newType;
-
-			mInst->context().nodeTypeFromModule("lang", "const-bool", newState == Qt::Checked,
-			                                    &newType);
-
-			mInst->setType(std::move(newType));
-		});
-
-		box->setMaximumSize(box->sizeHint());
-		return box;
-	}
-	if (mInst->type().name() == "strliteral") {
-		auto        edit = new QLineEdit();
-		std::string s    = mInst->type().toJSON();
-		edit->setText(QString::fromStdString(s));
-
-		edit->setMaximumSize(edit->sizeHint());
-
-		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
-			std::unique_ptr<chig::NodeType> newType;
-
-			mInst->context().nodeTypeFromModule("lang", "strliteral", s.toUtf8().constData(),
-			                                    &newType);
-
-			mInst->setType(std::move(newType));
-
-		});
-
-		return edit;
-	}
-	if (mInst->type().name() == "const-int") {
-		auto edit = new QLineEdit();
-		edit->setValidator(new QIntValidator);
-		int val = mInst->type().toJSON();
-		edit->setText(QString::number(val));
-
-		edit->setMaximumSize(edit->sizeHint());
-
-		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
-			std::unique_ptr<chig::NodeType> newType;
-
-			mInst->context().nodeTypeFromModule("lang", "const-int", s.toInt(), &newType);
-
-			mInst->setType(std::move(newType));
-
-		});
-
-		return edit;
-	}
-	if (mInst->type().name() == "func") {
-		QPushButton* butt = new QPushButton(i18n("Edit code"));
-		connect(butt, &QPushButton::clicked, this, [this] {
-			auto dialog = new EditCodeDialog(mInst, mFunctionView);
-
-			dialog->exec();
-		});
-
-		butt->setMaximumSize(butt->sizeHint());
-
-		return butt;
-	}
-	if (mInst->type().name() == "const-float") {
-		auto edit = new QLineEdit();
-		edit->setValidator(new QDoubleValidator);
-		double val = mInst->type().toJSON();
-		edit->setText(QString::number(val));
-
-		edit->setMaximumSize(edit->sizeHint());
-
-		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
-			std::unique_ptr<chig::NodeType> newType;
-
-			mInst->context().nodeTypeFromModule("lang", "const-float", s.toDouble(), &newType);
-
-			mInst->setType(std::move(newType));
-
-		});
-
-		return edit;
-	}
-
-	return nullptr;
+	return mEmbedded;
 }
