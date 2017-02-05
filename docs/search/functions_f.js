@@ -6,6 +6,7 @@ var searchData=
   ['removeexecinput',['removeExecInput',['../structchig_1_1GraphFunction.html#a390ce7b4174a06ecd00ae7c72af9e157',1,'chig::GraphFunction']]],
   ['removeexecoutput',['removeExecOutput',['../structchig_1_1GraphFunction.html#a90a589106d823501ecb6450636a19e64',1,'chig::GraphFunction']]],
   ['removefunction',['removeFunction',['../structchig_1_1GraphModule.html#a1e4006bb0bd7eba8ce50cc7176d4477f',1,'chig::GraphModule::removeFunction(gsl::cstring_span&lt;&gt; name)'],['../structchig_1_1GraphModule.html#a3c60235b680fb81105a6b6d9f82a86aa',1,'chig::GraphModule::removeFunction(GraphFunction *func)']]],
+  ['removelocalvaraible',['removeLocalVaraible',['../structchig_1_1GraphFunction.html#a359bee901dedb7db55cc84d9e8738695',1,'chig::GraphFunction']]],
   ['removenode',['removeNode',['../structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e',1,'chig::GraphFunction']]],
   ['removestruct',['removeStruct',['../structchig_1_1GraphModule.html#a7d3e60b0ac5dcc4304c4cfc0a8b13d07',1,'chig::GraphModule::removeStruct(gsl::cstring_span&lt;&gt; name)'],['../structchig_1_1GraphModule.html#ab7d1874b6bc78249d78000fb61db2dd3',1,'chig::GraphModule::removeStruct(GraphStruct *tyToDel)']]],
   ['removetype',['removeType',['../structchig_1_1GraphStruct.html#abefe7c0c45f61546d82649a27bea2119',1,'chig::GraphStruct']]],

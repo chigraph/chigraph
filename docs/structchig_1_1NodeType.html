@@ -100,7 +100,8 @@ $(document).ready(function(){initNavTree('structchig_1_1NodeType.html','');});
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType__inherit__graph.svg" width="312" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType__inherit__graph.svg" width="124" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -115,18 +116,18 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s
 <tr class="memitem:a4225c75840cda9382e6f5ff169d59513"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513">clone</a> () const =0</td></tr>
 <tr class="memdesc:a4225c75840cda9382e6f5ff169d59513"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clones the type.  <a href="#a4225c75840cda9382e6f5ff169d59513">More...</a><br /></td></tr>
 <tr class="separator:a4225c75840cda9382e6f5ff169d59513"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d6fbd28daa967f8d8a3b57351137b9b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a2d6fbd28daa967f8d8a3b57351137b9b">codegen</a> (size_t execInputID, llvm::Module *modToCodegenInto, const llvm::DebugLoc &amp;nodeLocation, llvm::Function *f, const gsl::span&lt; llvm::Value *&gt; io, llvm::BasicBlock *codegenInto, const gsl::span&lt; llvm::BasicBlock *&gt; outputBlocks) const =0</td></tr>
-<tr class="memdesc:a2d6fbd28daa967f8d8a3b57351137b9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A virtual function that is called when this node needs to be called.  <a href="#a2d6fbd28daa967f8d8a3b57351137b9b">More...</a><br /></td></tr>
-<tr class="separator:a2d6fbd28daa967f8d8a3b57351137b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5f582da82b3e6bf14fe51e9cde43075"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ab5f582da82b3e6bf14fe51e9cde43075">codegen</a> (size_t execInputID, const llvm::DebugLoc &amp;nodeLocation, const gsl::span&lt; llvm::Value *&gt; io, llvm::BasicBlock *codegenInto, const gsl::span&lt; llvm::BasicBlock *&gt; outputBlocks, std::unordered_map&lt; std::string, std::shared_ptr&lt; void &gt;&gt; &amp;compileCache) const =0</td></tr>
+<tr class="memdesc:ab5f582da82b3e6bf14fe51e9cde43075"><td class="mdescLeft">&#160;</td><td class="mdescRight">A virtual function that is called when this node needs to be called.  <a href="#ab5f582da82b3e6bf14fe51e9cde43075">More...</a><br /></td></tr>
+<tr class="separator:ab5f582da82b3e6bf14fe51e9cde43075"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad78a890e3480aa9fdddb02f85d881531"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Context.html">Context</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ad78a890e3480aa9fdddb02f85d881531">context</a> () const</td></tr>
 <tr class="memdesc:ad78a890e3480aa9fdddb02f85d881531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> this <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> belongs to.  <a href="#ad78a890e3480aa9fdddb02f85d881531">More...</a><br /></td></tr>
 <tr class="separator:ad78a890e3480aa9fdddb02f85d881531"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dfb8b1b093b9de0ee59e8eee7ab84e1"><td class="memItemLeft" align="right" valign="top">gsl::span&lt; const std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a3dfb8b1b093b9de0ee59e8eee7ab84e1">dataInputs</a> () const</td></tr>
-<tr class="memdesc:a3dfb8b1b093b9de0ee59e8eee7ab84e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the data inputs for the node.  <a href="#a3dfb8b1b093b9de0ee59e8eee7ab84e1">More...</a><br /></td></tr>
-<tr class="separator:a3dfb8b1b093b9de0ee59e8eee7ab84e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7eb591e0e93940aeef541d9d37679b61"><td class="memItemLeft" align="right" valign="top">gsl::span&lt; const std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a7eb591e0e93940aeef541d9d37679b61">dataOutputs</a> () const</td></tr>
-<tr class="memdesc:a7eb591e0e93940aeef541d9d37679b61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the data outputs for the node.  <a href="#a7eb591e0e93940aeef541d9d37679b61">More...</a><br /></td></tr>
-<tr class="separator:a7eb591e0e93940aeef541d9d37679b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae03c2c70c06ea281a87b1b40c0514064"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#ae03c2c70c06ea281a87b1b40c0514064">dataInputs</a> () const</td></tr>
+<tr class="memdesc:ae03c2c70c06ea281a87b1b40c0514064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the data inputs for the node.  <a href="#ae03c2c70c06ea281a87b1b40c0514064">More...</a><br /></td></tr>
+<tr class="separator:ae03c2c70c06ea281a87b1b40c0514064"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed44920726e20a4403f3d43f88cadb54"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#aed44920726e20a4403f3d43f88cadb54">dataOutputs</a> () const</td></tr>
+<tr class="memdesc:aed44920726e20a4403f3d43f88cadb54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the data outputs for the node.  <a href="#aed44920726e20a4403f3d43f88cadb54">More...</a><br /></td></tr>
+<tr class="separator:aed44920726e20a4403f3d43f88cadb54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affd513d7d48eb9e3e8c8aa52f357f4b8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#affd513d7d48eb9e3e8c8aa52f357f4b8">description</a> () const</td></tr>
 <tr class="memdesc:affd513d7d48eb9e3e8c8aa52f357f4b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the description of the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#affd513d7d48eb9e3e8c8aa52f357f4b8">More...</a><br /></td></tr>
 <tr class="separator:affd513d7d48eb9e3e8c8aa52f357f4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,12 +162,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <tr class="memitem:a1558a4d3702149dfee2533e9bedb1b14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1NodeInstance.html">NodeInstance</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a1558a4d3702149dfee2533e9bedb1b14">nodeInstance</a> () const</td></tr>
 <tr class="memdesc:a1558a4d3702149dfee2533e9bedb1b14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the node instance.  <a href="#a1558a4d3702149dfee2533e9bedb1b14">More...</a><br /></td></tr>
 <tr class="separator:a1558a4d3702149dfee2533e9bedb1b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a126d0904045a882d384eb04021273c04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a126d0904045a882d384eb04021273c04">setDataInputs</a> (std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt; newInputs)</td></tr>
-<tr class="memdesc:a126d0904045a882d384eb04021273c04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data inputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#a126d0904045a882d384eb04021273c04">More...</a><br /></td></tr>
-<tr class="separator:a126d0904045a882d384eb04021273c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf68d45786ed3d3987ed26de9b305de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#aedf68d45786ed3d3987ed26de9b305de">setDataOutputs</a> (std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt; newOutputs)</td></tr>
-<tr class="memdesc:aedf68d45786ed3d3987ed26de9b305de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data outputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#aedf68d45786ed3d3987ed26de9b305de">More...</a><br /></td></tr>
-<tr class="separator:aedf68d45786ed3d3987ed26de9b305de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ff276bee8747ab992de1299fc32eb5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a3ff276bee8747ab992de1299fc32eb5f">setDataInputs</a> (std::vector&lt; <a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a> &gt; newInputs)</td></tr>
+<tr class="memdesc:a3ff276bee8747ab992de1299fc32eb5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data inputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#a3ff276bee8747ab992de1299fc32eb5f">More...</a><br /></td></tr>
+<tr class="separator:a3ff276bee8747ab992de1299fc32eb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a46fb28c4a3982fee872d99c2fd1bd5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a7a46fb28c4a3982fee872d99c2fd1bd5">setDataOutputs</a> (std::vector&lt; <a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a> &gt; newOutputs)</td></tr>
+<tr class="memdesc:a7a46fb28c4a3982fee872d99c2fd1bd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data outputs for the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>.  <a href="#a7a46fb28c4a3982fee872d99c2fd1bd5">More...</a><br /></td></tr>
+<tr class="separator:a7a46fb28c4a3982fee872d99c2fd1bd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a747e209832a5b7d2db9d9c608f8aaa2a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeType.html#a747e209832a5b7d2db9d9c608f8aaa2a">setDescription</a> (gsl::cstring_span&lt;&gt; newDesc)</td></tr>
 <tr class="memdesc:a747e209832a5b7d2db9d9c608f8aaa2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the description of the node.  <a href="#a747e209832a5b7d2db9d9c608f8aaa2a">More...</a><br /></td></tr>
 <tr class="separator:a747e209832a5b7d2db9d9c608f8aaa2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,7 +239,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00032">32</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
-<p>References <a class="el" href="ChigModule_8hpp_source.html#l00060">chig::ChigModule::context()</a>, <a class="el" href="NodeType_8hpp_source.html#l00073">description()</a>, <a class="el" href="NodeType_8hpp_source.html#l00070">name()</a>, and <a class="el" href="structchig_1_1NodeType.html#afa1cdaa90d27cd073f5cb86878aaee72">~NodeType()</a>.</p>
+<p>References <a class="el" href="ChigModule_8hpp_source.html#l00060">chig::ChigModule::context()</a>, <a class="el" href="NodeType_8hpp_source.html#l00072">description()</a>, <a class="el" href="NodeType_8hpp_source.html#l00069">name()</a>, and <a class="el" href="structchig_1_1NodeType.html#afa1cdaa90d27cd073f5cb86878aaee72">~NodeType()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -276,7 +277,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Clones the type. </p>
 <dl class="section return"><dt>Returns</dt><dd>The clone </dd></dl>
 
-<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00046">chig::NodeInstance::operator=()</a>, and <a class="el" href="NodeType_8hpp_source.html#l00063">toJSON()</a>.</p>
+<p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00046">chig::NodeInstance::operator=()</a>, and <a class="el" href="NodeType_8hpp_source.html#l00062">toJSON()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -287,8 +288,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 </div>
 </div>
-<a id="a2d6fbd28daa967f8d8a3b57351137b9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d6fbd28daa967f8d8a3b57351137b9b">&sect;&nbsp;</a></span>codegen()</h2>
+<a id="ab5f582da82b3e6bf14fe51e9cde43075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5f582da82b3e6bf14fe51e9cde43075">&sect;&nbsp;</a></span>codegen()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,20 +306,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">llvm::Module *&#160;</td>
-          <td class="paramname"><em>modToCodegenInto</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const llvm::DebugLoc &amp;&#160;</td>
           <td class="paramname"><em>nodeLocation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">llvm::Function *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -336,7 +325,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const gsl::span&lt; llvm::BasicBlock *&gt;&#160;</td>
-          <td class="paramname"><em>outputBlocks</em>&#160;</td>
+          <td class="paramname"><em>outputBlocks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unordered_map&lt; std::string, std::shared_ptr&lt; void &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>compileCache</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -355,12 +350,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">execInputID</td><td>The ID of the exec input </td></tr>
-    <tr><td class="paramname">modToCodegenInto</td><td>The module that is being generated </td></tr>
     <tr><td class="paramname">nodeLocation</td><td>The location of the node </td></tr>
-    <tr><td class="paramname">f</td><td>The function that is being generated </td></tr>
     <tr><td class="paramname">io</td><td>This has the values that are the inputs and outputs of the function. This vector will always have the size of <code>inputs.size() + outputs.size()</code> and starts with the inputs. The types are gaurenteed to be the same as inputs and outputs </td></tr>
     <tr><td class="paramname">codegenInto</td><td>The BasicBlock object that is used to place calls into </td></tr>
-    <tr><td class="paramname">outputBlocks</td><td>The blocks that can be outputted. This will be the same size as numOutputExecs. </td></tr>
+    <tr><td class="paramname">outputBlocks</td><td>The blocks that can be outputted. This will be the same size as </td></tr>
+    <tr><td class="paramname">compileCache</td><td>Cache for use of nodes numOutputExecs. </td></tr>
   </table>
   </dd>
 </dl>
@@ -372,7 +366,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType_a2d6fbd28daa967f8d8a3b57351137b9b_icgraph.svg" width="100%" height="526"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType_ab5f582da82b3e6bf14fe51e9cde43075_icgraph.svg" width="100%" height="526"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -403,12 +398,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> this <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> belongs to. </p>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00079">79</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00078">78</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a3dfb8b1b093b9de0ee59e8eee7ab84e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3dfb8b1b093b9de0ee59e8eee7ab84e1">&sect;&nbsp;</a></span>dataInputs()</h2>
+<a id="ae03c2c70c06ea281a87b1b40c0514064"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae03c2c70c06ea281a87b1b40c0514064">&sect;&nbsp;</a></span>dataInputs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -417,7 +412,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">gsl::span&lt;const std::pair&lt;<a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string&gt; &gt; chig::NodeType::dataInputs </td>
+          <td class="memname">const std::vector&lt;<a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a>&gt;&amp; chig::NodeType::dataInputs </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -433,7 +428,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get the data inputs for the node. </p>
 <dl class="section return"><dt>Returns</dt><dd>The data inputs in the format of {{<a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a>, description}, ...} </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00082">82</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00081">81</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00104">chig::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00209">chig::disconnectData()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00056">chig::NodeInstance::setType()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -441,13 +436,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType_a3dfb8b1b093b9de0ee59e8eee7ab84e1_icgraph.svg" width="100%" height="467"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType_ae03c2c70c06ea281a87b1b40c0514064_icgraph.svg" width="100%" height="467"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
 </div>
-<a id="a7eb591e0e93940aeef541d9d37679b61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7eb591e0e93940aeef541d9d37679b61">&sect;&nbsp;</a></span>dataOutputs()</h2>
+<a id="aed44920726e20a4403f3d43f88cadb54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed44920726e20a4403f3d43f88cadb54">&sect;&nbsp;</a></span>dataOutputs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -456,7 +452,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">gsl::span&lt;const std::pair&lt;<a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string&gt; &gt; chig::NodeType::dataOutputs </td>
+          <td class="memname">const std::vector&lt;<a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a>&gt;&amp; chig::NodeType::dataOutputs </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -472,7 +468,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get the data outputs for the node. </p>
 <dl class="section return"><dt>Returns</dt><dd>The data outputs in the format of {{<a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a>, description}, ...} </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00085">85</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00084">84</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00104">chig::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00209">chig::disconnectData()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00056">chig::NodeInstance::setType()</a>.</p>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -480,7 +476,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType_a7eb591e0e93940aeef541d9d37679b61_icgraph.svg" width="100%" height="467"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType_aed44920726e20a4403f3d43f88cadb54_icgraph.svg" width="100%" height="467"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -511,7 +508,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get the description of the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>The description </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00073">73</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00072">72</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00032">NodeType()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -550,7 +547,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get the execution inputs for the node. </p>
 <dl class="section return"><dt>Returns</dt><dd>The names of the inputs. The size of this vector is the size of inputs. </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00088">88</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00087">87</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00164">chig::connectExec()</a>.</p>
 <div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -589,7 +586,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get the execution outputs for the node. </p>
 <dl class="section return"><dt>Returns</dt><dd>The names of the outputs. The size is the input count. </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00091">91</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00090">90</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00164">chig::connectExec()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00275">chig::disconnectExec()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -628,7 +625,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get the <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> this <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> belongs to. </p>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00076">76</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00075">75</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00042">qualifiedName()</a>.</p>
 <div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -667,7 +664,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get the name of the <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> in the <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00070">70</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00069">69</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00032">NodeType()</a>, and <a class="el" href="NodeType_8hpp_source.html#l00042">qualifiedName()</a>.</p>
 <div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -706,7 +703,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get the node instance. </p>
 <dl class="section return"><dt>Returns</dt><dd>the node instance </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00141">141</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00138">138</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -736,7 +733,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Get if this node is pure. </p>
 <dl class="section return"><dt>Returns</dt><dd>If it's pure </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00095">95</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00094">94</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -768,7 +765,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00042">42</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
-<p>References <a class="el" href="structchig_1_1NodeType.html#a2d6fbd28daa967f8d8a3b57351137b9b">codegen()</a>, <a class="el" href="NodeType_8hpp_source.html#l00076">module()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00054">chig::ChigModule::name()</a>, and <a class="el" href="NodeType_8hpp_source.html#l00070">name()</a>.</p>
+<p>References <a class="el" href="structchig_1_1NodeType.html#ab5f582da82b3e6bf14fe51e9cde43075">codegen()</a>, <a class="el" href="NodeType_8hpp_source.html#l00075">module()</a>, <a class="el" href="ChigModule_8hpp_source.html#l00054">chig::ChigModule::name()</a>, and <a class="el" href="NodeType_8hpp_source.html#l00069">name()</a>.</p>
 
 <p>Referenced by <a class="el" href="NodeInstance_8cpp_source.html#l00104">chig::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00164">chig::connectExec()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00209">chig::disconnectData()</a>, and <a class="el" href="NodeInstance_8cpp_source.html#l00275">chig::disconnectExec()</a>.</p>
 <div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -776,7 +773,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-11-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType_aec01c9c30813ec9f0e15dda0f7ae34f3_cgraph.svg" width="472" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1NodeType_aec01c9c30813ec9f0e15dda0f7ae34f3_cgraph.svg" width="432" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -788,8 +786,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 </div>
 </div>
-<a id="a126d0904045a882d384eb04021273c04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a126d0904045a882d384eb04021273c04">&sect;&nbsp;</a></span>setDataInputs()</h2>
+<a id="a3ff276bee8747ab992de1299fc32eb5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ff276bee8747ab992de1299fc32eb5f">&sect;&nbsp;</a></span>setDataInputs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -800,7 +798,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
         <tr>
           <td class="memname">void chig::NodeType::setDataInputs </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a> &gt;&#160;</td>
           <td class="paramname"><em>newInputs</em></td><td>)</td>
           <td></td>
         </tr>
@@ -820,12 +818,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00100">100</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00099">99</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aedf68d45786ed3d3987ed26de9b305de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedf68d45786ed3d3987ed26de9b305de">&sect;&nbsp;</a></span>setDataOutputs()</h2>
+<a id="a7a46fb28c4a3982fee872d99c2fd1bd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a46fb28c4a3982fee872d99c2fd1bd5">&sect;&nbsp;</a></span>setDataOutputs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -836,7 +834,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
         <tr>
           <td class="memname">void chig::NodeType::setDataOutputs </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; std::pair&lt; <a class="el" href="structchig_1_1DataType.html">DataType</a>, std::string &gt;&gt;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a> &gt;&#160;</td>
           <td class="paramname"><em>newOutputs</em></td><td>)</td>
           <td></td>
         </tr>
@@ -856,7 +854,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00105">105</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00102">102</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -892,7 +890,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00123">123</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00120">120</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -928,9 +926,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00110">110</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00107">107</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00132">makePure()</a>.</p>
+<p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00129">makePure()</a>.</p>
 <div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-13-summary" class="dynsummary" style="display:block;">
@@ -973,9 +971,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00113">113</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00110">110</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00132">makePure()</a>.</p>
+<p>Referenced by <a class="el" href="NodeType_8hpp_source.html#l00129">makePure()</a>.</p>
 <div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-14-summary" class="dynsummary" style="display:block;">
@@ -1018,7 +1016,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00119">119</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00116">116</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 </div>
 </div>
@@ -1048,7 +1046,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <p>Create the JSON necessary to store the object. </p>
 <dl class="section return"><dt>Returns</dt><dd>The json obejct </dd></dl>
 
-<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00063">63</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
+<p>Definition at line <a class="el" href="NodeType_8hpp_source.html#l00062">62</a> of file <a class="el" href="NodeType_8hpp_source.html">NodeType.hpp</a>.</p>
 
 <p>References <a class="el" href="structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513">clone()</a>.</p>
 
@@ -1079,7 +1077,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1NodeType.html">NodeType</a></li>
-    <li class="footer">Generated on Wed Feb 1 2017 21:55:13 for chigraph by
+    <li class="footer">Generated on Sun Feb 5 2017 15:05:47 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

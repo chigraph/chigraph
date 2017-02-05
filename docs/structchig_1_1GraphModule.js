@@ -10,7 +10,7 @@ var structchig_1_1GraphModule =
     [ "fullName", "structchig_1_1GraphModule.html#ad730121a133fbc474fcb71d49f31f7b3", null ],
     [ "functions", "structchig_1_1GraphModule.html#a3aca789690eb2e7dedc764ae20154c9d", null ],
     [ "generateModule", "structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6", null ],
-    [ "getOrCreateFunction", "structchig_1_1GraphModule.html#a35cecf81b9d04523eeff65730dda359c", null ],
+    [ "getOrCreateFunction", "structchig_1_1GraphModule.html#a628d997f3978987e06a1fc05f86aab36", null ],
     [ "getOrCreateStruct", "structchig_1_1GraphModule.html#af766a22d33074aafe823b19218321d6e", null ],
     [ "graphFuncFromName", "structchig_1_1GraphModule.html#a9b67097e54ce6243ffd3fcb09c4f4b4c", null ],
     [ "name", "structchig_1_1GraphModule.html#a1fe8df6ff170ecd33057387571bb5cd2", null ],
@@ -27,6 +27,6 @@ var structchig_1_1GraphModule =
     [ "sourceFilePath", "structchig_1_1GraphModule.html#a2b80440a0bdf4c760a12ea0309d68060", null ],
     [ "structFromName", "structchig_1_1GraphModule.html#a64831f6b192140fb9014025717df72ac", null ],
     [ "structs", "structchig_1_1GraphModule.html#a86ebfc2ec07cfdf16946d3b0e941a0ae", null ],
-    [ "typeFromName", "structchig_1_1GraphModule.html#a86e884279dd33505cdb84f630f8a8ec6", null ],
-    [ "typeNames", "structchig_1_1GraphModule.html#a6d4a66c7e72fc4f83bff139baf819170", null ]
+    [ "typeFromName", "structchig_1_1GraphModule.html#ae7e8e926cca9f3ef8f75f624affa8fe6", null ],
+    [ "typeNames", "structchig_1_1GraphModule.html#acbcc68efa000356fda5d27b8bdf8c3ce", null ]
 ];
