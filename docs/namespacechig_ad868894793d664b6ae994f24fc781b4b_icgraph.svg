@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 774;
+var viewWidth = 578;
 var viewHeight = 39;
 var sectionId = 'dynsection-35';
 </script>
@@ -54,75 +54,59 @@ var sectionId = 'dynsection-35';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chig::validateFunctionNodeInputs</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-35 770,-35 770,4 -4,4"/>
-<!-- Node428 -->
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-35 574,-35 574,4 -4,4"/>
+<!-- Node427 -->
 <g id="node1" class="node">
-<title>Node428</title>
-<polygon fill="#bfbfbf" stroke="#000000" points="0,-.5 0,-30.5 149,-30.5 149,-.5 0,-.5"/>
+<title>Node427</title>
+<polygon fill="#bfbfbf" stroke="#000000" points="0,-.5 0,-30.5 134,-30.5 134,-.5 0,-.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::validateFunctionNode</text>
-<text text-anchor="middle" x="74.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Inputs</text>
+<text text-anchor="middle" x="67" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Inputs</text>
+</g>
+<!-- Node428 -->
+<g id="node2" class="node">
+<title>Node428</title>
+<g id="a_node2"><a xlink:href="namespacechig.html#afccf44a2370371aae836862d9731155e" target="_top" xlink:title="Validate that a function is compilable. ">
+<polygon fill="#ffffff" stroke="#000000" points="170,-6 170,-25 282,-25 282,-6 170,-6"/>
+<text text-anchor="middle" x="226" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::validateFunction</text>
+</a>
+</g>
+</g>
+<!-- Node427&#45;&gt;Node428 -->
+<g id="edge1" class="edge">
+<title>Node427&#45;&gt;Node428</title>
+<path fill="none" stroke="#191970" d="M144.4911,-15.5C153.0943,-15.5 161.7289,-15.5 169.9915,-15.5"/>
+<polygon fill="#191970" stroke="#191970" points="144.4303,-12.0001 134.4303,-15.5 144.4303,-19.0001 144.4303,-12.0001"/>
 </g>
 <!-- Node429 -->
-<g id="node2" class="node">
+<g id="node3" class="node">
 <title>Node429</title>
-<g id="a_node2"><a xlink:href="namespacechig.html#afccf44a2370371aae836862d9731155e" target="_top" xlink:title="Validate that a function is compilable. ">
-<polygon fill="#ffffff" stroke="#000000" points="185,-6 185,-25 309,-25 309,-6 185,-6"/>
-<text text-anchor="middle" x="247" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::validateFunction</text>
+<g id="a_node3"><a xlink:href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" target="_top" xlink:title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ...">
+<polygon fill="#ffffff" stroke="#000000" points="318,-6 318,-25 430,-25 430,-6 318,-6"/>
+<text text-anchor="middle" x="374" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::compileFunction</text>
 </a>
 </g>
 </g>
 <!-- Node428&#45;&gt;Node429 -->
-<g id="edge1" class="edge">
+<g id="edge2" class="edge">
 <title>Node428&#45;&gt;Node429</title>
-<path fill="none" stroke="#191970" d="M159.2728,-15.5C167.9149,-15.5 176.5767,-15.5 184.9111,-15.5"/>
-<polygon fill="#191970" stroke="#191970" points="159.1578,-12.0001 149.1577,-15.5 159.1577,-19.0001 159.1578,-12.0001"/>
+<path fill="none" stroke="#191970" d="M292.5579,-15.5C300.9836,-15.5 309.5393,-15.5 317.7821,-15.5"/>
+<polygon fill="#191970" stroke="#191970" points="292.3747,-12.0001 282.3747,-15.5 292.3746,-19.0001 292.3747,-12.0001"/>
 </g>
 <!-- Node430 -->
-<g id="node3" class="node">
+<g id="node4" class="node">
 <title>Node430</title>
-<g id="a_node3"><a xlink:href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" target="_top" xlink:title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ...">
-<polygon fill="#ffffff" stroke="#000000" points="345,-6 345,-25 468,-25 468,-6 345,-6"/>
-<text text-anchor="middle" x="406.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::compileFunction</text>
+<g id="a_node4"><a xlink:href="structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6" target="_top" xlink:title="Generate a llvm::Module from the module. ">
+<polygon fill="#ffffff" stroke="#000000" points="466,-.5 466,-30.5 570,-30.5 570,-.5 466,-.5"/>
+<text text-anchor="start" x="474" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
+<text text-anchor="middle" x="518" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">generateModule</text>
 </a>
 </g>
 </g>
 <!-- Node429&#45;&gt;Node430 -->
-<g id="edge2" class="edge">
-<title>Node429&#45;&gt;Node430</title>
-<path fill="none" stroke="#191970" d="M319.3958,-15.5C327.8842,-15.5 336.4847,-15.5 344.8082,-15.5"/>
-<polygon fill="#191970" stroke="#191970" points="319.1236,-12.0001 309.1236,-15.5 319.1235,-19.0001 319.1236,-12.0001"/>
-</g>
-<!-- Node431 -->
-<g id="node4" class="node">
-<title>Node431</title>
-<g id="a_node4"><a xlink:href="structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6" target="_top" xlink:title="Generate a llvm::Module from the module. ">
-<polygon fill="#ffffff" stroke="#000000" points="504,-.5 504,-30.5 617,-30.5 617,-.5 504,-.5"/>
-<text text-anchor="start" x="512" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
-<text text-anchor="middle" x="560.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">generateModule</text>
-</a>
-</g>
-</g>
-<!-- Node430&#45;&gt;Node431 -->
 <g id="edge3" class="edge">
-<title>Node430&#45;&gt;Node431</title>
-<path fill="none" stroke="#191970" d="M478.5049,-15.5C486.9673,-15.5 495.5105,-15.5 503.7234,-15.5"/>
-<polygon fill="#191970" stroke="#191970" points="478.2504,-12.0001 468.2504,-15.5 478.2503,-19.0001 478.2504,-12.0001"/>
-</g>
-<!-- Node432 -->
-<g id="node5" class="node">
-<title>Node432</title>
-<g id="a_node5"><a xlink:href="structchig_1_1GraphModule.html#a6d4a66c7e72fc4f83bff139baf819170" target="_top" xlink:title="Get the possible DataType names. ">
-<polygon fill="#ffffff" stroke="#000000" points="653,-.5 653,-30.5 766,-30.5 766,-.5 653,-.5"/>
-<text text-anchor="start" x="661" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
-<text text-anchor="middle" x="709.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">typeNames</text>
-</a>
-</g>
-</g>
-<!-- Node431&#45;&gt;Node432 -->
-<g id="edge4" class="edge">
-<title>Node431&#45;&gt;Node432</title>
-<path fill="none" stroke="#191970" d="M627.5076,-15.5C635.9902,-15.5 644.6037,-15.5 652.9022,-15.5"/>
-<polygon fill="#191970" stroke="#191970" points="627.2556,-12.0001 617.2556,-15.5 627.2555,-19.0001 627.2556,-12.0001"/>
+<title>Node429&#45;&gt;Node430</title>
+<path fill="none" stroke="#191970" d="M440.3376,-15.5C448.8106,-15.5 457.3888,-15.5 465.599,-15.5"/>
+<polygon fill="#191970" stroke="#191970" points="440.0865,-12.0001 430.0865,-15.5 440.0865,-19.0001 440.0865,-12.0001"/>
 </g>
 </g>
 </svg>

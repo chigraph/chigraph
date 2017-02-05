@@ -122,9 +122,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abefe7c0c45f61546d82649a27bea2119"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphStruct.html#abefe7c0c45f61546d82649a27bea2119">removeType</a> (size_t id)</td></tr>
 <tr class="memdesc:abefe7c0c45f61546d82649a27bea2119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a type from a struct.  <a href="#abefe7c0c45f61546d82649a27bea2119">More...</a><br /></td></tr>
 <tr class="separator:abefe7c0c45f61546d82649a27bea2119"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aa8870b0c3e262f49ac574b96a0fe8b"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::pair&lt; std::string, <a class="el" href="structchig_1_1DataType.html">DataType</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphStruct.html#a2aa8870b0c3e262f49ac574b96a0fe8b">types</a> () const</td></tr>
-<tr class="memdesc:a2aa8870b0c3e262f49ac574b96a0fe8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the types the struct contains.  <a href="#a2aa8870b0c3e262f49ac574b96a0fe8b">More...</a><br /></td></tr>
-<tr class="separator:a2aa8870b0c3e262f49ac574b96a0fe8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c1a043c5bd131f444ebee3d9fac44ed"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1GraphStruct.html#a7c1a043c5bd131f444ebee3d9fac44ed">types</a> () const</td></tr>
+<tr class="memdesc:a7c1a043c5bd131f444ebee3d9fac44ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the types the struct contains.  <a href="#a7c1a043c5bd131f444ebee3d9fac44ed">More...</a><br /></td></tr>
+<tr class="separator:a7c1a043c5bd131f444ebee3d9fac44ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A class holding a compound type defined in a <a class="el" href="structchig_1_1GraphModule.html" title="Module that holds graph functions. ">GraphModule</a>. </p>
@@ -168,14 +168,13 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="GraphStruct_8cpp_source.html#l00011">11</a> of file <a class="el" href="GraphStruct_8cpp_source.html">GraphStruct.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphStruct_8hpp_source.html#l00032">name()</a>.</p>
+<p>References <a class="el" href="GraphStruct_8hpp_source.html#l00031">name()</a>.</p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphStruct_abf5c04e575b4e68df1a9c4d31fba2a0e_cgraph.svg" width="380" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphStruct_abf5c04e575b4e68df1a9c4d31fba2a0e_cgraph.svg" width="380" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -218,16 +217,16 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">ty</td><td>The type </td></tr>
     <tr><td class="paramname">name</td><td>The name of the type </td></tr>
-    <tr><td class="paramname">addBefore</td><td>The type to add the new type before. Use <a class="el" href="structchig_1_1GraphStruct.html#a2aa8870b0c3e262f49ac574b96a0fe8b" title="Get the types the struct contains. ">types()</a>.size() to add to the end </td></tr>
+    <tr><td class="paramname">addBefore</td><td>The type to add the new type before. Use <a class="el" href="structchig_1_1GraphStruct.html#a7c1a043c5bd131f444ebee3d9fac44ed" title="Get the types the struct contains. ">types()</a>.size() to add to the end </td></tr>
   </table>
   </dd>
 </dl>
 
 <p>Definition at line <a class="el" href="GraphStruct_8cpp_source.html#l00014">14</a> of file <a class="el" href="GraphStruct_8cpp_source.html">GraphStruct.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphStruct_8hpp_source.html#l00036">types()</a>, and <a class="el" href="DataType_8hpp_source.html#l00041">chig::DataType::valid()</a>.</p>
+<p>References <a class="el" href="GraphStruct_8hpp_source.html#l00035">types()</a>, and <a class="el" href="DataType_8hpp_source.html#l00041">chig::DataType::valid()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphStruct_8hpp_source.html#l00036">types()</a>.</p>
+<p>Referenced by <a class="el" href="GraphStruct_8hpp_source.html#l00035">types()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -273,9 +272,9 @@ Public Member Functions</h2></td></tr>
 <p>Get the context. </p>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphStruct_8hpp_source.html#l00024">24</a> of file <a class="el" href="GraphStruct_8hpp_source.html">GraphStruct.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphStruct_8hpp_source.html#l00023">23</a> of file <a class="el" href="GraphStruct_8hpp_source.html">GraphStruct.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphStruct_8cpp_source.html#l00043">dataType()</a>.</p>
+<p>Referenced by <a class="el" href="GraphStruct_8cpp_source.html#l00041">dataType()</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
@@ -329,11 +328,11 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphStruct_8cpp_source.html#l00024">24</a> of file <a class="el" href="GraphStruct_8cpp_source.html">GraphStruct.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphStruct_8cpp_source.html#l00023">23</a> of file <a class="el" href="GraphStruct_8cpp_source.html">GraphStruct.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphStruct_8hpp_source.html#l00036">types()</a>, and <a class="el" href="DataType_8hpp_source.html#l00041">chig::DataType::valid()</a>.</p>
+<p>References <a class="el" href="GraphStruct_8hpp_source.html#l00035">types()</a>, and <a class="el" href="DataType_8hpp_source.html#l00041">chig::DataType::valid()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphStruct_8hpp_source.html#l00036">types()</a>.</p>
+<p>Referenced by <a class="el" href="GraphStruct_8hpp_source.html#l00035">types()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
@@ -379,9 +378,9 @@ Public Member Functions</h2></td></tr>
 <p>Get the module. </p>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1GraphModule.html" title="Module that holds graph functions. ">GraphModule</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphStruct_8hpp_source.html#l00028">28</a> of file <a class="el" href="GraphStruct_8hpp_source.html">GraphStruct.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphStruct_8hpp_source.html#l00027">27</a> of file <a class="el" href="GraphStruct_8hpp_source.html">GraphStruct.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphStruct_8cpp_source.html#l00043">dataType()</a>, and <a class="el" href="GraphModule_8cpp_source.html#l00286">chig::GraphModule::removeStruct()</a>.</p>
+<p>Referenced by <a class="el" href="GraphStruct_8cpp_source.html#l00041">dataType()</a>, and <a class="el" href="GraphModule_8cpp_source.html#l00506">chig::GraphModule::removeStruct()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -419,9 +418,9 @@ Public Member Functions</h2></td></tr>
 <p>Get the name of the type. </p>
 <dl class="section return"><dt>Returns</dt><dd>the name </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphStruct_8hpp_source.html#l00032">32</a> of file <a class="el" href="GraphStruct_8hpp_source.html">GraphStruct.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphStruct_8hpp_source.html#l00031">31</a> of file <a class="el" href="GraphStruct_8hpp_source.html">GraphStruct.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphStruct_8cpp_source.html#l00043">dataType()</a>, and <a class="el" href="GraphStruct_8cpp_source.html#l00011">GraphStruct()</a>.</p>
+<p>Referenced by <a class="el" href="GraphStruct_8cpp_source.html#l00041">dataType()</a>, and <a class="el" href="GraphStruct_8cpp_source.html#l00011">GraphStruct()</a>.</p>
 <div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
@@ -457,11 +456,11 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="GraphStruct_8cpp_source.html#l00033">33</a> of file <a class="el" href="GraphStruct_8cpp_source.html">GraphStruct.cpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphStruct_8cpp_source.html#l00032">32</a> of file <a class="el" href="GraphStruct_8cpp_source.html">GraphStruct.cpp</a>.</p>
 
-<p>References <a class="el" href="GraphStruct_8hpp_source.html#l00036">types()</a>.</p>
+<p>References <a class="el" href="GraphStruct_8hpp_source.html#l00035">types()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphStruct_8hpp_source.html#l00036">types()</a>.</p>
+<p>Referenced by <a class="el" href="GraphStruct_8hpp_source.html#l00035">types()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
@@ -481,8 +480,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2aa8870b0c3e262f49ac574b96a0fe8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2aa8870b0c3e262f49ac574b96a0fe8b">&sect;&nbsp;</a></span>types()</h2>
+<a id="a7c1a043c5bd131f444ebee3d9fac44ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c1a043c5bd131f444ebee3d9fac44ed">&sect;&nbsp;</a></span>types()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -491,7 +490,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt;std::pair&lt;std::string, <a class="el" href="structchig_1_1DataType.html">DataType</a>&gt; &gt;&amp; chig::GraphStruct::types </td>
+          <td class="memname">const std::vector&lt;<a class="el" href="structchig_1_1NamedDataType.html">NamedDataType</a>&gt;&amp; chig::GraphStruct::types </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -507,17 +506,17 @@ Public Member Functions</h2></td></tr>
 <p>Get the types the struct contains. </p>
 <dl class="section return"><dt>Returns</dt><dd>The types </dd></dl>
 
-<p>Definition at line <a class="el" href="GraphStruct_8hpp_source.html#l00036">36</a> of file <a class="el" href="GraphStruct_8hpp_source.html">GraphStruct.hpp</a>.</p>
+<p>Definition at line <a class="el" href="GraphStruct_8hpp_source.html#l00035">35</a> of file <a class="el" href="GraphStruct_8hpp_source.html">GraphStruct.hpp</a>.</p>
 
-<p>References <a class="el" href="GraphStruct_8cpp_source.html#l00014">addType()</a>, <a class="el" href="GraphStruct_8cpp_source.html#l00043">dataType()</a>, <a class="el" href="GraphStruct_8cpp_source.html#l00024">modifyType()</a>, and <a class="el" href="GraphStruct_8cpp_source.html#l00033">removeType()</a>.</p>
+<p>References <a class="el" href="GraphStruct_8cpp_source.html#l00014">addType()</a>, <a class="el" href="GraphStruct_8cpp_source.html#l00041">dataType()</a>, <a class="el" href="GraphStruct_8cpp_source.html#l00023">modifyType()</a>, and <a class="el" href="GraphStruct_8cpp_source.html#l00032">removeType()</a>.</p>
 
-<p>Referenced by <a class="el" href="GraphStruct_8cpp_source.html#l00014">addType()</a>, <a class="el" href="GraphStruct_8cpp_source.html#l00043">dataType()</a>, <a class="el" href="JsonSerializer_8cpp_source.html#l00101">chig::graphStructToJson()</a>, <a class="el" href="GraphStruct_8cpp_source.html#l00024">modifyType()</a>, and <a class="el" href="GraphStruct_8cpp_source.html#l00033">removeType()</a>.</p>
+<p>Referenced by <a class="el" href="GraphStruct_8cpp_source.html#l00014">addType()</a>, <a class="el" href="GraphStruct_8cpp_source.html#l00041">dataType()</a>, <a class="el" href="JsonSerializer_8cpp_source.html#l00099">chig::graphStructToJson()</a>, <a class="el" href="GraphStruct_8cpp_source.html#l00023">modifyType()</a>, and <a class="el" href="GraphStruct_8cpp_source.html#l00032">removeType()</a>.</p>
 <div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-10-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphStruct_a2aa8870b0c3e262f49ac574b96a0fe8b_cgraph.svg" width="571" height="267"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphStruct_a7c1a043c5bd131f444ebee3d9fac44ed_cgraph.svg" width="535" height="267"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -525,7 +524,7 @@ Public Member Functions</h2></td></tr>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-11-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphStruct_a2aa8870b0c3e262f49ac574b96a0fe8b_icgraph.svg" width="100%" height="525"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1GraphStruct_a7c1a043c5bd131f444ebee3d9fac44ed_icgraph.svg" width="100%" height="525"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
@@ -541,7 +540,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1GraphStruct.html">GraphStruct</a></li>
-    <li class="footer">Generated on Wed Feb 1 2017 21:55:13 for chigraph by
+    <li class="footer">Generated on Sun Feb 5 2017 15:05:47 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.12 </li>
   </ul>

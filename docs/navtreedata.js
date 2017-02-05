@@ -28,7 +28,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "CModule_8cpp.html",
-"structchig_1_1GraphStruct.html#ab62184ef12dfbc341714656505a037cf"
+"structchig_1_1GraphStruct.html#a40f421df5b78913f266df3aefb8a3fd3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

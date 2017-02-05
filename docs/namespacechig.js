@@ -8,6 +8,7 @@ var namespacechig =
     [ "GraphModule", "structchig_1_1GraphModule.html", "structchig_1_1GraphModule" ],
     [ "GraphStruct", "structchig_1_1GraphStruct.html", "structchig_1_1GraphStruct" ],
     [ "LangModule", "structchig_1_1LangModule.html", "structchig_1_1LangModule" ],
+    [ "NamedDataType", "structchig_1_1NamedDataType.html", "structchig_1_1NamedDataType" ],
     [ "NodeInstance", "structchig_1_1NodeInstance.html", "structchig_1_1NodeInstance" ],
     [ "NodeType", "structchig_1_1NodeType.html", "structchig_1_1NodeType" ],
     [ "Result", "structchig_1_1Result.html", "structchig_1_1Result" ]
