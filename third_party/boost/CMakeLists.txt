@@ -1,8 +1,8 @@
  
-add_library(boost_system system/error_code.cpp)
+add_library(boost_system STATIC system/error_code.cpp)
 target_include_directories(boost_system PUBLIC include)
 
-add_library(boost_filesystem 
+add_library(boost_filesystem STATIC
     filesystem/utf8_codecvt_facet.cpp
     filesystem/portability.cpp
     filesystem/operations.cpp
@@ -16,7 +16,7 @@ add_library(boost_filesystem
 target_include_directories(boost_filesystem PUBLIC include)
 target_link_libraries(boost_filesystem PUBLIC boost_system)
 
-add_library(boost_program_options 
+add_library(boost_program_options STATIC
     program_options/options_description.cpp
     program_options/utf8_codecvt_facet.cpp
     program_options/winmain.cpp

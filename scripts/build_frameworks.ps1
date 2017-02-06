@@ -1,41 +1,61 @@
 
+
 $ErrorActionPreference = "Stop"
 
 $firstdir = pwd
 $scriptsdir = $PSScriptRoot
 
+$version = "5.30.0"
+$sversion = "5.30"
 
-$buildtype = $args[0]
-$generator = $args[1]
-$qtdir = $args[2]
+$cmakeargs = $args
 
-"Building KF5 with $generator in $buildtype mode with qt in $qtdir"
+"Building KF5 with in $buildtype mode with cmake arguments $cmakeargs"
 
-mkdir $scriptsdir/../build/kf5 -Force
-mkdir $scriptsdir/../third_party/kf5 -Force
+
+$kf5dir = "$scriptsdir/../third_party/kf5"
+mkdir $kf5dir -Force
+mkdir $kf5dir/build -Force
+
+$webclient = New-Object System.Net.WebClient
+
+
 
 function build_framework
 {
 	$framework = $args[0]
 
-	cd $scriptsdir/../build/kf5/
+	cd $scriptsdir/../third_party/kf5/build
 	
-	if(Test-Path $framework) {
-		rm $framework -Recurse -Force
-    }
-    git clone https://anongit.kde.org/$framework --depth 1
-    mkdir $framework/build -Force
-    cd $framework/build
-       
-	"cmake .. -DCMAKE_BUILD_TYPE=`"$buildtype`" -DCMAKE_INSTALL_PREFIX=`"$scriptsdir/../third_party/kf5`" -G`"$generator`" -DCMAKE_PREFIX_PATH=`"$qtdir;$scriptsdir/../third_party/kf5`""
-
-    cmake .. -DCMAKE_BUILD_TYPE="$buildtype" -DCMAKE_INSTALL_PREFIX="$scriptsdir/../third_party/kf5" -G"$generator" -DCMAKE_PREFIX_PATH="$qtdir;$scriptsdir/../third_party/kf5"
-	if($LastExitCode) {
-		exit
+	$foldername = "$framework-$version"
+	
+	$url = "http://download.kde.org/stable/frameworks/$sversion/$foldername.zip"
+		
+	if (!(Test-Path "$foldername.zip")) {
+		"Downloading $framework"
+		$webclient.DownloadFile("$url", "$pwd/$foldername.zip")
 	}
-    cmake --build . 
+	if (!(Test-Path -Path $foldername)) {
+		"Extracting $framework"
+		Expand-Archive "$foldername.zip" .
+		
+	}
+	
+    mkdir $foldername/build -Force
+    cd $foldername/build
+       
+	$gtdir = "$scriptsdir/../third_party/libintl-win32"
+	$zlibdir = "$scriptsdir/../third_party/zlib-win32"
+	$fbdir = "$scriptsdir/../third_party/flexbison-win32"
+	
+	cmake .. -G"Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX="$kf5dir" -DCMAKE_PREFIX_PATH="$kf5dir" `
+		-DGETTEXT_MSGMERGE_EXECUTABLE="$gtdir/bin/msgmerge.exe" -DGETTEXT_MSGFMT_EXECUTABLE="$gtdir/bin/msgfmt.exe" `
+		-DLibIntl_INCLUDE_DIRS="$gtdir/include" -DLibIntl_LIBRARIES="$gtdir/lib/libintl.lib" -DZLIB_LIBRARY="$zlibdir/lib/zlibstatic.lib" `
+		-DZLIB_INCLUDE_DIR="$zlibdir/include" -DFLEX_EXECUTABLE="$fbdir/bin/flex.exe" -DBISON_EXECUTABLE="$fbdir/bin/bison.exe" `
+		"$cmakeargs"
+
 	if($LastExitCode) {
-		exit
+		#exit
 	}
     cmake --build . --target install
 	if($LastExitCode) {
@@ -45,9 +65,9 @@ function build_framework
 }
 
 build_framework extra-cmake-modules
+build_framework ki18n
 build_framework kconfig
 build_framework kguiaddons
-build_framework ki18n
 build_framework kitemviews
 build_framework sonnet
 build_framework kwidgetsaddons

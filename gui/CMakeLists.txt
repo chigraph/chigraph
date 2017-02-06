@@ -1,4 +1,10 @@
 set(KDE_SKIP_TEST_SETTINGS ON)
+
+if(WIN32)
+	set(GETTEXT_MSGMERGE_EXECUTABLE "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libintl-win32/bin/msgmerge.exe")
+	set(GETTEXT_MSGFMT_EXECUTABLE "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libintl-win32/bin/msgfmt.exe")
+endif()
+
 find_package(ECM 1.0.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
