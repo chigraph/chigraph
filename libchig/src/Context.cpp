@@ -17,6 +17,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 #include <llvm/Target/TargetMachine.h>
 #include <chig/CModule.hpp>
@@ -128,8 +129,11 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 		inFile >> readJson;
 	}
 
+	auto str = gsl::to_string(name);
+	boost::replace_all(str, "\\", "/");
+
 	GraphModule* toFillJson = nullptr;
-	res += addModuleFromJson(name, readJson, &toFillJson);
+	res += addModuleFromJson(str, readJson, &toFillJson);
 	if (toFill != nullptr) { *toFill = toFillJson; }
 
 	return res;
