@@ -3,7 +3,6 @@
 *.lo
 *.o
 *.obj
-
 # Precompiled Headers
 *.gch
 *.pch
@@ -27,6 +26,10 @@
 *.exe
 *.out
 *.app
+
+.vs/
+CMakeSettings.json
+
 
 
 build/

@@ -28,7 +28,7 @@ struct CFuncNode : NodeType {
 		std::string error;
 		try {
 			// compile the C code
-			Process clangexe(std::string(CHIG_CLANG_EXE) + " -xc - -c -g -emit-llvm -O0 -o -", {},
+			Process clangexe(std::string(CHIG_CLANG_EXE) + " -xc - -c -g -emit-llvm -O0 -I\"C:\\Program\\ Files\\ (x86)\\Windows\\ Kits\\10\\Include\\10.0.10240.0\\ucrt\"  -o -", {},
 			                 [&bitcode](const char* bytes, size_t n) {
 				                 // read stdin
 				                 bitcode.append(bytes, n);

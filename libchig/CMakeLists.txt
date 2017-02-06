@@ -40,7 +40,7 @@ set(CHIG_PRIVATE_FILES
 )
 
 
-add_library(chigcore ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
+add_library(chigcore STATIC ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
 
 set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../test)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.hpp.in ${CMAKE_BINARY_DIR}/chig/Config.hpp)
@@ -54,6 +54,7 @@ target_include_directories(chigcore
 	../third_party/tiny-process-library
 )
 
+
 target_compile_features(chigcore PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
 
 execute_process(COMMAND ${LLVM_CONFIG} --includedir OUTPUT_VARIABLE LLVM_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -61,12 +62,14 @@ message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 target_include_directories(chigcore PUBLIC "${LLVM_INCLUDE_DIR}")
 
 execute_process(COMMAND ${LLVM_CONFIG} --libs irreader support bitwriter executionengine native nativecodegen interpreter linker orcjit mcjit codegen selectiondag OUTPUT_VARIABLE LLVM_LIBRARIES OUTPUT_STRIP_TRAILING_WHITESPACE)
-message(STATUS "LLVM link libraries: ${LLVM_LIBRARIES}")
-target_link_libraries(chigcore PUBLIC ${LLVM_LIBRARIES})
+string(REPLACE " " ";" LLVM_LINK_LIST ${LLVM_LIBRARIES})
+message(STATUS "LLVM link libraries: ${LLVM_LINK_LIST}")
+target_link_libraries(chigcore PUBLIC ${LLVM_LINK_LIST})
 
 execute_process(COMMAND ${LLVM_CONFIG} --system-libs OUTPUT_VARIABLE LLVM_SYSTEM_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
-message(STATUS "LLVM system libraries: ${LLVM_SYSTEM_LIBS}")
-target_link_libraries(chigcore PUBLIC ${LLVM_SYSTEM_LIBS} ffi)
+string(REPLACE " " ";" LLVM_SYSTEM_LINK_LIST ${LLVM_SYSTEM_LIBS})
+message(STATUS "LLVM system libraries: ${LLVM_SYSTEM_LINK_LIST}")
+target_link_libraries(chigcore PUBLIC ${LLVM_SYSTEM_LINK_LIST})
 
 target_compile_definitions(chigcore PUBLIC 
   -D_GNU_SOURCE 
