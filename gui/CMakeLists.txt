@@ -18,7 +18,7 @@ include(FeatureSummary)
 # find qt
 find_package(Qt5 5.6.0 REQUIRED COMPONENTS Core Widgets)
 
-find_package(KF5 REQUIRED COMPONENTS CoreAddons I18n XmlGui WidgetsAddons TextWidgets IconThemes)
+find_package(KF5 REQUIRED COMPONENTS Service CoreAddons I18n XmlGui WidgetsAddons TextWidgets IconThemes)
 
 set(GUI_SRCS
 	main.cpp
@@ -32,6 +32,7 @@ set(GUI_SRCS
 	modulebrowser.cpp
 	moduledependencies.cpp
 	execparamlistwidget.cpp
+	thememanager.cpp
 )
 
 set(GUI_RESOURCES
@@ -49,11 +50,12 @@ set(GUI_HEADERS
 	modulebrowser.hpp
 	moduledependencies.hpp
 	execparamlistwidget.hpp
+	thememanager.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
 
-target_link_libraries(chiggui Qt5::Widgets KF5::CoreAddons KF5::I18n KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigcore)
+target_link_libraries(chiggui Qt5::Widgets KF5::Service KF5::CoreAddons KF5::I18n KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigcore)
 
 target_compile_features(chiggui PRIVATE cxx_variable_templates)
 
