@@ -12,12 +12,11 @@ platform:
   - x64
 
 before_build:
+  - set PATH=%QTDIR%\bin;%PATH%
+  - ps: .\scripts\build_frameworks.ps1 -DCMAKE_BUILD_TYPE="$Env:configuration" -DCMAKE_PREFIX_PATH="$Env:QTDIR"
   - mkdir build
   - cd build
-  - set PATH=%QTDIR%\bin;%PATH%
-  - ps: .\scripts\build_frameworks.ps1
-  - cmd: if "%configuration%"=="Debug" cmake "-G%GENERATOR%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
-  - cmd: if "%configuration%"=="Release"   cmake "-G%GENERATOR%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
+  - cmake "-G%GENERATOR%" -DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
 
 build:
   parallel: true
