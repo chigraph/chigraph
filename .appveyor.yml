@@ -15,7 +15,7 @@ before_build:
   - mkdir build
   - cd build
   - set PATH=%QTDIR%\bin;%PATH%
-  - ps: ./scripts/build_frameworks.sh
+  - ps: ./scripts/build_frameworks.ps1
   - cmd: if "%configuration%"=="Debug" cmake "-G%GENERATOR%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
   - cmd: if "%configuration%"=="Release"   cmake "-G%GENERATOR%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
 
