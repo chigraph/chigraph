@@ -14,7 +14,7 @@ option(CG_BUILD_GUI "Should the GUI be built" ON)
 
 # disable tests
 set(BUILD_CLAR OFF CACHE BOOL "")
-add_subdirectory(third_party/tiny-process-library)
+add_subdirectory(third_party/libexecstream)
 
 add_definitions("-DBOOST_ALL_NO_LIB")
 add_subdirectory(third_party/boost)
