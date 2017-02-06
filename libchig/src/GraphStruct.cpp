@@ -42,6 +42,10 @@ DataType GraphStruct::dataType() {
 	// if we have already calculated this, use that
 	if (mDataType.valid()) { return mDataType; }
 
+	if (types().empty()) {
+		return {};
+	}
+	
 	// create llvm::Type
 	std::vector<llvm::Type*> llTypes;
 	llTypes.reserve(types().size());

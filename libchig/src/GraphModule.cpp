@@ -28,11 +28,11 @@ struct GraphFuncCallType : public NodeType {
 	{
 		Result& res = *resPtr;
 
-		auto* mygraph = JModule->graphFuncFromName(funcname);
+		auto* mygraph = JModule->functionFromName(funcname);
 
 		if (mygraph == nullptr) {
 			res.addEntry(
-			    "EUKN", "Graph doesn't exist in module",
+			    "EINT", "Graph doesn't exist in module",
 			    {{"Module Name", JModule->name()}, {"Requested Name", gsl::to_string(funcname)}});
 			return;
 		}
@@ -58,7 +58,7 @@ struct GraphFuncCallType : public NodeType {
 		    codegenInto->getModule()->getFunction(mangleFunctionName(module().fullName(), name()));
 
 		if (func == nullptr) {
-			res.addEntry("EUKN", "Could not find function in llvm module",
+			res.addEntry("EINT", "Could not find function in llvm module",
 			             {{"Requested Function", name()}});
 			return res;
 		}
@@ -286,7 +286,6 @@ std::vector<std::string> GraphModule::typeNames() const {
 
 	for (const auto& ty : structs()) {
 		ret.push_back(ty->name());
-		ret.push_back(ty->name());
 	}
 
 	return ret;
@@ -353,7 +352,7 @@ GraphFunction* GraphModule::getOrCreateFunction(gsl::cstring_span<>        name,
                                                 std::vector<std::string>   execIns,
                                                 std::vector<std::string> execOuts, bool* inserted) {
 	// make sure there already isn't one by this name
-	auto foundFunc = graphFuncFromName(name);
+	auto foundFunc = functionFromName(name);
 	if (foundFunc != nullptr) {
 		if (inserted != nullptr) { *inserted = false; }
 		return foundFunc;
@@ -368,7 +367,7 @@ GraphFunction* GraphModule::getOrCreateFunction(gsl::cstring_span<>        name,
 }
 
 bool GraphModule::removeFunction(gsl::cstring_span<> name) {
-	auto funcPtr = graphFuncFromName(name);
+	auto funcPtr = functionFromName(name);
 
 	if (funcPtr == nullptr) { return false; }
 
@@ -387,7 +386,7 @@ void GraphModule::removeFunction(GraphFunction* func) {
 	mFunctions.erase(iter);
 }
 
-GraphFunction* GraphModule::graphFuncFromName(gsl::cstring_span<> name) const {
+GraphFunction* GraphModule::functionFromName(gsl::cstring_span<> name) const {
 	auto iter = std::find_if(mFunctions.begin(), mFunctions.end(),
 	                         [&](auto& ptr) { return ptr->name() == name; });
 
@@ -399,7 +398,7 @@ Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::j
                                      std::unique_ptr<NodeType>* toFill) {
 	Result res = {};
 
-	auto graph = graphFuncFromName(name);
+	auto graph = functionFromName(name);
 
 	if (graph == nullptr) {
 		// if it wasn't found, then see if it's a struct breaker or maker
