@@ -1,0 +1,19 @@
+env:
+  - SHARED=True
+  - SHARED=False
+
+install:
+  - pip install --user conan && export PATH=$PATH:$HOME/.local/bin
+  - conan --version
+
+  - DEPS_DIR="${HOME}/deps"
+  - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
+  - CMAKE_URL="http://www.cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz"
+  - mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
+  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+  - cd ${TRAVIS_BUILD_DIR}
+
+  - cmake --version
+
+script:
+  - conan test_package --build=outdated --options libexecstream:shared=$SHARED
