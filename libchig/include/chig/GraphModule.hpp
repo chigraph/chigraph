@@ -84,7 +84,7 @@ struct GraphModule : public ChigModule {
 	/// Get a function from the name
 	/// \param name The name to get
 	/// \return The GraphFunction or nullptr if it doesn't exist
-	GraphFunction* graphFuncFromName(gsl::cstring_span<> name) const;
+	GraphFunction* functionFromName(gsl::cstring_span<> name) const;
 
 	/// Get functions
 	/// \return The functions
