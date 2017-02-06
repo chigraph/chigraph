@@ -31,7 +31,6 @@ TEST_CASE("LangModule", "[module]") {
 			REQUIRE(test.unqualifiedName() == "i8*");
 			REQUIRE(test.qualifiedName() == "lang:i8*");
 
-
 			res = c.typeFromModule("lang", "float", &test);
 			REQUIRE(!!res);
 			REQUIRE(test.llvmType() == llvm::IntegerType::getFloatTy(c.llvmContext()));

@@ -25,7 +25,7 @@ If your version doesn't supply new enough llvm versions, use [LLVM's ppa](https:
 I personally use Arch for most of chigraph's development, so this is pretty guaranteed to work:
 ```bash
 sudo pacman -Sy
-sudo pacman -S llvm qt5 kf5 cmake git
+sudo pacman -S llvm qt5 kf5 cmake git extra-cmake-modules
 ```
 
 #### OpenSUSE
