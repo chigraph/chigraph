@@ -1,7 +1,4 @@
 
-
-$ErrorActionPreference = "Stop"
-
 $firstdir = pwd
 $scriptsdir = $PSScriptRoot
 
