@@ -29,8 +29,7 @@ class FunctionView;
 
 class ChigraphNodeModel : public NodeDataModel {
 public:
-	ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fview_)
-	    : mInst{inst_}, mFunctionView{fview_} {}
+	ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fview_);
 
 	chig::NodeInstance& instance() const { return *mInst; }
 	QString             caption() const override {
@@ -56,6 +55,7 @@ public:
 private:
 	chig::NodeInstance* mInst;
 	FunctionView*       mFunctionView;
+	QWidget*            mEmbedded = nullptr;
 };
 
 #endif  // CHIG_GUI_CHIGNODEGUI_HPP
