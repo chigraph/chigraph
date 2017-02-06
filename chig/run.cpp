@@ -94,6 +94,12 @@ int run(const std::vector<std::string>& opts) {
 
 	if (entry == nullptr) {
 		std::cerr << "No main function in module: " << std::endl;
+
+		std::string mod;
+		llvm::raw_string_ostream s{ mod };
+		llmod->print(s, nullptr);
+
+		std::cerr << std::endl << mod << std::endl;
 		return 1;
 	}
 

@@ -51,7 +51,7 @@ target_include_directories(chigcore
 	include/
 	${CMAKE_BINARY_DIR}/
 	../third_party/GSL
-	../third_party/tiny-process-library
+	../third_party/libexecstream/include
 )
 
 
@@ -80,7 +80,7 @@ target_compile_definitions(chigcore PUBLIC
 
 target_link_libraries(chigcore
 PUBLIC
-	tiny-process-library
+	libexecstream
 	boost_filesystem
 )
 
