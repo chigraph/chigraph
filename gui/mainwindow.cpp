@@ -235,12 +235,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 
 	// theme selector
 	auto themeAction = new KActionMenu(i18n("Theme"), this);
-	ThemeManager::instance()->setThemeMenuAction(themeAction);
+	auto themeManager = new ThemeManager(themeAction);
 	actColl->addAction(QStringLiteral("theme"), themeAction);
-	connect(ThemeManager::instance(), &ThemeManager::signalThemeChanged, this, [this](const QString& theme) {
-		KSharedConfigPtr config = KSharedConfig::openConfig(theme);
-		qApp->setPalette(KColorScheme::createApplicationPalette(config));
-	});
 	
 	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
 }
