@@ -16,9 +16,12 @@ include(KDECMakeSettings)
 include(FeatureSummary)
 
 # find qt
-find_package(Qt5 5.6.0 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt5 5.6.0 REQUIRED COMPONENTS Gui Core Widgets)
 
-find_package(KF5 REQUIRED COMPONENTS Service CoreAddons I18n XmlGui WidgetsAddons TextWidgets IconThemes)
+find_package(KF5 REQUIRED COMPONENTS Archive DBusAddons Sonnet GuiAddons ItemViews Config ConfigWidgets Auth Codecs Completion GlobalAccel Service WindowSystem CoreAddons I18n XmlGui WidgetsAddons TextWidgets IconThemes)
+
+# make sure QtMain is linked
+cmake_policy(SET CMP0020 NEW)
 
 set(GUI_SRCS
 	main.cpp
@@ -55,7 +58,7 @@ set(GUI_HEADERS
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
 
-target_link_libraries(chiggui Qt5::Widgets KF5::Service KF5::CoreAddons KF5::I18n KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigcore)
+target_link_libraries(chiggui Qt5::Widgets KF5::CoreAddons KF5::I18n KF5::Auth KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigcore)
 
 target_compile_features(chiggui PRIVATE cxx_variable_templates)
 
@@ -63,4 +66,33 @@ if(UNIX)
         target_compile_options(chiggui PRIVATE "-fexceptions")
 endif()
 
+# copy dlls
+if(WIN32)
+	foreach(QTLIB Qt5::Widgets Qt5::Core Qt5::Gui KF5::DBusAddons KF5::Archive KF5::ConfigWidgets KF5::GuiAddons KF5::ItemViews KF5::Codecs KF5::Auth KF5::Completion KF5::SonnetCore KF5::SonnetUi KF5::Service KF5::ConfigGui KF5::ConfigCore KF5::WindowSystem KF5::GlobalAccel KF5::CoreAddons KF5::I18n KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes)
+
+		add_custom_command(
+		TARGET chiggui POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different
+			$<TARGET_FILE:${QTLIB}>
+			$<TARGET_FILE_DIR:chiggui>
+		)
+	
+	endforeach()
+	
+	add_custom_command(
+	TARGET chiggui POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different
+		${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libintl-win32/bin/iconv.dll
+		$<TARGET_FILE_DIR:chiggui>
+	)
+	
+	
+	add_custom_command(
+	TARGET chiggui POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different
+		${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libintl-win32/bin/libintl.dll
+		$<TARGET_FILE_DIR:chiggui>
+	)
+	
+endif()
 install(TARGETS chiggui DESTINATION bin)
