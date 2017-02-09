@@ -35,6 +35,7 @@ set(GUI_SRCS
 	modulebrowser.cpp
 	moduledependencies.cpp
 	execparamlistwidget.cpp
+	thememanager.cpp
 )
 
 set(GUI_RESOURCES
@@ -52,6 +53,7 @@ set(GUI_HEADERS
 	modulebrowser.hpp
 	moduledependencies.hpp
 	execparamlistwidget.hpp
+	thememanager.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
