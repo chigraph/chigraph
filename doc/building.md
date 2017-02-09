@@ -124,5 +124,48 @@ Then run it!
 open ./gui/chiggui.app
 ```
 
+## Windows
+
+## Installing dependencies
+
+First, Install [Visual Studio 2015](https://www.visualstudio.com/downloads/). 2015 is the only version that has been tested, 2017 RC might work but you'd have to compile qt. Make sure to choose custom install:
+
+![Visual Studio custom install](screenshots/vscustom/png)
+
+and pick Visual C++ and git:
+
+![Visual C++](screenshots/vc++)
+
+
+
+Install [Qt open source 5.6 or newer](https://www.qt.io/download-open-source). Make sure you install msvc2015_64 binaries:
+
+![Make sure to install msvc2015_64](screenshots/windowsqt.png)
+
+Install [CMake](https://cmake.org/download/). I suggest you use an installer, it's harder to screw up. Make sure to get a stable release because those are better tested (they usually put the release candidates on top). Make sure to add cmake to path for either all users or just the current one:
+
+![cmake path](screenshots/cmakepath.png)
+
+OR
+
+![cmake path](screenshots/cmakepathcurrentuser.png)
+
+Then, download LLVM from the [chigraph releases page](https://github.com/chigraph/chigraph/releases/tag/dependencies) and extract it. Choose either debug or release, and take note for later. 
+
+Next, [install python 3](https://www.python.org/downloads/release/python-360/) into `C:\Python3`. It'll work if you don't install it there, just pass `-DPYTHON_EXECUTABLE=C:\path\to\python` to the `./build_directories.ps1` script below (at the end).
+
+Finally, build KDE Frameworks 5:
+Allow execution of remote scripts by opening powershell as an admin:
+
+![Admin powershell](screenshots/adminpowershell.png)
+ and entering:
+```powershell
+Set-ExecutionPolicy RemoteSigned
+```
+
+Then press `A` to accept all.
+
+
+
 
 Any errors? [File an issue!](https://github.com/chigraph/chigraph/issues/new)
