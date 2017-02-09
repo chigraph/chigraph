@@ -5,10 +5,14 @@ $scriptsdir = $PSScriptRoot
 $version = "5.30.0"
 $sversion = "5.30"
 
-$cmakeargs = $args
+$qtdir = $args[0]
+$buildtype = $args[1]
+$cmakeargs = $args[2..($args.length - 1)]
 
-"Building KF5 with in $buildtype mode with cmake arguments $cmakeargs"
+"Building KF5 with in $buildtype mode with cmake arguments $cmakeargs and qt in $qtdir"
 
+# set path
+$env:Path = "$qtdir/bin;$env:Path"
 
 $kf5dir = "$scriptsdir/../third_party/kf5"
 mkdir $kf5dir -Force
@@ -45,7 +49,7 @@ function build_framework
 	$zlibdir = "$scriptsdir/../third_party/zlib-win32"
 	$fbdir = "$scriptsdir/../third_party/flexbison-win32"
 	
-	cmake .. -G"Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX="$kf5dir" -DCMAKE_PREFIX_PATH="$kf5dir" `
+	cmake .. -G"Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=$buildtype -DCMAKE_INSTALL_PREFIX="$kf5dir" -DCMAKE_PREFIX_PATH="$kf5dir;$qtdir" `
 		-DGETTEXT_MSGMERGE_EXECUTABLE="$gtdir/bin/msgmerge.exe" -DGETTEXT_MSGFMT_EXECUTABLE="$gtdir/bin/msgfmt.exe" `
 		-DLibIntl_INCLUDE_DIRS="$gtdir/include" -DLibIntl_LIBRARIES="$gtdir/lib/libintl.lib" -DZLIB_LIBRARY="$zlibdir/lib/zlibstatic.lib" `
 		-DZLIB_INCLUDE_DIR="$zlibdir/include" -DFLEX_EXECUTABLE="$fbdir/bin/flex.exe" -DBISON_EXECUTABLE="$fbdir/bin/bison.exe" `
@@ -54,7 +58,7 @@ function build_framework
 	if($LastExitCode) {
 		#exit
 	}
-    cmake --build . --target install
+    cmake --build . --target install --config $buildtype
 	if($LastExitCode) {
 		exit
 	}
@@ -62,8 +66,8 @@ function build_framework
 }
 
 build_framework extra-cmake-modules
-build_framework ki18n
 build_framework kconfig
+build_framework ki18n
 build_framework kguiaddons
 build_framework kitemviews
 build_framework sonnet
