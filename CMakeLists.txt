@@ -12,6 +12,10 @@ set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 option(CG_BUILD_GUI "Should the GUI be built" ON)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # disable tests
 set(BUILD_CLAR OFF CACHE BOOL "")
 add_subdirectory(third_party/libexecstream)

@@ -33,8 +33,9 @@ int main(int argc, char** argv) {
 
 	aboutData.processCommandLine(&parser);
 
-	// QIcon::setThemeName("breeze-dark");
-
+#ifdef WIN32
+	QIcon::setThemeName("breeze");
+#endif
 	auto win = new MainWindow();
 	win->show();
 
