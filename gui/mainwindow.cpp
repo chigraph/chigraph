@@ -44,7 +44,7 @@
 #include "chigraphnodemodel.hpp"
 #include "thememanager.hpp"
 
-MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
+MainWindow::MainWindow(QWidget* parent) : KParts::MainWindow(parent) {
 	Q_INIT_RESOURCE(chiggui);
 
 	// set icon

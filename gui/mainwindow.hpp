@@ -5,6 +5,7 @@
 
 #include <KStandardAction>
 #include <KXmlGuiWindow>
+#include <KParts/MainWindow>
 
 #include <QListView>
 #include <QPlainTextEdit>
@@ -22,7 +23,7 @@
 
 #include "functionview.hpp"
 
-class MainWindow : public KXmlGuiWindow {
+class MainWindow : public KParts::MainWindow {
 	Q_OBJECT
 public:
 	MainWindow(QWidget* parent = nullptr);

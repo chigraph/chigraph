@@ -18,7 +18,7 @@ include(FeatureSummary)
 # find qt
 find_package(Qt5 5.6.0 REQUIRED COMPONENTS Gui Core Widgets)
 
-find_package(KF5 REQUIRED COMPONENTS Archive DBusAddons Sonnet GuiAddons ItemViews Config ConfigWidgets Auth Codecs Completion GlobalAccel Service WindowSystem CoreAddons I18n XmlGui WidgetsAddons TextWidgets IconThemes)
+find_package(KF5 REQUIRED COMPONENTS Archive DBusAddons Sonnet Parts GuiAddons ItemViews Config ConfigWidgets Auth Codecs Completion GlobalAccel Service WindowSystem CoreAddons I18n XmlGui WidgetsAddons TextWidgets IconThemes)
 
 # make sure QtMain is linked
 cmake_policy(SET CMP0020 NEW)
@@ -58,7 +58,7 @@ set(GUI_HEADERS
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
 
-target_link_libraries(chiggui Qt5::Widgets KF5::CoreAddons KF5::I18n KF5::Auth KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigcore)
+target_link_libraries(chiggui Qt5::Widgets KF5::CoreAddons KF5::I18n KF5::Auth KF5::Parts KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigcore)
 
 target_compile_features(chiggui PRIVATE cxx_variable_templates)
 
