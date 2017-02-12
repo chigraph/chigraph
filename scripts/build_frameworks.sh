@@ -20,7 +20,7 @@ build_framework() {
 
     foldername=$framework-$version
 
-    wget http://download.kde.org/stable/frameworks/$sversion/$foldername.zip
+    wget http://download.kde.org/stable/frameworks/$sversion/$foldername.tar.xz
     tar xf $foldername.tar.xz
     mkdir -p $foldername/build
     cd $foldername/build
