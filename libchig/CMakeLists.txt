@@ -71,6 +71,10 @@ string(REPLACE " " ";" LLVM_SYSTEM_LINK_LIST ${LLVM_SYSTEM_LIBS})
 message(STATUS "LLVM system libraries: ${LLVM_SYSTEM_LINK_LIST}")
 target_link_libraries(chigcore PUBLIC ${LLVM_SYSTEM_LINK_LIST})
 
+if(UNIX)
+	target_link_libraries(chigcore PUBLIC ffi)
+endif()
+
 target_compile_definitions(chigcore PUBLIC 
   -D_GNU_SOURCE 
   -D__STDC_CONSTANT_MACROS 
