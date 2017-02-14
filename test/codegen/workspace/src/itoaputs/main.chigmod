@@ -102,7 +102,10 @@
         "itoa": {
           "data": {
             "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
-            "function": "doitoa"
+            "function": "doitoa",
+            "inputs": [{"val": "lang:i32"}],
+            "output": "lang:i8*",
+            "extraflags": []
           },
           "location": [
             735,
@@ -113,7 +116,10 @@
         "puts": {
           "data": {
             "code": "#include <stdio.h>\n int doputs(const char* arg) { \nreturn puts(arg);\n}",
-            "function": "doputs"
+            "function": "doputs",
+            "inputs": [{"arg": "lang:i8*"}],
+            "output": "lang:i32",
+            "extraflags": []
           },
           "location": [
             486,
