@@ -88,7 +88,10 @@
         "printf": {
           "data": {
             "code": "#include <stdio.h> \n void printint(int i){printf(\"%i\", i); }",
-            "function": "printint"
+            "function": "printint",
+            "extraflags": [],
+            "inputs": [{"i": "lang:i32"}],
+            "output": null
           },
           "location": [
             -54.3120002746582,

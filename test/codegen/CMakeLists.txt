@@ -21,7 +21,7 @@ foreach(MODULEPATH ${CODEGEN_TESTS})
 	
 	add_test(NAME ${MODULEPATH}_test
 		COMMAND codegen_tester ${FULLMODULEPATH}
-		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../../chig
+		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../../bin
 	)
 	
 endforeach()

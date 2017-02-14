@@ -141,7 +141,10 @@
         "itoa": {
           "data": {
             "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
-            "function": "doitoa"
+            "function": "doitoa",
+            "inputs": [{"arg": "lang:i32"}],
+            "output": "lang:i8*",
+            "extraflags": []
           },
           "location": [
             1138,
