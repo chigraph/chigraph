@@ -4,6 +4,8 @@
 
 #include "../src/NodeGraphicsObject.hpp"
 
+#include <chig/CModule.hpp>
+
 class EditCodeDialog : public QDialog {
 public:
 	EditCodeDialog(chig::NodeInstance* inst, FunctionView* fview) {
@@ -29,8 +31,7 @@ public:
 			std::string code     = textEdit->toPlainText().toStdString();
 
 			std::unique_ptr<chig::NodeType> ty;
-			chig::Result                    res = inst->context().nodeTypeFromModule(
-			    "c", "func", {{"code", code}, {"function", function}}, &ty);
+			auto res = inst->context().cModule()->createNodeTypeFromCCode(code, function, {}, &ty);
 			if (!res) {
 				KMessageBox::detailedError(this, "Failed to compile C node",
 				                           QString::fromStdString(res.dump()));

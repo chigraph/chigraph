@@ -123,10 +123,13 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 
 	// load the JSON
 	nlohmann::json readJson = {};
-	{
+	try {
 		fs::ifstream inFile{fullPath};
 
 		inFile >> readJson;
+	} catch (std::exception& e) {
+		res.addEntry("EUKN", "Failed to parse json", {{"Error", e.what()}});
+		return res;
 	}
 
 	auto str = gsl::to_string(name);
@@ -172,6 +175,12 @@ bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept {
 	// make sure it's unique
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) { return false; }
+	
+	if (modToAdd->fullName() == "c") {
+		mCModule = dynamic_cast<CModule*>(modToAdd.get());
+	} else if (modToAdd->fullName() == "lang") {
+		mLangModule = dynamic_cast<LangModule*>(modToAdd.get());
+	}
 
 	mModules.push_back(std::move(modToAdd));
 

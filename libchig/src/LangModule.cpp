@@ -26,7 +26,7 @@ struct IfNodeType : NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 2);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -53,7 +53,7 @@ struct EntryNodeType : NodeType {
 	    size_t /*inputExecID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == dataOutputs().size() && codegenInto != nullptr &&
 		        outputBlocks.size() == execOutputs().size());
 
@@ -111,7 +111,7 @@ struct ConstIntNodeType : NodeType {
 	    size_t /*inputExecID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -143,7 +143,7 @@ struct ConstFloatNodeType : NodeType {
 	    size_t /*inputExecID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -175,7 +175,7 @@ struct ConstBoolNodeType : NodeType {
 	    size_t /*inputExecID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -208,7 +208,7 @@ struct ExitNodeType : NodeType {
 	Result codegen(
 	    size_t execInputID, const llvm::DebugLoc& nodeLocation, const gsl::span<llvm::Value*> io,
 	    llvm::BasicBlock* codegenInto, const gsl::span<llvm::BasicBlock*> /*outputBlocks*/,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(execInputID < execInputs().size() && io.size() == dataInputs().size() &&
 		        codegenInto != nullptr);
 
@@ -265,7 +265,7 @@ struct StringLiteralNodeType : NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -303,7 +303,7 @@ struct IntToFloatNodeType : NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == 2 && codegenInto != nullptr && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -336,7 +336,7 @@ struct FloatToIntNodeType : NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == 2 && codegenInto != nullptr && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -398,7 +398,7 @@ struct BinaryOperationNodeType : NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == 3 && codegenInto != nullptr && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -491,7 +491,7 @@ struct CompareNodeType : NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Expects(io.size() == 3 && codegenInto != nullptr && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(codegenInto);

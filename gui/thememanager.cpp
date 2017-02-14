@@ -10,7 +10,7 @@
 #include <KConfigGroup>
 #include <KMessageBox>
 #include <KLocalizedString>
-#include <ktoolinvocation.h>
+#include <KToolInvocation>
 #include <KColorScheme>
 #include <QApplication>
 

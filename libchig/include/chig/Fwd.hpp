@@ -8,6 +8,7 @@ namespace chig {
 struct ChigModule;
 struct Context;
 struct DataType;
+struct CModule;
 struct NamedDataType;
 struct GraphFunction;
 struct GraphStruct;

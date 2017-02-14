@@ -55,7 +55,7 @@ public:
 	virtual Result codegen(
 	    size_t execInputID, const llvm::DebugLoc& nodeLocation, const gsl::span<llvm::Value*> io,
 	    llvm::BasicBlock* codegenInto, const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>&           compileCache) const = 0;
+	    std::unordered_map<std::string, std::shared_ptr<void>>&           compileCache) = 0;
 
 	/// Create the JSON necessary to store the object.
 	/// \return The json obejct

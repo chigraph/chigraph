@@ -87,7 +87,10 @@
         "{d6a93602-9d43-44d0-97c3-70c21d4a774c}": {
           "data": {
             "code": "#include <stdio.h> \n\nvoid intprinter_printint(int val) { \n  printf(\"%i\", val);\n}",
-            "function": "intprinter_printint"
+            "function": "intprinter_printint",
+            "inputs": [{"val": "lang:i32"}],
+            "output": null,
+            "extraflags": []
           },
           "location": [
             467,
@@ -311,7 +314,10 @@
         "{856cba7e-59b5-4172-9b36-783581cde081}": {
           "data": {
             "code": "#include <stdio.h>\n\nvoid intprinter_printfloat(float f) {\n  printf(\"%f\", f);\n}",
-            "function": "intprinter_printfloat"
+            "function": "intprinter_printfloat",
+            "inputs": [{"f": "lang:float"}],
+            "output": null,
+            "extraflags": []
           },
           "location": [
             612,
@@ -418,7 +424,10 @@
         "{d28e119d-5458-45aa-8034-fcca232d45f9}": {
           "data": {
             "code": "#include <stdio.h>\n\nvoid intprinter_printstr(const char* s) {\n  printf(\"%s\", s);\n}",
-            "function": "intprinter_printstr"
+            "function": "intprinter_printstr",
+            "extraflags": [],
+            "inputs": [{"s": "lang:i8*"}],
+            "output": null
           },
           "location": [
             353,

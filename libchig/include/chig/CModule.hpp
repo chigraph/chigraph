@@ -8,7 +8,9 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "chig/ChigModule.hpp"
 #include "chig/Fwd.hpp"
@@ -30,6 +32,23 @@ struct CModule : ChigModule {
 	std::vector<std::string> nodeTypeNames() const override { return {"func"}; }
 	std::vector<std::string> typeNames() const override { return {}; }
 	Result                   generateModule(llvm::Module& /*module*/) override { return {}; }
+
+	/// Set extra arguments to pass to clang for generating C code
+	/// \param extraArgs The new extra arguments
+	void setExtraArguments(std::vector<std::string> extraArgs) {
+		mExtraCArgs = std::move(extraArgs);
+	}
+
+	/// Get the extra arguments
+	/// \return The extra arguments
+	const std::vector<std::string>& extraArguments() const { return mExtraCArgs; }
+
+	Result createNodeTypeFromCCode(const std::string& code, const std::string& functionName,
+	                               const std::vector<std::string>& clangArgs,
+	                               std::unique_ptr<NodeType>*      toFill);
+
+private:
+	std::vector<std::string> mExtraCArgs;
 };
 }
 

@@ -48,7 +48,7 @@ struct GraphFuncCallType : public NodeType {
 	Result codegen(
 	    size_t execInputID, const llvm::DebugLoc& nodeLocation, const gsl::span<llvm::Value*> io,
 	    llvm::BasicBlock* codegenInto, const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Result res = {};
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -109,7 +109,7 @@ struct MakeStructNodeType : public NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
@@ -149,7 +149,7 @@ struct BreakStructNodeType : public NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
@@ -193,7 +193,7 @@ struct SetLocalNodeType : public NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
@@ -240,7 +240,7 @@ struct GetLocalNodeType : public NodeType {
 	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
 	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) const override {
+	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
