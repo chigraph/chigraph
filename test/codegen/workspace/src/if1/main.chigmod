@@ -142,7 +142,10 @@
         "putsfalse": {
           "data": {
             "code": "#include <stdio.h>\n int doputs(const char* arg) { return puts(arg);}",
-            "function": "doputs"
+            "function": "doputs",
+            "inputs": [{"arg": "lang:i8*"}],
+            "output": "lang:i32",
+            "extraflags": []
           },
           "location": [
             374.559997558594,
@@ -153,7 +156,10 @@
         "putstrue": {
           "data": {
             "code": "#include <stdio.h>\n int doputs1(const char* arg) { return puts(arg);}",
-            "function": "doputs1"
+            "function": "doputs1",
+            "inputs": [{"arg": "lang:i8*"}],
+            "output": "lang:i32",
+            "extraflags": []
           },
           "location": [
             372.760009765625,

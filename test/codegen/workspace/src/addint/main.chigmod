@@ -101,7 +101,10 @@
         "{2d51ae53-b57c-4982-9a9a-76997f8938ed}": {
           "data": {
             "code": "#include <stdio.h> \n\nvoid printfint(int val) { \n  printf(\"%i\", val);\n}",
-            "function": "printfint"
+            "function": "printfint",
+            "extraflags": [],
+            "inputs": [{"val": "lang:i32"}],
+            "output": null
           },
           "location": [
             500,

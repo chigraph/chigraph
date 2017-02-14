@@ -171,6 +171,7 @@ struct CFuncNode : NodeType {
 		j["function"] = mFunctionName;
 
 		auto& jsonExtraFlags = j["extraflags"];
+		jsonExtraFlags = nlohmann::json::array();
 		for (const auto& flag : mExtraArguments) { jsonExtraFlags.push_back(flag); }
 
 		auto& jsonInputs = j["inputs"];

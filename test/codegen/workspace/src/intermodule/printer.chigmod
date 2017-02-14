@@ -107,7 +107,10 @@
         "puts": {
           "data": {
             "code": "#include <stdio.h> \n int doputs(const char* mystr) { return puts(mystr); }",
-            "function": "doputs"
+            "function": "doputs", 
+            "inputs": [{"arg": "lang:i8*"}],
+            "output": "lang:i32",
+            "extraflags": []
           },
           "location": [
             12,
