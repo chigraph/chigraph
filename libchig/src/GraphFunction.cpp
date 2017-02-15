@@ -71,17 +71,12 @@ Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float 
 
 std::vector<NodeInstance*> GraphFunction::nodesWithType(gsl::cstring_span<> module,
                                                         gsl::cstring_span<> name) const noexcept {
-	auto typeFinder = [&](auto& pair) {
-		return pair.second->type().module().name() == module && pair.second->type().name() == name;
-	};
-
+	
 	std::vector<NodeInstance*> ret;
-	auto                       iter = std::find_if(mNodes.begin(), mNodes.end(), typeFinder);
-	while (iter != mNodes.end()) {
-		ret.emplace_back(iter->second.get());
-
-		std::advance(iter, 1);  // don't process the same one twice!
-		iter = std::find_if(iter, mNodes.end(), typeFinder);
+	for (const auto& node : mNodes) {
+		 if (node.second->type().module().fullName() == module && node.second->type().name() == name) {
+			 ret.push_back(node.second.get());
+		}
 	}
 
 	return ret;

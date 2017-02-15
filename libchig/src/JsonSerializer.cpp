@@ -82,7 +82,7 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 nlohmann::json graphModuleToJson(const GraphModule& mod) {
 	nlohmann::json data;
 
-	data["name"]         = mod.name();
+	data["name"]         = mod.shortName();
 	data["dependencies"] = mod.dependencies();
 
 	auto& graphsjson = data["graphs"];

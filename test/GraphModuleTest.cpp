@@ -13,9 +13,8 @@ TEST_CASE("GraphModuleTest", "[module]") {
 	auto gMod = c.newGraphModule("test/main");
 	REQUIRE(c.numModules() == 1);
 	REQUIRE(c.moduleByFullName("test/main") == gMod);
-	REQUIRE(c.moduleByName("main") == gMod);
 	REQUIRE(gMod->fullName() == "test/main");
-	REQUIRE(gMod->name() == "main");
+	REQUIRE(gMod->shortName() == "main");
 	REQUIRE(gMod->typeNames().size() == 0);
 	
 	auto res = gMod->addDependency("c");

@@ -39,7 +39,7 @@ public:
 
 	/// Get the qualified name of the node type, like module.name():name()
 	/// \return The qualified name
-	std::string qualifiedName() const { return module().name() + ":" + name(); }
+	std::string qualifiedName() const { return module().fullName() + ":" + name(); }
 	/// A virtual function that is called when this node needs to be called
 	/// \param execInputID The ID of the exec input
 	/// \param nodeLocation The location of the node

@@ -310,7 +310,7 @@ Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::j
 	}
 
 	res.addEntry("E37", "Unrecognized node type in module",
-	             {{"Module", "c"}, {"Requested Type", name()}});
+	             {{"Module", "c"}, {"Requested Type", fullName()}});
 	return res;
 }
 

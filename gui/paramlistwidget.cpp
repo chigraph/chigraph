@@ -19,13 +19,13 @@ QStringList createTypeOptions(const chig::GraphModule& mod) {
 	QStringList ret;
 
 	// add the module
-	for (const auto& ty : mod.typeNames()) { ret << QString::fromStdString(mod.name() + ":" + ty); }
+	for (const auto& ty : mod.typeNames()) { ret << QString::fromStdString(mod.fullName() + ":" + ty); }
 
 	// and its dependencies
 	for (auto dep : mod.dependencies()) {
 		auto depMod = mod.context().moduleByFullName(dep);
 		for (const auto& type : depMod->typeNames()) {
-			ret << QString::fromStdString(depMod->name() + ":" + type);
+			ret << QString::fromStdString(depMod->fullName() + ":" + type);
 		}
 	}
 	return ret;

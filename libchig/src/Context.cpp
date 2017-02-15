@@ -33,14 +33,7 @@ Context::Context(const boost::filesystem::path& workPath) {
 
 	mWorkspacePath = workspaceFromChildPath(workPath);
 }
-ChigModule* Context::moduleByName(gsl::cstring_span<> moduleName) const noexcept {
-	Result res;
 
-	for (auto& module : mModules) {
-		if (module->name() == moduleName) { return module.get(); }
-	}
-	return nullptr;
-}
 
 ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept {
 	Result res;
@@ -208,7 +201,7 @@ Result Context::typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> n
 
 	Result res;
 
-	ChigModule* mod = moduleByName(module);
+	ChigModule* mod = moduleByFullName(module);
 	if (mod == nullptr) {
 		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(module)}});
 		return res;
@@ -228,7 +221,7 @@ Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_
                                    std::unique_ptr<NodeType>* toFill) noexcept {
 	Result res;
 
-	auto module = moduleByName(moduleName);
+	auto module = moduleByFullName(moduleName);
 	if (module == nullptr) {
 		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(moduleName)}});
 		return res;
@@ -303,13 +296,6 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 	return res;
 }
 
-std::string Context::fullModuleName(gsl::cstring_span<> shortName) const {
-	auto mod = moduleByName(shortName);
-
-	if (mod != nullptr) { return mod->fullName(); }
-
-	return "";
-}
 boost::filesystem::path workspaceFromChildPath(const boost::filesystem::path& path) {
 	fs::path ret = path;
 

@@ -1,35 +1,12 @@
 {
   "dependencies": [
-    "intprinter",
+    "lang",
     "c",
-    "lang"
+    "intprinter"
   ],
-  "types": {},
   "graphs": [
     {
       "connections": [
-        {
-          "input": [
-            "{57331dea-ce43-4740-871d-c60776f354f9}",
-            0
-          ],
-          "output": [
-            "{8d3f9c23-be00-41c0-83c0-efd466405a74}",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "{30bb58cf-0c5d-4a05-95a1-888372b623d1}",
-            0
-          ],
-          "output": [
-            "{57331dea-ce43-4740-871d-c60776f354f9}",
-            0
-          ],
-          "type": "data"
-        },
         {
           "input": [
             "entry",
@@ -60,6 +37,28 @@
           "output": [
             "{30bb58cf-0c5d-4a05-95a1-888372b623d1}",
             1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{57331dea-ce43-4740-871d-c60776f354f9}",
+            0
+          ],
+          "output": [
+            "{8d3f9c23-be00-41c0-83c0-efd466405a74}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "{30bb58cf-0c5d-4a05-95a1-888372b623d1}",
+            0
+          ],
+          "output": [
+            "{57331dea-ce43-4740-871d-c60776f354f9}",
+            0
           ],
           "type": "data"
         }
@@ -119,8 +118,8 @@
             ]
           },
           "location": [
-            779,
-            178
+            841.400024414062,
+            180.399993896484
           ],
           "type": "lang:exit"
         },
@@ -136,5 +135,6 @@
       "type": "function"
     }
   ],
-  "name": "main"
+  "name": "main",
+  "types": {}
 }

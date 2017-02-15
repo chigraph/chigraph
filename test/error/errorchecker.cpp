@@ -49,13 +49,12 @@ int main(int argc, char** argv) {
 	if (strcmp(mode, "mod") == 0) {
 		GraphModule* mod;
 		res += jsonToGraphModule(c, newData, "main", &mod);
-		std::string moduleName = mod->name();
 
 		int ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;
 
 		std::unique_ptr<llvm::Module> llmod = nullptr;
-		res += c.compileModule(moduleName, &llmod);
+		res += c.compileModule(mod->fullName(), &llmod);
 
 		ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;
