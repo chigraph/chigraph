@@ -25,4 +25,8 @@ before_build:
 
 build:
   parallel: true
-  project: C:\projects\chigraph\build\chigraph.sln
+  project: C:\projects\chigraph-miekk\build\chigraph.sln
+
+after_build:
+  - cd build
+  - cmake --build . --config %configuration% --target RUN_TESTS
