@@ -224,7 +224,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 		}
 		
 		WHEN("We create some local variables") {
-			func->getOrCreateLocalVaraible("hello", lmod->typeFromName("i32"));
+			func->getOrCreateLocalVariable("hello", lmod->typeFromName("i32"));
 			
 			auto correctJSON = R"ENDJSON(
 				{

@@ -109,8 +109,9 @@ TEST_CASE("GraphModuleTest", "[module]") {
 			
 			assertFuncRemoved();
 		}
+			
 	}
-	
+
 	
 	
 }
