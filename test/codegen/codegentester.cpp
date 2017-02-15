@@ -120,6 +120,9 @@ std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
 			       "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " +
 			       rgraph["outputs"].dump(-1);
 		}
+		if (lgraph["local_variables"] != rgraph["local_variables"]) {
+			return "graph local_variables in graph #" + std::to_string(iter) + "not equal; serialized: " + lgraph["local_variables"].dump(-1) + " original: " + rgraph["local_variables"].dump(-1);
+		}
 	}
 
 	return "";

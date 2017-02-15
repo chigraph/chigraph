@@ -197,6 +197,38 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& input) {
 	Result res;
 
+	// read the local variables
+	if (input.find("local_variables") == input.end() || !input["local_variables"].is_object()) {
+		res.addEntry("E45", "JSON in graph doesn't have a local_variables object", {});
+		
+		return res;
+	}
+	
+	for (auto localiter = input["local_variables"].begin(); localiter != input["local_variables"].end(); ++localiter) {
+		std::string localName = localiter.key();
+		
+		if (!localiter.value().is_string()) {
+			res.addEntry("E46", "Local variable vaue in json wasn't a string", {{"Given local variable json", localiter.value()}});
+			
+			continue;
+		}
+		
+		// parse the type names
+		std::string qualifiedType = localiter.value();
+		
+		std::string moduleName, typeName;
+		std::tie(moduleName, typeName) = parseColonPair(qualifiedType);
+		
+		DataType ty;
+		res += createInside.context().typeFromModule(moduleName, typeName, &ty);
+		
+		if (!res) {
+			continue;
+		}
+		
+		createInside.getOrCreateLocalVaraible(localName, ty);
+	}
+	
 	// read the nodes
 	if (input.find("nodes") == input.end() || !input["nodes"].is_object()) {
 		res.addEntry("E5", "JSON in graph doesn't have nodes object", {});

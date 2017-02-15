@@ -44,7 +44,8 @@ TEST_CASE("JsonSerializer", "[json]") {
                     "data_inputs": [],
                     "data_outputs": [],
 					"exec_inputs": [""],
-					"exec_outputs": [""]
+					"exec_outputs": [""],
+					"local_variables": {}
 				}
 			)ENDJSON"_json;
 
@@ -82,7 +83,8 @@ TEST_CASE("JsonSerializer", "[json]") {
                     "data_inputs": [],
                     "data_outputs": [],
 					"exec_inputs": [""],
-					"exec_outputs": [""]
+					"exec_outputs": [""] ,
+					"local_variables": {}
 					}
 					)ENDJSON"_json;
 
@@ -118,10 +120,11 @@ TEST_CASE("JsonSerializer", "[json]") {
 								}
 							},
 							"connections": [],
-                    "data_inputs": [],
-                    "data_outputs": [],
-					"exec_inputs": [""],
-					"exec_outputs": [""]
+							"data_inputs": [],
+							"data_outputs": [],
+							"exec_inputs": [""],
+							"exec_outputs": [""],
+							"local_variables": {}
 						}
 						)ENDJSON"_json;
 
@@ -161,7 +164,8 @@ TEST_CASE("JsonSerializer", "[json]") {
 								"data_inputs": [],
 								"data_outputs": [],
 								"exec_inputs": [""],
-								"exec_outputs": [""]
+								"exec_outputs": [""],
+								"local_variables": {}
 							}
 						)ENDJSON"_json;
 
@@ -208,7 +212,8 @@ TEST_CASE("JsonSerializer", "[json]") {
 								"data_inputs": [],
 								"data_outputs": [],
 								"exec_inputs": [""],
-								"exec_outputs": [""]
+								"exec_outputs": [""],
+								"local_variables": {}
 								})ENDJSON"_json;
 
 							requireWorks(correctJSON);
@@ -216,6 +221,26 @@ TEST_CASE("JsonSerializer", "[json]") {
 					}
 				}
 			}
+		}
+		
+		WHEN("We create some local variables") {
+			func->getOrCreateLocalVaraible("hello", lmod->typeFromName("i32"));
+			
+			auto correctJSON = R"ENDJSON(
+				{
+					"type": "function",
+					"name": "hello",
+					"nodes": {},
+					"connections": [],
+                    "data_inputs": [],
+                    "data_outputs": [],
+					"exec_inputs": [""],
+					"exec_outputs": [""],
+					"local_variables": {"hello": "lang:i32"}
+				}
+			)ENDJSON"_json;
+			
+			requireWorks(correctJSON);
 		}
 	}
 }
