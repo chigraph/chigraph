@@ -180,10 +180,10 @@ struct BreakStructNodeType : public NodeType {
 
 struct SetLocalNodeType : public NodeType {
 	SetLocalNodeType(ChigModule& mod, NamedDataType ty) : NodeType(mod), mDataType{std::move(ty)} {
-		setName("_set_" + ty.name);
-		setDescription("Set " + ty.name);
+		setName("_set_" + mDataType.name);
+		setDescription("Set " + mDataType.name);
 
-		setDataInputs({{"", ty.type}});
+		setDataInputs({{"", mDataType.type}});
 
 		setExecInputs({""});
 		setExecOutputs({""});
@@ -196,22 +196,17 @@ struct SetLocalNodeType : public NodeType {
 	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
-
-		llvm::Value* local = nullptr;
-
-		// see if it's already in the cache
-		auto iter = compileCache.find(mDataType.name);
-		if (iter != compileCache.end()) { local = static_cast<llvm::Value*>(iter->second.get()); }
+		
+		
+		std::shared_ptr<void>& local = compileCache[mDataType.name];
 
 		if (local == nullptr) {
 			// create a new one!
-			local = builder.CreateAlloca(mDataType.type.llvmType());
-
-			compileCache[mDataType.name] = std::make_shared<llvm::Value*>(local);
+			local = std::make_shared<llvm::Value*>(builder.CreateAlloca(mDataType.type.llvmType()));
 		}
 
 		// set the value!
-		builder.CreateStore(io[0], local);
+		builder.CreateStore(io[0], *static_cast<llvm::Value**>(local.get()));
 
 		builder.CreateBr(outputBlocks[0]);
 
@@ -228,10 +223,10 @@ struct SetLocalNodeType : public NodeType {
 
 struct GetLocalNodeType : public NodeType {
 	GetLocalNodeType(ChigModule& mod, NamedDataType ty) : NodeType(mod), mDataType{std::move(ty)} {
-		setName("_get_" + ty.name);
-		setDescription("Get " + ty.name);
+		setName("_get_" + mDataType.name);
+		setDescription("Get " + mDataType.name);
 
-		setDataOutputs({{"", ty.type}});
+		setDataOutputs({{"", mDataType.type}});
 
 		makePure();
 	}
@@ -244,21 +239,17 @@ struct GetLocalNodeType : public NodeType {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		llvm::Value* local = nullptr;
-
-		// see if it's already in the cache
-		auto iter = compileCache.find(mDataType.name);
-		if (iter != compileCache.end()) { local = static_cast<llvm::Value*>(iter->second.get()); }
+		std::shared_ptr<void>& local = compileCache[mDataType.name];
 
 		if (local == nullptr) {
 			// create a new one!
-			local = builder.CreateAlloca(mDataType.type.llvmType());
-
-			compileCache[mDataType.name] = std::make_shared<llvm::Value*>(local);
+			local = std::make_shared<llvm::Value*>(builder.CreateAlloca(mDataType.type.llvmType()));
+			
+			// TODO: create an error here
 		}
 
-		builder.CreateStore(builder.CreateLoad(local), io[0]);
-
+		builder.CreateStore(builder.CreateLoad(*static_cast<llvm::Value**>(local.get())), io[0]);
+		
 		builder.CreateBr(outputBlocks[0]);
 
 		return {};
@@ -442,7 +433,7 @@ Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::j
 				DataType ty;
 				res += context().typeFromModule(module, typeName, &ty);
 				
-				*toFill = std::make_unique<SetLocalNodeType>(*this, NamedDataType{nameStr.substr(5), ty});
+				*toFill = std::make_unique<SetLocalNodeType>(*this, NamedDataType{nameStr.substr(5), std::move(ty)});
 			} else {
 				res.addEntry("EUKN", "Json data for _set_ node type isn't a string", {{"Given Data", jsonData}});
 			}
