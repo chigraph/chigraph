@@ -17,11 +17,12 @@ var structchig_1_1GraphFunction =
     [ "execInputs", "structchig_1_1GraphFunction.html#a217197f9e54f57cd7a8751a335f4710b", null ],
     [ "execOutputs", "structchig_1_1GraphFunction.html#ae155f716b072ef5f8e3ba064ae7ef8c0", null ],
     [ "functionType", "structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848", null ],
-    [ "getOrCreateLocalVaraible", "structchig_1_1GraphFunction.html#ac926cac92bf82b3128015601dc1de1bd", null ],
+    [ "getOrCreateLocalVariable", "structchig_1_1GraphFunction.html#a964778b9436923d46b84777331ad008c", null ],
     [ "getOrInsertEntryNode", "structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917", null ],
     [ "insertNode", "structchig_1_1GraphFunction.html#a70b74dd7330f7afb2b3ab38feebd57c5", null ],
     [ "insertNode", "structchig_1_1GraphFunction.html#a449ab966907b5e32dd00d5f6bb1b3ede", null ],
     [ "localVariableFromName", "structchig_1_1GraphFunction.html#a34c7e4d2c114b9ba672a55dc2793f69c", null ],
+    [ "localVariables", "structchig_1_1GraphFunction.html#a72a81861d1331948804b2a267598ec79", null ],
     [ "modifyDataInput", "structchig_1_1GraphFunction.html#a1ac9ba57c83cafb7517921d49425db5c", null ],
     [ "modifyDataOutput", "structchig_1_1GraphFunction.html#a4a8166eb973ba7225491a2ec85421f53", null ],
     [ "modifyExecInput", "structchig_1_1GraphFunction.html#a66359dd63933d9c37b00d3894c979b11", null ],
@@ -37,6 +38,8 @@ var structchig_1_1GraphFunction =
     [ "removeDataOutput", "structchig_1_1GraphFunction.html#ae6fc3833c6e0631177efb4e35e7f59e4", null ],
     [ "removeExecInput", "structchig_1_1GraphFunction.html#a390ce7b4174a06ecd00ae7c72af9e157", null ],
     [ "removeExecOutput", "structchig_1_1GraphFunction.html#a90a589106d823501ecb6450636a19e64", null ],
-    [ "removeLocalVaraible", "structchig_1_1GraphFunction.html#a359bee901dedb7db55cc84d9e8738695", null ],
-    [ "removeNode", "structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e", null ]
+    [ "removeLocalVariable", "structchig_1_1GraphFunction.html#a1c45651f8ac9b7bf9cebcd11d91763f0", null ],
+    [ "removeNode", "structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e", null ],
+    [ "renameLocalVariable", "structchig_1_1GraphFunction.html#a84b2464a3617b85a8ad719b3401a901f", null ],
+    [ "retypeLocalVariable", "structchig_1_1GraphFunction.html#a905a09106e02a246daac43a37c42b97b", null ]
 ];

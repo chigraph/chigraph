@@ -1,46 +1,45 @@
 <map id="chig::GraphModule::generateModule" name="chig::GraphModule::generateModule">
-<area shape="rect" id="node2" href="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="204,645,368,671"/>
-<area shape="rect" id="node29" href="$structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3" title="Get the full name of the module. " alt="" coords="428,289,629,315"/>
-<area shape="rect" id="node31" href="$namespacechig.html#a2a1a14d23516a3c3d5df010cb9d14edf" title="Mangle a function name. " alt="" coords="429,1161,629,1187"/>
-<area shape="rect" id="node39" href="$structchig_1_1GraphModule.html#a2b80440a0bdf4c760a12ea0309d68060" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="211,180,361,221"/>
-<area shape="rect" id="node3" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. " alt="" coords="984,785,1148,811"/>
-<area shape="rect" id="node4" href="$structchig_1_1GraphFunction.html#a1e937f70e87b2d783211f31a6ddfb91c" title="Get the context. " alt="" coords="737,383,887,424"/>
-<area shape="rect" id="node5" href="$structchig_1_1GraphModule.html#a292eaf6be61fdccb79b54341a34ca6d7" title="Create the associations from line number and function in debug info. " alt="" coords="439,608,619,649"/>
-<area shape="rect" id="node11" href="$structchig_1_1GraphFunction.html#a42c555949c37c229eae02af3dabae189" title="Get the function data inputs in the format {type, docstring}. " alt="" coords="1197,971,1348,1012"/>
-<area shape="rect" id="node14" href="$structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37" title="Get the name of the function. " alt="" coords="1627,785,1778,827"/>
-<area shape="rect" id="node15" href="$structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22" title="Check if the DataType is valid. " alt="" coords="1623,465,1783,491"/>
-<area shape="rect" id="node17" href="$structchig_1_1GraphFunction.html#a94dca2e45795b16d6b4fe0be6c07f250" title="Get the function data outputs in the format {type, docstring}. " alt="" coords="737,448,887,489"/>
-<area shape="rect" id="node21" href="$structchig_1_1DataType.html#a4a142025e9029ce73bd3e192e53e6d85" title="Get the debug type. " alt="" coords="429,491,629,518"/>
-<area shape="rect" id="node22" href="$structchig_1_1GraphFunction.html#aa47e30665a08b671950c4e8411c7a4ba" title="Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two e..." alt="" coords="991,953,1141,995"/>
-<area shape="rect" id="node28" href="$structchig_1_1GraphFunction.html#a2eddb58def91a9e0fce7212db3834827" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="1410,600,1561,641"/>
-<area shape="rect" id="node30" href="$structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848" title="Get the LLVM function type for the function. " alt="" coords="453,543,604,584"/>
-<area shape="rect" id="node32" href="$structchig_1_1Context.html#aa484ef2c16aaa4d97a21632af4122bd8" title="Gets a DataType from a module. " alt="" coords="416,725,641,751"/>
-<area shape="rect" id="node34" href="$namespacechig.html#afccf44a2370371aae836862d9731155e" title="Validate that a function is compilable. " alt="" coords="446,885,611,911"/>
-<area shape="rect" id="node6" href="$structchig_1_1GraphModule.html#a3aca789690eb2e7dedc764ae20154c9d" title="Get functions. " alt="" coords="737,557,887,599"/>
-<area shape="rect" id="node7" href="$structchig_1_1GraphModule.html#af766a22d33074aafe823b19218321d6e" title="Create a new struct in the module. " alt="" coords="991,557,1141,599"/>
-<area shape="rect" id="node8" href="$structchig_1_1GraphModule.html#a64831f6b192140fb9014025717df72ac" title="Get a struct by name. " alt="" coords="1197,572,1348,613"/>
-<area shape="rect" id="node10" href="$structchig_1_1GraphModule.html#a7d3e60b0ac5dcc4304c4cfc0a8b13d07" title="Remove a struct from the module by name. " alt="" coords="1197,507,1348,548"/>
-<area shape="rect" id="node9" href="$structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2" title="Get the short name of the module (the last bit) " alt="" coords="1396,531,1575,558"/>
-<area shape="rect" id="node12" href="$structchig_1_1GraphFunction.html#a58da0f0d53f153a37bb4ba7bdc00df75" title="Add an input to the end of the argument list. " alt="" coords="1410,1044,1561,1085"/>
-<area shape="rect" id="node13" href="$structchig_1_1GraphFunction.html#a1ac9ba57c83cafb7517921d49425db5c" title="Modify an input (change it&#39;s type and docstring) " alt="" coords="1410,913,1561,955"/>
-<area shape="rect" id="node16" href="$structchig_1_1GraphFunction.html#a9698f54861e9997f2690e10e0e8316c8" title="Remove an input from the argument list. " alt="" coords="1410,979,1561,1020"/>
-<area shape="rect" id="node18" href="$structchig_1_1GraphFunction.html#af76e111d051ead319035f83785b932e2" title="Add an data output to the end of the argument list. " alt="" coords="991,389,1141,431"/>
-<area shape="rect" id="node19" href="$structchig_1_1GraphFunction.html#a4a8166eb973ba7225491a2ec85421f53" title="Modify an data output (change it&#39;s type and docstring) " alt="" coords="1410,457,1561,499"/>
-<area shape="rect" id="node20" href="$structchig_1_1GraphFunction.html#ae6fc3833c6e0631177efb4e35e7f59e4" title="Remove an data output from the argument list. " alt="" coords="989,324,1143,365"/>
-<area shape="rect" id="node23" href="$structchig_1_1GraphFunction.html#a217197f9e54f57cd7a8751a335f4710b" title="Get the function exec inputs. " alt="" coords="1197,820,1348,861"/>
-<area shape="rect" id="node27" href="$structchig_1_1GraphFunction.html#ac4c14204d36773082b3fe93b48be4279" title="Gets the nodes with a given type. " alt="" coords="1197,725,1348,767"/>
-<area shape="rect" id="node24" href="$structchig_1_1GraphFunction.html#a61a90781bcdc650d6b2446dd16d8a079" title="Add an exec input to the end of the argument list. " alt="" coords="1410,717,1561,759"/>
-<area shape="rect" id="node25" href="$structchig_1_1GraphFunction.html#a66359dd63933d9c37b00d3894c979b11" title="Modify an exec input (change docstring) " alt="" coords="1410,783,1561,824"/>
-<area shape="rect" id="node26" href="$structchig_1_1GraphFunction.html#a390ce7b4174a06ecd00ae7c72af9e157" title="Remove an exec input from the argument list. " alt="" coords="1410,848,1561,889"/>
-<area shape="rect" id="node33" href="$structchig_1_1ChigModule.html#a7bb138db48ea320a09312ffd1af0999a" title="Get a DataType from the name. " alt="" coords="691,775,933,802"/>
-<area shape="rect" id="node35" href="$namespacechig.html#ae2ff27777b91f651f86d9a8e8ef0b986" title="Make sure that connections connect back and that they have the same types. " alt="" coords="689,877,935,919"/>
-<area shape="rect" id="node38" href="$namespacechig.html#ad868894793d664b6ae994f24fc781b4b" title="The make sure that nodes are called before their outputs are used. " alt="" coords="713,943,911,984"/>
-<area shape="rect" id="node36" href="$structchig_1_1NodeInstance.html#a1468afe4799106831566bd283332a516" title="Get the ID of the instance, unique to the graph. " alt="" coords="983,902,1149,929"/>
-<area shape="rect" id="node37" href="$structchig_1_1GraphFunction.html#a13cb6ea56ea3161cf0983a3922ac3b06" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="991,836,1141,877"/>
-<area shape="rect" id="node40" href="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" title="Get the Context that this module belongs to. " alt="" coords="433,187,624,214"/>
-<area shape="rect" id="node42" href="$structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f" title="Get the workspace path of the Context. " alt="" coords="421,238,636,265"/>
-<area shape="rect" id="node43" href="$structchig_1_1GraphModule.html#a628d997f3978987e06a1fc05f86aab36" title="Create a new function if it does&#39;t already exist. " alt="" coords="451,5,607,47"/>
-<area shape="rect" id="node44" href="$structchig_1_1GraphModule.html#acf2cd8568f77bb56185e87e8ccb5889c" title="Get a function from the name. " alt="" coords="737,93,887,135"/>
-<area shape="rect" id="node45" href="$structchig_1_1GraphModule.html#a1e4006bb0bd7eba8ce50cc7176d4477f" title="Remove a function from the module. " alt="" coords="453,71,604,112"/>
-<area shape="rect" id="node41" href="$structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" title="Generate a llvm::Module from the module. " alt="" coords="713,180,911,221"/>
+<area shape="rect" id="node2" href="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="192,521,341,547"/>
+<area shape="rect" id="node28" href="$structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3" title="Get the full name of the module. " alt="" coords="401,947,583,974"/>
+<area shape="rect" id="node30" href="$namespacechig.html#a2a1a14d23516a3c3d5df010cb9d14edf" title="Mangle a function name. " alt="" coords="401,897,583,923"/>
+<area shape="rect" id="node38" href="$structchig_1_1GraphModule.html#a2b80440a0bdf4c760a12ea0309d68060" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="197,1041,336,1083"/>
+<area shape="rect" id="node3" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. " alt="" coords="914,487,1066,514"/>
+<area shape="rect" id="node4" href="$structchig_1_1GraphFunction.html#a1e937f70e87b2d783211f31a6ddfb91c" title="Get the context. " alt="" coords="685,328,823,369"/>
+<area shape="rect" id="node5" href="$structchig_1_1GraphModule.html#a292eaf6be61fdccb79b54341a34ca6d7" title="Create the associations from line number and function in debug info. " alt="" coords="409,780,575,821"/>
+<area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#a42c555949c37c229eae02af3dabae189" title="Get the function data inputs in the format {type, docstring}. " alt="" coords="1115,267,1253,308"/>
+<area shape="rect" id="node13" href="$structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37" title="Get the name of the function. " alt="" coords="1491,387,1630,428"/>
+<area shape="rect" id="node14" href="$structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22" title="Check if the DataType is valid. " alt="" coords="1488,93,1633,119"/>
+<area shape="rect" id="node16" href="$structchig_1_1GraphFunction.html#a94dca2e45795b16d6b4fe0be6c07f250" title="Get the function data outputs in the format {type, docstring}. " alt="" coords="685,160,823,201"/>
+<area shape="rect" id="node20" href="$structchig_1_1DataType.html#a4a142025e9029ce73bd3e192e53e6d85" title="Get the debug type. " alt="" coords="401,125,583,151"/>
+<area shape="rect" id="node21" href="$structchig_1_1GraphFunction.html#aa47e30665a08b671950c4e8411c7a4ba" title="Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two e..." alt="" coords="921,656,1059,697"/>
+<area shape="rect" id="node27" href="$structchig_1_1GraphFunction.html#a2eddb58def91a9e0fce7212db3834827" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="1301,391,1440,432"/>
+<area shape="rect" id="node29" href="$structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848" title="Get the LLVM function type for the function. " alt="" coords="423,277,561,319"/>
+<area shape="rect" id="node31" href="$structchig_1_1Context.html#aa484ef2c16aaa4d97a21632af4122bd8" title="Gets a DataType from a module. " alt="" coords="389,495,595,522"/>
+<area shape="rect" id="node33" href="$namespacechig.html#afccf44a2370371aae836862d9731155e" title="Validate that a function is compilable. " alt="" coords="417,605,567,631"/>
+<area shape="rect" id="node6" href="$structchig_1_1GraphModule.html#a3aca789690eb2e7dedc764ae20154c9d" title="Get functions. " alt="" coords="685,780,823,821"/>
+<area shape="rect" id="node7" href="$structchig_1_1GraphModule.html#af766a22d33074aafe823b19218321d6e" title="Create a new struct in the module. " alt="" coords="921,839,1059,880"/>
+<area shape="rect" id="node8" href="$structchig_1_1GraphModule.html#a64831f6b192140fb9014025717df72ac" title="Get a struct by name. " alt="" coords="1115,809,1253,851"/>
+<area shape="rect" id="node9" href="$structchig_1_1GraphModule.html#a7d3e60b0ac5dcc4304c4cfc0a8b13d07" title="Remove a struct from the module by name. " alt="" coords="921,721,1059,763"/>
+<area shape="rect" id="node11" href="$structchig_1_1GraphFunction.html#a58da0f0d53f153a37bb4ba7bdc00df75" title="Add an input to the end of the argument list. " alt="" coords="1301,260,1440,301"/>
+<area shape="rect" id="node12" href="$structchig_1_1GraphFunction.html#a1ac9ba57c83cafb7517921d49425db5c" title="Modify an input (change it&#39;s type and docstring) " alt="" coords="1301,325,1440,367"/>
+<area shape="rect" id="node15" href="$structchig_1_1GraphFunction.html#a9698f54861e9997f2690e10e0e8316c8" title="Remove an input from the argument list. " alt="" coords="1301,195,1440,236"/>
+<area shape="rect" id="node17" href="$structchig_1_1GraphFunction.html#af76e111d051ead319035f83785b932e2" title="Add an data output to the end of the argument list. " alt="" coords="921,95,1059,136"/>
+<area shape="rect" id="node18" href="$structchig_1_1GraphFunction.html#a4a8166eb973ba7225491a2ec85421f53" title="Modify an data output (change it&#39;s type and docstring) " alt="" coords="1301,85,1440,127"/>
+<area shape="rect" id="node19" href="$structchig_1_1GraphFunction.html#ae6fc3833c6e0631177efb4e35e7f59e4" title="Remove an data output from the argument list. " alt="" coords="920,160,1060,201"/>
+<area shape="rect" id="node22" href="$structchig_1_1GraphFunction.html#a217197f9e54f57cd7a8751a335f4710b" title="Get the function exec inputs. " alt="" coords="1115,656,1253,697"/>
+<area shape="rect" id="node26" href="$structchig_1_1GraphFunction.html#ac4c14204d36773082b3fe93b48be4279" title="Gets the nodes with a given type. " alt="" coords="1115,449,1253,491"/>
+<area shape="rect" id="node23" href="$structchig_1_1GraphFunction.html#a61a90781bcdc650d6b2446dd16d8a079" title="Add an exec input to the end of the argument list. " alt="" coords="1301,591,1440,632"/>
+<area shape="rect" id="node24" href="$structchig_1_1GraphFunction.html#a66359dd63933d9c37b00d3894c979b11" title="Modify an exec input (change docstring) " alt="" coords="1301,656,1440,697"/>
+<area shape="rect" id="node25" href="$structchig_1_1GraphFunction.html#a390ce7b4174a06ecd00ae7c72af9e157" title="Remove an exec input from the argument list. " alt="" coords="1301,721,1440,763"/>
+<area shape="rect" id="node32" href="$structchig_1_1ChigModule.html#a7bb138db48ea320a09312ffd1af0999a" title="Get a DataType from the name. " alt="" coords="643,445,865,471"/>
+<area shape="rect" id="node34" href="$namespacechig.html#ae2ff27777b91f651f86d9a8e8ef0b986" title="Make sure that connections connect back and that they have the same types. " alt="" coords="643,597,865,639"/>
+<area shape="rect" id="node37" href="$namespacechig.html#ad868894793d664b6ae994f24fc781b4b" title="The make sure that nodes are called before their outputs are used. " alt="" coords="664,663,844,704"/>
+<area shape="rect" id="node35" href="$structchig_1_1NodeInstance.html#a1468afe4799106831566bd283332a516" title="Get the ID of the instance, unique to the graph. " alt="" coords="913,605,1067,631"/>
+<area shape="rect" id="node36" href="$structchig_1_1GraphFunction.html#a13cb6ea56ea3161cf0983a3922ac3b06" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="921,539,1059,580"/>
+<area shape="rect" id="node39" href="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" title="Get the Context that this module belongs to. " alt="" coords="405,998,579,1025"/>
+<area shape="rect" id="node41" href="$structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f" title="Get the workspace path of the Context. " alt="" coords="393,1049,591,1075"/>
+<area shape="rect" id="node42" href="$structchig_1_1GraphModule.html#a628d997f3978987e06a1fc05f86aab36" title="Create a new function if it does&#39;t already exist. " alt="" coords="421,1216,563,1257"/>
+<area shape="rect" id="node43" href="$structchig_1_1GraphModule.html#acf2cd8568f77bb56185e87e8ccb5889c" title="Get a function from the name. " alt="" coords="685,1151,823,1192"/>
+<area shape="rect" id="node44" href="$structchig_1_1GraphModule.html#a1e4006bb0bd7eba8ce50cc7176d4477f" title="Remove a function from the module. " alt="" coords="423,1151,561,1192"/>
+<area shape="rect" id="node40" href="$structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" title="Generate a llvm::Module from the module. " alt="" coords="663,991,845,1032"/>
 </map>
