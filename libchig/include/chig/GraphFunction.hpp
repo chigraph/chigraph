@@ -242,7 +242,7 @@ struct GraphFunction {
 	/// Rename a local variable
 	/// \param oldName The name of the existing local to change
 	/// \param newName The new name of the local
-	void renameLocalVariable(gsl::cstring_span<> oldName, gsl::cstring_span<> newName);
+	void renameLocalVariable(const std::string& oldName, const std::string& newName);
 	
 	/// Set a new type to a local variable
 	/// \param name The name of the local to change
