@@ -17,6 +17,7 @@ before_build:
   - ps: .\scripts\download_llvm.ps1 "$Env:configuration"
   - ps: cd $path
   - ps: .\scripts\build_frameworks.ps1 "$Env:QTDIR" "$Env:configuration" ""
+  - ps: cd $path
   - mkdir build
   - cd build
   - cmake "-G%GENERATOR%" -DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
