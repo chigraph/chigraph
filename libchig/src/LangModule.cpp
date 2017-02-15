@@ -254,7 +254,7 @@ struct ExitNodeType : NodeType {
 
 struct StringLiteralNodeType : NodeType {
 	StringLiteralNodeType(LangModule& mod, std::string str)
-	    : NodeType(mod, "strliteral", "exit from a function; think return"),
+	    : NodeType(mod, "strliteral", "string literal"),
 	      literalString(std::move(str)) {
 		makePure();
 

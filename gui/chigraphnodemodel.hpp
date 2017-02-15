@@ -33,7 +33,7 @@ public:
 
 	chig::NodeInstance& instance() const { return *mInst; }
 	QString             caption() const override {
-		auto str = QString::fromStdString(mInst->type().qualifiedName());
+		auto str = QString::fromStdString(mInst->type().description());
 		return str;
 	}
 	QString name() const override { return QString::fromStdString(mInst->type().qualifiedName()); }
