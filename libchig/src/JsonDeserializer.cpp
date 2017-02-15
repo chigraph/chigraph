@@ -226,7 +226,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 			continue;
 		}
 		
-		createInside.getOrCreateLocalVaraible(localName, ty);
+		createInside.getOrCreateLocalVariable(localName, ty);
 	}
 	
 	// read the nodes

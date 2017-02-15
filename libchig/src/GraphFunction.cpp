@@ -321,7 +321,7 @@ NamedDataType GraphFunction::localVariableFromName(gsl::cstring_span<> name) con
 	return {};
 }
 
-NamedDataType GraphFunction::getOrCreateLocalVaraible(std::string name, DataType type,
+NamedDataType GraphFunction::getOrCreateLocalVariable(std::string name, DataType type,
                                                       bool* inserted) {
 	auto local = localVariableFromName(name);
 
@@ -336,15 +336,111 @@ NamedDataType GraphFunction::getOrCreateLocalVaraible(std::string name, DataType
 	return mLocalVariables[mLocalVariables.size() - 1];
 }
 
-bool GraphFunction::removeLocalVaraible(gsl::cstring_span<> name) {
+bool GraphFunction::removeLocalVariable(gsl::cstring_span<> name) {
 	auto iter = std::find_if(mLocalVariables.begin(), mLocalVariables.end(),
 	                         [&](auto& toTest) { return toTest.name == name; });
 
+	bool erased = false;
 	if (iter != mLocalVariables.end()) {
 		mLocalVariables.erase(iter);
-		return true;
+		erased = true;
 	}
-	return false;
+	if (!erased) {
+		return false;
+	}
+	
+	// remove set and get nodes
+	auto setNodes = nodesWithType(module().fullName(), "_set_" + gsl::to_string(name));
+	for (const auto& node : setNodes) {
+		removeNode(node);
+	}
+	auto getNodes = nodesWithType(module().fullName(), "_get_" + gsl::to_string(name));
+	for (const auto& node : getNodes) {
+		removeNode(node);
+	}
+	
+	return true;
 }
+
+
+void GraphFunction::renameLocalVariable(gsl::cstring_span<> oldName, gsl::cstring_span<> newName) {
+	
+	bool setanything = false;
+	for (auto& var : mLocalVariables) {
+		if (var.name == oldName) {
+			var.name = gsl::to_string(newName);
+			
+			setanything = true;
+			break;
+		}
+	}
+	
+	// if it wans't found, then we don't have to update
+	if (!setanything) {
+		return;
+	}
+	
+	// update existing nodes
+	auto setNodes = nodesWithType(module().fullName(), "_set_" + gsl::to_string(oldName));
+	for (const auto& node : setNodes) {
+		// create a new node type
+		std::unique_ptr<NodeType> ty;
+		
+		auto res = module().nodeTypeFromName("_set_" + gsl::to_string(newName), node->type().toJSON(), &ty);
+		Expects(!!res);
+		
+		node->setType(std::move(ty));
+	}
+	
+	auto getNodes = nodesWithType(module().fullName(), "_get_" + gsl::to_string(oldName));
+	for (const auto& node : getNodes) {
+		// create a new node type
+		std::unique_ptr<NodeType> ty;
+		
+		auto res = module().nodeTypeFromName("_get_" + gsl::to_string(newName), node->type().toJSON(), &ty);
+		Expects(!!res);
+		
+		node->setType(std::move(ty));
+	}
+	
+	
+}
+
+
+void GraphFunction::retypeLocalVariable(gsl::cstring_span<> name, DataType newType) {
+	 	
+	for (auto& var : mLocalVariables) {
+		if (var.name == name) {
+			var.type = newType;
+			break;
+		}
+	}
+	
+		
+	// update existing nodes
+	auto setNodes = nodesWithType(module().fullName(), "_set_" + gsl::to_string(name));
+	for (const auto& node : setNodes) {
+		// create a new node type
+		std::unique_ptr<NodeType> ty;
+		
+		auto res = module().nodeTypeFromName("_set_" + gsl::to_string(name), newType.qualifiedName(), &ty);
+		Expects(!!res);
+		
+		node->setType(std::move(ty));
+	}
+	
+	auto getNodes = nodesWithType(module().fullName(), "_get_" + gsl::to_string(name));
+	for (const auto& node : getNodes) {
+		// create a new node type
+		std::unique_ptr<NodeType> ty;
+		
+		auto res = module().nodeTypeFromName("_get_" + gsl::to_string(name), newType.qualifiedName(), &ty);
+		Expects(!!res);
+		
+		node->setType(std::move(ty));
+	}
+	
+}
+
 
 }  // namespace chig

@@ -36,6 +36,7 @@ set(GUI_SRCS
 	moduledependencies.cpp
 	execparamlistwidget.cpp
 	thememanager.cpp
+	localvariables.cpp
 )
 
 set(GUI_RESOURCES
@@ -54,6 +55,7 @@ set(GUI_HEADERS
 	moduledependencies.hpp
 	execparamlistwidget.hpp
 	thememanager.hpp
+	localvariables.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})

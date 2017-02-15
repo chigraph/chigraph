@@ -231,14 +231,24 @@ struct GraphFunction {
 	/// \param type The type of the local
 	/// \param inserted True if the local varaiable was new, optional
 	/// \return The new local variable or the already existing one
-	NamedDataType getOrCreateLocalVaraible(std::string name, DataType type,
+	NamedDataType getOrCreateLocalVariable(std::string name, DataType type,
 	                                       bool* inserted = nullptr);
 
-	/// Remove a local variable from the module by name
+	/// Remove a local variable from the function by name
 	/// \param name The name of the local variable to remove
 	/// \return True if a local was actually removed, false if no local by that name existed
-	bool removeLocalVaraible(gsl::cstring_span<> name);
-
+	bool removeLocalVariable(gsl::cstring_span<> name);
+	
+	/// Rename a local variable
+	/// \param oldName The name of the existing local to change
+	/// \param newName The new name of the local
+	void renameLocalVariable(gsl::cstring_span<> oldName, gsl::cstring_span<> newName);
+	
+	/// Set a new type to a local variable
+	/// \param name The name of the local to change
+	/// \param newType The new type
+	void retypeLocalVariable(gsl::cstring_span<> name, DataType newType);
+	
 	/// \}
 
 	// Various getters

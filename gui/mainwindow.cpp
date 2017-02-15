@@ -3,6 +3,7 @@
 #include "functionspane.hpp"
 #include "functionview.hpp"
 #include "modulebrowser.hpp"
+#include "localvariables.hpp"
 #include "moduledependencies.hpp"
 #include "subprocessoutputview.hpp"
 
@@ -107,10 +108,6 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	scroll->setWidgetResizable(true);
 	docker->setWidget(scroll);
 	addDockWidget(Qt::RightDockWidgetArea, docker);
-	connect(this, &MainWindow::functionOpened, docker, [docker](FunctionView* func) {
-		docker->setWindowTitle(i18n("Function Details") + " - " +
-		                       QString::fromStdString(func->function()->name()));
-	});
 	connect(mFunctionTabs, &QTabWidget::currentChanged, functionDetails,
 	        [this, docker, functionDetails](int newLoc) {
 
@@ -119,6 +116,26 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		        if (funcView != nullptr) {
 			        functionDetails->loadFunction(funcView);
 			        docker->setWindowTitle(i18n("Function Details") + " - " +
+			                               QString::fromStdString(funcView->function()->name()));
+		        }
+		    });
+	
+	docker = new QDockWidget(i18n("Local Variables"), this);
+	docker->setObjectName("Local Variables");
+	auto localVars = new LocalVariables;
+	scroll = new QScrollArea;
+	scroll->setWidget(localVars);
+	scroll->setWidgetResizable(true);
+	docker->setWidget(scroll);
+	addDockWidget(Qt::RightDockWidgetArea, docker);
+	connect(mFunctionTabs, &QTabWidget::currentChanged, functionDetails,
+	        [this, docker, localVars](int newLoc) {
+
+		        auto funcView = dynamic_cast<FunctionView*>(mFunctionTabs->widget(newLoc));
+
+		        if (funcView != nullptr) {
+			        localVars->loadFunction(funcView);
+			        docker->setWindowTitle(i18n("Local Variables") + " - " +
 			                               QString::fromStdString(funcView->function()->name()));
 		        }
 		    });
