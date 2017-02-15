@@ -33,7 +33,7 @@ struct GraphFuncCallType : public NodeType {
 		if (mygraph == nullptr) {
 			res.addEntry(
 			    "EINT", "Graph doesn't exist in module",
-			    {{"Module Name", JModule->name()}, {"Requested Name", gsl::to_string(funcname)}});
+			    {{"Module Name", JModule->fullName()}, {"Requested Name", gsl::to_string(funcname)}});
 			return;
 		}
 

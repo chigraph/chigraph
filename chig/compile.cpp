@@ -46,10 +46,20 @@ int compile(const std::vector<std::string>& opts) {
 
 	std::string infile = vm["input-file"].as<std::string>();
 
+	fs::path workspacePath;
+	if (vm.count("workspace") != 0) {
+		workspacePath = vm["workspace"].as<std::string>();
+	} else {
+		workspacePath = fs::current_path();
+	}
+
+	Context c{workspacePath};
 	nlohmann::json read_json = {};
 
+	std::string moduleName;
 	if (infile == "-") {
 		std::cin >> read_json;
+		moduleName = "main";
 	} else {
 		// make sure it's an actual file
 		fs::path inpath = infile;
@@ -57,6 +67,7 @@ int compile(const std::vector<std::string>& opts) {
 			std::cerr << "error: Cannot open input file " << inpath;
 			return 1;
 		}
+		moduleName = fs::relative(inpath, c.workspacePath() / "src").replace_extension("").string();
 
 		fs::ifstream stream(inpath);
 
@@ -70,17 +81,9 @@ int compile(const std::vector<std::string>& opts) {
 
 	Result res;
 
-	fs::path workspacePath;
-	if (vm.count("workspace") != 0) {
-		workspacePath = vm["workspace"].as<std::string>();
-	} else {
-		workspacePath = fs::current_path();
-	}
-
-	Context c{workspacePath};
 	// load it as a module
 	GraphModule* cmodule;
-	res += c.addModuleFromJson("main", read_json, &cmodule);
+	res += c.addModuleFromJson(moduleName, read_json, &cmodule);
 
 	if (!res) {
 		std::cerr << res << std::endl;
@@ -88,7 +91,7 @@ int compile(const std::vector<std::string>& opts) {
 	}
 
 	std::unique_ptr<llvm::Module> llmod;
-	res += c.compileModule(cmodule->name(), &llmod);
+	res += c.compileModule(cmodule->fullName(), &llmod);
 
 	if (!res) {
 		std::cerr << res << std::endl;

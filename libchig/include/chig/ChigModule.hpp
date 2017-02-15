@@ -51,7 +51,7 @@ struct ChigModule {
 
 	/// Get the short name of the module (the last bit)
 	/// \return The name
-	std::string name() const { return mName; }
+	std::string shortName() const { return mName; }
 	/// Get the full name of the module
 	/// \return The name
 	std::string fullName() const { return mFullName; }

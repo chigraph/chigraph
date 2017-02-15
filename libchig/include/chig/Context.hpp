@@ -35,11 +35,6 @@ struct Context {
 	Context(const Context& context) = delete;
 	Context(Context&&)              = delete;
 
-	/// Gets the module by the name
-	/// \param moduleName The name of the module to find
-	/// \return ret_module The module that has the name \c moduleName, nullptr if none were found
-	ChigModule* moduleByName(gsl::cstring_span<> moduleName) const noexcept;
-
 	/// Gets the module by the full name
 	/// \param fullModuleName The name of the module to find
 	/// \return ret_module The module that has the full name \c fullModuleName, nullptr if none were
@@ -81,7 +76,7 @@ struct Context {
 	bool unloadModule(gsl::cstring_span<> fullName);
 
 	/// Gets a DataType from a module
-	/// \param module The name of the module, "lang" if nullptr
+	/// \param module The full name of the module
 	/// \param name The name of the type, required
 	/// \param toFill The type to fill
 	/// \return The result
@@ -89,7 +84,7 @@ struct Context {
 	                      DataType* toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
-	/// \param moduleName The module name.
+	/// \param moduleName The full module name.
 	/// \param typeName The name of the node type
 	/// \param data The JSON data that is used to construct the NodeType.
 	/// \param toFill The point to fill
@@ -109,11 +104,6 @@ struct Context {
 	/// \param toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \return The result
 	Result compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill);
-
-	/// Get the full module name from a short one
-	/// \param shortName The short name of the module
-	/// \return The long name. If there was an error getting the module then an empty string.
-	std::string fullModuleName(gsl::cstring_span<> shortName) const;
 
 	/// Get the number of modules this Context has
 	/// \return The module count

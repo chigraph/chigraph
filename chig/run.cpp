@@ -74,6 +74,10 @@ int run(const std::vector<std::string>& opts) {
 
 		ChigModule* cMod;
 		res += c.loadModule(moduleName.string(), &cMod);
+		if (!res) {
+			std::cerr << res.dump();
+			return 1;
+		}
 
 		jmod = dynamic_cast<GraphModule*>(cMod);
 	}

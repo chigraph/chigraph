@@ -47,20 +47,15 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 			}
 
 			THEN("There should be 1 module in c") { REQUIRE(c.numModules() == 1); }
-			THEN("Getting the lang module from c should work") {
-				REQUIRE(c.moduleByName("lang") != nullptr);
-				REQUIRE(c.moduleByName("lang")->name() == "lang");
-			}
 
 			THEN("Getting other modules should fail") {
-				REQUIRE(c.moduleByName("qwerty") == nullptr);
-				REQUIRE(c.moduleByName("") == nullptr);
-				REQUIRE(c.moduleByName("lang/hello") == nullptr);
+				REQUIRE(c.moduleByFullName("qwerty") == nullptr);
+				REQUIRE(c.moduleByFullName("") == nullptr);
 			}
 
 			THEN("Getting the lang module from c should work via moduleByFullName") {
 				REQUIRE(c.moduleByFullName("lang") != nullptr);
-				REQUIRE(c.moduleByFullName("lang")->name() == "lang");
+				REQUIRE(c.moduleByFullName("lang")->fullName() == "lang");
 			}
 
 			THEN("Getting other modules should fail via moduleByFullName") {

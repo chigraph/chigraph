@@ -30,7 +30,7 @@ struct DataType {
 	std::string unqualifiedName() const { return mName; }
 	/// Get the qualified name of the type (with the module)
 	/// \return The qualified name
-	std::string qualifiedName() const { return mModule->name() + ":" + mName; }
+	std::string qualifiedName() const { return mModule->fullName() + ":" + mName; }
 	/// Get the underlying \c llvm::Type
 	/// \return the \c llvm::Type
 	llvm::Type* llvmType() const { return mLLVMType; }
