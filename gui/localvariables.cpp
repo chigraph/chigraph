@@ -28,7 +28,8 @@ void LocalVariables::loadFunction(FunctionView* func)
 		connect(nameEdit, &QLineEdit::textChanged, this, [this, id](const QString& newText) {
 			auto stdstr = newText.toStdString();
 			mFunctionView->function()->renameLocalVariable(mFunctionView->function()->localVariables()[id].name, stdstr);
-			
+			// update the registry
+			mFunctionView->refreshRegistry();
 			// update the nodes
 			refreshReferencingNodes(stdstr);
 		});
@@ -51,6 +52,7 @@ void LocalVariables::loadFunction(FunctionView* func)
 			auto localName = mFunctionView->function()->localVariables()[id].name;
 
 			mFunctionView->function()->retypeLocalVariable(localName, ty);
+			mFunctionView->refreshRegistry();
 			refreshReferencingNodes(localName);
 
 		});

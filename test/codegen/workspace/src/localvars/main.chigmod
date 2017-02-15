@@ -1,8 +1,8 @@
 {
   "dependencies": [
-    "lang",
+    "intprinter",
     "c",
-    "intprinter"
+    "lang"
   ],
   "graphs": [
     {
@@ -72,7 +72,8 @@
         ""
       ],
       "local_variables": {
-        "hello": "lang:i32"
+        "hello": "lang:i32",
+        "tac": "lang:i1"
       },
       "name": "main",
       "nodes": {
