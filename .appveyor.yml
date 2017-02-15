@@ -14,10 +14,11 @@ platform:
 before_build:
   - set PATH=%QTDIR%\bin;%PATH%
   - ps: .\scripts\build_frameworks.ps1 "$Env:QTDIR" "$Env:configuration" ""
+  - ps: .\scripts\download_llvm.ps1 "$Env:configuration"
   - mkdir build
   - cd build
   - cmake "-G%GENERATOR%" -DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
 
 build:
   parallel: true
-  project: C:\projects\nodeeditor\build\chigraph.sln
+  project: C:\projects\chigraph\build\chigraph.sln
