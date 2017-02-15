@@ -13,7 +13,7 @@ platform:
 
 before_build:
   - set PATH=%QTDIR%\bin;%PATH%
-  - ps: .\scripts\build_frameworks.ps1 -DCMAKE_BUILD_TYPE="$Env:configuration" -DCMAKE_PREFIX_PATH="$Env:QTDIR"
+  - ps: .\scripts\build_frameworks.ps1 "$Env:QTDIR" "$Env:configuration" ""
   - mkdir build
   - cd build
   - cmake "-G%GENERATOR%" -DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
