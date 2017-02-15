@@ -2,10 +2,15 @@ cmake_minimum_required(VERSION 2.8)
 
 project(chigraph)
 
-# add the module dirs
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
-
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5)
+
+if (WIN32)
+	if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
+		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm)
+	else()
+		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvmrel)
+	endif()
+endif()
 
 set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 
