@@ -12,6 +12,7 @@ platform:
   - x64
 
 before_build:
+  - git submodule update --init --recursive
   - set PATH=%QTDIR%\bin;%PATH%
   - ps: $path = $pwd
   - ps: .\scripts\download_llvm.ps1 "$Env:configuration"
