@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name',['name',['../structchig_1_1ChigModule.html#a1fe8df6ff170ecd33057387571bb5cd2',1,'chig::ChigModule::name()'],['../structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37',1,'chig::GraphFunction::name()'],['../structchig_1_1GraphStruct.html#ac791660a36070de71e34e03c2a96233d',1,'chig::GraphStruct::name()'],['../structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53',1,'chig::NodeType::name()']]],
+  ['name',['name',['../structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37',1,'chig::GraphFunction::name()'],['../structchig_1_1GraphStruct.html#ac791660a36070de71e34e03c2a96233d',1,'chig::GraphStruct::name()'],['../structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53',1,'chig::NodeType::name()']]],
   ['nameddatatype',['NamedDataType',['../structchig_1_1NamedDataType.html',1,'chig']]],
   ['namemangler_2ecpp',['NameMangler.cpp',['../NameMangler_8cpp.html',1,'']]],
   ['namemangler_2ehpp',['NameMangler.hpp',['../NameMangler_8hpp.html',1,'']]],
