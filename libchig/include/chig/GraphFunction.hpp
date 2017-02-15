@@ -216,6 +216,10 @@ struct GraphFunction {
 
 	/// \name Local Variable Manipulation functions
 	/// \{
+	
+	/// Get the local variables
+	/// \return The local variables
+	const std::vector<NamedDataType>& localVariables() const { return mLocalVariables; }
 
 	/// Get a local varaible by name
 	/// \param name The name of the variable

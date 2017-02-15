@@ -23,6 +23,15 @@
 						"type": "string",
 						"pattern": "function"
 					},
+					"local_variables": {
+						"description": "The local variables for the function",
+						"type": "object",
+						"patternProperties": {
+							"\\w*": {
+								"type": "string"
+							}
+						}
+					},
 					"data_inputs": {
 						"description": "The input data types",
 						"type": "array",

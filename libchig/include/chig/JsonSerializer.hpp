@@ -22,8 +22,8 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func);
 nlohmann::json graphModuleToJson(const GraphModule& mod);
 
 /// Serialize a GraphStruct to json
-/// \param func The struct to serialize
-nlohmann::json graphStructToJson(const GraphStruct& mod);
+/// \param str The struct to serialize
+nlohmann::json graphStructToJson(const GraphStruct& str);
 
 /// \}
 }

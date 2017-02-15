@@ -218,7 +218,7 @@ struct SetLocalNodeType : public NodeType {
 		return {};
 	}
 
-	nlohmann::json            toJSON() const override { return {}; }
+	nlohmann::json            toJSON() const override { return mDataType.type.qualifiedName(); }
 	std::unique_ptr<NodeType> clone() const override {
 		return std::make_unique<SetLocalNodeType>(module(), mDataType);
 	}
@@ -264,7 +264,7 @@ struct GetLocalNodeType : public NodeType {
 		return {};
 	}
 
-	nlohmann::json            toJSON() const override { return {}; }
+	nlohmann::json            toJSON() const override { return mDataType.type.qualifiedName(); }
 	std::unique_ptr<NodeType> clone() const override {
 		return std::make_unique<GetLocalNodeType>(module(), mDataType);
 	}
@@ -394,7 +394,7 @@ GraphFunction* GraphModule::functionFromName(gsl::cstring_span<> name) const {
 	return nullptr;
 }
 
-Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& /*jsonData*/,
+Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
                                      std::unique_ptr<NodeType>* toFill) {
 	Result res = {};
 
@@ -416,6 +416,37 @@ Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::j
 				*toFill = std::make_unique<BreakStructNodeType>(*str);
 				return res;
 			}
+		}
+		if (nameStr.substr(0, 5) == "_get_") {
+			if (jsonData.is_string()) {
+				std::string module, typeName;
+				
+				std::tie(module, typeName) = parseColonPair(jsonData);
+				
+				DataType ty;
+				res += context().typeFromModule(module, typeName, &ty);
+				
+				*toFill = std::make_unique<GetLocalNodeType>(*this, NamedDataType{nameStr.substr(5), ty});
+			} else {
+				res.addEntry("EUKN", "Json data for _get_ node type isn't a string", {{"Given Data", jsonData}});
+			}
+			return res;
+			
+		}
+		if (nameStr.substr(0, 5) == "_set_") {
+			if (jsonData.is_string()) {
+				std::string module, typeName;
+				
+				std::tie(module, typeName) = parseColonPair(jsonData);
+				
+				DataType ty;
+				res += context().typeFromModule(module, typeName, &ty);
+				
+				*toFill = std::make_unique<SetLocalNodeType>(*this, NamedDataType{nameStr.substr(5), ty});
+			} else {
+				res.addEntry("EUKN", "Json data for _set_ node type isn't a string", {{"Given Data", jsonData}});
+			}
+			return res;
 		}
 
 		// if we get here than it's for sure not a thing
