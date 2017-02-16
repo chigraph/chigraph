@@ -6,6 +6,7 @@
 #include "localvariables.hpp"
 #include "moduledependencies.hpp"
 #include "subprocessoutputview.hpp"
+#include "moduledetails.hpp"
 
 #include <KActionCollection>
 #include <KConfigGroup>
@@ -53,20 +54,28 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 
 	mChigContext = std::make_unique<chig::Context>();
 
-	// setup functions pane
-	QDockWidget* docker = new QDockWidget(i18n("Functions"), this);
-	docker->setObjectName("Functions");
-	auto functionsPane = new FunctionsPane(this, this);
-	docker->setWidget(functionsPane);
+	// setup module details
+	auto docker = new QDockWidget(i18n("Module Details"));
+	docker->setObjectName("Module Details");
+	auto modDetails = new ModuleDetails;
+	docker->setWidget(modDetails);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
-	connect(functionsPane, &FunctionsPane::functionSelected, this,
-	        &MainWindow::newFunctionSelected);
-	connect(this, &MainWindow::newFunctionCreated, functionsPane,
-	        [functionsPane](chig::GraphFunction* func) {
-		        functionsPane->updateModule(&func->module());
-		    });
-	connect(this, &MainWindow::moduleOpened, docker, [docker](chig::GraphModule* mod) {
-		docker->setWindowTitle(i18n("Functions") + " - " + QString::fromStdString(mod->fullName()));
+	connect(modDetails, &ModuleDetails::functionSelected, this, &MainWindow::newFunctionSelected);
+	connect(this, &MainWindow::moduleOpened, modDetails, &ModuleDetails::loadModule);
+	connect(this, &MainWindow::newFunctionCreated, modDetails, [modDetails](chig::GraphFunction* func) {
+		modDetails->loadModule(func->module());
+	});
+	connect(modDetails, &ModuleDetails::dependencyAdded, this, [this] {
+		auto count = mFunctionTabs->count();
+		for (auto idx = 0; idx < count; ++idx) {
+			auto view = dynamic_cast<FunctionView*>(mFunctionTabs->widget(idx));
+
+			if (view) { view->refreshRegistry(); }
+		}
+	});
+	connect(this, &MainWindow::moduleOpened, docker, [docker](chig::GraphModule& mod) {
+		docker->setWindowTitle(i18n("Module Details") + " - " +
+		                       QString::fromStdString(mod.fullName()));
 	});
 
 	// setup module browser
@@ -119,45 +128,6 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 			                               QString::fromStdString(funcView->function()->name()));
 		        }
 		    });
-	
-	docker = new QDockWidget(i18n("Local Variables"), this);
-	docker->setObjectName("Local Variables");
-	auto localVars = new LocalVariables;
-	scroll = new QScrollArea;
-	scroll->setWidget(localVars);
-	scroll->setWidgetResizable(true);
-	docker->setWidget(scroll);
-	addDockWidget(Qt::RightDockWidgetArea, docker);
-	connect(mFunctionTabs, &QTabWidget::currentChanged, functionDetails,
-	        [this, docker, localVars](int newLoc) {
-
-		        auto funcView = dynamic_cast<FunctionView*>(mFunctionTabs->widget(newLoc));
-
-		        if (funcView != nullptr) {
-			        localVars->loadFunction(funcView);
-			        docker->setWindowTitle(i18n("Local Variables") + " - " +
-			                               QString::fromStdString(funcView->function()->name()));
-		        }
-		    });
-
-	docker = new QDockWidget(i18n("Module Dependencies"), this);
-	docker->setObjectName("Module Dependencies");
-	auto mModuleDeps = new ModuleDependencies;
-	docker->setWidget(mModuleDeps);
-	addDockWidget(Qt::RightDockWidgetArea, docker);
-	connect(this, &MainWindow::moduleOpened, mModuleDeps, &ModuleDependencies::setModule);
-	connect(mModuleDeps, &ModuleDependencies::dependencyAdded, this, [this] {
-		auto count = mFunctionTabs->count();
-		for (auto idx = 0; idx < count; ++idx) {
-			auto view = dynamic_cast<FunctionView*>(mFunctionTabs->widget(idx));
-
-			if (view) { view->refreshRegistry(); }
-		}
-	});
-	connect(this, &MainWindow::moduleOpened, docker, [docker](chig::GraphModule* mod) {
-		docker->setWindowTitle(i18n("Module Dependencies") + " - " +
-		                       QString::fromStdString(mod->fullName()));
-	});
 
 	/// Setup actions
 	auto actColl = this->KXmlGuiWindow::actionCollection();
@@ -317,7 +287,7 @@ void MainWindow::openModule(const QString& fullName) {
 	setWindowTitle(QString::fromStdString(mModule->fullName()));
 
 	// call signal
-	moduleOpened(mModule);
+	moduleOpened(*mModule);
 }
 
 void MainWindow::newFunctionSelected(chig::GraphFunction* func) {

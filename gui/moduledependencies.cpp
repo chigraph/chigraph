@@ -29,6 +29,6 @@ ModuleDependencies::ModuleDependencies(QWidget* parent) : QListWidget(parent) {
 }
 
 void ModuleDependencies::addNewDepItem() {
-	mAddDepItem = new QListWidgetItem(QStringLiteral("  <Add Dependnecy>  "));
+	mAddDepItem = new QListWidgetItem(QStringLiteral("  <Add Dependency>  "));
 	addItem(mAddDepItem);
 }

@@ -21,13 +21,10 @@ public:
 	chig::GraphFunction* mFunc;
 };
 
-FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(parent) {
-	connect(win, &MainWindow::moduleOpened, this, &FunctionsPane::updateModule);
-
-	connect(this, &QListWidget::itemDoubleClicked, this, &FunctionsPane::selectItem);
-
+FunctionsPane::FunctionsPane(QWidget* parent) : QListWidget(parent) {
 	setContextMenuPolicy(Qt::CustomContextMenu);
-
+	
+	connect(this, &QListWidget::itemDoubleClicked, this, &FunctionsPane::selectItem);
 	connect(this, &QWidget::customContextMenuRequested, this, [this](QPoint p) {
 		QPoint global = mapToGlobal(p);
 
@@ -45,8 +42,8 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 			                      auto casted = dynamic_cast<FunctionListItem*>(funcItem);
 			                      if (casted == nullptr) { return; }
 
-			                      chig::GraphModule* mod = &casted->mFunc->module();
-			                      casted->mFunc->module().removeFunction(casted->mFunc);
+			                      chig::GraphModule& mod = casted->mFunc->module();
+			                      mod.removeFunction(casted->mFunc);
 
 			                      updateModule(mod);
 
@@ -55,13 +52,11 @@ FunctionsPane::FunctionsPane(QWidget* parent, MainWindow* win) : QListWidget(par
 	});
 }
 
-void FunctionsPane::updateModule(chig::GraphModule* mod) {
-	Expects(mod != nullptr);
-
+void FunctionsPane::updateModule(chig::GraphModule& mod) {
 	clear();
 
 	// go through functions
-	for (auto& fun : mod->functions()) { addItem(new FunctionListItem(fun.get())); }
+	for (auto& fun : mod.functions()) { addItem(new FunctionListItem(fun.get())); }
 }
 
 void FunctionsPane::selectItem(QListWidgetItem* newitem) {
