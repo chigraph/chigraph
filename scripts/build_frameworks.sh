@@ -8,7 +8,7 @@ cd $SCRIPTSDIR/..
 kf5dir=$SCRIPTSDIR/../third_party/kf5
 mkdir -p $kf5dir/build
 
-version=5.30.0
+version=5.31.0
 sversion=${version:0:4}
 
 flags=$@
@@ -64,7 +64,7 @@ build_helper kxmlgui
 #build_helper threadweaver
 build_helper attica
 #build_helper knewstuff
-#build_helper ktexteditor
+build_helper ktexteditor
 #build_helper kpackage
 #build_helper kdeclarative
 #build_helper kcmutils

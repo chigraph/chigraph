@@ -1,11 +1,10 @@
 {
   "dependencies": [
-    "c",
-    "lang"
+    "lang",
+    "c"
   ],
   "graphs": [
     {
-      "local_variables": {},
       "connections": [
         {
           "input": [
@@ -53,6 +52,7 @@
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "printint",
       "nodes": {
         "entry": {
@@ -87,11 +87,15 @@
         },
         "{d6a93602-9d43-44d0-97c3-70c21d4a774c}": {
           "data": {
-            "code": "#include <stdio.h> \n\nvoid intprinter_printint(int val) { \n  printf(\"%i\", val);\n}",
+            "code": "#include <stdio.h> \n\nvoid intprinter_printint(int val) {\n\tprintf(\"%i\", val);\n}",
+            "extraflags": [],
             "function": "intprinter_printint",
-            "inputs": [{"val": "lang:i32"}],
-            "output": null,
-            "extraflags": []
+            "inputs": [
+              {
+                "": "lang:i32"
+              }
+            ],
+            "output": null
           },
           "location": [
             467,
@@ -103,7 +107,6 @@
       "type": "function"
     },
     {
-      "local_variables": {},
       "connections": [
         {
           "input": [
@@ -184,6 +187,7 @@
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "printbool",
       "nodes": {
         "entry": {
@@ -198,8 +202,8 @@
             ]
           },
           "location": [
-            215,
-            155
+            150,
+            167
           ],
           "type": "lang:entry"
         },
@@ -247,7 +251,6 @@
       "type": "function"
     },
     {
-      "local_variables": {},
       "connections": [
         {
           "input": [
@@ -295,6 +298,7 @@
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "printfloat",
       "nodes": {
         "entry": {
@@ -316,11 +320,15 @@
         },
         "{856cba7e-59b5-4172-9b36-783581cde081}": {
           "data": {
-            "code": "#include <stdio.h>\n\nvoid intprinter_printfloat(float f) {\n  printf(\"%f\", f);\n}",
+            "code": "#include <stdio.h>\n\nvoid intprinter_printfloat(float f) {\n\tprintf(\"%f\", f);\n}",
+            "extraflags": [],
             "function": "intprinter_printfloat",
-            "inputs": [{"f": "lang:float"}],
-            "output": null,
-            "extraflags": []
+            "inputs": [
+              {
+                "": "lang:float"
+              }
+            ],
+            "output": null
           },
           "location": [
             612,
@@ -345,7 +353,6 @@
       "type": "function"
     },
     {
-      "local_variables": {},
       "connections": [
         {
           "input": [
@@ -393,6 +400,7 @@
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "printstr",
       "nodes": {
         "entry": {
@@ -407,8 +415,8 @@
             ]
           },
           "location": [
-            148,
-            213
+            120,
+            218
           ],
           "type": "lang:entry"
         },
@@ -427,10 +435,14 @@
         },
         "{d28e119d-5458-45aa-8034-fcca232d45f9}": {
           "data": {
-            "code": "#include <stdio.h>\n\nvoid intprinter_printstr(const char* s) {\n  printf(\"%s\", s);\n}",
-            "function": "intprinter_printstr",
+            "code": "#include <stdio.h>\n\nvoid intprinter_printstr(const char* s) {\n\tprintf(\"%s\", s);\n}",
             "extraflags": [],
-            "inputs": [{"s": "lang:i8*"}],
+            "function": "intprinter_printstr",
+            "inputs": [
+              {
+                "": "lang:i8*"
+              }
+            ],
             "output": null
           },
           "location": [

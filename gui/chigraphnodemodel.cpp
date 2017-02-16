@@ -14,7 +14,8 @@ class EditCodeDialog : public QDialog {
 public:
 	EditCodeDialog(chig::NodeInstance* inst, FunctionView* fview) {
 		setWindowTitle(i18n("Edit C Call Node"));
-		setSizePolicy({QSizePolicy::Expanding, QSizePolicy::Expanding});
+		
+		
 
 		auto layout = new QVBoxLayout;
 		setLayout(layout);
@@ -34,6 +35,7 @@ public:
 		});
 		// create a widget to display the document
 		KTextEditor::View* textEdit = doc->createView(nullptr);
+		textEdit->setMinimumHeight(200);
 		layout->addWidget(textEdit);
 		
 		auto okButton = new QPushButton;

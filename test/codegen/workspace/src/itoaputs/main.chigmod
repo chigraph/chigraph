@@ -1,12 +1,10 @@
 {
   "dependencies": [
-    "lang",
-    "c"
+    "c",
+    "lang"
   ],
-  "types": {},
   "graphs": [
     {
-      "local_variables": {},
       "connections": [
         {
           "input": [
@@ -72,6 +70,7 @@
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "main",
       "nodes": {
         "entry": {
@@ -102,11 +101,15 @@
         },
         "itoa": {
           "data": {
-            "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
+            "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%d\", val);\n\treturn a;\n}",
+            "extraflags": [],
             "function": "doitoa",
-            "inputs": [{"val": "lang:i32"}],
-            "output": "lang:i8*",
-            "extraflags": []
+            "inputs": [
+              {
+                "": "lang:i32"
+              }
+            ],
+            "output": "lang:i8*"
           },
           "location": [
             735,
@@ -116,11 +119,15 @@
         },
         "puts": {
           "data": {
-            "code": "#include <stdio.h>\n int doputs(const char* arg) { \nreturn puts(arg);\n}",
+            "code": "#include <stdio.h>\nint doputs(const char* arg) {\n\treturn puts(arg);\n}",
+            "extraflags": [],
             "function": "doputs",
-            "inputs": [{"arg": "lang:i8*"}],
-            "output": "lang:i32",
-            "extraflags": []
+            "inputs": [
+              {
+                "": "lang:i8*"
+              }
+            ],
+            "output": "lang:i32"
           },
           "location": [
             486,
@@ -140,5 +147,6 @@
       "type": "function"
     }
   ],
-  "name": "main"
+  "name": "main",
+  "types": {}
 }
