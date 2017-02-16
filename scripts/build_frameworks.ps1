@@ -76,7 +76,7 @@ build_framework kcompletion
 build_framework kdbusaddons
 build_framework karchive
 build_framework kcoreaddons
-#build_framework kjobwidgets
+build_framework kjobwidgets
 build_framework kwindowsystem
 build_framework kcrash
 build_framework kservice
@@ -87,9 +87,9 @@ build_framework kiconthemes
 build_framework ktextwidgets
 build_framework kglobalaccel
 build_framework kxmlgui
-#build_framework kbookmarks
-#build_framework solid
-#build_framework kio
+build_framework kbookmarks
+build_framework solid
+build_framework kio
 #build_framework kparts
 #build_framework kitemmodels
 #build_framework threadweaver
