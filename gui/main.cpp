@@ -1,6 +1,8 @@
 #include <KAboutData>
 #include <KLocalizedString>
 #include <KMessageBox>
+#include <KCrash>
+
 #include <QApplication>
 #include <QCommandLineParser>
 
@@ -8,6 +10,7 @@
 
 int main(int argc, char** argv) {
 	QApplication app(argc, argv);
+	KCrash::initialize();
 
 	KLocalizedString::setApplicationDomain("chiggui");
 

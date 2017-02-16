@@ -6,10 +6,15 @@
 
 #include <chig/CModule.hpp>
 
+#include <KTextEditor/Document>
+#include <KTextEditor/Editor>
+#include <KTextEditor/View>
+
 class EditCodeDialog : public QDialog {
 public:
 	EditCodeDialog(chig::NodeInstance* inst, FunctionView* fview) {
 		setWindowTitle(i18n("Edit C Call Node"));
+		setSizePolicy({QSizePolicy::Expanding, QSizePolicy::Expanding});
 
 		auto layout = new QVBoxLayout;
 		setLayout(layout);
@@ -18,17 +23,25 @@ public:
 		layout->addWidget(lineEdit);
 		lineEdit->setText(QString::fromStdString(inst->type().toJSON()["function"]));
 
-		auto textEdit = new KTextEdit;
-		textEdit->setFontFamily("sourcecodepro");
+		// get KTextEditor stuff
+		KTextEditor::Editor* editor = KTextEditor::Editor::instance();
+		// create a new document
+		KTextEditor::Document* doc = editor->createDocument(this);
+		doc->setText(QString::fromStdString(inst->type().toJSON()["code"]));
+		doc->setHighlightingMode("C");
+		connect(doc, &KTextEditor::Document::highlightingModeChanged, this, [](auto* doc) {
+			std::cout << "Changed to " << doc->highlightingMode().toStdString() << std::endl;
+		});
+		// create a widget to display the document
+		KTextEditor::View* textEdit = doc->createView(nullptr);
 		layout->addWidget(textEdit);
-		textEdit->setText(QString::fromStdString(inst->type().toJSON()["code"]));
-
+		
 		auto okButton = new QPushButton;
 		layout->addWidget(okButton);
 		okButton->setText(i18n("Ok"));
-		connect(okButton, &QPushButton::clicked, this, [this, textEdit, lineEdit, inst, fview] {
+		connect(okButton, &QPushButton::clicked, this, [this, doc, lineEdit, inst, fview] {
 			std::string function = lineEdit->text().toStdString();
-			std::string code     = textEdit->toPlainText().toStdString();
+			std::string code     = doc->text().toStdString();
 
 			std::unique_ptr<chig::NodeType> ty;
 			auto res = inst->context().cModule()->createNodeTypeFromCCode(code, function, {}, &ty);
