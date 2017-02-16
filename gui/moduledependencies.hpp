@@ -21,14 +21,14 @@ public:
 
 	chig::GraphModule* module() const { return mModule; }
 public slots:
-	void setModule(chig::GraphModule* mod) {
+	void setModule(chig::GraphModule& mod) {
 		clear();
-		for (const auto& dep : mod->dependencies()) {
+		for (const auto& dep : mod.dependencies()) {
 			if (dep == "c" || dep == "lang") { continue; }
 			addItem(QString::fromStdString(dep));
 		}
 		addNewDepItem();
-		mModule = mod;
+		mModule = &mod;
 	}
 
 signals:

@@ -1,6 +1,7 @@
 #include "localvariables.hpp"
 #include "execparamlistwidget.hpp"
 #include "paramlistwidget.hpp"
+#include "typeselector.hpp"
 
 #include <QPushButton>
 #include <QGridLayout>
@@ -10,6 +11,7 @@
 
 LocalVariables::LocalVariables(QWidget* parent) : QWidget{parent}
 {
+	setSizePolicy({QSizePolicy::Preferred, QSizePolicy::Preferred});
 }
 
 void LocalVariables::loadFunction(FunctionView* func)
@@ -35,28 +37,21 @@ void LocalVariables::loadFunction(FunctionView* func)
 		});
 		layout->addWidget(nameEdit, id, 0);
 		
-		auto combo = new QComboBox;
-		combo->addItems(createTypeOptions(mFunctionView->function()->module()));
-		combo->setCurrentText(QString::fromStdString(var.type.qualifiedName()));
-		connect(combo, &QComboBox::currentTextChanged, this, [this, id](const QString& newType) {
-			std::string mod, name;
-			std::tie(mod, name) = chig::parseColonPair(newType.toStdString());
-
-			chig::DataType ty;
-			auto           res = mFunctionView->function()->context().typeFromModule(mod, name, &ty);
-			if (!res) {
-				KMessageBox::detailedError(this, i18n("Failed to get type"),
-				                           QString::fromStdString(res.dump()));
+		auto tySelector = new TypeSelector(mFunctionView->function()->module());
+		tySelector->setCurrentType(var.type);
+		connect(tySelector, &TypeSelector::typeSelected, this, [this, id](const chig::DataType& newType) {
+			if (!newType.valid()) {
 				return;
 			}
+			
 			auto localName = mFunctionView->function()->localVariables()[id].name;
 
-			mFunctionView->function()->retypeLocalVariable(localName, ty);
+			mFunctionView->function()->retypeLocalVariable(localName, newType);
 			mFunctionView->refreshRegistry();
 			refreshReferencingNodes(localName);
 
 		});
-		layout->addWidget(combo, id, 1);
+		layout->addWidget(tySelector, id, 1);
 		
 		auto deleteButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-remove")), {});
 		connect(deleteButton, &QPushButton::clicked, this, [this, id] {
@@ -86,7 +81,7 @@ void LocalVariables::loadFunction(FunctionView* func)
 		
 		loadFunction(mFunctionView);
 	});
-	layout->addWidget(newButton, id, 2);
+	layout->addWidget(newButton, id, 2, Qt::AlignRight);
 	
 }
 

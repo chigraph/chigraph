@@ -5,30 +5,21 @@
 
 #include <QWidget>
 
-#include <chig/GraphFunction.hpp>
-
-#include "execparamlistwidget.hpp"
-#include "paramlistwidget.hpp"
-
 class FunctionView;
+class FunctionInOuts;
+class LocalVariables;
 
 class FunctionDetails : public QWidget {
-	Q_OBJECT
+	
 public:
 	FunctionDetails(QWidget* parent = nullptr);
-
-public slots:
-	void loadFunction(FunctionView* func);
-
+	
+	void loadFunction(FunctionView* funcView);
+	
 private:
-	FunctionView*        mFuncView = nullptr;
-	chig::GraphFunction* mFunc     = nullptr;
-
-	ParamListWidget* ins;
-	ParamListWidget* outs;
-
-	ExecParamListWidget* execins;
-	ExecParamListWidget* execouts;
+	FunctionInOuts* mInOuts;
+	LocalVariables* mLocals;
+	
 };
 
 #endif  // CHIGGUI_FUNCTIONDETAILS_HPP

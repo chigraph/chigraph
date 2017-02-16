@@ -12,11 +12,11 @@ class MainWindow;
 class FunctionsPane : public QListWidget {
 	Q_OBJECT
 public:
-	FunctionsPane(QWidget* parent, MainWindow* win);
+	FunctionsPane(QWidget* parent = nullptr);
 
 public slots:
 
-	void updateModule(chig::GraphModule* mod);
+	void updateModule(chig::GraphModule& mod);
 
 private slots:
 

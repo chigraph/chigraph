@@ -1,12 +1,10 @@
 {
   "dependencies": [
-    "c",
-    "lang"
+    "lang",
+    "c"
   ],
-  "types": {},
   "graphs": [
-    { 
-      "local_variables": {},
+    {
       "connections": [
         {
           "input": [
@@ -94,6 +92,7 @@
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "main",
       "nodes": {
         "call": {
@@ -141,9 +140,13 @@
         "itoa": {
           "data": {
             "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
-            "function": "doitoa",
             "extraflags": [],
-            "inputs": [{"val": "lang:i32"}],
+            "function": "doitoa",
+            "inputs": [
+              {
+                "val": "lang:i32"
+              }
+            ],
             "output": "lang:i8*"
           },
           "location": [
@@ -164,7 +167,6 @@
       "type": "function"
     },
     {
-      "local_variables": {},
       "connections": [
         {
           "input": [
@@ -227,6 +229,7 @@
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "docall",
       "nodes": {
         "entry": {
@@ -266,9 +269,13 @@
         "puts": {
           "data": {
             "code": "#include <stdio.h> \n int doputs(const char* mystr) { return puts(mystr); }",
-            "function": "doputs",
             "extraflags": [],
-            "inputs": [{"mystr": "lang:i8*"}],
+            "function": "doputs",
+            "inputs": [
+              {
+                "mystr": "lang:i8*"
+              }
+            ],
             "output": "lang:i32"
           },
           "location": [
@@ -281,5 +288,6 @@
       "type": "function"
     }
   ],
-  "name": "main"
+  "name": "main",
+  "types": {}
 }

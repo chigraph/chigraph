@@ -37,6 +37,9 @@ set(GUI_SRCS
 	execparamlistwidget.cpp
 	thememanager.cpp
 	localvariables.cpp
+	functioninouts.cpp
+	moduledetails.cpp
+	typeselector.cpp
 )
 
 set(GUI_RESOURCES
@@ -56,11 +59,14 @@ set(GUI_HEADERS
 	execparamlistwidget.hpp
 	thememanager.hpp
 	localvariables.hpp
+	functioninouts.hpp
+	moduledetails.hpp
+	typeselector.hpp
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
 
-target_link_libraries(chiggui Qt5::Widgets KF5::Service KF5::CoreAddons KF5::I18n KF5::Auth KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigcore)
+target_link_libraries(chiggui Qt5::Widgets KF5::Completion KF5::Service KF5::CoreAddons KF5::I18n KF5::Auth KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigcore)
 
 target_compile_features(chiggui PRIVATE cxx_variable_templates)
 

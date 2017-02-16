@@ -6,12 +6,14 @@
 #include <QLineEdit>
 #include <QPushButton>
 
+#include <KComboBox>
 #include <KMessageBox>
 
 #include <chig/GraphFunction.hpp>
 
 #include "execparamlistwidget.hpp"
 #include "functionview.hpp"
+#include "typeselector.hpp"
 
 ParamListWidget::ParamListWidget(QWidget* parent) : QWidget(parent) {}
 
@@ -41,32 +43,26 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 				refreshExits();
 			}
 		});
-		layout->addWidget(edit, id, 0);
+		layout->addWidget(edit, id, 0, Qt::AlignTop);
 
-		auto combo = new QComboBox;
-		combo->addItems(createTypeOptions(mFunc->function()->module()));
-		combo->setCurrentText(QString::fromStdString(param.type.qualifiedName()));
-		connect(combo, &QComboBox::currentTextChanged, this, [this, id](const QString& newType) {
-			std::string mod, name;
-			std::tie(mod, name) = chig::parseColonPair(newType.toStdString());
-
-			chig::DataType ty;
-			auto           res = mFunc->function()->context().typeFromModule(mod, name, &ty);
-			if (!res) {
-				KMessageBox::detailedError(this, i18n("Failed to get type"),
-				                           QString::fromStdString(res.dump()));
+		auto tySelector = new TypeSelector(mFunc->function()->module());
+		tySelector->setCurrentType(param.type);
+		connect(tySelector, &TypeSelector::typeSelected, this, [this, id](const chig::DataType& newType) {
+			
+			if (!newType.valid()) {
 				return;
 			}
+			
 			if (mType == Input) {
-				mFunc->function()->modifyDataInput(id, ty, {});
+				mFunc->function()->modifyDataInput(id, newType, {});
 				refreshEntry();
 			} else {
-				mFunc->function()->modifyDataOutput(id, ty, {});
+				mFunc->function()->modifyDataOutput(id, newType, {});
 				refreshExits();
 			}
 
 		});
-		layout->addWidget(combo, id, 1);
+		layout->addWidget(tySelector, id, 1, Qt::AlignTop);
 
 		auto deleteButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-remove")), {});
 		connect(deleteButton, &QAbstractButton::clicked, this, [this, id](bool) {
@@ -80,7 +76,7 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 				setFunction(mFunc, mType);
 			}
 		});
-		layout->addWidget(deleteButton, id, 2);
+		layout->addWidget(deleteButton, id, 2, Qt::AlignTop);
 
 		++id;
 	}
@@ -106,7 +102,7 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 		}
 
 	});
-	layout->addWidget(newButton, id, 2, Qt::AlignRight);
+	layout->addWidget(newButton, id, 2, Qt::AlignRight | Qt::AlignTop);
 }
 
 void ParamListWidget::refreshEntry() {

@@ -42,7 +42,7 @@ public slots:
 
 signals:
 	void workspaceOpened(chig::Context& workspace);
-	void moduleOpened(chig::GraphModule* mod);
+	void moduleOpened(chig::GraphModule& mod);
 	void functionOpened(FunctionView* func);
 
 	void newModuleCreated(chig::GraphModule* newModule);
