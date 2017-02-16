@@ -292,8 +292,7 @@ struct StringLiteralNodeType : NodeType {
 
 struct IntToFloatNodeType : NodeType {
 	IntToFloatNodeType(LangModule& mod) : NodeType(mod, "inttofloat", "convert integer to float") {
-		setExecInputs({""});
-		setExecOutputs({""});
+		makePure();
 
 		setDataInputs({{"", mod.typeFromName("i32")}});
 		setDataOutputs({{"", mod.typeFromName("float")}});
@@ -325,8 +324,7 @@ struct IntToFloatNodeType : NodeType {
 
 struct FloatToIntNodeType : NodeType {
 	FloatToIntNodeType(LangModule& mod) : NodeType(mod, "floattoint", "convert float to integer") {
-		setExecInputs({""});
-		setExecOutputs({""});
+		makePure();
 
 		setDataInputs({{"", mod.typeFromName("float")}});
 		setDataOutputs({{"", mod.typeFromName("i32")}});
