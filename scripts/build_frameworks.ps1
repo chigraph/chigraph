@@ -90,7 +90,7 @@ build_framework kxmlgui
 build_framework kbookmarks
 build_framework solid
 build_framework kio
-#build_framework kparts
+build_framework kparts
 #build_framework kitemmodels
 #build_framework threadweaver
 build_framework attica

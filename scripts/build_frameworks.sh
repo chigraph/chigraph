@@ -59,7 +59,7 @@ build_helper kxmlgui
 build_helper kbookmarks
 build_helper solid
 build_helper kio
-#build_helper kparts
+build_helper kparts
 #build_helper kitemmodels
 #build_helper threadweaver
 build_helper attica
