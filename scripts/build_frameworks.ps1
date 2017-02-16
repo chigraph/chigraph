@@ -2,8 +2,8 @@
 $firstdir = pwd
 $scriptsdir = $PSScriptRoot
 
-$version = "5.30.0"
-$sversion = "5.30"
+$version = "5.31.0"
+$sversion = "5.31"
 
 $qtdir = $args[0]
 $buildtype = $args[1]
@@ -95,7 +95,7 @@ build_framework kxmlgui
 #build_framework threadweaver
 build_framework attica
 #build_framework knewstuff
-#build_framework ktexteditor
+build_framework ktexteditor
 #build_framework kpackage
 #build_framework kdeclarative
 #build_framework kcmutils
