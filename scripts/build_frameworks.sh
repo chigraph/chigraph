@@ -45,7 +45,7 @@ build_helper kcompletion
 build_helper kdbusaddons
 build_helper karchive
 build_helper kcoreaddons
-#build_helper kjobwidgets
+build_helper kjobwidgets
 build_helper kwindowsystem
 build_helper kcrash
 build_helper kservice
@@ -56,9 +56,9 @@ build_helper kiconthemes
 build_helper ktextwidgets
 build_helper kglobalaccel
 build_helper kxmlgui
-#build_helper kbookmarks
-#build_helper solid
-#build_helper kio
+build_helper kbookmarks
+build_helper solid
+build_helper kio
 #build_helper kparts
 #build_helper kitemmodels
 #build_helper threadweaver
