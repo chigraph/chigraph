@@ -58,6 +58,7 @@ build_helper kglobalaccel
 build_helper kxmlgui
 build_helper kbookmarks
 build_helper solid
+build_helper kwallet
 build_helper kio
 build_helper kparts
 #build_helper kitemmodels
