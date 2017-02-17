@@ -95,6 +95,7 @@ build_framework kparts
 #build_framework threadweaver
 build_framework attica
 #build_framework knewstuff
+build_framework syntax-highlighting
 build_framework ktexteditor
 #build_framework kpackage
 #build_framework kdeclarative

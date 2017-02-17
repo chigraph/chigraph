@@ -64,6 +64,7 @@ build_helper kparts
 #build_helper threadweaver
 build_helper attica
 #build_helper knewstuff
+build_helper syntax-highlighting
 build_helper ktexteditor
 #build_helper kpackage
 #build_helper kdeclarative
