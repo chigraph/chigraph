@@ -53,7 +53,8 @@ function build_framework
 		-DGETTEXT_MSGMERGE_EXECUTABLE="$gtdir/bin/msgmerge.exe" -DGETTEXT_MSGFMT_EXECUTABLE="$gtdir/bin/msgfmt.exe" `
 		-DLibIntl_INCLUDE_DIRS="$gtdir/include" -DLibIntl_LIBRARIES="$gtdir/lib/libintl.lib" -DZLIB_LIBRARY="$zlibdir/lib/zlibstatic.lib" `
 		-DZLIB_INCLUDE_DIR="$zlibdir/include" -DFLEX_EXECUTABLE="$fbdir/bin/flex.exe" -DBISON_EXECUTABLE="$fbdir/bin/bison.exe" `
-		"$cmakeargs"
+		-DCMAKE_CXX_FLAGS="-DKIOWIDGETS_NO_DEPRECATED" `
+		"$cmakeargs" 
 
 	if($LastExitCode) {
 		#exit
@@ -89,7 +90,7 @@ build_framework kglobalaccel
 build_framework kxmlgui
 build_framework kbookmarks
 build_framework solid
-build_framework kwallet
+#build_framework kwallet
 build_framework kio
 build_framework kparts
 #build_framework kitemmodels

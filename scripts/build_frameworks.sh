@@ -58,7 +58,8 @@ build_helper kglobalaccel
 build_helper kxmlgui
 build_helper kbookmarks
 build_helper solid
-build_helper kwallet
+#build_helper knotifications
+#build_helper kwallet
 build_helper kio
 build_helper kparts
 #build_helper kitemmodels
@@ -70,7 +71,6 @@ build_helper ktexteditor
 #build_helper kpackage
 #build_helper kdeclarative
 #build_helper kcmutils
-#build_helper knotifications
 #build_helper knotifyconfig
 #build_helper libkomparediff2
 #build_helper kdoctools
