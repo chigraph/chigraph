@@ -28,7 +28,7 @@ TypeSelector::TypeSelector(chig::ChigModule& module, QWidget* parent) : KComboBo
 		}
 	}
 	
-	connect (this, qOverload<>(&KComboBox::returnPressed), this, [&module, this]() {
+	connect (this, static_cast<void(KComboBox::*)()>(&KComboBox::returnPressed), this, [&module, this]() {
 		typeSelected(currentType());
 	});
 }
