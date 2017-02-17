@@ -89,6 +89,7 @@ build_framework kglobalaccel
 build_framework kxmlgui
 build_framework kbookmarks
 build_framework solid
+build_framework kwallet
 build_framework kio
 build_framework kparts
 #build_framework kitemmodels
