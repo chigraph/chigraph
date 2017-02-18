@@ -637,7 +637,7 @@ SUITE(multi_span_tests)
 #endif
 
 #ifdef CONFIRM_COMPILATION_ERRORS
-        static_bounds<size_t, 7, dynamic_range, 2> b12(b11);
+        static_bounds<std::size_t, 7, dynamic_range, 2> b12(b11);
         b12 = b11;
         b11 = b12;
 
@@ -1148,7 +1148,7 @@ SUITE(multi_span_tests)
         auto width = 5, height = 20;
 
         auto imgSize = width * height;
-        auto image_ptr = new int[imgSize][3];
+        auto image_ptr = new int[static_cast<std::size_t>(imgSize)][3];
 
         // size check will be done
         auto image_view =
@@ -1291,8 +1291,8 @@ SUITE(multi_span_tests)
             CHECK(i1[0] == 0);
 
             // components of different types
-            size_t c0 = 0;
-            size_t c1 = 1;
+            std::size_t c0 = 0;
+            std::size_t c1 = 1;
             index<3> i2(c0, c1, 2);
             CHECK(i2[0] == 0);
 
@@ -1319,7 +1319,7 @@ SUITE(multi_span_tests)
             CHECK(i1[0] == 0);
 
             // components of different types
-            size_t c0 = 0;
+            std::size_t c0 = 0;
             index<1> i2(c0);
             CHECK(i2[0] == 0);
 
@@ -1496,7 +1496,7 @@ SUITE(multi_span_tests)
         auto height = 4, width = 2;
         auto size = height * width;
 
-        auto arr = new int[size];
+        auto arr = new int[static_cast<std::size_t>(size)];
         for (auto i = 0; i < size; ++i) {
             arr[i] = i;
         }
@@ -1674,7 +1674,7 @@ SUITE(multi_span_tests)
             for (auto& b : wav) {
                 b = byte(0);
             }
-            for (size_t i = 0; i < 4; ++i) {
+            for (std::size_t i = 0; i < 4; ++i) {
                 CHECK(a[i] == 0);
             }
         }
@@ -1684,7 +1684,7 @@ SUITE(multi_span_tests)
             for (auto& n : av) {
                 n = 1;
             }
-            for (size_t i = 0; i < 4; ++i) {
+            for (std::size_t i = 0; i < 4; ++i) {
                 CHECK(a[i] == 1);
             }
         }
