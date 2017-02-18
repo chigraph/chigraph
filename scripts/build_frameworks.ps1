@@ -62,7 +62,6 @@ function build_framework
 		-DGETTEXT_MSGMERGE_EXECUTABLE="$gtdir/bin/msgmerge.exe" -DGETTEXT_MSGFMT_EXECUTABLE="$gtdir/bin/msgfmt.exe" `
 		-DLibIntl_INCLUDE_DIRS="$gtdir/include" -DLibIntl_LIBRARIES="$gtdir/lib/libintl.lib" -DZLIB_LIBRARY="$zlibdir/lib/zlibstatic.lib" `
 		-DZLIB_INCLUDE_DIR="$zlibdir/include" -DFLEX_EXECUTABLE="$fbdir/bin/flex.exe" -DBISON_EXECUTABLE="$fbdir/bin/bison.exe" `
-		-DCMAKE_CXX_FLAGS="-DKIOWIDGETS_NO_DEPRECATED" `
 		"$cmakeargs" 
 
 	if($LastExitCode) {
