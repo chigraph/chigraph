@@ -1,5 +1,7 @@
 $scriptsdir = $PSScriptRoot
 
+$startingdir = $pwd
+
 if ($args.length -ne 1) {
 	"Usage: download_llvm.ps1 [Debug|Release]"
 	exit
@@ -25,3 +27,5 @@ $webclient.DownloadFile("$url", "$pwd/llvm-$type.zip")
 
 
 Expand-Archive "llvm-$type.zip" .
+
+cd $startingdir

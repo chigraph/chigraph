@@ -2,13 +2,15 @@ cmake_minimum_required(VERSION 2.8)
 
 project(chigraph)
 
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5)
+if (NOT WIN32)
+    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5)
+endif()
 
 if (WIN32)
 	if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
-		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm)
+		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug)
 	else()
-		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvmrel)
+		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvmrel ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release)
 	endif()
 endif()
 

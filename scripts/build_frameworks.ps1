@@ -2,8 +2,13 @@
 $firstdir = pwd
 $scriptsdir = $PSScriptRoot
 
-$version = "5.31.0"
-$sversion = "5.31"
+$version = "5.30.0"
+$sversion = "5.30"
+
+if ($args.length -lt 3) {
+    "Usage: .\build_frameworks.ps1 </path/to/qt> <Debug|Release> <Extra CMake flags (just use `"`" if you don't want any)"
+    exit
+}
 
 $qtdir = $args[0]
 $buildtype = $args[1]
@@ -14,7 +19,11 @@ $cmakeargs = $args[2..($args.length - 1)]
 # set path
 $env:Path = "$qtdir/bin;$env:Path"
 
-$kf5dir = "$scriptsdir/../third_party/kf5"
+if ($buildtype -eq "Debug") {
+    $kf5dir = "$scriptsdir/../third_party/kf5-debug"
+} else {
+    $kf5dir = "$scriptsdir/../third_party/kf5-release"
+}
 mkdir $kf5dir -Force
 mkdir $kf5dir/build -Force
 
@@ -26,7 +35,7 @@ function build_framework
 {
 	$framework = $args[0]
 
-	cd $scriptsdir/../third_party/kf5/build
+	cd $kf5dir/build
 	
 	$foldername = "$framework-$version"
 	
