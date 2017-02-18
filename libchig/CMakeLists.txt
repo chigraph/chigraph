@@ -50,7 +50,7 @@ target_include_directories(chigcore
 	${LLVM_INCLUDE_DIRS}
 	include/
 	${CMAKE_BINARY_DIR}/
-	../third_party/GSL
+	../third_party/GSL/include
 	../third_party/libexecstream/include
 )
 
