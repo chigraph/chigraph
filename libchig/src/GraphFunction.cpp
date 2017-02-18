@@ -40,8 +40,9 @@ NodeInstance* GraphFunction::entryNode() const noexcept {
 			return nullptr;
 		}
 		// make sure it has the same exec names and size
+		auto foundExecOutputs = matching[0]->type().execOutputs();
 		if (!std::equal(execInputs().begin(), execInputs().end(),
-		                matching[0]->type().execOutputs().begin())) {
+		                foundExecOutputs.begin(), foundExecOutputs.end())) {
 			return nullptr;
 		}
 		return matching[0];
@@ -55,7 +56,7 @@ Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float 
 
 	// make sure the ID doesn't exist
 	if (nodes().find(gsl::to_string(id)) != nodes().end()) {
-		res.addEntry("EUKN", "Cannot have two nodes with the same ID",
+		res.addEntry("E47", "Cannot have two nodes with the same ID",
 		             {{"Requested ID", gsl::to_string(id)}});
 		return res;
 	}
