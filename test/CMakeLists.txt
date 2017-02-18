@@ -4,7 +4,7 @@ include_directories(../third_party/Catch/include)
 add_definitions("-D__STDC_LIMIT_MACROS")
 add_definitions("-D__STDC_CONSTANT_MACROS")
 
-add_executable(api_tests main.cpp ContextTests.cpp JSONSerializer.cpp LangModuleTests.cpp NameManglerTests.cpp GraphModuleTest.cpp)
+add_executable(api_tests main.cpp ContextTests.cpp JSONSerializer.cpp LangModuleTests.cpp NameManglerTests.cpp GraphModuleTest.cpp GraphFunctionEntryTest.cpp GraphFunctionLocalsTest.cpp)
 target_link_libraries(api_tests PUBLIC chigcore)
 
 add_test(NAME api_tests 

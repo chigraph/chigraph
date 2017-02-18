@@ -21,7 +21,7 @@ namespace chig {
 /// this is an AST-like representation of a function in a graph
 /// It is used for IDE-like behavior, codegen, and JSON generation.
 struct GraphFunction {
-	/// Construct a graph
+	/// Construct a graph--don't call this directly use GraphModule::getorCreateFunction
 	/// \param mod The owning module
 	/// \param name The name of the function
 	/// \param dataIns The data inputs to the function
