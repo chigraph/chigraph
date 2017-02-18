@@ -1,7 +1,7 @@
 
 ![chigraph logo](doc/images/chigraph.png)
 
-[![Travis branch](https://img.shields.io/travis/chigraph/chigraph/master.svg?style=flat-square)](https://travis-ci.org/chigraph/chigraph) https://ci.appveyor.com/project/GuapoTaco/chigraph-miekk [![Coveralls](https://img.shields.io/coveralls/chigraph/chigraph.svg?style=flat-square)](https://coveralls.io/github/chigraph/chigraph)    [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/chigraph/)
+[![Travis branch](https://img.shields.io/travis/chigraph/chigraph/master.svg?style=flat-square)](https://travis-ci.org/chigraph/chigraph) [![AppVeyor](https://img.shields.io/appveyor/ci/guapotaco/chigraph-miekk.svg?style=flat-square)](https://ci.appveyor.com/project/GuapoTaco/chigraph-miekk) [![Coveralls](https://img.shields.io/coveralls/chigraph/chigraph.svg?style=flat-square)](https://coveralls.io/github/chigraph/chigraph)    [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/chigraph/)
 
 # What is chigraph?
 Chigraph,  pronunced chai-graph, is a new systems programming language. It's fast. It's scalable. And, more importantly, it's easy to learn. How does it achieve such goals? By scrapping the age-old standard of text (not entirely though).
