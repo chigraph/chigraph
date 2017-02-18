@@ -28,5 +28,4 @@ build:
   project: C:\projects\chigraph-miekk\build\chigraph.sln
 
 after_build:
-  - cd build
   - cmake --build . --config %configuration% --target RUN_TESTS
