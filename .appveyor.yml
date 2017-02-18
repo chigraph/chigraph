@@ -28,4 +28,5 @@ build:
   project: C:\projects\chigraph-miekk\build\chigraph.sln
 
 after_build:
-  - cmake --build . --config %configuration% --target RUN_TESTS
+  - SET CTEST_OUTPUT_ON_FAILURE=1
+  - cmake --build . --config %configuration% --target RUN_TESTS || echo "Failed"
