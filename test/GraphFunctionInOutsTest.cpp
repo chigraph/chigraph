@@ -50,6 +50,9 @@ TEST_CASE("Create and manipulate inputs and outputs in GraphFunctions", "") {
 
 	NodeInstance* setNode;
 	func->insertNode("test/main", "_set_var", "lang:i32", 0, 0, "set", &setNode);
+	
+	NodeInstance* setNode2;
+	func->insertNode("test/main", "_set_var", "lang:i32", 0, 0, "set2", &setNode2);
 
 	NodeInstance* getNode;
 	func->insertNode("test/main", "_get_var", "lang:i32", 0, 0, "get", &getNode);
@@ -403,119 +406,123 @@ TEST_CASE("Create and manipulate inputs and outputs in GraphFunctions", "") {
 		}
 	}
 
-	// 	WHEN("We add a exec output") {
-	//
-	// 		func->addExecOutput("eout");
-	//
-	// 		REQUIRE(func->execOutputs().size() == 1);
-	// 		REQUIRE(func->execOutputs()[0] == "eout");
-	//
-	// 		// check exit nodes
-	// 		REQUIRE(exitNode1->type().execOutputs().size() == 0);
-	// 		REQUIRE(exitNode1->type().execInputs().size() == 1);
-	// 		REQUIRE(exitNode1->type().execInputs()[0] == "eout");
-	//
-	// 		REQUIRE(exitNode2->type().execOutputs().size() == 0);
-	// 		REQUIRE(exitNode2->type().execInputs().size() == 1);
-	// 		REQUIRE(exitNode2->type().execInputs()[0] == "eout");
-	//
-	// 		res = connectExec(*setNode, 0, *exitNode1, 0);
-	// 		REQUIRE(!!res);
-	//
-	// 		res = connectExec(*setNode, 0, *exitNode2, 0);
-	// 		REQUIRE(!!res);
-	//
-	// 		// check connection
-	// 		REQUIRE(exitNode1->inputExecConnections[0].size() == 1);
-	// 		REQUIRE(exitNode1->inputExecConnections[0][0].first == setNode);
-	// 		REQUIRE(exitNode1->inputExecConnections[0][0].second == 0);
-	//
-	// 		REQUIRE(exitNode2->inputExecConnections[0].size() == 1);
-	// 		REQUIRE(exitNode2->inputExecConnections[0][0].first == setNode);
-	// 		REQUIRE(exitNode2->inputExecConnections[0][0].second == 0);
-	//
-	// 		WHEN("We add another after that") {
-	//
-	// 			func->addExecOutput("eout2", 1);
-	//
-	// 			REQUIRE(func->execOutputs().size() == 2);
-	// 			REQUIRE(func->execOutputs()[0] == "ein");
-	// 			REQUIRE(func->execOutputs()[1] == "ein2");
-	//
-	// 			// check exit nodes
-	// 			REQUIRE(exitNode1->type().execOutputs().size() == 0);
-	// 			REQUIRE(exitNode1->type().execInputs().size() == 2);
-	// 			REQUIRE(exitNode1->type().execInputs()[0] == "eout");
-	// 			REQUIRE(exitNode1->type().execInputs()[1] == "eout2");
-	//
-	// 			REQUIRE(exitNode2->type().execOutputs().size() == 0);
-	// 			REQUIRE(exitNode2->type().execInputs().size() == 2);
-	// 			REQUIRE(exitNode2->type().execInputs()[0] == "eout");
-	// 			REQUIRE(exitNode2->type().execInputs()[1] == "eout2");
-	//
-	// 		}
-	//
-	// 		WHEN("We add another before that") {
-	//
-	// 			func->addExecOutput("ein2", 0);
-	//
-	//
-	// 			REQUIRE(func->execOutputs().size() == 2);
-	// 			REQUIRE(func->execOutputs()[0] == "ein2");
-	// 			REQUIRE(func->execOutputs()[1] == "ein");
-	//
-	// 			// check exit nodes
-	// 			REQUIRE(exitNode1->type().execInputs().size() == 0);
-	// 			REQUIRE(exitNode1->type().execInputs().size() == 2);
-	// 			REQUIRE(exitNode1->type().execInputs()[0] == "eout2");
-	// 			REQUIRE(exitNode1->type().execInputs()[1] == "eout");
-	//
-	// 			REQUIRE(exitNode2->type().execInputs().size() == 0);
-	// 			REQUIRE(exitNode2->type().execInputs().size() == 2);
-	// 			REQUIRE(exitNode2->type().execInputs()[0] == "eout2");
-	// 			REQUIRE(exitNode2->type().execInputs()[1] == "eout");
-	//
-	//
-	// 		}
-	//
-	// 		WHEN("We rename it") {
-	//
-	// 			func->renameExecOutput(0, "einrenamed");
-	//
-	// 			REQUIRE(func->execOutputs().size() == 1);
-	// 			REQUIRE(func->execOutputs()[0] == "einrenamed");
-	//
-	// 			// check entry nodes
-	// 			REQUIRE(entryNode->type().execOutputs().size() == 0);
-	// 			REQUIRE(entryNode->type().execInputs().size() == 1);
-	// 			REQUIRE(entryNode->type().execInputs()[0] == "einrenamed");
-	// 		}
-	//
-	// 		WHEN("We rename it using the wrong index") {
-	// 			func->renameExecOutput(1, "param1renamed");
-	//
-	// 			// everything should remain the same
-	// 			REQUIRE(func->execOutputs().size() == 1);
-	// 			REQUIRE(func->execOutputs()[0] == "eout");
-	//
-	// 			// check exit nodes
-	// 			REQUIRE(exitNode1->type().execInputs().size() == 0);
-	// 			REQUIRE(exitNode1->type().execInputs().size() == 1);
-	// 			REQUIRE(exitNode1->type().execInputs()[0] == "eout");
-	//
-	// 			REQUIRE(exitNode2->type().execInputs().size() == 0);
-	// 			REQUIRE(exitNode2->type().execInputs().size() == 1);
-	// 			REQUIRE(exitNode2->type().execInputs()[0] == "eout");
-	//
-	// 			// check connection
-	// 			REQUIRE(exitNode1->inputExecConnections[0].size() == 1);
-	// 			REQUIRE(exitNode1->inputExecConnections[0][0].first == setNode);
-	// 			REQUIRE(exitNode1->inputExecConnections[0][0].second == 0);
-	//
-	// 			REQUIRE(exitNode2->inputExecConnections[0].size() == 1);
-	// 			REQUIRE(exitNode2->inputExecConnections[0][0].first == setNode);
-	// 			REQUIRE(exitNode2->inputExecConnections[0][0].second == 0);
-	// 		}
-	//
-	// 	}
+		WHEN("We add a exec output") {
+	
+			func->addExecOutput("eout");
+	
+			REQUIRE(func->execOutputs().size() == 1);
+			REQUIRE(func->execOutputs()[0] == "eout");
+	
+			// check exit nodes
+			REQUIRE(exitNode1->type().execOutputs().size() == 0);
+			REQUIRE(exitNode1->type().execInputs().size() == 1);
+			REQUIRE(exitNode1->type().execInputs()[0] == "eout");
+	
+			REQUIRE(exitNode2->type().execOutputs().size() == 0);
+			REQUIRE(exitNode2->type().execInputs().size() == 1);
+			REQUIRE(exitNode2->type().execInputs()[0] == "eout");
+	
+			res = connectExec(*setNode, 0, *exitNode1, 0);
+			REQUIRE(!!res);
+	
+			res = connectExec(*setNode2, 0, *exitNode2, 0);
+			REQUIRE(!!res);
+	
+			// check connection
+			REQUIRE(exitNode1->inputExecConnections[0].size() == 1);
+			REQUIRE(exitNode1->inputExecConnections[0][0].first == setNode);
+			REQUIRE(exitNode1->inputExecConnections[0][0].second == 0);
+	
+			REQUIRE(exitNode2->inputExecConnections[0].size() == 1);
+			REQUIRE(exitNode2->inputExecConnections[0][0].first == setNode2);
+			REQUIRE(exitNode2->inputExecConnections[0][0].second == 0);
+	
+			WHEN("We add another after that") {
+	
+				func->addExecOutput("eout2", 1);
+	
+				REQUIRE(func->execOutputs().size() == 2);
+				REQUIRE(func->execOutputs()[0] == "eout");
+				REQUIRE(func->execOutputs()[1] == "eout2");
+	
+				// check exit nodes
+				REQUIRE(exitNode1->type().execOutputs().size() == 0);
+				REQUIRE(exitNode1->type().execInputs().size() == 2);
+				REQUIRE(exitNode1->type().execInputs()[0] == "eout");
+				REQUIRE(exitNode1->type().execInputs()[1] == "eout2");
+	
+				REQUIRE(exitNode2->type().execOutputs().size() == 0);
+				REQUIRE(exitNode2->type().execInputs().size() == 2);
+				REQUIRE(exitNode2->type().execInputs()[0] == "eout");
+				REQUIRE(exitNode2->type().execInputs()[1] == "eout2");
+	
+			}
+	
+			WHEN("We add another before that") {
+	
+				func->addExecOutput("eout2", 0);
+	
+	
+				REQUIRE(func->execOutputs().size() == 2);
+				REQUIRE(func->execOutputs()[0] == "eout2");
+				REQUIRE(func->execOutputs()[1] == "eout");
+	
+				// check exit nodes
+				REQUIRE(exitNode1->type().execOutputs().size() == 0);
+				REQUIRE(exitNode1->type().execInputs().size() == 2);
+				REQUIRE(exitNode1->type().execInputs()[0] == "eout2");
+				REQUIRE(exitNode1->type().execInputs()[1] == "eout");
+	
+				REQUIRE(exitNode2->type().execOutputs().size() == 0);
+				REQUIRE(exitNode2->type().execInputs().size() == 2);
+				REQUIRE(exitNode2->type().execInputs()[0] == "eout2");
+				REQUIRE(exitNode2->type().execInputs()[1] == "eout");
+	
+	
+			}
+	
+			WHEN("We rename it") {
+	
+				func->renameExecOutput(0, "einrenamed");
+	
+				REQUIRE(func->execOutputs().size() == 1);
+				REQUIRE(func->execOutputs()[0] == "einrenamed");
+	
+				// check exit nodes
+				REQUIRE(exitNode1->type().execOutputs().size() == 0);
+				REQUIRE(exitNode1->type().execInputs().size() == 1);
+				REQUIRE(exitNode1->type().execInputs()[0] == "einrenamed");
+				
+				REQUIRE(exitNode2->type().execOutputs().size() == 0);
+				REQUIRE(exitNode2->type().execInputs().size() == 1);
+				REQUIRE(exitNode2->type().execInputs()[0] == "einrenamed");
+			}
+	
+			WHEN("We rename it using the wrong index") {
+				func->renameExecOutput(1, "param1renamed");
+	
+				// everything should remain the same
+				REQUIRE(func->execOutputs().size() == 1);
+				REQUIRE(func->execOutputs()[0] == "eout");
+	
+				// check exit nodes
+				REQUIRE(exitNode1->type().execOutputs().size() == 0);
+				REQUIRE(exitNode1->type().execInputs().size() == 1);
+				REQUIRE(exitNode1->type().execInputs()[0] == "eout");
+	
+				REQUIRE(exitNode2->type().execOutputs().size() == 0);
+				REQUIRE(exitNode2->type().execInputs().size() == 1);
+				REQUIRE(exitNode2->type().execInputs()[0] == "eout");
+	
+				// check connection
+				REQUIRE(exitNode1->inputExecConnections[0].size() == 1);
+				REQUIRE(exitNode1->inputExecConnections[0][0].first == setNode);
+				REQUIRE(exitNode1->inputExecConnections[0][0].second == 0);
+	
+				REQUIRE(exitNode2->inputExecConnections[0].size() == 1);
+				REQUIRE(exitNode2->inputExecConnections[0][0].first == setNode2);
+				REQUIRE(exitNode2->inputExecConnections[0][0].second == 0);
+			}
+	
+		}
 }
