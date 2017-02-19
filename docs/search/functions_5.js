@@ -10,5 +10,5 @@ var searchData=
   ['graphmodule',['GraphModule',['../structchig_1_1GraphModule.html#a1a496595a1b4b952682c31c562e7d4ef',1,'chig::GraphModule']]],
   ['graphmoduletojson',['graphModuleToJson',['../namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a',1,'chig']]],
   ['graphstruct',['GraphStruct',['../structchig_1_1GraphStruct.html#abf5c04e575b4e68df1a9c4d31fba2a0e',1,'chig::GraphStruct']]],
-  ['graphstructtojson',['graphStructToJson',['../namespacechig.html#a861c4c86923d2d770390d08cadbd3b8f',1,'chig']]]
+  ['graphstructtojson',['graphStructToJson',['../namespacechig.html#acb577a9d61ae779ccd61feb0b9193705',1,'chig']]]
 ];

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['langmodule',['LangModule',['../structchig_1_1LangModule.html',1,'chig']]],
-  ['langmodule',['LangModule',['../structchig_1_1LangModule.html#adab4150aa733a4aa66bc0ede5654dcaa',1,'chig::LangModule::LangModule()'],['../structchig_1_1Context.html#a7a477a9a4e450aa171814e494d0ff631',1,'chig::Context::langModule()']]],
+  ['langmodule',['LangModule',['../structchig_1_1LangModule.html',1,'chig::LangModule'],['../structchig_1_1LangModule.html#adab4150aa733a4aa66bc0ede5654dcaa',1,'chig::LangModule::LangModule()'],['../structchig_1_1Context.html#a7a477a9a4e450aa171814e494d0ff631',1,'chig::Context::langModule()']]],
   ['langmodule_2ecpp',['LangModule.cpp',['../LangModule_8cpp.html',1,'']]],
   ['langmodule_2ehpp',['LangModule.hpp',['../LangModule_8hpp.html',1,'']]],
   ['listmodulesinworkspace',['listModulesInWorkspace',['../structchig_1_1Context.html#a29560b87cbcd1fb4b772faceca58b231',1,'chig::Context']]],

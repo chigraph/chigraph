@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 737;
+var viewWidth = 738;
 var viewHeight = 132;
 var sectionId = 'dynsection-19';
 </script>
@@ -54,153 +54,153 @@ var sectionId = 'dynsection-19';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chig::GraphModule::getOrCreateStruct</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-128 733,-128 733,4 -4,4"/>
-<!-- Node166 -->
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-128 734,-128 734,4 -4,4"/>
+<!-- Node168 -->
 <g id="node1" class="node">
-<title>Node166</title>
+<title>Node168</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-26.5 0,-56.5 104,-56.5 104,-26.5 0,-26.5"/>
 <text text-anchor="start" x="8" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
 <text text-anchor="middle" x="52" y="-33.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">getOrCreateStruct</text>
 </g>
-<!-- Node167 -->
-<g id="node2" class="node">
-<title>Node167</title>
-<g id="a_node2"><a xlink:href="structchig_1_1GraphModule.html#a3aca789690eb2e7dedc764ae20154c9d" target="_top" xlink:title="Get functions. ">
-<polygon fill="#ffffff" stroke="#000000" points="148.5,-49.5 148.5,-79.5 252.5,-79.5 252.5,-49.5 148.5,-49.5"/>
-<text text-anchor="start" x="156.5" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
-<text text-anchor="middle" x="200.5" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">functions</text>
-</a>
-</g>
-</g>
-<!-- Node166&#45;&gt;Node167 -->
-<g id="edge1" class="edge">
-<title>Node166&#45;&gt;Node167</title>
-<path fill="none" stroke="#191970" d="M114.5604,-51.1895C125.8184,-52.9332 137.4441,-54.7338 148.3671,-56.4255"/>
-<polygon fill="#191970" stroke="#191970" points="114.7734,-47.6808 104.3555,-49.6089 113.702,-54.5984 114.7734,-47.6808"/>
-</g>
-<!-- Node173 -->
-<g id="node8" class="node">
-<title>Node173</title>
-<g id="a_node8"><a xlink:href="namespacechig.html#a2af3c68005d33184e5e66b35c4737902" target="_top" xlink:title="Load a GraphStruct from json. ">
-<polygon fill="#ffffff" stroke="#000000" points="140,-10 140,-29 261,-29 261,-10 140,-10"/>
-<text text-anchor="middle" x="200.5" y="-17" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::jsonToGraphStruct</text>
-</a>
-</g>
-</g>
-<!-- Node166&#45;&gt;Node173 -->
-<g id="edge7" class="edge">
-<title>Node166&#45;&gt;Node173</title>
-<path fill="none" stroke="#191970" d="M114.512,-32.239C122.9477,-30.9892 131.5907,-29.7088 139.9906,-28.4644"/>
-<polygon fill="#191970" stroke="#191970" points="113.7346,-28.8158 104.3555,-33.7436 114.7605,-35.7403 113.7346,-28.8158"/>
-</g>
-<!-- Node168 -->
-<g id="node3" class="node">
-<title>Node168</title>
-<g id="a_node3"><a xlink:href="structchig_1_1GraphModule.html#a292eaf6be61fdccb79b54341a34ca6d7" target="_top" xlink:title="Create the associations from line number and function in debug info. ">
-<polygon fill="#ffffff" stroke="#000000" points="299,-93.5 299,-123.5 423,-123.5 423,-93.5 299,-93.5"/>
-<text text-anchor="start" x="307" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
-<text text-anchor="middle" x="361" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">createLineNumberAssoc</text>
-</a>
-</g>
-</g>
-<!-- Node167&#45;&gt;Node168 -->
-<g id="edge2" class="edge">
-<title>Node167&#45;&gt;Node168</title>
-<path fill="none" stroke="#191970" d="M262.4197,-81.4749C276.8168,-85.4217 292.0455,-89.5966 306.1149,-93.4536"/>
-<polygon fill="#191970" stroke="#191970" points="263.1793,-78.054 252.6098,-78.7855 261.3285,-84.805 263.1793,-78.054"/>
-</g>
-<!-- Node171 -->
-<g id="node6" class="node">
-<title>Node171</title>
-<g id="a_node6"><a xlink:href="namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a" target="_top" xlink:title="Serialize a JsonModule to json. ">
-<polygon fill="#ffffff" stroke="#000000" points="297,-55 297,-74 425,-74 425,-55 297,-55"/>
-<text text-anchor="middle" x="361" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::graphModuleToJson</text>
-</a>
-</g>
-</g>
-<!-- Node167&#45;&gt;Node171 -->
-<g id="edge5" class="edge">
-<title>Node167&#45;&gt;Node171</title>
-<path fill="none" stroke="#191970" d="M262.713,-64.5C273.8941,-64.5 285.5679,-64.5 296.8039,-64.5"/>
-<polygon fill="#191970" stroke="#191970" points="262.6098,-61.0001 252.6098,-64.5 262.6097,-68.0001 262.6098,-61.0001"/>
-</g>
 <!-- Node169 -->
-<g id="node4" class="node">
+<g id="node2" class="node">
 <title>Node169</title>
-<g id="a_node4"><a xlink:href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" target="_top" xlink:title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ...">
-<polygon fill="#ffffff" stroke="#000000" points="469,-99 469,-118 581,-118 581,-99 469,-99"/>
-<text text-anchor="middle" x="525" y="-106" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::compileFunction</text>
+<g id="a_node2"><a xlink:href="structchig_1_1GraphModule.html#a3aca789690eb2e7dedc764ae20154c9d" target="_top" xlink:title="Get functions. ">
+<polygon fill="#ffffff" stroke="#000000" points="149,-49.5 149,-79.5 253,-79.5 253,-49.5 149,-49.5"/>
+<text text-anchor="start" x="157" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
+<text text-anchor="middle" x="201" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">functions</text>
 </a>
 </g>
 </g>
 <!-- Node168&#45;&gt;Node169 -->
-<g id="edge3" class="edge">
+<g id="edge1" class="edge">
 <title>Node168&#45;&gt;Node169</title>
-<path fill="none" stroke="#191970" d="M433.3576,-108.5C445.2518,-108.5 457.4204,-108.5 468.8437,-108.5"/>
-<polygon fill="#191970" stroke="#191970" points="433.0014,-105.0001 423.0014,-108.5 433.0013,-112.0001 433.0014,-105.0001"/>
+<path fill="none" stroke="#191970" d="M114.1443,-51.0927C125.7121,-52.8784 137.6888,-54.7271 148.9165,-56.4603"/>
+<polygon fill="#191970" stroke="#191970" points="114.5299,-47.6109 104.113,-49.5443 113.4619,-54.529 114.5299,-47.6109"/>
+</g>
+<!-- Node175 -->
+<g id="node8" class="node">
+<title>Node175</title>
+<g id="a_node8"><a xlink:href="namespacechig.html#a2af3c68005d33184e5e66b35c4737902" target="_top" xlink:title="Load a GraphStruct from json. ">
+<polygon fill="#ffffff" stroke="#000000" points="140,-10 140,-29 262,-29 262,-10 140,-10"/>
+<text text-anchor="middle" x="201" y="-17" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::jsonToGraphStruct</text>
+</a>
+</g>
+</g>
+<!-- Node168&#45;&gt;Node175 -->
+<g id="edge7" class="edge">
+<title>Node168&#45;&gt;Node175</title>
+<path fill="none" stroke="#191970" d="M114.045,-32.339C122.6183,-31.0731 131.4182,-29.7738 139.9728,-28.5107"/>
+<polygon fill="#191970" stroke="#191970" points="113.4945,-28.8822 104.113,-33.8055 114.517,-35.8072 113.4945,-28.8822"/>
 </g>
 <!-- Node170 -->
-<g id="node5" class="node">
+<g id="node3" class="node">
 <title>Node170</title>
-<g id="a_node5"><a xlink:href="structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6" target="_top" xlink:title="Generate a llvm::Module from the module. ">
-<polygon fill="#ffffff" stroke="#000000" points="625,-93.5 625,-123.5 729,-123.5 729,-93.5 625,-93.5"/>
-<text text-anchor="start" x="633" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
-<text text-anchor="middle" x="677" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">generateModule</text>
+<g id="a_node3"><a xlink:href="structchig_1_1GraphModule.html#a292eaf6be61fdccb79b54341a34ca6d7" target="_top" xlink:title="Create the associations from line number and function in debug info. ">
+<polygon fill="#ffffff" stroke="#000000" points="300.5,-93.5 300.5,-123.5 423.5,-123.5 423.5,-93.5 300.5,-93.5"/>
+<text text-anchor="start" x="308.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
+<text text-anchor="middle" x="362" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">createLineNumberAssoc</text>
 </a>
 </g>
 </g>
 <!-- Node169&#45;&gt;Node170 -->
-<g id="edge4" class="edge">
+<g id="edge2" class="edge">
 <title>Node169&#45;&gt;Node170</title>
-<path fill="none" stroke="#191970" d="M591.2928,-108.5C602.4354,-108.5 613.8611,-108.5 624.5905,-108.5"/>
-<polygon fill="#191970" stroke="#191970" points="591.1674,-105.0001 581.1673,-108.5 591.1673,-112.0001 591.1674,-105.0001"/>
+<path fill="none" stroke="#191970" d="M263.1126,-81.4749C277.5546,-85.4217 292.8307,-89.5966 306.9439,-93.4536"/>
+<polygon fill="#191970" stroke="#191970" points="263.8411,-78.0457 253.2721,-78.7855 261.9956,-84.798 263.8411,-78.0457"/>
+</g>
+<!-- Node173 -->
+<g id="node6" class="node">
+<title>Node173</title>
+<g id="a_node6"><a xlink:href="namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a" target="_top" xlink:title="Serialize a JsonModule to json. ">
+<polygon fill="#ffffff" stroke="#000000" points="298,-55 298,-74 426,-74 426,-55 298,-55"/>
+<text text-anchor="middle" x="362" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::graphModuleToJson</text>
+</a>
+</g>
+</g>
+<!-- Node169&#45;&gt;Node173 -->
+<g id="edge5" class="edge">
+<title>Node169&#45;&gt;Node173</title>
+<path fill="none" stroke="#191970" d="M263.4737,-64.5C274.7644,-64.5 286.5539,-64.5 297.8906,-64.5"/>
+<polygon fill="#191970" stroke="#191970" points="263.2721,-61.0001 253.2721,-64.5 263.2721,-68.0001 263.2721,-61.0001"/>
+</g>
+<!-- Node171 -->
+<g id="node4" class="node">
+<title>Node171</title>
+<g id="a_node4"><a xlink:href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" target="_top" xlink:title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ...">
+<polygon fill="#ffffff" stroke="#000000" points="470,-99 470,-118 582,-118 582,-99 470,-99"/>
+<text text-anchor="middle" x="526" y="-106" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::compileFunction</text>
+</a>
+</g>
+</g>
+<!-- Node170&#45;&gt;Node171 -->
+<g id="edge3" class="edge">
+<title>Node170&#45;&gt;Node171</title>
+<path fill="none" stroke="#191970" d="M433.6149,-108.5C445.73,-108.5 458.1526,-108.5 469.8016,-108.5"/>
+<polygon fill="#191970" stroke="#191970" points="433.5342,-105.0001 423.5341,-108.5 433.5341,-112.0001 433.5342,-105.0001"/>
 </g>
 <!-- Node172 -->
-<g id="node7" class="node">
+<g id="node5" class="node">
 <title>Node172</title>
-<g id="a_node7"><a xlink:href="structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff" target="_top" xlink:title="Serialize to disk in the context. ">
-<polygon fill="#ffffff" stroke="#000000" points="473,-49.5 473,-79.5 577,-79.5 577,-49.5 473,-49.5"/>
-<text text-anchor="start" x="481" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
-<text text-anchor="middle" x="525" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">saveToDisk</text>
+<g id="a_node5"><a xlink:href="structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6" target="_top" xlink:title="Generate a llvm::Module from the module. ">
+<polygon fill="#ffffff" stroke="#000000" points="626,-93.5 626,-123.5 730,-123.5 730,-93.5 626,-93.5"/>
+<text text-anchor="start" x="634" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
+<text text-anchor="middle" x="678" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">generateModule</text>
 </a>
 </g>
 </g>
 <!-- Node171&#45;&gt;Node172 -->
-<g id="edge6" class="edge">
+<g id="edge4" class="edge">
 <title>Node171&#45;&gt;Node172</title>
-<path fill="none" stroke="#191970" d="M435.4399,-64.5C448.1199,-64.5 461.043,-64.5 472.9827,-64.5"/>
-<polygon fill="#191970" stroke="#191970" points="435.3465,-61.0001 425.3464,-64.5 435.3464,-68.0001 435.3465,-61.0001"/>
+<path fill="none" stroke="#191970" d="M592.2928,-108.5C603.4354,-108.5 614.8611,-108.5 625.5905,-108.5"/>
+<polygon fill="#191970" stroke="#191970" points="592.1674,-105.0001 582.1673,-108.5 592.1673,-112.0001 592.1674,-105.0001"/>
 </g>
 <!-- Node174 -->
-<g id="node9" class="node">
+<g id="node7" class="node">
 <title>Node174</title>
-<g id="a_node9"><a xlink:href="namespacechig.html#a1f28de74faa271cf31249935c9640c58" target="_top" xlink:title="Load a GraphModule from json. ">
-<polygon fill="#ffffff" stroke="#000000" points="298,-8 298,-27 424,-27 424,-8 298,-8"/>
-<text text-anchor="middle" x="361" y="-15" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::jsonToGraphModule</text>
+<g id="a_node7"><a xlink:href="structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff" target="_top" xlink:title="Serialize to disk in the context. ">
+<polygon fill="#ffffff" stroke="#000000" points="474,-49.5 474,-79.5 578,-79.5 578,-49.5 474,-49.5"/>
+<text text-anchor="start" x="482" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
+<text text-anchor="middle" x="526" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">saveToDisk</text>
 </a>
 </g>
 </g>
 <!-- Node173&#45;&gt;Node174 -->
-<g id="edge8" class="edge">
+<g id="edge6" class="edge">
 <title>Node173&#45;&gt;Node174</title>
-<path fill="none" stroke="#191970" d="M271.4111,-18.6164C280.2094,-18.5067 289.1596,-18.3952 297.8307,-18.2872"/>
-<polygon fill="#191970" stroke="#191970" points="271.1337,-15.1195 261.1782,-18.7439 271.221,-22.1189 271.1337,-15.1195"/>
+<path fill="none" stroke="#191970" d="M436.4399,-64.5C449.1199,-64.5 462.043,-64.5 473.9827,-64.5"/>
+<polygon fill="#191970" stroke="#191970" points="436.3465,-61.0001 426.3464,-64.5 436.3464,-68.0001 436.3465,-61.0001"/>
 </g>
-<!-- Node175 -->
-<g id="node10" class="node">
-<title>Node175</title>
-<g id="a_node10"><a xlink:href="structchig_1_1Context.html#a0d9ec5f2803a5777d2e389256ccb3e3b" target="_top" xlink:title="Load a module from JSON – avoid this use the string overload. ">
-<polygon fill="#ffffff" stroke="#000000" points="461,-.5 461,-30.5 589,-30.5 589,-.5 461,-.5"/>
-<text text-anchor="start" x="469" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::addModule</text>
-<text text-anchor="middle" x="525" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">FromJson</text>
+<!-- Node176 -->
+<g id="node9" class="node">
+<title>Node176</title>
+<g id="a_node9"><a xlink:href="namespacechig.html#a1f28de74faa271cf31249935c9640c58" target="_top" xlink:title="Load a GraphModule from json. ">
+<polygon fill="#ffffff" stroke="#000000" points="298,-8 298,-27 426,-27 426,-8 298,-8"/>
+<text text-anchor="middle" x="362" y="-15" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::jsonToGraphModule</text>
 </a>
 </g>
 </g>
-<!-- Node174&#45;&gt;Node175 -->
+<!-- Node175&#45;&gt;Node176 -->
+<g id="edge8" class="edge">
+<title>Node175&#45;&gt;Node176</title>
+<path fill="none" stroke="#191970" d="M272.5386,-18.6113C280.9857,-18.5064 289.566,-18.3998 297.9014,-18.2963"/>
+<polygon fill="#191970" stroke="#191970" points="272.2822,-15.1141 262.3265,-18.7382 272.3692,-22.1136 272.2822,-15.1141"/>
+</g>
+<!-- Node177 -->
+<g id="node10" class="node">
+<title>Node177</title>
+<g id="a_node10"><a xlink:href="structchig_1_1Context.html#a0d9ec5f2803a5777d2e389256ccb3e3b" target="_top" xlink:title="Load a module from JSON – avoid this use the string overload. ">
+<polygon fill="#ffffff" stroke="#000000" points="462,-.5 462,-30.5 590,-30.5 590,-.5 462,-.5"/>
+<text text-anchor="start" x="470" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::addModule</text>
+<text text-anchor="middle" x="526" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">FromJson</text>
+</a>
+</g>
+</g>
+<!-- Node176&#45;&gt;Node177 -->
 <g id="edge9" class="edge">
-<title>Node174&#45;&gt;Node175</title>
-<path fill="none" stroke="#191970" d="M434.63,-16.6021C443.4101,-16.495 452.3197,-16.3863 460.9502,-16.2811"/>
-<polygon fill="#191970" stroke="#191970" points="434.3632,-13.105 424.4067,-16.7267 434.4487,-20.1044 434.3632,-13.105"/>
+<title>Node176&#45;&gt;Node177</title>
+<path fill="none" stroke="#191970" d="M436.5641,-16.5907C445.0037,-16.4878 453.5492,-16.3835 461.8391,-16.2824"/>
+<polygon fill="#191970" stroke="#191970" points="436.303,-13.0935 426.3464,-16.7153 436.3884,-20.093 436.303,-13.0935"/>
 </g>
 </g>
 </svg>
