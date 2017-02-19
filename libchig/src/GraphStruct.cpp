@@ -9,7 +9,7 @@
 namespace chig {
 
 GraphStruct::GraphStruct(GraphModule& mod, std::string name)
-    : mModule{&mod}, mContext{&mod.context()}, mName{name} {}
+    : mModule{&mod}, mContext{&mod.context()}, mName{std::move(name)} {}
 
 void GraphStruct::addType(DataType ty, std::string name, size_t addBefore) {
 	Expects(addBefore <= types().size() && ty.valid() && !name.empty());
@@ -23,7 +23,7 @@ void GraphStruct::addType(DataType ty, std::string name, size_t addBefore) {
 void GraphStruct::modifyType(size_t id, DataType newTy, std::string newName) {
 	Expects(id < types().size() && newTy.valid() && !newName.empty());
 
-	mTypes[id] = {newName, newTy};
+	mTypes[id] = {std::move(newName), std::move(newTy)};
 
 	// invalidate the current DataType
 	mDataType = {};
