@@ -1,30 +1,32 @@
 #include <catch.hpp>
 
 #include <chig/Context.hpp>
+#include <chig/GraphFunction.hpp>
 #include <chig/GraphModule.hpp>
-#include <chig/Result.hpp>
 #include <chig/GraphStruct.hpp>
 #include <chig/LangModule.hpp>
-#include <chig/GraphFunction.hpp>
 #include <chig/NodeInstance.hpp>
+#include <chig/Result.hpp>
 
 using namespace chig;
 using namespace nlohmann;
 
 TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 	Context c;
-	Result res; 
-	
+	Result  res;
+
 	res = c.loadModule("lang");
 	REQUIRE(!!res);
-	
+
 	auto& langMod = *c.langModule();
-	
-	auto mod = c.newGraphModule("test/main");
+
+	auto mod      = c.newGraphModule("test/main");
 	bool inserted = false;
-	auto func = mod->getOrCreateFunction("main", {{"Hello", langMod.typeFromName("i32")}}, {{"HelOut", langMod.typeFromName("i1")}}, {"In Exec"}, {"Out Exec"}, &inserted);
+	auto func     = mod->getOrCreateFunction("main", {{"Hello", langMod.typeFromName("i32")}},
+	                                     {{"HelOut", langMod.typeFromName("i1")}}, {"In Exec"},
+	                                     {"Out Exec"}, &inserted);
 	REQUIRE(inserted == true);
-	
+
 	// it should be all good
 	REQUIRE(func->name() == "main");
 	REQUIRE(&func->context() == &c);
@@ -40,7 +42,7 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 	REQUIRE(func->execOutputs().size() == 1);
 	REQUIRE(func->execOutputs()[0] == "Out Exec");
 	REQUIRE(func->localVariables().size() == 0);
-	
+
 	json correctEntryJson = R"({"data": [{"Hello": "lang:i32"}], "exec": ["In Exec"]})"_json;
 	std::unique_ptr<NodeType> ty;
 	res = func->createEntryNodeType(&ty);
@@ -49,106 +51,111 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 	REQUIRE(ty->name() == "entry");
 	REQUIRE(&ty->module() == &langMod);
 	REQUIRE(ty->toJSON() == correctEntryJson);
-	
+
 	WHEN("We add a correct entry node it should be a-ok") {
 		std::unique_ptr<NodeType> ty;
 		res += langMod.nodeTypeFromName("entry", correctEntryJson, &ty);
 		REQUIRE(!!res);
 		REQUIRE(ty != nullptr);
-		
+
 		NodeInstance* inst;
 		res += func->insertNode(std::move(ty), 213.f, 123.f, "entry", &inst);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
-		
+
 		REQUIRE(inst->id() == "entry");
 		REQUIRE(inst->x() == 213.f);
 		REQUIRE(inst->y() == 123.f);
 		REQUIRE(inst->type().qualifiedName() == "lang:entry");
 		REQUIRE(inst->type().toJSON() == correctEntryJson);
-		
+
 		REQUIRE(func->entryNode() == inst);
 	}
-	
+
 	WHEN("We add a correct entry node with getOrInsertEntryNode it should be a-ok") {
-		
 		NodeInstance* inst;
 		res = func->getOrInsertEntryNode(213.f, 123.f, "entry", &inst);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
-		
+
 		REQUIRE(inst->id() == "entry");
 		REQUIRE(inst->x() == 213.f);
 		REQUIRE(inst->y() == 123.f);
 		REQUIRE(inst->type().qualifiedName() == "lang:entry");
 		REQUIRE(inst->type().toJSON() == correctEntryJson);
-		
+
 		REQUIRE(func->entryNode() == inst);
 	}
-	
+
 	WHEN("We add a correct node with the other insertNode function it should be a-ok") {
-		
 		NodeInstance* inst;
 		res = func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, "entry", &inst);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
 		REQUIRE(func->nodes().size() == 1);
 		REQUIRE(func->nodes()["entry"].get() == inst);
-		
+
 		REQUIRE(inst->id() == "entry");
 		REQUIRE(inst->x() == 213.f);
 		REQUIRE(inst->y() == 123.f);
 		REQUIRE(inst->type().qualifiedName() == "lang:entry");
 		REQUIRE(inst->type().toJSON() == correctEntryJson);
-		
+
 		REQUIRE(func->entryNode() == inst);
-		
+
 		WHEN("We delete that node the count should go back down") {
 			res = func->removeNode(inst);
 			REQUIRE(!!res);
-			
+
 			REQUIRE(func->nodes().size() == 0);
 			REQUIRE(func->entryNode() == nullptr);
 		}
-		
+
 		WHEN("We add another entry node, entryNode should fail") {
 			NodeInstance* inst2;
-			res = func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, "entry2", &inst2);
+			res =
+			    func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, "entry2", &inst2);
 			REQUIRE(!!res);
-			
+
 			REQUIRE(inst2 != inst);
 			REQUIRE(func->entryNode() == nullptr);
 		}
-		
+
+		WHEN("We try to add another entry node with getOrInsertEntryNode") {
+			NodeInstance* inst2;
+			res = func->getOrInsertEntryNode(0.f, 0.f, "notentry", &inst2);
+
+			REQUIRE(inst2 == inst);
+		}
+
 		WHEN("We add another entry node with the same ID, insertNode should fail") {
 			NodeInstance* inst2;
-			res = func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, "entry", &inst2);
+			res =
+			    func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, "entry", &inst2);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E47");
 		}
 	}
-	
+
 	auto checkInvalidEntry = [&](json obj) {
 		NodeInstance* inst;
 		res = func->insertNode("lang", "entry", obj, 213.f, 123.f, "entry", &inst);
-		
+
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
 		REQUIRE(func->nodes().size() == 1);
 		REQUIRE(func->nodes()["entry"].get() == inst);
-		
+
 		REQUIRE(inst->id() == "entry");
 		REQUIRE(inst->x() == 213.f);
 		REQUIRE(inst->y() == 123.f);
 		REQUIRE(inst->type().qualifiedName() == "lang:entry");
 		REQUIRE_FALSE(inst->type().toJSON() == correctEntryJson);
-		
+
 		REQUIRE(func->entryNode() == nullptr);
 	};
-	
-	WHEN("We add an invalid entry node entryNode should fail") {
-		checkInvalidEntry({});
-	}
+
+	WHEN("We add an invalid entry node entryNode should fail") { checkInvalidEntry({}); }
 	WHEN("We add an invalid entry with the wrong name for the data parameter") {
 		checkInvalidEntry(R"({"data": [{"Helloo": "lang:i32"}], "exec": ["In Exec"]})"_json);
 	}
@@ -156,10 +163,10 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 		checkInvalidEntry(R"({"data": [{"Hello": "lang:i32"}], "exec": ["In Exec wrong"]})"_json);
 	}
 	WHEN("We add an invalid entry with the wrong amount of data inputs") {
-		checkInvalidEntry(R"({"data": [{"Hello": "lang:i32"}, {"Hello": "lang:i1"}], "exec": ["In Exec"]})"_json);
+		checkInvalidEntry(
+		    R"({"data": [{"Hello": "lang:i32"}, {"Hello": "lang:i1"}], "exec": ["In Exec"]})"_json);
 	}
 	WHEN("We add an invalid entry with the wrong amount of exec inputs") {
 		checkInvalidEntry(R"({"data": [{"Hello": "lang:i32"}], "exec": ["In Exec", "Tada"]})"_json);
 	}
-	
 }

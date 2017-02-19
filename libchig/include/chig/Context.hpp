@@ -111,11 +111,11 @@ struct Context {
 	/// Get the associated LLVMContext
 	/// \return The LLVMContext
 	llvm::LLVMContext& llvmContext() const { return *mLLVMContext; }
-	
+
 	/// Get the LangModule, if it has been loaded yet
 	/// \return The LangModule
 	LangModule* langModule() const { return mLangModule; }
-	
+
 	/// Get the CModule, if it has been loaded yet
 	/// \return The CModule
 	CModule* cModule() const { return mCModule; }
@@ -133,8 +133,8 @@ private:
 	// This cache is only for use during compilation to not duplicate modules
 	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/>
 	    mCompileCache;
-		
-	CModule* mCModule = nullptr;
+
+	CModule*    mCModule    = nullptr;
 	LangModule* mLangModule = nullptr;
 };
 

@@ -41,8 +41,8 @@ NodeInstance* GraphFunction::entryNode() const noexcept {
 		}
 		// make sure it has the same exec names and size
 		auto foundExecOutputs = matching[0]->type().execOutputs();
-		if (!std::equal(execInputs().begin(), execInputs().end(),
-		                foundExecOutputs.begin(), foundExecOutputs.end())) {
+		if (!std::equal(execInputs().begin(), execInputs().end(), foundExecOutputs.begin(),
+		                foundExecOutputs.end())) {
 			return nullptr;
 		}
 		return matching[0];
@@ -72,11 +72,11 @@ Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float 
 
 std::vector<NodeInstance*> GraphFunction::nodesWithType(gsl::cstring_span<> module,
                                                         gsl::cstring_span<> name) const noexcept {
-	
 	std::vector<NodeInstance*> ret;
 	for (const auto& node : mNodes) {
-		 if (node.second->type().module().fullName() == module && node.second->type().name() == name) {
-			 ret.push_back(node.second.get());
+		if (node.second->type().module().fullName() == module &&
+		    node.second->type().name() == name) {
+			ret.push_back(node.second.get());
 		}
 	}
 
@@ -186,10 +186,10 @@ Result GraphFunction::getOrInsertEntryNode(float x, float y, gsl::cstring_span<>
 	return res;
 }
 
-void GraphFunction::addDataInput(const DataType& type, gsl::cstring_span<> name, int addAfter) {
-	if (addAfter < mDataInputs.size()) {
+void GraphFunction::addDataInput(const DataType& type, gsl::cstring_span<> name, size_t addBefore) {
+	if (addBefore < mDataInputs.size()) {
 		// +1 because emplace adds before
-		mDataInputs.emplace(mDataInputs.cbegin() + addAfter + 1, gsl::to_string(name), type);
+		mDataInputs.emplace(mDataInputs.cbegin() + addBefore, gsl::to_string(name), type);
 	} else {
 		mDataInputs.emplace_back(gsl::to_string(name), type);
 	}
@@ -201,19 +201,22 @@ void GraphFunction::removeDataInput(int idx) {
 	updateEntries();
 }
 
-void GraphFunction::modifyDataInput(int idx, const DataType& type,
-                                    boost::optional<std::string> name) {
-	if (idx < mDataInputs.size()) {
-		if (type.valid()) { mDataInputs[idx].type = type; }
-		if (name) { mDataInputs[idx].name = *name; }
-	}
+void GraphFunction::renameDataInput(int idx, std::string newName) {
+	if (idx < mDataInputs.size()) { mDataInputs[idx].name = std::move(newName); }
 	updateEntries();
 }
 
-void GraphFunction::addDataOutput(const DataType& type, gsl::cstring_span<> name, int addAfter) {
-	if (addAfter < mDataOutputs.size()) {
-		// +1 because emplace adds before
-		mDataOutputs.emplace(mDataOutputs.cbegin() + addAfter + 1, gsl::to_string(name), type);
+void GraphFunction::retypeDataInput(int idx, DataType newType) {
+	if (idx < mDataInputs.size()) { mDataInputs[idx].type = std::move(newType); }
+	updateEntries();
+}
+
+void GraphFunction::addDataOutput(const DataType& type, gsl::cstring_span<> name,
+                                  size_t addBefore) {
+	Expects(addBefore >= 0);
+
+	if (addBefore < mDataOutputs.size()) {
+		mDataOutputs.emplace(mDataOutputs.cbegin() + addBefore, gsl::to_string(name), type);
 	} else {
 		mDataOutputs.emplace_back(gsl::to_string(name), type);
 	}
@@ -225,12 +228,13 @@ void GraphFunction::removeDataOutput(int idx) {
 	updateExits();
 }
 
-void GraphFunction::modifyDataOutput(int idx, const DataType& type,
-                                     boost::optional<std::string> name) {
-	if (idx < mDataOutputs.size()) {
-		if (type.valid()) { mDataOutputs[idx].type = type; }
-		if (name) { mDataOutputs[idx].name = *name; }
-	}
+void GraphFunction::renameDataOutput(int idx, std::string newName) {
+	if (idx < mDataOutputs.size()) { mDataOutputs[idx].name = std::move(newName); }
+	updateExits();
+}
+
+void GraphFunction::retypeDataOutput(int idx, DataType newType) {
+	if (idx < mDataOutputs.size()) { mDataOutputs[idx].type = std::move(newType); }
 	updateExits();
 }
 
@@ -252,10 +256,10 @@ llvm::FunctionType* GraphFunction::functionType() const {
 	                               arguments, false);
 }
 
-void GraphFunction::addExecInput(gsl::cstring_span<> name, int addAfter) {
-	if (addAfter < mExecInputs.size()) {
+void GraphFunction::addExecInput(gsl::cstring_span<> name, size_t addBefore) {
+	if (addBefore < mExecInputs.size()) {
 		// +1 because emplace adds before
-		mExecInputs.emplace(mExecInputs.cbegin() + addAfter + 1, gsl::to_string(name));
+		mExecInputs.emplace(mExecInputs.cbegin() + addBefore, gsl::to_string(name));
 	} else {
 		mExecInputs.emplace_back(gsl::to_string(name));
 	}
@@ -267,15 +271,15 @@ void GraphFunction::removeExecInput(int idx) {
 	updateEntries();
 }
 
-void GraphFunction::modifyExecInput(int idx, gsl::cstring_span<> name) {
-	if (idx < mExecInputs.size()) { mExecInputs[idx] = gsl::to_string(name); }
+void GraphFunction::renameExecInput(int idx, std::string name) {
+	if (idx < mExecInputs.size()) { mExecInputs[idx] = std::move(name); }
 	updateEntries();
 }
 
-void GraphFunction::addExecOutput(gsl::cstring_span<> name, int addAfter) {
-	if (addAfter < mExecOutputs.size()) {
+void GraphFunction::addExecOutput(gsl::cstring_span<> name, size_t addBefore) {
+	if (addBefore < mExecOutputs.size()) {
 		// +1 because emplace adds before
-		mExecOutputs.emplace(mExecOutputs.cbegin() + addAfter + 1, gsl::to_string(name));
+		mExecOutputs.emplace(mExecOutputs.cbegin() + addBefore, gsl::to_string(name));
 	} else {
 		mExecOutputs.emplace_back(gsl::to_string(name));
 	}
@@ -287,8 +291,8 @@ void GraphFunction::removeExecOutput(int idx) {
 	updateExits();
 }
 
-void GraphFunction::modifyExecOutput(int idx, gsl::cstring_span<> name) {
-	if (idx < mExecOutputs.size()) { mExecOutputs[idx] = gsl::to_string(name); }
+void GraphFunction::renameExecOutput(int idx, std::string name) {
+	if (idx < mExecOutputs.size()) { mExecOutputs[idx] = std::move(name); }
 	updateExits();
 }
 
@@ -346,106 +350,91 @@ bool GraphFunction::removeLocalVariable(gsl::cstring_span<> name) {
 		mLocalVariables.erase(iter);
 		erased = true;
 	}
-	if (!erased) {
-		return false;
-	}
-	
+	if (!erased) { return false; }
+
 	// remove set and get nodes
 	auto setNodes = nodesWithType(module().fullName(), "_set_" + gsl::to_string(name));
-	for (const auto& node : setNodes) {
-		removeNode(node);
-	}
-	auto getNodes = nodesWithType(module().fullName(), "_get_" + gsl::to_string(name));
-	for (const auto& node : getNodes) {
-		removeNode(node);
-	}
-	
+	for (const auto& node : setNodes) { removeNode(node); }
+	auto             getNodes = nodesWithType(module().fullName(), "_get_" + gsl::to_string(name));
+	for (const auto& node : getNodes) { removeNode(node); }
+
 	return true;
 }
 
+void GraphFunction::renameLocalVariable(std::string oldName,
+                                        std::string newName) {
 
-void GraphFunction::renameLocalVariable(const std::string& oldNameArg, const std::string& newNameArg) {
-	
-	// copy these off because they can change if the arguments point to the actual one
-	std::string oldName = oldNameArg;
-	std::string newName = newNameArg;
-	
-	
 	bool setanything = false;
 	for (auto& var : mLocalVariables) {
 		if (var.name == oldName) {
 			var.name = newName;
-			
+
 			setanything = true;
 			break;
 		}
 	}
-	
+
 	// if it wans't found, then we don't have to update
-	if (!setanything) {
-		return;
-	}
-	
+	if (!setanything) { return; }
+
 	// update existing nodes
 	auto setNodes = nodesWithType(module().fullName(), "_set_" + oldName);
 	for (const auto& node : setNodes) {
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
-		
+
 		auto res = module().nodeTypeFromName("_set_" + newName, node->type().toJSON(), &ty);
 		Expects(!!res);
-		
+
 		node->setType(std::move(ty));
 	}
-	
+
 	auto getNodes = nodesWithType(module().fullName(), "_get_" + oldName);
 	for (const auto& node : getNodes) {
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
-		
+
 		auto res = module().nodeTypeFromName("_get_" + newName, node->type().toJSON(), &ty);
 		Expects(!!res);
-		
+
 		node->setType(std::move(ty));
 	}
-	
 }
 
-
 void GraphFunction::retypeLocalVariable(gsl::cstring_span<> name, DataType newType) {
-	 	
+	std::string qualifiedName = newType.qualifiedName();
+	
 	for (auto& var : mLocalVariables) {
 		if (var.name == name) {
-			var.type = newType;
+			var.type = std::move(newType);
 			break;
 		}
 	}
-	
-		
+
 	// update existing nodes
 	auto setNodes = nodesWithType(module().fullName(), "_set_" + gsl::to_string(name));
 	for (const auto& node : setNodes) {
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
-		
-		auto res = module().nodeTypeFromName("_set_" + gsl::to_string(name), newType.qualifiedName(), &ty);
+
+		auto res =
+		    module().nodeTypeFromName("_set_" + gsl::to_string(name), qualifiedName, &ty);
 		Expects(!!res);
-		
+
 		node->setType(std::move(ty));
 	}
-	
+
 	auto getNodes = nodesWithType(module().fullName(), "_get_" + gsl::to_string(name));
 	for (const auto& node : getNodes) {
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
-		
-		auto res = module().nodeTypeFromName("_get_" + gsl::to_string(name), newType.qualifiedName(), &ty);
+
+		auto res =
+		    module().nodeTypeFromName("_get_" + gsl::to_string(name), qualifiedName, &ty);
 		Expects(!!res);
-		
+
 		node->setType(std::move(ty));
 	}
-	
 }
-
 
 }  // namespace chig

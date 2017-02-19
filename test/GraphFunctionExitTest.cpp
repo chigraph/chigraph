@@ -1,0 +1,56 @@
+#include <catch.hpp>
+
+#include <chig/Context.hpp>
+#include <chig/GraphFunction.hpp>
+#include <chig/GraphModule.hpp>
+#include <chig/GraphStruct.hpp>
+#include <chig/LangModule.hpp>
+#include <chig/NodeInstance.hpp>
+#include <chig/Result.hpp>
+
+using namespace chig;
+using namespace nlohmann;
+
+TEST_CASE("Create and manipulate exit nodes in GraphFunctions", "") {
+	Context c;
+	Result  res;
+
+	res = c.loadModule("lang");
+	REQUIRE(!!res);
+
+	auto& langMod = *c.langModule();
+
+	auto mod      = c.newGraphModule("test/main");
+	bool inserted = false;
+
+	WHEN("We create a function with a few arguments") {
+		auto func = mod->getOrCreateFunction("main", {{"Hello", langMod.typeFromName("i32")}},
+		                                     {{"HelOut", langMod.typeFromName("i1")}}, {"In Exec"},
+		                                     {"Out Exec"}, &inserted);
+		REQUIRE(inserted == true);
+
+		std::unique_ptr<NodeType> ty;
+		res = func->createExitNodeType(&ty);
+		REQUIRE(ty != nullptr);
+		REQUIRE(ty->execInputs().size() == 1);
+		REQUIRE(ty->execInputs()[0] == "Out Exec");
+		REQUIRE(ty->execOutputs().size() == 0);
+		REQUIRE(ty->dataInputs().size() == 1);
+		REQUIRE((ty->dataInputs()[0] == NamedDataType{"HelOut", langMod.typeFromName("i1")}));
+		REQUIRE(ty->dataOutputs().size() == 0);
+		REQUIRE(ty->toJSON() == R"({"data": [{"HelOut": "lang:i1"}], "exec": ["Out Exec"]})"_json);
+	}
+	WHEN("We create an entirely default function") {
+		auto func = mod->getOrCreateFunction("main", {}, {}, {}, {}, &inserted);
+		REQUIRE(inserted == true);
+
+		std::unique_ptr<NodeType> ty;
+		res = func->createExitNodeType(&ty);
+		REQUIRE(ty != nullptr);
+		REQUIRE(ty->execInputs().size() == 0);
+		REQUIRE(ty->execOutputs().size() == 0);
+		REQUIRE(ty->dataInputs().size() == 0);
+		REQUIRE(ty->dataOutputs().size() == 0);
+		REQUIRE(ty->toJSON() == R"({"data": [], "exec": []})"_json);
+	}
+}

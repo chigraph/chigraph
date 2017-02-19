@@ -31,7 +31,7 @@ public:
 	void refreshRegistry();
 
 	chig::GraphFunction* function() const { return mFunction; }
-	
+
 	FlowScene& scene() const { return *mScene; }
 private slots:
 	void nodeAdded(Node& n);

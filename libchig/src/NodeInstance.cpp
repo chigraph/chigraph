@@ -21,8 +21,10 @@ NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeTy
 	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
 	outputDataConnections.resize(type().dataOutputs().size(), {});
 
-	inputExecConnections.resize(type().execInputs().size(), {});
-	outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0});
+	if (!type().pure()) {
+		inputExecConnections.resize(type().execInputs().size(), {});
+		outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0});
+	}
 }
 
 NodeInstance::NodeInstance(const NodeInstance& other, std::string id)

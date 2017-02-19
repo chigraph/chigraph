@@ -121,7 +121,9 @@ std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
 			       rgraph["outputs"].dump(-1);
 		}
 		if (lgraph["local_variables"] != rgraph["local_variables"]) {
-			return "graph local_variables in graph #" + std::to_string(iter) + "not equal; serialized: " + lgraph["local_variables"].dump(-1) + " original: " + rgraph["local_variables"].dump(-1);
+			return "graph local_variables in graph #" + std::to_string(iter) +
+			       "not equal; serialized: " + lgraph["local_variables"].dump(-1) + " original: " +
+			       rgraph["local_variables"].dump(-1);
 		}
 	}
 
@@ -167,7 +169,7 @@ int main(int argc, char** argv) {
 	std::string expectedcerr = j["expectedstderr"];
 
 	int expectedreturncode = j["expectedret"];
-	
+
 	auto chigExePath = fs::current_path() / ("chig" + std::string(exesuffix));
 
 	auto         modfile = moduleDir / "main.chigmod";
@@ -176,7 +178,7 @@ int main(int argc, char** argv) {
 	inmodfile >> chigmodule;
 
 	fs::current_path(moduleDir);
-	
+
 	// chig compile + lli
 	{
 		std::string generatedir, chigstderr;
@@ -185,9 +187,10 @@ int main(int argc, char** argv) {
 		chigexe.set_wait_timeout(exec_stream_t::s_out, 10000);
 		chigexe.start(chigExePath.string(), "compile main.chigmod");
 
-		generatedir = std::string{ std::istreambuf_iterator<char>(chigexe.out()), std::istreambuf_iterator<char>() };
-		chigstderr = std::string{ std::istreambuf_iterator<char>(chigexe.err()), std::istreambuf_iterator<char>() };
-
+		generatedir = std::string{std::istreambuf_iterator<char>(chigexe.out()),
+		                          std::istreambuf_iterator<char>()};
+		chigstderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
+		                         std::istreambuf_iterator<char>()};
 
 		chigexe.close();
 		// check stderr and return code
@@ -203,17 +206,17 @@ int main(int argc, char** argv) {
 		exec_stream_t lliexe;
 		lliexe.set_wait_timeout(exec_stream_t::s_out, 10000);
 		lliexe.start(CHIG_LLI_EXE, "");
-		
+
 		lliexe.in() << generatedir;
 		lliexe.close_in();
 
-
-		llistdout = std::string{ std::istreambuf_iterator<char>(lliexe.out()), std::istreambuf_iterator<char>() };
-		llistderr = std::string{ std::istreambuf_iterator<char>(lliexe.err()), std::istreambuf_iterator<char>() };
-
+		llistdout = std::string{std::istreambuf_iterator<char>(lliexe.out()),
+		                        std::istreambuf_iterator<char>()};
+		llistderr = std::string{std::istreambuf_iterator<char>(lliexe.err()),
+		                        std::istreambuf_iterator<char>()};
 
 		lliexe.close();
-		
+
 		int retcodelli = lliexe.exit_code();
 
 		if (retcodelli != expectedreturncode) {
@@ -252,9 +255,10 @@ int main(int argc, char** argv) {
 		chigexe.set_wait_timeout(exec_stream_t::s_out, 10000);
 		chigexe.start(chigExePath.string(), "run main.chigmod");
 
-		generatedstdout = std::string{ std::istreambuf_iterator<char>(chigexe.out()), std::istreambuf_iterator<char>() };
-		generatedstderr = std::string{ std::istreambuf_iterator<char>(chigexe.err()), std::istreambuf_iterator<char>() };
-
+		generatedstdout = std::string{std::istreambuf_iterator<char>(chigexe.out()),
+		                              std::istreambuf_iterator<char>()};
+		generatedstderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
+		                              std::istreambuf_iterator<char>()};
 
 		chigexe.close();
 		int retcode = chigexe.exit_code();
@@ -334,15 +338,16 @@ int main(int argc, char** argv) {
 		chigexe.set_wait_timeout(exec_stream_t::s_out, 10000);
 		chigexe.start(chigExePath.string(), "compile -tbc main.chigmod");
 
-		generatedir = std::string{ std::istreambuf_iterator<char>(chigexe.out()), std::istreambuf_iterator<char>() };
-		chigstderr = std::string{ std::istreambuf_iterator<char>(chigexe.err()), std::istreambuf_iterator<char>() };
-
+		generatedir = std::string{std::istreambuf_iterator<char>(chigexe.out()),
+		                          std::istreambuf_iterator<char>()};
+		chigstderr = std::string{std::istreambuf_iterator<char>(chigexe.err()),
+		                         std::istreambuf_iterator<char>()};
 
 		chigexe.close();
 		// check stderr and return code
 		if (chigexe.exit_code() != 0) {
 			std::cerr << "Failed to generate module with chig compile: \n"
-				<< chigstderr << std::endl;
+			          << chigstderr << std::endl;
 			return 1;
 		}
 
@@ -356,9 +361,10 @@ int main(int argc, char** argv) {
 		lliexe.in() << generatedir;
 		lliexe.close_in();
 
-		llistdout = std::string{ std::istreambuf_iterator<char>(lliexe.out()), std::istreambuf_iterator<char>() };
-		llistderr = std::string{ std::istreambuf_iterator<char>(lliexe.err()), std::istreambuf_iterator<char>() };
-
+		llistdout = std::string{std::istreambuf_iterator<char>(lliexe.out()),
+		                        std::istreambuf_iterator<char>()};
+		llistderr = std::string{std::istreambuf_iterator<char>(lliexe.err()),
+		                        std::istreambuf_iterator<char>()};
 
 		lliexe.close();
 		int retcodelli = lliexe.exit_code();

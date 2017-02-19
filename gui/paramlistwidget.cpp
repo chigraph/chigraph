@@ -36,10 +36,10 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 		edit->setText(QString::fromStdString(param.name));
 		connect(edit, &QLineEdit::textChanged, this, [this, id](const QString& newText) {
 			if (mType == Input) {
-				mFunc->function()->modifyDataInput(id, {}, newText.toStdString());
+				mFunc->function()->renameDataInput(id, newText.toStdString());
 				refreshEntry();
 			} else {
-				mFunc->function()->modifyDataOutput(id, {}, newText.toStdString());
+				mFunc->function()->renameDataOutput(id, newText.toStdString());
 				refreshExits();
 			}
 		});
@@ -47,21 +47,20 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 
 		auto tySelector = new TypeSelector(mFunc->function()->module());
 		tySelector->setCurrentType(param.type);
-		connect(tySelector, &TypeSelector::typeSelected, this, [this, id](const chig::DataType& newType) {
-			
-			if (!newType.valid()) {
-				return;
-			}
-			
-			if (mType == Input) {
-				mFunc->function()->modifyDataInput(id, newType, {});
-				refreshEntry();
-			} else {
-				mFunc->function()->modifyDataOutput(id, newType, {});
-				refreshExits();
-			}
+		connect(tySelector, &TypeSelector::typeSelected, this,
+		        [this, id](const chig::DataType& newType) {
 
-		});
+			        if (!newType.valid()) { return; }
+
+			        if (mType == Input) {
+				        mFunc->function()->retypeDataInput(id, newType);
+				        refreshEntry();
+			        } else {
+				        mFunc->function()->retypeDataOutput(id, newType);
+				        refreshExits();
+			        }
+
+			    });
 		layout->addWidget(tySelector, id, 1, Qt::AlignTop);
 
 		auto deleteButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-remove")), {});
@@ -87,15 +86,13 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 	connect(newButton, &QAbstractButton::clicked, this, [this](bool) {
 		if (mType == Input) {
 			mFunc->function()->addDataInput(
-			    mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "",
-			    mFunc->function()->dataInputs().size() - 1);
+			    mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "");
 			refreshEntry();
 
 			setFunction(mFunc, mType);  // TODO: not the most efficient way...
 		} else {
 			mFunc->function()->addDataOutput(
-			    mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "",
-			    mFunc->function()->dataOutputs().size() - 1);
+			    mFunc->function()->context().moduleByFullName("lang")->typeFromName("i32"), "");
 			refreshExits();
 
 			setFunction(mFunc, mType);

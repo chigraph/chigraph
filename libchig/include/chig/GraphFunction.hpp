@@ -132,17 +132,29 @@ struct GraphFunction {
 	/// Add an input to the end of the argument list
 	/// \param type The new input type
 	/// \param name The name of the input (just for documentation)
-	/// \param addAfter The input ID to add after
-	void addDataInput(const DataType& type, gsl::cstring_span<> name, int addAfter);
+	/// \param addBefore The input ID to add before, default is end
+	void addDataInput(const DataType& type, gsl::cstring_span<> name,
+	                  size_t addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an input from the argument list
+	/// Also removes invalid connections
+	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to delete
 	void removeDataInput(int idx);
-	/// Modify an input (change it's type and docstring)
-	/// \param idx The index to change
-	/// \param type The new type. Use {} to keep it's current type
-	/// \param name The new name. Use {} to keep it's current name
-	void modifyDataInput(int idx, const DataType& type, boost::optional<std::string> name);
+
+	/// Rename a data input
+	/// This also updates the entry node
+	/// If idx is out of range, this function does nothing.
+	/// \param idx The index to rename
+	/// \param newName The new name
+	void renameDataInput(int idx, std::string newName);
+
+	/// Change the type of a data input
+	/// This also updates the entry node and disconnects invalid connections.
+	/// If idx is out of range, this function does nothing.
+	/// \param idx The index to retype
+	/// \param newType The new type
+	void retypeDataInput(int idx, DataType newType);
 
 	/// \}
 
@@ -155,17 +167,30 @@ struct GraphFunction {
 	/// Add an data output to the end of the argument list
 	/// \param type The new output type
 	/// \param name The name of the output (just for documentation)
-	/// \param addAfter The output to add after
-	void addDataOutput(const DataType& type, gsl::cstring_span<> name, int addAfter);
+	/// \param addBefore The output to add before, default is end
+	void addDataOutput(const DataType& type, gsl::cstring_span<> name,
+	                   size_t addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an data output from the argument list
+	/// Also removes invalid connections
+	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to delete
 	void removeDataOutput(int idx);
 	/// Modify an data output (change it's type and docstring)
-	/// \param idx The index to change
-	/// \param type The new type. Use {} to keep it's current type
-	/// \param name The new name. Use {} to keep it's current name
-	void modifyDataOutput(int idx, const DataType& type, boost::optional<std::string> name);
+
+	/// Rename a data output
+	/// This also updates all exit nodes
+	/// If idx is out of range, this function does nothing.
+	/// \param idx The index to rename
+	/// \param newName The new name
+	void renameDataOutput(int idx, std::string newName);
+
+	/// Change the type of a data output
+	/// This also updates all exit nodes and disconnects invalid connections.
+	/// If idx is out of range, this function does nothing.
+	/// \param idx The index to retype
+	/// \param newType The new type
+	void retypeDataOutput(int idx, DataType newType);
 
 	/// \}
 
@@ -177,17 +202,20 @@ struct GraphFunction {
 	const std::vector<std::string>& execInputs() const { return mExecInputs; }
 	/// Add an exec input to the end of the argument list
 	/// \param name The name of the input (just for documentation)
-	/// \param addAfter the input to add after
-	void addExecInput(gsl::cstring_span<> name, int addAfter);
+	/// \param addBefore the input to add after
+	void addExecInput(gsl::cstring_span<> name,
+	                  size_t              addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an exec input from the argument list
+	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to delete
 	void removeExecInput(int idx);
 
-	/// Modify an exec input (change docstring)
+	/// Change the name for an exec input
+	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to change
 	/// \param name The new name.
-	void modifyExecInput(int idx, gsl::cstring_span<> name);
+	void renameExecInput(int idx, std::string name);
 
 	/// \}
 
@@ -200,23 +228,26 @@ struct GraphFunction {
 	const std::vector<std::string>& execOutputs() const { return mExecOutputs; }
 	/// Add an exec output to the end of the argument list
 	/// \param name The name of the output (just for documentation)
-	/// \param addAfter The output to add after
-	void addExecOutput(gsl::cstring_span<> name, int addAfter);
+	/// \param addBefore The output to add after
+	void addExecOutput(gsl::cstring_span<> name,
+	                   size_t              addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an exec output from the argument list
+	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to delete
 	void removeExecOutput(int idx);
 
-	/// Modify an exec output (change docstring)
+	/// Rename an exec output
+	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to change
 	/// \param name The new name.
-	void modifyExecOutput(int idx, gsl::cstring_span<> name);
+	void renameExecOutput(int idx, std::string name);
 
 	/// \}
 
 	/// \name Local Variable Manipulation functions
 	/// \{
-	
+
 	/// Get the local variables
 	/// \return The local variables
 	const std::vector<NamedDataType>& localVariables() const { return mLocalVariables; }
@@ -238,17 +269,17 @@ struct GraphFunction {
 	/// \param name The name of the local variable to remove
 	/// \return True if a local was actually removed, false if no local by that name existed
 	bool removeLocalVariable(gsl::cstring_span<> name);
-	
+
 	/// Rename a local variable
 	/// \param oldName The name of the existing local to change
 	/// \param newName The new name of the local
-	void renameLocalVariable(const std::string& oldName, const std::string& newName);
-	
+	void renameLocalVariable(std::string oldName, std::string newName);
+
 	/// Set a new type to a local variable
 	/// \param name The name of the local to change
 	/// \param newType The new type
 	void retypeLocalVariable(gsl::cstring_span<> name, DataType newType);
-	
+
 	/// \}
 
 	// Various getters

@@ -53,7 +53,7 @@ int compile(const std::vector<std::string>& opts) {
 		workspacePath = fs::current_path();
 	}
 
-	Context c{workspacePath};
+	Context        c{workspacePath};
 	nlohmann::json read_json = {};
 
 	std::string moduleName;

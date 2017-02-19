@@ -23,7 +23,7 @@ public:
 
 FunctionsPane::FunctionsPane(QWidget* parent) : QListWidget(parent) {
 	setContextMenuPolicy(Qt::CustomContextMenu);
-	
+
 	connect(this, &QListWidget::itemDoubleClicked, this, &FunctionsPane::selectItem);
 	connect(this, &QWidget::customContextMenuRequested, this, [this](QPoint p) {
 		QPoint global = mapToGlobal(p);

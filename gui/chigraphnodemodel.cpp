@@ -14,8 +14,6 @@ class EditCodeDialog : public QDialog {
 public:
 	EditCodeDialog(chig::NodeInstance* inst, FunctionView* fview) {
 		setWindowTitle(i18n("Edit C Call Node"));
-		
-		
 
 		auto layout = new QVBoxLayout;
 		setLayout(layout);
@@ -37,7 +35,7 @@ public:
 		KTextEditor::View* textEdit = doc->createView(nullptr);
 		textEdit->setMinimumHeight(200);
 		layout->addWidget(textEdit);
-		
+
 		auto okButton = new QPushButton;
 		layout->addWidget(okButton);
 		okButton->setText(i18n("Ok"));

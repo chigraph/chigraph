@@ -40,4 +40,3 @@ void FunctionInOuts::loadFunction(FunctionView* func) {
 	ins->setFunction(func, ParamListWidget::Input);
 	outs->setFunction(func, ParamListWidget::Output);
 }
-

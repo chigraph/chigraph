@@ -79,7 +79,7 @@ std::unique_ptr<llvm::Module> compileCCode(const std::string&              code,
 	return ret;
 }
 
-}  // anon namespace
+}  // anonymous namespace
 
 /// The NodeType for calling C functions
 struct CFuncNode : NodeType {
@@ -91,7 +91,7 @@ struct CFuncNode : NodeType {
 	      mCCode(gsl::to_string(cCode)),
 	      mExtraArguments{std::move(extraArgs)},
 	      mInputs{std::move(inputs)},
-	      mOutput{output},
+	      mOutput{std::move(output)},
 	      mCModule{mod} {
 		setExecInputs({""});
 		setExecOutputs({""});
@@ -103,7 +103,7 @@ struct CFuncNode : NodeType {
 	Result codegen(size_t /*inID*/, const llvm::DebugLoc& nodeLocation,
 	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
 	               const gsl::span<llvm::BasicBlock*> outputBlocks,
-	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
+	               std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
 		Expects(io.size() == dataInputs().size() + dataOutputs().size() && codegenInto != nullptr &&
 		        outputBlocks.size() == 1);
 
@@ -171,7 +171,7 @@ struct CFuncNode : NodeType {
 		j["function"] = mFunctionName;
 
 		auto& jsonExtraFlags = j["extraflags"];
-		jsonExtraFlags = nlohmann::json::array();
+		jsonExtraFlags       = nlohmann::json::array();
 		for (const auto& flag : mExtraArguments) { jsonExtraFlags.push_back(flag); }
 
 		auto& jsonInputs = j["inputs"];
