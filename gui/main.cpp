@@ -1,7 +1,7 @@
 #include <KAboutData>
+#include <KCrash>
 #include <KLocalizedString>
 #include <KMessageBox>
-#include <KCrash>
 
 #include <QApplication>
 #include <QCommandLineParser>

@@ -163,7 +163,7 @@ Result validatePath(
 
 	return res;
 }
-}  // anon namespace
+}  // anonymous namespace
 
 Result validateFunctionNodeInputs(const GraphFunction& func) {
 	Result res;
@@ -187,4 +187,4 @@ Result validateFunctionNodeInputs(const GraphFunction& func) {
 
 	return res;
 }
-}
+}  // namespace chig

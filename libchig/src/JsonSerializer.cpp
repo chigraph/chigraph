@@ -19,10 +19,10 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 	for (auto& in : func.dataInputs()) {
 		datainputsjson.push_back({{in.name, in.type.qualifiedName()}});
 	}
-	
+
 	// serialize the local variables
 	auto& localsjson = jsonData["local_variables"];
-	localsjson = nlohmann::json::object();
+	localsjson       = nlohmann::json::object();
 	for (const auto& local : func.localVariables()) {
 		localsjson[local.name] = local.type.qualifiedName();
 	}
@@ -114,4 +114,3 @@ nlohmann::json graphStructToJson(const GraphStruct& struc) {
 }
 
 }  // namespace chig
-

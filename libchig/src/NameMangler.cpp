@@ -10,8 +10,9 @@ std::string mangleFunctionName(gsl::cstring_span<> fullModuleName, gsl::cstring_
 	// escape characters
 
 	// if it is the special main module, then just return main
-	if ((modName.substr(modName.rfind('/') + 1, modName.rfind('.')) == "main" || 
-		modName.substr(modName.rfind('\\') + 1, modName.rfind('.')) == "main") && name == "main") {
+	if ((modName.substr(modName.rfind('/') + 1, modName.rfind('.')) == "main" ||
+	     modName.substr(modName.rfind('\\') + 1, modName.rfind('.')) == "main") &&
+	    name == "main") {
 		return "main";
 	}
 

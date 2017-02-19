@@ -2,18 +2,18 @@
 #include "functiondetails.hpp"
 #include "functionspane.hpp"
 #include "functionview.hpp"
-#include "modulebrowser.hpp"
 #include "localvariables.hpp"
+#include "modulebrowser.hpp"
 #include "moduledependencies.hpp"
-#include "subprocessoutputview.hpp"
 #include "moduledetails.hpp"
+#include "subprocessoutputview.hpp"
 
 #include <KActionCollection>
+#include <KActionMenu>
+#include <KColorScheme>
 #include <KConfigGroup>
 #include <KLocalizedString>
-#include <KActionMenu>
 #include <KMessageBox>
-#include <KColorScheme>
 #include <KStandardAction>
 
 #include <QAction>
@@ -62,9 +62,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
 	connect(modDetails, &ModuleDetails::functionSelected, this, &MainWindow::newFunctionSelected);
 	connect(this, &MainWindow::moduleOpened, modDetails, &ModuleDetails::loadModule);
-	connect(this, &MainWindow::newFunctionCreated, modDetails, [modDetails](chig::GraphFunction* func) {
-		modDetails->loadModule(func->module());
-	});
+	connect(this, &MainWindow::newFunctionCreated, modDetails,
+	        [modDetails](chig::GraphFunction* func) { modDetails->loadModule(func->module()); });
 	connect(modDetails, &ModuleDetails::dependencyAdded, this, [this] {
 		auto count = mFunctionTabs->count();
 		for (auto idx = 0; idx < count; ++idx) {
@@ -221,10 +220,10 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(newModuleAction, &QAction::triggered, this, &MainWindow::newModule);
 
 	// theme selector
-	auto themeAction = new KActionMenu(i18n("Theme"), this);
+	auto themeAction  = new KActionMenu(i18n("Theme"), this);
 	auto themeManager = new ThemeManager(themeAction);
 	actColl->addAction(QStringLiteral("theme"), themeAction);
-	
+
 	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
 }
 

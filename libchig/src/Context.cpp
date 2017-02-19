@@ -15,9 +15,9 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Target/TargetOptions.h>
 
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
-#include <boost/algorithm/string/replace.hpp>
 
 #include <llvm/Target/TargetMachine.h>
 #include <chig/CModule.hpp>
@@ -33,7 +33,6 @@ Context::Context(const boost::filesystem::path& workPath) {
 
 	mWorkspacePath = workspaceFromChildPath(workPath);
 }
-
 
 ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept {
 	Result res;
@@ -168,7 +167,7 @@ bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept {
 	// make sure it's unique
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) { return false; }
-	
+
 	if (modToAdd->fullName() == "c") {
 		mCModule = dynamic_cast<CModule*>(modToAdd.get());
 	} else if (modToAdd->fullName() == "lang") {

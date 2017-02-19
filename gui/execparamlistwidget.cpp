@@ -17,7 +17,9 @@ QStringList createTypeOptions(const chig::GraphModule& mod) {
 	QStringList ret;
 
 	// add the module
-	for (const auto& ty : mod.typeNames()) { ret << QString::fromStdString(mod.fullName() + ":" + ty); }
+	for (const auto& ty : mod.typeNames()) {
+		ret << QString::fromStdString(mod.fullName() + ":" + ty);
+	}
 
 	// and its dependencies
 	for (auto dep : mod.dependencies()) {
@@ -52,10 +54,10 @@ void ExecParamListWidget::setFunction(FunctionView* func, Type ty) {
 		edit->setText(QString::fromStdString(param));
 		connect(edit, &QLineEdit::textChanged, this, [this, id](const QString& newText) {
 			if (mType == Input) {
-				mFunc->function()->modifyExecInput(id, newText.toStdString());
+				mFunc->function()->renameExecInput(id, newText.toStdString());
 				refreshEntry();
 			} else {
-				mFunc->function()->modifyExecOutput(id, newText.toStdString());
+				mFunc->function()->renameExecOutput(id, newText.toStdString());
 				refreshExits();
 			}
 		});
@@ -83,12 +85,12 @@ void ExecParamListWidget::setFunction(FunctionView* func, Type ty) {
 	newButton->setSizePolicy({QSizePolicy::Maximum, QSizePolicy::Maximum});
 	connect(newButton, &QAbstractButton::clicked, this, [this](bool) {
 		if (mType == Input) {
-			mFunc->function()->addExecInput("", mFunc->function()->execInputs().size() - 1);
+			mFunc->function()->addExecInput("");
 			refreshEntry();
 
 			setFunction(mFunc, mType);  // TODO: not the most efficient way...
 		} else {
-			mFunc->function()->addExecOutput("", mFunc->function()->execOutputs().size() - 1);
+			mFunc->function()->addExecOutput("");
 			refreshExits();
 
 			setFunction(mFunc, mType);

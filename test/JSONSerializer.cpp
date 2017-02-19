@@ -222,10 +222,10 @@ TEST_CASE("JsonSerializer", "[json]") {
 				}
 			}
 		}
-		
+
 		WHEN("We create some local variables") {
 			func->getOrCreateLocalVariable("hello", lmod->typeFromName("i32"));
-			
+
 			auto correctJSON = R"ENDJSON(
 				{
 					"type": "function",
@@ -239,7 +239,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 					"local_variables": {"hello": "lang:i32"}
 				}
 			)ENDJSON"_json;
-			
+
 			requireWorks(correctJSON);
 		}
 	}

@@ -259,7 +259,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 	}
 }
 
-}  // anon namespace
+}  // anonymous namespace
 
 Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
                        llvm::DIBuilder& debugBuilder) {
@@ -434,5 +434,4 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 	return res;
 }
-};
-
+} // namespace chig

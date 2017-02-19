@@ -155,4 +155,3 @@ private:
 }
 
 #endif  // CHIG_NODE_TYPE_HPP
-

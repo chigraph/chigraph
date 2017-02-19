@@ -311,7 +311,7 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 
 	// register dependencies + our own mod
 	auto deps = mFunction->module().dependencies();
-	
+
 	// register functions in this module
 	deps.insert(mFunction->module().fullName());
 	for (auto modName : deps) {
@@ -337,17 +337,18 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 
 	reg->registerModel(std::make_unique<ChigraphNodeModel>(
 	    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "lang:exit"), this));
-	
+
 	// register local variable setters and getters
 	for (const auto& local : mFunction->localVariables()) {
 		mFunction->module().nodeTypeFromName("_set_" + local.name, local.type.qualifiedName(), &ty);
-		
-		reg->registerModel(std::make_unique<ChigraphNodeModel>(new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "_set_" + local.name), this));
-		
+
+		reg->registerModel(std::make_unique<ChigraphNodeModel>(
+		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "_set_" + local.name), this));
+
 		mFunction->module().nodeTypeFromName("_get_" + local.name, local.type.qualifiedName(), &ty);
-		
-		reg->registerModel(std::make_unique<ChigraphNodeModel>(new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "_get_" + local.name), this));
-		
+
+		reg->registerModel(std::make_unique<ChigraphNodeModel>(
+		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "_get_" + local.name), this));
 	}
 
 	return reg;

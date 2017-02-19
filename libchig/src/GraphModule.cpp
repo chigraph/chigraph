@@ -31,9 +31,9 @@ struct GraphFuncCallType : public NodeType {
 		auto* mygraph = JModule->functionFromName(funcname);
 
 		if (mygraph == nullptr) {
-			res.addEntry(
-			    "EINT", "Graph doesn't exist in module",
-			    {{"Module Name", JModule->fullName()}, {"Requested Name", gsl::to_string(funcname)}});
+			res.addEntry("EINT", "Graph doesn't exist in module",
+			             {{"Module Name", JModule->fullName()},
+			              {"Requested Name", gsl::to_string(funcname)}});
 			return;
 		}
 
@@ -45,10 +45,10 @@ struct GraphFuncCallType : public NodeType {
 		setExecOutputs(mygraph->execOutputs());
 	}
 
-	Result codegen(
-	    size_t execInputID, const llvm::DebugLoc& nodeLocation, const gsl::span<llvm::Value*> io,
-	    llvm::BasicBlock* codegenInto, const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
+	Result codegen(size_t execInputID, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Result res = {};
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -105,11 +105,10 @@ struct MakeStructNodeType : public NodeType {
 		setDataOutputs({{"", ty.dataType()}});
 	}
 
-	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
+	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
@@ -145,11 +144,10 @@ struct BreakStructNodeType : public NodeType {
 		setDataOutputs(ty.types());
 	}
 
-	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
+	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
@@ -189,15 +187,13 @@ struct SetLocalNodeType : public NodeType {
 		setExecOutputs({""});
 	}
 
-	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
+	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
-		
-		
+
 		std::shared_ptr<void>& local = compileCache[mDataType.name];
 
 		if (local == nullptr) {
@@ -231,11 +227,10 @@ struct GetLocalNodeType : public NodeType {
 		makePure();
 	}
 
-	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	    const gsl::span<llvm::BasicBlock*> outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
+	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
+	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
@@ -244,12 +239,12 @@ struct GetLocalNodeType : public NodeType {
 		if (local == nullptr) {
 			// create a new one!
 			local = std::make_shared<llvm::Value*>(builder.CreateAlloca(mDataType.type.llvmType()));
-			
+
 			// TODO: create an error here
 		}
 
 		builder.CreateStore(builder.CreateLoad(*static_cast<llvm::Value**>(local.get())), io[0]);
-		
+
 		builder.CreateBr(outputBlocks[0]);
 
 		return {};
@@ -275,9 +270,7 @@ std::vector<std::string> GraphModule::typeNames() const {
 	std::vector<std::string> ret;
 	ret.reserve(structs().size());
 
-	for (const auto& ty : structs()) {
-		ret.push_back(ty->name());
-	}
+	for (const auto& ty : structs()) { ret.push_back(ty->name()); }
 
 	return ret;
 }
@@ -411,31 +404,34 @@ Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::j
 		if (nameStr.substr(0, 5) == "_get_") {
 			if (jsonData.is_string()) {
 				std::string module, typeName;
-				
+
 				std::tie(module, typeName) = parseColonPair(jsonData);
-				
+
 				DataType ty;
 				res += context().typeFromModule(module, typeName, &ty);
-				
-				*toFill = std::make_unique<GetLocalNodeType>(*this, NamedDataType{nameStr.substr(5), ty});
+
+				*toFill =
+				    std::make_unique<GetLocalNodeType>(*this, NamedDataType{nameStr.substr(5), ty});
 			} else {
-				res.addEntry("EUKN", "Json data for _get_ node type isn't a string", {{"Given Data", jsonData}});
+				res.addEntry("EUKN", "Json data for _get_ node type isn't a string",
+				             {{"Given Data", jsonData}});
 			}
 			return res;
-			
 		}
 		if (nameStr.substr(0, 5) == "_set_") {
 			if (jsonData.is_string()) {
 				std::string module, typeName;
-				
+
 				std::tie(module, typeName) = parseColonPair(jsonData);
-				
+
 				DataType ty;
 				res += context().typeFromModule(module, typeName, &ty);
-				
-				*toFill = std::make_unique<SetLocalNodeType>(*this, NamedDataType{nameStr.substr(5), std::move(ty)});
+
+				*toFill = std::make_unique<SetLocalNodeType>(
+				    *this, NamedDataType{nameStr.substr(5), std::move(ty)});
 			} else {
-				res.addEntry("EUKN", "Json data for _set_ node type isn't a string", {{"Given Data", jsonData}});
+				res.addEntry("EUKN", "Json data for _set_ node type isn't a string",
+				             {{"Given Data", jsonData}});
 			}
 			return res;
 		}

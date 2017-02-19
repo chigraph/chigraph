@@ -10,16 +10,14 @@ class FunctionInOuts;
 class LocalVariables;
 
 class FunctionDetails : public QWidget {
-	
 public:
 	FunctionDetails(QWidget* parent = nullptr);
-	
+
 	void loadFunction(FunctionView* funcView);
-	
+
 private:
 	FunctionInOuts* mInOuts;
 	LocalVariables* mLocals;
-	
 };
 
 #endif  // CHIGGUI_FUNCTIONDETAILS_HPP

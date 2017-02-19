@@ -14,7 +14,9 @@ inline QStringList createTypeOptions(const chig::GraphModule& mod) {
 	QStringList ret;
 
 	// add the module
-	for (const auto& ty : mod.typeNames()) { ret << QString::fromStdString(mod.fullName() + ":" + ty); }
+	for (const auto& ty : mod.typeNames()) {
+		ret << QString::fromStdString(mod.fullName() + ":" + ty);
+	}
 
 	// and its dependencies
 	for (auto dep : mod.dependencies()) {

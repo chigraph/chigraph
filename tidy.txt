@@ -1,0 +1,24 @@
+/home/russellg/chigraph/build/../libchig/include/chig/GraphFunction.hpp:276:7: warning: function 'chig::GraphFunction::renameLocalVariable' has a definition with different parameter names [readability-inconsistent-declaration-parameter-name]
+        void renameLocalVariable(const std::string& oldName, const std::string& newName);
+             ^
+                                                    oldNameArg                  newNameArg
+/home/russellg/chigraph/libchig/src/GraphFunction.cpp:364:21: note: the definition seen here
+void GraphFunction::renameLocalVariable(const std::string& oldNameArg,
+                    ^
+/home/russellg/chigraph/build/../libchig/include/chig/GraphFunction.hpp:276:7: note: differing parameters are named here: ('oldName', 'newName'), in definition: ('oldNameArg', 'newNameArg')
+        void renameLocalVariable(const std::string& oldName, const std::string& newName);
+             ^
+/home/russellg/chigraph/libchig/src/GraphFunction.cpp:14:1: warning: #includes are not sorted properly [llvm-include-order]
+#include <boost/dynamic_bitset.hpp>
+^
+/home/russellg/chigraph/libchig/src/GraphFunction.cpp:367:14: warning: local copy 'oldName' of the variable 'oldNameArg' is never modified; consider avoiding the copy [performance-unnecessary-copy-initialization]
+        std::string oldName = oldNameArg;
+                    ^
+        const      &
+/home/russellg/chigraph/libchig/src/GraphFunction.cpp:368:14: warning: local copy 'newName' of the variable 'newNameArg' is never modified; consider avoiding the copy [performance-unnecessary-copy-initialization]
+        std::string newName = newNameArg;
+                    ^
+        const      &
+/home/russellg/chigraph/libchig/src/GraphFunction.cpp:407:76: warning: the parameter 'newType' is copied for each invocation but only used as a const reference; consider making it a const reference [performance-unnecessary-value-param]
+void GraphFunction::retypeLocalVariable(gsl::cstring_span<> name, DataType newType) {
+                                                                           ^
