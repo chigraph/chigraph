@@ -104,20 +104,27 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 		return res;
 	}
 	// make sure it has a type element
-	if (input.find("type") == input.end()) {
-		res.addEntry("E2", R"(JSON in graph doesn't have a "type" element)", {});
+	if (input.find("type") == input.end() || !input["type"].is_string()) {
+		res.addEntry("E2", R"(JSON in graph doesn't have a "type" element)", {{"Module Name", createInside.fullName()}});
 		return res;
 	}
 	if (input["type"] != "function") {
-		res.addEntry("E3", "JSON in graph doesn't have a function type", {});
+		res.addEntry("E3", "JSON in graph doesn't have a function type", {{"Module Name", createInside.fullName()}});
 		return res;
 	}
 	// make sure there is a name
-	if (input.find("name") == input.end()) {
-		res.addEntry("E4", "JSON in graph doesn't have a name parameter", {});
+	if (input.find("name") == input.end() || !input["name"].is_string()) {
+		res.addEntry("E4", "JSON in graph doesn't have a name parameter", {{"Module Name", createInside.fullName()}});
 		return res;
 	}
 	std::string name = input["name"];
+	
+	// load the description
+	if (input.find("description") == input.end() || !input["description"].is_string()) {
+		res.addEntry("E50", "JSON in graph doesn't have a description string", {{"Function Name", name}, {"Module Name", createInside.fullName()}});
+		return res;
+	}
+	std::string description = input["description"];
 
 	if (input.find("data_inputs") == input.end() || !input["data_inputs"].is_array()) {
 		res.addEntry("E43", "JSON in graph doesn't have an data_inputs array", {});
@@ -189,6 +196,7 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 	// construct it
 	auto created =
 	    createInside.getOrCreateFunction(name, datainputs, dataoutputs, execinputs, execoutputs);
+	created->setDescription(std::move(description));
 	if (toFill != nullptr) { *toFill = created; }
 
 	return res;

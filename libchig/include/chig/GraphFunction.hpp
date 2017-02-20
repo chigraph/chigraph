@@ -282,6 +282,15 @@ struct GraphFunction {
 
 	/// \}
 
+	/// Set the description of the function
+	/// \param newDesc The new description
+	void setDescription(std::string newDesc) { mDescription = std::move(newDesc); }
+	
+	/// Get the description of the function
+	/// \return The description
+	const std::string& description() const { return mDescription; };
+	
+	
 	// Various getters
 	//////////////////
 
@@ -302,6 +311,7 @@ private:
 	GraphModule* mModule;
 	Context*     mContext;
 	std::string  mName;  /// the name of the function
+	std::string  mDescription;
 
 	std::vector<NamedDataType> mDataInputs;
 	std::vector<NamedDataType> mDataOutputs;
