@@ -1,12 +1,11 @@
 {
   "dependencies": [
-    "intprinter",
+    "lang",
     "c",
-    "lang"
+    "intprinter"
   ],
   "graphs": [
     {
-	"description": "main",
       "connections": [
         {
           "input": [
@@ -66,6 +65,7 @@
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
@@ -109,8 +109,8 @@
         "{55d4e21c-0eb2-43f6-a3e6-ecff5b55bfcf}": {
           "data": "lang:i32",
           "location": [
-            533,
-            107
+            524.359985351562,
+            77.6240005493164
           ],
           "type": "localvars/main:_set_hello"
         },
@@ -139,6 +139,5 @@
       "type": "function"
     }
   ],
-  "name": "main",
   "types": {}
 }

@@ -8,9 +8,9 @@ endif()
 
 if (WIN32)
 	if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
-		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug)
+		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-debug ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug)
 	else()
-		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvmrel ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release)
+		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-release ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release)
 	endif()
 endif()
 

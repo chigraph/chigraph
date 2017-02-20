@@ -22,6 +22,8 @@
 
 #include "functionview.hpp"
 
+class ModuleBrowser;
+
 class MainWindow : public KXmlGuiWindow {
 	Q_OBJECT
 public:
@@ -39,6 +41,8 @@ public slots:
 	void closeTab(int idx);
 	void newFunction();
 	void newModule();
+	void moduleDirtied(chig::ChigModule& mod);
+	void discardChangesInModule(chig::ChigModule& mod);
 
 signals:
 	void workspaceOpened(chig::Context& workspace);
@@ -49,6 +53,8 @@ signals:
 	void newFunctionCreated(chig::GraphFunction* func);
 
 private:
+	void closeEvent(QCloseEvent* event) override;
+	
 	KRecentFilesAction* mOpenRecentAction;  // keep this so we can save the entries
 	std::unordered_map<QString, FunctionView*> mOpenFunctions;
 
@@ -58,6 +64,7 @@ private:
 	// context & module
 	std::unique_ptr<chig::Context> mChigContext = nullptr;
 	chig::GraphModule*             mModule      = nullptr;
+	ModuleBrowser* mModuleBrowser = nullptr;
 };
 
 #endif  // CHIGGUI_MAINWINDOW_H

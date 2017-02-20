@@ -32,9 +32,6 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	hlayout->setMargin(0);
 	hlayout->setSpacing(0);
 
-	// create the registry
-	//////////////////////
-
 	mScene = new FlowScene(createRegistry());
 
 	mView = new FlowView(mScene);
@@ -108,6 +105,8 @@ void FunctionView::nodeAdded(Node& n) {
 	    std::unique_ptr<chig::NodeInstance>(&ptr->instance());
 
 	mNodeMap[&ptr->instance()] = &n;
+	
+	dirtied(function()->module());
 }
 
 void FunctionView::nodeDeleted(Node& n) {
@@ -138,6 +137,7 @@ void FunctionView::nodeDeleted(Node& n) {
 	mFunction->removeNode(&ptr->instance());
 
 	mNodeMap.erase(&ptr->instance());
+	dirtied(function()->module());
 }
 
 void FunctionView::connectionAdded(Connection& c) {
@@ -180,6 +180,7 @@ void FunctionView::connectionAdded(Connection& c) {
 	conns[&c] = std::array<std::pair<chig::NodeInstance*, size_t>, 2>{
 	    {std::make_pair(&inptr->instance(), inconnid),
 	     std::make_pair(&outptr->instance(), outconnid)}};
+	dirtied(function()->module());
 }
 void FunctionView::connectionDeleted(Connection& c) {
 	auto conniter = conns.find(&c);
@@ -208,6 +209,7 @@ void FunctionView::connectionDeleted(Connection& c) {
 	}
 
 	conns.erase(&c);
+	dirtied(function()->module());
 }
 
 void FunctionView::connectionUpdated(Connection& c) {
@@ -215,6 +217,7 @@ void FunctionView::connectionUpdated(Connection& c) {
 	auto iter = conns.find(&c);
 	if (iter == conns.end()) { return connectionAdded(c); }
 
+	dirtied(function()->module());
 	// remove the existing connection
 }
 
@@ -224,6 +227,7 @@ void FunctionView::nodeMoved(Node& n, QPointF newLoc) {
 	
 	model->instance().setX(newLoc.x());
 	model->instance().setY(newLoc.y());
+	dirtied(function()->module());
 }
 
 void FunctionView::refreshGuiForNode(Node* node) {
@@ -291,6 +295,7 @@ void FunctionView::refreshGuiForNode(Node* node) {
 			          .get()] = {{{inst, localID}, {conn.first, remoteID}}};
 		}
 	}
+	dirtied(function()->module());
 }
 
 void FunctionView::refreshRegistry() { mScene->setRegistry(createRegistry()); }

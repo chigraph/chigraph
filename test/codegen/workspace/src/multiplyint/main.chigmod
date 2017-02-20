@@ -1,13 +1,11 @@
 {
   "dependencies": [
-    "lang",
+    "intprinter",
     "c",
-    "intprinter"
+    "lang"
   ],
   "graphs": [
     {
-	"description": "main",
-      "local_variables": {},
       "connections": [
         {
           "input": [
@@ -67,12 +65,14 @@
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "main",
       "nodes": {
         "entry": {
@@ -83,8 +83,8 @@
             ]
           },
           "location": [
-            304.622924804688,
-            137.781509399414
+            285.622924804688,
+            141.781509399414
           ],
           "type": "lang:entry"
         },
@@ -137,6 +137,5 @@
       "type": "function"
     }
   ],
-  "name": "main",
   "types": {}
 }

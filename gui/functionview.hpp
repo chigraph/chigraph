@@ -41,6 +41,9 @@ private slots:
 	void connectionUpdated(QtNodes::Connection& c);
 	
 	void nodeMoved(QtNodes::Node& n, QPointF newLoc);
+	
+signals:
+	void dirtied(chig::ChigModule& mod);
 
 private:
 	QtNodes::FlowScene* mScene;
