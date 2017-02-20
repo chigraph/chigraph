@@ -130,11 +130,11 @@ open ./gui/chiggui.app
 
 First, Install [Visual Studio 2015](https://www.visualstudio.com/downloads/). 2015 is the only version that has been tested, 2017 RC might work but you'd have to compile qt. Make sure to choose custom install:
 
-![Visual Studio custom install](screenshots/vscustom/png)
+![Visual Studio custom install](screenshots/vscustom.png)
 
 and pick Visual C++ and git:
 
-![Visual C++](screenshots/vc++)
+![Visual C++](screenshots/vc++.png)
 
 
 
