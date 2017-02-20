@@ -93,6 +93,8 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 
 	connect(mScene, &FlowScene::connectionCreated, this, &FunctionView::connectionAdded);
 	connect(mScene, &FlowScene::connectionDeleted, this, &FunctionView::connectionDeleted);
+	
+	connect(mScene, &FlowScene::nodeMoved, this, &FunctionView::nodeMoved);
 }
 
 void FunctionView::nodeAdded(Node& n) {
@@ -208,23 +210,20 @@ void FunctionView::connectionDeleted(Connection& c) {
 	conns.erase(&c);
 }
 
-void FunctionView::updatePositions() {
-	for (auto& inst : mNodeMap) {
-		auto ptr = inst.second;
-		if (ptr != nullptr) {
-			QPointF pos = ptr->nodeGraphicsObject().pos();
-			inst.first->setX(pos.x());
-			inst.first->setY(pos.y());
-		}
-	}
-}
-
 void FunctionView::connectionUpdated(Connection& c) {
 	// find in assoc
 	auto iter = conns.find(&c);
 	if (iter == conns.end()) { return connectionAdded(c); }
 
 	// remove the existing connection
+}
+
+void FunctionView::nodeMoved(Node& n, QPointF newLoc) {
+	
+	auto model = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
+	
+	model->instance().setX(newLoc.x());
+	model->instance().setY(newLoc.y());
 }
 
 void FunctionView::refreshGuiForNode(Node* node) {

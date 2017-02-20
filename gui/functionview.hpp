@@ -23,8 +23,6 @@ public:
 	QtNodes::Node* guiNodeFromChigNode(chig::NodeInstance* inst);
 	chig::NodeInstance* chigNodeFromGuiNode(QtNodes::Node* node);
 
-	void updatePositions();
-
 	// refresh I/O for the node
 	void refreshGuiForNode(QtNodes::Node* node);
 
@@ -41,6 +39,8 @@ private slots:
 	void connectionDeleted(QtNodes::Connection& c);
 
 	void connectionUpdated(QtNodes::Connection& c);
+	
+	void nodeMoved(QtNodes::Node& n, QPointF newLoc);
 
 private:
 	QtNodes::FlowScene* mScene;
