@@ -196,17 +196,17 @@ void GraphFunction::addDataInput(const DataType& type, gsl::cstring_span<> name,
 	updateEntries();
 }
 
-void GraphFunction::removeDataInput(int idx) {
+void GraphFunction::removeDataInput(size_t idx) {
 	if (idx < mDataInputs.size()) { mDataInputs.erase(mDataInputs.begin() + idx); }
 	updateEntries();
 }
 
-void GraphFunction::renameDataInput(int idx, std::string newName) {
+void GraphFunction::renameDataInput(size_t idx, std::string newName) {
 	if (idx < mDataInputs.size()) { mDataInputs[idx].name = std::move(newName); }
 	updateEntries();
 }
 
-void GraphFunction::retypeDataInput(int idx, DataType newType) {
+void GraphFunction::retypeDataInput(size_t idx, DataType newType) {
 	if (idx < mDataInputs.size()) { mDataInputs[idx].type = std::move(newType); }
 	updateEntries();
 }
@@ -223,17 +223,17 @@ void GraphFunction::addDataOutput(const DataType& type, gsl::cstring_span<> name
 	updateExits();
 }
 
-void GraphFunction::removeDataOutput(int idx) {
+void GraphFunction::removeDataOutput(size_t idx) {
 	if (idx < mDataOutputs.size()) { mDataOutputs.erase(mDataOutputs.begin() + idx); }
 	updateExits();
 }
 
-void GraphFunction::renameDataOutput(int idx, std::string newName) {
+void GraphFunction::renameDataOutput(size_t idx, std::string newName) {
 	if (idx < mDataOutputs.size()) { mDataOutputs[idx].name = std::move(newName); }
 	updateExits();
 }
 
-void GraphFunction::retypeDataOutput(int idx, DataType newType) {
+void GraphFunction::retypeDataOutput(size_t idx, DataType newType) {
 	if (idx < mDataOutputs.size()) { mDataOutputs[idx].type = std::move(newType); }
 	updateExits();
 }
@@ -266,12 +266,12 @@ void GraphFunction::addExecInput(gsl::cstring_span<> name, size_t addBefore) {
 	updateEntries();
 }
 
-void GraphFunction::removeExecInput(int idx) {
+void GraphFunction::removeExecInput(size_t idx) {
 	if (idx < mExecInputs.size()) { mExecInputs.erase(mExecInputs.begin() + idx); }
 	updateEntries();
 }
 
-void GraphFunction::renameExecInput(int idx, std::string name) {
+void GraphFunction::renameExecInput(size_t idx, std::string name) {
 	if (idx < mExecInputs.size()) { mExecInputs[idx] = std::move(name); }
 	updateEntries();
 }
@@ -286,12 +286,12 @@ void GraphFunction::addExecOutput(gsl::cstring_span<> name, size_t addBefore) {
 	updateExits();
 }
 
-void GraphFunction::removeExecOutput(int idx) {
+void GraphFunction::removeExecOutput(size_t idx) {
 	if (idx < mExecOutputs.size()) { mExecOutputs.erase(mExecOutputs.begin() + idx); }
 	updateExits();
 }
 
-void GraphFunction::renameExecOutput(int idx, std::string name) {
+void GraphFunction::renameExecOutput(size_t idx, std::string name) {
 	if (idx < mExecOutputs.size()) { mExecOutputs[idx] = std::move(name); }
 	updateExits();
 }

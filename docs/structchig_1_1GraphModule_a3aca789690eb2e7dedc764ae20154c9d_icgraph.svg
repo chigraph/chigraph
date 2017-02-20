@@ -55,62 +55,62 @@ var sectionId = 'dynsection-14';
 <g id="viewport">
 <title>chig::GraphModule::functions</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-79 560,-79 560,4 -4,4"/>
-<!-- Node104 -->
+<!-- Node105 -->
 <g id="node1" class="node">
-<title>Node104</title>
+<title>Node105</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-22.5 0,-52.5 104,-52.5 104,-22.5 0,-22.5"/>
 <text text-anchor="start" x="8" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
 <text text-anchor="middle" x="52" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">functions</text>
 </g>
-<!-- Node105 -->
+<!-- Node106 -->
 <g id="node2" class="node">
-<title>Node105</title>
+<title>Node106</title>
 <g id="a_node2"><a xlink:href="structchig_1_1GraphModule.html#a292eaf6be61fdccb79b54341a34ca6d7" target="_top" xlink:title="Create the associations from line number and function in debug info. ">
-<polygon fill="#ffffff" stroke="#000000" points="142,-44.5 142,-74.5 266,-74.5 266,-44.5 142,-44.5"/>
-<text text-anchor="start" x="150" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
+<polygon fill="#ffffff" stroke="#000000" points="142.5,-44.5 142.5,-74.5 265.5,-74.5 265.5,-44.5 142.5,-44.5"/>
+<text text-anchor="start" x="150.5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
 <text text-anchor="middle" x="204" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">createLineNumberAssoc</text>
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node105 -->
+<!-- Node105&#45;&gt;Node106 -->
 <g id="edge1" class="edge">
-<title>Node104&#45;&gt;Node105</title>
-<path fill="none" stroke="#191970" d="M114.4136,-46.5335C123.4888,-47.8471 132.8311,-49.1992 141.9,-50.5118"/>
+<title>Node105&#45;&gt;Node106</title>
+<path fill="none" stroke="#191970" d="M114.2621,-46.5116C123.5619,-47.8576 133.1455,-49.2447 142.4308,-50.5887"/>
 <polygon fill="#191970" stroke="#191970" points="114.708,-43.0398 104.3098,-45.0712 113.7053,-49.9676 114.708,-43.0398"/>
 </g>
-<!-- Node108 -->
+<!-- Node109 -->
 <g id="node5" class="node">
-<title>Node108</title>
+<title>Node109</title>
 <g id="a_node5"><a xlink:href="namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a" target="_top" xlink:title="Serialize a JsonModule to json. ">
 <polygon fill="#ffffff" stroke="#000000" points="140,-6 140,-25 268,-25 268,-6 140,-6"/>
 <text text-anchor="middle" x="204" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::graphModuleToJson</text>
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node108 -->
+<!-- Node105&#45;&gt;Node109 -->
 <g id="edge4" class="edge">
-<title>Node104&#45;&gt;Node108</title>
+<title>Node105&#45;&gt;Node109</title>
 <path fill="none" stroke="#191970" d="M114.3845,-28.4707C122.7602,-27.2584 131.3639,-26.0131 139.7707,-24.7963"/>
 <polygon fill="#191970" stroke="#191970" points="113.7053,-25.0324 104.3098,-29.9288 114.708,-31.9602 113.7053,-25.0324"/>
 </g>
-<!-- Node106 -->
+<!-- Node107 -->
 <g id="node3" class="node">
-<title>Node106</title>
+<title>Node107</title>
 <g id="a_node3"><a xlink:href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" target="_top" xlink:title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ...">
 <polygon fill="#ffffff" stroke="#000000" points="304,-50 304,-69 416,-69 416,-50 304,-50"/>
 <text text-anchor="middle" x="360" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::compileFunction</text>
 </a>
 </g>
 </g>
-<!-- Node105&#45;&gt;Node106 -->
+<!-- Node106&#45;&gt;Node107 -->
 <g id="edge2" class="edge">
-<title>Node105&#45;&gt;Node106</title>
-<path fill="none" stroke="#191970" d="M276.1515,-59.5C285.4754,-59.5 294.9113,-59.5 303.9223,-59.5"/>
-<polygon fill="#191970" stroke="#191970" points="276.1036,-56.0001 266.1036,-59.5 276.1035,-63.0001 276.1036,-56.0001"/>
+<title>Node106&#45;&gt;Node107</title>
+<path fill="none" stroke="#191970" d="M275.7995,-59.5C285.2161,-59.5 294.754,-59.5 303.8595,-59.5"/>
+<polygon fill="#191970" stroke="#191970" points="275.6554,-56.0001 265.6553,-59.5 275.6553,-63.0001 275.6554,-56.0001"/>
 </g>
-<!-- Node107 -->
+<!-- Node108 -->
 <g id="node4" class="node">
-<title>Node107</title>
+<title>Node108</title>
 <g id="a_node4"><a xlink:href="structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6" target="_top" xlink:title="Generate a llvm::Module from the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="452,-44.5 452,-74.5 556,-74.5 556,-44.5 452,-44.5"/>
 <text text-anchor="start" x="460" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
@@ -118,15 +118,15 @@ var sectionId = 'dynsection-14';
 </a>
 </g>
 </g>
-<!-- Node106&#45;&gt;Node107 -->
+<!-- Node107&#45;&gt;Node108 -->
 <g id="edge3" class="edge">
-<title>Node106&#45;&gt;Node107</title>
+<title>Node107&#45;&gt;Node108</title>
 <path fill="none" stroke="#191970" d="M426.3376,-59.5C434.8106,-59.5 443.3888,-59.5 451.599,-59.5"/>
 <polygon fill="#191970" stroke="#191970" points="426.0865,-56.0001 416.0865,-59.5 426.0865,-63.0001 426.0865,-56.0001"/>
 </g>
-<!-- Node109 -->
+<!-- Node110 -->
 <g id="node6" class="node">
-<title>Node109</title>
+<title>Node110</title>
 <g id="a_node6"><a xlink:href="structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff" target="_top" xlink:title="Serialize to disk in the context. ">
 <polygon fill="#ffffff" stroke="#000000" points="308,-.5 308,-30.5 412,-30.5 412,-.5 308,-.5"/>
 <text text-anchor="start" x="316" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
@@ -134,9 +134,9 @@ var sectionId = 'dynsection-14';
 </a>
 </g>
 </g>
-<!-- Node108&#45;&gt;Node109 -->
+<!-- Node109&#45;&gt;Node110 -->
 <g id="edge5" class="edge">
-<title>Node108&#45;&gt;Node109</title>
+<title>Node109&#45;&gt;Node110</title>
 <path fill="none" stroke="#191970" d="M278.5577,-15.5C288.4019,-15.5 298.3195,-15.5 307.6814,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="278.3519,-12.0001 268.3518,-15.5 278.3518,-19.0001 278.3519,-12.0001"/>
 </g>

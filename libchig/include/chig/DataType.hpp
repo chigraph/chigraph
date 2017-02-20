@@ -12,7 +12,7 @@
 
 namespace chig {
 /// A type of data
-/// Loose wrapper around llvm::Type*, except it knows which ChigModule its in
+/// Loose wrapper around llvm::Type*, except it knows which ChigModule it's in and it embeds debug types
 struct DataType {
 	/// Constructor
 	/// \param chigMod The module
@@ -27,10 +27,10 @@ struct DataType {
 	ChigModule& module() const { return *mModule; }
 	/// Get the unqualified name of the type
 	/// \return The unqualified name
-	std::string unqualifiedName() const { return mName; }
-	/// Get the qualified name of the type (with the module)
+	const std::string& unqualifiedName() const { return mName; }
+	/// Get the qualified name of the type (module().fullName() + ":" name())
 	/// \return The qualified name
-	std::string qualifiedName() const { return mModule->fullName() + ":" + mName; }
+	std::string qualifiedName() const { return module().fullName() + ":" + unqualifiedName(); }
 	/// Get the underlying \c llvm::Type
 	/// \return the \c llvm::Type
 	llvm::Type* llvmType() const { return mLLVMType; }
@@ -41,18 +41,6 @@ struct DataType {
 	bool valid() const {
 		return mModule != nullptr && mName != "" && mLLVMType != nullptr && mDIType != nullptr;
 	}
-	/// Equality check
-	/// \param other The DataType to check equality against
-	/// \return If they are equal
-	bool operator==(const DataType& other) const {
-		return mModule == other.mModule && mName == other.mName && mLLVMType == other.mLLVMType &&
-		       mDIType == other.mDIType;
-	}
-
-	/// Inequality check
-	/// \param other The DataType to check equality against
-	/// \return If they are inequal
-	bool operator!=(const DataType& other) const { return !(*this == other); }
 
 private:
 	ChigModule*   mModule;
@@ -61,19 +49,60 @@ private:
 	llvm::DIType* mDIType;
 };
 
+/// Equality check
+/// \param lhs The first DataType
+/// \param rhs The DataType to check equality against
+/// \return If they are equal
+/// \relates DataType
+inline bool operator==(const DataType& lhs, const DataType& rhs) {
+	return &lhs.module() == &rhs.module() && lhs.unqualifiedName() == rhs.unqualifiedName() && lhs.llvmType() == rhs.llvmType() &&
+			lhs.debugType() == rhs.debugType();
+}
+
+/// Inequality check
+/// \param lhs The first DataType
+/// \param rhs The DataType to check equality against
+/// \return If they aren't equal
+/// \relates DataType
+inline bool operator!=(const DataType& lhs, const DataType& rhs) { return !(lhs == rhs); }
+
+
+/// Basicaly a std::pair<std::string, DataType>, except it has nicer names.
 struct NamedDataType {
+	
+	/// Construct a NamedDataType from the name and the type
+	/// \param n The name
+	/// \param ty The type
 	NamedDataType(std::string n = {}, DataType ty = {}) : name{std::move(n)}, type{std::move(ty)} {}
 
-	bool operator==(const NamedDataType& other) const {
-		return name == other.name && type == other.type;
-	}
-	bool operator!=(const NamedDataType& other) const { return !(*this == other); }
-
+	/// See if the pair is valid
+	/// \return if it's valid
 	bool valid() const { return type.valid(); }
 
+	/// The name
 	std::string name;
+	
+	/// The type
 	DataType    type;
 };
+
+/// Check if two NamedDataType objects are equal
+/// \param lhs The first type
+/// \param rhs The type to compare to
+/// \return if they are equal
+/// \relates NamedDataType
+inline bool operator==(const NamedDataType& lhs, const NamedDataType& rhs) {
+	return lhs.name == rhs.name && lhs.type == rhs.type;
+}
+
+/// Check if two NamedDataType objects aren't equal
+/// \param lhs The first type
+/// \param rhs The type to compare to
+/// \return if they aren't equal
+/// \relates NamedDataType
+inline bool operator!=(const NamedDataType& lhs, const NamedDataType& rhs) { return !(lhs == rhs); }
+
+
 }
 
 #endif  // CHIG_DATA_TYPE_HPP

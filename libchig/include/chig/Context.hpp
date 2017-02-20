@@ -52,14 +52,14 @@ struct Context {
 
 	/// Load a module from disk
 	/// \param name The name of the moudle
-	/// \param toFill The module that was loaded, optional
-	/// \result The result
+	/// \retval toFill The module that was loaded, optional
+	/// \return The result
 	Result loadModule(const gsl::cstring_span<> name, ChigModule** toFill = nullptr);
 
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param fullName The full path of the module, including URL
 	/// \param json The JSON data
-	/// \param toFill The GraphModule* to fill into, optional
+	/// \retval toFill The GraphModule* to fill into, optional
 	/// \return The Result
 	Result addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json,
 	                         GraphModule** toFill = nullptr);
@@ -78,7 +78,7 @@ struct Context {
 	/// Gets a DataType from a module
 	/// \param module The full name of the module
 	/// \param name The name of the type, required
-	/// \param toFill The type to fill
+	/// \retval toFill The type to fill
 	/// \return The result
 	Result typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
 	                      DataType* toFill) noexcept;
@@ -87,7 +87,8 @@ struct Context {
 	/// \param moduleName The full module name.
 	/// \param typeName The name of the node type
 	/// \param data The JSON data that is used to construct the NodeType.
-	/// \param toFill The point to fill
+	/// \retval toFill The point to fill
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr)
 	/// \return The Result
 	Result nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
 	                          const nlohmann::json&      data,
@@ -101,7 +102,9 @@ struct Context {
 	bool hasWorkspace() const noexcept { return !workspacePath().empty(); }
 	/// Compile a module to a \c llvm::Module
 	/// \param fullName The full name of the moudle to compile
-	/// \param toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
+	/// \retval toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr)
+	/// \pre moduleByFullName(fullName) exists
 	/// \return The result
 	Result compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill);
 
@@ -112,11 +115,11 @@ struct Context {
 	/// \return The LLVMContext
 	llvm::LLVMContext& llvmContext() const { return *mLLVMContext; }
 
-	/// Get the LangModule, if it has been loaded yet
+	/// Get the LangModule, if it has been loaded
 	/// \return The LangModule
 	LangModule* langModule() const { return mLangModule; }
 
-	/// Get the CModule, if it has been loaded yet
+	/// Get the CModule, if it has been loaded
 	/// \return The CModule
 	CModule* cModule() const { return mCModule; }
 

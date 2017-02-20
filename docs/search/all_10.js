@@ -3,7 +3,7 @@ var searchData=
   ['savetodisk',['saveToDisk',['../structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff',1,'chig::GraphModule']]],
   ['setdatainputs',['setDataInputs',['../structchig_1_1NodeType.html#a3ff276bee8747ab992de1299fc32eb5f',1,'chig::NodeType']]],
   ['setdataoutputs',['setDataOutputs',['../structchig_1_1NodeType.html#a7a46fb28c4a3982fee872d99c2fd1bd5',1,'chig::NodeType']]],
-  ['setdescription',['setDescription',['../structchig_1_1NodeType.html#a747e209832a5b7d2db9d9c608f8aaa2a',1,'chig::NodeType']]],
+  ['setdescription',['setDescription',['../structchig_1_1GraphFunction.html#af4c4bb89b9458debff0efc8f9693d996',1,'chig::GraphFunction::setDescription()'],['../structchig_1_1NodeType.html#a747e209832a5b7d2db9d9c608f8aaa2a',1,'chig::NodeType::setDescription()']]],
   ['setexecinputs',['setExecInputs',['../structchig_1_1NodeType.html#af2c90f6feb76c07a1a60aec4e6f44b18',1,'chig::NodeType']]],
   ['setexecoutputs',['setExecOutputs',['../structchig_1_1NodeType.html#af0820866c93d3c2975aea01d582501a6',1,'chig::NodeType']]],
   ['setextraarguments',['setExtraArguments',['../structchig_1_1CModule.html#af284d8e92a7d7df39d8d6c7acdf8d559',1,'chig::CModule']]],

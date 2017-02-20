@@ -65,7 +65,7 @@ struct GraphFunction {
 	/// \param x The x location of the node
 	/// \param y The y location of the node
 	/// \param id The node ID
-	/// \param toFill The nodeInstance to fill to, optional.
+	/// \retval toFill The nodeInstance to fill to, optional.
 	/// \return The result
 	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
 	                  NodeInstance** toFill = nullptr);
@@ -84,7 +84,7 @@ struct GraphFunction {
 	/// \param x The x location of the node
 	/// \param y The y location of the node
 	/// \param id The node ID
-	/// \param toFill The NodeInstance to fill to, optional
+	/// \retval toFill The NodeInstance* to fill to, optional
 	/// \return The Result
 	Result insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
 	                  const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
@@ -101,7 +101,7 @@ struct GraphFunction {
 	/// \param y The y coordinate of the new entry, or changes the existing entry node to be at this
 	/// Y location
 	/// \param id The ID of the node, disregarded if there is already an entry
-	/// \param toFill The NodeInstance* to fill, optional
+	/// \retval toFill The NodeInstance* to fill, optional
 	/// \return The Result
 	Result getOrInsertEntryNode(float x, float y, gsl::cstring_span<> id,
 	                            NodeInstance** toFill = nullptr);
@@ -109,12 +109,14 @@ struct GraphFunction {
 	/// \}
 
 	/// Create a fresh NodeType for an entry
-	/// \param toFill The NodeType pointer to fill
+	/// \retval toFill The NodeType pointer to fill
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr)
 	/// \return The result
 	Result createEntryNodeType(std::unique_ptr<NodeType>* toFill) const;
 
 	/// Create a fresh NodeType for an exit
-	/// \param toFill The NodeType pointer to fill
+	/// \retval toFill The NodeType pointer to fill
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr)
 	/// \return The result
 	Result createExitNodeType(std::unique_ptr<NodeType>* toFill) const;
 
@@ -140,21 +142,21 @@ struct GraphFunction {
 	/// Also removes invalid connections
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to delete
-	void removeDataInput(int idx);
+	void removeDataInput(size_t idx);
 
 	/// Rename a data input
 	/// This also updates the entry node
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to rename
 	/// \param newName The new name
-	void renameDataInput(int idx, std::string newName);
+	void renameDataInput(size_t idx, std::string newName);
 
 	/// Change the type of a data input
 	/// This also updates the entry node and disconnects invalid connections.
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to retype
 	/// \param newType The new type
-	void retypeDataInput(int idx, DataType newType);
+	void retypeDataInput(size_t idx, DataType newType);
 
 	/// \}
 
@@ -175,7 +177,7 @@ struct GraphFunction {
 	/// Also removes invalid connections
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to delete
-	void removeDataOutput(int idx);
+	void removeDataOutput(size_t idx);
 	/// Modify an data output (change it's type and docstring)
 
 	/// Rename a data output
@@ -183,14 +185,14 @@ struct GraphFunction {
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to rename
 	/// \param newName The new name
-	void renameDataOutput(int idx, std::string newName);
+	void renameDataOutput(size_t idx, std::string newName);
 
 	/// Change the type of a data output
 	/// This also updates all exit nodes and disconnects invalid connections.
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to retype
 	/// \param newType The new type
-	void retypeDataOutput(int idx, DataType newType);
+	void retypeDataOutput(size_t idx, DataType newType);
 
 	/// \}
 
@@ -209,13 +211,13 @@ struct GraphFunction {
 	/// Remove an exec input from the argument list
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to delete
-	void removeExecInput(int idx);
+	void removeExecInput(size_t idx);
 
 	/// Change the name for an exec input
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to change
 	/// \param name The new name.
-	void renameExecInput(int idx, std::string name);
+	void renameExecInput(size_t idx, std::string name);
 
 	/// \}
 
@@ -235,13 +237,13 @@ struct GraphFunction {
 	/// Remove an exec output from the argument list
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to delete
-	void removeExecOutput(int idx);
+	void removeExecOutput(size_t idx);
 
 	/// Rename an exec output
 	/// If idx is out of range, this function does nothing.
 	/// \param idx The index to change
 	/// \param name The new name.
-	void renameExecOutput(int idx, std::string name);
+	void renameExecOutput(size_t idx, std::string name);
 
 	/// \}
 

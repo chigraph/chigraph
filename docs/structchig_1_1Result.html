@@ -1,6 +1,8 @@
+<!-- HTML header for doxygen 1.8.13-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
@@ -100,7 +102,7 @@ $(document).ready(function(){initNavTree('structchig_1_1Result.html','');});
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Result__coll__graph.svg" width="178" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Result__coll__graph.svg" width="164" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -135,11 +137,42 @@ nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Result.html#a6d818cb55e17942f46bf8a293c7874b1">success</a></td></tr>
 <tr class="memdesc:a6d818cb55e17942f46bf8a293c7874b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">if it is successful <br /></td></tr>
 <tr class="separator:a6d818cb55e17942f46bf8a293c7874b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Result operators</div></td></tr>
+<tr class="memitem:a8fb4cc68d78f0a0068c0ddd282875eee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Result.html#a8fb4cc68d78f0a0068c0ddd282875eee">operator+</a> (const <a class="el" href="structchig_1_1Result.html">Result</a> &amp;lhs, const <a class="el" href="structchig_1_1Result.html">Result</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a8fb4cc68d78f0a0068c0ddd282875eee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append two <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> objects.  <a href="#a8fb4cc68d78f0a0068c0ddd282875eee">More...</a><br /></td></tr>
+<tr class="separator:a8fb4cc68d78f0a0068c0ddd282875eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3dbb473ec8607456c13be950e739827"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Result.html#aa3dbb473ec8607456c13be950e739827">operator+=</a> (<a class="el" href="structchig_1_1Result.html">Result</a> &amp;lhs, const <a class="el" href="structchig_1_1Result.html">Result</a> &amp;rhs)</td></tr>
+<tr class="memdesc:aa3dbb473ec8607456c13be950e739827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append one result to an existing one.  <a href="#aa3dbb473ec8607456c13be950e739827">More...</a><br /></td></tr>
+<tr class="separator:aa3dbb473ec8607456c13be950e739827"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a1caa60d79ed3cd997da1559bddd278"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Result.html#a3a1caa60d79ed3cd997da1559bddd278">operator&lt;&lt;</a> (std::ostream &amp;lhs, const <a class="el" href="structchig_1_1Result.html">Result</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a3a1caa60d79ed3cd997da1559bddd278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stream operator.  <a href="#a3a1caa60d79ed3cd997da1559bddd278">More...</a><br /></td></tr>
+<tr class="separator:a3a1caa60d79ed3cd997da1559bddd278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The result object, used for identifiying errors with good diagnostics. </p>
+<h2>Usage:</h2>
+<p>If you want to construct a default result object, just call the default constructor: </p><div class="fragment"><div class="line"><a class="code" href="structchig_1_1Result.html#a0b7d8acbc4d8ed473f32709dd9101b1c">Result</a> res;</div></div><!-- fragment --><p> <code>res</code> is the most common name for an error object, prefer it to other names.</p>
+<p>When an error, warning, or just some event that requries logging needs to be added to the result object, call <code><a class="el" href="structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. ">Result::addEntry</a></code>: </p><div class="fragment"><div class="line"><a class="code" href="structchig_1_1Result.html#a0b7d8acbc4d8ed473f32709dd9101b1c">Result</a> res;</div><div class="line">res.addEntry(<span class="stringliteral">&quot;E231&quot;</span>, <span class="stringliteral">&quot;Some error occured&quot;</span>, {{<span class="stringliteral">&quot;Line Number&quot;</span>, 34}});</div></div><!-- fragment --><p> Note the <code>E</code> at the beginning of the error code, this is important. If it's an <code>E</code>, it's considered an error, and will mark the result as errored. If it's a <code>W</code>, then it's logged, but <em>it's still considred successful</em>.</p>
+<p>If you're calling another operation that emits a <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> object, then there's an easy to integrate that result object: the opeartor+=</p>
+<div class="fragment"><div class="line"><a class="code" href="structchig_1_1Result.html#a0b7d8acbc4d8ed473f32709dd9101b1c">Result</a> res;</div><div class="line">res += <a class="code" href="namespacechig.html#a8a2e0029b591b2c20b39d570753f123f">connectExec</a>(...); <span class="comment">// or any function that returns a Result</span></div></div><!-- fragment --><h2>Implementation Details:</h2>
+<p><a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> objects store a json object that represents the error metadata. It's an array, each being an object containing three objects:</p><ul>
+<li><p class="startli"><code>errorcode</code>: The errorcode. This is an identifier representng the error: a character followed by a number. The value of the character changes the behaviour:</p><ul>
+<li><code>E</code>: it's an error and sets <code>success</code> to false.</li>
+<li><code>W</code>: it's a warning</li>
+<li><code>I</code>: it's just info</li>
+</ul>
+<p class="startli">If it's anything else, that it will cause an assertion</p>
+</li>
+<li><code>overview</code>: A simple string representing the generics of the problem. It <em>shouldn't</em> differ from error to error, if you need to include specifics use the <code>data</code> element</li>
+<li><code>data</code>: Extra metadata for the error, including context and how the error occured. </li>
+</ul>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00016">16</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00053">53</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aabb30a56760c3a817518912d9eabb491"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aabb30a56760c3a817518912d9eabb491">&#9670;&nbsp;</a></span>addEntry()</h2>
@@ -191,18 +224,175 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00026">26</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00063">63</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00035">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00038">success</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00072">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00075">success</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00264">chig::compileFunction()</a>, <a class="el" href="Context_8cpp_source.html#l00234">chig::Context::compileModule()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00106">chig::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00166">chig::connectExec()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00098">chig::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00211">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00277">chig::disconnectExec()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00053">chig::GraphFunction::insertNode()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00197">chig::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00012">chig::jsonToGraphModule()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00373">chig::jsonToGraphStruct()</a>, <a class="el" href="Context_8cpp_source.html#l00083">chig::Context::loadModule()</a>, <a class="el" href="Context_8cpp_source.html#l00218">chig::Context::nodeTypeFromModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00830">chig::LangModule::nodeTypeFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00217">chig::CModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00381">chig::GraphModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00302">chig::GraphModule::saveToDisk()</a>, <a class="el" href="Context_8cpp_source.html#l00197">chig::Context::typeFromModule()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00019">chig::validateFunctionConnectionsAreTwoWay()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00264">chig::compileFunction()</a>, <a class="el" href="Context_8cpp_source.html#l00234">chig::Context::compileModule()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00106">chig::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00166">chig::connectExec()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00098">chig::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00211">chig::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00277">chig::disconnectExec()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00053">chig::GraphFunction::insertNode()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00205">chig::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00012">chig::jsonToGraphModule()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00381">chig::jsonToGraphStruct()</a>, <a class="el" href="Context_8cpp_source.html#l00083">chig::Context::loadModule()</a>, <a class="el" href="Context_8cpp_source.html#l00218">chig::Context::nodeTypeFromModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00830">chig::LangModule::nodeTypeFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00217">chig::CModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00382">chig::GraphModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00303">chig::GraphModule::saveToDisk()</a>, <a class="el" href="Context_8cpp_source.html#l00197">chig::Context::typeFromModule()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00019">chig::validateFunctionConnectionsAreTwoWay()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Result_aabb30a56760c3a817518912d9eabb491_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Result_aabb30a56760c3a817518912d9eabb491_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a8fb4cc68d78f0a0068c0ddd282875eee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fb4cc68d78f0a0068c0ddd282875eee">&#9670;&nbsp;</a></span>operator+()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structchig_1_1Result.html">Result</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structchig_1_1Result.html">Result</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Append two <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> objects. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>The left error </td></tr>
+    <tr><td class="paramname">rhs</td><td>The right error </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The concatinated errors </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00093">93</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00072">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00075">success</a>.</p>
+
+</div>
+</div>
+<a id="aa3dbb473ec8607456c13be950e739827"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3dbb473ec8607456c13be950e739827">&#9670;&nbsp;</a></span>operator+=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> &amp; operator+= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structchig_1_1Result.html">Result</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structchig_1_1Result.html">Result</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Append one result to an existing one. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>The existing <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> to add to </td></tr>
+    <tr><td class="paramname">rhs</td><td>The (usually temporary) result to be added into lhs </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>*this </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00109">109</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00072">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00075">success</a>.</p>
+
+</div>
+</div>
+<a id="a3a1caa60d79ed3cd997da1559bddd278"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a1caa60d79ed3cd997da1559bddd278">&#9670;&nbsp;</a></span>operator<<()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structchig_1_1Result.html">Result</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stream operator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>The stream </td></tr>
+    <tr><td class="paramname">rhs</td><td>The <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> to print to lhs </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>lhs after printing </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00123">123</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00044">dump()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Result_a3a1caa60d79ed3cd997da1559bddd278_cgraph.svg" width="352" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -217,7 +407,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1Result.html">Result</a></li>
-    <li class="footer">Generated on Sat Feb 18 2017 22:59:58 for chigraph by
+    <li class="footer">Generated on Sun Feb 19 2017 21:46:54 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
