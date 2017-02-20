@@ -20,6 +20,9 @@ public:
 public slots:
 	void loadFunction(FunctionView* func);
 
+signals:
+	void dirtied();
+	
 private:
 	FunctionView*        mFuncView = nullptr;
 	chig::GraphFunction* mFunc     = nullptr;

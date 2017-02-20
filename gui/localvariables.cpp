@@ -33,6 +33,7 @@ void LocalVariables::loadFunction(FunctionView* func) {
 			mFunctionView->refreshRegistry();
 			// update the nodes
 			refreshReferencingNodes(stdstr);
+			dirtied();
 		});
 		layout->addWidget(nameEdit, id, 0);
 
@@ -47,6 +48,7 @@ void LocalVariables::loadFunction(FunctionView* func) {
 			        mFunctionView->function()->retypeLocalVariable(localName, newType);
 			        mFunctionView->refreshRegistry();
 			        refreshReferencingNodes(localName);
+					dirtied();
 
 			    });
 		layout->addWidget(tySelector, id, 1);
@@ -63,6 +65,7 @@ void LocalVariables::loadFunction(FunctionView* func) {
 
 			// refresh the local vars panel
 			loadFunction(mFunctionView);
+			dirtied();
 
 		});
 		layout->addWidget(deleteButton, id, 2);
@@ -78,6 +81,7 @@ void LocalVariables::loadFunction(FunctionView* func) {
 		mFunctionView->refreshRegistry();
 
 		loadFunction(mFunctionView);
+		dirtied();
 	});
 	layout->addWidget(newButton, id, 2, Qt::AlignRight);
 }

@@ -26,6 +26,7 @@ FunctionDetails::FunctionDetails(QWidget* parent) {
 	connect (mDescEdit, &QLineEdit::textChanged, this, [this](const QString& newText) {
 		if (mFunction != nullptr) {
 			mFunction->function()->setDescription(newText.toStdString());
+			dirtied();
 		}
 	});
 
@@ -37,6 +38,7 @@ FunctionDetails::FunctionDetails(QWidget* parent) {
 
 	mInOuts = new FunctionInOuts;
 	inslayout->addWidget(mInOuts);
+	connect(mInOuts, &FunctionInOuts::dirtied, this, &FunctionDetails::dirtied);
 
 	auto localsbox = new QGroupBox(i18n("Local Variables"));
 	layout->addWidget(localsbox);
@@ -46,6 +48,7 @@ FunctionDetails::FunctionDetails(QWidget* parent) {
 
 	mLocals = new LocalVariables;
 	localslayout->addWidget(mLocals);
+	connect(mLocals, &LocalVariables::dirtied, this, &FunctionDetails::dirtied);
 }
 
 void FunctionDetails::loadFunction(FunctionView* funcView) {

@@ -20,6 +20,8 @@ public:
 signals:
 	void functionSelected(chig::GraphFunction* func);
 	void dependencyAdded(const QString& name);
+	void dependencyRemoved(const QString& name);
+	void dirtied();
 
 private:
 	ModuleDependencies* mModDeps;

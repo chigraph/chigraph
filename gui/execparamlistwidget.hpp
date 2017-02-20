@@ -38,6 +38,9 @@ public:
 
 	void setFunction(FunctionView* func, Type ty);
 
+signals:
+	void dirtied();
+
 private:
 	void refreshEntry();
 	void refreshExits();

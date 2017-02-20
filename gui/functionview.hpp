@@ -43,7 +43,7 @@ private slots:
 	void nodeMoved(QtNodes::Node& n, QPointF newLoc);
 	
 signals:
-	void dirtied(chig::ChigModule& mod);
+	void dirtied();
 
 private:
 	QtNodes::FlowScene* mScene;

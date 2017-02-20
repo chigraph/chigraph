@@ -8,11 +8,15 @@
 #include "functionview.hpp"
 
 class LocalVariables : public QWidget {
+	Q_OBJECT
 public:
 	LocalVariables(QWidget* parent = nullptr);
 
 	void loadFunction(FunctionView* func);
 
+signals:
+	void dirtied();
+	
 private:
 	void refreshReferencingNodes(const std::string& name);
 	void deleteReferencingNodes(const std::string& name);

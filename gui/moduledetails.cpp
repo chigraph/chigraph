@@ -31,6 +31,9 @@ ModuleDetails::ModuleDetails(QWidget* parent) {
 
 	mModDeps = new ModuleDependencies;
 	connect(mModDeps, &ModuleDependencies::dependencyAdded, this, &ModuleDetails::dependencyAdded);
+	connect(mModDeps, &ModuleDependencies::dependencyAdded, this, [this](auto){dirtied();});
+	connect(mModDeps, &ModuleDependencies::dependencyRemoved, this, &ModuleDetails::dependencyRemoved);
+	connect(mModDeps, &ModuleDependencies::dependencyRemoved, this, [this](auto){dirtied();});
 	depslayout->addWidget(mModDeps);
 }
 
