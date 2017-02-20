@@ -1,7 +1,7 @@
 {
   "dependencies": [
-    "c",
-    "lang"
+    "lang",
+    "c"
   ],
   "graphs": [
     {
@@ -19,33 +19,11 @@
         },
         {
           "input": [
-            "itoa",
+            "puts",
             0
           ],
           "output": [
             "exit",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "puts",
-            0
-          ],
-          "output": [
-            "itoa",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "puts",
-            0
-          ],
-          "output": [
-            "itoa",
             0
           ],
           "type": "exec"
@@ -98,24 +76,6 @@
             103
           ],
           "type": "lang:exit"
-        },
-        "itoa": {
-          "data": {
-            "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%d\", val);\n\treturn a;\n}",
-            "extraflags": [],
-            "function": "doitoa",
-            "inputs": [
-              {
-                "": "lang:i32"
-              }
-            ],
-            "output": "lang:i8*"
-          },
-          "location": [
-            735,
-            105
-          ],
-          "type": "c:func"
         },
         "puts": {
           "data": {

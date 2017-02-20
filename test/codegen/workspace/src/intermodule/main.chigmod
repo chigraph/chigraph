@@ -1,14 +1,34 @@
 {
   "dependencies": [
-    "intermodule/printer",
+    "lang",
     "c",
-    "lang"
+    "intermodule/printer"
   ],
-  "types": {},
   "graphs": [
     {
-      "local_variables": {},
       "connections": [
+        {
+          "input": [
+            "{4caf7ce7-fea1-4f63-ad73-bd6cf4652164}",
+            0
+          ],
+          "output": [
+            "exit",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "itoa",
+            0
+          ],
+          "output": [
+            "{4caf7ce7-fea1-4f63-ad73-bd6cf4652164}",
+            0
+          ],
+          "type": "data"
+        },
         {
           "input": [
             "itoa",
@@ -59,7 +79,7 @@
             0
           ],
           "output": [
-            "exit",
+            "{4caf7ce7-fea1-4f63-ad73-bd6cf4652164}",
             0
           ],
           "type": "exec"
@@ -95,6 +115,7 @@
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "main",
       "nodes": {
         "call": {
@@ -108,8 +129,8 @@
         "call2": {
           "data": null,
           "location": [
-            1336,
-            93
+            1334.33337402344,
+            57.1666679382324
           ],
           "type": "intermodule/printer:docall"
         },
@@ -134,18 +155,22 @@
             ]
           },
           "location": [
-            1516.83996582031,
-            92.6800003051758
+            1742.76220703125,
+            85.9336242675781
           ],
           "type": "lang:exit"
         },
         "itoa": {
           "data": {
-            "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
+            "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%d\", val); \n\treturn a;\n}",
+            "extraflags": [],
             "function": "doitoa",
-            "inputs": [{"arg": "lang:i32"}],
-            "output": "lang:i8*",
-            "extraflags": []
+            "inputs": [
+              {
+                "": "lang:i32"
+              }
+            ],
+            "output": "lang:i8*"
           },
           "location": [
             1138,
@@ -160,10 +185,29 @@
             231
           ],
           "type": "lang:strliteral"
+        },
+        "{4caf7ce7-fea1-4f63-ad73-bd6cf4652164}": {
+          "data": {
+            "code": "#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}\n",
+            "extraflags": [],
+            "function": "dofree",
+            "inputs": [
+              {
+                "": "lang:i8*"
+              }
+            ],
+            "output": null
+          },
+          "location": [
+            1492.19763183594,
+            103.467735290527
+          ],
+          "type": "c:func"
         }
       },
       "type": "function"
     }
   ],
-  "name": "main"
+  "name": "main",
+  "types": {}
 }
