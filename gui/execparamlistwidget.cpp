@@ -56,9 +56,11 @@ void ExecParamListWidget::setFunction(FunctionView* func, Type ty) {
 			if (mType == Input) {
 				mFunc->function()->renameExecInput(id, newText.toStdString());
 				refreshEntry();
+				dirtied();
 			} else {
 				mFunc->function()->renameExecOutput(id, newText.toStdString());
 				refreshExits();
+				dirtied();
 			}
 		});
 		layout->addWidget(edit, id, 0);
@@ -69,10 +71,12 @@ void ExecParamListWidget::setFunction(FunctionView* func, Type ty) {
 				mFunc->function()->removeExecInput(id);
 				refreshEntry();
 				setFunction(mFunc, mType);
+				dirtied();
 			} else {
 				mFunc->function()->removeExecOutput(id);
 				refreshExits();
 				setFunction(mFunc, mType);
+				dirtied();
 			}
 		});
 		layout->addWidget(deleteButton, id, 1);
@@ -87,11 +91,13 @@ void ExecParamListWidget::setFunction(FunctionView* func, Type ty) {
 		if (mType == Input) {
 			mFunc->function()->addExecInput("");
 			refreshEntry();
+			dirtied();
 
 			setFunction(mFunc, mType);  // TODO: not the most efficient way...
 		} else {
 			mFunc->function()->addExecOutput("");
 			refreshExits();
+			dirtied();
 
 			setFunction(mFunc, mType);
 		}

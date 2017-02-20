@@ -42,6 +42,7 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 				mFunc->function()->renameDataOutput(id, newText.toStdString());
 				refreshExits();
 			}
+			dirtied();
 		});
 		layout->addWidget(edit, id, 0, Qt::AlignTop);
 
@@ -59,6 +60,7 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 				        mFunc->function()->retypeDataOutput(id, newType);
 				        refreshExits();
 			        }
+					dirtied();
 
 			    });
 		layout->addWidget(tySelector, id, 1, Qt::AlignTop);
@@ -74,6 +76,7 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 				refreshExits();
 				setFunction(mFunc, mType);
 			}
+			dirtied();
 		});
 		layout->addWidget(deleteButton, id, 2, Qt::AlignTop);
 
@@ -97,6 +100,7 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 
 			setFunction(mFunc, mType);
 		}
+		dirtied();
 
 	});
 	layout->addWidget(newButton, id, 2, Qt::AlignRight | Qt::AlignTop);

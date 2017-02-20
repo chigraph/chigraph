@@ -33,6 +33,7 @@ public slots:
 
 signals:
 	void dependencyAdded(const QString& str);
+	void dependencyRemoved(const QString& str);
 
 private:
 	void addNewDepItem();

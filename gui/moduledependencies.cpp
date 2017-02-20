@@ -2,6 +2,8 @@
 
 #include <chig/Result.hpp>
 
+#include <QMenu>
+
 ModuleDependencies::ModuleDependencies(QWidget* parent) : QListWidget(parent) {
 	connect(this, &QListWidget::itemDoubleClicked, this, [this](QListWidgetItem* item) {
 		if (item != mAddDepItem) { return; }
@@ -25,6 +27,30 @@ ModuleDependencies::ModuleDependencies(QWidget* parent) : QListWidget(parent) {
 		dependencyAdded(mod);
 
 		insertItem(count() - 1, mod);
+	});
+	
+	setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, &QWidget::customContextMenuRequested, this, [this](QPoint p) {
+		QPoint global = mapToGlobal(p);
+
+		QListWidgetItem* funcItem = item(indexAt(p).row());
+		if (mAddDepItem == funcItem) {
+			return;
+		}
+		// if we didn't right click on an item, then don't do anything
+		if (funcItem == nullptr) { return; }
+
+		QMenu contextMenu;
+		contextMenu.addAction(QIcon::fromTheme(QStringLiteral("edit-delete")), i18n("Delete"),
+		                      [this, funcItem] {
+								std::string text = funcItem->text().toStdString();
+								
+								mModule->removeDependency(text);
+								
+								// reload
+								setModule(*mModule);
+			                  });  // TODO: shortcut
+		contextMenu.exec(global);
 	});
 }
 

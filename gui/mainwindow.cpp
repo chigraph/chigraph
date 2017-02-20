@@ -64,18 +64,21 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(this, &MainWindow::moduleOpened, modDetails, &ModuleDetails::loadModule);
 	connect(this, &MainWindow::newFunctionCreated, modDetails,
 	        [modDetails](chig::GraphFunction* func) { modDetails->loadModule(func->module()); });
-	connect(modDetails, &ModuleDetails::dependencyAdded, this, [this] {
+	auto dependencyUpdatedSlot = [this] {
 		auto count = mFunctionTabs->count();
 		for (auto idx = 0; idx < count; ++idx) {
 			auto view = dynamic_cast<FunctionView*>(mFunctionTabs->widget(idx));
 
 			if (view) { view->refreshRegistry(); }
 		}
-	});
+	};
+	connect(modDetails, &ModuleDetails::dependencyAdded, this, dependencyUpdatedSlot);
+	connect(modDetails, &ModuleDetails::dependencyRemoved, this, dependencyUpdatedSlot);
 	connect(this, &MainWindow::moduleOpened, docker, [docker](chig::GraphModule& mod) {
 		docker->setWindowTitle(i18n("Module Details") + " - " +
 		                       QString::fromStdString(mod.fullName()));
 	});
+	connect(modDetails, &ModuleDetails::dirtied, this, &MainWindow::moduleDirtied);
 
 	// setup module browser
 	docker = new QDockWidget(i18n("Modules"), this);
@@ -130,7 +133,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 			                               QString::fromStdString(funcView->function()->name()));
 		        }
 		    });
-
+	connect(functionDetails, &FunctionDetails::dirtied, this, &MainWindow::moduleDirtied);
+	
 	/// Setup actions
 	auto actColl = this->KXmlGuiWindow::actionCollection();
 
@@ -359,8 +363,12 @@ void MainWindow::newModule() {
 }
 
 
-void MainWindow::moduleDirtied(chig::ChigModule& mod) {
-	mModuleBrowser->moduleDirtied(mod);
+void MainWindow::moduleDirtied() {
+	if (!currentModule()) {
+		return;
+	}
+	
+	mModuleBrowser->moduleDirtied(*currentModule());
 }
 
 

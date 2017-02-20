@@ -41,7 +41,7 @@ public slots:
 	void closeTab(int idx);
 	void newFunction();
 	void newModule();
-	void moduleDirtied(chig::ChigModule& mod);
+	void moduleDirtied();
 	void discardChangesInModule(chig::ChigModule& mod);
 
 signals:
