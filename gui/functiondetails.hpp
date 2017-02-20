@@ -9,6 +9,8 @@ class FunctionView;
 class FunctionInOuts;
 class LocalVariables;
 
+class QLineEdit;
+
 class FunctionDetails : public QWidget {
 public:
 	FunctionDetails(QWidget* parent = nullptr);
@@ -18,6 +20,10 @@ public:
 private:
 	FunctionInOuts* mInOuts;
 	LocalVariables* mLocals;
+	
+	QLineEdit* mDescEdit;
+	
+	FunctionView* mFunction = nullptr;
 };
 
 #endif  // CHIGGUI_FUNCTIONDETAILS_HPP
