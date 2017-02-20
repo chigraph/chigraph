@@ -1,6 +1,8 @@
+<!-- HTML header for doxygen 1.8.13-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
@@ -84,13 +86,14 @@ $(document).ready(function(){initNavTree('structchig_1_1DataType.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#related">Related Functions</a> &#124;
 <a href="structchig_1_1DataType-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">chig::DataType Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> its in.  
+<p>A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> it's in and it embeds debug types.  
  <a href="structchig_1_1DataType.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="DataType_8hpp_source.html">chig/DataType.hpp</a>&gt;</code></p>
@@ -109,25 +112,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa63396ca8c48bd0a6be166df245772a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#aa63396ca8c48bd0a6be166df245772a9">module</a> () const</td></tr>
 <tr class="memdesc:aa63396ca8c48bd0a6be166df245772a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the module this is a part of.  <a href="#aa63396ca8c48bd0a6be166df245772a9">More...</a><br /></td></tr>
 <tr class="separator:aa63396ca8c48bd0a6be166df245772a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10f4c641a18c6127f37c71b34fa0e320"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a10f4c641a18c6127f37c71b34fa0e320">operator!=</a> (const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;other) const</td></tr>
-<tr class="memdesc:a10f4c641a18c6127f37c71b34fa0e320"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality check.  <a href="#a10f4c641a18c6127f37c71b34fa0e320">More...</a><br /></td></tr>
-<tr class="separator:a10f4c641a18c6127f37c71b34fa0e320"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af71e8c0cc7981392f3af0fa5df1f1d4c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#af71e8c0cc7981392f3af0fa5df1f1d4c">operator==</a> (const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;other) const</td></tr>
-<tr class="memdesc:af71e8c0cc7981392f3af0fa5df1f1d4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality check.  <a href="#af71e8c0cc7981392f3af0fa5df1f1d4c">More...</a><br /></td></tr>
-<tr class="separator:af71e8c0cc7981392f3af0fa5df1f1d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a918a4163252b17b6971b3cf98497d537"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a918a4163252b17b6971b3cf98497d537">qualifiedName</a> () const</td></tr>
-<tr class="memdesc:a918a4163252b17b6971b3cf98497d537"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the qualified name of the type (with the module)  <a href="#a918a4163252b17b6971b3cf98497d537">More...</a><br /></td></tr>
+<tr class="memdesc:a918a4163252b17b6971b3cf98497d537"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the qualified name of the type (<a class="el" href="structchig_1_1DataType.html#aa63396ca8c48bd0a6be166df245772a9" title="Get the module this is a part of. ">module()</a>.fullName() + ":" name())  <a href="#a918a4163252b17b6971b3cf98497d537">More...</a><br /></td></tr>
 <tr class="separator:a918a4163252b17b6971b3cf98497d537"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a977054d97d25af626109f372a793f4a6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a977054d97d25af626109f372a793f4a6">unqualifiedName</a> () const</td></tr>
-<tr class="memdesc:a977054d97d25af626109f372a793f4a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the unqualified name of the type.  <a href="#a977054d97d25af626109f372a793f4a6">More...</a><br /></td></tr>
-<tr class="separator:a977054d97d25af626109f372a793f4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a1ec252d6db0dc74267a9fbf391566c"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a6a1ec252d6db0dc74267a9fbf391566c">unqualifiedName</a> () const</td></tr>
+<tr class="memdesc:a6a1ec252d6db0dc74267a9fbf391566c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the unqualified name of the type.  <a href="#a6a1ec252d6db0dc74267a9fbf391566c">More...</a><br /></td></tr>
+<tr class="separator:a6a1ec252d6db0dc74267a9fbf391566c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a307eaa94c9f2d408c7a204e364b02b22"><td class="memItemLeft" align="right" valign="top"><a id="a307eaa94c9f2d408c7a204e364b02b22"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22">valid</a> () const</td></tr>
-<tr class="memdesc:a307eaa94c9f2d408c7a204e364b02b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a> is valid. <br /></td></tr>
+<tr class="memdesc:a307eaa94c9f2d408c7a204e364b02b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule it&#39;s in and it embe...">DataType</a> is valid. <br /></td></tr>
 <tr class="separator:a307eaa94c9f2d408c7a204e364b02b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:ad14e85637a15b7f77cbc51d7139ebfd1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#ad14e85637a15b7f77cbc51d7139ebfd1">operator!=</a> (const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;lhs, const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;rhs)</td></tr>
+<tr class="memdesc:ad14e85637a15b7f77cbc51d7139ebfd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality check.  <a href="#ad14e85637a15b7f77cbc51d7139ebfd1">More...</a><br /></td></tr>
+<tr class="separator:ad14e85637a15b7f77cbc51d7139ebfd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28f2089d4e0ce03e737d2a82e473c927"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a28f2089d4e0ce03e737d2a82e473c927">operator==</a> (const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;lhs, const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a28f2089d4e0ce03e737d2a82e473c927"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality check.  <a href="#a28f2089d4e0ce03e737d2a82e473c927">More...</a><br /></td></tr>
+<tr class="separator:a28f2089d4e0ce03e737d2a82e473c927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> its in. </p>
+<div class="textblock"><p>A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> it's in and it embeds debug types. </p>
 
 <p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00016">16</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -220,13 +228,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00039">39</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00264">chig::compileFunction()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00264">chig::compileFunction()</a>, and <a class="el" href="DataType_8hpp_source.html#l00057">operator==()</a>.</p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a4a142025e9029ce73bd3e192e53e6d85_icgraph.svg" width="622" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a4a142025e9029ce73bd3e192e53e6d85_icgraph.svg" width="610" height="96"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -259,6 +267,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00036">36</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="DataType_8hpp_source.html#l00057">operator==()</a>.</p>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a3b053e3ef3585abbc0453f59c25383b9_icgraph.svg" width="411" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <a id="aa63396ca8c48bd0a6be166df245772a9"></a>
@@ -289,79 +306,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00027">27</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="DataType_8hpp_source.html#l00057">operator==()</a>, and <a class="el" href="DataType_8hpp_source.html#l00033">qualifiedName()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_aa63396ca8c48bd0a6be166df245772a9_icgraph.svg" width="100%" height="372"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
-<a id="a10f4c641a18c6127f37c71b34fa0e320"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10f4c641a18c6127f37c71b34fa0e320">&#9670;&nbsp;</a></span>operator!=()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool chig::DataType::operator!= </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Inequality check. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>The <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a> to check equality against </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>If they are inequal </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00055">55</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
-
-</div>
-</div>
-<a id="af71e8c0cc7981392f3af0fa5df1f1d4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af71e8c0cc7981392f3af0fa5df1f1d4c">&#9670;&nbsp;</a></span>operator==()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool chig::DataType::operator== </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Equality check. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>The <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule its in...">DataType</a> to check equality against </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>If they are equal </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00047">47</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -388,33 +340,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 </table>
 </div><div class="memdoc">
 
-<p>Get the qualified name of the type (with the module) </p>
+<p>Get the qualified name of the type (<a class="el" href="structchig_1_1DataType.html#aa63396ca8c48bd0a6be166df245772a9" title="Get the module this is a part of. ">module()</a>.fullName() + ":" name()) </p>
 <dl class="section return"><dt>Returns</dt><dd>The qualified name </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00033">33</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ChigModule_8hpp_source.html#l00057">chig::ChigModule::fullName()</a>.</p>
+<p class="reference">References <a class="el" href="ChigModule_8hpp_source.html#l00058">chig::ChigModule::fullName()</a>, <a class="el" href="DataType_8hpp_source.html#l00027">module()</a>, and <a class="el" href="DataType_8hpp_source.html#l00030">unqualifiedName()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00404">chig::GraphFunction::retypeLocalVariable()</a>.</p>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a918a4163252b17b6971b3cf98497d537_cgraph.svg" width="443" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a918a4163252b17b6971b3cf98497d537_cgraph.svg" width="474" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a918a4163252b17b6971b3cf98497d537_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="a977054d97d25af626109f372a793f4a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a977054d97d25af626109f372a793f4a6">&#9670;&nbsp;</a></span>unqualifiedName()</h2>
+<a id="a6a1ec252d6db0dc74267a9fbf391566c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a1ec252d6db0dc74267a9fbf391566c">&#9670;&nbsp;</a></span>unqualifiedName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -423,7 +375,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string chig::DataType::unqualifiedName </td>
+          <td class="memname">const std::string&amp; chig::DataType::unqualifiedName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -441,6 +393,121 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 
 <p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00030">30</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="DataType_8hpp_source.html#l00057">operator==()</a>, and <a class="el" href="DataType_8hpp_source.html#l00033">qualifiedName()</a>.</p>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a6a1ec252d6db0dc74267a9fbf391566c_icgraph.svg" width="100%" height="372"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="ad14e85637a15b7f77cbc51d7139ebfd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad14e85637a15b7f77cbc51d7139ebfd1">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Inequality check. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>The first <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule it&#39;s in and it embe...">DataType</a> </td></tr>
+    <tr><td class="paramname">rhs</td><td>The <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule it&#39;s in and it embe...">DataType</a> to check equality against </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If they aren't equal </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00067">67</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a28f2089d4e0ce03e737d2a82e473c927"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28f2089d4e0ce03e737d2a82e473c927">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structchig_1_1DataType.html">DataType</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Equality check. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>The first <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule it&#39;s in and it embe...">DataType</a> </td></tr>
+    <tr><td class="paramname">rhs</td><td>The <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule it&#39;s in and it embe...">DataType</a> to check equality against </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If they are equal </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00057">57</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="DataType_8hpp_source.html#l00039">debugType()</a>, <a class="el" href="DataType_8hpp_source.html#l00036">llvmType()</a>, <a class="el" href="DataType_8hpp_source.html#l00027">module()</a>, and <a class="el" href="DataType_8hpp_source.html#l00030">unqualifiedName()</a>.</p>
+<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1DataType_a28f2089d4e0ce03e737d2a82e473c927_cgraph.svg" width="455" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
@@ -452,7 +519,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1DataType.html">DataType</a></li>
-    <li class="footer">Generated on Sat Feb 18 2017 22:59:57 for chigraph by
+    <li class="footer">Generated on Sun Feb 19 2017 21:46:54 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

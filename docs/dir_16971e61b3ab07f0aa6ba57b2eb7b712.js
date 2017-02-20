@@ -24,6 +24,8 @@ var dir_16971e61b3ab07f0aa6ba57b2eb7b712 =
     [ "NodeType.hpp", "NodeType_8hpp.html", [
       [ "NodeType", "structchig_1_1NodeType.html", "structchig_1_1NodeType" ]
     ] ],
-    [ "Result.hpp", "Result_8hpp.html", "Result_8hpp" ],
+    [ "Result.hpp", "Result_8hpp.html", [
+      [ "Result", "structchig_1_1Result.html", "structchig_1_1Result" ]
+    ] ],
     [ "ToString.hpp", "ToString_8hpp_source.html", null ]
 ];

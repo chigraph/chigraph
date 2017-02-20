@@ -32,7 +32,8 @@ struct ChigModule {
 	/// Create a node type that is in the module from the name and json
 	/// \param name The name of the node type to create
 	/// \param jsonData The extra JSON data for the node
-	/// \param toFill The NodeType object to fill
+	/// \retval toFill The NodeType object to fill
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr)
 	/// \return The result
 	virtual Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
 	                                std::unique_ptr<NodeType>* toFill) = 0;

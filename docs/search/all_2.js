@@ -6,7 +6,7 @@ var searchData=
   ['datatype_2ehpp',['DataType.hpp',['../DataType_8hpp.html',1,'']]],
   ['debugtype',['debugType',['../structchig_1_1DataType.html#a4a142025e9029ce73bd3e192e53e6d85',1,'chig::DataType']]],
   ['dependencies',['dependencies',['../structchig_1_1ChigModule.html#a0fc2b8e9bab1d061ec12212ac8c78a40',1,'chig::ChigModule']]],
-  ['description',['description',['../structchig_1_1NodeType.html#affd513d7d48eb9e3e8c8aa52f357f4b8',1,'chig::NodeType']]],
+  ['description',['description',['../structchig_1_1GraphFunction.html#a48b7382c18c52ae83779b9973f7ddf31',1,'chig::GraphFunction::description()'],['../structchig_1_1NodeType.html#affd513d7d48eb9e3e8c8aa52f357f4b8',1,'chig::NodeType::description()']]],
   ['disconnectdata',['disconnectData',['../namespacechig.html#a26aa6586df79345493de9fc130291c18',1,'chig']]],
   ['disconnectexec',['disconnectExec',['../namespacechig.html#ad24a330508033631ef29b2f6e5cf6210',1,'chig']]],
   ['dump',['dump',['../structchig_1_1Result.html#af0d6e60f12b46f5723fa32524ae53db9',1,'chig::Result']]]

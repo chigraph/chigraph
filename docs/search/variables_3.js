@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['success',['success',['../structchig_1_1Result.html#a6d818cb55e17942f46bf8a293c7874b1',1,'chig::Result']]]
+  ['result_5fjson',['result_json',['../structchig_1_1Result.html#a25e2b271aa311953345140f248582428',1,'chig::Result']]]
 ];

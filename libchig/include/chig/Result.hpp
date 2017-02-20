@@ -13,6 +13,43 @@
 
 namespace chig {
 /// The result object, used for identifiying errors with good diagnostics
+/// 
+/// ## Usage:
+/// If you want to construct a default result object, just call the default constructor:
+/// ```
+/// Result res;
+/// ```
+/// `res` is the most common name for an error object, prefer it to other names.
+/// 
+/// When an error, warning, or just some event that requries logging needs to be added to the result object, 
+/// call `Result::addEntry`:
+/// ```
+/// Result res;
+/// res.addEntry("E231", "Some error occured", {{"Line Number", 34}});
+/// ```
+/// Note the `E` at the beginning of the error code, this is important. If it's an `E`, it's considered an error,
+/// and will mark the result as errored. If it's a `W`, then it's logged, but _it's still considred successful_.
+/// 
+/// If you're calling another operation that emits a Result object, then there's an easy to integrate that result object: the opeartor+=
+/// 
+/// ```
+/// Result res;
+/// res += connectExec(...); // or any function that returns a Result
+/// ```
+/// 
+/// ## Implementation Details:
+/// Result objects store a json object that represents the error metadata.
+/// It's an array, each being an object containing three objects:
+/// - `errorcode`: The errorcode. This is an identifier representng the error: a
+///    character followed by a number. The value of the character changes the behaviour:
+///      - `E`: it's an error and sets `success` to false. 
+///      - `W`: it's a warning
+///      - `I`: it's just info
+///   
+///   If it's anything else, that it will cause an assertion
+/// - `overview`: A simple string representing the generics of the problem. It *shouldn't* differ from 
+///   error to error, if you need to include specifics use the `data` element
+/// - `data`: Extra metadata for the error, including context and how the error occured.
 struct Result {
 	/// Default constructor; defaults to success
 	Result() : result_json(nlohmann::json::array()), success{true} {}
@@ -52,6 +89,7 @@ struct Result {
 /// \param lhs The left error
 /// \param rhs The right error
 /// \return The concatinated errors
+/// \relates Result
 inline Result operator+(const Result& lhs, const Result& rhs) {
 	Result ret;
 	ret.success = !(!lhs.success || !rhs.success);  // if either of them are false, then result is
@@ -67,6 +105,7 @@ inline Result operator+(const Result& lhs, const Result& rhs) {
 /// \param lhs The existing Result to add to
 /// \param rhs The (usually temporary) result to be added into lhs
 /// \return *this
+/// \relates Result
 inline Result& operator+=(Result& lhs, const Result& rhs) {
 	lhs.success = !(!lhs.success || !rhs.success);  // if either of them are false, then result is
 
@@ -80,6 +119,7 @@ inline Result& operator+=(Result& lhs, const Result& rhs) {
 /// \param lhs The stream
 /// \param rhs The Result to print to lhs
 /// \return lhs after printing
+/// \relates Result
 inline std::ostream& operator<<(std::ostream& lhs, const Result& rhs) {
 	lhs << rhs.dump();
 
