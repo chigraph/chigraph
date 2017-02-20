@@ -11,6 +11,8 @@
 #include <KTextEditor/View>
 #include <KActionCollection>
 
+using namespace QtNodes;
+
 class EditCodeDialog : public QDialog {
 public:
 	EditCodeDialog(chig::NodeInstance* inst, FunctionView* fview) {

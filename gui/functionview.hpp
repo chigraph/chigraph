@@ -20,41 +20,41 @@ class FunctionView : public QWidget {
 public:
 	FunctionView(chig::GraphFunction* func_, QWidget* parent = nullptr);
 
-	Node* guiNodeFromChigNode(chig::NodeInstance* inst);
-	chig::NodeInstance* chigNodeFromGuiNode(Node* node);
+	QtNodes::Node* guiNodeFromChigNode(chig::NodeInstance* inst);
+	chig::NodeInstance* chigNodeFromGuiNode(QtNodes::Node* node);
 
 	void updatePositions();
 
 	// refresh I/O for the node
-	void refreshGuiForNode(Node* node);
+	void refreshGuiForNode(QtNodes::Node* node);
 
 	void refreshRegistry();
 
 	chig::GraphFunction* function() const { return mFunction; }
 
-	FlowScene& scene() const { return *mScene; }
+	QtNodes::FlowScene& scene() const { return *mScene; }
 private slots:
-	void nodeAdded(Node& n);
-	void nodeDeleted(Node& n);
+	void nodeAdded(QtNodes::Node& n);
+	void nodeDeleted(QtNodes::Node& n);
 
-	void connectionAdded(Connection& c);
-	void connectionDeleted(Connection& c);
+	void connectionAdded(QtNodes::Connection& c);
+	void connectionDeleted(QtNodes::Connection& c);
 
-	void connectionUpdated(Connection& c);
+	void connectionUpdated(QtNodes::Connection& c);
 
 private:
-	FlowScene* mScene;
-	FlowView*  mView;
+	QtNodes::FlowScene* mScene;
+	QtNodes::FlowView*  mView;
 
 	chig::GraphFunction* mFunction;
 
-	std::unordered_map<chig::NodeInstance*, Node*> mNodeMap;
+	std::unordered_map<chig::NodeInstance*, QtNodes::Node*> mNodeMap;
 
 	// this contains absolute port ids
-	std::unordered_map<const Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
+	std::unordered_map<const QtNodes::Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
 	    conns;
 
-	std::shared_ptr<DataModelRegistry> createRegistry();
+	std::shared_ptr<QtNodes::DataModelRegistry> createRegistry();
 };
 
 #endif  // CHIGGUI_FUNCTIONVIEW_HPP
