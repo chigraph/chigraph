@@ -30,10 +30,11 @@ public slots:
 	void moduleSaved(chig::ChigModule& saved);
 
 	const std::unordered_set<chig::ChigModule*> dirtyModules() const { return mDirtyModules; }
+
 private:
 	void updateDirtyStatus(chig::ChigModule& updated, bool dirty);
-	
-	chig::Context* mContext = nullptr;
+
+	chig::Context*                        mContext = nullptr;
 	std::unordered_set<chig::ChigModule*> mDirtyModules;
 	std::unordered_map<std::string, ModuleTreeItem*> mItems;
 };

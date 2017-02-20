@@ -39,9 +39,9 @@ private slots:
 	void connectionDeleted(QtNodes::Connection& c);
 
 	void connectionUpdated(QtNodes::Connection& c);
-	
+
 	void nodeMoved(QtNodes::Node& n, QPointF newLoc);
-	
+
 signals:
 	void dirtied();
 
@@ -54,7 +54,8 @@ private:
 	std::unordered_map<chig::NodeInstance*, QtNodes::Node*> mNodeMap;
 
 	// this contains absolute port ids
-	std::unordered_map<const QtNodes::Connection*, std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
+	std::unordered_map<const QtNodes::Connection*,
+	                   std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
 	    conns;
 
 	std::shared_ptr<QtNodes::DataModelRegistry> createRegistry();

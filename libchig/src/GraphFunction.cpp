@@ -361,9 +361,7 @@ bool GraphFunction::removeLocalVariable(gsl::cstring_span<> name) {
 	return true;
 }
 
-void GraphFunction::renameLocalVariable(std::string oldName,
-                                        std::string newName) {
-
+void GraphFunction::renameLocalVariable(std::string oldName, std::string newName) {
 	bool setanything = false;
 	for (auto& var : mLocalVariables) {
 		if (var.name == oldName) {
@@ -403,7 +401,7 @@ void GraphFunction::renameLocalVariable(std::string oldName,
 
 void GraphFunction::retypeLocalVariable(gsl::cstring_span<> name, DataType newType) {
 	std::string qualifiedName = newType.qualifiedName();
-	
+
 	for (auto& var : mLocalVariables) {
 		if (var.name == name) {
 			var.type = std::move(newType);
@@ -417,8 +415,7 @@ void GraphFunction::retypeLocalVariable(gsl::cstring_span<> name, DataType newTy
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
 
-		auto res =
-		    module().nodeTypeFromName("_set_" + gsl::to_string(name), qualifiedName, &ty);
+		auto res = module().nodeTypeFromName("_set_" + gsl::to_string(name), qualifiedName, &ty);
 		Expects(!!res);
 
 		node->setType(std::move(ty));
@@ -429,8 +426,7 @@ void GraphFunction::retypeLocalVariable(gsl::cstring_span<> name, DataType newTy
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
 
-		auto res =
-		    module().nodeTypeFromName("_get_" + gsl::to_string(name), qualifiedName, &ty);
+		auto res = module().nodeTypeFromName("_get_" + gsl::to_string(name), qualifiedName, &ty);
 		Expects(!!res);
 
 		node->setType(std::move(ty));

@@ -12,7 +12,8 @@
 
 namespace chig {
 /// A type of data
-/// Loose wrapper around llvm::Type*, except it knows which ChigModule it's in and it embeds debug types
+/// Loose wrapper around llvm::Type*, except it knows which ChigModule it's in and it embeds debug
+/// types
 struct DataType {
 	/// Constructor
 	/// \param chigMod The module
@@ -55,8 +56,8 @@ private:
 /// \return If they are equal
 /// \relates DataType
 inline bool operator==(const DataType& lhs, const DataType& rhs) {
-	return &lhs.module() == &rhs.module() && lhs.unqualifiedName() == rhs.unqualifiedName() && lhs.llvmType() == rhs.llvmType() &&
-			lhs.debugType() == rhs.debugType();
+	return &lhs.module() == &rhs.module() && lhs.unqualifiedName() == rhs.unqualifiedName() &&
+	       lhs.llvmType() == rhs.llvmType() && lhs.debugType() == rhs.debugType();
 }
 
 /// Inequality check
@@ -66,10 +67,8 @@ inline bool operator==(const DataType& lhs, const DataType& rhs) {
 /// \relates DataType
 inline bool operator!=(const DataType& lhs, const DataType& rhs) { return !(lhs == rhs); }
 
-
 /// Basicaly a std::pair<std::string, DataType>, except it has nicer names.
 struct NamedDataType {
-	
 	/// Construct a NamedDataType from the name and the type
 	/// \param n The name
 	/// \param ty The type
@@ -81,9 +80,9 @@ struct NamedDataType {
 
 	/// The name
 	std::string name;
-	
+
 	/// The type
-	DataType    type;
+	DataType type;
 };
 
 /// Check if two NamedDataType objects are equal
@@ -101,8 +100,6 @@ inline bool operator==(const NamedDataType& lhs, const NamedDataType& rhs) {
 /// \return if they aren't equal
 /// \relates NamedDataType
 inline bool operator!=(const NamedDataType& lhs, const NamedDataType& rhs) { return !(lhs == rhs); }
-
-
 }
 
 #endif  // CHIG_DATA_TYPE_HPP

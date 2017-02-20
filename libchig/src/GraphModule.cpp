@@ -23,9 +23,7 @@ namespace chig {
 namespace {
 struct GraphFuncCallType : public NodeType {
 	GraphFuncCallType(GraphModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
-	    : NodeType(json_module, funcname, ""),
-	      JModule(&json_module)
-	{
+	    : NodeType(json_module, funcname, ""), JModule(&json_module) {
 		Result& res = *resPtr;
 
 		auto* mygraph = JModule->functionFromName(funcname);

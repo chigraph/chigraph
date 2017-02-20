@@ -48,7 +48,7 @@ void LocalVariables::loadFunction(FunctionView* func) {
 			        mFunctionView->function()->retypeLocalVariable(localName, newType);
 			        mFunctionView->refreshRegistry();
 			        refreshReferencingNodes(localName);
-					dirtied();
+			        dirtied();
 
 			    });
 		layout->addWidget(tySelector, id, 1);

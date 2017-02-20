@@ -22,7 +22,7 @@ public slots:
 
 signals:
 	void dirtied();
-	
+
 private:
 	FunctionView*        mFuncView = nullptr;
 	chig::GraphFunction* mFunc     = nullptr;

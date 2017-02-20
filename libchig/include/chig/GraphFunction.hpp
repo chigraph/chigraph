@@ -110,13 +110,15 @@ struct GraphFunction {
 
 	/// Create a fresh NodeType for an entry
 	/// \retval toFill The NodeType pointer to fill
-	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr)
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
+	/// pointer to the unique_ptr)
 	/// \return The result
 	Result createEntryNodeType(std::unique_ptr<NodeType>* toFill) const;
 
 	/// Create a fresh NodeType for an exit
 	/// \retval toFill The NodeType pointer to fill
-	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr)
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
+	/// pointer to the unique_ptr)
 	/// \return The result
 	Result createExitNodeType(std::unique_ptr<NodeType>* toFill) const;
 
@@ -287,12 +289,11 @@ struct GraphFunction {
 	/// Set the description of the function
 	/// \param newDesc The new description
 	void setDescription(std::string newDesc) { mDescription = std::move(newDesc); }
-	
+
 	/// Get the description of the function
 	/// \return The description
 	const std::string& description() const { return mDescription; };
-	
-	
+
 	// Various getters
 	//////////////////
 

@@ -16,7 +16,7 @@ public:
 
 signals:
 	void dirtied();
-	
+
 private:
 	void refreshReferencingNodes(const std::string& name);
 	void deleteReferencingNodes(const std::string& name);

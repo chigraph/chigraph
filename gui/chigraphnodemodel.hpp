@@ -44,11 +44,14 @@ public:
 
 	virtual unsigned int nPorts(QtNodes::PortType portType) const override;
 
-	virtual QtNodes::NodeDataType dataType(QtNodes::PortType pType, QtNodes::PortIndex pIndex) const override;
+	virtual QtNodes::NodeDataType dataType(QtNodes::PortType  pType,
+	                                       QtNodes::PortIndex pIndex) const override;
 
-	virtual void                      setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override {}
-	virtual std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex /*port*/) override { return nullptr; }
-	virtual QWidget*                  embeddedWidget() override;
+	virtual void setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override {}
+	virtual std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex /*port*/) override {
+		return nullptr;
+	}
+	virtual QWidget* embeddedWidget() override;
 	// We don't need saving...chigraph has its own serialization
 	QJsonObject save() const override { return {}; }
 

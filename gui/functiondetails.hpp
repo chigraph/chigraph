@@ -20,13 +20,13 @@ public:
 
 signals:
 	void dirtied();
-	
+
 private:
 	FunctionInOuts* mInOuts;
 	LocalVariables* mLocals;
-	
+
 	QLineEdit* mDescEdit;
-	
+
 	FunctionView* mFunction = nullptr;
 };
 

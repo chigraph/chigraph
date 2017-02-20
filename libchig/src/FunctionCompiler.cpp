@@ -434,4 +434,4 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 	return res;
 }
-} // namespace chig
+}  // namespace chig

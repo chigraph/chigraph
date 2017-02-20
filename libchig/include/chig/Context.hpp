@@ -88,7 +88,8 @@ struct Context {
 	/// \param typeName The name of the node type
 	/// \param data The JSON data that is used to construct the NodeType.
 	/// \retval toFill The point to fill
-	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr)
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
+	/// pointer to the unique_ptr)
 	/// \return The Result
 	Result nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
 	                          const nlohmann::json&      data,
@@ -103,7 +104,8 @@ struct Context {
 	/// Compile a module to a \c llvm::Module
 	/// \param fullName The full name of the moudle to compile
 	/// \retval toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
-	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr)
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
+	/// pointer to the unique_ptr)
 	/// \pre moduleByFullName(fullName) exists
 	/// \return The result
 	Result compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill);
