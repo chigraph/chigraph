@@ -105,23 +105,27 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 	}
 	// make sure it has a type element
 	if (input.find("type") == input.end() || !input["type"].is_string()) {
-		res.addEntry("E2", R"(JSON in graph doesn't have a "type" element)", {{"Module Name", createInside.fullName()}});
+		res.addEntry("E2", R"(JSON in graph doesn't have a "type" element)",
+		             {{"Module Name", createInside.fullName()}});
 		return res;
 	}
 	if (input["type"] != "function") {
-		res.addEntry("E3", "JSON in graph doesn't have a function type", {{"Module Name", createInside.fullName()}});
+		res.addEntry("E3", "JSON in graph doesn't have a function type",
+		             {{"Module Name", createInside.fullName()}});
 		return res;
 	}
 	// make sure there is a name
 	if (input.find("name") == input.end() || !input["name"].is_string()) {
-		res.addEntry("E4", "JSON in graph doesn't have a name parameter", {{"Module Name", createInside.fullName()}});
+		res.addEntry("E4", "JSON in graph doesn't have a name parameter",
+		             {{"Module Name", createInside.fullName()}});
 		return res;
 	}
 	std::string name = input["name"];
-	
+
 	// load the description
 	if (input.find("description") == input.end() || !input["description"].is_string()) {
-		res.addEntry("E50", "JSON in graph doesn't have a description string", {{"Function Name", name}, {"Module Name", createInside.fullName()}});
+		res.addEntry("E50", "JSON in graph doesn't have a description string",
+		             {{"Function Name", name}, {"Module Name", createInside.fullName()}});
 		return res;
 	}
 	std::string description = input["description"];

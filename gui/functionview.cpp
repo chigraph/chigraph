@@ -90,7 +90,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 
 	connect(mScene, &FlowScene::connectionCreated, this, &FunctionView::connectionAdded);
 	connect(mScene, &FlowScene::connectionDeleted, this, &FunctionView::connectionDeleted);
-	
+
 	connect(mScene, &FlowScene::nodeMoved, this, &FunctionView::nodeMoved);
 }
 
@@ -105,7 +105,7 @@ void FunctionView::nodeAdded(Node& n) {
 	    std::unique_ptr<chig::NodeInstance>(&ptr->instance());
 
 	mNodeMap[&ptr->instance()] = &n;
-	
+
 	dirtied();
 }
 
@@ -222,9 +222,8 @@ void FunctionView::connectionUpdated(Connection& c) {
 }
 
 void FunctionView::nodeMoved(Node& n, QPointF newLoc) {
-	
 	auto model = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
-	
+
 	model->instance().setX(newLoc.x());
 	model->instance().setY(newLoc.y());
 	dirtied();

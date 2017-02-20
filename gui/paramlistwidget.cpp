@@ -60,7 +60,7 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 				        mFunc->function()->retypeDataOutput(id, newType);
 				        refreshExits();
 			        }
-					dirtied();
+			        dirtied();
 
 			    });
 		layout->addWidget(tySelector, id, 1, Qt::AlignTop);

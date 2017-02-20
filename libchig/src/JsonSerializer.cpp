@@ -10,8 +10,8 @@ namespace chig {
 nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 	auto jsonData = nlohmann::json{};
 
-	jsonData["type"] = "function";
-	jsonData["name"] = func.name();
+	jsonData["type"]        = "function";
+	jsonData["name"]        = func.name();
 	jsonData["description"] = func.description();
 
 	auto& datainputsjson = jsonData["data_inputs"];

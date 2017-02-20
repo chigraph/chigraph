@@ -54,7 +54,7 @@ signals:
 
 private:
 	void closeEvent(QCloseEvent* event) override;
-	
+
 	KRecentFilesAction* mOpenRecentAction;  // keep this so we can save the entries
 	std::unordered_map<QString, FunctionView*> mOpenFunctions;
 
@@ -62,9 +62,9 @@ private:
 	QTabWidget* mFunctionTabs = nullptr;
 
 	// context & module
-	std::unique_ptr<chig::Context> mChigContext = nullptr;
-	chig::GraphModule*             mModule      = nullptr;
-	ModuleBrowser* mModuleBrowser = nullptr;
+	std::unique_ptr<chig::Context> mChigContext   = nullptr;
+	chig::GraphModule*             mModule        = nullptr;
+	ModuleBrowser*                 mModuleBrowser = nullptr;
 };
 
 #endif  // CHIGGUI_MAINWINDOW_H

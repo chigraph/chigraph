@@ -11,23 +11,21 @@
 
 namespace {
 
-class StringListValidator : public QValidator{
+class StringListValidator : public QValidator {
 public:
-	StringListValidator(QStringList acceptableValues) : mAcceptableValues{std::move(acceptableValues)} {}
-	
+	StringListValidator(QStringList acceptableValues)
+	    : mAcceptableValues{std::move(acceptableValues)} {}
+
 	State validate(QString& input, int& pos) const override {
-		if (mAcceptableValues.contains(input)) {
-			return Acceptable;
-		}
+		if (mAcceptableValues.contains(input)) { return Acceptable; }
 		return Intermediate;
 	}
-	
+
 private:
 	QStringList mAcceptableValues;
-
 };
 
-} // anonymous namespace
+}  // anonymous namespace
 
 TypeSelector::TypeSelector(chig::ChigModule& module, QWidget* parent)
     : KComboBox(true, parent), mModule{&module} {

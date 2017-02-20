@@ -6,10 +6,10 @@
 
 #include <chig/CModule.hpp>
 
+#include <KActionCollection>
 #include <KTextEditor/Document>
 #include <KTextEditor/Editor>
 #include <KTextEditor/View>
-#include <KActionCollection>
 
 using namespace QtNodes;
 
