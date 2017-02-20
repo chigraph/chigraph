@@ -232,14 +232,6 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::save() {
-	for (int idx = 0; idx < mFunctionTabs->count(); ++idx) {
-		auto func = mFunctionTabs->widget(idx);
-		if (func != nullptr) {
-			auto castedFunc = dynamic_cast<FunctionView*>(func);
-			if (castedFunc != nullptr) { castedFunc->updatePositions(); }
-		}
-	}
-
 	if (mModule != nullptr) {
 		chig::Result res = mModule->saveToDisk();
 		if (!res) {
