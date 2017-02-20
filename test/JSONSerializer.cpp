@@ -24,6 +24,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 
 		bool created;
 		auto func = jmod->getOrCreateFunction("hello", {}, {}, {""}, {""}, &created);
+		func->setDescription("desc");
 		REQUIRE(created == true);
 		REQUIRE(func != nullptr);
 
@@ -39,6 +40,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 				{
 					"type": "function",
 					"name": "hello",
+					"description": "desc",
 					"nodes": {},
 					"connections": [],
                     "data_inputs": [],
@@ -69,6 +71,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 					{
 						"type": "function",
 						"name": "hello",
+						"description": "desc",
 						"nodes": {
 							"entry": {
 								"type": "lang:entry",
@@ -104,6 +107,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 						{
 							"type": "function",
 							"name": "hello",
+							"description": "desc",
 							"nodes": {
 								"entry": {
 									"type": "lang:entry",
@@ -139,6 +143,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 							{
 								"type": "function",
 								"name": "hello",
+								"description": "desc",
 								"nodes": {
 									"entry": {
 										"type": "lang:entry",
@@ -182,6 +187,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 								{
 								"type": "function",
 								"name": "hello",
+								"description": "desc",
 								"nodes": {
 									"entry": {
 										"type": "lang:entry",
@@ -230,6 +236,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 				{
 					"type": "function",
 					"name": "hello",
+					"description": "desc",
 					"nodes": {},
 					"connections": [],
                     "data_inputs": [],

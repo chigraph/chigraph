@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"title": "Chigraph",
-	"description": "The code specification for the Chigraph language. https://github.com/russelltg/chigraph",
+	"description": "The code specification for the Chigraph language. https://github.com/chigraph/chigraph",
 	"type": "object",
 	"properties": {
 		"dependencies": {
@@ -75,7 +75,11 @@
 						}
 					},
 					"name": {
-						"description": "The description of the graph.",
+						"description": "The name of the graph.",
+						"type": "string"
+					},
+					"description": {
+						"description": "The description of the graph (more user facing)",
 						"type": "string"
 					},
 					"nodes": {

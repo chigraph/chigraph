@@ -24,11 +24,12 @@ namespace {
 struct GraphFuncCallType : public NodeType {
 	GraphFuncCallType(GraphModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
 	    : NodeType(json_module, funcname, ""),
-	      JModule(&json_module)  // TODO: description
+	      JModule(&json_module)
 	{
 		Result& res = *resPtr;
 
 		auto* mygraph = JModule->functionFromName(funcname);
+		setDescription(mygraph->description());
 
 		if (mygraph == nullptr) {
 			res.addEntry("EINT", "Graph doesn't exist in module",

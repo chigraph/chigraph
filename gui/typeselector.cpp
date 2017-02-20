@@ -9,24 +9,48 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 
+namespace {
+
+class StringListValidator : public QValidator{
+public:
+	StringListValidator(QStringList acceptableValues) : mAcceptableValues{std::move(acceptableValues)} {}
+	
+	State validate(QString& input, int& pos) const override {
+		if (mAcceptableValues.contains(input)) {
+			return Acceptable;
+		}
+		return Intermediate;
+	}
+	
+private:
+	QStringList mAcceptableValues;
+
+};
+
+} // anonymous namespace
+
 TypeSelector::TypeSelector(chig::ChigModule& module, QWidget* parent)
     : KComboBox(true, parent), mModule{&module} {
 	KCompletion* completer = completionObject();
 
 	setCompletionMode(KCompletion::CompletionPopupAuto);
 
+	QStringList possibleTypes;
 	// add the module
 	for (const auto& ty : module.typeNames()) {
-		completer->addItem(QString::fromStdString(module.fullName() + ":" + ty));
+		possibleTypes << QString::fromStdString(module.fullName() + ":" + ty);
 	}
 
 	// and its dependencies
 	for (auto dep : module.dependencies()) {
 		auto depMod = module.context().moduleByFullName(dep);
 		for (const auto& type : depMod->typeNames()) {
-			completer->addItem(QString::fromStdString(depMod->fullName() + ":" + type));
+			possibleTypes << QString::fromStdString(depMod->fullName() + ":" + type);
 		}
 	}
+
+	completer->setItems(possibleTypes);
+	setValidator(new StringListValidator(std::move(possibleTypes)));
 
 	connect(this, static_cast<void (KComboBox::*)()>(&KComboBox::returnPressed), this,
 	        [&module, this]() { typeSelected(currentType()); });
