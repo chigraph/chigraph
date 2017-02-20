@@ -27,7 +27,7 @@
 
 class FunctionView;
 
-class ChigraphNodeModel : public NodeDataModel {
+class ChigraphNodeModel : public QtNodes::NodeDataModel {
 public:
 	ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fview_);
 
@@ -42,15 +42,15 @@ public:
 		return std::make_unique<ChigraphNodeModel>(newInst, mFunctionView);
 	}
 
-	virtual unsigned int nPorts(PortType portType) const override;
+	virtual unsigned int nPorts(QtNodes::PortType portType) const override;
 
-	virtual NodeDataType dataType(PortType pType, PortIndex pIndex) const override;
+	virtual QtNodes::NodeDataType dataType(QtNodes::PortType pType, QtNodes::PortIndex pIndex) const override;
 
-	virtual void                      setInData(std::shared_ptr<NodeData>, PortIndex) override {}
-	virtual std::shared_ptr<NodeData> outData(PortIndex /*port*/) override { return nullptr; }
+	virtual void                      setInData(std::shared_ptr<QtNodes::NodeData>, QtNodes::PortIndex) override {}
+	virtual std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex /*port*/) override { return nullptr; }
 	virtual QWidget*                  embeddedWidget() override;
 	// We don't need saving...chigraph has its own serialization
-	void save(Properties&) const override {}
+	QJsonObject save() const override { return {}; }
 
 private:
 	chig::NodeInstance* mInst;

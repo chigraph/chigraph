@@ -14,6 +14,8 @@
 
 #include "chigraphnodemodel.hpp"
 
+using namespace QtNodes;
+
 FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
     : QWidget(parent), mFunction{func_} {
 	auto hlayout = new QHBoxLayout(this);
