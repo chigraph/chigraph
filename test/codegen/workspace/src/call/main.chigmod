@@ -8,6 +8,28 @@
       "connections": [
         {
           "input": [
+            "{3d7a9f86-6aed-4bb2-866e-cb4489142b06}",
+            0
+          ],
+          "output": [
+            "exit",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "itoa",
+            0
+          ],
+          "output": [
+            "{3d7a9f86-6aed-4bb2-866e-cb4489142b06}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
             "itoa",
             0
           ],
@@ -56,7 +78,7 @@
             0
           ],
           "output": [
-            "exit",
+            "{3d7a9f86-6aed-4bb2-866e-cb4489142b06}",
             0
           ],
           "type": "exec"
@@ -106,8 +128,8 @@
         "call2": {
           "data": null,
           "location": [
-            1234.16003417969,
-            76.2399978637695
+            1304.66247558594,
+            51.3567962646484
           ],
           "type": "call/main:docall"
         },
@@ -132,19 +154,19 @@
             ]
           },
           "location": [
-            1451.51831054688,
-            90.7680053710938
+            1776.6865234375,
+            35.4581832885742
           ],
           "type": "lang:exit"
         },
         "itoa": {
           "data": {
-            "code": "#include <stdio.h> \n #include <stdlib.h> \n #include <string.h> \n char* doitoa(int val) { char* a = malloc(33); memset(a, 0, 33); sprintf(a, \"%d\", val); return a; }",
+            "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%d\", val);\n\treturn a;\n}",
             "extraflags": [],
             "function": "doitoa",
             "inputs": [
               {
-                "val": "lang:i32"
+                "": "lang:i32"
               }
             ],
             "output": "lang:i8*"
@@ -162,6 +184,24 @@
             200.880004882812
           ],
           "type": "lang:strliteral"
+        },
+        "{3d7a9f86-6aed-4bb2-866e-cb4489142b06}": {
+          "data": {
+            "code": "#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}",
+            "extraflags": [],
+            "function": "dofree",
+            "inputs": [
+              {
+                "": "lang:i8*"
+              }
+            ],
+            "output": null
+          },
+          "location": [
+            1484.35205078125,
+            84.6719970703125
+          ],
+          "type": "c:func"
         }
       },
       "type": "function"
@@ -262,24 +302,24 @@
           },
           "location": [
             435,
-            52
+            49
           ],
           "type": "lang:exit"
         },
         "puts": {
           "data": {
-            "code": "#include <stdio.h> \n int doputs(const char* mystr) { return puts(mystr); }",
+            "code": "#include <stdio.h> \nint doputs(const char* mystr) {\n\treturn puts(mystr);\n}",
             "extraflags": [],
             "function": "doputs",
             "inputs": [
               {
-                "mystr": "lang:i8*"
+                "": "lang:i8*"
               }
             ],
             "output": "lang:i32"
           },
           "location": [
-            155.320007324219,
+            163.320007324219,
             28.9599990844727
           ],
           "type": "c:func"

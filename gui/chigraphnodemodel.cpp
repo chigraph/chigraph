@@ -9,6 +9,7 @@
 #include <KTextEditor/Document>
 #include <KTextEditor/Editor>
 #include <KTextEditor/View>
+#include <KActionCollection>
 
 class EditCodeDialog : public QDialog {
 public:
@@ -33,6 +34,16 @@ public:
 		});
 		// create a widget to display the document
 		KTextEditor::View* textEdit = doc->createView(nullptr);
+		// delete save and saveAs actions
+		{
+			for (const auto& action : textEdit->actionCollection()->actions()) {
+				QString name = action->text();
+			}
+			auto saveAction = textEdit->actionCollection()->action("file_save");
+			textEdit->actionCollection()->removeAction(saveAction);
+			auto saveAsAction = textEdit->actionCollection()->action("file_save_as");
+			textEdit->actionCollection()->removeAction(saveAsAction);
+		}
 		textEdit->setMinimumHeight(200);
 		layout->addWidget(textEdit);
 

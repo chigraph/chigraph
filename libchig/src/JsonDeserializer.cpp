@@ -163,7 +163,7 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 
 	// get exec I/O
 	if (input.find("exec_inputs") == input.end() || !input["exec_inputs"].is_array()) {
-		res.addEntry("EUKN", "JSON in graph doesn't have an exec_inputs array", {});
+		res.addEntry("E48", "JSON in graph doesn't have an exec_inputs array", {});
 		return res;
 	}
 
@@ -175,7 +175,7 @@ Result createGraphFunctionDeclarationFromJson(GraphModule&          createInside
 	}
 
 	if (input.find("exec_outputs") == input.end() || !input["exec_outputs"].is_array()) {
-		res.addEntry("EUKN", "JSON in graph doesn't have an data_outputs array", {});
+		res.addEntry("E49", "JSON in graph doesn't have an data_outputs array", {});
 		return res;
 	}
 
