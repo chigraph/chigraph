@@ -37,7 +37,7 @@ struct DataType {
 	/// Get the debug type
 	/// \return The debug type
 	llvm::DIType* debugType() const { return mDIType; }
-	/// Check if the DataType is valid
+	/// Check if the DataType is valid (if it's actually bound to a type and module)
 	bool valid() const {
 		return mModule != nullptr && mName != "" && mLLVMType != nullptr && mDIType != nullptr;
 	}

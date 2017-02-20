@@ -80,17 +80,20 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	// setup module browser
 	docker = new QDockWidget(i18n("Modules"), this);
 	docker->setObjectName("Modules");
-	auto moduleBrowser = new ModuleBrowser(this);
-	docker->setWidget(moduleBrowser);
+	mModuleBrowser = new ModuleBrowser(this);
+	docker->setWidget(mModuleBrowser );
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
-	connect(this, &MainWindow::workspaceOpened, moduleBrowser, &ModuleBrowser::loadWorkspace);
-	connect(moduleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
+	connect(this, &MainWindow::workspaceOpened, mModuleBrowser , &ModuleBrowser::loadWorkspace);
+	connect(mModuleBrowser , &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
 	connect(
-	    this, &MainWindow::newModuleCreated, moduleBrowser,
-	    [moduleBrowser](chig::GraphModule* mod) { moduleBrowser->loadWorkspace(mod->context()); });
+	    this, &MainWindow::newModuleCreated, mModuleBrowser ,
+	    [this](chig::GraphModule* mod) { mModuleBrowser ->loadWorkspace(mod->context()); });
 	connect(this, &MainWindow::workspaceOpened, docker, [docker](chig::Context& ctx) {
 		docker->setWindowTitle(i18n("Modules") + " - " +
 		                       QString::fromStdString(ctx.workspacePath().string()));
+	});
+	connect(mModuleBrowser, &ModuleBrowser::discardChanges, this, [this](const std::string& moduleName) {
+		discardChangesInModule(*context().moduleByFullName(moduleName));
 	});
 
 	mFunctionTabs = new QTabWidget(this);
@@ -239,6 +242,7 @@ void MainWindow::save() {
 			                           QString::fromStdString(res.dump()));
 		}
 	}
+	mModuleBrowser->moduleSaved(*mModule);
 }
 
 void MainWindow::openWorkspaceDialog() {
@@ -300,6 +304,7 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func) {
 	mOpenFunctions[qualifiedFunctionName] = view;
 	mFunctionTabs->setTabText(idx, qualifiedFunctionName);
 	mFunctionTabs->setCurrentWidget(view);
+	connect(view, &FunctionView::dirtied, this, &MainWindow::moduleDirtied);
 
 	functionOpened(view);
 }
@@ -351,4 +356,86 @@ void MainWindow::newModule() {
 	newModuleCreated(mod);
 	// then load the module
 	openModule(QString::fromStdString(mod->fullName()));
+}
+
+
+void MainWindow::moduleDirtied(chig::ChigModule& mod) {
+	mModuleBrowser->moduleDirtied(mod);
+}
+
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+	// check through dirty modules
+	if(mModuleBrowser->dirtyModules().empty()) {
+		KXmlGuiWindow::closeEvent(event);
+		return;
+	}
+	
+	// see if they want to save them
+	for (auto mod : mModuleBrowser->dirtyModules()) {
+		auto bc = KMessageBox::questionYesNoCancel(this, i18n("Module <b>") + QString::fromStdString(mod->fullName()) + i18n("</b> has unsaved changes. Do you want to save your changes or discard them?"), i18n("Close"), KStandardGuiItem::save(), KStandardGuiItem::discard());
+		
+		switch (bc) {
+			case KMessageBox::Yes:
+				// this means save
+				save();
+				break;
+			case KMessageBox::No:
+				// this means discard
+				discardChangesInModule(*mod);
+				break;
+			case KMessageBox::Cancel:
+				event->ignore();
+				return;
+			default:
+				Expects(false);
+		}
+		
+	}
+	
+	KXmlGuiWindow::closeEvent(event);
+}
+
+void MainWindow::discardChangesInModule(chig::ChigModule& mod) {
+	
+	// mark it as clean
+	mModuleBrowser->moduleSaved(mod);
+	
+	int currTabId = mFunctionTabs->currentIndex();
+	
+	// close the function views
+	std::vector<std::pair<std::string, int>> functionNames;
+	for (const auto& pair : mOpenFunctions) {
+		if (&pair.second->function()->module() == &mod) {
+			auto idx = mFunctionTabs->indexOf(pair.second);
+			functionNames.emplace_back(pair.second->function()->name(), idx);
+			mFunctionTabs->removeTab(idx);
+		}
+	}
+	
+	bool isCurrentModule = &mod == currentModule();
+	
+	std::string fullName = mod.fullName();
+	context().unloadModule(fullName);
+	
+	chig::ChigModule* cMod;
+	context().loadModule(fullName, &cMod);
+	chig::GraphModule* gMod = dynamic_cast<chig::GraphModule*>(cMod);
+	
+	if (isCurrentModule) {
+		openModule(QString::fromStdString(fullName));
+	}
+	
+	// re-add the tabs in reverse order to keep the ids
+	for (auto iter = functionNames.rbegin(); iter != functionNames.rend(); ++iter) {
+		chig::GraphFunction* func = gMod->functionFromName(iter->first);
+		QString qualifiedFunctionName =
+			QString::fromStdString(gMod->fullName() + ":" + func->name());
+		auto view = new FunctionView(func);
+		mFunctionTabs->insertTab(iter->second, view, qualifiedFunctionName);
+		mOpenFunctions[qualifiedFunctionName] = view;
+		connect(view, &FunctionView::dirtied, this, &MainWindow::moduleDirtied);
+	}
+	
+	mFunctionTabs->setCurrentIndex(currTabId);
 }
