@@ -326,6 +326,9 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			// ret first
 			DataType intType;
 			res += func.context().typeFromModule("lang", "i32", &intType);
+            if (!res) {
+              return res;
+            }
 			Expects(intType.valid());
 			params.push_back(intType.debugType());
 

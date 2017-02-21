@@ -860,6 +860,7 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 	// just parse the type
 	auto IR        = "@G = external global "s + gsl::to_string(name);
 	auto err       = llvm::SMDiagnostic();
+    context().llvmContext().setDiscardValueNames(false);
 	auto tmpModule = llvm::parseAssemblyString(IR, err, context().llvmContext());
 	if (!tmpModule) { return nullptr; }
 
