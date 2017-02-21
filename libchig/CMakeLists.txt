@@ -4,6 +4,8 @@ find_program(CLANG_EXE clang)
 
 find_program(LLI_EXE lli)
 
+add_subdirectory(ctollvm)
+
 set(CHIG_PUBLIC_FILES
 	include/chig/ChigModule.hpp
 	include/chig/Context.hpp
@@ -86,6 +88,8 @@ target_link_libraries(chigcore
 PUBLIC
 	libexecstream
 	boost_filesystem
+PRIVATE
+    ctollvm
 )
 
 install(TARGETS chigcore DESTINATION lib)

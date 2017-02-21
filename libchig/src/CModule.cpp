@@ -14,69 +14,29 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Transforms/Utils/Cloning.h>
 
+#include "../ctollvm/ctollvm.hpp"
+
 using namespace chig;
 
 namespace {
 
-std::unique_ptr<llvm::Module> compileCCode(const std::string&              code,
-                                           const std::vector<std::string>& arguments,
-                                           llvm::LLVMContext& ctx, Result& res) {
-	std::string bitcode;
-	std::string error;
-	int         ec;
-	try {
-		// compile the C code
-		exec_stream_t clangexe;
-		clangexe.set_wait_timeout(exec_stream_t::s_out, 100000);
-
-		// get arguments to pass to clang
-		std::vector<std::string> args = {"-xc", "-", "-c", "-emit-llvm", "-g", "-O0", "-o", "-"};
-		args.reserve(args.size() + arguments.size());
-		std::copy(arguments.begin(), arguments.end(), std::back_inserter(args));
-
-		// start the executable
-		clangexe.start(std::string(CHIG_CLANG_EXE), args.begin(), args.end());
-
-		clangexe.in() << code;
-		clangexe.close_in();
-
-		bitcode = std::string(std::istreambuf_iterator<char>(clangexe.out()),
-		                      std::istreambuf_iterator<char>());
-		error = std::string(std::istreambuf_iterator<char>(clangexe.err()),
-		                    std::istreambuf_iterator<char>());
-
-		clangexe.close();
-		ec = clangexe.exit_code();
-
-	} catch (std::exception& e) {
-		res.addEntry("EUKN", "Failed to run clang and generate bitcode", {{"Error", e.what()}});
-		return nullptr;
-	}
-
-	if (ec != 0) {
-		res.addEntry("EUKN", "Error encountered while generating IR", {{"Error Text", error}});
-		return nullptr;
-	}
-
-	if (bitcode.empty()) {
-		res.addEntry("EUKN", "Unknown error encountered while generating IR", {});
-		return nullptr;
-	}
-
-	llvm::SMDiagnostic diag;
-	auto ret = llvm::parseIR(llvm::MemoryBufferRef(bitcode, "clang-generated"), diag, ctx);
-
-	if (!ret) {
-		std::string              errorString;
-		llvm::raw_string_ostream errorStream(errorString);
-		diag.print("chig compile", errorStream);
-
-		res.addEntry("EUKN", "Error parsing clang-generated bitcode module",
-		             {{"Error Text", errorString}});
-		return nullptr;
-	}
-
-	return ret;
+std::unique_ptr<llvm::Module> compileCCode(const std::string& code, const std::vector<std::string>& args, llvm::LLVMContext& ctx, Result& res) {
+  std::vector<const char*> cArgs;
+  for (const auto& arg : args) {
+    cArgs.push_back(arg.c_str());
+  }
+  
+  std::string errors;
+  
+  auto mod = cToLLVM(ctx, code.c_str(), "internal.c", cArgs, errors);
+  
+  if (mod == nullptr) {
+    res.addEntry("EUKN", "Failed to generate IR with clang", {{"Error", errors}});
+  } else if (!errors.empty()) {
+    res.addEntry("WUKN", "Warnings encountered while generating IR with clang", {{"Error", errors}});
+  }
+   
+  return mod;
 }
 
 }  // anonymous namespace
