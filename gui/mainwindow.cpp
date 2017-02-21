@@ -303,7 +303,7 @@ void MainWindow::newFunctionSelected(chig::GraphFunction* func) {
 	}
 	// if it's not already open, we'll have to create our own
 
-	auto view                             = new FunctionView(func, mFunctionTabs);
+	auto view                             = new FunctionView(this, func, mFunctionTabs);
 	int  idx                              = mFunctionTabs->addTab(view, qualifiedFunctionName);
 	mOpenFunctions[qualifiedFunctionName] = view;
 	mFunctionTabs->setTabText(idx, qualifiedFunctionName);
@@ -432,7 +432,7 @@ void MainWindow::discardChangesInModule(chig::ChigModule& mod) {
 		chig::GraphFunction* func = gMod->functionFromName(iter->first);
 		QString              qualifiedFunctionName =
 		    QString::fromStdString(gMod->fullName() + ":" + func->name());
-		auto view = new FunctionView(func);
+		auto view = new FunctionView(this, func);
 		mFunctionTabs->insertTab(iter->second, view, qualifiedFunctionName);
 		mOpenFunctions[qualifiedFunctionName] = view;
 		connect(view, &FunctionView::dirtied, this, &MainWindow::moduleDirtied);
