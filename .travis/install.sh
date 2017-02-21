@@ -10,7 +10,8 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 
 else
 
-	brew install llvm cmake qt5 bison gettext ninja || echo
+	brew install cmake qt5 bison gettext ninja || echo
+	brew install llvm --with-clang
 	./scripts/build_frameworks.sh \
 		-DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 		-DCMAKE_PREFIX_PATH='/usr/local/opt/qt5;/usr/local/opt/gettext' \
