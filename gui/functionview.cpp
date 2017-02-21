@@ -1,4 +1,5 @@
 #include "functionview.hpp"
+#include "mainwindow.hpp"
 
 #include <QHBoxLayout>
 
@@ -16,8 +17,8 @@
 
 using namespace QtNodes;
 
-FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
-    : QWidget(parent), mFunction{func_} {
+FunctionView::FunctionView(MainWindow* mainWindow, chig::GraphFunction* func_, QWidget* parent)
+    : QWidget(parent), mFunction{func_}, mMainWindow{mainWindow} {
 	auto hlayout = new QHBoxLayout(this);
 
 	// TODO: see how to actually set the colors
@@ -92,6 +93,7 @@ FunctionView::FunctionView(chig::GraphFunction* func_, QWidget* parent)
 	connect(mScene, &FlowScene::connectionDeleted, this, &FunctionView::connectionDeleted);
 
 	connect(mScene, &FlowScene::nodeMoved, this, &FunctionView::nodeMoved);
+	connect(mScene, &FlowScene::nodeDoubleClicked, this, &FunctionView::nodeDoubleClicked);
 }
 
 void FunctionView::nodeAdded(Node& n) {
@@ -227,6 +229,28 @@ void FunctionView::nodeMoved(Node& n, QPointF newLoc) {
 	model->instance().setX(newLoc.x());
 	model->instance().setY(newLoc.y());
 	dirtied();
+}
+
+void FunctionView::nodeDoubleClicked(QtNodes::Node& n) {
+    // see if we can get the implementation
+	auto model = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
+    
+    
+    auto* graphMod = dynamic_cast<chig::GraphModule*>(&model->instance().type().module());
+    if (graphMod == nullptr) {
+      return;
+    }
+    
+    auto func = graphMod->functionFromName(model->instance().type().name());
+    if (func == nullptr) {
+      return;
+    }
+    // load the right module
+    mMainWindow->openModule(QString::fromStdString(graphMod->fullName()));
+    
+    // load the right function
+    mMainWindow->newFunctionSelected(func);
+    
 }
 
 void FunctionView::refreshGuiForNode(Node* node) {

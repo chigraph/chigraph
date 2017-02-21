@@ -15,10 +15,12 @@
 
 #include "chigraphnodemodel.hpp"
 
+class MainWindow;
+
 class FunctionView : public QWidget {
 	Q_OBJECT
 public:
-	FunctionView(chig::GraphFunction* func_, QWidget* parent = nullptr);
+	FunctionView(MainWindow* mainWindow, chig::GraphFunction* func_, QWidget* parent = nullptr);
 
 	QtNodes::Node* guiNodeFromChigNode(chig::NodeInstance* inst);
 	chig::NodeInstance* chigNodeFromGuiNode(QtNodes::Node* node);
@@ -41,6 +43,8 @@ private slots:
 	void connectionUpdated(QtNodes::Connection& c);
 
 	void nodeMoved(QtNodes::Node& n, QPointF newLoc);
+    
+    void nodeDoubleClicked(QtNodes::Node& n);
 
 signals:
 	void dirtied();
@@ -59,6 +63,8 @@ private:
 	    conns;
 
 	std::shared_ptr<QtNodes::DataModelRegistry> createRegistry();
+    
+    MainWindow* mMainWindow;
 };
 
 #endif  // CHIGGUI_FUNCTIONVIEW_HPP
