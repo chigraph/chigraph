@@ -7,7 +7,7 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 
-#include <llvm/Bitcode/ReaderWriter.h>
+#include <llvm/Bitcode/BitcodeWriter.h>
 #include <llvm/Support/raw_ostream.h>
 
 #include <chig/Config.hpp>

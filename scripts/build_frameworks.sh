@@ -5,13 +5,15 @@ set -xe
 SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPTSDIR/..
 
-kf5dir=$SCRIPTSDIR/../third_party/kf5
+btype=$1
+
+kf5dir=$SCRIPTSDIR/../third_party/kf5-${btype,,}
 mkdir -p $kf5dir/build
 
 version=5.31.0
 sversion=${version:0:4}
 
-flags=$@
+flags=$2
 
 build_framework() {
     framework=$1
@@ -25,7 +27,7 @@ build_framework() {
     mkdir -p $foldername/build
     cd $foldername/build
     
-    cmake .. -DCMAKE_PREFIX_PATH=$kf5dir -DCMAKE_INSTALL_PREFIX=$kf5dir $flags 
+    cmake .. -DCMAKE_PREFIX_PATH=$kf5dir -DCMAKE_INSTALL_PREFIX=$kf5dir -DCMAKE_BUILD_TYPE=$btype $flags 
     cmake --build .
     cmake --build . --target install
 }

@@ -7,6 +7,7 @@
 #include <clang/Frontend/TextDiagnosticPrinter.h>
 #include <clang/CodeGen/CodeGenAction.h>
 #include <clang/Basic/TargetInfo.h>
+#include <clang/Lex/PreprocessorOptions.h>
 
 #include <llvm/IR/Module.h>
 #include <llvm/Support/raw_os_ostream.h>
@@ -20,7 +21,7 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* code, const 
 
     // Prepare compilation arguments
     // TODO: fix this please
-    compileArgs.insert(compileArgs.begin(), "/usr/bin/clang");
+    compileArgs.insert(compileArgs.begin(), "/home/russellg/projects/llvm-release/bin/clang");
     compileArgs.push_back(fileName);
 
     // Prepare DiagnosticEngine 
@@ -39,7 +40,7 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* code, const 
     std::unique_ptr<CompilerInstance> Clang(new CompilerInstance());
   
     // Initialize CompilerInvocation
-    auto invoc = clang::createInvocationFromCommandLine(compileArgs, diagnosticsEngine);
+    auto invoc = std::shared_ptr<clang::CompilerInvocation>(clang::createInvocationFromCommandLine(compileArgs, diagnosticsEngine));
     Clang->setInvocation(invoc);
     
     // Map code filename to a memoryBuffer

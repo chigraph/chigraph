@@ -69,7 +69,7 @@ message(STATUS "LLVM link libraries: ${LLVM_LINK_LIST}")
 target_link_libraries(chigcore PUBLIC ${LLVM_LINK_LIST})
 
 execute_process(COMMAND ${LLVM_CONFIG} --system-libs OUTPUT_VARIABLE LLVM_SYSTEM_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
-string(REPLACE " " ";" LLVM_SYSTEM_LINK_LIST ${LLVM_SYSTEM_LIBS})
+string(REPLACE " " ";" LLVM_SYSTEM_LINK_LIST "${LLVM_SYSTEM_LIBS}")
 message(STATUS "LLVM system libraries: ${LLVM_SYSTEM_LINK_LIST}")
 target_link_libraries(chigcore PUBLIC ${LLVM_SYSTEM_LINK_LIST})
 

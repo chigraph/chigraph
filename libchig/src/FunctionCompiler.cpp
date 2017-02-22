@@ -356,7 +356,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	// TODO: line numbers?
 	auto debugFunc = debugBuilder.createFunction(
 	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, 0,
-	    subroutineType, false, true, 0, 0, false
+	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 	    ,
 	    f);

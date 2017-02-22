@@ -37,7 +37,6 @@
 #include <chig/LangModule.hpp>
 #include <chig/json.hpp>
 
-#include <llvm/Bitcode/ReaderWriter.h>
 #include <llvm/Support/raw_ostream.h>
 
 #include <fstream>
