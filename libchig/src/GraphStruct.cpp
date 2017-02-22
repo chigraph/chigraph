@@ -65,7 +65,7 @@ DataType GraphStruct::dataType() {
 		                             type.name,
 #endif
 		                             nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8,
-		                             currentOffset, 0, nullptr);
+		                             currentOffset, llvm::DINode::DIFlags{}, nullptr);
 		diTypes.push_back(member);
 
 		currentOffset += debugType->getSizeInBits();
@@ -74,7 +74,7 @@ DataType GraphStruct::dataType() {
 
 	auto diStructType = llvm::DICompositeType::get(
 	    context().llvmContext(), llvm::dwarf::DW_TAG_structure_type, name(), nullptr, 0, nullptr,
-	    nullptr, currentOffset, 8, 0, 0, llvm::MDTuple::get(context().llvmContext(), diTypes), 0,
+	    nullptr, currentOffset, 8, 0, llvm::DINode::DIFlags{}, llvm::MDTuple::get(context().llvmContext(), diTypes), 0,
 	    nullptr, {}, "");
 
 	mDataType = DataType(&module(), name(), llType, diStructType);

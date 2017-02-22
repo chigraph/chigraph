@@ -2,16 +2,20 @@ cmake_minimum_required(VERSION 2.8)
 
 project(chigraph)
 
-if (NOT WIN32)
-    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5)
+if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug OR
+	NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release OR
+	NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-debug OR
+	NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-release OR)
+	message(FATAL_ERROR "Run setup.py first")
 endif()
 
-if (WIN32)
-	if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
-		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-debug ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug)
-	else()
-		set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-release ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release)
+if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
+	if (LINUX)
+		add_definitions("-D_GLIBCXX_DEBUG")
 	endif()
+	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-debug ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug)
+else()
+	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-release ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release)
 endif()
 
 set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
@@ -68,6 +72,6 @@ if(DOXYGEN_FOUND)
 	)
 	
 else()
-	message("DOXYGEN not found, target `make doc` will not be avaliable")
+	message(WARNING "DOXYGEN not found, target `doc` will not be avaliable")
 endif()
 

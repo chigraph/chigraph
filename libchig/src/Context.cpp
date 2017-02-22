@@ -7,7 +7,7 @@
 #include "chig/LangModule.hpp"
 #include "chig/NodeInstance.hpp"
 
-#include <llvm/Bitcode/ReaderWriter.h>
+#include <llvm/Bitcode/BitcodeReader.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/TargetRegistry.h>

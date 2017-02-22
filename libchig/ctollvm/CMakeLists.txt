@@ -1,9 +1,10 @@
 
 find_package(Clang REQUIRED)
+message("Clang Dir: ${CLANG_INSTALL_PREFIX}")
 
 add_library(ctollvm SHARED ctollvm.cpp)
 
-target_include_directories(ctollvm PUBLIC ${CLANG_INCLUDE_DIRS})
+target_include_directories(ctollvm PUBLIC ${LLVM_INCLUDE_DIRS})
 
 target_compile_features(ctollvm PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
 

@@ -279,9 +279,9 @@ Result GraphModule::generateModule(llvm::Module& module) {
 
 	// debug info
 	llvm::DIBuilder debugBuilder(module);
+	auto diFile = debugBuilder.createFile(sourceFilePath().filename().string(), sourceFilePath().parent_path().string());
 	auto            compileUnit = debugBuilder.createCompileUnit(
-	    llvm::dwarf::DW_LANG_C, sourceFilePath().filename().string(),
-	    sourceFilePath().parent_path().string(), "Chigraph Compiler", false, "", 0);
+	    llvm::dwarf::DW_LANG_C, diFile, "Chigraph Compiler", false, "", 0);
 
 	// create prototypes
 	for (auto& graph : mFunctions) {
