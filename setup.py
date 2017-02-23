@@ -38,6 +38,9 @@ if platform.system() == "Linux":
 	
 	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/llvm-4.0-release-gcc6.3-linux64.tar.xz', os.path.join(thirdPartyDir, "llvm-release.tar.xz"), thirdPartyDir))
 	
+	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/llvm-4.0.0-debug-gcc6.3-linux64.1.tar.xz', os.path.join(thirdPartyDir, "llvm-debug.1.tar.xz"), thirdPartyDir))
+	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/llvm-4.0.0-debug-gcc6.3-linux64.2.tar.xz', os.path.join(thirdPartyDir, "llvm-debug.2.tar.xz"), thirdPartyDir))
+	
 elif platform.system() == "Windows":
 	pass
 elif platform.system() == "Darwin":
