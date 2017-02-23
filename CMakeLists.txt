@@ -2,15 +2,16 @@ cmake_minimum_required(VERSION 2.8)
 
 project(chigraph)
 
-if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug OR
-	NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release OR
-	NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-debug OR
-	NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-release OR)
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug" OR
+	NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release" OR
+	NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-debug" OR
+	NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-release")
+	
 	message(FATAL_ERROR "Run setup.py first")
 endif()
 
 if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
-	if (LINUX)
+	if (UNIX AND NOT APPLE)
 		add_definitions("-D_GLIBCXX_DEBUG")
 	endif()
 	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-debug ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug)
