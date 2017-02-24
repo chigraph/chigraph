@@ -356,16 +356,10 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 	// TODO(#65): line numbers?
 	auto debugFunc = debugBuilder.createFunction(
-	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, 0,
-	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-	    ,
-	    f);
-#else
-	    );
+	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, 1,
+	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false);
 
-	f->setSubprogram(debugFunc);
-#endif
+	//f->setSubprogram(debugFunc); TODO TODO TODO please don't comment this out
 	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
 	llvm::BasicBlock* block      = llvm::BasicBlock::Create(mod->getContext(), entry->id(), f);
 	auto              blockcpy   = block;
