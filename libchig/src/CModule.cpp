@@ -16,27 +16,28 @@
 
 #include "../ctollvm/ctollvm.hpp"
 
-using namespace chig;
+namespace chig {
 
 namespace {
 
-std::unique_ptr<llvm::Module> compileCCode(const std::string& code, const std::vector<std::string>& args, llvm::LLVMContext& ctx, Result& res) {
-  std::vector<const char*> cArgs;
-  for (const auto& arg : args) {
-    cArgs.push_back(arg.c_str());
-  }
-  
-  std::string errors;
-  
-  auto mod = cToLLVM(ctx, code.c_str(), "internal.c", cArgs, errors);
-  
-  if (mod == nullptr) {
-    res.addEntry("EUKN", "Failed to generate IR with clang", {{"Error", errors}});
-  } else if (!errors.empty()) {
-    res.addEntry("WUKN", "Warnings encountered while generating IR with clang", {{"Error", errors}});
-  }
-   
-  return mod;
+std::unique_ptr<llvm::Module> compileCCode(const std::string&              code,
+                                           const std::vector<std::string>& args,
+                                           llvm::LLVMContext& ctx, Result& res) {
+	std::vector<const char*> cArgs;
+	for (const auto& arg : args) { cArgs.push_back(arg.c_str()); }
+
+	std::string errors;
+
+	auto mod = cToLLVM(ctx, code.c_str(), "internal.c", cArgs, errors);
+
+	if (mod == nullptr) {
+		res.addEntry("EUKN", "Failed to generate IR with clang", {{"Error", errors}});
+	} else if (!errors.empty()) {
+		res.addEntry("WUKN", "Warnings encountered while generating IR with clang",
+		             {{"Error", errors}});
+	}
+
+	return mod;
 }
 
 }  // anonymous namespace
@@ -108,7 +109,7 @@ struct CFuncNode : NodeType {
 		}
 
 		auto callinst =
-		    builder.CreateCall(llfunc, {inputs.data(), (size_t)inputs.size()}, outputName);
+		    builder.CreateCall(llfunc, {inputs.data(), static_cast<size_t>(inputs.size())}, outputName);
 		callinst->setDebugLoc(nodeLocation);
 
 		// store theoutput if there are any
@@ -169,7 +170,7 @@ struct CFuncNode : NodeType {
 CModule::CModule(Context& ctx) : ChigModule(ctx, "c") {}
 
 DataType CModule::typeFromName(gsl::cstring_span<> /*typeName*/) {
-	// TODO: implement
+	// TODO(#8) : implement
 
 	return {};
 }
@@ -310,3 +311,4 @@ Result chig::CModule::createNodeTypeFromCCode(const std::string&              co
 
 	return res;
 }
+} // namespace chig

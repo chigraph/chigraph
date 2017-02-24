@@ -118,7 +118,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			// get pointers to the objects
 			auto value = cacheObject.outputs[param.second];
 			// dereference
-			io.push_back(builder.CreateLoad(value));  // TODO: pass ptr to value
+			io.push_back(builder.CreateLoad(value));
 
 			// make sure it's the right type
 			if (io[io.size() - 1]->getType() !=
@@ -140,12 +140,19 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 
 		// create outputs
 		auto& outputCache = data.nodeCache[node].outputs;
+		outputCache.resize(node->type().dataOutputs().size(), nullptr);
 
+		auto id = 0ull;
 		for (auto& output : node->type().dataOutputs()) {
-			// TODO: research address spaces
-			llvm::AllocaInst* alloc = allocBuilder.CreateAlloca(output.type.llvmType(), nullptr,
-			                                                    node->id() + "__" + output.name);
-			outputCache.push_back(alloc);
+			if (outputCache[id] != nullptr) {
+				io.push_back(outputCache[id]);
+				++id;
+				continue;
+			}
+
+			llvm::AllocaInst* alloc = allocBuilder.CreateAlloca(
+			    output.type.llvmType(), nullptr, node->id() + "__" + std::to_string(id));
+			outputCache[id] = alloc;
 			io.push_back(alloc);
 
 			// create debug info
@@ -153,15 +160,10 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 				// get type
 				llvm::DIType* dType = output.type.debugType();
 
-				// TODO: better names
-				auto debugVar = data.dbuilder->
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-				                createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
-#else
-				                createAutoVariable(
-#endif
-				                                    data.diFunc, node->id() + "__" + output.name,
-				                                    data.diFunc->getFile(), 1, dType);
+				// TODO(#63): better names
+				auto debugVar = data.dbuilder->createAutoVariable(
+				    data.diFunc, node->id() + "__" + std::to_string(id), data.diFunc->getFile(), 1,
+				    dType);
 
 				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
 				                             llvm::DebugLoc::get(1, 1, data.diFunc),
@@ -177,6 +179,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 				     {"Yielded type", stringifyLLVMType(alloc->getType())},
 				     {"Node ID", node->id()}});
 			}
+			++id;
 		}
 	}
 
@@ -225,7 +228,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 	    codeBlock, outputBlocks, data.compileCache);
 	if (!res) { return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}}; }
 
-	// TODO: sequence nodes
+	// TODO(#64): raise an error here instead
 	for (auto& bb : unusedBlocks) {
 		llvm::IRBuilder<> builder(bb);
 
@@ -326,9 +329,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			// ret first
 			DataType intType;
 			res += func.context().typeFromModule("lang", "i32", &intType);
-            if (!res) {
-              return res;
-            }
+			if (!res) { return res; }
 			Expects(intType.valid());
 			params.push_back(intType.debugType());
 
@@ -353,7 +354,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	llvm::Function* f =
 	    llvm::cast<llvm::Function>(mod->getOrInsertFunction(mangledName, func.functionType()));
 
-	// TODO: line numbers?
+	// TODO(#65): line numbers?
 	auto debugFunc = debugBuilder.createFunction(
 	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, 0,
 	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false
@@ -381,17 +382,11 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			res += func.context().typeFromModule("lang", "i32", &intDataType);
 			Expects(intDataType.valid());
 			auto debugParam =
-			    debugBuilder.
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-			    createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc, "inputexec_id",
-			                        debugFile, 0, intDataType.debugType());
-#else
-			    createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
+			    debugBuilder.createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
 			                            intDataType.debugType());
-#endif
 			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 			                           llvm::DebugLoc::get(1, 1, debugFunc),
-			                           allocBlock);  // TODO: "line" numbers
+			                           allocBlock);  // TODO(#65): "line" numbers
 
 			++idx;
 			continue;
@@ -410,18 +405,13 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 		// create DIType*
 		llvm::DIType* dType      = tyAndName.type.debugType();
-		auto          debugParam = debugBuilder.
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
-		                                      tyAndName.name, debugFile, 0, dType);
-#else
-		                  createParameterVariable(debugFunc, tyAndName.name,
+		auto          debugParam = debugBuilder.createParameterVariable(debugFunc, tyAndName.name,
 		                                          idx + 1,  // + 1 because it starts at 1
 		                                          debugFile, 0, dType);
-#endif
+		
 		debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 		                           llvm::DebugLoc::get(1, 1, debugFunc),
-		                           allocBlock);  // TODO: line numbers
+		                           allocBlock);  // TODO(#65): line numbers
 
 		++idx;
 	}

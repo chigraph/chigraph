@@ -832,7 +832,7 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	                           64, 64, llvm::dwarf::DW_ATE_float);
 	auto charType = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
 	                                       "lang:i8", 8, 8, llvm::dwarf::DW_ATE_unsigned_char);
-	
+
 	mDebugTypes["i8*"] = llvm::DIDerivedType::get(
 	    context().llvmContext(), llvm::dwarf::DW_TAG_pointer_type, nullptr, nullptr, 0, nullptr,
 	    charType, 64, 64, 0, llvm::DINode::DIFlags());  // TODO: 32bit support?
@@ -859,9 +859,9 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 	using namespace std::string_literals;
 
 	// just parse the type
-	auto IR        = "@G = external global "s + gsl::to_string(name);
-	auto err       = llvm::SMDiagnostic();
-    context().llvmContext().setDiscardValueNames(false);
+	auto IR  = "@G = external global "s + gsl::to_string(name);
+	auto err = llvm::SMDiagnostic();
+	context().llvmContext().setDiscardValueNames(false);
 	auto tmpModule = llvm::parseAssemblyString(IR, err, context().llvmContext());
 	if (!tmpModule) { return nullptr; }
 

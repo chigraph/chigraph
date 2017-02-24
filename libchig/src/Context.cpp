@@ -23,8 +23,6 @@
 #include <chig/CModule.hpp>
 #include <gsl/gsl>
 
-using namespace llvm;
-
 namespace fs = boost::filesystem;
 
 namespace chig {
@@ -57,8 +55,8 @@ GraphModule* Context::newGraphModule(gsl::cstring_span<> fullName) {
 	return mod;
 }
 
-std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept {
-	std::unordered_set<std::string> moduleList;
+std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
+	std::vector<std::string> moduleList;
 
 	fs::path srcDir = workspacePath() / "src";
 
@@ -73,7 +71,7 @@ std::unordered_set<std::string> Context::listModulesInWorkspace() const noexcept
 			fs::path relPath = fs::relative(p, srcDir);
 
 			relPath.replace_extension("");  // remove .chigmod
-			moduleList.insert(relPath.string());
+			moduleList.emplace_back(relPath.string());
 		}
 	}
 
@@ -125,7 +123,7 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 	}
 
 	auto str = gsl::to_string(name);
-	boost::replace_all(str, "\\", "/");
+	boost::replace_all(str, R"(\)", "/");
 
 	GraphModule* toFillJson = nullptr;
 	res += addModuleFromJson(str, readJson, &toFillJson);
@@ -248,7 +246,7 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 	// generate dependencies
 	for (const auto& depName : chigmod->dependencies()) {
 		std::unique_ptr<llvm::Module> compiledDep;
-		res += compileModule(depName, &compiledDep);  // TODO: detect circular dependencies
+		res += compileModule(depName, &compiledDep);  // TODO(#62): detect circular dependencies
 
 		if (!res) { return res; }
 
