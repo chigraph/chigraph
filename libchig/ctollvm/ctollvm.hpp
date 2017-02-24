@@ -1,8 +1,10 @@
-#include <llvm/IR/Module.h>
 #include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
 
-#include <vector>
 #include <memory>
 #include <string>
+#include <vector>
 
-std::unique_ptr<llvm::Module> cToLLVM(llvm::LLVMContext& ctx, const char* code, const char* fileName, std::vector<const char*> compileArgs, std::string& err);
+std::unique_ptr<llvm::Module> cToLLVM(llvm::LLVMContext& ctx, const char* code,
+                                      const char* fileName, std::vector<const char*> compileArgs,
+                                      std::string& err);

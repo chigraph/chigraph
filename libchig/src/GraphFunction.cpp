@@ -27,7 +27,7 @@ GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<> name,
       mDataOutputs(std::move(dataOuts)),
       mExecInputs(std::move(execIns)),
       mExecOutputs(std::move(execOuts)) {
-	// TODO: check that it has at least 1 exec input and output
+	// TODO(#66): check that it has at least 1 exec input and output
 }
 
 NodeInstance* GraphFunction::entryNode() const noexcept {

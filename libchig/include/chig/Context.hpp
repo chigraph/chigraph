@@ -48,7 +48,7 @@ struct Context {
 
 	/// Get the list of modules in the workspace
 	/// \return The module list
-	std::unordered_set<std::string> listModulesInWorkspace() const noexcept;
+	std::vector<std::string> listModulesInWorkspace() const noexcept;
 
 	/// Load a module from disk
 	/// \param name The name of the moudle

@@ -43,8 +43,8 @@ private slots:
 	void connectionUpdated(QtNodes::Connection& c);
 
 	void nodeMoved(QtNodes::Node& n, QPointF newLoc);
-    
-    void nodeDoubleClicked(QtNodes::Node& n);
+
+	void nodeDoubleClicked(QtNodes::Node& n);
 
 signals:
 	void dirtied();
@@ -63,8 +63,8 @@ private:
 	    conns;
 
 	std::shared_ptr<QtNodes::DataModelRegistry> createRegistry();
-    
-    MainWindow* mMainWindow;
+
+	MainWindow* mMainWindow;
 };
 
 #endif  // CHIGGUI_FUNCTIONVIEW_HPP

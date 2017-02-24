@@ -232,25 +232,19 @@ void FunctionView::nodeMoved(Node& n, QPointF newLoc) {
 }
 
 void FunctionView::nodeDoubleClicked(QtNodes::Node& n) {
-    // see if we can get the implementation
+	// see if we can get the implementation
 	auto model = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
-    
-    
-    auto* graphMod = dynamic_cast<chig::GraphModule*>(&model->instance().type().module());
-    if (graphMod == nullptr) {
-      return;
-    }
-    
-    auto func = graphMod->functionFromName(model->instance().type().name());
-    if (func == nullptr) {
-      return;
-    }
-    // load the right module
-    mMainWindow->openModule(QString::fromStdString(graphMod->fullName()));
-    
-    // load the right function
-    mMainWindow->newFunctionSelected(func);
-    
+
+	auto* graphMod = dynamic_cast<chig::GraphModule*>(&model->instance().type().module());
+	if (graphMod == nullptr) { return; }
+
+	auto func = graphMod->functionFromName(model->instance().type().name());
+	if (func == nullptr) { return; }
+	// load the right module
+	mMainWindow->openModule(QString::fromStdString(graphMod->fullName()));
+
+	// load the right function
+	mMainWindow->newFunctionSelected(func);
 }
 
 void FunctionView::refreshGuiForNode(Node* node) {
