@@ -12,14 +12,14 @@ def dlAndExtract(tup):
 	filename = tup[1]
 	extractto = tup[2]
 	
-	#print("downloading " + filename)
+	print("downloading " + filename)
 	
 	if not os.path.isfile(filename):
 		# download
 		with urllib.request.urlopen(url) as response, open(filename, 'wb') as out_file:
 			shutil.copyfileobj(response, out_file)
 	
-	#print("extracting " + filename + " to " + extractto)
+	print("extracting " + filename + " to " + extractto)
 	
 	# extract
 	tar = tarfile.open(filename)
