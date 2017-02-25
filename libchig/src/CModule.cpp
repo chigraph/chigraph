@@ -12,6 +12,7 @@
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Transforms/Utils/Cloning.h>
+#include <llvm/Support/FileSystem.h>
 
 #include "../ctollvm/ctollvm.hpp"
 
@@ -19,7 +20,7 @@ namespace chig {
 
 namespace {
 
-std::unique_ptr<llvm::Module> compileCCode(const std::string&              code,
+std::unique_ptr<llvm::Module> compileCCode(const char* execPath, const std::string&              code,
                                            const std::vector<std::string>& args,
                                            llvm::LLVMContext& ctx, Result& res) {
 	std::vector<const char*> cArgs;
@@ -27,7 +28,7 @@ std::unique_ptr<llvm::Module> compileCCode(const std::string&              code,
 
 	std::string errors;
 
-	auto mod = cToLLVM(ctx, code.c_str(), "internal.c", cArgs, errors);
+	auto mod = cToLLVM(ctx, execPath, code.c_str(), "internal.c", cArgs, errors);
 
 	if (mod == nullptr) {
 		res.addEntry("EUKN", "Failed to generate IR with clang", {{"Error", errors}});
@@ -74,7 +75,7 @@ struct CFuncNode : NodeType {
 		if (llcompiledmod == nullptr) {
 			std::vector<std::string> args = mCModule.extraArguments();
 			std::copy(mExtraArguments.begin(), mExtraArguments.end(), std::back_inserter(args));
-			llcompiledmod = compileCCode(mCCode, args, context().llvmContext(), res);
+			llcompiledmod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), mCCode, args, context().llvmContext(), res);
 
 			if (!res) { return res; }
 		}
@@ -282,7 +283,7 @@ Result chig::CModule::createNodeTypeFromCCode(const std::string&              co
 
 	Result res;
 
-	auto mod = compileCCode(code, clangArgs, context().llvmContext(), res);
+	auto mod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), code, clangArgs, context().llvmContext(), res);
 
 	if (!res) { return res; }
 

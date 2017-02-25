@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 project(chigraph)
+
+cmake_policy(SET CMP0053 NEW)
 
 # Check that the dependencies dirs exist
 if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
