@@ -14,6 +14,7 @@ platform:
 before_build:
   - 'git submodule update --init --recursive'
   - 'set PATH=%QTDIR%\bin;C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%'
+  - "sh -c 'pacman -Syu'"
   - 'sh scripts\setup_msys2.sh'
   - mkdir build
   - cd build
