@@ -28,18 +28,18 @@ matrix:
       osx_image: xcode8.2
       env: BUILD_TYPE=Debug
     
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='g++5 gcc-5'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='g++6 gcc-6'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='g++6 gcc-6'
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='g++-5 gcc-5'
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='g++-6 gcc-6'
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='g++-6 gcc-6'
     - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='clang-3.7'
     - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='clang-3.7'
     - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='clang-3.8'
     - env: CXX_COMPILER=clang++-3.8   C_COMPILER=clang-3.8  BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='clang-3.8'
     - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='clang-3.9'
     - env: CXX_COMPILER=clang++-3.9   C_COMPILER=clang-3.9  BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='clang-3.9'
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='g++5 gcc-5'
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='g++5 gcc-5'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='g++6 gcc-6'
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='g++-5 gcc-5'
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='g++-5 gcc-5'
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='g++-6 gcc-6'
     - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='g++6 gcc-6'
     - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='clang-3.7'
     - env: CXX_COMPILER=clang++-3.7   C_COMPILER=clang-3.7  BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='clang-3.7'
@@ -71,7 +71,7 @@ matrix:
       env: BUILD_TYPE=Release
 
 install: 
-  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update && sudo apt-get install $PACKAGES qt${QT_VERSION:0:2}base qt${QT_VERSION:0:2}script qt${QT_VERSION:0:2}declarative qt${QT_VERSION:0:2}tools qt${QT_VERSION:0:2}x11extras qt${QT_VERSION:0:2}svg ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils libudev-dev build-essential && source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh; fi'
+  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update && sudo apt-get install qt${QT_VERSION:0:2}base qt${QT_VERSION:0:2}script qt${QT_VERSION:0:2}declarative qt${QT_VERSION:0:2}tools qt${QT_VERSION:0:2}x11extras qt${QT_VERSION:0:2}svg ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils libudev-dev build-essential && source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh; fi'
   - ./.travis/install.sh
 
 script:
