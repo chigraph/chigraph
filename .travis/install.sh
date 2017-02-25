@@ -7,7 +7,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	find . -maxdepth 2
 else
 
-	brew install cmake qt5 bison gettext ninja || echo
+	brew install cmake qt5 bison gettext ninja python3 || echo
 	brew install llvm --with-clang
 	./setup.py
 		
