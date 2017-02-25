@@ -19,7 +19,7 @@ set(TEST_SRCS
 )
 
 add_executable(api_tests ${TEST_SRCS})
-target_link_libraries(api_tests PUBLIC chigcore)
+target_link_libraries(api_tests PUBLIC libchig)
 
 add_test(NAME api_tests 
 	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

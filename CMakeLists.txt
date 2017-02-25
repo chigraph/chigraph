@@ -6,26 +6,25 @@ cmake_policy(SET CMP0053 NEW)
 
 # Check that the dependencies dirs exist
 if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
-	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug" OR
-		NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-debug")
-		
-	#		message(FATAL_ERROR "Run setup.py first")
+	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug")
+			message(FATAL_ERROR "Run setup.py first")
 	endif()
 else()
-	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release" OR
-		NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-release")
-	#	message(FATAL_ERROR "Run setup.py first")
+	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release")
+		message(FATAL_ERROR "Run setup.py first")
 	endif()
+endif()
+
+# make sure they have pulled the submodules
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/nodeeditor/CMakeLists.txt")
+    message(FATAL_ERROR "Pull the submodules first, run `git submodule update --init`")
 endif()
 
 
 if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
-	if (UNIX AND NOT APPLE)
-		add_definitions("-D_GLIBCXX_DEBUG")
-	endif()
-	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-debug ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug)
+	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug)
 else()
-	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/llvm-release ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release)
+	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release)
 endif()
 
 set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
@@ -44,7 +43,7 @@ add_subdirectory(third_party/libexecstream)
 add_definitions("-DBOOST_ALL_NO_LIB")
 add_subdirectory(third_party/boost)
 
-find_program(LLVM_CONFIG llvm-config)
+find_program(LLVM_CONFIG llvm-config REQUIRED HINTS ${LLVM_INSTALL_PREFIX}/bin)
 message(STATUS "llvm-config found at ${LLVM_CONFIG}")
 
 execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE LLVM_LIBDIR OUTPUT_STRIP_TRAILING_WHITESPACE)

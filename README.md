@@ -20,8 +20,8 @@ Chigraph,  pronunced chai-graph, is a new systems programming language. It's fas
 # Components
 Chigraph is made up of three components:
 
-##libchigcore
-Libchigcore is the chigraph library that provides all functions for chigraph clients, like code generation, graph representation, etc. Want to compile a chigraph module using libchigcore?
+##libchig
+Libchig is the chigraph library that provides all functions for chigraph clients, like code generation, graph representation, etc. Want to compile a chigraph module using libchig?
 
 ```C++
 #include <chig/Context.hpp>
