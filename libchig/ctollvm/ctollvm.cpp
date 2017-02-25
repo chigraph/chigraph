@@ -39,7 +39,7 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* code, const 
 	auto invoc = std::shared_ptr<clang::CompilerInvocation>(
 	    clang::createInvocationFromCommandLine(compileArgs, diagnosticsEngine));
 	Clang->setInvocation(invoc
-#if LLVM_VERSION_MAJROR <= 3 && LLVM_VERSION_MINOR <= 9
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 9
 	.get()	
 #endif
 	);

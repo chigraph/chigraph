@@ -301,8 +301,8 @@ int main(int argc, char** argv) {
 		Result r;
 
 		Context     c{moduleDir};
-		std::string fullName =
-		    (fs::relative(moduleDir, c.workspacePath() / "src") / "main").string();
+		fs::path fullName =
+		    fs::relative(moduleDir, c.workspacePath() / "src") / "main";
 
 		// test serialization and deserialization
 		GraphModule* deserialized;
