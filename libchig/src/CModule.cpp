@@ -1,7 +1,6 @@
 /// \file CModule.cpp
 
 #include "chig/CModule.hpp"
-#include "chig/Config.hpp"
 #include "chig/GraphFunction.hpp"
 #include "chig/JsonDeserializer.hpp"
 
