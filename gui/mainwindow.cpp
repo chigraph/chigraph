@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	// set icon
 	setWindowIcon(QIcon(":/icons/chigraphsmall.png"));
 
-	mChigContext = std::make_unique<chig::Context>();
+	mChigContext = std::make_unique<chig::Context>(qApp->arguments()[0].toStdString().c_str());
 
 	// setup module details
 	auto docker = new QDockWidget(i18n("Module Details"));

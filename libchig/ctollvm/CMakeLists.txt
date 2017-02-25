@@ -1,6 +1,4 @@
 
-find_package(Clang REQUIRED)
-message("Clang Dir: ${CLANG_INSTALL_PREFIX}")
 
 add_library(ctollvm SHARED ctollvm.cpp)
 

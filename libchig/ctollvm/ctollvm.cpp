@@ -16,11 +16,10 @@ using namespace llvm;
 using namespace clang;
 using namespace std;
 
-std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* code, const char* fileName,
+std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, const char* code, const char* fileName,
                                       std::vector<const char*> compileArgs, std::string& err) {
 	// Prepare compilation arguments
-	// TODO: fix this please
-	compileArgs.insert(compileArgs.begin(), "C:\\msys64\\mingw64\\bin\\clang.exe");
+	compileArgs.insert(compileArgs.begin(), execPath);
 	compileArgs.push_back(fileName);
 
 	// Prepare DiagnosticEngine

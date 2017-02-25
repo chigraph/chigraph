@@ -1,8 +1,8 @@
 
+find_program(LLI_EXE lli REQUIRED)
 
-find_program(CLANG_EXE clang)
-
-find_program(LLI_EXE lli)
+find_package(Clang REQUIRED)
+message("Clang Dir: ${CLANG_INSTALL_PREFIX}")
 
 add_subdirectory(ctollvm)
 
@@ -16,12 +16,12 @@ set(CHIG_PUBLIC_FILES
 	include/chig/NodeType.hpp
 	include/chig/Result.hpp
 	include/chig/NameMangler.hpp
-    include/chig/CModule.hpp
-    include/chig/FunctionValidator.hpp
-    include/chig/FunctionCompiler.hpp
-    include/chig/JsonDeserializer.hpp
-    include/chig/JsonSerializer.hpp
-    include/chig/GraphStruct.hpp
+	include/chig/CModule.hpp
+	include/chig/FunctionValidator.hpp
+	include/chig/FunctionCompiler.hpp
+	include/chig/JsonDeserializer.hpp
+	include/chig/JsonSerializer.hpp
+	include/chig/GraphStruct.hpp
 )
 
 set(CHIG_PRIVATE_FILES
@@ -64,7 +64,7 @@ message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 target_include_directories(chigcore PUBLIC "${LLVM_INCLUDE_DIR}")
 
 execute_process(COMMAND ${LLVM_CONFIG} --libs irreader support bitwriter executionengine native nativecodegen interpreter linker orcjit mcjit codegen selectiondag OUTPUT_VARIABLE LLVM_LIBRARIES OUTPUT_STRIP_TRAILING_WHITESPACE)
-string(REPLACE " " ";" LLVM_LINK_LIST ${LLVM_LIBRARIES})
+string(REPLACE " " ";" LLVM_LINK_LIST "${LLVM_LIBRARIES}")
 message(STATUS "LLVM link libraries: ${LLVM_LINK_LIST}")
 target_link_libraries(chigcore PUBLIC ${LLVM_LINK_LIST})
 
@@ -88,6 +88,14 @@ PUBLIC
 	boost_filesystem
 PRIVATE
     ctollvm
+)
+
+# move the clang lib folder, this is basic includes
+add_custom_command(
+TARGET chigcore POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${CLANG_INSTALL_PREFIX}/lib/clang
+	${CMAKE_BINARY_DIR}/lib/clang
 )
 
 install(TARGETS chigcore DESTINATION lib)
