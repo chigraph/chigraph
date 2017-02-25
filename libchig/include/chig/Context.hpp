@@ -39,12 +39,12 @@ struct Context {
 	/// \param fullModuleName The name of the module to find
 	/// \return ret_module The module that has the full name \c fullModuleName, nullptr if none were
 	/// found
-	ChigModule* moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept;
+	ChigModule* moduleByFullName(const boost::filesystem::path& fullModuleName) const noexcept;
 
 	/// Create a new GraphModule with the given full name
 	/// \param fullName The new name
 	/// \return The created GraphModule
-	GraphModule* newGraphModule(gsl::cstring_span<> fullName);
+	GraphModule* newGraphModule(const boost::filesystem::path& fullName);
 
 	/// Get the list of modules in the workspace
 	/// \return The module list
@@ -54,14 +54,14 @@ struct Context {
 	/// \param name The name of the moudle
 	/// \retval toFill The module that was loaded, optional
 	/// \return The result
-	Result loadModule(const gsl::cstring_span<> name, ChigModule** toFill = nullptr);
+	Result loadModule(const boost::filesystem::path& name, ChigModule** toFill = nullptr);
 
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param fullName The full path of the module, including URL
 	/// \param json The JSON data
 	/// \retval toFill The GraphModule* to fill into, optional
 	/// \return The Result
-	Result addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json,
+	Result addModuleFromJson(const boost::filesystem::path& fullName, const nlohmann::json& json,
 	                         GraphModule** toFill = nullptr);
 
 	/// Adds a custom module to the Context
@@ -73,14 +73,14 @@ struct Context {
 	/// Unloads a module
 	/// \param fullName The full name of the module to unload
 	/// \return True if a module was unloaded
-	bool unloadModule(gsl::cstring_span<> fullName);
+	bool unloadModule(const boost::filesystem::path& fullName);
 
 	/// Gets a DataType from a module
 	/// \param module The full name of the module
 	/// \param name The name of the type, required
 	/// \retval toFill The type to fill
 	/// \return The result
-	Result typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
+	Result typeFromModule(const boost::filesystem::path& module, gsl::cstring_span<> name,
 	                      DataType* toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
@@ -91,7 +91,7 @@ struct Context {
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \return The Result
-	Result nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+	Result nodeTypeFromModule(const boost::filesystem::path&, gsl::cstring_span<> typeName,
 	                          const nlohmann::json&      data,
 	                          std::unique_ptr<NodeType>* toFill) noexcept;
 
@@ -108,7 +108,7 @@ struct Context {
 	/// pointer to the unique_ptr)
 	/// \pre moduleByFullName(fullName) exists
 	/// \return The result
-	Result compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill);
+	Result compileModule(const boost::filesystem::path& fullName, std::unique_ptr<llvm::Module>* toFill);
 
 	/// Get the number of modules this Context has
 	/// \return The module count

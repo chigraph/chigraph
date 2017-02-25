@@ -25,7 +25,7 @@ public slots:
 		clear();
 		for (const auto& dep : mod.dependencies()) {
 			if (dep == "c" || dep == "lang") { continue; }
-			addItem(QString::fromStdString(dep));
+			addItem(QString::fromStdString(dep.generic_string()));
 		}
 		addNewDepItem();
 		mModule = &mod;

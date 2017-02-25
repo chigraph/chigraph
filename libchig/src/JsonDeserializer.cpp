@@ -10,7 +10,7 @@
 namespace chig {
 
 Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
-                         gsl::cstring_span<> fullName, GraphModule** toFill) {
+                         const boost::filesystem::path& fullName, GraphModule** toFill) {
 	Result res;
 
 	// create the module
