@@ -9,8 +9,11 @@
 #include "chig/Fwd.hpp"
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
+#include "chig/HashFilesystemPath.hpp"
 
 #include <gsl/gsl>
+
+#include <boost/filesystem.hpp>
 
 #include <unordered_set>
 
@@ -24,7 +27,7 @@ struct ChigModule {
 	/// Default constructor. This is usually run by Context::loadModule
 	/// \param contextArg The context to create the module insides
 	/// \param moduleFullName The full name of the module
-	ChigModule(Context& contextArg, std::string moduleFullName);
+	ChigModule(Context& contextArg, boost::filesystem::path moduleFullName);
 
 	/// Destructor
 	virtual ~ChigModule() = default;
@@ -55,8 +58,9 @@ struct ChigModule {
 	/// \return The name
 	std::string shortName() const { return mName; }
 	/// Get the full name of the module
-	/// \return The name
-	std::string fullName() const { return mFullName; }
+	std::string fullName() const { return mFullName.generic_string(); }
+	/// Get the full name of the module in a path
+	boost::filesystem::path fullNamePath() const { return mFullName; }
 	/// Get the Context that this module belongs to
 	/// \return The context
 	Context& context() const { return *mContext; }
@@ -67,12 +71,12 @@ struct ChigModule {
 
 	/// Get the dependencies
 	/// \return The dependencies
-	const std::unordered_set<std::string>& dependencies() const { return mDependencies; }
+	const std::unordered_set<boost::filesystem::path>& dependencies() const { return mDependencies; }
 	/// Add a dependency to the module
 	/// Loads the module from context() if it isn't already loaded
 	/// \param newDepFullPath The dependency, full path
 	/// \return The result
-	Result addDependency(std::string newDepFullPath);
+	Result addDependency(const boost::filesystem::path& newDepFullPath);
 
 	/// Remove a dependency
 	/// Does not unload from context
@@ -83,11 +87,11 @@ struct ChigModule {
 	}
 
 private:
-	std::string mFullName;
+	boost::filesystem::path mFullName;
 	std::string mName;
 	Context*    mContext;
 
-	std::unordered_set<std::string> mDependencies;
+	std::unordered_set<boost::filesystem::path> mDependencies;
 };
 }
 

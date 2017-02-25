@@ -8,6 +8,8 @@
 
 #include <gsl/gsl>
 
+#include <boost/filesystem.hpp>
+
 namespace chig {
 
 /// \name Json Serialization/Deserialization
@@ -19,7 +21,7 @@ namespace chig {
 /// \param fullName The full name of the module being loaded
 /// \retval toFill The GraphModule* to set, optional
 Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
-                         gsl::cstring_span<> fullName, GraphModule** toFill = nullptr);
+                         const boost::filesystem::path& fullName, GraphModule** toFill = nullptr);
 
 /// Create a forward declaration of a function in a module with an empty graph
 /// \param createInside the GraphModule to create the forward declaration in

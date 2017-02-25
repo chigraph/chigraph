@@ -70,7 +70,7 @@ Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float 
 	return res;
 }
 
-std::vector<NodeInstance*> GraphFunction::nodesWithType(gsl::cstring_span<> module,
+std::vector<NodeInstance*> GraphFunction::nodesWithType(const boost::filesystem::path& module,
                                                         gsl::cstring_span<> name) const noexcept {
 	std::vector<NodeInstance*> ret;
 	for (const auto& node : mNodes) {
@@ -83,7 +83,7 @@ std::vector<NodeInstance*> GraphFunction::nodesWithType(gsl::cstring_span<> modu
 	return ret;
 }
 
-Result GraphFunction::insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+Result GraphFunction::insertNode(const boost::filesystem::path& moduleName, gsl::cstring_span<> typeName,
                                  const nlohmann::json& typeJSON, float x, float y,
                                  gsl::cstring_span<> id, NodeInstance** toFill) {
 	std::unique_ptr<NodeType> nodeType;

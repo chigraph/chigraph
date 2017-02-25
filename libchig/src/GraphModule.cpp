@@ -259,7 +259,7 @@ struct GetLocalNodeType : public NodeType {
 
 }  // anon namespace
 
-GraphModule::GraphModule(Context& cont, std::string fullName, gsl::span<std::string> dependencies)
+GraphModule::GraphModule(Context& cont, boost::filesystem::path fullName, gsl::span<boost::filesystem::path> dependencies)
     : ChigModule(cont, fullName) {
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) { addDependency(dep); }

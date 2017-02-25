@@ -26,13 +26,13 @@
 namespace fs = boost::filesystem;
 
 namespace chig {
-Context::Context(const boost::filesystem::path& workPath) {
+Context::Context(const fs::path& workPath) {
 	mLLVMContext = std::make_unique<llvm::LLVMContext>();
 
 	mWorkspacePath = workspaceFromChildPath(workPath);
 }
 
-ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const noexcept {
+ChigModule* Context::moduleByFullName(const fs::path& fullModuleName) const noexcept {
 	Result res;
 
 	for (auto& module : mModules) {
@@ -41,12 +41,12 @@ ChigModule* Context::moduleByFullName(gsl::cstring_span<> fullModuleName) const 
 	return nullptr;
 }
 
-GraphModule* Context::newGraphModule(gsl::cstring_span<> fullName) {
+GraphModule* Context::newGraphModule(const fs::path& fullName) {
 	// create the module
 	GraphModule* mod = nullptr;
 	{
-		auto uMod = std::make_unique<GraphModule>(*this, gsl::to_string(fullName),
-		                                          gsl::span<std::string>());
+		auto uMod = std::make_unique<GraphModule>(*this, fullName,
+		                                          gsl::span<fs::path>());
 
 		mod = uMod.get();
 		addModule(std::move(uMod));
@@ -78,7 +78,7 @@ std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
 	return moduleList;
 }
 
-chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModule** toFill) {
+chig::Result chig::Context::loadModule(const fs::path& name, ChigModule** toFill) {
 	Result res;
 
 	// check for built-in modules
@@ -97,17 +97,18 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 
 	if (workspacePath().empty()) {
 		res.addEntry("EUKN", "Cannot load module without a workspace path",
-		             {{"Requested Module"}, gsl::to_string(name)});
+		             {{"Requested Module"}, name.generic_string()});
 		return res;
 	}
 
 	// find it in the workspace
-	fs::path fullPath = workspacePath() / "src" / (gsl::to_string(name) + ".chigmod");
+	fs::path fullPath = workspacePath() / "src" / name;
+	fullPath.replace_extension(".chigmod");
 
 	if (!fs::is_regular_file(fullPath)) {
 		res.addEntry(
 		    "EUKN", "Failed to find module",
-		    {{"Module Name", gsl::to_string(name)}, {"Workspace Path", workspacePath().string()}});
+		    {{"Module Name", name.generic_string()}, {"Workspace Path", workspacePath().string()}});
 		return res;
 	}
 
@@ -122,17 +123,14 @@ chig::Result chig::Context::loadModule(const gsl::cstring_span<> name, ChigModul
 		return res;
 	}
 
-	auto str = gsl::to_string(name);
-	boost::replace_all(str, R"(\)", "/");
-
 	GraphModule* toFillJson = nullptr;
-	res += addModuleFromJson(str, readJson, &toFillJson);
+	res += addModuleFromJson(name.generic_string(), readJson, &toFillJson);
 	if (toFill != nullptr) { *toFill = toFillJson; }
 
 	return res;
 }
 
-Result Context::addModuleFromJson(gsl::cstring_span<> fullName, const nlohmann::json& json,
+Result Context::addModuleFromJson(const fs::path& fullName, const nlohmann::json& json,
                                   GraphModule** toFill) {
 	Result res;
 
@@ -179,7 +177,7 @@ bool Context::addModule(std::unique_ptr<ChigModule> modToAdd) noexcept {
 	return true;
 }
 
-bool Context::unloadModule(gsl::cstring_span<> fullName) {
+bool Context::unloadModule(const fs::path& fullName) {
 	// find the module, and if we see it then delete it
 	for (auto idx = 0ull; idx < mModules.size(); ++idx) {
 		if (mModules[idx]->fullName() == fullName) {
@@ -192,7 +190,7 @@ bool Context::unloadModule(gsl::cstring_span<> fullName) {
 	return false;
 }
 
-Result Context::typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> name,
+Result Context::typeFromModule(const fs::path& module, gsl::cstring_span<> name,
                                DataType* toFill) noexcept {
 	Expects(toFill != nullptr);
 
@@ -200,27 +198,27 @@ Result Context::typeFromModule(gsl::cstring_span<> module, gsl::cstring_span<> n
 
 	ChigModule* mod = moduleByFullName(module);
 	if (mod == nullptr) {
-		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(module)}});
+		res.addEntry("E36", "Could not find module", {{"module", module.generic_string()}});
 		return res;
 	}
 
 	*toFill = mod->typeFromName(name);
 	if (!toFill->valid()) {
 		res.addEntry("E37", "Could not find type in module",
-		             {{"type", gsl::to_string(name)}, {"module", gsl::to_string(module)}});
+		             {{"type", gsl::to_string(name)}, {"module", module.generic_string()}});
 	}
 
 	return res;
 }
 
-Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+Result Context::nodeTypeFromModule(const fs::path& moduleName, gsl::cstring_span<> typeName,
                                    const nlohmann::json&      data,
                                    std::unique_ptr<NodeType>* toFill) noexcept {
 	Result res;
 
 	auto module = moduleByFullName(moduleName);
 	if (module == nullptr) {
-		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(moduleName)}});
+		res.addEntry("E36", "Could not find module", {{"module", moduleName.generic_string()}});
 		return res;
 	}
 
@@ -229,7 +227,7 @@ Result Context::nodeTypeFromModule(gsl::cstring_span<> moduleName, gsl::cstring_
 	return res;
 }
 
-Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm::Module>* toFill) {
+Result Context::compileModule(const fs::path& fullName, std::unique_ptr<llvm::Module>* toFill) {
 	Expects(toFill != nullptr);
 
 	Result res;
@@ -237,11 +235,11 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 	auto chigmod = moduleByFullName(fullName);
 
 	if (chigmod == nullptr) {
-		res.addEntry("E36", "Could not find module", {{"module", gsl::to_string(fullName)}});
+		res.addEntry("E36", "Could not find module", {{"module", fullName.generic_string()}});
 		return res;
 	}
 
-	auto llmod = std::make_unique<llvm::Module>(gsl::to_string(fullName), llvmContext());
+	auto llmod = std::make_unique<llvm::Module>(fullName.generic_string(), llvmContext());
 
 	// generate dependencies
 	for (const auto& depName : chigmod->dependencies()) {
@@ -284,7 +282,7 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 
 			res.addEntry(
 			    "EINT", "Internal compiler error: Invalid module created",
-			    {{"Error", err}, {"Full Name", gsl::to_string(fullName)}, {"Module", moduleStr}});
+			    {{"Error", err}, {"Full Name", fullName.generic_string()}, {"Module", moduleStr}});
 		}
 	}
 
@@ -293,7 +291,7 @@ Result Context::compileModule(gsl::cstring_span<> fullName, std::unique_ptr<llvm
 	return res;
 }
 
-boost::filesystem::path workspaceFromChildPath(const boost::filesystem::path& path) {
+fs::path workspaceFromChildPath(const fs::path& path) {
 	fs::path ret = path;
 
 	// initialize workspace directory

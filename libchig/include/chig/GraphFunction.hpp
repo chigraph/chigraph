@@ -16,6 +16,7 @@
 #include <llvm/IR/DerivedTypes.h>  // for FunctionType
 
 #include <boost/optional.hpp>
+#include <boost/filesystem.hpp>
 
 namespace chig {
 /// this is an AST-like representation of a function in a graph
@@ -74,7 +75,7 @@ struct GraphFunction {
 	/// \param module The module the type is in
 	/// \param name The name of the type
 	/// \return A vector of NodeInstance
-	std::vector<NodeInstance*> nodesWithType(gsl::cstring_span<> module,
+	std::vector<NodeInstance*> nodesWithType(const boost::filesystem::path& module,
 	                                         gsl::cstring_span<> name) const noexcept;
 
 	/// Add a node to the graph using module, type, and json
@@ -86,7 +87,7 @@ struct GraphFunction {
 	/// \param id The node ID
 	/// \retval toFill The NodeInstance* to fill to, optional
 	/// \return The Result
-	Result insertNode(gsl::cstring_span<> moduleName, gsl::cstring_span<> typeName,
+	Result insertNode(const boost::filesystem::path& moduleName, gsl::cstring_span<> typeName,
 	                  const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
 	                  NodeInstance** toFill = nullptr);
 
