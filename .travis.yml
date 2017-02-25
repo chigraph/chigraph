@@ -21,7 +21,7 @@ addons:
 matrix: 
   include: 
   
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='g++5 gcc5 python-pip'  TEST_COV=YES
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='g++5 gcc-5 python-pip'  TEST_COV=YES
     
     # sneak in 1 osx one so we can see it early
     - os: osx
