@@ -67,7 +67,7 @@ set(GUI_HEADERS
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
 
-target_link_libraries(chiggui Qt5::Widgets KF5::Completion KF5::TextEditor KF5::Crash KF5::Service KF5::CoreAddons KF5::I18n KF5::Auth KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigcore)
+target_link_libraries(chiggui Qt5::Widgets KF5::Completion KF5::TextEditor KF5::Crash KF5::Service KF5::CoreAddons KF5::I18n KF5::Auth KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes libchig)
 
 target_compile_features(chiggui PRIVATE cxx_variable_templates)
 

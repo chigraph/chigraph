@@ -7,4 +7,4 @@ add_definitions("-D__STDC_CONSTANT_MACROS")
 
 add_executable(chig main.cpp compile.cpp run.cpp)
 
-target_link_libraries(chig chigcore ${llvm_libs} boost_program_options)
+target_link_libraries(chig libchig ${llvm_libs} boost_program_options)

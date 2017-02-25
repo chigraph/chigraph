@@ -20,14 +20,21 @@ string(REPLACE " " ";" LLVM_SYSTEM_LINK_LIST "${LLVM_SYSTEM_LIBS}")
 message(STATUS "LLVM system libraries: ${LLVM_SYSTEM_LINK_LIST}")
 target_link_libraries(ctollvm PUBLIC ${LLVM_SYSTEM_LINK_LIST})
 
+link_directories(${CLANG_LIB_DIR})
+
 target_link_libraries(ctollvm 
 PRIVATE
-	clangParse
+    clangFrontendTool
 	clangCodeGen
+	clangFrontend
+	clangParse
+	clangSerialization
 	clangSema
 	clangEdit
+	clangAnalysis
 	clangAST
 	clangLex
+	clangDriver
 	clangBasic
 PUBLIC
 	${LLVMLIBS}
