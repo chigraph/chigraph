@@ -14,7 +14,14 @@
 #include <chig/Result.hpp>
 #include <chig/json.hpp>
 
+
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 9
+#include <llvm/Bitcode/ReaderWriter.h>
+#else
+#include <llvm/Bitcode/BitcodeReader.h>
 #include <llvm/Bitcode/BitcodeWriter.h>
+#endif
+
 #include <llvm/IR/Module.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_os_ostream.h>
