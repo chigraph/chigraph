@@ -7,7 +7,12 @@
 #include "chig/LangModule.hpp"
 #include "chig/NodeInstance.hpp"
 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 9
+#include <llvm/Bitcode/ReaderWriter.h>
+#else
 #include <llvm/Bitcode/BitcodeReader.h>
+#endif
+
 #include <llvm/IR/Verifier.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/TargetRegistry.h>

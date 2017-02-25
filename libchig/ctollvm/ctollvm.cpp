@@ -38,7 +38,11 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* code, const 
 	// Initialize CompilerInvocation
 	auto invoc = std::shared_ptr<clang::CompilerInvocation>(
 	    clang::createInvocationFromCommandLine(compileArgs, diagnosticsEngine));
-	Clang->setInvocation(invoc);
+	Clang->setInvocation(invoc
+#if LLVM_VERSION_MAJROR <= 3 && LLVM_VERSION_MINOR <= 9
+	.get()	
+#endif
+	);
 
 	// Map code filename to a memoryBuffer
 	StringRef                testCodeData(code);
