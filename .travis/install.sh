@@ -9,7 +9,7 @@ else
 
 	brew install cmake qt5 bison gettext ninja python3 || echo
 	brew install llvm --with-clang
-	./setup.py
+	/usr/local/bin/python3 ./setup.py
 		
 fi
 	
