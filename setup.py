@@ -46,5 +46,5 @@ elif platform.system() == "Darwin":
 	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/kf5-5.31.0-release-appleclang8-darwin64.tar.xz', os.path.join(thirdPartyDir, "kf5-release.tar.xz"), thirdPartyDir))
 
 
-for url in urls:
-	dlAndExtract(url)
+p = Pool(len(urls))
+p.map(dlAndExtract, urls)
