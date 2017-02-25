@@ -228,7 +228,8 @@ int main(int argc, char** argv) {
 			std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was "
 			          << expectedreturncode << std::endl
 			          << "stdout: \"" << llistdout << "\"" << std::endl
-			          << "stderr: \"" << llistderr << "\"" << std::endl;
+			          << "stderr: \"" << llistderr << "\"" << std::endl
+					  << "generated IR" << std::endl << generatedir << std::endl;
 
 			return 1;
 		}
@@ -237,7 +238,8 @@ int main(int argc, char** argv) {
 			std::cerr << "(lli ll) Unexpected stdout: " << llistdout << " expected was "
 			          << expectedcout << std::endl
 			          << "retcode: \"" << retcodelli << "\"" << std::endl
-			          << "stderr: \"" << llistderr << "\"" << std::endl;
+			          << "stderr: \"" << llistderr << "\"" << std::endl
+					  << "generated IR" << std::endl << generatedir << std::endl;
 
 			return 1;
 		}
@@ -246,7 +248,8 @@ int main(int argc, char** argv) {
 			std::cerr << "(lli ll) Unexpected stderr: " << stderr << " expected was "
 			          << expectedcerr << std::endl
 			          << "retcode: \"" << retcodelli << "\"" << std::endl
-			          << "stdout: \"" << llistdout << "\"" << std::endl;
+			          << "stdout: \"" << llistdout << "\"" << std::endl
+					  << "generated IR" << std::endl << generatedir << std::endl;
 
 			return 1;
 		}
