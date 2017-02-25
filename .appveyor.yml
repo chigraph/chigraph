@@ -13,11 +13,10 @@ platform:
 
 before_build:
   - 'git submodule update --init --recursive'
-  - 'set PATH=%QTDIR%\bin;%PATH%'
-  - 'C:\msys64\msys2.exe scripts\setup_msys2.sh'
+  - 'set PATH=%QTDIR%\bin;C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%'
+  - 'sh scripts\setup_msys2.sh'
   - mkdir build
   - cd build
-  - SET PATH="%PATH%;C:\msys64\mingw64\bin"
   - cmake "-GNinja" -DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
   - ninja
 
