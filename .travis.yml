@@ -1,9 +1,6 @@
 sudo: required
 language: cpp
 dist: trusty
-cache:
-  directories:
-    - third_party/kf5
 
 addons: 
   apt: 
