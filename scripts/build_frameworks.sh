@@ -13,7 +13,7 @@ mkdir -p $kf5dir/build
 version=5.31.0
 sversion=${version:0:4}
 
-flags=$2
+flags="$2"
 
 build_framework() {
     framework=$1
@@ -33,7 +33,7 @@ build_framework() {
 }
 
 build_helper() {
-    ( (build_framework $1)  &> kf5.log) || (cat kf5.log && exits)
+    ( (build_framework $1)  &> kf5.log) || (cat kf5.log && exist)
 }
 
 build_helper extra-cmake-modules
@@ -76,6 +76,7 @@ build_helper ktexteditor
 #build_helper knotifyconfig
 #build_helper libkomparediff2
 #build_helper kdoctools
+build_helper breeze
 build_helper breeze-icons -DBINARY_ICONS_RESOURCE=1
 #build_helper kpty
 #build_helper kinit 
