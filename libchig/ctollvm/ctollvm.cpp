@@ -20,7 +20,7 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* code, const 
                                       std::vector<const char*> compileArgs, std::string& err) {
 	// Prepare compilation arguments
 	// TODO: fix this please
-	compileArgs.insert(compileArgs.begin(), "/home/russellg/projects/llvm-release/bin/clang");
+	compileArgs.insert(compileArgs.begin(), "C:\\msys64\\mingw64\\bin\\clang.exe");
 	compileArgs.push_back(fileName);
 
 	// Prepare DiagnosticEngine
