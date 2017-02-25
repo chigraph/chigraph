@@ -14,18 +14,13 @@ platform:
 before_build:
   - git submodule update --init --recursive
   - set PATH=%QTDIR%\bin;%PATH%
-  - ps: $path = $pwd
-  - ps: .\scripts\download_llvm.ps1 "$Env:configuration"
-  - ps: cd $path
-  - ps: .\scripts\build_frameworks.ps1 "$Env:QTDIR" "$Env:configuration" ""
-  - ps: cd $path
+  - "/msys2/bin/sh" scripts/setup_msys2.sh
   - mkdir build
   - cd build
-  - cmake "-G%GENERATOR%" -DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
+  - SET PATH="%PATH%;C:\msys64\mingw64\bin"
+  - cmake "-GNinja" -DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
+  - ninja
 
-build:
-  parallel: true
-  project: C:\projects\chigraph-miekk\build\chigraph.sln
 
 #after_build:
 #  - SET CTEST_OUTPUT_ON_FAILURE=1
