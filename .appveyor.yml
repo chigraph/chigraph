@@ -14,7 +14,7 @@ platform:
 before_build:
   - git submodule update --init --recursive
   - set PATH=%QTDIR%\bin;%PATH%
-  - "/msys2/bin/sh" scripts/setup_msys2.sh
+  - 'C:\msys2\bin\sh' scripts\setup_msys2.sh
   - mkdir build
   - cd build
   - SET PATH="%PATH%;C:\msys64\mingw64\bin"
