@@ -37,7 +37,6 @@ if platform.system() == "Linux":
 	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/kf5-5.31.0-release-gcc6.3-linux64.tar.xz', os.path.join(thirdPartyDir, "kf5-release.tar.xz"), thirdPartyDir))
 	
 	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/llvm-4.0-release-gcc6.3-linux64.tar.xz', os.path.join(thirdPartyDir, "llvm-release.tar.xz"), thirdPartyDir))
-	
 	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/llvm-4.0-debug-gcc6.3-linux64.tar.xz', os.path.join(thirdPartyDir, "llvm-debug.tar.xz"), thirdPartyDir))
 	
 elif platform.system() == "Windows":
@@ -46,5 +45,6 @@ elif platform.system() == "Darwin":
 	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/kf5-5.31.0-debug-appleclang8-darwin64.tar.xz', os.path.join(thirdPartyDir, "kf5-debug.tar.xz"), thirdPartyDir))
 	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/kf5-5.31.0-release-appleclang8-darwin64.tar.xz', os.path.join(thirdPartyDir, "kf5-release.tar.xz"), thirdPartyDir))
 
-p = Pool(len(urls))
-p.map(dlAndExtract, urls)
+
+for url in urls:
+	dlAndExtract(url)
