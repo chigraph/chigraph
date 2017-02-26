@@ -10,14 +10,14 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 			-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
 			-DCMAKE_C_COMPILER=$C_COMPILER \
 			-GNinja -DCMAKE_CXX_FLAGS='--coverage' \
-			-DLLVM_INSTALL_PREFIX='/usr/lib/llvm-3.9/'
+			-DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config'
 	else
 
 		cmake . -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 			-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
 			-DCMAKE_C_COMPILER=$C_COMPILER \
 			-GNinja \
-			-DLLVM_INSTALL_PREFIX='/usr/lib/llvm-3.9/'
+			-DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config'
 			
 	fi
 

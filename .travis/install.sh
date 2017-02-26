@@ -4,7 +4,6 @@ set -xe
 
 if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	./setup.py
-	find . -maxdepth 5
 else
 
 	brew install cmake qt5 bison gettext ninja python3 || echo
