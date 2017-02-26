@@ -19,15 +19,16 @@
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Target/TargetOptions.h>
+#include <llvm/ExecutionEngine/ExecutionEngine.h>
+#include <llvm/Target/TargetMachine.h>
+
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
 
-#include <llvm/Target/TargetMachine.h>
 #include <chig/CModule.hpp>
 #include <gsl/gsl>
-
 namespace fs = boost::filesystem;
 
 namespace chig {
@@ -317,6 +318,46 @@ std::string stringifyLLVMType(llvm::Type* ty) {
 		ty->print(stream);
 	}
 	return data;
+}
+
+Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel, std::vector<llvm::GenericValue> args, llvm::GenericValue* ret, llvm::Function* funcToRun) {
+	
+	Result res;
+	
+	llvm::InitializeNativeTarget();
+		
+	if (funcToRun == nullptr) {
+		funcToRun = mod->getFunction("main");
+		
+		if (funcToRun == nullptr) {
+			res.addEntry("EUKN", "Failed to find main function in module", {{"Module Name", mod->getName()}});
+			return res;
+		}
+	}
+	
+	llvm::EngineBuilder EEBuilder(std::move(mod));
+
+	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
+	EEBuilder.setVerifyModules(true);
+
+	EEBuilder.setOptLevel(optLevel);
+
+	std::string errMsg;
+	EEBuilder.setErrorStr(&errMsg);
+
+	std::unique_ptr<llvm::ExecutionEngine> EE(EEBuilder.create());
+
+	if (!EE) {
+		res.addEntry("EINT", "Failed to create an LLVM ExecutionEngine", {{"Error", errMsg}});
+		return res;
+	}
+
+
+	auto returnValue = EE->runFunction(funcToRun, args);
+	
+	if (ret != nullptr) {
+		*ret = returnValue;
+	}
 }
 
 }  // namespace chig
