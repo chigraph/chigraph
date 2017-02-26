@@ -107,22 +107,13 @@ int run(const std::vector<std::string>& opts) {
 		return 1;
 	}
 
-	llvm::EngineBuilder EEBuilder(std::move(llmod));
-
-	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
-	EEBuilder.setVerifyModules(true);
-
-	EEBuilder.setOptLevel(llvm::CodeGenOpt::Default);
-
-	std::string errMsg;
-	EEBuilder.setErrorStr(&errMsg);
-
-	std::unique_ptr<llvm::ExecutionEngine> EE(EEBuilder.create());
-
-	if (!EE) {
-		std::cerr << errMsg << std::endl;
+	llvm::GenericValue ret;
+	res += interpretLLVMIR(std::move(llmod), llvm::CodeGenOpt::Default, {}, &ret, entry);
+	if (!res) {
+		std::cerr << res << std::endl;
 		return 1;
 	}
-
-	return EE->runFunctionAsMain(entry, {}, nullptr);
+	
+	
+	return ret.IntVal.getZExtValue();
 }

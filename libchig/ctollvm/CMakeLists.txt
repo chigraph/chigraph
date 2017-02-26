@@ -36,7 +36,8 @@ PUBLIC
 
 target_link_libraries(ctollvm 
 PRIVATE
-    clangFrontendTool
+	clangRewrite
+	clangFrontendTool
 	clangCodeGen
 	clangFrontend
 	clangParse
