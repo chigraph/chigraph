@@ -17,8 +17,17 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		Context c{};
 		Result  res;
 
+		// create a workspace
+		fs::path workspaceDir = fs::unique_path(); // this is a tmp file
+		fs::create_directories(workspaceDir);
+		
+		// create the .chigraphworkspace file
+		{
+			fs::ofstream stream{workspaceDir / ".chigraphworkspace"};
+		}
+		
+		
 		THEN("It resolves workspace paths correctly") {
-			fs::path workspaceDir = fs::path(CHIG_TEST_DIR) / "codegen" / "workspace";
 
 			REQUIRE(workspaceFromChildPath(workspaceDir) == workspaceDir);
 			REQUIRE(workspaceFromChildPath(workspaceDir / "src") == workspaceDir);
