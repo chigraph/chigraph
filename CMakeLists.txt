@@ -4,13 +4,12 @@ project(chigraph)
 
 cmake_policy(SET CMP0053 NEW)
 
-
-
 set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 option(CG_BUILD_GUI "Should the GUI be built" ON)
 
+# this is really important to keep install-like paths
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -19,12 +18,16 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(BUILD_CLAR OFF CACHE BOOL "")
 add_subdirectory(third_party/libexecstream)
 
+# we're building them ourselves, so don't auto-link in on windows
 add_definitions("-DBOOST_ALL_NO_LIB")
 add_subdirectory(third_party/boost)
 
+# find llvm-config. This dictates which clang etc is uses. 
+# Clang MUST be installed in the same directory.
 find_program(LLVM_CONFIG llvm-config REQUIRED)
 message(STATUS "llvm-config found at ${LLVM_CONFIG}")
 
+# add libchig and the basic driver
 add_subdirectory(libchig)
 add_subdirectory(chig)
 
