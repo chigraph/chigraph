@@ -27,7 +27,7 @@ build_framework() {
     mkdir -p $foldername/build
     cd $foldername/build
     
-    cmake .. -DCMAKE_PREFIX_PATH=$kf5dir -DCMAKE_INSTALL_PREFIX=$kf5dir -DCMAKE_BUILD_TYPE=$btype $flags 
+    cmake .. -DCMAKE_PREFIX_PATH="$kf5dir" -DCMAKE_INSTALL_PREFIX="$kf5dir" -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=$btype $flags 
     cmake --build .
     cmake --build . --target install
 }
