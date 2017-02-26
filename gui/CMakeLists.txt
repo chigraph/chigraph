@@ -1,8 +1,26 @@
 set(KDE_SKIP_TEST_SETTINGS ON)
 
-if(WIN32)
-	set(GETTEXT_MSGMERGE_EXECUTABLE "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libintl-win32/bin/msgmerge.exe")
-	set(GETTEXT_MSGFMT_EXECUTABLE "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libintl-win32/bin/msgfmt.exe")
+# Check that the dependencies dirs exist
+if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
+	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/kf5-debug")
+			message(FATAL_ERROR "Run setup.py first")
+	endif()
+else()
+	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/kf5-release")
+		message(FATAL_ERROR "Run setup.py first")
+	endif()
+endif()
+
+# make sure they have pulled the submodules
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/nodeeditor/CMakeLists.txt")
+    message(FATAL_ERROR "Pull the submodules first, run `git submodule update --init`")
+endif()
+
+# use the downloaded KF5 libraries
+if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
+	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/kf5-debug)
+else()
+	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/kf5-release)
 endif()
 
 find_package(ECM 1.0.0 REQUIRED NO_MODULE)

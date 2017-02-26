@@ -4,28 +4,7 @@ project(chigraph)
 
 cmake_policy(SET CMP0053 NEW)
 
-# Check that the dependencies dirs exist
-if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
-	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug")
-			message(FATAL_ERROR "Run setup.py first")
-	endif()
-else()
-	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release")
-		message(FATAL_ERROR "Run setup.py first")
-	endif()
-endif()
 
-# make sure they have pulled the submodules
-if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/nodeeditor/CMakeLists.txt")
-    message(FATAL_ERROR "Pull the submodules first, run `git submodule update --init`")
-endif()
-
-
-if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
-	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-debug)
-else()
-	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/third_party/kf5-release)
-endif()
 
 set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 
