@@ -15,6 +15,7 @@ addons:
       - sourceline: 'ppa:beineri/opt-qt562-trusty'
       - sourceline: 'ppa:beineri/opt-qt571-trusty'
       - sourceline: 'ppa:beineri/opt-qt58-trusty'
+      - sourceline: 'ppa:presslabs/gitfs'
       
 matrix: 
   include: 
@@ -79,7 +80,7 @@ matrix:
       env: BUILD_TYPE=Release
 
 install: 
-  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update && sudo apt-get install $PACKAGES llvm-3.9-dev libclang-3.9-dev libclang-common-3.9-dev qt${QT_VERSION:0:2}base qt${QT_VERSION:0:2}script qt${QT_VERSION:0:2}declarative qt${QT_VERSION:0:2}tools qt${QT_VERSION:0:2}x11extras qt${QT_VERSION:0:2}svg ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils libudev-dev build-essential && source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh; fi'
+  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update && sudo apt-get install $PACKAGES llvm-3.9-dev libclang-3.9-dev libclang-common-3.9-dev libgit2 qt${QT_VERSION:0:2}base qt${QT_VERSION:0:2}speech qt${QT_VERSION:0:2}script qt${QT_VERSION:0:2}declarative qt${QT_VERSION:0:2}tools qt${QT_VERSION:0:2}x11extras qt${QT_VERSION:0:2}svg ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils libudev-dev build-essential && source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh; fi'
   - ./.travis/install.sh
 
 script:
