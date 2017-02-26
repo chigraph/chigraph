@@ -1,18 +1,11 @@
-
-find_program(LLI_EXE lli REQUIRED HINTS ${LLVM_INSTALL_PREFIX}/bin)
-message(STATUS "lli:" ${LLI_EXE})
-
-find_program(CLANG_EXE clang REQUIRED HINTS ${LLVM_INSTALL_PREFIX}/bin)
-message(STATUS "clang: ${CLANG_EXE}")
-
-
-get_filename_component(CLANG_BIN_DIR ${CLANG_EXE} DIRECTORY)
-get_filename_component(CLANG_INSTALL_PREFIX ${CLANG_BIN_DIR} DIRECTORY)
+execute_process(COMMAND ${LLVM_CONFIG} --prefix OUTPUT_VARIABLE CLANG_INSTALL_PREFIX  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "clang install prefix: ${CLANG_INSTALL_PREFIX}")
 
-find_library(CLANG_BASIC_LIB clangBasic REQUIRED HINTS ${CLANG_INSTALL_PREFIX}/lib ${CLANG_INSTALL_PREFIX}/lib64)
-get_filename_component(CLANG_LIB_DIR ${CLANG_BASIC_LIB} DIRECTORY)
+execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE CLANG_LIB_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "clang libdir: ${CLANG_LIB_DIR}")
+
+find_program(LLI_EXE lli REQUIRED HINTS ${CLANG_INSTALL_PREFIX}/bin)
+message(STATUS "lli: ${LLI_EXE}")
 
 add_subdirectory(ctollvm)
 

@@ -43,12 +43,8 @@ add_subdirectory(third_party/libexecstream)
 add_definitions("-DBOOST_ALL_NO_LIB")
 add_subdirectory(third_party/boost)
 
-find_program(LLVM_CONFIG llvm-config REQUIRED HINTS ${LLVM_INSTALL_PREFIX}/bin /usr)
+find_program(LLVM_CONFIG llvm-config REQUIRED)
 message(STATUS "llvm-config found at ${LLVM_CONFIG}")
-
-execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE LLVM_LIBDIR OUTPUT_STRIP_TRAILING_WHITESPACE)
-message(STATUS "LLVM library directory: ${LLVM_LIBDIR}")
-link_directories(${LLVM_LIBDIR})
 
 add_subdirectory(libchig)
 add_subdirectory(chig)
