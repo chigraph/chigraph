@@ -8,6 +8,10 @@ addons:
       - ubuntu-toolchain-r-test
       - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main'
         key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
+      - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main'
+        key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
+      - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.7 main'
+        key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
       - sourceline: 'ppa:beineri/opt-qt562-trusty'
       - sourceline: 'ppa:beineri/opt-qt571-trusty'
       - sourceline: 'ppa:beineri/opt-qt58-trusty'
@@ -16,24 +20,24 @@ addons:
 matrix: 
   include: 
   
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='g++-5 gcc-5 python-pip'  TEST_COV=YES
+    #- env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='g++-5 gcc-5 python-pip'  TEST_COV=YES
     
     # sneak in 1 osx one so we can see it early
     - os: osx
       osx_image: xcode8.2
       env: BUILD_TYPE=Debug
     
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='g++-5 gcc-5'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='g++-6 gcc-6'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='g++-6 gcc-6'
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='g++-5 gcc-5'
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='g++-5 gcc-5'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='g++-6 gcc-6'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='g++-6 gcc-6'
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=58  PACKAGES='g++-5 gcc-5'
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=58  PACKAGES='g++-5 gcc-5'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=58  PACKAGES='g++-6 gcc-6'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=58  PACKAGES='g++-6 gcc-6'
+    #- env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='g++-5 gcc-5'
+    #- env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=562 PACKAGES='g++-6 gcc-6'
+    #- env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=562 PACKAGES='g++-6 gcc-6'
+    #- env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='g++-5 gcc-5'
+    #- env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='g++-5 gcc-5'
+    #- env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='g++-6 gcc-6'
+    #- env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='g++-6 gcc-6'
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=58 LLVM_VERSION=3.7 PACKAGES='g++-5 gcc-5' TEST_COV=YES
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=58 LLVM_VERSION=3.8 PACKAGES='g++-5 gcc-5'
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=58 LLVM_VERSION=3.9 PACKAGES='g++-6 gcc-6'
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=58 LLVM_VERSION=3.9 PACKAGES='g++-6 gcc-6'
 
     - os: osx
       osx_image: xcode8.2
@@ -58,7 +62,7 @@ matrix:
       env: BUILD_TYPE=Release
 
 install: 
-  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update && sudo apt-get install $PACKAGES llvm-3.9-dev libclang-3.9-dev libclang-common-3.9-dev libgit2 qt${QT_VERSION:0:2}base qt${QT_VERSION:0:2}speech qt${QT_VERSION:0:2}script qt${QT_VERSION:0:2}declarative qt${QT_VERSION:0:2}tools qt${QT_VERSION:0:2}x11extras qt${QT_VERSION:0:2}svg ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils libudev-dev build-essential && source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh; fi'
+  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get update && sudo apt-get install $PACKAGES llvm-${LLVM_VERSION}-dev libclang-${LLVM_VERSION}-dev libclang-common-${LLVM_VERSION}-dev libgit2 qt${QT_VERSION:0:2}base qt${QT_VERSION:0:2}speech qt${QT_VERSION:0:2}script qt${QT_VERSION:0:2}declarative qt${QT_VERSION:0:2}tools qt${QT_VERSION:0:2}x11extras qt${QT_VERSION:0:2}svg ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils libudev-dev build-essential && source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh; fi'
   - ./.travis/install.sh
 
 script:
