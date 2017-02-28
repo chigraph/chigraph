@@ -1,0 +1,122 @@
+{
+  "dependencies": [
+    "intprinter",
+    "c",
+    "lang"
+  ],
+  "graphs": [
+    {
+      "connections": [
+        {
+          "input": [
+            "entry",
+            0
+          ],
+          "output": [
+            "{3717ae4c-2afc-4c32-ac4a-246e451154ae}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "{17e7ce13-35b6-4858-a0c2-a2bdc6f5d68b}",
+            0
+          ],
+          "output": [
+            "{b1caf65d-f65f-4fc4-9821-e3b83724fd81}",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "{3717ae4c-2afc-4c32-ac4a-246e451154ae}",
+            0
+          ],
+          "output": [
+            "{9acea025-97ad-42af-8ffb-503d4b0860e8}",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "{b1caf65d-f65f-4fc4-9821-e3b83724fd81}",
+            0
+          ],
+          "output": [
+            "{3717ae4c-2afc-4c32-ac4a-246e451154ae}",
+            0
+          ],
+          "type": "data"
+        }
+      ],
+      "data_inputs": [],
+      "data_outputs": [],
+      "description": "",
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "local_variables": {},
+      "name": "main",
+      "nodes": {
+        "entry": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            221,
+            141
+          ],
+          "type": "lang:entry"
+        },
+        "{17e7ce13-35b6-4858-a0c2-a2bdc6f5d68b}": {
+          "data": 32,
+          "location": [
+            150,
+            309
+          ],
+          "type": "lang:const-float"
+        },
+        "{3717ae4c-2afc-4c32-ac4a-246e451154ae}": {
+          "data": null,
+          "location": [
+            637,
+            152
+          ],
+          "type": "intprinter:printint"
+        },
+        "{9acea025-97ad-42af-8ffb-503d4b0860e8}": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            797,
+            155
+          ],
+          "type": "lang:exit"
+        },
+        "{b1caf65d-f65f-4fc4-9821-e3b83724fd81}": {
+          "data": null,
+          "location": [
+            439,
+            257
+          ],
+          "type": "lang:floattoint"
+        }
+      },
+      "type": "function"
+    }
+  ],
+  "types": {}
+}
