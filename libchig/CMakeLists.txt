@@ -94,12 +94,13 @@ target_link_libraries(libchig
 PUBLIC
 	libexecstream
 	boost_filesystem
-	${LLVM_SYSTEM_LINK_LIST}
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
 	ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
 PRIVATE
 	ctollvm
+PUBLIC
+	${LLVM_SYSTEM_LINK_LIST}
 )
 
 target_include_directories(libchig
