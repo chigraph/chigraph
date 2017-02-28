@@ -340,7 +340,7 @@ struct FloatToIntNodeType : NodeType {
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		auto casted =
-		    builder.CreateCast(llvm::Instruction::CastOps::FPToSI, io[0], builder.getFloatTy());
+		    builder.CreateCast(llvm::Instruction::CastOps::FPToSI, io[0], builder.getInt32Ty());
 		builder.CreateStore(casted, io[1]);
 
 		builder.CreateBr(outputBlocks[0]);
