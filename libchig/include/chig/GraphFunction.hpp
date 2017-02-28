@@ -15,8 +15,8 @@
 
 #include <llvm/IR/DerivedTypes.h>  // for FunctionType
 
-#include <boost/optional.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/optional.hpp>
 
 namespace chig {
 /// this is an AST-like representation of a function in a graph
@@ -76,7 +76,7 @@ struct GraphFunction {
 	/// \param name The name of the type
 	/// \return A vector of NodeInstance
 	std::vector<NodeInstance*> nodesWithType(const boost::filesystem::path& module,
-	                                         gsl::cstring_span<> name) const noexcept;
+	                                         gsl::cstring_span<>            name) const noexcept;
 
 	/// Add a node to the graph using module, type, and json
 	/// \param moduleName The name of the module that typeName is in

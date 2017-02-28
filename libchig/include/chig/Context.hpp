@@ -14,10 +14,10 @@
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
+#include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Type.h>
-#include <llvm/ExecutionEngine/GenericValue.h>
 
 #include <gsl/gsl>
 
@@ -92,8 +92,8 @@ struct Context {
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \return The Result
-	Result nodeTypeFromModule(const boost::filesystem::path& moduleName, gsl::cstring_span<> typeName,
-	                          const nlohmann::json&      data,
+	Result nodeTypeFromModule(const boost::filesystem::path& moduleName,
+	                          gsl::cstring_span<> typeName, const nlohmann::json& data,
 	                          std::unique_ptr<NodeType>* toFill) noexcept;
 
 	/// Get the workspace path of the Context
@@ -109,7 +109,8 @@ struct Context {
 	/// pointer to the unique_ptr)
 	/// \pre moduleByFullName(fullName) exists
 	/// \return The result
-	Result compileModule(const boost::filesystem::path& fullName, std::unique_ptr<llvm::Module>* toFill);
+	Result compileModule(const boost::filesystem::path& fullName,
+	                     std::unique_ptr<llvm::Module>* toFill);
 
 	/// Get the number of modules this Context has
 	/// \return The module count
@@ -159,8 +160,10 @@ std::string stringifyLLVMType(llvm::Type* ty);
 /// Interpret LLVM IR, just a convenience function
 /// \param mod The LLVM Module to interpret
 /// \parmam funcToRun The function to run, or leave a nullptr for main
-Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel = llvm::CodeGenOpt::Default, std::vector<llvm::GenericValue> args = {}, llvm::GenericValue* ret = nullptr, llvm::Function* funcToRun = nullptr);
-
+Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
+                       llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
+                       std::vector<llvm::GenericValue> args = {}, llvm::GenericValue* ret = nullptr,
+                       llvm::Function* funcToRun = nullptr);
 }
 
 #endif  // CHIG_CONTEXT_HPP

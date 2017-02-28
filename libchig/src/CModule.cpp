@@ -9,10 +9,10 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IRReader/IRReader.h>
 #include <llvm/Linker/Linker.h>
+#include <llvm/Support/FileSystem.h>
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Transforms/Utils/Cloning.h>
-#include <llvm/Support/FileSystem.h>
 
 #include "../ctollvm/ctollvm.hpp"
 
@@ -20,7 +20,7 @@ namespace chig {
 
 namespace {
 
-std::unique_ptr<llvm::Module> compileCCode(const char* execPath, const std::string&              code,
+std::unique_ptr<llvm::Module> compileCCode(const char* execPath, const std::string& code,
                                            const std::vector<std::string>& args,
                                            llvm::LLVMContext& ctx, Result& res) {
 	std::vector<const char*> cArgs;
@@ -75,7 +75,8 @@ struct CFuncNode : NodeType {
 		if (llcompiledmod == nullptr) {
 			std::vector<std::string> args = mCModule.extraArguments();
 			std::copy(mExtraArguments.begin(), mExtraArguments.end(), std::back_inserter(args));
-			llcompiledmod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), mCCode, args, context().llvmContext(), res);
+			llcompiledmod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(),
+			                             mCCode, args, context().llvmContext(), res);
 
 			if (!res) { return res; }
 		}
@@ -108,8 +109,8 @@ struct CFuncNode : NodeType {
 			outputName = dataOutputs()[0].name;
 		}
 
-		auto callinst =
-		    builder.CreateCall(llfunc, {inputs.data(), static_cast<size_t>(inputs.size())}, outputName);
+		auto callinst = builder.CreateCall(
+		    llfunc, {inputs.data(), static_cast<size_t>(inputs.size())}, outputName);
 		callinst->setDebugLoc(nodeLocation);
 
 		// store theoutput if there are any
@@ -283,7 +284,8 @@ Result chig::CModule::createNodeTypeFromCCode(const std::string&              co
 
 	Result res;
 
-	auto mod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), code, clangArgs, context().llvmContext(), res);
+	auto mod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), code,
+	                        clangArgs, context().llvmContext(), res);
 
 	if (!res) { return res; }
 
@@ -311,4 +313,4 @@ Result chig::CModule::createNodeTypeFromCCode(const std::string&              co
 
 	return res;
 }
-} // namespace chig
+}  // namespace chig

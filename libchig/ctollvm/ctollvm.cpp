@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 #include <clang/Basic/DiagnosticOptions.h>
 #include <clang/Basic/TargetInfo.h>
@@ -19,8 +19,9 @@ using namespace llvm;
 using namespace clang;
 using namespace std;
 
-std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, const char* code, const char* fileName,
-                                      std::vector<const char*> compileArgs, std::string& err) {
+std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, const char* code,
+                                      const char* fileName, std::vector<const char*> compileArgs,
+                                      std::string& err) {
 	// Prepare compilation arguments
 	compileArgs.insert(compileArgs.begin(), execPath);
 	compileArgs.push_back(fileName);
@@ -40,10 +41,10 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, co
 	// Initialize CompilerInvocation
 	auto invoc =
 #if LLVM_VERSION_MAJOR >= 4
-	std::shared_ptr<clang::CompilerInvocation>
+	    std::shared_ptr<clang::CompilerInvocation>
 #endif
-		(clang::createInvocationFromCommandLine(compileArgs, diagnosticsEngine));
-	
+	    (clang::createInvocationFromCommandLine(compileArgs, diagnosticsEngine));
+
 	Clang->setInvocation(invoc);
 
 	// Map code filename to a memoryBuffer

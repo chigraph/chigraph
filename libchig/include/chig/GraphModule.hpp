@@ -18,7 +18,8 @@ struct GraphModule : public ChigModule {
 	/// \param cont The context
 	/// \param fullName The full name of the module
 	/// \param dependencies The dependencies
-	GraphModule(Context& cont, boost::filesystem::path fullName, gsl::span<boost::filesystem::path> dependencies);
+	GraphModule(Context& cont, boost::filesystem::path fullName,
+	            gsl::span<boost::filesystem::path> dependencies);
 
 	// No copy or move -- pointer only
 	GraphModule(const GraphModule&) = delete;

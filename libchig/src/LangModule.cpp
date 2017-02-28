@@ -859,21 +859,20 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 	using namespace std::string_literals;
 
 	llvm::Type* ty;
-	
+
 	auto err = llvm::SMDiagnostic();
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 8
 	// just parse the type
-	auto IR  = "@G = external global "s + gsl::to_string(name);
+	auto IR = "@G = external global "s + gsl::to_string(name);
 
 	auto tmpModule = llvm::parseAssemblyString(IR, err, context().llvmContext());
 	if (!tmpModule) { return nullptr; }
-	
+
 	ty = tmpModule->getNamedValue("G")->getType()->getContainedType(0);
-#else 
+#else
 	{
 		llvm::Module tMod("tmp", context().llvmContext());
-		ty = llvm::parseType(
-			gsl::to_string(name), err, tMod, nullptr);
+		ty = llvm::parseType(gsl::to_string(name), err, tMod, nullptr);
 	}
 #endif
 
@@ -882,8 +881,7 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 	if (iter == mDebugTypes.end()) { return {}; }
 
 	// returns the pointer type, so get the contained type
-	return DataType{this, gsl::to_string(name),
-	                ty, iter->second};
+	return DataType{this, gsl::to_string(name), ty, iter->second};
 }
 
 }  // namespace chig

@@ -13,15 +13,14 @@
 #include <llvm/Bitcode/BitcodeReader.h>
 #endif
 
+#include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/TargetRegistry.h>
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Support/raw_ostream.h>
-#include <llvm/Target/TargetOptions.h>
-#include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/Target/TargetMachine.h>
-
+#include <llvm/Target/TargetOptions.h>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
@@ -51,8 +50,7 @@ GraphModule* Context::newGraphModule(const fs::path& fullName) {
 	// create the module
 	GraphModule* mod = nullptr;
 	{
-		auto uMod = std::make_unique<GraphModule>(*this, fullName,
-		                                          gsl::span<fs::path>());
+		auto uMod = std::make_unique<GraphModule>(*this, fullName, gsl::span<fs::path>());
 
 		mod = uMod.get();
 		addModule(std::move(uMod));
@@ -320,21 +318,23 @@ std::string stringifyLLVMType(llvm::Type* ty) {
 	return data;
 }
 
-Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel, std::vector<llvm::GenericValue> args, llvm::GenericValue* ret, llvm::Function* funcToRun) {
-	
+Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
+                       std::vector<llvm::GenericValue> args, llvm::GenericValue* ret,
+                       llvm::Function* funcToRun) {
 	Result res;
-	
+
 	llvm::InitializeNativeTarget();
-		
+
 	if (funcToRun == nullptr) {
 		funcToRun = mod->getFunction("main");
-		
+
 		if (funcToRun == nullptr) {
-			res.addEntry("EUKN", "Failed to find main function in module", {{"Module Name", mod->getName()}});
+			res.addEntry("EUKN", "Failed to find main function in module",
+			             {{"Module Name", mod->getName()}});
 			return res;
 		}
 	}
-	
+
 	llvm::EngineBuilder EEBuilder(std::move(mod));
 
 	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
@@ -352,12 +352,9 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 		return res;
 	}
 
-
 	auto returnValue = EE->runFunction(funcToRun, args);
-	
-	if (ret != nullptr) {
-		*ret = returnValue;
-	}
+
+	if (ret != nullptr) { *ret = returnValue; }
 }
 
 }  // namespace chig
