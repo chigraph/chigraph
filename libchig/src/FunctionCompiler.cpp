@@ -161,7 +161,12 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 				llvm::DIType* dType = output.type.debugType();
 
 				// TODO(#63): better names
-				auto debugVar = data.dbuilder->createAutoVariable(
+				auto debugVar = data.dbuilder->
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+				createLocalVariable(createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
+#else
+				createAutoVariable(
+#endif				
 				    data.diFunc, node->id() + "__" + std::to_string(id), data.diFunc->getFile(), 1,
 				    dType);
 
@@ -376,8 +381,15 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			res += func.context().typeFromModule("lang", "i32", &intDataType);
 			Expects(intDataType.valid());
 			auto debugParam =
-			    debugBuilder.createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
-			                            intDataType.debugType());
+			    debugBuilder.
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+					createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc, "inputexec_id",
+										debugFile, 0, intDataType.debugType());
+#else
+
+					createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
+											intDataType.debugType());
+#endif
 			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 			                           llvm::DebugLoc::get(1, 1, debugFunc),
 			                           allocBlock);  // TODO(#65): "line" numbers
@@ -399,10 +411,15 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 		// create DIType*
 		llvm::DIType* dType      = tyAndName.type.debugType();
-		auto          debugParam = debugBuilder.createParameterVariable(debugFunc, tyAndName.name,
+		auto          debugParam = debugBuilder.
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+			createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
+		                                      tyAndName.name, debugFile, 0, dType);
+#else
+			createParameterVariable(debugFunc, tyAndName.name,
 		                                          idx + 1,  // + 1 because it starts at 1
 		                                          debugFile, 0, dType);
-		
+#endif	
 		debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 		                           llvm::DebugLoc::get(1, 1, debugFunc),
 		                           allocBlock);  // TODO(#65): line numbers
