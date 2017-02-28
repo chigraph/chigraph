@@ -163,7 +163,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 				// TODO(#63): better names
 				auto debugVar = data.dbuilder->
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-				createLocalVariable(createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
+				createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
 #else
 				createAutoVariable(
 #endif				
