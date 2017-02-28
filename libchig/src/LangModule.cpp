@@ -858,15 +858,24 @@ Result LangModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::js
 DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 	using namespace std::string_literals;
 
+	llvm::Type* ty;
+	
+	auto err = llvm::SMDiagnostic();
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 8
 	// just parse the type
 	auto IR  = "@G = external global "s + gsl::to_string(name);
-	auto err = llvm::SMDiagnostic();
 
-#if LLVM_VERSION_MINOR >= 9 && LLVM_VERSION_MAJOR >= 3
-	context().llvmContext().setDiscardValueNames(false);
-#endif
 	auto tmpModule = llvm::parseAssemblyString(IR, err, context().llvmContext());
 	if (!tmpModule) { return nullptr; }
+	
+	ty = tmpModule->getNamedValue("G")->getType()->getContainedType(0);
+#else 
+	{
+		llvm::Module tMod("tmp", context().llvmContext());
+		ty = llvm::parseType(
+			gsl::to_string(name), err, tMod, nullptr);
+	}
+#endif
 
 	// get debug type
 	auto iter = mDebugTypes.find(gsl::to_string(name));
@@ -874,7 +883,7 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 
 	// returns the pointer type, so get the contained type
 	return DataType{this, gsl::to_string(name),
-	                tmpModule->getNamedValue("G")->getType()->getContainedType(0), iter->second};
+	                ty, iter->second};
 }
 
 }  // namespace chig

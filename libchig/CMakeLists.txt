@@ -69,7 +69,7 @@ set(LLVM_COMPONENTS
 	codegen
 	selectiondag
 )
-execute_process(COMMAND ${LLVM_CONFIG} --libs ${LLVM_COMPONENTS} OUTPUT_VARIABLE LLVM_LIBRARIES OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND ${LLVM_CONFIG} --libfiles ${LLVM_COMPONENTS} OUTPUT_VARIABLE LLVM_LIBRARIES OUTPUT_STRIP_TRAILING_WHITESPACE)
 string(REPLACE " " ";" LLVM_LINK_LIST "${LLVM_LIBRARIES}")
 message(STATUS "LLVM link libraries: ${LLVM_LINK_LIST}")
 
@@ -88,13 +88,15 @@ execute_process(COMMAND ${LLVM_CONFIG} --ldflags OUTPUT_VARIABLE LLVM_LD_FLAGS O
 string(REPLACE " " ";" LLVM_LD_FLAGS_LIST "${LLVM_LD_FLAGS}")
 message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 
+link_directories(${CLANG_LIB_DIR})
+
 target_link_libraries(libchig
 PUBLIC
 	libexecstream
 	boost_filesystem
 	${LLVM_SYSTEM_LINK_LIST}
-	${LLVM_LINK_LIST}
 	${LLVM_LD_FLAGS_LIST}
+	${LLVM_LINK_LIST}
 	ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
 PRIVATE
 	ctollvm
