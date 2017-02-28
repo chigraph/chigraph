@@ -64,9 +64,7 @@ set(LLVM_COMPONENTS
 	executionengine
 	native
 	nativecodegen
-	interpreter
 	linker
-	orcjit
 	mcjit
 	codegen
 	selectiondag
