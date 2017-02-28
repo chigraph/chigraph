@@ -27,6 +27,9 @@ add_subdirectory(third_party/boost)
 find_program(LLVM_CONFIG llvm-config REQUIRED)
 message(STATUS "llvm-config found at ${LLVM_CONFIG}")
 
+execute_process(COMMAND ${LLVM_CONFIG} --version OUTPUT_VARIABLE LLVM_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+message(STATUS "LLVM version: ${LLVM_VERSION}")
+
 # add libchig and the basic driver
 add_subdirectory(libchig)
 add_subdirectory(chig)
