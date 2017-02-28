@@ -104,6 +104,7 @@ $(document).ready(function(){initNavTree('Context_8hpp.html','');});
 <code>#include &lt;llvm/IR/LLVMContext.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Module.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Type.h&gt;</code><br />
+<code>#include &lt;llvm/ExecutionEngine/GenericValue.h&gt;</code><br />
 <code>#include &lt;gsl/gsl&gt;</code><br />
 <code>#include &lt;boost/filesystem.hpp&gt;</code><br />
 <code>#include &lt;boost/optional.hpp&gt;</code><br />
@@ -112,14 +113,16 @@ $(document).ready(function(){initNavTree('Context_8hpp.html','');});
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8hpp__incl.svg" width="100%" height="440"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8hpp__incl.svg" width="100%" height="451"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> This graph shows which files directly or indirectly include this file:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8hpp__dep__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8hpp__dep__incl.svg" width="100%" height="496"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="Context_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -138,6 +141,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ac58b7fab2d2023b6b10df41d45af5eef"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#ac58b7fab2d2023b6b10df41d45af5eef">chig::interpretLLVMIR</a> (std::unique_ptr&lt; llvm::Module &gt; mod, llvm::CodeGenOpt::Level optLevel=llvm::CodeGenOpt::Default, std::vector&lt; llvm::GenericValue &gt; args={}, llvm::GenericValue *ret=nullptr, llvm::Function *funcToRun=nullptr)</td></tr>
+<tr class="memdesc:ac58b7fab2d2023b6b10df41d45af5eef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpret LLVM IR, just a convenience function.  <a href="namespacechig.html#ac58b7fab2d2023b6b10df41d45af5eef">More...</a><br /></td></tr>
+<tr class="separator:ac58b7fab2d2023b6b10df41d45af5eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ef9d45891ba99268d7c5215ab6c66a6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#a6ef9d45891ba99268d7c5215ab6c66a6">chig::stringifyLLVMType</a> (llvm::Type *ty)</td></tr>
 <tr class="memdesc:a6ef9d45891ba99268d7c5215ab6c66a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns a type into a string.  <a href="namespacechig.html#a6ef9d45891ba99268d7c5215ab6c66a6">More...</a><br /></td></tr>
 <tr class="separator:a6ef9d45891ba99268d7c5215ab6c66a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,7 +161,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_16971e61b3ab07f0aa6ba57b2eb7b712.html">chig</a></li><li class="navelem"><a class="el" href="Context_8hpp.html">Context.hpp</a></li>
-    <li class="footer">Generated on Sun Feb 19 2017 21:46:54 for chigraph by
+    <li class="footer">Generated on Mon Feb 27 2017 21:34:30 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

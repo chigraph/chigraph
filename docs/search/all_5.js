@@ -9,7 +9,7 @@ var searchData=
   ['graphfunction_2ecpp',['GraphFunction.cpp',['../GraphFunction_8cpp.html',1,'']]],
   ['graphfunction_2ehpp',['GraphFunction.hpp',['../GraphFunction_8hpp.html',1,'']]],
   ['graphfunctiontojson',['graphFunctionToJson',['../namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b',1,'chig']]],
-  ['graphmodule',['GraphModule',['../structchig_1_1GraphModule.html',1,'chig::GraphModule'],['../structchig_1_1GraphModule.html#a1a496595a1b4b952682c31c562e7d4ef',1,'chig::GraphModule::GraphModule()']]],
+  ['graphmodule',['GraphModule',['../structchig_1_1GraphModule.html',1,'chig::GraphModule'],['../structchig_1_1GraphModule.html#a65458343d0344b6b806f9b0b780b32f4',1,'chig::GraphModule::GraphModule()']]],
   ['graphmodule_2ecpp',['GraphModule.cpp',['../GraphModule_8cpp.html',1,'']]],
   ['graphmodule_2ehpp',['GraphModule.hpp',['../GraphModule_8hpp.html',1,'']]],
   ['graphmoduletojson',['graphModuleToJson',['../namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a',1,'chig']]],

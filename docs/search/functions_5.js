@@ -7,7 +7,7 @@ var searchData=
   ['getorinsertentrynode',['getOrInsertEntryNode',['../structchig_1_1GraphFunction.html#a1fd77fbd5bb46690fdc79cd9c6d35917',1,'chig::GraphFunction']]],
   ['graphfunction',['GraphFunction',['../structchig_1_1GraphFunction.html#ae6fd9cf0654d81f28dd2a4b14d78c74b',1,'chig::GraphFunction']]],
   ['graphfunctiontojson',['graphFunctionToJson',['../namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b',1,'chig']]],
-  ['graphmodule',['GraphModule',['../structchig_1_1GraphModule.html#a1a496595a1b4b952682c31c562e7d4ef',1,'chig::GraphModule']]],
+  ['graphmodule',['GraphModule',['../structchig_1_1GraphModule.html#a65458343d0344b6b806f9b0b780b32f4',1,'chig::GraphModule']]],
   ['graphmoduletojson',['graphModuleToJson',['../namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a',1,'chig']]],
   ['graphstruct',['GraphStruct',['../structchig_1_1GraphStruct.html#abf5c04e575b4e68df1a9c4d31fba2a0e',1,'chig::GraphStruct']]],
   ['graphstructtojson',['graphStructToJson',['../namespacechig.html#acb577a9d61ae779ccd61feb0b9193705',1,'chig']]]

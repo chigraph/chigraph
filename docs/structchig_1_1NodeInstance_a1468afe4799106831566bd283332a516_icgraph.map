@@ -1,23 +1,27 @@
 <map id="chig::NodeInstance::id" name="chig::NodeInstance::id">
-<area shape="rect" id="node2" href="$namespacechig.html#a26aa6586df79345493de9fc130291c18" title="Disconnect a data connection. " alt="" coords="244,88,388,115"/>
-<area shape="rect" id="node9" href="$structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e" title="Remove a node from the function. " alt="" coords="480,299,619,341"/>
-<area shape="rect" id="node16" href="$structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153" title="Set the type of the node instance. " alt="" coords="482,131,617,173"/>
-<area shape="rect" id="node17" href="$namespacechig.html#ad24a330508033631ef29b2f6e5cf6210" title="Disconnect a exec connection. " alt="" coords="243,205,389,232"/>
-<area shape="rect" id="node18" href="$structchig_1_1NodeInstance.html#a3c1b4ddc0c288cbacf6e4aaa7810a349" title="Copy assignment operator. " alt="" coords="249,307,383,349"/>
-<area shape="rect" id="node19" href="$namespacechig.html#ae2ff27777b91f651f86d9a8e8ef0b986" title="Make sure that connections connect back and that they have the same types. " alt="" coords="205,387,427,429"/>
-<area shape="rect" id="node3" href="$namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d" title="Connects two nodes&#39; data connections. " alt="" coords="486,5,613,32"/>
-<area shape="rect" id="node4" href="$structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2" title="Get the containing GraphFunction. " alt="" coords="680,61,815,102"/>
-<area shape="rect" id="node6" href="$namespacechig.html#a62056798e67720d435705b99f7e16cd0" title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ..." alt="" coords="1057,39,1236,65"/>
-<area shape="rect" id="node5" href="$namespacechig.html#a8a2e0029b591b2c20b39d570753f123f" title="Connects two nodes&#39; exec connections. " alt="" coords="875,68,1005,95"/>
-<area shape="rect" id="node7" href="$namespacechig.html#a1f28de74faa271cf31249935c9640c58" title="Load a GraphModule from json. " alt="" coords="1284,39,1455,65"/>
-<area shape="rect" id="node8" href="$structchig_1_1Context.html#a0d9ec5f2803a5777d2e389256ccb3e3b" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="1503,31,1673,73"/>
-<area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#a79cbfaf26d9a966ae8048c81dc09777e" title="chig::GraphFunction\l::nodes" alt="" coords="678,299,817,341"/>
-<area shape="rect" id="node11" href="$structchig_1_1GraphFunction.html#a1c45651f8ac9b7bf9cebcd11d91763f0" title="Remove a local variable from the function by name. " alt="" coords="672,365,823,406"/>
-<area shape="rect" id="node12" href="$structchig_1_1GraphFunction.html#a72a81861d1331948804b2a267598ec79" title="Get the local variables. " alt="" coords="871,362,1009,403"/>
-<area shape="rect" id="node13" href="$namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b" title="Serialize a GraphFunction to json. " alt="" coords="1057,369,1236,396"/>
-<area shape="rect" id="node14" href="$namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a" title="Serialize a JsonModule to json. " alt="" coords="1284,369,1455,396"/>
-<area shape="rect" id="node15" href="$structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff" title="Serialize to disk in the context. " alt="" coords="1519,362,1657,403"/>
-<area shape="rect" id="node20" href="$namespacechig.html#afccf44a2370371aae836862d9731155e" title="Validate that a function is compilable. " alt="" coords="475,424,624,451"/>
-<area shape="rect" id="node21" href="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="673,432,822,459"/>
-<area shape="rect" id="node22" href="$structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6" title="Generate a llvm::Module from the module. " alt="" coords="871,427,1009,469"/>
+<area shape="rect" id="node2" href="$namespacechig.html#a26aa6586df79345493de9fc130291c18" title="Disconnect a data connection. " alt="" coords="244,289,388,315"/>
+<area shape="rect" id="node15" href="$structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e" title="Remove a node from the function. " alt="" coords="480,63,619,104"/>
+<area shape="rect" id="node20" href="$structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153" title="Set the type of the node instance. " alt="" coords="482,231,617,272"/>
+<area shape="rect" id="node21" href="$namespacechig.html#ad24a330508033631ef29b2f6e5cf6210" title="Disconnect a exec connection. " alt="" coords="243,179,389,206"/>
+<area shape="rect" id="node22" href="$structchig_1_1NodeInstance.html#a3c1b4ddc0c288cbacf6e4aaa7810a349" title="Copy assignment operator. " alt="" coords="249,340,383,381"/>
+<area shape="rect" id="node23" href="$namespacechig.html#ae2ff27777b91f651f86d9a8e8ef0b986" title="Make sure that connections connect back and that they have the same types. " alt="" coords="205,409,427,451"/>
+<area shape="rect" id="node3" href="$namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d" title="Connects two nodes&#39; data connections. " alt="" coords="486,371,613,398"/>
+<area shape="rect" id="node4" href="$structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2" title="Get the containing GraphFunction. " alt="" coords="679,301,814,343"/>
+<area shape="rect" id="node6" href="$namespacechig.html#a62056798e67720d435705b99f7e16cd0" title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ..." alt="" coords="1068,309,1247,335"/>
+<area shape="rect" id="node5" href="$namespacechig.html#a8a2e0029b591b2c20b39d570753f123f" title="Connects two nodes&#39; exec connections. " alt="" coords="879,309,1010,335"/>
+<area shape="rect" id="node7" href="$namespacechig.html#a3b1bc50c9d7b3cdb17ffcb3ad602f7ab" title="Load a GraphModule from json. " alt="" coords="1299,262,1469,289"/>
+<area shape="rect" id="node8" href="$structchig_1_1Context.html#a077f8ef8c0dd541ec2e2d64bcd8f9fc0" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="1521,231,1692,272"/>
+<area shape="rect" id="node9" href="$structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2" title="Load a module from disk. " alt="" coords="1740,226,1913,253"/>
+<area shape="rect" id="node10" href="$structchig_1_1ChigModule.html#ad5feee65f261f3777edddd027eb89400" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="1961,221,2184,247"/>
+<area shape="rect" id="node11" href="$structchig_1_1ChigModule.html#a7f239dc07b0a4d74d6907da6f25127dc" title="Get the dependencies. " alt="" coords="2232,159,2443,186"/>
+<area shape="rect" id="node14" href="$structchig_1_1GraphModule.html#a65458343d0344b6b806f9b0b780b32f4" title="Construct a GraphModule. " alt="" coords="2268,213,2407,255"/>
+<area shape="rect" id="node12" href="$namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a" title="Serialize a JsonModule to json. " alt="" coords="2491,134,2661,161"/>
+<area shape="rect" id="node13" href="$structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff" title="Serialize to disk in the context. " alt="" coords="2709,127,2848,168"/>
+<area shape="rect" id="node16" href="$structchig_1_1GraphFunction.html#a79cbfaf26d9a966ae8048c81dc09777e" title="chig::GraphFunction\l::nodes" alt="" coords="677,63,816,104"/>
+<area shape="rect" id="node17" href="$structchig_1_1GraphFunction.html#a1c45651f8ac9b7bf9cebcd11d91763f0" title="Remove a local variable from the function by name. " alt="" coords="869,5,1020,47"/>
+<area shape="rect" id="node18" href="$structchig_1_1GraphFunction.html#a72a81861d1331948804b2a267598ec79" title="Get the local variables. " alt="" coords="1088,99,1227,140"/>
+<area shape="rect" id="node19" href="$namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b" title="Serialize a GraphFunction to json. " alt="" coords="1295,107,1473,134"/>
+<area shape="rect" id="node24" href="$namespacechig.html#afccf44a2370371aae836862d9731155e" title="Validate that a function is compilable. " alt="" coords="475,423,624,450"/>
+<area shape="rect" id="node25" href="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="672,425,821,451"/>
+<area shape="rect" id="node26" href="$structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6" title="Generate a llvm::Module from the module. " alt="" coords="875,419,1014,460"/>
 </map>
