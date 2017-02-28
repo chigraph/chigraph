@@ -14,7 +14,6 @@
 #include <chig/Result.hpp>
 #include <chig/json.hpp>
 
-
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 9
 #include <llvm/Bitcode/ReaderWriter.h>
 #else

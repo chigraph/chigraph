@@ -91,10 +91,8 @@ nlohmann::json graphModuleToJson(const GraphModule& mod) {
 	nlohmann::json data;
 
 	auto& depsjson = data["dependencies"];
-	depsjson = nlohmann::json::array();
-	for(const auto& dep : mod.dependencies()) {
-		depsjson.push_back(dep.generic_string());
-	}
+	depsjson       = nlohmann::json::array();
+	for (const auto& dep : mod.dependencies()) { depsjson.push_back(dep.generic_string()); }
 
 	auto& graphsjson = data["graphs"];
 	graphsjson       = nlohmann::json::array();

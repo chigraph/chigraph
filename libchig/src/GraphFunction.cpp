@@ -83,9 +83,9 @@ std::vector<NodeInstance*> GraphFunction::nodesWithType(const boost::filesystem:
 	return ret;
 }
 
-Result GraphFunction::insertNode(const boost::filesystem::path& moduleName, gsl::cstring_span<> typeName,
-                                 const nlohmann::json& typeJSON, float x, float y,
-                                 gsl::cstring_span<> id, NodeInstance** toFill) {
+Result GraphFunction::insertNode(const boost::filesystem::path& moduleName,
+                                 gsl::cstring_span<> typeName, const nlohmann::json& typeJSON,
+                                 float x, float y, gsl::cstring_span<> id, NodeInstance** toFill) {
 	std::unique_ptr<NodeType> nodeType;
 	Result res = context().nodeTypeFromModule(moduleName, typeName, typeJSON, &nodeType);
 

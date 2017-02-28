@@ -6,12 +6,12 @@
 #include <boost/filesystem.hpp>
 
 namespace std {
-	template<>
-	struct hash<boost::filesystem::path> {
-		size_t operator()(const boost::filesystem::path& p) const {
-			return std::hash<std::string>()(p.generic_string());
-		}
-	};
+template <>
+struct hash<boost::filesystem::path> {
+	size_t operator()(const boost::filesystem::path& p) const {
+		return std::hash<std::string>()(p.generic_string());
+	}
+};
 }
 
-#endif // CHIG_HASH_FILESYSTEM_PATH_HPP
+#endif  // CHIG_HASH_FILESYSTEM_PATH_HPP

@@ -7,9 +7,9 @@
 #pragma once
 
 #include "chig/Fwd.hpp"
+#include "chig/HashFilesystemPath.hpp"
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
-#include "chig/HashFilesystemPath.hpp"
 
 #include <gsl/gsl>
 
@@ -71,7 +71,9 @@ struct ChigModule {
 
 	/// Get the dependencies
 	/// \return The dependencies
-	const std::unordered_set<boost::filesystem::path>& dependencies() const { return mDependencies; }
+	const std::unordered_set<boost::filesystem::path>& dependencies() const {
+		return mDependencies;
+	}
 	/// Add a dependency to the module
 	/// Loads the module from context() if it isn't already loaded
 	/// \param newDepFullPath The dependency, full path
@@ -88,8 +90,8 @@ struct ChigModule {
 
 private:
 	boost::filesystem::path mFullName;
-	std::string mName;
-	Context*    mContext;
+	std::string             mName;
+	Context*                mContext;
 
 	std::unordered_set<boost::filesystem::path> mDependencies;
 };

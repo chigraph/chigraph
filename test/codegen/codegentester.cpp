@@ -229,7 +229,8 @@ int main(int argc, char** argv) {
 			          << expectedreturncode << std::endl
 			          << "stdout: \"" << llistdout << "\"" << std::endl
 			          << "stderr: \"" << llistderr << "\"" << std::endl
-					  << "generated IR" << std::endl << generatedir << std::endl;
+			          << "generated IR" << std::endl
+			          << generatedir << std::endl;
 
 			return 1;
 		}
@@ -239,7 +240,8 @@ int main(int argc, char** argv) {
 			          << expectedcout << std::endl
 			          << "retcode: \"" << retcodelli << "\"" << std::endl
 			          << "stderr: \"" << llistderr << "\"" << std::endl
-					  << "generated IR" << std::endl << generatedir << std::endl;
+			          << "generated IR" << std::endl
+			          << generatedir << std::endl;
 
 			return 1;
 		}
@@ -249,7 +251,8 @@ int main(int argc, char** argv) {
 			          << expectedcerr << std::endl
 			          << "retcode: \"" << retcodelli << "\"" << std::endl
 			          << "stdout: \"" << llistdout << "\"" << std::endl
-					  << "generated IR" << std::endl << generatedir << std::endl;
+			          << "generated IR" << std::endl
+			          << generatedir << std::endl;
 
 			return 1;
 		}
@@ -303,9 +306,8 @@ int main(int argc, char** argv) {
 	{
 		Result r;
 
-		Context     c{moduleDir};
-		fs::path fullName =
-		    fs::relative(moduleDir, c.workspacePath() / "src") / "main";
+		Context  c{moduleDir};
+		fs::path fullName = fs::relative(moduleDir, c.workspacePath() / "src") / "main";
 
 		// test serialization and deserialization
 		GraphModule* deserialized;

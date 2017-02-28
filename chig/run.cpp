@@ -113,7 +113,6 @@ int run(const std::vector<std::string>& opts) {
 		std::cerr << res << std::endl;
 		return 1;
 	}
-	
-	
+
 	return ret.IntVal.getZExtValue();
 }

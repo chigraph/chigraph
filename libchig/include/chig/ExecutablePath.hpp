@@ -8,7 +8,6 @@
 namespace chig {
 
 std::string executablePath();
-
 }
 
-#endif // CHIG_EXECUTABLE_PATH_HPP
+#endif  // CHIG_EXECUTABLE_PATH_HPP

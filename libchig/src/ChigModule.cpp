@@ -7,7 +7,6 @@
 namespace chig {
 ChigModule::ChigModule(Context& contextArg, boost::filesystem::path moduleFullName)
     : mFullName{std::move(moduleFullName)}, mContext{&contextArg} {
-
 	mName = mFullName.filename().string();
 }
 

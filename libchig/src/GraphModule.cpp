@@ -259,7 +259,8 @@ struct GetLocalNodeType : public NodeType {
 
 }  // anon namespace
 
-GraphModule::GraphModule(Context& cont, boost::filesystem::path fullName, gsl::span<boost::filesystem::path> dependencies)
+GraphModule::GraphModule(Context& cont, boost::filesystem::path fullName,
+                         gsl::span<boost::filesystem::path> dependencies)
     : ChigModule(cont, fullName) {
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) { addDependency(dep); }
@@ -279,16 +280,17 @@ Result GraphModule::generateModule(llvm::Module& module) {
 
 	// debug info
 	llvm::DIBuilder debugBuilder(module);
-	
-	
+
 	auto compileUnit = debugBuilder.createCompileUnit(llvm::dwarf::DW_LANG_C,
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 9
-     sourceFilePath().filename().string(), sourceFilePath().parent_path().string(),
+	                                                  sourceFilePath().filename().string(),
+	                                                  sourceFilePath().parent_path().string(),
 #else
-	 debugBuilder.createFile(sourceFilePath().filename().string(),
-	                                      sourceFilePath().parent_path().string()),
+	                                                  debugBuilder.createFile(
+	                                                      sourceFilePath().filename().string(),
+	                                                      sourceFilePath().parent_path().string()),
 #endif
-    "Chigraph Compiler", false, "", 0);
+	                                                  "Chigraph Compiler", false, "", 0);
 
 	// create prototypes
 	for (auto& graph : mFunctions) {

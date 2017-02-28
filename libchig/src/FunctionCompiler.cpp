@@ -161,14 +161,15 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 				llvm::DIType* dType = output.type.debugType();
 
 				// TODO(#63): better names
-				auto debugVar = data.dbuilder->
+				auto debugVar =
+				    data.dbuilder->
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-				createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
+				    createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
 #else
-				createAutoVariable(
-#endif				
-				    data.diFunc, node->id() + "__" + std::to_string(id), data.diFunc->getFile(), 1,
-				    dType);
+				    createAutoVariable(
+#endif
+				                        data.diFunc, node->id() + "__" + std::to_string(id),
+				                        data.diFunc->getFile(), 1, dType);
 
 				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
 				                             llvm::DebugLoc::get(1, 1, data.diFunc),
@@ -364,7 +365,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, 1,
 	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false);
 
-	//f->setSubprogram(debugFunc); TODO TODO TODO please don't comment this out
+	// f->setSubprogram(debugFunc); TODO TODO TODO please don't comment this out
 	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
 	llvm::BasicBlock* block      = llvm::BasicBlock::Create(mod->getContext(), entry->id(), f);
 	auto              blockcpy   = block;
@@ -383,12 +384,12 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			auto debugParam =
 			    debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-					createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc, "inputexec_id",
-										debugFile, 0, intDataType.debugType());
+			    createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc, "inputexec_id",
+			                        debugFile, 0, intDataType.debugType());
 #else
 
-					createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
-											intDataType.debugType());
+			    createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
+			                            intDataType.debugType());
 #endif
 			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 			                           llvm::DebugLoc::get(1, 1, debugFunc),
@@ -413,13 +414,13 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		llvm::DIType* dType      = tyAndName.type.debugType();
 		auto          debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-			createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
+		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
 		                                      tyAndName.name, debugFile, 0, dType);
 #else
-			createParameterVariable(debugFunc, tyAndName.name,
+		                  createParameterVariable(debugFunc, tyAndName.name,
 		                                          idx + 1,  // + 1 because it starts at 1
 		                                          debugFile, 0, dType);
-#endif	
+#endif
 		debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
 		                           llvm::DebugLoc::get(1, 1, debugFunc),
 		                           allocBlock);  // TODO(#65): line numbers

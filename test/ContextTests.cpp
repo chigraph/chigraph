@@ -18,17 +18,13 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		Result  res;
 
 		// create a workspace
-		fs::path workspaceDir = fs::unique_path(); // this is a tmp file
+		fs::path workspaceDir = fs::unique_path();  // this is a tmp file
 		fs::create_directories(workspaceDir);
-		
-		// create the .chigraphworkspace file
-		{
-			fs::ofstream stream{workspaceDir / ".chigraphworkspace"};
-		}
-		
-		
-		THEN("It resolves workspace paths correctly") {
 
+		// create the .chigraphworkspace file
+		{ fs::ofstream stream{workspaceDir / ".chigraphworkspace"}; }
+
+		THEN("It resolves workspace paths correctly") {
 			REQUIRE(workspaceFromChildPath(workspaceDir) == workspaceDir);
 			REQUIRE(workspaceFromChildPath(workspaceDir / "src") == workspaceDir);
 			REQUIRE(workspaceFromChildPath(workspaceDir / "src" / "github.com") == workspaceDir);

@@ -81,11 +81,10 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 			for (const auto& connection : inputExecSlot) {
 				auto& remoteConn = connection.first->outputExecConnections[connection.second];
 				if (remoteConn.first != node.second.get() || remoteConn.second != id) {
-					res.addEntry(
-					    "EUKN", "Exec connection doesn't connect back",
-					    {{"Left Node", connection.first->id()},
-					     {"Right Node", node.second->id()},
-					     {"Left output ID", connection.second}});
+					res.addEntry("EUKN", "Exec connection doesn't connect back",
+					             {{"Left Node", connection.first->id()},
+					              {"Right Node", node.second->id()},
+					              {"Left output ID", connection.second}});
 				}
 			}
 			++id;
@@ -144,7 +143,9 @@ Result validatePath(
 	auto id = 0ull;
 	for (const auto& conn : inst.inputDataConnections) {
 		if (conn.first == nullptr) {
-			res.addEntry("EUKN", "Node is missing an input data connection", {{"nodeid", inst.id()}, {"dataid", id}, {"nodetype", inst.type().qualifiedName()}});
+			res.addEntry(
+			    "EUKN", "Node is missing an input data connection",
+			    {{"nodeid", inst.id()}, {"dataid", id}, {"nodetype", inst.type().qualifiedName()}});
 			continue;
 		}
 
@@ -152,7 +153,7 @@ Result validatePath(
 			res.addEntry("EUKN", "Node that accepts data from another node is called first",
 			             {{"nodeid", inst.id()}, {"othernodeid", conn.first->id()}});
 		}
-		
+
 		++id;
 	}
 
