@@ -120,7 +120,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6a1ec252d6db0dc74267a9fbf391566c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a307eaa94c9f2d408c7a204e364b02b22"><td class="memItemLeft" align="right" valign="top"><a id="a307eaa94c9f2d408c7a204e364b02b22"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22">valid</a> () const</td></tr>
-<tr class="memdesc:a307eaa94c9f2d408c7a204e364b02b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule it&#39;s in and it embe...">DataType</a> is valid. <br /></td></tr>
+<tr class="memdesc:a307eaa94c9f2d408c7a204e364b02b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule it&#39;s in and it embe...">DataType</a> is valid (if it's actually bound to a type and module) <br /></td></tr>
 <tr class="separator:a307eaa94c9f2d408c7a204e364b02b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
@@ -137,7 +137,7 @@ Related Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> it's in and it embeds debug types. </p>
 
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00016">16</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00017">17</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0a9f30e6eb74a9e5ce45ef97897b849e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0a9f30e6eb74a9e5ce45ef97897b849e">&#9670;&nbsp;</a></span>DataType()</h2>
@@ -195,7 +195,7 @@ Related Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00021">21</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00022">22</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -226,9 +226,9 @@ Related Functions</h2></td></tr>
 <p>Get the debug type. </p>
 <dl class="section return"><dt>Returns</dt><dd>The debug type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00039">39</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00040">40</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00264">chig::compileFunction()</a>, and <a class="el" href="DataType_8hpp_source.html#l00057">operator==()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00272">chig::compileFunction()</a>, and <a class="el" href="DataType_8hpp_source.html#l00058">operator==()</a>.</p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -265,9 +265,9 @@ Related Functions</h2></td></tr>
 <p>Get the underlying <code>llvm::Type</code>. </p>
 <dl class="section return"><dt>Returns</dt><dd>the <code>llvm::Type</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00036">36</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00037">37</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="DataType_8hpp_source.html#l00057">operator==()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="DataType_8hpp_source.html#l00058">operator==()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -304,9 +304,9 @@ Related Functions</h2></td></tr>
 <p>Get the module this is a part of. </p>
 <dl class="section return"><dt>Returns</dt><dd>The module </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00027">27</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00028">28</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="DataType_8hpp_source.html#l00057">operator==()</a>, and <a class="el" href="DataType_8hpp_source.html#l00033">qualifiedName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="DataType_8hpp_source.html#l00058">operator==()</a>, and <a class="el" href="DataType_8hpp_source.html#l00034">qualifiedName()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -343,11 +343,11 @@ Related Functions</h2></td></tr>
 <p>Get the qualified name of the type (<a class="el" href="structchig_1_1DataType.html#aa63396ca8c48bd0a6be166df245772a9" title="Get the module this is a part of. ">module()</a>.fullName() + ":" name()) </p>
 <dl class="section return"><dt>Returns</dt><dd>The qualified name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00033">33</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00034">34</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ChigModule_8hpp_source.html#l00058">chig::ChigModule::fullName()</a>, <a class="el" href="DataType_8hpp_source.html#l00027">module()</a>, and <a class="el" href="DataType_8hpp_source.html#l00030">unqualifiedName()</a>.</p>
+<p class="reference">References <a class="el" href="ChigModule_8hpp_source.html#l00061">chig::ChigModule::fullName()</a>, <a class="el" href="DataType_8hpp_source.html#l00028">module()</a>, and <a class="el" href="DataType_8hpp_source.html#l00031">unqualifiedName()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00404">chig::GraphFunction::retypeLocalVariable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00402">chig::GraphFunction::retypeLocalVariable()</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
@@ -391,9 +391,9 @@ Related Functions</h2></td></tr>
 <p>Get the unqualified name of the type. </p>
 <dl class="section return"><dt>Returns</dt><dd>The unqualified name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00030">30</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00031">31</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="DataType_8hpp_source.html#l00057">operator==()</a>, and <a class="el" href="DataType_8hpp_source.html#l00033">qualifiedName()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="DataType_8hpp_source.html#l00058">operator==()</a>, and <a class="el" href="DataType_8hpp_source.html#l00034">qualifiedName()</a>.</p>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
@@ -449,7 +449,7 @@ Related Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If they aren't equal </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00067">67</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00068">68</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
 </div>
 </div>
@@ -497,9 +497,9 @@ Related Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If they are equal </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00057">57</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="DataType_8hpp_source.html#l00058">58</a> of file <a class="el" href="DataType_8hpp_source.html">DataType.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="DataType_8hpp_source.html#l00039">debugType()</a>, <a class="el" href="DataType_8hpp_source.html#l00036">llvmType()</a>, <a class="el" href="DataType_8hpp_source.html#l00027">module()</a>, and <a class="el" href="DataType_8hpp_source.html#l00030">unqualifiedName()</a>.</p>
+<p class="reference">References <a class="el" href="DataType_8hpp_source.html#l00040">debugType()</a>, <a class="el" href="DataType_8hpp_source.html#l00037">llvmType()</a>, <a class="el" href="DataType_8hpp_source.html#l00028">module()</a>, and <a class="el" href="DataType_8hpp_source.html#l00031">unqualifiedName()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -519,7 +519,7 @@ Related Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1DataType.html">DataType</a></li>
-    <li class="footer">Generated on Sun Feb 19 2017 21:46:54 for chigraph by
+    <li class="footer">Generated on Mon Feb 27 2017 21:34:31 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

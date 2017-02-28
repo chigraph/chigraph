@@ -111,48 +111,48 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6216fb103dda5088af5ef8ba6f65817"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aa6216fb103dda5088af5ef8ba6f65817">addModule</a> (std::unique_ptr&lt; <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> &gt; modToAdd) noexcept</td></tr>
 <tr class="memdesc:aa6216fb103dda5088af5ef8ba6f65817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a custom module to the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> This usually doesn't get called, use the <code>gsl::string_span&lt;&gt;</code> overload instead.  <a href="#aa6216fb103dda5088af5ef8ba6f65817">More...</a><br /></td></tr>
 <tr class="separator:aa6216fb103dda5088af5ef8ba6f65817"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d9ec5f2803a5777d2e389256ccb3e3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a0d9ec5f2803a5777d2e389256ccb3e3b">addModuleFromJson</a> (gsl::cstring_span&lt;&gt; fullName, const nlohmann::json &amp;json, <a class="el" href="structchig_1_1GraphModule.html">GraphModule</a> **toFill=nullptr)</td></tr>
-<tr class="memdesc:a0d9ec5f2803a5777d2e389256ccb3e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a module from JSON &ndash; avoid this use the string overload.  <a href="#a0d9ec5f2803a5777d2e389256ccb3e3b">More...</a><br /></td></tr>
-<tr class="separator:a0d9ec5f2803a5777d2e389256ccb3e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a077f8ef8c0dd541ec2e2d64bcd8f9fc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a077f8ef8c0dd541ec2e2d64bcd8f9fc0">addModuleFromJson</a> (const boost::filesystem::path &amp;fullName, const nlohmann::json &amp;json, <a class="el" href="structchig_1_1GraphModule.html">GraphModule</a> **toFill=nullptr)</td></tr>
+<tr class="memdesc:a077f8ef8c0dd541ec2e2d64bcd8f9fc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a module from JSON &ndash; avoid this use the string overload.  <a href="#a077f8ef8c0dd541ec2e2d64bcd8f9fc0">More...</a><br /></td></tr>
+<tr class="separator:a077f8ef8c0dd541ec2e2d64bcd8f9fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60f9e7347a5843b31c4c342a014683c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1CModule.html">CModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a60f9e7347a5843b31c4c342a014683c7">cModule</a> () const</td></tr>
 <tr class="memdesc:a60f9e7347a5843b31c4c342a014683c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="structchig_1_1CModule.html" title="The CModule is the module that supplies functionality to create C bindings. ">CModule</a>, if it has been loaded.  <a href="#a60f9e7347a5843b31c4c342a014683c7">More...</a><br /></td></tr>
 <tr class="separator:a60f9e7347a5843b31c4c342a014683c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8987940286a7a67313b635891d8f51e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a8987940286a7a67313b635891d8f51e8">compileModule</a> (gsl::cstring_span&lt;&gt; fullName, std::unique_ptr&lt; llvm::Module &gt; *toFill)</td></tr>
-<tr class="memdesc:a8987940286a7a67313b635891d8f51e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile a module to a <code>llvm::Module</code>.  <a href="#a8987940286a7a67313b635891d8f51e8">More...</a><br /></td></tr>
-<tr class="separator:a8987940286a7a67313b635891d8f51e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76268c7aba0f643cf3242a87872de711"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a76268c7aba0f643cf3242a87872de711">compileModule</a> (const boost::filesystem::path &amp;fullName, std::unique_ptr&lt; llvm::Module &gt; *toFill)</td></tr>
+<tr class="memdesc:a76268c7aba0f643cf3242a87872de711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile a module to a <code>llvm::Module</code>.  <a href="#a76268c7aba0f643cf3242a87872de711">More...</a><br /></td></tr>
+<tr class="separator:a76268c7aba0f643cf3242a87872de711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4fb30ced50d32c629ad50669b8b1e05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aa4fb30ced50d32c629ad50669b8b1e05">hasWorkspace</a> () const noexcept</td></tr>
 <tr class="memdesc:aa4fb30ced50d32c629ad50669b8b1e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this context has a workspace bound to it &ndash; same as !workspacePath().empty()  <a href="#aa4fb30ced50d32c629ad50669b8b1e05">More...</a><br /></td></tr>
 <tr class="separator:aa4fb30ced50d32c629ad50669b8b1e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a477a9a4e450aa171814e494d0ff631"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1LangModule.html">LangModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a7a477a9a4e450aa171814e494d0ff631">langModule</a> () const</td></tr>
 <tr class="memdesc:a7a477a9a4e450aa171814e494d0ff631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="structchig_1_1LangModule.html" title="The module that provides built-in operations like literals, math operations, etc. ...">LangModule</a>, if it has been loaded.  <a href="#a7a477a9a4e450aa171814e494d0ff631">More...</a><br /></td></tr>
 <tr class="separator:a7a477a9a4e450aa171814e494d0ff631"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29560b87cbcd1fb4b772faceca58b231"><td class="memItemLeft" align="right" valign="top">std::unordered_set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a29560b87cbcd1fb4b772faceca58b231">listModulesInWorkspace</a> () const noexcept</td></tr>
-<tr class="memdesc:a29560b87cbcd1fb4b772faceca58b231"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the list of modules in the workspace.  <a href="#a29560b87cbcd1fb4b772faceca58b231">More...</a><br /></td></tr>
-<tr class="separator:a29560b87cbcd1fb4b772faceca58b231"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af57b8e285632b803f1a3a026fc4936f9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#af57b8e285632b803f1a3a026fc4936f9">listModulesInWorkspace</a> () const noexcept</td></tr>
+<tr class="memdesc:af57b8e285632b803f1a3a026fc4936f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the list of modules in the workspace.  <a href="#af57b8e285632b803f1a3a026fc4936f9">More...</a><br /></td></tr>
+<tr class="separator:af57b8e285632b803f1a3a026fc4936f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782020dfc6a44bdbacbea2a72cfd38e6"><td class="memItemLeft" align="right" valign="top">llvm::LLVMContext &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a782020dfc6a44bdbacbea2a72cfd38e6">llvmContext</a> () const</td></tr>
 <tr class="memdesc:a782020dfc6a44bdbacbea2a72cfd38e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the associated LLVMContext.  <a href="#a782020dfc6a44bdbacbea2a72cfd38e6">More...</a><br /></td></tr>
 <tr class="separator:a782020dfc6a44bdbacbea2a72cfd38e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ee400680060a0891bdffc7109016fec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a2ee400680060a0891bdffc7109016fec">loadModule</a> (const gsl::cstring_span&lt;&gt; name, <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> **toFill=nullptr)</td></tr>
-<tr class="memdesc:a2ee400680060a0891bdffc7109016fec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a module from disk.  <a href="#a2ee400680060a0891bdffc7109016fec">More...</a><br /></td></tr>
-<tr class="separator:a2ee400680060a0891bdffc7109016fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98839bbfddeb9b73c59a112d37b1a9c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a98839bbfddeb9b73c59a112d37b1a9c3">moduleByFullName</a> (gsl::cstring_span&lt;&gt; fullModuleName) const noexcept</td></tr>
-<tr class="memdesc:a98839bbfddeb9b73c59a112d37b1a9c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module by the full name.  <a href="#a98839bbfddeb9b73c59a112d37b1a9c3">More...</a><br /></td></tr>
-<tr class="separator:a98839bbfddeb9b73c59a112d37b1a9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71228b695c6c476dad8b2f17574837a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1GraphModule.html">GraphModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a71228b695c6c476dad8b2f17574837a2">newGraphModule</a> (gsl::cstring_span&lt;&gt; fullName)</td></tr>
-<tr class="memdesc:a71228b695c6c476dad8b2f17574837a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new <a class="el" href="structchig_1_1GraphModule.html" title="Module that holds graph functions. ">GraphModule</a> with the given full name.  <a href="#a71228b695c6c476dad8b2f17574837a2">More...</a><br /></td></tr>
-<tr class="separator:a71228b695c6c476dad8b2f17574837a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1cfbdb1646a75316dfa60f117576f37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#ab1cfbdb1646a75316dfa60f117576f37">nodeTypeFromModule</a> (gsl::cstring_span&lt;&gt; moduleName, gsl::cstring_span&lt;&gt; typeName, const nlohmann::json &amp;data, std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt; *toFill) noexcept</td></tr>
-<tr class="memdesc:ab1cfbdb1646a75316dfa60f117576f37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> from the JSON and name.  <a href="#ab1cfbdb1646a75316dfa60f117576f37">More...</a><br /></td></tr>
-<tr class="separator:ab1cfbdb1646a75316dfa60f117576f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75ab64b58e168998761ed6ebd5e493b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2">loadModule</a> (const boost::filesystem::path &amp;name, <a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> **toFill=nullptr)</td></tr>
+<tr class="memdesc:a75ab64b58e168998761ed6ebd5e493b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a module from disk.  <a href="#a75ab64b58e168998761ed6ebd5e493b2">More...</a><br /></td></tr>
+<tr class="separator:a75ab64b58e168998761ed6ebd5e493b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9794348cb6c594497574b13852d6fd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#ae9794348cb6c594497574b13852d6fd1">moduleByFullName</a> (const boost::filesystem::path &amp;fullModuleName) const noexcept</td></tr>
+<tr class="memdesc:ae9794348cb6c594497574b13852d6fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module by the full name.  <a href="#ae9794348cb6c594497574b13852d6fd1">More...</a><br /></td></tr>
+<tr class="separator:ae9794348cb6c594497574b13852d6fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc23e74bddad2f97fecc6041dee22b2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1GraphModule.html">GraphModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#abc23e74bddad2f97fecc6041dee22b2b">newGraphModule</a> (const boost::filesystem::path &amp;fullName)</td></tr>
+<tr class="memdesc:abc23e74bddad2f97fecc6041dee22b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new <a class="el" href="structchig_1_1GraphModule.html" title="Module that holds graph functions. ">GraphModule</a> with the given full name.  <a href="#abc23e74bddad2f97fecc6041dee22b2b">More...</a><br /></td></tr>
+<tr class="separator:abc23e74bddad2f97fecc6041dee22b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9a1bc6f91e7ee0a5363722e5f8916e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#ae9a1bc6f91e7ee0a5363722e5f8916e3">nodeTypeFromModule</a> (const boost::filesystem::path &amp;moduleName, gsl::cstring_span&lt;&gt; typeName, const nlohmann::json &amp;data, std::unique_ptr&lt; <a class="el" href="structchig_1_1NodeType.html">NodeType</a> &gt; *toFill) noexcept</td></tr>
+<tr class="memdesc:ae9a1bc6f91e7ee0a5363722e5f8916e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a <a class="el" href="structchig_1_1NodeType.html" title="A generic node type. ">NodeType</a> from the JSON and name.  <a href="#ae9a1bc6f91e7ee0a5363722e5f8916e3">More...</a><br /></td></tr>
+<tr class="separator:ae9a1bc6f91e7ee0a5363722e5f8916e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92c913aaa730281508e2048807472cee"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a92c913aaa730281508e2048807472cee">numModules</a> () const</td></tr>
 <tr class="memdesc:a92c913aaa730281508e2048807472cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of modules this <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> has.  <a href="#a92c913aaa730281508e2048807472cee">More...</a><br /></td></tr>
 <tr class="separator:a92c913aaa730281508e2048807472cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa484ef2c16aaa4d97a21632af4122bd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#aa484ef2c16aaa4d97a21632af4122bd8">typeFromModule</a> (gsl::cstring_span&lt;&gt; module, gsl::cstring_span&lt;&gt; name, <a class="el" href="structchig_1_1DataType.html">DataType</a> *toFill) noexcept</td></tr>
-<tr class="memdesc:aa484ef2c16aaa4d97a21632af4122bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule it&#39;s in and it embe...">DataType</a> from a module.  <a href="#aa484ef2c16aaa4d97a21632af4122bd8">More...</a><br /></td></tr>
-<tr class="separator:aa484ef2c16aaa4d97a21632af4122bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac10b22215a14a3da5de09d4460d5f093"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#ac10b22215a14a3da5de09d4460d5f093">unloadModule</a> (gsl::cstring_span&lt;&gt; fullName)</td></tr>
-<tr class="memdesc:ac10b22215a14a3da5de09d4460d5f093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unloads a module.  <a href="#ac10b22215a14a3da5de09d4460d5f093">More...</a><br /></td></tr>
-<tr class="separator:ac10b22215a14a3da5de09d4460d5f093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a1a3f31844162754866d7d0e877e176"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchig_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a0a1a3f31844162754866d7d0e877e176">typeFromModule</a> (const boost::filesystem::path &amp;module, gsl::cstring_span&lt;&gt; name, <a class="el" href="structchig_1_1DataType.html">DataType</a> *toFill) noexcept</td></tr>
+<tr class="memdesc:a0a1a3f31844162754866d7d0e877e176"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a <a class="el" href="structchig_1_1DataType.html" title="A type of data Loose wrapper around llvm::Type*, except it knows which ChigModule it&#39;s in and it embe...">DataType</a> from a module.  <a href="#a0a1a3f31844162754866d7d0e877e176">More...</a><br /></td></tr>
+<tr class="separator:a0a1a3f31844162754866d7d0e877e176"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af692ac28d1822e686430bc28228244c5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#af692ac28d1822e686430bc28228244c5">unloadModule</a> (const boost::filesystem::path &amp;fullName)</td></tr>
+<tr class="memdesc:af692ac28d1822e686430bc28228244c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unloads a module.  <a href="#af692ac28d1822e686430bc28228244c5">More...</a><br /></td></tr>
+<tr class="separator:af692ac28d1822e686430bc28228244c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21a5a702d92a00b87700e03782f9cb5f"><td class="memItemLeft" align="right" valign="top">boost::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f">workspacePath</a> () const</td></tr>
 <tr class="memdesc:a21a5a702d92a00b87700e03782f9cb5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the workspace path of the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a>.  <a href="#a21a5a702d92a00b87700e03782f9cb5f">More...</a><br /></td></tr>
 <tr class="separator:a21a5a702d92a00b87700e03782f9cb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,7 +160,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The class that handles the loading, creation, storing, and compilation of modules It also stores a <code>LLVMContext</code> object to be used everywhere. </p>
 
-<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00029">29</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00030">30</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa524b83a49d7109a09e8d32d098bf2d5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa524b83a49d7109a09e8d32d098bf2d5">&#9670;&nbsp;</a></span>Context()</h2>
@@ -185,17 +185,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00031">31</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="Context_8cpp_source.html#l00298">chig::workspaceFromChildPath()</a>.</p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_aa524b83a49d7109a09e8d32d098bf2d5_cgraph.svg" width="414" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -233,12 +222,32 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the module was added (it didn't exist before) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00164">164</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00166">166</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Context_8cpp_source.html#l00041">moduleByFullName()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00087">loadModule()</a>, and <a class="el" href="Context_8cpp_source.html#l00050">newGraphModule()</a>.</p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_aa6216fb103dda5088af5ef8ba6f65817_cgraph.svg" width="450" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_aa6216fb103dda5088af5ef8ba6f65817_icgraph.svg" width="100%" height="383"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
-<a id="a0d9ec5f2803a5777d2e389256ccb3e3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d9ec5f2803a5777d2e389256ccb3e3b">&#9670;&nbsp;</a></span>addModuleFromJson()</h2>
+<a id="a077f8ef8c0dd541ec2e2d64bcd8f9fc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a077f8ef8c0dd541ec2e2d64bcd8f9fc0">&#9670;&nbsp;</a></span>addModuleFromJson()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,7 +255,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> chig::Context::addModuleFromJson </td>
           <td>(</td>
-          <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
+          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>fullName</em>, </td>
         </tr>
         <tr>
@@ -285,15 +294,26 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00137">137</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00139">139</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ChigModule_8hpp_source.html#l00058">chig::ChigModule::fullName()</a>, and <a class="el" href="JsonDeserializer_8cpp_source.html#l00012">chig::jsonToGraphModule()</a>.</p>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+<p class="reference">References <a class="el" href="ChigModule_8hpp_source.html#l00061">chig::ChigModule::fullName()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00012">chig::jsonToGraphModule()</a>, <a class="el" href="Context_8cpp_source.html#l00041">moduleByFullName()</a>, and <a class="el" href="Context_8cpp_source.html#l00186">unloadModule()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00087">loadModule()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a0d9ec5f2803a5777d2e389256ccb3e3b_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a077f8ef8c0dd541ec2e2d64bcd8f9fc0_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a077f8ef8c0dd541ec2e2d64bcd8f9fc0_icgraph.svg" width="100%" height="383"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -324,21 +344,22 @@ Public Member Functions</h2></td></tr>
 <p>Get the <a class="el" href="structchig_1_1CModule.html" title="The CModule is the module that supplies functionality to create C bindings. ">CModule</a>, if it has been loaded. </p>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1CModule.html" title="The CModule is the module that supplies functionality to create C bindings. ">CModule</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00124">124</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00127">127</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Context_8cpp_source.html#l00310">chig::stringifyLLVMType()</a>, and <a class="el" href="Context_8cpp_source.html#l00298">chig::workspaceFromChildPath()</a>.</p>
-<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+<p class="reference">References <a class="el" href="Context_8cpp_source.html#l00323">chig::interpretLLVMIR()</a>, <a class="el" href="Context_8cpp_source.html#l00312">chig::stringifyLLVMType()</a>, and <a class="el" href="namespacechig.html#a32e319a56d723f024b5f47727adaf17c">chig::workspaceFromChildPath()</a>.</p>
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a60f9e7347a5843b31c4c342a014683c7_cgraph.svg" width="418" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a60f9e7347a5843b31c4c342a014683c7_cgraph.svg" width="616" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
 </div>
-<a id="a8987940286a7a67313b635891d8f51e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8987940286a7a67313b635891d8f51e8">&#9670;&nbsp;</a></span>compileModule()</h2>
+<a id="a76268c7aba0f643cf3242a87872de711"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76268c7aba0f643cf3242a87872de711">&#9670;&nbsp;</a></span>compileModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -346,7 +367,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> chig::Context::compileModule </td>
           <td>(</td>
-          <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
+          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>fullName</em>, </td>
         </tr>
         <tr>
@@ -381,24 +402,26 @@ Public Member Functions</h2></td></tr>
 moduleByFullName(fullName) exists </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00234">234</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00236">236</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00063">chig::Result::addEntry()</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00068">chig::Result::addEntry()</a>, <a class="el" href="Context_8hpp_source.html#l00119">llvmContext()</a>, <a class="el" href="Context_8cpp_source.html#l00041">moduleByFullName()</a>, and <a class="el" href="namespacechig.html#a32e319a56d723f024b5f47727adaf17c">chig::workspaceFromChildPath()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Context_8hpp_source.html#l00102">hasWorkspace()</a>.</p>
-<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="Context_8hpp_source.html#l00104">hasWorkspace()</a>.</p>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a8987940286a7a67313b635891d8f51e8_cgraph.svg" width="404" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a76268c7aba0f643cf3242a87872de711_cgraph.svg" width="474" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
-<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a8987940286a7a67313b635891d8f51e8_icgraph.svg" width="447" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a76268c7aba0f643cf3242a87872de711_icgraph.svg" width="447" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -429,15 +452,16 @@ moduleByFullName(fullName) exists </dd></dl>
 <p>Check if this context has a workspace bound to it &ndash; same as !workspacePath().empty() </p>
 <dl class="section return"><dt>Returns</dt><dd>If it has a workspace </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00102">102</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00104">104</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Context_8cpp_source.html#l00234">compileModule()</a>, and <a class="el" href="Context_8hpp_source.html#l00099">workspacePath()</a>.</p>
-<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+<p class="reference">References <a class="el" href="Context_8cpp_source.html#l00236">compileModule()</a>, and <a class="el" href="Context_8hpp_source.html#l00101">workspacePath()</a>.</p>
+<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_aa4fb30ced50d32c629ad50669b8b1e05_cgraph.svg" width="647" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_aa4fb30ced50d32c629ad50669b8b1e05_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -468,12 +492,12 @@ moduleByFullName(fullName) exists </dd></dl>
 <p>Get the <a class="el" href="structchig_1_1LangModule.html" title="The module that provides built-in operations like literals, math operations, etc. ...">LangModule</a>, if it has been loaded. </p>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1LangModule.html" title="The module that provides built-in operations like literals, math operations, etc. ...">LangModule</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00120">120</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00123">123</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a29560b87cbcd1fb4b772faceca58b231"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29560b87cbcd1fb4b772faceca58b231">&#9670;&nbsp;</a></span>listModulesInWorkspace()</h2>
+<a id="af57b8e285632b803f1a3a026fc4936f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af57b8e285632b803f1a3a026fc4936f9">&#9670;&nbsp;</a></span>listModulesInWorkspace()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -482,7 +506,7 @@ moduleByFullName(fullName) exists </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unordered_set&lt; std::string &gt; chig::Context::listModulesInWorkspace </td>
+          <td class="memname">std::vector&lt; std::string &gt; chig::Context::listModulesInWorkspace </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -498,7 +522,17 @@ moduleByFullName(fullName) exists </dd></dl>
 <p>Get the list of modules in the workspace. </p>
 <dl class="section return"><dt>Returns</dt><dd>The module list </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00060">60</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00064">64</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Context_8hpp_source.html#l00101">workspacePath()</a>.</p>
+<div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_af57b8e285632b803f1a3a026fc4936f9_cgraph.svg" width="428" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -528,12 +562,22 @@ moduleByFullName(fullName) exists </dd></dl>
 <p>Get the associated LLVMContext. </p>
 <dl class="section return"><dt>Returns</dt><dd>The LLVMContext </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00116">116</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00119">119</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00236">compileModule()</a>.</p>
+<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a782020dfc6a44bdbacbea2a72cfd38e6_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
-<a id="a2ee400680060a0891bdffc7109016fec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ee400680060a0891bdffc7109016fec">&#9670;&nbsp;</a></span>loadModule()</h2>
+<a id="a75ab64b58e168998761ed6ebd5e493b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75ab64b58e168998761ed6ebd5e493b2">&#9670;&nbsp;</a></span>loadModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -541,7 +585,7 @@ moduleByFullName(fullName) exists </dd></dl>
         <tr>
           <td class="memname"><a class="el" href="structchig_1_1Result.html">chig::Result</a> chig::Context::loadModule </td>
           <td>(</td>
-          <td class="paramtype">const gsl::cstring_span&lt;&gt;&#160;</td>
+          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
@@ -573,30 +617,32 @@ moduleByFullName(fullName) exists </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00083">83</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00087">87</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00063">chig::Result::addEntry()</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00068">chig::Result::addEntry()</a>, <a class="el" href="Context_8cpp_source.html#l00166">addModule()</a>, <a class="el" href="Context_8cpp_source.html#l00139">addModuleFromJson()</a>, and <a class="el" href="Context_8hpp_source.html#l00101">workspacePath()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00015">chig::ChigModule::addDependency()</a>.</p>
-<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="ChigModule_8cpp_source.html#l00014">chig::ChigModule::addDependency()</a>.</p>
+<div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a2ee400680060a0891bdffc7109016fec_cgraph.svg" width="383" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a75ab64b58e168998761ed6ebd5e493b2_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a2ee400680060a0891bdffc7109016fec_icgraph.svg" width="100%" height="383"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a75ab64b58e168998761ed6ebd5e493b2_icgraph.svg" width="100%" height="383"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
 </div>
-<a id="a98839bbfddeb9b73c59a112d37b1a9c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98839bbfddeb9b73c59a112d37b1a9c3">&#9670;&nbsp;</a></span>moduleByFullName()</h2>
+<a id="ae9794348cb6c594497574b13852d6fd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9794348cb6c594497574b13852d6fd1">&#9670;&nbsp;</a></span>moduleByFullName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -607,7 +653,7 @@ moduleByFullName(fullName) exists </dd></dl>
         <tr>
           <td class="memname"><a class="el" href="structchig_1_1ChigModule.html">ChigModule</a> * chig::Context::moduleByFullName </td>
           <td>(</td>
-          <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
+          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>fullModuleName</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -628,12 +674,22 @@ moduleByFullName(fullName) exists </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ret_module The module that has the full name <code>fullModuleName</code>, nullptr if none were found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00037">37</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00041">41</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00166">addModule()</a>, <a class="el" href="Context_8cpp_source.html#l00139">addModuleFromJson()</a>, <a class="el" href="Context_8cpp_source.html#l00236">compileModule()</a>, <a class="el" href="Context_8cpp_source.html#l00220">nodeTypeFromModule()</a>, and <a class="el" href="Context_8cpp_source.html#l00199">typeFromModule()</a>.</p>
+<div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-12-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_ae9794348cb6c594497574b13852d6fd1_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
-<a id="a71228b695c6c476dad8b2f17574837a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71228b695c6c476dad8b2f17574837a2">&#9670;&nbsp;</a></span>newGraphModule()</h2>
+<a id="abc23e74bddad2f97fecc6041dee22b2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc23e74bddad2f97fecc6041dee22b2b">&#9670;&nbsp;</a></span>newGraphModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -641,7 +697,7 @@ moduleByFullName(fullName) exists </dd></dl>
         <tr>
           <td class="memname"><a class="el" href="structchig_1_1GraphModule.html">GraphModule</a> * chig::Context::newGraphModule </td>
           <td>(</td>
-          <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
+          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>fullName</em></td><td>)</td>
           <td></td>
         </tr>
@@ -657,21 +713,32 @@ moduleByFullName(fullName) exists </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The created <a class="el" href="structchig_1_1GraphModule.html" title="Module that holds graph functions. ">GraphModule</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00046">46</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00050">50</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Context_8cpp_source.html#l00166">addModule()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="JsonDeserializer_8cpp_source.html#l00012">chig::jsonToGraphModule()</a>.</p>
-<div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a71228b695c6c476dad8b2f17574837a2_icgraph.svg" width="655" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-13-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_abc23e74bddad2f97fecc6041dee22b2b_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-14-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-14-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_abc23e74bddad2f97fecc6041dee22b2b_icgraph.svg" width="100%" height="383"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
 </div>
-<a id="ab1cfbdb1646a75316dfa60f117576f37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1cfbdb1646a75316dfa60f117576f37">&#9670;&nbsp;</a></span>nodeTypeFromModule()</h2>
+<a id="ae9a1bc6f91e7ee0a5363722e5f8916e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9a1bc6f91e7ee0a5363722e5f8916e3">&#9670;&nbsp;</a></span>nodeTypeFromModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -682,7 +749,7 @@ moduleByFullName(fullName) exists </dd></dl>
         <tr>
           <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> chig::Context::nodeTypeFromModule </td>
           <td>(</td>
-          <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
+          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>moduleName</em>, </td>
         </tr>
         <tr>
@@ -734,24 +801,26 @@ moduleByFullName(fullName) exists </dd></dl>
 <dl class="section pre"><dt>Precondition</dt><dd>toFill isn't null (the value the unique_ptr points to be can be null, but not the pointer to the unique_ptr) </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchig_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00218">218</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00220">220</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00063">chig::Result::addEntry()</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00068">chig::Result::addEntry()</a>, and <a class="el" href="Context_8cpp_source.html#l00041">moduleByFullName()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00136">chig::GraphFunction::createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00154">chig::GraphFunction::createExitNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00086">chig::GraphFunction::insertNode()</a>, and <a class="el" href="JsonDeserializer_8cpp_source.html#l00205">chig::jsonToGraphFunction()</a>.</p>
-<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="GraphFunction_8cpp_source.html#l00136">chig::GraphFunction::createEntryNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00154">chig::GraphFunction::createExitNodeType()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00086">chig::GraphFunction::insertNode()</a>, and <a class="el" href="JsonDeserializer_8cpp_source.html#l00209">chig::jsonToGraphFunction()</a>.</p>
+<div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-15-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_ab1cfbdb1646a75316dfa60f117576f37_cgraph.svg" width="404" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-15-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_ae9a1bc6f91e7ee0a5363722e5f8916e3_cgraph.svg" width="474" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
-<div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-10-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_ab1cfbdb1646a75316dfa60f117576f37_icgraph.svg" width="100%" height="574"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-16" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-16-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-16-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-16-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_ae9a1bc6f91e7ee0a5363722e5f8916e3_icgraph.svg" width="100%" height="534"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -782,12 +851,12 @@ moduleByFullName(fullName) exists </dd></dl>
 <p>Get the number of modules this <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a> has. </p>
 <dl class="section return"><dt>Returns</dt><dd>The module count </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00113">113</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00116">116</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aa484ef2c16aaa4d97a21632af4122bd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa484ef2c16aaa4d97a21632af4122bd8">&#9670;&nbsp;</a></span>typeFromModule()</h2>
+<a id="a0a1a3f31844162754866d7d0e877e176"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a1a3f31844162754866d7d0e877e176">&#9670;&nbsp;</a></span>typeFromModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -798,7 +867,7 @@ moduleByFullName(fullName) exists </dd></dl>
         <tr>
           <td class="memname"><a class="el" href="structchig_1_1Result.html">Result</a> chig::Context::typeFromModule </td>
           <td>(</td>
-          <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
+          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>module</em>, </td>
         </tr>
         <tr>
@@ -842,30 +911,32 @@ moduleByFullName(fullName) exists </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00197">197</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00199">199</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00063">chig::Result::addEntry()</a>, and <a class="el" href="structchig_1_1ChigModule.html#a7bb138db48ea320a09312ffd1af0999a">chig::ChigModule::typeFromName()</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00068">chig::Result::addEntry()</a>, <a class="el" href="Context_8cpp_source.html#l00041">moduleByFullName()</a>, and <a class="el" href="structchig_1_1ChigModule.html#a7bb138db48ea320a09312ffd1af0999a">chig::ChigModule::typeFromName()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00264">chig::compileFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00098">chig::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00205">chig::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00381">chig::jsonToGraphStruct()</a>, <a class="el" href="LangModule_8cpp_source.html#l00534">chig::LangModule::LangModule()</a>, <a class="el" href="CModule_8cpp_source.html#l00217">chig::CModule::nodeTypeFromName()</a>, and <a class="el" href="GraphModule_8cpp_source.html#l00382">chig::GraphModule::nodeTypeFromName()</a>.</p>
-<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00272">chig::compileFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00098">chig::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00209">chig::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00385">chig::jsonToGraphStruct()</a>, <a class="el" href="LangModule_8cpp_source.html#l00544">chig::LangModule::LangModule()</a>, <a class="el" href="CModule_8cpp_source.html#l00178">chig::CModule::nodeTypeFromName()</a>, and <a class="el" href="GraphModule_8cpp_source.html#l00387">chig::GraphModule::nodeTypeFromName()</a>.</p>
+<div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-17-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-11-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_aa484ef2c16aaa4d97a21632af4122bd8_cgraph.svg" width="482" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-17-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a0a1a3f31844162754866d7d0e877e176_cgraph.svg" width="483" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
-<div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-12-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-12-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_aa484ef2c16aaa4d97a21632af4122bd8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-18" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-18-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-18-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-18-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a0a1a3f31844162754866d7d0e877e176_icgraph.svg" width="100%" height="585"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
 </div>
-<a id="ac10b22215a14a3da5de09d4460d5f093"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac10b22215a14a3da5de09d4460d5f093">&#9670;&nbsp;</a></span>unloadModule()</h2>
+<a id="af692ac28d1822e686430bc28228244c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af692ac28d1822e686430bc28228244c5">&#9670;&nbsp;</a></span>unloadModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -873,7 +944,7 @@ moduleByFullName(fullName) exists </dd></dl>
         <tr>
           <td class="memname">bool chig::Context::unloadModule </td>
           <td>(</td>
-          <td class="paramtype">gsl::cstring_span&lt;&gt;&#160;</td>
+          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>fullName</em></td><td>)</td>
           <td></td>
         </tr>
@@ -889,7 +960,17 @@ moduleByFullName(fullName) exists </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if a module was unloaded </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00184">184</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8cpp_source.html#l00186">186</a> of file <a class="el" href="Context_8cpp_source.html">Context.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00139">addModuleFromJson()</a>.</p>
+<div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-19-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-19-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_af692ac28d1822e686430bc28228244c5_icgraph.svg" width="100%" height="383"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
 
 </div>
 </div>
@@ -919,15 +1000,16 @@ moduleByFullName(fullName) exists </dd></dl>
 <p>Get the workspace path of the <a class="el" href="structchig_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a>. </p>
 <dl class="section return"><dt>Returns</dt><dd>The workspace path </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00099">99</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Context_8hpp_source.html#l00101">101</a> of file <a class="el" href="Context_8hpp_source.html">Context.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Context_8hpp_source.html#l00102">hasWorkspace()</a>, and <a class="el" href="GraphModule_8hpp_source.html#l00054">chig::GraphModule::sourceFilePath()</a>.</p>
-<div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-13-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="Context_8hpp_source.html#l00104">hasWorkspace()</a>, <a class="el" href="Context_8cpp_source.html#l00064">listModulesInWorkspace()</a>, <a class="el" href="Context_8cpp_source.html#l00087">loadModule()</a>, and <a class="el" href="GraphModule_8hpp_source.html#l00054">chig::GraphModule::sourceFilePath()</a>.</p>
+<div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-20-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-13-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a21a5a702d92a00b87700e03782f9cb5f_icgraph.svg" width="635" height="136"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-20-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchig_1_1Context_a21a5a702d92a00b87700e03782f9cb5f_icgraph.svg" width="100%" height="510"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -942,7 +1024,7 @@ moduleByFullName(fullName) exists </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechig.html">chig</a></li><li class="navelem"><a class="el" href="structchig_1_1Context.html">Context</a></li>
-    <li class="footer">Generated on Sun Feb 19 2017 21:46:54 for chigraph by
+    <li class="footer">Generated on Mon Feb 27 2017 21:34:31 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
