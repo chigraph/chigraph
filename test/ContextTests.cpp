@@ -7,8 +7,6 @@
 
 #include <llvm/IR/DerivedTypes.h>
 
-#include <chig/Config.hpp>
-
 using namespace chig;
 namespace fs = boost::filesystem;
 

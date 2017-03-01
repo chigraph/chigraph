@@ -4,9 +4,6 @@ message(STATUS "clang install prefix: ${CLANG_INSTALL_PREFIX}")
 execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE CLANG_LIB_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "clang libdir: ${CLANG_LIB_DIR}")
 
-find_program(LLI_EXE lli REQUIRED HINTS ${CLANG_INSTALL_PREFIX}/bin)
-message(STATUS "lli: ${LLI_EXE}")
-
 add_subdirectory(ctollvm)
 
 set(CHIG_PUBLIC_FILES
@@ -47,8 +44,6 @@ set(CHIG_PRIVATE_FILES
 
 add_library(libchig STATIC ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
 set_target_properties(libchig PROPERTIES OUTPUT_NAME chig)
-
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.hpp.in ${CMAKE_BINARY_DIR}/chig/Config.hpp)
 
 target_compile_features(libchig PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
 

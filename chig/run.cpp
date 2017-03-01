@@ -31,9 +31,6 @@ namespace fs = boost::filesystem;
 using namespace chig;
 
 int run(const std::vector<std::string>& opts) {
-	llvm::InitializeNativeTarget();
-	llvm::InitializeNativeTargetAsmPrinter();
-	llvm::InitializeNativeTargetAsmParser();
 
 	po::options_description run_opts;
 	run_opts.add_options()("input-file", po::value<std::string>(),
