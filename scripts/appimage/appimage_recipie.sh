@@ -17,7 +17,7 @@ QTDIR=/usr/local/Qt-${QTVERSION}/
 # install chigraph
 cd /
 rm -rf /chigraph || true
-git clone https://github.com/chigraph/chigraph --depth=1 
+git clone https://github.com/chigraph/chigraph --depth=1 --recursive 
 
 # prepare the appdir
 mkdir -p /chigraph.appdir/usr
@@ -32,14 +32,15 @@ ln -s /usr/bin/cmake3 /usr/bin/cmake
 
 # build KF5
 export PATH=/opt/rh/python27/root/usr/bin/:$PATH
-/chigraph/scripts/build_frameworks.sh Release "-DCMAKE_PREFIX_PATH='/chigraph.appdir/usr;$QTDIR' -DCMAKE_INSTALL_PREFIX=/chigraph.appdir/usr"
+/chigraph/scripts/build_frameworks.sh Release "-GNinja -DCMAKE_PREFIX_PATH='/chigraph.appdir/usr;$QTDIR' -DCMAKE_INSTALL_PREFIX=/chigraph.appdir/usr"
 
 # build chigraph
 cd /chigraph
+rm -rf build
 mkdir -p build
 cd build
-cmake3 .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH='/chigraph.appdir/usr;/opt/llvm' -DCMAKE_INSTALL_PREFIX='/chigraph.apdir/usr'
-make -j8 install
+cmake3 .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr;/opt/llvm;$QTDIR" -DCMAKE_INSTALL_PREFIX='/chigraph.appdir/usr' -DCG_LINK_FFI=OFF
+ninja  install
 
 # remove pointless stuff
 cd /chigraph.appdir/
