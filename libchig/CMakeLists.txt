@@ -126,6 +126,11 @@ BYPRODUCTS ${CMAKE_BINARY_DIR}/lib/clang
 COMMENT "Copying standard clang includes from ${CLANG_LIB_DIR}/clang to ${CMAKE_BINARY_DIR}/lib/clang"
 )
 
-install(TARGETS libchig DESTINATION lib)
+install(TARGETS libchig 
+	RUNTIME DESTINATION bin
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+)
 install(DIRECTORY include/chig DESTINATION include)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/lib DESTINATION .)
 

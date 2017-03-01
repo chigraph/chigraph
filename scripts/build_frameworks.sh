@@ -13,7 +13,7 @@ mkdir -p $kf5dir/build
 version=5.31.0
 sversion=${version:0:4}
 
-flags="$2"
+flags=$2
 
 build_framework() {
     framework=$1
@@ -81,15 +81,15 @@ build_helper breeze-icons -DBINARY_ICONS_RESOURCE=1
 #build_helper kinit 
 #build_helper konsole
 
-cd $kf5dir/build
-
-foldername=breeze-5.9.2
-
-wget http://download.kde.org/stable/plasma/5.9.2/$foldername.tar.xz
-tar xf $foldername.tar.xz
-mkdir -p $foldername/build
-cd $foldername/build
-
-cmake .. -DCMAKE_PREFIX_PATH="$kf5dir" -DCMAKE_INSTALL_PREFIX="$kf5dir" -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=$btype $flags 
-cmake --build .
-cmake --build . --target install
+# cd $kf5dir/build
+# 
+# foldername=breeze-5.9.2
+# 
+# wget http://download.kde.org/stable/plasma/5.9.2/$foldername.tar.xz
+# tar xf $foldername.tar.xz
+# mkdir -p $foldername/build
+# cd $foldername/build
+# 
+# cmake .. -DCMAKE_PREFIX_PATH="$kf5dir" -DCMAKE_INSTALL_PREFIX="$kf5dir" -DLIB_INSTALL_DIR=lib -DCMAKE_BUILD_TYPE=$btype $flags 
+# cmake --build .
+# cmake --build . --target install

@@ -84,6 +84,8 @@ set(GUI_HEADERS
 )
 
 add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
+
+# for some reason cmake doesn't pick up on me wanting to do this...idk
 set_target_properties(chiggui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 
@@ -116,8 +118,11 @@ if(WIN32)
 			$<TARGET_FILE:${QTLIB}>
 			$<TARGET_FILE_DIR:chiggui>
 		)
+		
+		install(FILE $<TARGET_FILE:${QTLIB}> DESTINATION bin)
 	
 	endforeach()
 	
 endif()
+
 install(TARGETS chiggui DESTINATION bin)
