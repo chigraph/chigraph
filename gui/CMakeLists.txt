@@ -3,17 +3,17 @@ set(KDE_SKIP_TEST_SETTINGS ON)
 # Check that the dependencies dirs exist
 if ("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
 	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/kf5-debug")
-			message(FATAL_ERROR "Run setup.py first")
+		message(WARNING "Run setup.py first; trying to find system KF5")
 	endif()
 else()
 	if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/kf5-release")
-		message(FATAL_ERROR "Run setup.py first")
+		message(WARNING "Run setup.py first; trying to find system KF5")
 	endif()
 endif()
 
 # make sure they have pulled the submodules
 if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/nodeeditor/CMakeLists.txt")
-    message(FATAL_ERROR "Pull the submodules first, run `git submodule update --init`")
+	message(FATAL_ERROR "Pull the submodules first, run `git submodule update --init`")
 endif()
 
 # use the downloaded KF5 libraries
@@ -94,7 +94,7 @@ target_link_libraries(chiggui Qt5::Widgets KF5::Completion KF5::TextEditor KF5::
 target_compile_features(chiggui PRIVATE cxx_variable_templates)
 
 if(UNIX)
-        target_compile_options(chiggui PRIVATE "-fexceptions")
+	target_compile_options(chiggui PRIVATE "-fexceptions")
 endif()
 
 # copy dlls

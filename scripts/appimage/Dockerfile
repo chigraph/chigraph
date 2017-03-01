@@ -12,13 +12,17 @@ ENV QTDIR=/usr/local/Qt-${QTVERSION}/
 RUN mkdir -p /qt
 RUN bash -c "cd /qt && wget http://download.qt.io/archive/qt/${QVERSION_SHORT}/${QTVERSION}/single/qt-everywhere-opensource-src-${QTVERSION}.tar.xz && tar xvf qt-everywhere-opensource-src-${QTVERSION}.tar.xz"
 RUN bash -c "ln -sf /opt/rh/devtoolset-4/root/usr/bin/g++ /usr/bin/g++ && ln -sf /opt/rh/devtoolset-4/root/usr/bin/c++ /usr/bin/c++"
-
 RUN bash -c "cd /qt/qt-everywhere-opensource-src-$QTV && ./configure -v -skip qtgamepad -skip webengine -platform linux-g++ -qt-pcre -qt-xcb -qt-xkbcommon -xkb-config-root /usr/share/X11/xkb -no-pch -confirm-license -opensource && make -j 8 || make -j 1 install; make -j8 install && rm -Rf /qt"
 
+# ninja
+RUN yum -y update && yum -y install unzip
+RUN cd /usr/bin && wget https://github.com/ninja-build/ninja/releases/download/v1.7.2/ninja-linux.zip && unzip ninja-linux.zip && rm -f ninja-linux.zip
+
+# llvm+clang
 RUN mkdir -p /llvm
 RUN bash -c "cd /llvm && wget http://llvm.org/releases/3.9.1/llvm-3.9.1.src.tar.xz && tar xvf llvm-3.9.1.src.tar.xz"
 RUN bash -c "cd /llvm/llvm-3.9.1.src && cd tools && wget http://llvm.org/releases/3.9.1/cfe-3.9.1.src.tar.xz && tar xvf cfe-3.9.1.src.tar.xz"
-RUN bash -c "source /opt/rh/python27/enable && source /opt/rh/devtoolset-4/enable && python --version && cd /llvm/llvm-3.9.1.src && mkdir -p build && cd build && cmake3 .. -DCMAKE_INSTALL_PREFIX=/opt/llvm/ -DCMAKE_BUILD_TYPE=Release && make -j8 install && rm -Rf /llvm"
+RUN bash -c "source /opt/rh/python27/enable && source /opt/rh/devtoolset-4/enable && python --version && cd /llvm/llvm-3.9.1.src && mkdir -p build && cd build && cmake3 .. -DLLVM_TARGETS_TO_BUILD=X86 -DLLVM_ENABLE_RTTI=ON -GNinja -DCMAKE_INSTALL_PREFIX=/opt/llvm/ -DCMAKE_BUILD_TYPE=Release && ninja install && rm -Rf /llvm"
 
 CMD /bin/bash
  
