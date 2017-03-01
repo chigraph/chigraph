@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QPlainTextEdit>
 #include <QVBoxLayout>
+#include <QApplication>
 
 #include <KLocalizedString>
 #include <KMessageBox>
@@ -16,7 +17,8 @@
 
 #include <llvm/Support/raw_ostream.h>
 
-#include <chig/Config.hpp>
+#include <boost/filesystem.hpp>
+
 #include <chig/Result.hpp>
 
 SubprocessOutputView::SubprocessOutputView(chig::GraphModule* module) : mModule(module) {
@@ -37,10 +39,16 @@ SubprocessOutputView::SubprocessOutputView(chig::GraphModule* module) : mModule(
 
 		llvm::WriteBitcodeToFile(llmod.get(), os);
 	}
-
+	boost::filesystem::path chigPath = boost::filesystem::path(QApplication::applicationFilePath().toStdString()).parent_path() / "chig"
+#ifdef _WIN32
+		+ ".exe"
+#endif
+	;
+	
 	// run in lli
 	mProcess = new QProcess(this);
-	mProcess->setProgram(QStringLiteral(CHIG_LLI_EXE));
+	mProcess->setProgram(QString::fromStdString(chigPath.string()));
+	mProcess->setArguments(QStringList(QStringLiteral("interpret")));
 	mProcess->start();
 	mProcess->write(str.c_str(), str.length());
 	mProcess->closeWriteChannel();

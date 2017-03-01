@@ -1,5 +1,4 @@
 #include <chig/CModule.hpp>
-#include <chig/Config.hpp>
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
 #include <chig/GraphModule.hpp>
@@ -210,7 +209,7 @@ int main(int argc, char** argv) {
 		// now go through lli
 		exec_stream_t lliexe;
 		lliexe.set_wait_timeout(exec_stream_t::s_out, 10000);
-		lliexe.start(CHIG_LLI_EXE, "");
+		lliexe.start(chigExePath.string(), "interpret");
 
 		lliexe.in() << generatedir;
 		lliexe.close_in();
@@ -366,7 +365,7 @@ int main(int argc, char** argv) {
 		// now go through lli
 		exec_stream_t lliexe;
 		lliexe.set_wait_timeout(exec_stream_t::s_out, 10000);
-		lliexe.start(CHIG_LLI_EXE, "");
+		lliexe.start(chigExePath.string(), "interpret");
 
 		lliexe.in() << generatedir;
 		lliexe.close_in();

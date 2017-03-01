@@ -30,7 +30,6 @@
 #include <QTextStream>
 
 #include <chig/CModule.hpp>
-#include <chig/Config.hpp>
 #include <chig/Context.hpp>
 #include <chig/GraphFunction.hpp>
 #include <chig/GraphModule.hpp>

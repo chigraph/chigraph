@@ -324,6 +324,8 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 	Result res;
 
 	llvm::InitializeNativeTarget();
+	llvm::InitializeNativeTargetAsmPrinter();
+	llvm::InitializeNativeTargetAsmParser();
 
 	if (funcToRun == nullptr) {
 		funcToRun = mod->getFunction("main");
