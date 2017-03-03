@@ -21,11 +21,6 @@ QTVERSION=5.8.0
 QVERSION_SHORT=5.8
 QTDIR=/usr/local/Qt-${QTVERSION}/
 
-# install chigraph
-cd /
-rm -rf /chigraph || true
-git clone https://github.com/chigraph/chigraph --depth=1 --recursive 
-
 # prepare the appdir
 mkdir -p /chigraph.appdir/usr
 mkdir -p /chigraph.appdir/usr/lib
