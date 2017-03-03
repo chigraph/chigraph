@@ -2,10 +2,17 @@
 
 set -xe
 
-# acquire appimagekit
+# acquire linuxdeployqt
 cd /
-wget https://github.com/probonopd/AppImageKit/releases/download/8/appimagetool-x86_64.AppImage -O appimagetool
-chmod a+x appimagetool
+rm -Rf /linuxdeployqt
+if [ ! -d AppImageKit ] ; then
+  git clone  --depth 1 https://github.com/probonopd/linuxdeployqt.git /linuxdeployqt
+fi
+
+cd /linuxdeployqt/
+/usr/local/Qt-5.8.0/bin/qmake linuxdeployqt.pro
+make
+cd /
 
 # enable newer compiler
 source /opt/rh/devtoolset-4/enable
@@ -39,11 +46,17 @@ cd /chigraph
 rm -rf build
 mkdir -p build
 cd build
-cmake3 .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr;/opt/llvm;$QTDIR" -DCMAKE_INSTALL_PREFIX='/chigraph.appdir/usr' -DCG_LINK_FFI=OFF
-ninja  install
+cmake3 .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr;/opt/llvm;$QTDIR" -DCMAKE_INSTALL_PREFIX='/usr' -DCG_LINK_FFI=OFF
+ninja DESTDIR=/chigraph.appdir install
 
 # remove pointless stuff
 cd /chigraph.appdir/
 rm -rf ./usr/include
 find . -name '*.a' -exec rm {} \;
+
+cp /chigraph/scripts/appimage/chiggui.desktop /chigraph.appdir/
+
+unset QTDIR # not sure why we do this
+/linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/chiggui.dekstop -bundle-non-qt-libs
+/linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/chiggui.dekstop -appimage
 

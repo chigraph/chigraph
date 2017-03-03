@@ -24,5 +24,8 @@ RUN bash -c "cd /llvm && wget http://llvm.org/releases/3.9.1/llvm-3.9.1.src.tar.
 RUN bash -c "cd /llvm/llvm-3.9.1.src && cd tools && wget http://llvm.org/releases/3.9.1/cfe-3.9.1.src.tar.xz && tar xvf cfe-3.9.1.src.tar.xz"
 RUN bash -c "source /opt/rh/python27/enable && source /opt/rh/devtoolset-4/enable && python --version && cd /llvm/llvm-3.9.1.src && mkdir -p build && cd build && cmake3 .. -DLLVM_TARGETS_TO_BUILD=X86 -DLLVM_ENABLE_RTTI=ON -GNinja -DCMAKE_INSTALL_PREFIX=/opt/llvm/ -DCMAKE_BUILD_TYPE=Release && ninja install && rm -Rf /llvm"
 
+RUN yum -y update && yum -y install fuse-sshfs dkms-fuse fuse fuse-ntfs-3g
+RUN usermod -G fuse root
+
 CMD /bin/bash
  
