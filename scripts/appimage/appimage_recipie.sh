@@ -2,6 +2,11 @@
 
 set -xe
 
+QT_BASE_DIR=/opt/qt58
+export QTDIR=$QT_BASE_DIR
+export PATH=$QT_BASE_DIR/bin:$PATH
+
+
 # acquire linuxdeployqt
 cd /
 rm -Rf /linuxdeployqt
@@ -10,16 +15,10 @@ if [ ! -d AppImageKit ] ; then
 fi
 
 cd /linuxdeployqt/
-/usr/local/Qt-5.8.0/bin/qmake linuxdeployqt.pro
-make
+qmake linuxdeployqt.pro
+make -j8
 cd /
 
-# enable newer compiler
-source /opt/rh/devtoolset-4/enable
-
-QTVERSION=5.8.0
-QVERSION_SHORT=5.8
-QTDIR=/usr/local/Qt-${QTVERSION}/
 
 # prepare the appdir
 mkdir -p /chigraph.appdir/usr
@@ -28,9 +27,6 @@ cd  /chigraph.appdir/usr
 rm -rf lib64 || true
 ln -s lib lib64
 
-# force use of cmake3
-mv /usr/bin/cmake /usr/bin/cmake-old
-ln -s /usr/bin/cmake3 /usr/bin/cmake
 
 # build KF5
 export PATH=/opt/rh/python27/root/usr/bin/:$PATH
@@ -41,7 +37,7 @@ cd /chigraph
 rm -rf build
 mkdir -p build
 cd build
-cmake3 .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr;/opt/llvm;$QTDIR" -DCMAKE_INSTALL_PREFIX='/usr' -DCG_LINK_FFI=OFF
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr" -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config'
 make -j8 DESTDIR=/chigraph.appdir install
 
 # remove pointless stuff
