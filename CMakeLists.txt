@@ -9,6 +9,7 @@ set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 option(CG_BUILD_GUI "Should the GUI be built" ON)
 option(CG_LINK_FFI "Should FFI be linked in--llvm sometimes forgets to link it" ON)
+option(CG_BUILD_DEBUGGER "Should the debugger be built" ON)
 
 # this is really important to keep install-like paths
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -31,8 +32,13 @@ message(STATUS "llvm-config found at ${LLVM_CONFIG}")
 execute_process(COMMAND ${LLVM_CONFIG} --version OUTPUT_VARIABLE LLVM_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "LLVM version: ${LLVM_VERSION}")
 
-# add libchig and the basic driver
+# add libchig
 add_subdirectory(libchig)
+
+if (CG_BUILD_DEBUGGER)
+	add_subdirectory(libchigdebugger)
+endif()
+
 add_subdirectory(chig)
 
 if(CG_BUILD_GUI)

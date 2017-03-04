@@ -330,7 +330,7 @@ void MainWindow::newFunction() {
 
 	chig::GraphFunction* func =
 	    currentModule()->getOrCreateFunction(newName.toStdString(), {}, {}, {""}, {""});
-	func->getOrInsertEntryNode(0, 0, "entry");
+	func->getOrInsertEntryNode(0, 0, boost::uuids::string_generator()("entry"));
 
 	newFunctionCreated(func);
 	newFunctionSelected(func);  // open the newly created function

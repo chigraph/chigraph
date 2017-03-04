@@ -3,55 +3,52 @@
     "lang",
     "c"
   ],
-  "types": {},
   "graphs": [
     {
-	"description": "main",
-      "local_variables": {},
       "connections": [
         {
           "input": [
-            "puts",
+            "67469f63-c2ae-40b5-9524-f0758c3fab27",
             0
           ],
           "output": [
-            "exit",
+            "0c30ff52-06d8-4d85-a849-6c1b5a1fd9da",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "entry",
+            "88cc6fb4-6a87-49da-a237-571fb436dcdc",
             0
           ],
           "output": [
-            "puts",
+            "67469f63-c2ae-40b5-9524-f0758c3fab27",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "puts",
+            "88cc6fb4-6a87-49da-a237-571fb436dcdc",
             0
           ],
           "output": [
-            "exit",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "entry",
-            0
-          ],
-          "output": [
-            "puts",
+            "67469f63-c2ae-40b5-9524-f0758c3fab27",
             0
           ],
           "type": "exec"
+        },
+        {
+          "input": [
+            "67469f63-c2ae-40b5-9524-f0758c3fab27",
+            0
+          ],
+          "output": [
+            "0c30ff52-06d8-4d85-a849-6c1b5a1fd9da",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [
@@ -64,32 +61,17 @@
           "out": "lang:i32"
         }
       ],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "docall",
       "nodes": {
-        "entry": {
-          "data": {
-            "data": [
-              {
-                "str": "lang:i8*"
-              }
-            ],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            -198.151992797852,
-            7.28000020980835
-          ],
-          "type": "lang:entry"
-        },
-        "exit": {
+        "0c30ff52-06d8-4d85-a849-6c1b5a1fd9da": {
           "data": {
             "data": [
               {
@@ -101,28 +83,49 @@
             ]
           },
           "location": [
-            321,
-            28
+            268.200012207031,
+            17.2000007629395
           ],
           "type": "lang:exit"
         },
-        "puts": {
+        "67469f63-c2ae-40b5-9524-f0758c3fab27": {
           "data": {
-            "code": "#include <stdio.h> \n int doputs(const char* mystr) { return puts(mystr); }",
-            "function": "doputs", 
-            "inputs": [{"arg": "lang:i8*"}],
-            "output": "lang:i32",
-            "extraflags": []
+            "code": "#include <stdio.h> \n\nint doputs(const char* mystr) {\n\treturn puts(mystr); \n}",
+            "extraflags": [],
+            "function": "doputs",
+            "inputs": [
+              {
+                "": "lang:i8*"
+              }
+            ],
+            "output": "lang:i32"
           },
           "location": [
-            12,
+            7.67999982833862,
             13
           ],
           "type": "c:func"
+        },
+        "88cc6fb4-6a87-49da-a237-571fb436dcdc": {
+          "data": {
+            "data": [
+              {
+                "str": "lang:i8*"
+              }
+            ],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            -195.271987915039,
+            13.039999961853
+          ],
+          "type": "lang:entry"
         }
       },
       "type": "function"
     }
   ],
-  "name": "printer"
+  "types": {}
 }

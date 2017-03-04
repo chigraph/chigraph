@@ -11,33 +11,33 @@
       "connections": [
         {
           "input": [
-            "printf",
+            "c5a79776-d6ff-419b-b571-8a0790ccb7e4",
             0
           ],
           "output": [
-            "exit",
+            "e94efc47-c24f-470e-a8a5-74d28886874e",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "cint",
+            "edd9e57b-b128-4332-9611-858e4547c572",
             0
           ],
           "output": [
-            "printf",
+            "c5a79776-d6ff-419b-b571-8a0790ccb7e4",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "entry",
+            "e0e2e6e4-5c4d-452b-8072-9f7a5182041e",
             0
           ],
           "output": [
-            "printf",
+            "c5a79776-d6ff-419b-b571-8a0790ccb7e4",
             0
           ],
           "type": "exec"
@@ -53,7 +53,7 @@
       ],
       "name": "main",
       "nodes": {
-        "cint": {
+        "edd9e57b-b128-4332-9611-858e4547c572": {
           "data": 42,
           "location": [
             -345.145599365234,
@@ -61,7 +61,7 @@
           ],
           "type": "lang:const-int"
         },
-        "entry": {
+        "e0e2e6e4-5c4d-452b-8072-9f7a5182041e": {
           "data": {
             "data": [],
             "exec": [
@@ -74,7 +74,7 @@
           ],
           "type": "lang:entry"
         },
-        "exit": {
+        "e94efc47-c24f-470e-a8a5-74d28886874e": {
           "data": {
             "data": [],
             "exec": [
@@ -87,7 +87,7 @@
           ],
           "type": "lang:exit"
         },
-        "printf": {
+        "c5a79776-d6ff-419b-b571-8a0790ccb7e4": {
           "data": {
             "code": "#include <stdio.h> \n void printint(int i){printf(\"%i\", i); }",
             "function": "printint",

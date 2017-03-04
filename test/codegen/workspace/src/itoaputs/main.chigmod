@@ -9,33 +9,33 @@
       "connections": [
         {
           "input": [
-            "entry",
+            "658a61aa-6008-4aec-82bd-9a12a7984b94",
             0
           ],
           "output": [
-            "puts",
+            "03cc1f46-6de5-4945-b874-c7cb4f43c65c",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "puts",
+            "03cc1f46-6de5-4945-b874-c7cb4f43c65c",
             0
           ],
           "output": [
-            "exit",
+            "89554903-d262-48c8-922c-84d1be2406a0",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "str",
+            "9821d88d-2cfc-40b9-aab6-e16e470728f5",
             0
           ],
           "output": [
-            "puts",
+            "03cc1f46-6de5-4945-b874-c7cb4f43c65c",
             0
           ],
           "type": "data"
@@ -52,7 +52,7 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
-        "entry": {
+        "658a61aa-6008-4aec-82bd-9a12a7984b94": {
           "data": {
             "data": [],
             "exec": [
@@ -65,7 +65,7 @@
           ],
           "type": "lang:entry"
         },
-        "exit": {
+        "89554903-d262-48c8-922c-84d1be2406a0": {
           "data": {
             "data": [],
             "exec": [
@@ -78,7 +78,7 @@
           ],
           "type": "lang:exit"
         },
-        "puts": {
+        "03cc1f46-6de5-4945-b874-c7cb4f43c65c": {
           "data": {
             "code": "#include <stdio.h>\nint doputs(const char* arg) {\n\treturn puts(arg);\n}",
             "extraflags": [],
@@ -96,7 +96,7 @@
           ],
           "type": "c:func"
         },
-        "str": {
+        "9821d88d-2cfc-40b9-aab6-e16e470728f5": {
           "data": "hello",
           "location": [
             223,

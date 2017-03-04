@@ -8,33 +8,33 @@
       "connections": [
         {
           "input": [
-            "{d6a93602-9d43-44d0-97c3-70c21d4a774c}",
+            "d6a93602-9d43-44d0-97c3-70c21d4a774c",
             0
           ],
           "output": [
-            "{bad8a6cf-de69-4b1d-93c9-11eed7b84d0a}",
+            "bad8a6cf-de69-4b1d-93c9-11eed7b84d0a",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "entry",
+            "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
-            "{d6a93602-9d43-44d0-97c3-70c21d4a774c}",
+            "d6a93602-9d43-44d0-97c3-70c21d4a774c",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "entry",
+            "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
-            "{d6a93602-9d43-44d0-97c3-70c21d4a774c}",
+            "d6a93602-9d43-44d0-97c3-70c21d4a774c",
             0
           ],
           "type": "exec"
@@ -56,7 +56,7 @@
       "local_variables": {},
       "name": "printint",
       "nodes": {
-        "entry": {
+        "cdf55106-abcf-4290-bfcd-0bea399c468b": {
           "data": {
             "data": [
               {
@@ -73,7 +73,7 @@
           ],
           "type": "lang:entry"
         },
-        "{bad8a6cf-de69-4b1d-93c9-11eed7b84d0a}": {
+        "bad8a6cf-de69-4b1d-93c9-11eed7b84d0a": {
           "data": {
             "data": [],
             "exec": [
@@ -86,7 +86,7 @@
           ],
           "type": "lang:exit"
         },
-        "{d6a93602-9d43-44d0-97c3-70c21d4a774c}": {
+        "d6a93602-9d43-44d0-97c3-70c21d4a774c": {
           "data": {
             "code": "#include <stdio.h> \n\nvoid intprinter_printint(int val) {\n\tprintf(\"%i\", val);\n}",
             "extraflags": [],
@@ -111,66 +111,66 @@
       "connections": [
         {
           "input": [
-            "{7249bd0c-dd3c-452f-b122-8154cbed7a49}",
+            "7249bd0c-dd3c-452f-b122-8154cbed7a49",
             0
           ],
           "output": [
-            "{cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe}",
+            "cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "entry",
+            "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
-            "{b83b78df-d5c7-44a4-bfb3-3e624d636863}",
+            "b83b78df-d5c7-44a4-bfb3-3e624d636863",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "{b83b78df-d5c7-44a4-bfb3-3e624d636863}",
+            "b83b78df-d5c7-44a4-bfb3-3e624d636863",
             0
           ],
           "output": [
-            "{cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe}",
+            "cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "{b83b78df-d5c7-44a4-bfb3-3e624d636863}",
+            "b83b78df-d5c7-44a4-bfb3-3e624d636863",
             1
           ],
           "output": [
-            "{c99bebb3-7a41-4d42-9b5d-f7e2f82871c1}",
+            "c99bebb3-7a41-4d42-9b5d-f7e2f82871c1",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "entry",
+            "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
-            "{b83b78df-d5c7-44a4-bfb3-3e624d636863}",
+            "b83b78df-d5c7-44a4-bfb3-3e624d636863",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "{d3c52688-e910-47ec-9715-504704c37a90}",
+            "d3c52688-e910-47ec-9715-504704c37a90",
             0
           ],
           "output": [
-            "{c99bebb3-7a41-4d42-9b5d-f7e2f82871c1}",
+            "c99bebb3-7a41-4d42-9b5d-f7e2f82871c1",
             0
           ],
           "type": "data"
@@ -192,7 +192,7 @@
       "local_variables": {},
       "name": "printbool",
       "nodes": {
-        "entry": {
+        "cdf55106-abcf-4290-bfcd-0bea399c468b": {
           "data": {
             "data": [
               {
@@ -209,7 +209,7 @@
           ],
           "type": "lang:entry"
         },
-        "{7249bd0c-dd3c-452f-b122-8154cbed7a49}": {
+        "7249bd0c-dd3c-452f-b122-8154cbed7a49": {
           "data": 1,
           "location": [
             727,
@@ -217,7 +217,7 @@
           ],
           "type": "lang:const-int"
         },
-        "{b83b78df-d5c7-44a4-bfb3-3e624d636863}": {
+        "b83b78df-d5c7-44a4-bfb3-3e624d636863": {
           "data": null,
           "location": [
             401,
@@ -225,7 +225,7 @@
           ],
           "type": "lang:if"
         },
-        "{c99bebb3-7a41-4d42-9b5d-f7e2f82871c1}": {
+        "c99bebb3-7a41-4d42-9b5d-f7e2f82871c1": {
           "data": null,
           "location": [
             978,
@@ -233,7 +233,7 @@
           ],
           "type": "intprinter:printint"
         },
-        "{cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe}": {
+        "cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe": {
           "data": null,
           "location": [
             994,
@@ -241,7 +241,7 @@
           ],
           "type": "intprinter:printint"
         },
-        "{d3c52688-e910-47ec-9715-504704c37a90}": {
+        "d3c52688-e910-47ec-9715-504704c37a90": {
           "data": 0,
           "location": [
             735,
@@ -256,33 +256,33 @@
       "connections": [
         {
           "input": [
-            "{856cba7e-59b5-4172-9b36-783581cde081}",
+            "856cba7e-59b5-4172-9b36-783581cde081",
             0
           ],
           "output": [
-            "{a6427f85-d271-4631-81d5-692b10d3c872}",
+            "a6427f85-d271-4631-81d5-692b10d3c872",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "entry",
+            "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
-            "{856cba7e-59b5-4172-9b36-783581cde081}",
+            "856cba7e-59b5-4172-9b36-783581cde081",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "entry",
+            "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
-            "{856cba7e-59b5-4172-9b36-783581cde081}",
+            "856cba7e-59b5-4172-9b36-783581cde081",
             0
           ],
           "type": "exec"
@@ -304,7 +304,7 @@
       "local_variables": {},
       "name": "printfloat",
       "nodes": {
-        "entry": {
+        "cdf55106-abcf-4290-bfcd-0bea399c468b": {
           "data": {
             "data": [
               {
@@ -321,7 +321,7 @@
           ],
           "type": "lang:entry"
         },
-        "{856cba7e-59b5-4172-9b36-783581cde081}": {
+        "856cba7e-59b5-4172-9b36-783581cde081": {
           "data": {
             "code": "#include <stdio.h>\n\nvoid intprinter_printfloat(float f) {\n\tprintf(\"%f\", f);\n}",
             "extraflags": [],
@@ -339,7 +339,7 @@
           ],
           "type": "c:func"
         },
-        "{a6427f85-d271-4631-81d5-692b10d3c872}": {
+        "a6427f85-d271-4631-81d5-692b10d3c872": {
           "data": {
             "data": [],
             "exec": [
@@ -359,33 +359,33 @@
       "connections": [
         {
           "input": [
-            "{d28e119d-5458-45aa-8034-fcca232d45f9}",
+            "d28e119d-5458-45aa-8034-fcca232d45f9",
             0
           ],
           "output": [
-            "{28ef2fa4-86c7-4895-86d4-0dbb921ac7f2}",
+            "28ef2fa4-86c7-4895-86d4-0dbb921ac7f2",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "entry",
+            "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
-            "{d28e119d-5458-45aa-8034-fcca232d45f9}",
+            "d28e119d-5458-45aa-8034-fcca232d45f9",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "entry",
+            "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
-            "{d28e119d-5458-45aa-8034-fcca232d45f9}",
+            "d28e119d-5458-45aa-8034-fcca232d45f9",
             0
           ],
           "type": "exec"
@@ -407,7 +407,7 @@
       "local_variables": {},
       "name": "printstr",
       "nodes": {
-        "entry": {
+        "cdf55106-abcf-4290-bfcd-0bea399c468b": {
           "data": {
             "data": [
               {
@@ -424,7 +424,7 @@
           ],
           "type": "lang:entry"
         },
-        "{28ef2fa4-86c7-4895-86d4-0dbb921ac7f2}": {
+        "28ef2fa4-86c7-4895-86d4-0dbb921ac7f2": {
           "data": {
             "data": [],
             "exec": [
@@ -437,7 +437,7 @@
           ],
           "type": "lang:exit"
         },
-        "{d28e119d-5458-45aa-8034-fcca232d45f9}": {
+        "d28e119d-5458-45aa-8034-fcca232d45f9": {
           "data": {
             "code": "#include <stdio.h>\n\nvoid intprinter_printstr(const char* s) {\n\tprintf(\"%s\", s);\n}",
             "extraflags": [],

@@ -10,6 +10,9 @@
 
 #include <vector>
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+
 namespace chig {
 /// An instance of a node
 struct NodeInstance {
@@ -21,19 +24,13 @@ struct NodeInstance {
 	/// \param posY The Y location of the node
 	/// \param nodeID The unique ID for the node
 	NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX, float posY,
-	             gsl::cstring_span<> nodeID);
+	             boost::uuids::uuid nodeID = boost::uuids::random_generator()());
 
 	/// Move constructor
 	NodeInstance(NodeInstance&&) = default;
 
 	/// Copy constructor
-	NodeInstance(const NodeInstance& other, std::string id);
-
-	/// Move assignment operator
-	NodeInstance& operator=(NodeInstance&&) = default;
-
-	/// Copy assignment operator
-	NodeInstance& operator=(const NodeInstance&);
+	explicit NodeInstance(const NodeInstance& other, boost::uuids::uuid id = boost::uuids::random_generator()());
 
 	/// Set the type of the node instance
 	/// \param newType The new type
@@ -59,7 +56,7 @@ struct NodeInstance {
 	void setY(float newY) { mY = newY; }
 	/// Get the ID of the instance, unique to the graph
 	/// \return The ID
-	std::string id() const { return mId; }
+	boost::uuids::uuid id() const { return mId; }
 	// connections
 
 	// TODO: better documentation here and OOify
@@ -87,7 +84,7 @@ private:
 	float mX = 0.f;
 	float mY = 0.0;
 
-	std::string mId;
+	boost::uuids::uuid mId;
 
 	Context*       mContext;
 	GraphFunction* mFunction = nullptr;

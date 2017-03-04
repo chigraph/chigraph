@@ -14,6 +14,7 @@
 #include <boost/dynamic_bitset.hpp>
 #include <boost/range/counting_range.hpp>
 #include <boost/range/join.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 namespace chig {
 GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<> name,
@@ -51,19 +52,19 @@ NodeInstance* GraphFunction::entryNode() const noexcept {
 }
 
 Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y,
-                                 gsl::cstring_span<> id, NodeInstance** toFill) {
+                                 boost::uuids::uuid id, NodeInstance** toFill) {
 	Result res;
 
 	// make sure the ID doesn't exist
-	if (nodes().find(gsl::to_string(id)) != nodes().end()) {
+	if (nodes().find(id) != nodes().end()) {
 		res.addEntry("E47", "Cannot have two nodes with the same ID",
-		             {{"Requested ID", gsl::to_string(id)}});
+		             {{"Requested ID", boost::uuids::to_string(id)}});
 		return res;
 	}
 
 	auto ptr = std::make_unique<NodeInstance>(this, std::move(type), x, y, id);
 
-	auto emplaced = mNodes.emplace(gsl::to_string(id), std::move(ptr)).first;
+	auto emplaced = mNodes.emplace(id, std::move(ptr)).first;
 
 	if (toFill != nullptr) { *toFill = emplaced->second.get(); }
 
@@ -85,7 +86,7 @@ std::vector<NodeInstance*> GraphFunction::nodesWithType(const boost::filesystem:
 
 Result GraphFunction::insertNode(const boost::filesystem::path& moduleName,
                                  gsl::cstring_span<> typeName, const nlohmann::json& typeJSON,
-                                 float x, float y, gsl::cstring_span<> id, NodeInstance** toFill) {
+                                 float x, float y, boost::uuids::uuid id, NodeInstance** toFill) {
 	std::unique_ptr<NodeType> nodeType;
 	Result res = context().nodeTypeFromModule(moduleName, typeName, typeJSON, &nodeType);
 
@@ -169,7 +170,7 @@ Result GraphFunction::createExitNodeType(std::unique_ptr<NodeType>* toFill) cons
 	return res;
 }
 
-Result GraphFunction::getOrInsertEntryNode(float x, float y, gsl::cstring_span<> id,
+Result GraphFunction::getOrInsertEntryNode(float x, float y, boost::uuids::uuid id,
                                            NodeInstance** toFill) {
 	Result res;
 

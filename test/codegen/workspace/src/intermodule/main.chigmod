@@ -1,115 +1,115 @@
 {
   "dependencies": [
-    "lang",
+    "intermodule/printer",
     "c",
-    "intermodule/printer"
+    "lang"
   ],
   "graphs": [
     {
-	"description": "main",
       "connections": [
         {
           "input": [
-            "{4caf7ce7-fea1-4f63-ad73-bd6cf4652164}",
+            "68d5bcc2-a260-48b1-b9ce-032466dea4c6",
             0
           ],
           "output": [
-            "exit",
+            "3cd01c89-8fa1-477e-a953-6cf4d125ee0e",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "itoa",
+            "c4886ab8-e782-4279-961b-db9e4b32ba6d",
             0
           ],
           "output": [
-            "{4caf7ce7-fea1-4f63-ad73-bd6cf4652164}",
+            "4caf7ce7-fea1-4f63-ad73-bd6cf4652164",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "49510c55-7bec-4398-83ee-bf8968960830",
+            0
+          ],
+          "output": [
+            "c4886ab8-e782-4279-961b-db9e4b32ba6d",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "itoa",
+            "3cd01c89-8fa1-477e-a953-6cf4d125ee0e",
             0
           ],
           "output": [
-            "call2",
+            "49510c55-7bec-4398-83ee-bf8968960830",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "call",
+            "5060e2c4-3c93-4d8b-8d9e-1a3a5ec04044",
             0
           ],
           "output": [
-            "itoa",
+            "3cd01c89-8fa1-477e-a953-6cf4d125ee0e",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "call",
+            "49510c55-7bec-4398-83ee-bf8968960830",
             0
           ],
           "output": [
-            "itoa",
+            "c4886ab8-e782-4279-961b-db9e4b32ba6d",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "strliteral",
+            "3cd01c89-8fa1-477e-a953-6cf4d125ee0e",
             0
           ],
           "output": [
-            "call",
+            "49510c55-7bec-4398-83ee-bf8968960830",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "call2",
+            "4caf7ce7-fea1-4f63-ad73-bd6cf4652164",
             0
           ],
           "output": [
-            "{4caf7ce7-fea1-4f63-ad73-bd6cf4652164}",
+            "b5fb2695-79fe-44bd-b70c-8c920ad470fa",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "itoa",
+            "49510c55-7bec-4398-83ee-bf8968960830",
             0
           ],
           "output": [
-            "call2",
+            "4caf7ce7-fea1-4f63-ad73-bd6cf4652164",
             0
           ],
           "type": "data"
-        },
-        {
-          "input": [
-            "entry",
-            0
-          ],
-          "output": [
-            "call",
-            0
-          ],
-          "type": "exec"
         }
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
@@ -119,7 +119,7 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
-        "call": {
+        "3cd01c89-8fa1-477e-a953-6cf4d125ee0e": {
           "data": null,
           "location": [
             975,
@@ -127,43 +127,9 @@
           ],
           "type": "intermodule/printer:docall"
         },
-        "call2": {
-          "data": null,
-          "location": [
-            1334.33337402344,
-            57.1666679382324
-          ],
-          "type": "intermodule/printer:docall"
-        },
-        "entry": {
+        "49510c55-7bec-4398-83ee-bf8968960830": {
           "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            591,
-            96
-          ],
-          "type": "lang:entry"
-        },
-        "exit": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            1742.76220703125,
-            85.9336242675781
-          ],
-          "type": "lang:exit"
-        },
-        "itoa": {
-          "data": {
-            "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%d\", val); \n\treturn a;\n}",
+            "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%i\", val); \n\treturn a;\n}",
             "extraflags": [],
             "function": "doitoa",
             "inputs": [
@@ -174,20 +140,12 @@
             "output": "lang:i8*"
           },
           "location": [
-            1138,
+            1152.40002441406,
             94
           ],
           "type": "c:func"
         },
-        "strliteral": {
-          "data": "Yay happy!",
-          "location": [
-            666,
-            231
-          ],
-          "type": "lang:strliteral"
-        },
-        "{4caf7ce7-fea1-4f63-ad73-bd6cf4652164}": {
+        "4caf7ce7-fea1-4f63-ad73-bd6cf4652164": {
           "data": {
             "code": "#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}\n",
             "extraflags": [],
@@ -200,15 +158,56 @@
             "output": null
           },
           "location": [
-            1492.19763183594,
-            103.467735290527
+            1543.51733398438,
+            63.3877372741699
           ],
           "type": "c:func"
+        },
+        "5060e2c4-3c93-4d8b-8d9e-1a3a5ec04044": {
+          "data": "Yay happy!",
+          "location": [
+            673.693420410156,
+            160.428482055664
+          ],
+          "type": "lang:strliteral"
+        },
+        "68d5bcc2-a260-48b1-b9ce-032466dea4c6": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            699.132751464844,
+            40.9461059570312
+          ],
+          "type": "lang:entry"
+        },
+        "b5fb2695-79fe-44bd-b70c-8c920ad470fa": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            1775.1103515625,
+            36.1672248840332
+          ],
+          "type": "lang:exit"
+        },
+        "c4886ab8-e782-4279-961b-db9e4b32ba6d": {
+          "data": null,
+          "location": [
+            1362,
+            39.5999984741211
+          ],
+          "type": "intermodule/printer:docall"
         }
       },
       "type": "function"
     }
   ],
-  "name": "main",
   "types": {}
 }

@@ -350,7 +350,7 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 
 			auto name = ty->qualifiedName();  // cache the name because ty is moved from
 			reg->registerModel(std::make_unique<ChigraphNodeModel>(
-			    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, name),
+			    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, boost::uuids::random_generator()()),
 			    this));  // TODO: this is a memory leak
 		}
 	}
@@ -359,19 +359,19 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 	mFunction->createExitNodeType(&ty);
 
 	reg->registerModel(std::make_unique<ChigraphNodeModel>(
-	    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "lang:exit"), this));
+	    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this));
 
 	// register local variable setters and getters
 	for (const auto& local : mFunction->localVariables()) {
 		mFunction->module().nodeTypeFromName("_set_" + local.name, local.type.qualifiedName(), &ty);
 
 		reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "_set_" + local.name), this));
+		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this));
 
 		mFunction->module().nodeTypeFromName("_get_" + local.name, local.type.qualifiedName(), &ty);
 
 		reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, "_get_" + local.name), this));
+		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this));
 	}
 
 	return reg;

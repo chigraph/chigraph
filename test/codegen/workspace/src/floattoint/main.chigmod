@@ -9,44 +9,44 @@
       "connections": [
         {
           "input": [
-            "entry",
+            "3a835489-1a6b-4aef-bd7f-dce8861cdca2",
             0
           ],
           "output": [
-            "{3717ae4c-2afc-4c32-ac4a-246e451154ae}",
+            "3717ae4c-2afc-4c32-ac4a-246e451154ae",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "{17e7ce13-35b6-4858-a0c2-a2bdc6f5d68b}",
+            "17e7ce13-35b6-4858-a0c2-a2bdc6f5d68b",
             0
           ],
           "output": [
-            "{b1caf65d-f65f-4fc4-9821-e3b83724fd81}",
+            "b1caf65d-f65f-4fc4-9821-e3b83724fd81",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "{3717ae4c-2afc-4c32-ac4a-246e451154ae}",
+            "3717ae4c-2afc-4c32-ac4a-246e451154ae",
             0
           ],
           "output": [
-            "{9acea025-97ad-42af-8ffb-503d4b0860e8}",
+            "9acea025-97ad-42af-8ffb-503d4b0860e8",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "{b1caf65d-f65f-4fc4-9821-e3b83724fd81}",
+            "b1caf65d-f65f-4fc4-9821-e3b83724fd81",
             0
           ],
           "output": [
-            "{3717ae4c-2afc-4c32-ac4a-246e451154ae}",
+            "3717ae4c-2afc-4c32-ac4a-246e451154ae",
             0
           ],
           "type": "data"
@@ -64,7 +64,7 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
-        "entry": {
+        "3a835489-1a6b-4aef-bd7f-dce8861cdca2": {
           "data": {
             "data": [],
             "exec": [
@@ -77,7 +77,7 @@
           ],
           "type": "lang:entry"
         },
-        "{17e7ce13-35b6-4858-a0c2-a2bdc6f5d68b}": {
+        "17e7ce13-35b6-4858-a0c2-a2bdc6f5d68b": {
           "data": 32,
           "location": [
             150,
@@ -85,7 +85,7 @@
           ],
           "type": "lang:const-float"
         },
-        "{3717ae4c-2afc-4c32-ac4a-246e451154ae}": {
+        "3717ae4c-2afc-4c32-ac4a-246e451154ae": {
           "data": null,
           "location": [
             637,
@@ -93,7 +93,7 @@
           ],
           "type": "intprinter:printint"
         },
-        "{9acea025-97ad-42af-8ffb-503d4b0860e8}": {
+        "9acea025-97ad-42af-8ffb-503d4b0860e8": {
           "data": {
             "data": [],
             "exec": [
@@ -106,7 +106,7 @@
           ],
           "type": "lang:exit"
         },
-        "{b1caf65d-f65f-4fc4-9821-e3b83724fd81}": {
+        "b1caf65d-f65f-4fc4-9821-e3b83724fd81": {
           "data": null,
           "location": [
             439,
