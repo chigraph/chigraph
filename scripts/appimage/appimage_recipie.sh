@@ -41,8 +41,8 @@ cd /chigraph
 rm -rf build
 mkdir -p build
 cd build
-cmake3 .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr;/opt/llvm;$QTDIR" -DCMAKE_INSTALL_PREFIX='/usr' -DCG_LINK_FFI=OFF
-ninja DESTDIR=/chigraph.appdir install
+cmake3 .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr;/opt/llvm;$QTDIR" -DCMAKE_INSTALL_PREFIX='/usr' -DCG_LINK_FFI=OFF
+make -j8 DESTDIR=/chigraph.appdir install
 
 # remove pointless stuff
 cd /chigraph.appdir/

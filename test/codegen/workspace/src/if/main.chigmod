@@ -11,88 +11,88 @@
       "connections": [
         {
           "input": [
-            "putstrue",
+            "2b0c944e-7556-4b1d-b11b-fce5c922c08a",
             0
           ],
           "output": [
-            "exit",
+            "4a38557a-2555-4f76-bda7-aa0395d1f6a3",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "strtrue",
+            "ddc2f8f6-5c48-4b49-8d40-d68ad3abfe44",
             0
           ],
           "output": [
-            "putstrue",
+            "2b0c944e-7556-4b1d-b11b-fce5c922c08a",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "entry",
+            "a8bf0c2e-04b7-45e0-b674-d17e221d8052",
             0
           ],
           "output": [
-            "if",
+            "d74771c0-a287-4c64-a831-d9cb6cf42a9f",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "putsfalse",
+            "425a5fbe-f47a-46b4-a584-02bd5d9a630e",
             0
           ],
           "output": [
-            "exit",
+            "4a38557a-2555-4f76-bda7-aa0395d1f6a3",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "strfalse",
+            "7bd619d5-0bf6-419f-9182-39c8a463c9fa",
             0
           ],
           "output": [
-            "putsfalse",
+            "425a5fbe-f47a-46b4-a584-02bd5d9a630e",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "if",
+            "d74771c0-a287-4c64-a831-d9cb6cf42a9f",
             0
           ],
           "output": [
-            "putstrue",
+            "2b0c944e-7556-4b1d-b11b-fce5c922c08a",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "if",
+            "d74771c0-a287-4c64-a831-d9cb6cf42a9f",
             1
           ],
           "output": [
-            "putsfalse",
+            "425a5fbe-f47a-46b4-a584-02bd5d9a630e",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "true",
+            "d1fd3c93-85f6-43ea-90bb-437fee5cf9e7",
             0
           ],
           "output": [
-            "if",
+            "d74771c0-a287-4c64-a831-d9cb6cf42a9f",
             0
           ],
           "type": "data"
@@ -108,7 +108,7 @@
       ],
       "name": "main",
       "nodes": {
-        "entry": {
+        "a8bf0c2e-04b7-45e0-b674-d17e221d8052": {
           "data": {
             "data": [],
             "exec": [
@@ -121,7 +121,7 @@
           ],
           "type": "lang:entry"
         },
-        "exit": {
+        "4a38557a-2555-4f76-bda7-aa0395d1f6a3": {
           "data": {
             "data": [],
             "exec": [
@@ -134,7 +134,7 @@
           ],
           "type": "lang:exit"
         },
-        "if": {
+        "d74771c0-a287-4c64-a831-d9cb6cf42a9f": {
           "data": null,
           "location": [
             1140.59204101562,
@@ -142,7 +142,7 @@
           ],
           "type": "lang:if"
         },
-        "putsfalse": {
+        "425a5fbe-f47a-46b4-a584-02bd5d9a630e": {
           "data": {
             "code": "#include <stdio.h>\n int doputs(const char* arg) { return puts(arg);}",
             "function": "doputs",
@@ -156,7 +156,7 @@
           ],
           "type": "c:func"
         },
-        "putstrue": {
+        "2b0c944e-7556-4b1d-b11b-fce5c922c08a": {
           "data": {
             "code": "#include <stdio.h>\n int doputs1(const char* arg) { return puts(arg);}",
             "extraflags": [],
@@ -170,7 +170,7 @@
           ],
           "type": "c:func"
         },
-        "strfalse": {
+        "7bd619d5-0bf6-419f-9182-39c8a463c9fa": {
           "data": "false",
           "location": [
             1386.30639648438,
@@ -178,7 +178,7 @@
           ],
           "type": "lang:strliteral"
         },
-        "strtrue": {
+        "ddc2f8f6-5c48-4b49-8d40-d68ad3abfe44": {
           "data": "true",
           "location": [
             1476.93908691406,
@@ -186,7 +186,7 @@
           ],
           "type": "lang:strliteral"
         },
-        "true": {
+        "d1fd3c93-85f6-43ea-90bb-437fee5cf9e7": {
           "data": true,
           "location": [
             901.710388183594,

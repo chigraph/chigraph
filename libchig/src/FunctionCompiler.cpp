@@ -10,6 +10,7 @@
 #include <boost/bimap.hpp>
 #include <boost/dynamic_bitset.hpp>
 #include <boost/range/join.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 #include <unordered_map>
 
@@ -44,7 +45,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 	auto              mod = data.allocBlock->getModule();
 
 	auto codeBlock =
-	    llvm::BasicBlock::Create(node->context().llvmContext(), node->id() + "_code", f);
+	    llvm::BasicBlock::Create(node->context().llvmContext(), boost::uuids::to_string(node->id()) + "_code", f);
 	llvm::IRBuilder<> builder(codeBlock);
 
 	// get inputs and outputs
@@ -64,7 +65,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 						pureDependencies.push_back(param.first);
 						pureBBs.push_back(
 						    llvm::BasicBlock::Create(node->context().llvmContext(),
-						                             param.first->id() + "____" + impure->id(), f));
+						                             boost::uuids::to_string(param.first->id()) + "____" + boost::uuids::to_string(impure->id()), f));
 					}
 				}
 			}
@@ -151,7 +152,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			}
 
 			llvm::AllocaInst* alloc = allocBuilder.CreateAlloca(
-			    output.type.llvmType(), nullptr, node->id() + "__" + std::to_string(id));
+			    output.type.llvmType(), nullptr, boost::uuids::to_string(node->id()) + "__" + std::to_string(id));
 			outputCache[id] = alloc;
 			io.push_back(alloc);
 
@@ -168,7 +169,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 #else
 				    createAutoVariable(
 #endif
-				                        data.diFunc, node->id() + "__" + std::to_string(id),
+				                        data.diFunc, boost::uuids::to_string(node->id()) + "__" + std::to_string(id),
 				                        data.diFunc->getFile(), 1, dType);
 
 				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
@@ -220,7 +221,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			outputBlocks.push_back(outBlock);
 			needsCodegen.push_back(true);  // these need codegen
 			if (node->outputExecConnections[idx].first != nullptr) {
-				outBlock->setName("node_" + node->outputExecConnections[idx].first->id());
+				outBlock->setName("node_" + boost::uuids::to_string(node->outputExecConnections[idx].first->id()));
 			} else {
 				unusedBlocks.push_back(outBlock);
 			}
@@ -367,7 +368,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 	// f->setSubprogram(debugFunc); TODO TODO TODO please don't comment this out
 	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
-	llvm::BasicBlock* block      = llvm::BasicBlock::Create(mod->getContext(), entry->id(), f);
+	llvm::BasicBlock* block      = llvm::BasicBlock::Create(mod->getContext(), boost::uuids::to_string(entry->id()), f);
 	auto              blockcpy   = block;
 
 	// set argument names

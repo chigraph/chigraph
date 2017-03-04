@@ -8,6 +8,7 @@
 
 #include "chig/Fwd.hpp"
 #include "chig/json.hpp"
+#include "chig/HashUuid.hpp"
 
 #include <gsl/gsl>
 
@@ -16,7 +17,8 @@
 #include <llvm/IR/DerivedTypes.h>  // for FunctionType
 
 #include <boost/filesystem.hpp>
-#include <boost/optional.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/random_generator.hpp>
 
 namespace chig {
 /// this is an AST-like representation of a function in a graph
@@ -49,9 +51,9 @@ struct GraphFunction {
 	/// Get the nodes in the function
 	/// Usually called by connectData or connectExec or GraphFunction
 	/// \return The nodes, mapped by id, value
-	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() { return mNodes; }
+	std::unordered_map<boost::uuids::uuid, std::unique_ptr<NodeInstance>>& nodes() { return mNodes; }
 	/// \copydoc Graph::nodes
-	const std::unordered_map<std::string, std::unique_ptr<NodeInstance>>& nodes() const {
+	const std::unordered_map<boost::uuids::uuid, std::unique_ptr<NodeInstance>>& nodes() const {
 		return mNodes;
 	}
 
@@ -68,7 +70,7 @@ struct GraphFunction {
 	/// \param id The node ID
 	/// \retval toFill The nodeInstance to fill to, optional.
 	/// \return The result
-	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, gsl::cstring_span<> id,
+	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, boost::uuids::uuid id = boost::uuids::random_generator()(),
 	                  NodeInstance** toFill = nullptr);
 
 	/// Gets the nodes with a given type
@@ -88,7 +90,7 @@ struct GraphFunction {
 	/// \retval toFill The NodeInstance* to fill to, optional
 	/// \return The Result
 	Result insertNode(const boost::filesystem::path& moduleName, gsl::cstring_span<> typeName,
-	                  const nlohmann::json& typeJSON, float x, float y, gsl::cstring_span<> id,
+	                  const nlohmann::json& typeJSON, float x, float y, boost::uuids::uuid id = boost::uuids::random_generator()(),
 	                  NodeInstance** toFill = nullptr);
 
 	/// Remove a node from the function. Also disconnect it's connections.
@@ -104,7 +106,7 @@ struct GraphFunction {
 	/// \param id The ID of the node, disregarded if there is already an entry
 	/// \retval toFill The NodeInstance* to fill, optional
 	/// \return The Result
-	Result getOrInsertEntryNode(float x, float y, gsl::cstring_span<> id,
+	Result getOrInsertEntryNode(float x, float y, boost::uuids::uuid id = boost::uuids::random_generator()(),
 	                            NodeInstance** toFill = nullptr);
 
 	/// \}
@@ -325,7 +327,7 @@ private:
 
 	std::vector<NamedDataType> mLocalVariables;
 
-	std::unordered_map<std::string, std::unique_ptr<NodeInstance>>
+	std::unordered_map<boost::uuids::uuid, std::unique_ptr<NodeInstance>>
 	    mNodes;  /// Storage for the nodes
 };
 

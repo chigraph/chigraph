@@ -54,16 +54,18 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 	WHEN("We add a correct entry node it should be a-ok") {
 		std::unique_ptr<NodeType> ty;
+		
 		res += langMod.nodeTypeFromName("entry", correctEntryJson, &ty);
 		REQUIRE(!!res);
 		REQUIRE(ty != nullptr);
 
 		NodeInstance* inst;
-		res += func->insertNode(std::move(ty), 213.f, 123.f, "entry", &inst);
+		auto entryUUID = boost::uuids::random_generator()();
+		res += func->insertNode(std::move(ty), 213.f, 123.f, entryUUID, &inst);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
 
-		REQUIRE(inst->id() == "entry");
+		REQUIRE(inst->id() == entryUUID);
 		REQUIRE(inst->x() == 213.f);
 		REQUIRE(inst->y() == 123.f);
 		REQUIRE(inst->type().qualifiedName() == "lang:entry");
@@ -74,11 +76,12 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 	WHEN("We add a correct entry node with getOrInsertEntryNode it should be a-ok") {
 		NodeInstance* inst;
-		res = func->getOrInsertEntryNode(213.f, 123.f, "entry", &inst);
+		auto entryUUID = boost::uuids::random_generator()();
+		res = func->getOrInsertEntryNode(213.f, 123.f, entryUUID, &inst);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
 
-		REQUIRE(inst->id() == "entry");
+		REQUIRE(inst->id() == entryUUID);
 		REQUIRE(inst->x() == 213.f);
 		REQUIRE(inst->y() == 123.f);
 		REQUIRE(inst->type().qualifiedName() == "lang:entry");
@@ -89,13 +92,14 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 	WHEN("We add a correct node with the other insertNode function it should be a-ok") {
 		NodeInstance* inst;
-		res = func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, "entry", &inst);
+		auto entryUUID = boost::uuids::random_generator()();
+		res = func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, entryUUID, &inst);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
 		REQUIRE(func->nodes().size() == 1);
-		REQUIRE(func->nodes()["entry"].get() == inst);
+		REQUIRE(func->nodes()[entryUUID].get() == inst);
 
-		REQUIRE(inst->id() == "entry");
+		REQUIRE(inst->id() == entryUUID);
 		REQUIRE(inst->x() == 213.f);
 		REQUIRE(inst->y() == 123.f);
 		REQUIRE(inst->type().qualifiedName() == "lang:entry");
@@ -113,8 +117,9 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 		WHEN("We add another entry node, entryNode should fail") {
 			NodeInstance* inst2;
+			auto entryUUID = boost::uuids::random_generator()();
 			res =
-			    func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, "entry2", &inst2);
+			    func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, entryUUID, &inst2);
 			REQUIRE(!!res);
 
 			REQUIRE(inst2 != inst);
@@ -123,7 +128,8 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 		WHEN("We try to add another entry node with getOrInsertEntryNode") {
 			NodeInstance* inst2;
-			res = func->getOrInsertEntryNode(0.f, 0.f, "notentry", &inst2);
+			auto entryUUID = boost::uuids::random_generator()();
+			res = func->getOrInsertEntryNode(0.f, 0.f, entryUUID, &inst2);
 
 			REQUIRE(inst2 == inst);
 		}
@@ -131,7 +137,7 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 		WHEN("We add another entry node with the same ID, insertNode should fail") {
 			NodeInstance* inst2;
 			res =
-			    func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, "entry", &inst2);
+			    func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, entryUUID, &inst2);
 			REQUIRE(!res);
 			REQUIRE(res.result_json[0]["errorcode"] == "E47");
 		}
@@ -139,14 +145,15 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 	auto checkInvalidEntry = [&](json obj) {
 		NodeInstance* inst;
-		res = func->insertNode("lang", "entry", obj, 213.f, 123.f, "entry", &inst);
+		auto entryUUID = boost::uuids::random_generator()();
+		res = func->insertNode("lang", "entry", obj, 213.f, 123.f, entryUUID, &inst);
 
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
 		REQUIRE(func->nodes().size() == 1);
-		REQUIRE(func->nodes()["entry"].get() == inst);
+		REQUIRE(func->nodes()[entryUUID].get() == inst);
 
-		REQUIRE(inst->id() == "entry");
+		REQUIRE(inst->id() == entryUUID);
 		REQUIRE(inst->x() == 213.f);
 		REQUIRE(inst->y() == 123.f);
 		REQUIRE(inst->type().qualifiedName() == "lang:entry");

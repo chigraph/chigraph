@@ -16,6 +16,8 @@
 
 #include <boost/filesystem.hpp>
 
+#include <boost/uuid/uuid_io.hpp>
+
 namespace fs = boost::filesystem;
 
 namespace chig {
@@ -485,8 +487,8 @@ boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() c
 	}
 
 	std::sort(nodes.begin(), nodes.end(), [](const auto& lhs, const auto& rhs) {
-		return (lhs->function().name() + ":" + lhs->id()) <
-		       (rhs->function().name() + ":" + rhs->id());
+		return (lhs->function().name() + ":" + boost::uuids::to_string(lhs->id())) <
+		       (rhs->function().name() + ":" + boost::uuids::to_string(rhs->id()));
 	});
 
 	boost::bimap<unsigned, NodeInstance*> ret;

@@ -5,6 +5,8 @@
 #include "chig/GraphStruct.hpp"
 #include "chig/NodeInstance.hpp"
 
+#include <boost/uuid/uuid_io.hpp> // for boost::uuids::to_string
+
 namespace chig {
 
 nlohmann::json graphFunctionToJson(const GraphFunction& func) {
@@ -53,7 +55,7 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 
 	for (const auto& nodepair : func.nodes()) {
 		auto&       node   = nodepair.second;
-		std::string nodeID = nodepair.first;
+		std::string nodeID = boost::uuids::to_string(nodepair.first);
 
 		nlohmann::json nodeJson = node->type().toJSON();
 		jsonNodes[nodeID]       = {{"type", node->type().qualifiedName()},
@@ -68,7 +70,7 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 			if (conn.first != nullptr) {
 				jsonConnections.push_back({{"type", "exec"},
 				                           {"input", {nodeID, conn_id}},
-				                           {"output", {conn.first->id(), conn.second}}});
+				                           {"output", {boost::uuids::to_string(conn.first->id()), conn.second}}});
 			}
 		}
 
@@ -78,7 +80,7 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 			auto& connpair = node->inputDataConnections[conn_id];
 			if (connpair.first != nullptr) {
 				jsonConnections.push_back({{"type", "data"},
-				                           {"input", {connpair.first->id(), connpair.second}},
+				                           {"input", {boost::uuids::to_string(connpair.first->id()), connpair.second}},
 				                           {"output", {nodeID, conn_id}}});
 			}
 		}

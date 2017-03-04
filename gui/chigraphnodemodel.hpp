@@ -38,7 +38,7 @@ public:
 	}
 	QString name() const override { return QString::fromStdString(mInst->type().qualifiedName()); }
 	std::unique_ptr<NodeDataModel> clone() const override {
-		auto newInst = new chig::NodeInstance(*mInst, QUuid::createUuid().toString().toStdString());
+		auto newInst = new chig::NodeInstance(*mInst);
 		return std::make_unique<ChigraphNodeModel>(newInst, mFunctionView);
 	}
 

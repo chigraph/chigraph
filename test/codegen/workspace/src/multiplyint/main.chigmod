@@ -9,55 +9,55 @@
       "connections": [
         {
           "input": [
-            "entry",
+            "079421d3-66a4-4b9c-9bd4-e68a3a6fa6ae",
             0
           ],
           "output": [
-            "{57331dea-ce43-4740-871d-c60776f354f9}",
+            "57331dea-ce43-4740-871d-c60776f354f9",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "{febeae96-ac33-44df-a941-dde50fbf37f9}",
+            "febeae96-ac33-44df-a941-dde50fbf37f9",
             0
           ],
           "output": [
-            "{30bb58cf-0c5d-4a05-95a1-888372b623d1}",
+            "30bb58cf-0c5d-4a05-95a1-888372b623d1",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "{18a61491-04ca-47ee-8a97-bdc5e35cc1ea}",
+            "18a61491-04ca-47ee-8a97-bdc5e35cc1ea",
             0
           ],
           "output": [
-            "{30bb58cf-0c5d-4a05-95a1-888372b623d1}",
+            "30bb58cf-0c5d-4a05-95a1-888372b623d1",
             1
           ],
           "type": "data"
         },
         {
           "input": [
-            "{57331dea-ce43-4740-871d-c60776f354f9}",
+            "57331dea-ce43-4740-871d-c60776f354f9",
             0
           ],
           "output": [
-            "{8d3f9c23-be00-41c0-83c0-efd466405a74}",
+            "8d3f9c23-be00-41c0-83c0-efd466405a74",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "{30bb58cf-0c5d-4a05-95a1-888372b623d1}",
+            "30bb58cf-0c5d-4a05-95a1-888372b623d1",
             0
           ],
           "output": [
-            "{57331dea-ce43-4740-871d-c60776f354f9}",
+            "57331dea-ce43-4740-871d-c60776f354f9",
             0
           ],
           "type": "data"
@@ -75,7 +75,7 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
-        "entry": {
+        "079421d3-66a4-4b9c-9bd4-e68a3a6fa6ae": {
           "data": {
             "data": [],
             "exec": [
@@ -88,7 +88,7 @@
           ],
           "type": "lang:entry"
         },
-        "{18a61491-04ca-47ee-8a97-bdc5e35cc1ea}": {
+        "18a61491-04ca-47ee-8a97-bdc5e35cc1ea": {
           "data": 32,
           "location": [
             87,
@@ -96,7 +96,7 @@
           ],
           "type": "lang:const-int"
         },
-        "{30bb58cf-0c5d-4a05-95a1-888372b623d1}": {
+        "30bb58cf-0c5d-4a05-95a1-888372b623d1": {
           "data": null,
           "location": [
             385,
@@ -104,7 +104,7 @@
           ],
           "type": "lang:i32*i32"
         },
-        "{57331dea-ce43-4740-871d-c60776f354f9}": {
+        "57331dea-ce43-4740-871d-c60776f354f9": {
           "data": null,
           "location": [
             594,
@@ -112,7 +112,7 @@
           ],
           "type": "intprinter:printint"
         },
-        "{8d3f9c23-be00-41c0-83c0-efd466405a74}": {
+        "8d3f9c23-be00-41c0-83c0-efd466405a74": {
           "data": {
             "data": [],
             "exec": [
@@ -125,7 +125,7 @@
           ],
           "type": "lang:exit"
         },
-        "{febeae96-ac33-44df-a941-dde50fbf37f9}": {
+        "febeae96-ac33-44df-a941-dde50fbf37f9": {
           "data": 124,
           "location": [
             75,

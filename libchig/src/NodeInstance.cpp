@@ -7,11 +7,11 @@
 
 namespace chig {
 NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX,
-                           float posY, gsl::cstring_span<> nodeID)
+                           float posY, boost::uuids::uuid nodeID)
     : mType{std::move(nodeType)},
       mX{posX},
       mY{posY},
-      mId{gsl::to_string(nodeID)},
+      mId{nodeID},
       mContext{&mType->context()},
       mFunction{func} {
 	Expects(mType != nullptr && mFunction != nullptr);
@@ -27,11 +27,11 @@ NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeTy
 	}
 }
 
-NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
+NodeInstance::NodeInstance(const NodeInstance& other, boost::uuids::uuid id)
     : mType(other.type().clone()),
       mX{other.x()},
       mY{other.y()},
-      mId{std::move(id)},
+      mId{id},
       mContext{&other.context()},
       mFunction{&other.function()} {
 	Expects(mType != nullptr && mFunction != nullptr);
@@ -43,16 +43,6 @@ NodeInstance::NodeInstance(const NodeInstance& other, std::string id)
 
 	inputExecConnections.resize(type().execInputs().size(), {});
 	outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0});
-}
-
-NodeInstance& NodeInstance::operator=(const NodeInstance& other) {
-	mType                = other.type().clone();
-	mType->mNodeInstance = this;
-	mX                   = other.x();
-	mY                   = other.y();
-	mId                  = other.id() + "_";
-
-	return *this;
 }
 
 void NodeInstance::setType(std::unique_ptr<NodeType> newType) {

@@ -10,55 +10,55 @@
       "connections": [
         {
           "input": [
-            "{81c5d132-1f8e-4c89-b614-777a6f09c249}",
+            "81c5d132-1f8e-4c89-b614-777a6f09c249",
             0
           ],
           "output": [
-            "{93b5ee67-3e41-44b5-b434-326527039524}",
+            "93b5ee67-3e41-44b5-b434-326527039524",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "{81c5d132-1f8e-4c89-b614-777a6f09c249}",
+            "81c5d132-1f8e-4c89-b614-777a6f09c249",
             0
           ],
           "output": [
-            "{93b5ee67-3e41-44b5-b434-326527039524}",
+            "93b5ee67-3e41-44b5-b434-326527039524",
             1
           ],
           "type": "data"
         },
         {
           "input": [
-            "entry",
+            "eb41074a-551d-4102-b0e2-299a0404c4c0",
             0
           ],
           "output": [
-            "{2d51ae53-b57c-4982-9a9a-76997f8938ed}",
+            "2d51ae53-b57c-4982-9a9a-76997f8938ed",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "{2d51ae53-b57c-4982-9a9a-76997f8938ed}",
+            "2d51ae53-b57c-4982-9a9a-76997f8938ed",
             0
           ],
           "output": [
-            "{096cc8d3-9d12-4b35-a023-e926af19b03d}",
+            "096cc8d3-9d12-4b35-a023-e926af19b03d",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "{93b5ee67-3e41-44b5-b434-326527039524}",
+            "93b5ee67-3e41-44b5-b434-326527039524",
             0
           ],
           "output": [
-            "{2d51ae53-b57c-4982-9a9a-76997f8938ed}",
+            "2d51ae53-b57c-4982-9a9a-76997f8938ed",
             0
           ],
           "type": "data"
@@ -74,7 +74,7 @@
       ],
       "name": "main",
       "nodes": {
-        "entry": {
+        "eb41074a-551d-4102-b0e2-299a0404c4c0": {
           "data": {
             "data": [],
             "exec": [
@@ -87,7 +87,7 @@
           ],
           "type": "lang:entry"
         },
-        "{096cc8d3-9d12-4b35-a023-e926af19b03d}": {
+        "096cc8d3-9d12-4b35-a023-e926af19b03d": {
           "data": {
             "data": [],
             "exec": [
@@ -100,7 +100,7 @@
           ],
           "type": "lang:exit"
         },
-        "{2d51ae53-b57c-4982-9a9a-76997f8938ed}": {
+        "2d51ae53-b57c-4982-9a9a-76997f8938ed": {
           "data": {
             "code": "#include <stdio.h> \n\nvoid printfint(int val) { \n  printf(\"%i\", val);\n}",
             "function": "printfint",
@@ -114,7 +114,7 @@
           ],
           "type": "c:func"
         },
-        "{81c5d132-1f8e-4c89-b614-777a6f09c249}": {
+        "81c5d132-1f8e-4c89-b614-777a6f09c249": {
           "data": 213,
           "location": [
             92,
@@ -122,7 +122,7 @@
           ],
           "type": "lang:const-int"
         },
-        "{93b5ee67-3e41-44b5-b434-326527039524}": {
+        "93b5ee67-3e41-44b5-b434-326527039524": {
           "data": null,
           "location": [
             339,

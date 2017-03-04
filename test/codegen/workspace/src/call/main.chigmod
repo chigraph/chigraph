@@ -9,99 +9,99 @@
       "connections": [
         {
           "input": [
-            "{3d7a9f86-6aed-4bb2-866e-cb4489142b06}",
+            "3d7a9f86-6aed-4bb2-866e-cb4489142b06",
             0
           ],
           "output": [
-            "exit",
+            "8526e191-b534-4910-953f-d10b7b206d50",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "itoa",
+            "bb38760c-5018-431b-86c4-087f5d233c29",
             0
           ],
           "output": [
-            "{3d7a9f86-6aed-4bb2-866e-cb4489142b06}",
+            "3d7a9f86-6aed-4bb2-866e-cb4489142b06",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "itoa",
+            "bb38760c-5018-431b-86c4-087f5d233c29",
             0
           ],
           "output": [
-            "call2",
+            "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "call",
+            "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e",
             0
           ],
           "output": [
-            "itoa",
+            "bb38760c-5018-431b-86c4-087f5d233c29",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "call",
+            "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e",
             0
           ],
           "output": [
-            "itoa",
+            "bb38760c-5018-431b-86c4-087f5d233c29",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "strliteral",
+            "0819c157-5528-431b-a13c-4252ae286b97",
             0
           ],
           "output": [
-            "call",
+            "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "call2",
+            "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc",
             0
           ],
           "output": [
-            "{3d7a9f86-6aed-4bb2-866e-cb4489142b06}",
+            "3d7a9f86-6aed-4bb2-866e-cb4489142b06",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "itoa",
+            "bb38760c-5018-431b-86c4-087f5d233c29",
             0
           ],
           "output": [
-            "call2",
+            "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "entry",
+            "f4ec53cb-41db-4e88-a247-cc495d78fd3f",
             0
           ],
           "output": [
-            "call",
+            "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e",
             0
           ],
           "type": "exec"
@@ -118,7 +118,7 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
-        "call": {
+        "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e": {
           "data": null,
           "location": [
             782,
@@ -126,7 +126,7 @@
           ],
           "type": "call/main:docall"
         },
-        "call2": {
+        "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc": {
           "data": null,
           "location": [
             1304.66247558594,
@@ -134,7 +134,7 @@
           ],
           "type": "call/main:docall"
         },
-        "entry": {
+        "f4ec53cb-41db-4e88-a247-cc495d78fd3f": {
           "data": {
             "data": [],
             "exec": [
@@ -147,7 +147,7 @@
           ],
           "type": "lang:entry"
         },
-        "exit": {
+        "8526e191-b534-4910-953f-d10b7b206d50": {
           "data": {
             "data": [],
             "exec": [
@@ -160,7 +160,7 @@
           ],
           "type": "lang:exit"
         },
-        "itoa": {
+        "bb38760c-5018-431b-86c4-087f5d233c29": {
           "data": {
             "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%d\", val);\n\treturn a;\n}",
             "extraflags": [],
@@ -178,7 +178,7 @@
           ],
           "type": "c:func"
         },
-        "strliteral": {
+        "0819c157-5528-431b-a13c-4252ae286b97": {
           "data": "Yay happy!",
           "location": [
             529.68798828125,
@@ -186,7 +186,7 @@
           ],
           "type": "lang:strliteral"
         },
-        "{3d7a9f86-6aed-4bb2-866e-cb4489142b06}": {
+        "3d7a9f86-6aed-4bb2-866e-cb4489142b06": {
           "data": {
             "code": "#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}",
             "extraflags": [],
@@ -212,44 +212,44 @@
       "connections": [
         {
           "input": [
-            "puts",
+            "1256bcd3-0ca1-4675-bc78-6e24ee4b593d",
             0
           ],
           "output": [
-            "exit",
+            "8526e191-b534-4910-953f-d10b7b206d50",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "entry",
+            "f4ec53cb-41db-4e88-a247-cc495d78fd3f",
             0
           ],
           "output": [
-            "puts",
+            "1256bcd3-0ca1-4675-bc78-6e24ee4b593d",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "puts",
+            "1256bcd3-0ca1-4675-bc78-6e24ee4b593d",
             0
           ],
           "output": [
-            "exit",
+            "8526e191-b534-4910-953f-d10b7b206d50",
             0
           ],
           "type": "data"
         },
         {
           "input": [
-            "entry",
+            "f4ec53cb-41db-4e88-a247-cc495d78fd3f",
             0
           ],
           "output": [
-            "puts",
+            "1256bcd3-0ca1-4675-bc78-6e24ee4b593d",
             0
           ],
           "type": "exec"
@@ -274,7 +274,7 @@
       "local_variables": {},
       "name": "docall",
       "nodes": {
-        "entry": {
+        "f4ec53cb-41db-4e88-a247-cc495d78fd3f": {
           "data": {
             "data": [
               {
@@ -291,7 +291,7 @@
           ],
           "type": "lang:entry"
         },
-        "exit": {
+        "8526e191-b534-4910-953f-d10b7b206d50": {
           "data": {
             "data": [
               {
@@ -308,7 +308,7 @@
           ],
           "type": "lang:exit"
         },
-        "puts": {
+        "1256bcd3-0ca1-4675-bc78-6e24ee4b593d": {
           "data": {
             "code": "#include <stdio.h> \nint doputs(const char* mystr) {\n\treturn puts(mystr);\n}",
             "extraflags": [],

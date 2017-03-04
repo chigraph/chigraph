@@ -292,9 +292,19 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 			             {{"nodeid", nodeid}});
 			continue;
 		}
-
-		createInside.insertNode(std::move(nodeType), node["location"][0], node["location"][1],
-		                        nodeid);
+		
+		
+		try {
+			auto uuidNodeID = boost::uuids::string_generator()(nodeid);
+			
+			createInside.insertNode(std::move(nodeType), node["location"][0], node["location"][1],
+									uuidNodeID);
+		} catch(std::exception& e) {
+			
+			res.addEntry("E51", "Invalid UUID string", {{"string", nodeid}});
+			
+		}
+		
 	}
 
 	size_t connID = 0;
@@ -335,6 +345,15 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 				continue;
 			}
 			std::string InputNodeID       = connection["input"][0];
+			
+			boost::uuids::uuid InputNodeIDUUID;
+			try {
+				InputNodeIDUUID = boost::uuids::string_generator()(InputNodeID);
+			} catch(std::exception&) {
+				res.addEntry("EUKN", "Invalid UUID string in connection", {{"string", InputNodeID}});
+				
+				return res;
+			}
 			int         InputConnectionID = connection["input"][1];
 
 			if (connection.find("output") == connection.end()) {
@@ -352,15 +371,25 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 				continue;
 			}
 			std::string OutputNodeID       = connection["output"][0];
+			
+			boost::uuids::uuid OutputNodeIDUUID;
+			try {
+				OutputNodeIDUUID = boost::uuids::string_generator()(OutputNodeID);
+			} catch (std::exception&) {
+				
+				res.addEntry("EUKN", "Invalid UUID string in connection", {{"string", OutputNodeID}});
+				
+				return res;
+			}
 			int         OutputConnectionID = connection["output"][1];
 
 			// make sure the nodes exist
-			if (createInside.nodes().find(InputNodeID) == createInside.nodes().end()) {
+			if (createInside.nodes().find(InputNodeIDUUID) == createInside.nodes().end()) {
 				res.addEntry("E20", "Input node for connection doesn't exist",
 				             {{"connectionid", connID}, {"Requested Node", InputNodeID}});
 				continue;
 			}
-			if (createInside.nodes().find(OutputNodeID) == createInside.nodes().end()) {
+			if (createInside.nodes().find(OutputNodeIDUUID) == createInside.nodes().end()) {
 				res.addEntry("E21", "Output node for connection doesn't exist",
 				             {{"connectionid", connID}, {"Requested Node", OutputNodeID}});
 				continue;
@@ -369,11 +398,11 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 			// connect
 			// these functions do bounds checking, it's okay
 			if (isData) {
-				res += connectData(*createInside.nodes()[InputNodeID], InputConnectionID,
-				                   *createInside.nodes()[OutputNodeID], OutputConnectionID);
+				res += connectData(*createInside.nodes()[InputNodeIDUUID], InputConnectionID,
+				                   *createInside.nodes()[OutputNodeIDUUID], OutputConnectionID);
 			} else {
-				res += connectExec(*createInside.nodes()[InputNodeID], InputConnectionID,
-				                   *createInside.nodes()[OutputNodeID], OutputConnectionID);
+				res += connectExec(*createInside.nodes()[InputNodeIDUUID], InputConnectionID,
+				                   *createInside.nodes()[OutputNodeIDUUID], OutputConnectionID);
 			}
 
 			++connID;

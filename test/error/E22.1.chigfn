@@ -7,7 +7,7 @@
 	"exec_inputs": [""],
 	"exec_outputs": [""],
 	"nodes": {
-		"if": {
+		"485e399f-d204-4579-8d57-311072e37e56": {
 			"type": "lang:if",
 			"data": {},
 			"location": [2, 2]
@@ -16,8 +16,8 @@
 	"connections": [
 		{
 			"type": "data",
-			"input": ["if", 0],
-			"output": ["if", 0]
+			"input": ["485e399f-d204-4579-8d57-311072e37e56", 0],
+			"output": ["485e399f-d204-4579-8d57-311072e37e56", 0]
 		}
 	],
 	"local_variables": {}

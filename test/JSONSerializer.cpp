@@ -7,8 +7,20 @@
 #include <chig/LangModule.hpp>
 #include <chig/NodeInstance.hpp>
 
+#include <boost/uuid/uuid_io.hpp>
+
 using namespace chig;
 using namespace nlohmann;
+
+template<typename ... Args>
+std::string string_format( const std::string& format, Args ... args )
+{
+    size_t size = snprintf( nullptr, 0, format.c_str(), args ... ) + 1; // Extra space for '\0'
+    std::unique_ptr<char[]> buf( new char[ size ] ); 
+    snprintf( buf.get(), size, format.c_str(), args ... );
+    return std::string( buf.get(), buf.get() + size - 1 ); // We don't want the '\0' inside
+}
+
 
 TEST_CASE("JsonSerializer", "[json]") {
 	GIVEN("A default constructed Context with a LangModule and GraphFunction named hello") {
@@ -63,17 +75,19 @@ TEST_CASE("JsonSerializer", "[json]") {
 			    "lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
 			REQUIRE(!!res);
 			NodeInstance* entry;
-			res += func->insertNode(std::move(toFill), 32, 32, "entry", &entry);
+			res += func->insertNode(std::move(toFill), 32, 32, boost::uuids::random_generator()(), &entry);
+			std::string entryUUID = boost::uuids::to_string(entry->id());
 			REQUIRE(!!res);
 
 			THEN("The JSON should be correct") {
-				auto correctJSON = R"ENDJSON(
+				
+				auto correctJSON = string_format(R"(
 					{
 						"type": "function",
 						"name": "hello",
 						"description": "desc",
 						"nodes": {
-							"entry": {
+							"%s": {
 								"type": "lang:entry",
 								"location": [32.0,32.0],
 								"data": {
@@ -89,9 +103,9 @@ TEST_CASE("JsonSerializer", "[json]") {
 					"exec_outputs": [""] ,
 					"local_variables": {}
 					}
-					)ENDJSON"_json;
+					)", entryUUID.c_str());
 
-				requireWorks(correctJSON);
+				requireWorks(json::parse(correctJSON));
 			}
 
 			WHEN("A lang:if is added") {
@@ -99,17 +113,18 @@ TEST_CASE("JsonSerializer", "[json]") {
 				res = c.nodeTypeFromModule("lang", "if", {}, &ifType);
 				REQUIRE(!!res);
 				NodeInstance* ifNode;
-				res += func->insertNode(std::move(ifType), 44.f, 23.f, "if", &ifNode);
+				res += func->insertNode(std::move(ifType), 44.f, 23.f, boost::uuids::random_generator()(), &ifNode);
+				std::string ifUUID = boost::uuids::to_string(ifNode->id());
 				REQUIRE(!!res);
 
 				THEN("The JSON should be correct") {
-					auto correctJSON = R"ENDJSON(
+					auto correctJSON = string_format(R"ENDJSON(
 						{
 							"type": "function",
 							"name": "hello",
 							"description": "desc",
 							"nodes": {
-								"entry": {
+								"%s": {
 									"type": "lang:entry",
 									"location": [32.0,32.0],
 									"data": {
@@ -117,7 +132,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 										"exec": [""]
 									}
 								},
-								"if": {
+								"%s": {
 									"type": "lang:if",
 									"location": [44.0, 23.0],
 									"data": null
@@ -130,22 +145,22 @@ TEST_CASE("JsonSerializer", "[json]") {
 							"exec_outputs": [""],
 							"local_variables": {}
 						}
-						)ENDJSON"_json;
+						)ENDJSON", entryUUID.c_str(), ifUUID.c_str());
 
-					requireWorks(correctJSON);
+					requireWorks(json::parse(correctJSON));
 				}
 
 				WHEN("We connect the entry to the ifNode exec") {
 					connectExec(*entry, 0, *ifNode, 0);
 
 					THEN("The JSON should be correct") {
-						auto correctJSON = R"ENDJSON(
+						auto correctJSON = string_format(R"ENDJSON(
 							{
 								"type": "function",
 								"name": "hello",
 								"description": "desc",
 								"nodes": {
-									"entry": {
+									"%s": {
 										"type": "lang:entry",
 										"location": [32.0,32.0],
 										"data": {
@@ -153,7 +168,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 											"exec": [""]
 										}
 									},
-									"if": {
+									"%s": {
 										"type": "lang:if",
 										"location": [44.0, 23.0],
 										"data": null
@@ -162,8 +177,8 @@ TEST_CASE("JsonSerializer", "[json]") {
 								"connections": [
 									{
 										"type": "exec",
-										"input": ["entry",0],
-										"output": ["if",0]
+										"input": ["%s",0],
+										"output": ["%s",0]
 									}
 								],
 								"data_inputs": [],
@@ -172,9 +187,9 @@ TEST_CASE("JsonSerializer", "[json]") {
 								"exec_outputs": [""],
 								"local_variables": {}
 							}
-						)ENDJSON"_json;
+						)ENDJSON", entryUUID.c_str(), ifUUID.c_str(), entryUUID.c_str(), ifUUID.c_str());
 
-						requireWorks(correctJSON);
+						requireWorks(json::parse(correctJSON));
 					}
 
 					WHEN("Connect the data") {
@@ -183,13 +198,13 @@ TEST_CASE("JsonSerializer", "[json]") {
 						REQUIRE(res.result_json == json::array());
 
 						THEN("The JSON should be correct") {
-							auto correctJSON = R"ENDJSON(
+							auto correctJSON = string_format(R"ENDJSON(
 								{
 								"type": "function",
 								"name": "hello",
 								"description": "desc",
 								"nodes": {
-									"entry": {
+									"%s": {
 										"type": "lang:entry",
 										"location": [32.0,32.0],
 										"data": {
@@ -197,7 +212,7 @@ TEST_CASE("JsonSerializer", "[json]") {
 											"exec": [""]
 										}
 									},
-									"if": {
+									"%s": {
 										"type": "lang:if",
 										"location": [44.0, 23.0],
 										"data": null
@@ -206,13 +221,13 @@ TEST_CASE("JsonSerializer", "[json]") {
 								"connections": [
 									{
 										"type": "data",
-										"input": ["entry",0],
-										"output": ["if",0]
+										"input": ["%s",0],
+										"output": ["%s",0]
 									},
 									{
 										"type": "exec",
-										"input": ["entry",0],
-										"output": ["if",0]
+										"input": ["%s",0],
+										"output": ["%s",0]
 									}
 								],
 								"data_inputs": [],
@@ -220,9 +235,9 @@ TEST_CASE("JsonSerializer", "[json]") {
 								"exec_inputs": [""],
 								"exec_outputs": [""],
 								"local_variables": {}
-								})ENDJSON"_json;
+								})ENDJSON", entryUUID.c_str(), ifUUID.c_str(),entryUUID.c_str(), ifUUID.c_str(), entryUUID.c_str(), ifUUID.c_str());
 
-							requireWorks(correctJSON);
+							requireWorks(json::parse(correctJSON));
 						}
 					}
 				}
