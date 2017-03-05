@@ -102,14 +102,24 @@ struct Context {
 	/// Check if this context has a workspace bound to it -- same as !workspacePath().empty()
 	/// \return If it has a workspace
 	bool hasWorkspace() const noexcept { return !workspacePath().empty(); }
+	
 	/// Compile a module to a \c llvm::Module
-	/// \param fullName The full name of the moudle to compile
+	/// \param fullName The full name of the module to compile
 	/// \retval toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \pre moduleByFullName(fullName) exists
 	/// \return The result
 	Result compileModule(const boost::filesystem::path& fullName,
+	                     std::unique_ptr<llvm::Module>* toFill);
+	
+	/// Compile a module to a \c llvm::Module
+	/// \param module The module to compile
+	/// \retval toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
+	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
+	/// pointer to the unique_ptr)
+	/// \return The result
+	Result compileModule(ChigModule& mod,
 	                     std::unique_ptr<llvm::Module>* toFill);
 
 	/// Get the number of modules this Context has

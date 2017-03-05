@@ -2,6 +2,7 @@
 
 #include "chig/NodeInstance.hpp"
 #include "chig/FunctionValidator.hpp"
+#include "chig/GraphFunction.hpp"
 
 #include <gsl/gsl>
 
@@ -13,7 +14,8 @@ NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeTy
       mY{posY},
       mId{nodeID},
       mContext{&mType->context()},
-      mFunction{func} {
+      mFunction{func},
+	  mGraphModule{&func->module()}{
 	Expects(mType != nullptr && mFunction != nullptr);
 
 	mType->mNodeInstance = this;

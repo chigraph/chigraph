@@ -6,6 +6,10 @@ QT_BASE_DIR=/opt/qt58
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
 
+# clone chigraph
+rm -rf /chigraph
+cd /
+git clone https://github.com/chigraph/chigraph --recursive --depth 1
 
 # acquire linuxdeployqt
 cd /
@@ -37,7 +41,7 @@ cd /chigraph
 rm -rf build
 mkdir -p build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr" -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config'
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr" -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-4.0/bin/llvm-config' -DCMAKE_CXX_COMPILER=clang++-4.0 -DCMAKE_C_COMPILER=clang-4.0
 make -j8 DESTDIR=/chigraph.appdir install
 
 # remove pointless stuff
