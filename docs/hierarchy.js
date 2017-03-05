@@ -10,6 +10,7 @@ var hierarchy =
     [ "chig::GraphFunction", "structchig_1_1GraphFunction.html", null ],
     [ "chig::GraphStruct", "structchig_1_1GraphStruct.html", null ],
     [ "std::hash< boost::filesystem::path >", "structstd_1_1hash_3_01boost_1_1filesystem_1_1path_01_4.html", null ],
+    [ "std::hash< boost::uuids::uuid >", "structstd_1_1hash_3_01boost_1_1uuids_1_1uuid_01_4.html", null ],
     [ "chig::NamedDataType", "structchig_1_1NamedDataType.html", null ],
     [ "chig::NodeInstance", "structchig_1_1NodeInstance.html", null ],
     [ "chig::NodeType", "structchig_1_1NodeType.html", null ],

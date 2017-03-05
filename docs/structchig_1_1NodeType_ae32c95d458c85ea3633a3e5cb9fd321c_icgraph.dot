@@ -1,0 +1,53 @@
+digraph "chig::NodeType::toJSON"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node251 [label="chig::NodeType::toJSON",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node251 -> Node252 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node252 [label="chig::connectData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d",tooltip="Connects two nodes&#39; data connections. "];
+  Node252 -> Node253 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node253 [label="chig::NodeInstance\l::function",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2",tooltip="Get the containing GraphFunction. "];
+  Node253 -> Node252 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node253 -> Node254 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node254 [label="chig::connectExec",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a8a2e0029b591b2c20b39d570753f123f",tooltip="Connects two nodes&#39; exec connections. "];
+  Node254 -> Node253 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node254 -> Node255 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node255 [label="chig::jsonToGraphFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a62056798e67720d435705b99f7e16cd0",tooltip="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ..."];
+  Node255 -> Node256 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node256 [label="chig::jsonToGraphModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a3b1bc50c9d7b3cdb17ffcb3ad602f7ab",tooltip="Load a GraphModule from json. "];
+  Node256 -> Node257 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node257 [label="chig::Context::addModule\lFromJson",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1Context.html#a077f8ef8c0dd541ec2e2d64bcd8f9fc0",tooltip="Load a module from JSON – avoid this use the string overload. "];
+  Node257 -> Node258 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node258 [label="chig::Context::loadModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2",tooltip="Load a module from disk. "];
+  Node258 -> Node259 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node259 [label="chig::ChigModule::addDependency",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1ChigModule.html#ad5feee65f261f3777edddd027eb89400",tooltip="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..."];
+  Node259 -> Node260 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node260 [label="chig::ChigModule::dependencies",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1ChigModule.html#a7f239dc07b0a4d74d6907da6f25127dc",tooltip="Get the dependencies. "];
+  Node260 -> Node261 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node261 [label="chig::graphModuleToJson",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a",tooltip="Serialize a JsonModule to json. "];
+  Node261 -> Node262 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node262 [label="chig::GraphModule::\lsaveToDisk",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff",tooltip="Serialize to disk in the context. "];
+  Node259 -> Node263 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node263 [label="chig::GraphModule::\lGraphModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphModule.html#a65458343d0344b6b806f9b0b780b32f4",tooltip="Construct a GraphModule. "];
+  Node253 -> Node264 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node264 [label="chig::disconnectData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a26aa6586df79345493de9fc130291c18",tooltip="Disconnect a data connection. "];
+  Node264 -> Node252 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node264 -> Node253 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node264 -> Node265 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node265 [label="chig::GraphFunction\l::removeNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e",tooltip="Remove a node from the function. "];
+  Node265 -> Node266 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node266 [label="chig::GraphFunction\l::nodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#aed770126edca8a167de5e44582e646de"];
+  Node265 -> Node267 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node267 [label="chig::GraphFunction\l::removeLocalVariable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a1c45651f8ac9b7bf9cebcd11d91763f0",tooltip="Remove a local variable from the function by name. "];
+  Node267 -> Node268 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node268 [label="chig::GraphFunction\l::localVariables",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a72a81861d1331948804b2a267598ec79",tooltip="Get the local variables. "];
+  Node268 -> Node269 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node269 [label="chig::graphFunctionToJson",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b",tooltip="Serialize a GraphFunction to json. "];
+  Node269 -> Node261 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node264 -> Node270 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node270 [label="chig::NodeInstance\l::setType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153",tooltip="Set the type of the node instance. "];
+  Node252 -> Node255 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node251 -> Node264 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}
