@@ -70,6 +70,8 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 		REQUIRE(inst->y() == 123.f);
 		REQUIRE(inst->type().qualifiedName() == "lang:entry");
 		REQUIRE(inst->type().toJSON() == correctEntryJson);
+		REQUIRE(&inst->function() == func);
+		REQUIRE(&inst->module() == mod);
 
 		REQUIRE(func->entryNode() == inst);
 	}

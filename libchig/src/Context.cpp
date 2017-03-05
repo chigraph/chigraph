@@ -7,12 +7,6 @@
 #include "chig/LangModule.hpp"
 #include "chig/NodeInstance.hpp"
 
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 9
-#include <llvm/Bitcode/ReaderWriter.h>
-#else
-#include <llvm/Bitcode/BitcodeReader.h>
-#endif
-
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Linker/Linker.h>
@@ -231,22 +225,28 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, gsl::cstring_span
 	return res;
 }
 
-Result Context::compileModule(const fs::path& fullName, std::unique_ptr<llvm::Module>* toFill) {
+Result Context::compileModule(const boost::filesystem::path& fullName,
+						std::unique_ptr<llvm::Module>* toFill) {
+	Result res;
+	
+	auto mod = moduleByFullName(fullName);
+	if (mod == nullptr) {
+		res.addEntry("E36", "Could not find module", {{"module", fullName.generic_string()}});
+		return res;
+	}
+	
+	return compileModule(*mod, toFill);
+}
+
+Result Context::compileModule(ChigModule& mod, std::unique_ptr<llvm::Module>* toFill) {
 	Expects(toFill != nullptr);
 
 	Result res;
 
-	auto chigmod = moduleByFullName(fullName);
-
-	if (chigmod == nullptr) {
-		res.addEntry("E36", "Could not find module", {{"module", fullName.generic_string()}});
-		return res;
-	}
-
-	auto llmod = std::make_unique<llvm::Module>(fullName.generic_string(), llvmContext());
+	auto llmod = std::make_unique<llvm::Module>(mod.fullName(), llvmContext());
 
 	// generate dependencies
-	for (const auto& depName : chigmod->dependencies()) {
+	for (const auto& depName : mod.dependencies()) {
 		std::unique_ptr<llvm::Module> compiledDep;
 		res += compileModule(depName, &compiledDep);  // TODO(#62): detect circular dependencies
 
@@ -260,7 +260,7 @@ Result Context::compileModule(const fs::path& fullName, std::unique_ptr<llvm::Mo
 #endif
 	}
 
-	res += chigmod->generateModule(*llmod);
+	res += mod.generateModule(*llmod);
 
 	// set debug info version if it doesn't already have it
 	if (llmod->getModuleFlag("Debug Info Version") == nullptr) {
@@ -286,7 +286,7 @@ Result Context::compileModule(const fs::path& fullName, std::unique_ptr<llvm::Mo
 
 			res.addEntry(
 			    "EINT", "Internal compiler error: Invalid module created",
-			    {{"Error", err}, {"Full Name", fullName.generic_string()}, {"Module", moduleStr}});
+			    {{"Error", err}, {"Full Name", mod.fullName()}, {"Module", moduleStr}});
 		}
 	}
 

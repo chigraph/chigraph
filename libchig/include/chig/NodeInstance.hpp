@@ -77,6 +77,9 @@ struct NodeInstance {
 
 	/// Get the containing GraphFunction
 	GraphFunction& function() const { return *mFunction; }
+	
+	/// Get the containing GraphModule
+	GraphModule& module() const { return *mGraphModule; }
 
 private:
 	std::unique_ptr<NodeType> mType = nullptr;
@@ -88,6 +91,7 @@ private:
 
 	Context*       mContext;
 	GraphFunction* mFunction = nullptr;
+	GraphModule* mGraphModule = nullptr;
 };
 
 /// \name Connection Manipulation
