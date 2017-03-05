@@ -33,8 +33,8 @@ ln -s lib lib64
 
 
 # build KF5
-export PATH=/opt/rh/python27/root/usr/bin/:$PATH
-/chigraph/scripts/build_frameworks.sh Release "-GNinja -DCMAKE_PREFIX_PATH='/chigraph.appdir/usr;$QTDIR' -DCMAKE_INSTALL_PREFIX=/chigraph.appdir/usr"
+python3 /chigraph/setup.py
+rsync -raP /chigraph/third_party/kf5-release/* /chigraph.appdir/usr/
 
 # build chigraph
 cd /chigraph
