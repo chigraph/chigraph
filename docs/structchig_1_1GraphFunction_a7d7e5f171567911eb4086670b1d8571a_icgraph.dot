@@ -1,0 +1,50 @@
+digraph "chig::GraphFunction::nodesWithType"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node535 [label="chig::GraphFunction\l::nodesWithType",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node535 -> Node536 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node536 [label="chig::GraphFunction\l::entryNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#aa47e30665a08b671950c4e8411c7a4ba",tooltip="Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two e..."];
+  Node536 -> Node537 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node537 [label="chig::compileFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30",tooltip="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..."];
+  Node537 -> Node538 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node538 [label="chig::GraphModule::\lgenerateModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6",tooltip="Generate a llvm::Module from the module. "];
+  Node536 -> Node539 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node539 [label="chig::GraphFunction\l::getOrInsertEntryNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a6b52aef92086d65539ad8be1ad78469e",tooltip="Creates an entry node if it doesn&#39;t already exist, else just return it. "];
+  Node539 -> Node540 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node540 [label="chig::GraphFunction\l::nodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#aed770126edca8a167de5e44582e646de"];
+  Node536 -> Node540 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node536 -> Node541 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node541 [label="chig::validateFunctionNode\lInputs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad868894793d664b6ae994f24fc781b4b",tooltip="The make sure that nodes are called before their outputs are used. "];
+  Node541 -> Node542 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node542 [label="chig::validateFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#afccf44a2370371aae836862d9731155e",tooltip="Validate that a function is compilable. "];
+  Node542 -> Node537 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node535 -> Node540 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node535 -> Node543 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node543 [label="chig::GraphFunction\l::removeLocalVariable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a1c45651f8ac9b7bf9cebcd11d91763f0",tooltip="Remove a local variable from the function by name. "];
+  Node543 -> Node544 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node544 [label="chig::GraphFunction\l::localVariables",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a72a81861d1331948804b2a267598ec79",tooltip="Get the local variables. "];
+  Node544 -> Node545 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node545 [label="chig::graphFunctionToJson",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b",tooltip="Serialize a GraphFunction to json. "];
+  Node545 -> Node546 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node546 [label="chig::graphModuleToJson",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a",tooltip="Serialize a JsonModule to json. "];
+  Node546 -> Node547 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node547 [label="chig::GraphModule::\lsaveToDisk",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff",tooltip="Serialize to disk in the context. "];
+  Node535 -> Node548 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node548 [label="chig::GraphFunction\l::renameExecOutput",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a242c9e82374bc304966506efd81ed0f5",tooltip="Rename an exec output If idx is out of range, this function does nothing. "];
+  Node548 -> Node549 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node549 [label="chig::GraphFunction\l::execOutputs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#ae155f716b072ef5f8e3ba064ae7ef8c0",tooltip="Get the function exec outputs. "];
+  Node549 -> Node550 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node550 [label="chig::GraphFunction\l::createExitNodeType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#ac7c52122fef0c74d9d0ee04af9a741c4",tooltip="Create a fresh NodeType for an exit. "];
+  Node550 -> Node540 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node550 -> Node548 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node549 -> Node545 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node535 -> Node551 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node551 [label="chig::GraphFunction\l::renameLocalVariable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a9eff598c36c450953054331757bf6d6b",tooltip="Rename a local variable. "];
+  Node551 -> Node544 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node535 -> Node552 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node552 [label="chig::GraphFunction\l::retypeLocalVariable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a905a09106e02a246daac43a37c42b97b",tooltip="Set a new type to a local variable. "];
+  Node552 -> Node544 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

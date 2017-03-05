@@ -24,13 +24,13 @@ if (edges && edges.length) {
                 <circle id="rim" cx="0" cy="0" r="7"/>
                 <circle id="rim2" cx="0" cy="0" r="3.5"/>
                 <g id="zoomPlus">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomplus.mouseover" end="zoomplus.mouseout"/>
                         </use>
                         <path d="M-4,0h8M0,-4v8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
                 </g>
                 <g id="zoomMin">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomminus.mouseover" end="zoomminus.mouseout"/>
                         </use>
                         <path d="M-4,0h8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
@@ -39,7 +39,7 @@ if (edges && edges.length) {
                         <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
                <g id="resetDef">
-                       <use xlink:href="#rim2" fill="#404040">
+                       <use xlink:href="#rim2" target="_top" fill="#404040">
                                <set attributeName="fill" to="#808080" begin="reset.mouseover" end="reset.mouseout"/>
                        </use>
                </g>
@@ -50,7 +50,7 @@ var viewWidth = 1749;
 var viewHeight = 186;
 var sectionId = 'dynsection-3';
 </script>
-<script xlink:href="svgpan.js"/>
+<script xlink:href="svgpan.js" target="_top"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chig::connectData</title>
@@ -64,7 +64,7 @@ var sectionId = 'dynsection-3';
 <!-- Node66 -->
 <g id="node2" class="node">
 <title>Node66</title>
-<g id="a_node2"><a xlink:href="structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2" target="_top" xlink:title="Get the containing GraphFunction. ">
+<g id="a_node2"><a xlink:href="structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2" target="_top" target="_top" xlink:title="Get the containing GraphFunction. ">
 <polygon fill="#ffffff" stroke="#000000" points="131,-81.5 131,-111.5 232,-111.5 232,-81.5 131,-81.5"/>
 <text text-anchor="start" x="139" y="-99.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::NodeInstance</text>
 <text text-anchor="middle" x="181.5" y="-88.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::function</text>
@@ -80,7 +80,7 @@ var sectionId = 'dynsection-3';
 <!-- Node68 -->
 <g id="node4" class="node">
 <title>Node68</title>
-<g id="a_node4"><a xlink:href="namespacechig.html#a62056798e67720d435705b99f7e16cd0" target="_top" xlink:title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ...">
+<g id="a_node4"><a xlink:href="namespacechig.html#a62056798e67720d435705b99f7e16cd0" target="_top" target="_top" xlink:title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ...">
 <polygon fill="#ffffff" stroke="#000000" points="412,-128 412,-147 546,-147 546,-128 412,-128"/>
 <text text-anchor="middle" x="479" y="-135" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::jsonToGraphFunction</text>
 </a>
@@ -101,7 +101,7 @@ var sectionId = 'dynsection-3';
 <!-- Node67 -->
 <g id="node3" class="node">
 <title>Node67</title>
-<g id="a_node3"><a xlink:href="namespacechig.html#a8a2e0029b591b2c20b39d570753f123f" target="_top" xlink:title="Connects two nodes&#39; exec connections. ">
+<g id="a_node3"><a xlink:href="namespacechig.html#a8a2e0029b591b2c20b39d570753f123f" target="_top" target="_top" xlink:title="Connects two nodes&#39; exec connections. ">
 <polygon fill="#ffffff" stroke="#000000" points="273,-90 273,-109 371,-109 371,-90 273,-90"/>
 <text text-anchor="middle" x="322" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::connectExec</text>
 </a>
@@ -116,7 +116,7 @@ var sectionId = 'dynsection-3';
 <!-- Node77 -->
 <g id="node13" class="node">
 <title>Node77</title>
-<g id="a_node13"><a xlink:href="namespacechig.html#a26aa6586df79345493de9fc130291c18" target="_top" xlink:title="Disconnect a data connection. ">
+<g id="a_node13"><a xlink:href="namespacechig.html#a26aa6586df79345493de9fc130291c18" target="_top" target="_top" xlink:title="Disconnect a data connection. ">
 <polygon fill="#ffffff" stroke="#000000" points="268,-52 268,-71 376,-71 376,-52 268,-52"/>
 <text text-anchor="middle" x="322" y="-59" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::disconnectData</text>
 </a>
@@ -143,7 +143,7 @@ var sectionId = 'dynsection-3';
 <!-- Node69 -->
 <g id="node5" class="node">
 <title>Node69</title>
-<g id="a_node5"><a xlink:href="namespacechig.html#a3b1bc50c9d7b3cdb17ffcb3ad602f7ab" target="_top" xlink:title="Load a GraphModule from json. ">
+<g id="a_node5"><a xlink:href="namespacechig.html#a3b1bc50c9d7b3cdb17ffcb3ad602f7ab" target="_top" target="_top" xlink:title="Load a GraphModule from json. ">
 <polygon fill="#ffffff" stroke="#000000" points="582,-128 582,-147 710,-147 710,-128 582,-128"/>
 <text text-anchor="middle" x="646" y="-135" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::jsonToGraphModule</text>
 </a>
@@ -158,7 +158,7 @@ var sectionId = 'dynsection-3';
 <!-- Node70 -->
 <g id="node6" class="node">
 <title>Node70</title>
-<g id="a_node6"><a xlink:href="structchig_1_1Context.html#a077f8ef8c0dd541ec2e2d64bcd8f9fc0" target="_top" xlink:title="Load a module from JSON – avoid this use the string overload. ">
+<g id="a_node6"><a xlink:href="structchig_1_1Context.html#a077f8ef8c0dd541ec2e2d64bcd8f9fc0" target="_top" target="_top" xlink:title="Load a module from JSON – avoid this use the string overload. ">
 <polygon fill="#ffffff" stroke="#000000" points="746,-122.5 746,-152.5 874,-152.5 874,-122.5 746,-122.5"/>
 <text text-anchor="start" x="754" y="-140.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::addModule</text>
 <text text-anchor="middle" x="810" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">FromJson</text>
@@ -174,7 +174,7 @@ var sectionId = 'dynsection-3';
 <!-- Node71 -->
 <g id="node7" class="node">
 <title>Node71</title>
-<g id="a_node7"><a xlink:href="structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2" target="_top" xlink:title="Load a module from disk. ">
+<g id="a_node7"><a xlink:href="structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2" target="_top" target="_top" xlink:title="Load a module from disk. ">
 <polygon fill="#ffffff" stroke="#000000" points="910,-128 910,-147 1040,-147 1040,-128 910,-128"/>
 <text text-anchor="middle" x="975" y="-135" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::loadModule</text>
 </a>
@@ -189,7 +189,7 @@ var sectionId = 'dynsection-3';
 <!-- Node72 -->
 <g id="node8" class="node">
 <title>Node72</title>
-<g id="a_node8"><a xlink:href="structchig_1_1ChigModule.html#ad5feee65f261f3777edddd027eb89400" target="_top" xlink:title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded...">
+<g id="a_node8"><a xlink:href="structchig_1_1ChigModule.html#ad5feee65f261f3777edddd027eb89400" target="_top" target="_top" xlink:title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded...">
 <polygon fill="#ffffff" stroke="#000000" points="1076,-128 1076,-147 1243,-147 1243,-128 1076,-128"/>
 <text text-anchor="middle" x="1159.5" y="-135" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::addDependency</text>
 </a>
@@ -204,7 +204,7 @@ var sectionId = 'dynsection-3';
 <!-- Node73 -->
 <g id="node9" class="node">
 <title>Node73</title>
-<g id="a_node9"><a xlink:href="structchig_1_1ChigModule.html#a7f239dc07b0a4d74d6907da6f25127dc" target="_top" xlink:title="Get the dependencies. ">
+<g id="a_node9"><a xlink:href="structchig_1_1ChigModule.html#a7f239dc07b0a4d74d6907da6f25127dc" target="_top" target="_top" xlink:title="Get the dependencies. ">
 <polygon fill="#ffffff" stroke="#000000" points="1279,-109 1279,-128 1437,-128 1437,-109 1279,-109"/>
 <text text-anchor="middle" x="1358" y="-116" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::dependencies</text>
 </a>
@@ -219,7 +219,7 @@ var sectionId = 'dynsection-3';
 <!-- Node76 -->
 <g id="node12" class="node">
 <title>Node76</title>
-<g id="a_node12"><a xlink:href="structchig_1_1GraphModule.html#a65458343d0344b6b806f9b0b780b32f4" target="_top" xlink:title="Construct a GraphModule. ">
+<g id="a_node12"><a xlink:href="structchig_1_1GraphModule.html#a65458343d0344b6b806f9b0b780b32f4" target="_top" target="_top" xlink:title="Construct a GraphModule. ">
 <polygon fill="#ffffff" stroke="#000000" points="1306,-147.5 1306,-177.5 1410,-177.5 1410,-147.5 1306,-147.5"/>
 <text text-anchor="start" x="1314" y="-165.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
 <text text-anchor="middle" x="1358" y="-154.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">GraphModule</text>
@@ -235,7 +235,7 @@ var sectionId = 'dynsection-3';
 <!-- Node74 -->
 <g id="node10" class="node">
 <title>Node74</title>
-<g id="a_node10"><a xlink:href="namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a" target="_top" xlink:title="Serialize a JsonModule to json. ">
+<g id="a_node10"><a xlink:href="namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a" target="_top" target="_top" xlink:title="Serialize a JsonModule to json. ">
 <polygon fill="#ffffff" stroke="#000000" points="1473,-90 1473,-109 1601,-109 1601,-90 1473,-90"/>
 <text text-anchor="middle" x="1537" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::graphModuleToJson</text>
 </a>
@@ -250,7 +250,7 @@ var sectionId = 'dynsection-3';
 <!-- Node75 -->
 <g id="node11" class="node">
 <title>Node75</title>
-<g id="a_node11"><a xlink:href="structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff" target="_top" xlink:title="Serialize to disk in the context. ">
+<g id="a_node11"><a xlink:href="structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff" target="_top" target="_top" xlink:title="Serialize to disk in the context. ">
 <polygon fill="#ffffff" stroke="#000000" points="1637,-84.5 1637,-114.5 1741,-114.5 1741,-84.5 1637,-84.5"/>
 <text text-anchor="start" x="1645" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
 <text text-anchor="middle" x="1689" y="-91.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">saveToDisk</text>
@@ -278,7 +278,7 @@ var sectionId = 'dynsection-3';
 <!-- Node78 -->
 <g id="node14" class="node">
 <title>Node78</title>
-<g id="a_node14"><a xlink:href="structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e" target="_top" xlink:title="Remove a node from the function. ">
+<g id="a_node14"><a xlink:href="structchig_1_1GraphFunction.html#a398599d8fe1982a3c76462b1b2375a6e" target="_top" target="_top" xlink:title="Remove a node from the function. ">
 <polygon fill="#ffffff" stroke="#000000" points="427,-49.5 427,-79.5 531,-79.5 531,-49.5 427,-49.5"/>
 <text text-anchor="start" x="435" y="-67.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="479" y="-56.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::removeNode</text>
@@ -294,7 +294,7 @@ var sectionId = 'dynsection-3';
 <!-- Node83 -->
 <g id="node19" class="node">
 <title>Node83</title>
-<g id="a_node19"><a xlink:href="structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153" target="_top" xlink:title="Set the type of the node instance. ">
+<g id="a_node19"><a xlink:href="structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153" target="_top" target="_top" xlink:title="Set the type of the node instance. ">
 <polygon fill="#ffffff" stroke="#000000" points="428.5,-.5 428.5,-30.5 529.5,-30.5 529.5,-.5 428.5,-.5"/>
 <text text-anchor="start" x="436.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::NodeInstance</text>
 <text text-anchor="middle" x="479" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::setType</text>
@@ -310,7 +310,7 @@ var sectionId = 'dynsection-3';
 <!-- Node79 -->
 <g id="node15" class="node">
 <title>Node79</title>
-<g id="a_node15"><a xlink:href="structchig_1_1GraphFunction.html#a79cbfaf26d9a966ae8048c81dc09777e" target="_top" xlink:title="chig::GraphFunction\l::nodes">
+<g id="a_node15"><a xlink:href="structchig_1_1GraphFunction.html#a79cbfaf26d9a966ae8048c81dc09777e" target="_top" target="_top" xlink:title="chig::GraphFunction\l::nodes">
 <polygon fill="#ffffff" stroke="#000000" points="594,-21.5 594,-51.5 698,-51.5 698,-21.5 594,-21.5"/>
 <text text-anchor="start" x="602" y="-39.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="646" y="-28.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::nodes</text>
@@ -326,7 +326,7 @@ var sectionId = 'dynsection-3';
 <!-- Node80 -->
 <g id="node16" class="node">
 <title>Node80</title>
-<g id="a_node16"><a xlink:href="structchig_1_1GraphFunction.html#a1c45651f8ac9b7bf9cebcd11d91763f0" target="_top" xlink:title="Remove a local variable from the function by name. ">
+<g id="a_node16"><a xlink:href="structchig_1_1GraphFunction.html#a1c45651f8ac9b7bf9cebcd11d91763f0" target="_top" target="_top" xlink:title="Remove a local variable from the function by name. ">
 <polygon fill="#ffffff" stroke="#000000" points="753.5,-65.5 753.5,-95.5 866.5,-95.5 866.5,-65.5 753.5,-65.5"/>
 <text text-anchor="start" x="761.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="810" y="-72.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::removeLocalVariable</text>
@@ -342,7 +342,7 @@ var sectionId = 'dynsection-3';
 <!-- Node81 -->
 <g id="node17" class="node">
 <title>Node81</title>
-<g id="a_node17"><a xlink:href="structchig_1_1GraphFunction.html#a72a81861d1331948804b2a267598ec79" target="_top" xlink:title="Get the local variables. ">
+<g id="a_node17"><a xlink:href="structchig_1_1GraphFunction.html#a72a81861d1331948804b2a267598ec79" target="_top" target="_top" xlink:title="Get the local variables. ">
 <polygon fill="#ffffff" stroke="#000000" points="923,-65.5 923,-95.5 1027,-95.5 1027,-65.5 923,-65.5"/>
 <text text-anchor="start" x="931" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="975" y="-72.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::localVariables</text>
@@ -358,7 +358,7 @@ var sectionId = 'dynsection-3';
 <!-- Node82 -->
 <g id="node18" class="node">
 <title>Node82</title>
-<g id="a_node18"><a xlink:href="namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b" target="_top" xlink:title="Serialize a GraphFunction to json. ">
+<g id="a_node18"><a xlink:href="namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b" target="_top" target="_top" xlink:title="Serialize a GraphFunction to json. ">
 <polygon fill="#ffffff" stroke="#000000" points="1092.5,-71 1092.5,-90 1226.5,-90 1226.5,-71 1092.5,-71"/>
 <text text-anchor="middle" x="1159.5" y="-78" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::graphFunctionToJson</text>
 </a>
@@ -380,29 +380,29 @@ var sectionId = 'dynsection-3';
 </svg>
         <g id="navigator" transform="translate(0 0)" fill="#404254">
                 <rect fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width=".5" x="0" y="0" width="60" height="60"/>
-                <use id="zoomplus" xlink:href="#zoomPlus" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
-                <use id="zoomminus" xlink:href="#zoomMin" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
-                <use id="reset" xlink:href="#resetDef" x="30" y="36" onmousedown="handleReset()"/>
-                <g id="arrowUp" xlink:href="#dirArrow" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <use id="zoomplus" xlink:href="#zoomPlus" target="_top" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
+                <use id="zoomminus" xlink:href="#zoomMin" target="_top" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
+                <use id="reset" xlink:href="#resetDef" target="_top" x="30" y="36" onmousedown="handleReset()"/>
+                <g id="arrowUp" xlink:href="#dirArrow" target="_top" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowUp.mouseover" end="arrowUp.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowRight" xlink:href="#dirArrow" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowRight" xlink:href="#dirArrow" target="_top" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowRight.mouseover" end="arrowRight.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowDown" xlink:href="#dirArrow" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowDown" xlink:href="#dirArrow" target="_top" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowDown.mouseover" end="arrowDown.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowLeft" xlink:href="#dirArrow" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowLeft" xlink:href="#dirArrow" target="_top" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowLeft.mouseover" end="arrowLeft.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
@@ -410,7 +410,7 @@ var sectionId = 'dynsection-3';
         </g>
         <svg viewBox="0 0 15 15" width="100%" height="30px" preserveAspectRatio="xMaxYMin meet">
          <g id="arrow_out" transform="scale(0.3 0.3)">
-          <a xlink:href="namespacechig_ad3c2fc880f6843f9a8a0f5ee0d62249d_icgraph_org.svg" target="_base">
+          <a xlink:href="namespacechig_ad3c2fc880f6843f9a8a0f5ee0d62249d_icgraph_org.svg" target="_top" target="_base">
            <rect id="button" ry="5" rx="5" y="6" x="6" height="38" width="38"
                 fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width="1.0"/>
            <path id="arrow"

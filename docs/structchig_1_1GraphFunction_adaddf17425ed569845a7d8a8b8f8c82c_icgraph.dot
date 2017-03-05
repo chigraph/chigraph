@@ -1,0 +1,34 @@
+digraph "chig::GraphFunction::addDataOutput"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node22 [label="chig::GraphFunction\l::addDataOutput",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node22 -> Node23 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="chig::GraphFunction\l::dataOutputs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a94dca2e45795b16d6b4fe0be6c07f250",tooltip="Get the function data outputs in the format {type, docstring}. "];
+  Node23 -> Node24 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="chig::compileFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30",tooltip="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..."];
+  Node24 -> Node25 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node25 [label="chig::GraphModule::\lgenerateModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6",tooltip="Generate a llvm::Module from the module. "];
+  Node23 -> Node26 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 [label="chig::GraphFunction\l::createExitNodeType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#ac7c52122fef0c74d9d0ee04af9a741c4",tooltip="Create a fresh NodeType for an exit. "];
+  Node26 -> Node27 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="chig::GraphFunction\l::nodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#aed770126edca8a167de5e44582e646de"];
+  Node26 -> Node28 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="chig::GraphFunction\l::renameExecOutput",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a242c9e82374bc304966506efd81ed0f5",tooltip="Rename an exec output If idx is out of range, this function does nothing. "];
+  Node28 -> Node29 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="chig::GraphFunction\l::execOutputs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#ae155f716b072ef5f8e3ba064ae7ef8c0",tooltip="Get the function exec outputs. "];
+  Node29 -> Node26 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 -> Node30 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="chig::graphFunctionToJson",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b",tooltip="Serialize a GraphFunction to json. "];
+  Node30 -> Node31 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="chig::graphModuleToJson",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a",tooltip="Serialize a JsonModule to json. "];
+  Node31 -> Node32 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="chig::GraphModule::\lsaveToDisk",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff",tooltip="Serialize to disk in the context. "];
+  Node23 -> Node33 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="chig::GraphFunction\l::functionType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848",tooltip="Get the LLVM function type for the function. "];
+  Node33 -> Node27 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 -> Node24 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 -> Node30 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

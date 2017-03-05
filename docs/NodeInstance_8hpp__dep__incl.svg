@@ -24,13 +24,13 @@ if (edges && edges.length) {
                 <circle id="rim" cx="0" cy="0" r="7"/>
                 <circle id="rim2" cx="0" cy="0" r="3.5"/>
                 <g id="zoomPlus">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomplus.mouseover" end="zoomplus.mouseout"/>
                         </use>
                         <path d="M-4,0h8M0,-4v8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
                 </g>
                 <g id="zoomMin">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomminus.mouseover" end="zoomminus.mouseout"/>
                         </use>
                         <path d="M-4,0h8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
@@ -39,7 +39,7 @@ if (edges && edges.length) {
                         <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
                <g id="resetDef">
-                       <use xlink:href="#rim2" fill="#404040">
+                       <use xlink:href="#rim2" target="_top" fill="#404040">
                                <set attributeName="fill" to="#808080" begin="reset.mouseover" end="reset.mouseout"/>
                        </use>
                </g>
@@ -50,7 +50,7 @@ var viewWidth = 1052;
 var viewHeight = 84;
 var sectionId = 'dynsection-1';
 </script>
-<script xlink:href="svgpan.js"/>
+<script xlink:href="svgpan.js" target="_top"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>include/chig/NodeInstance.hpp</title>
@@ -64,7 +64,7 @@ var sectionId = 'dynsection-1';
 <!-- Node28 -->
 <g id="node2" class="node">
 <title>Node28</title>
-<g id="a_node2"><a xlink:href="Context_8cpp.html" target="_top" xlink:title="src/Context.cpp">
+<g id="a_node2"><a xlink:href="Context_8cpp.html" target="_top" target="_top" xlink:title="src/Context.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="0,-.5 0,-19.5 86,-19.5 86,-.5 0,-.5"/>
 <text text-anchor="middle" x="43" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/Context.cpp</text>
 </a>
@@ -79,7 +79,7 @@ var sectionId = 'dynsection-1';
 <!-- Node29 -->
 <g id="node3" class="node">
 <title>Node29</title>
-<g id="a_node3"><a xlink:href="FunctionCompiler_8cpp.html" target="_top" xlink:title="src/FunctionCompiler.cpp">
+<g id="a_node3"><a xlink:href="FunctionCompiler_8cpp.html" target="_top" target="_top" xlink:title="src/FunctionCompiler.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="104,-.5 104,-19.5 232,-19.5 232,-.5 104,-.5"/>
 <text text-anchor="middle" x="168" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionCompiler.cpp</text>
 </a>
@@ -94,7 +94,7 @@ var sectionId = 'dynsection-1';
 <!-- Node30 -->
 <g id="node4" class="node">
 <title>Node30</title>
-<g id="a_node4"><a xlink:href="FunctionValidator_8cpp.html" target="_top" xlink:title="src/FunctionValidator.cpp">
+<g id="a_node4"><a xlink:href="FunctionValidator_8cpp.html" target="_top" target="_top" xlink:title="src/FunctionValidator.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="250,-.5 250,-19.5 378,-19.5 378,-.5 250,-.5"/>
 <text text-anchor="middle" x="314" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/FunctionValidator.cpp</text>
 </a>
@@ -109,7 +109,7 @@ var sectionId = 'dynsection-1';
 <!-- Node31 -->
 <g id="node5" class="node">
 <title>Node31</title>
-<g id="a_node5"><a xlink:href="GraphFunction_8cpp.html" target="_top" xlink:title="src/GraphFunction.cpp">
+<g id="a_node5"><a xlink:href="GraphFunction_8cpp.html" target="_top" target="_top" xlink:title="src/GraphFunction.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="396,-.5 396,-19.5 512,-19.5 512,-.5 396,-.5"/>
 <text text-anchor="middle" x="454" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/GraphFunction.cpp</text>
 </a>
@@ -124,7 +124,7 @@ var sectionId = 'dynsection-1';
 <!-- Node32 -->
 <g id="node6" class="node">
 <title>Node32</title>
-<g id="a_node6"><a xlink:href="GraphModule_8cpp.html" target="_top" xlink:title="src/GraphModule.cpp">
+<g id="a_node6"><a xlink:href="GraphModule_8cpp.html" target="_top" target="_top" xlink:title="src/GraphModule.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="530,-.5 530,-19.5 640,-19.5 640,-.5 530,-.5"/>
 <text text-anchor="middle" x="585" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/GraphModule.cpp</text>
 </a>
@@ -139,7 +139,7 @@ var sectionId = 'dynsection-1';
 <!-- Node33 -->
 <g id="node7" class="node">
 <title>Node33</title>
-<g id="a_node7"><a xlink:href="JsonDeserializer_8cpp_source.html" target="_top" xlink:title="src/JsonDeserializer.cpp">
+<g id="a_node7"><a xlink:href="JsonDeserializer_8cpp_source.html" target="_top" target="_top" xlink:title="src/JsonDeserializer.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="658,-.5 658,-19.5 782,-19.5 782,-.5 658,-.5"/>
 <text text-anchor="middle" x="720" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/JsonDeserializer.cpp</text>
 </a>
@@ -154,7 +154,7 @@ var sectionId = 'dynsection-1';
 <!-- Node34 -->
 <g id="node8" class="node">
 <title>Node34</title>
-<g id="a_node8"><a xlink:href="JsonSerializer_8cpp_source.html" target="_top" xlink:title="src/JsonSerializer.cpp">
+<g id="a_node8"><a xlink:href="JsonSerializer_8cpp_source.html" target="_top" target="_top" xlink:title="src/JsonSerializer.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="800.5,-.5 800.5,-19.5 913.5,-19.5 913.5,-.5 800.5,-.5"/>
 <text text-anchor="middle" x="857" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/JsonSerializer.cpp</text>
 </a>
@@ -169,7 +169,7 @@ var sectionId = 'dynsection-1';
 <!-- Node35 -->
 <g id="node9" class="node">
 <title>Node35</title>
-<g id="a_node9"><a xlink:href="NodeInstance_8cpp.html" target="_top" xlink:title="src/NodeInstance.cpp">
+<g id="a_node9"><a xlink:href="NodeInstance_8cpp.html" target="_top" target="_top" xlink:title="src/NodeInstance.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="932,-.5 932,-19.5 1044,-19.5 1044,-.5 932,-.5"/>
 <text text-anchor="middle" x="988" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">src/NodeInstance.cpp</text>
 </a>
@@ -185,29 +185,29 @@ var sectionId = 'dynsection-1';
 </svg>
         <g id="navigator" transform="translate(0 0)" fill="#404254">
                 <rect fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width=".5" x="0" y="0" width="60" height="60"/>
-                <use id="zoomplus" xlink:href="#zoomPlus" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
-                <use id="zoomminus" xlink:href="#zoomMin" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
-                <use id="reset" xlink:href="#resetDef" x="30" y="36" onmousedown="handleReset()"/>
-                <g id="arrowUp" xlink:href="#dirArrow" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <use id="zoomplus" xlink:href="#zoomPlus" target="_top" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
+                <use id="zoomminus" xlink:href="#zoomMin" target="_top" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
+                <use id="reset" xlink:href="#resetDef" target="_top" x="30" y="36" onmousedown="handleReset()"/>
+                <g id="arrowUp" xlink:href="#dirArrow" target="_top" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowUp.mouseover" end="arrowUp.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowRight" xlink:href="#dirArrow" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowRight" xlink:href="#dirArrow" target="_top" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowRight.mouseover" end="arrowRight.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowDown" xlink:href="#dirArrow" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowDown" xlink:href="#dirArrow" target="_top" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowDown.mouseover" end="arrowDown.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowLeft" xlink:href="#dirArrow" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowLeft" xlink:href="#dirArrow" target="_top" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowLeft.mouseover" end="arrowLeft.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
@@ -215,7 +215,7 @@ var sectionId = 'dynsection-1';
         </g>
         <svg viewBox="0 0 15 15" width="100%" height="30px" preserveAspectRatio="xMaxYMin meet">
          <g id="arrow_out" transform="scale(0.3 0.3)">
-          <a xlink:href="NodeInstance_8hpp__dep__incl_org.svg" target="_base">
+          <a xlink:href="NodeInstance_8hpp__dep__incl_org.svg" target="_top" target="_base">
            <rect id="button" ry="5" rx="5" y="6" x="6" height="38" width="38"
                 fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width="1.0"/>
            <path id="arrow"

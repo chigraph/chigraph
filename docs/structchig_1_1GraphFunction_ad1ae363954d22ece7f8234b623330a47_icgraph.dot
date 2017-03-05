@@ -1,0 +1,50 @@
+digraph "chig::GraphFunction::retypeDataInput"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node771 [label="chig::GraphFunction\l::retypeDataInput",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node771 -> Node772 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node772 [label="chig::GraphFunction\l::dataInputs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a42c555949c37c229eae02af3dabae189",tooltip="Get the function data inputs in the format {type, docstring}. "];
+  Node772 -> Node773 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node773 [label="chig::compileFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30",tooltip="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..."];
+  Node773 -> Node774 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node774 [label="chig::GraphModule::\lgenerateModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6",tooltip="Generate a llvm::Module from the module. "];
+  Node772 -> Node775 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node775 [label="chig::GraphFunction\l::createEntryNodeType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#abc41f524da8fd9b7308cb7abaa2b28c9",tooltip="Create a fresh NodeType for an entry. "];
+  Node775 -> Node776 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node776 [label="chig::GraphFunction\l::getOrInsertEntryNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a6b52aef92086d65539ad8be1ad78469e",tooltip="Creates an entry node if it doesn&#39;t already exist, else just return it. "];
+  Node776 -> Node777 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node777 [label="chig::GraphFunction\l::nodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#aed770126edca8a167de5e44582e646de"];
+  Node775 -> Node777 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node775 -> Node778 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node778 [label="chig::GraphFunction\l::renameExecOutput",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a242c9e82374bc304966506efd81ed0f5",tooltip="Rename an exec output If idx is out of range, this function does nothing. "];
+  Node778 -> Node779 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node779 [label="chig::GraphFunction\l::execOutputs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#ae155f716b072ef5f8e3ba064ae7ef8c0",tooltip="Get the function exec outputs. "];
+  Node779 -> Node780 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node780 [label="chig::GraphFunction\l::createExitNodeType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#ac7c52122fef0c74d9d0ee04af9a741c4",tooltip="Create a fresh NodeType for an exit. "];
+  Node780 -> Node777 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node780 -> Node778 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node779 -> Node781 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node781 [label="chig::graphFunctionToJson",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad0fd9448ab1cd1d73351fad5967a7b9b",tooltip="Serialize a GraphFunction to json. "];
+  Node781 -> Node782 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node782 [label="chig::graphModuleToJson",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#aaef3bb08f472ae32b2d3b292e69a007a",tooltip="Serialize a JsonModule to json. "];
+  Node782 -> Node783 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node783 [label="chig::GraphModule::\lsaveToDisk",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphModule.html#accb1a64da697a29e28d78a9a09bd52ff",tooltip="Serialize to disk in the context. "];
+  Node772 -> Node784 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node784 [label="chig::GraphFunction\l::entryNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#aa47e30665a08b671950c4e8411c7a4ba",tooltip="Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two e..."];
+  Node784 -> Node773 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node784 -> Node776 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node784 -> Node777 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node784 -> Node785 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node785 [label="chig::validateFunctionNode\lInputs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad868894793d664b6ae994f24fc781b4b",tooltip="The make sure that nodes are called before their outputs are used. "];
+  Node785 -> Node786 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node786 [label="chig::validateFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#afccf44a2370371aae836862d9731155e",tooltip="Validate that a function is compilable. "];
+  Node786 -> Node773 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node772 -> Node787 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node787 [label="chig::GraphFunction\l::functionType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848",tooltip="Get the LLVM function type for the function. "];
+  Node787 -> Node773 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node787 -> Node777 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node772 -> Node781 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

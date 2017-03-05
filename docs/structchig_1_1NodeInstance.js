@@ -1,13 +1,11 @@
 var structchig_1_1NodeInstance =
 [
-    [ "NodeInstance", "structchig_1_1NodeInstance.html#a9ee27647d679d01276868af2a04163ff", null ],
+    [ "NodeInstance", "structchig_1_1NodeInstance.html#ab6f16e2744ebee55b067bc30c24338be", null ],
     [ "NodeInstance", "structchig_1_1NodeInstance.html#a94fa44f7a1bc6dcdd56955c66d0ab6e5", null ],
-    [ "NodeInstance", "structchig_1_1NodeInstance.html#a2b736c092e6c31e19e2ed9b5be1fc6ec", null ],
+    [ "NodeInstance", "structchig_1_1NodeInstance.html#ad751b7946e23cd9c8df3497632d286b7", null ],
     [ "context", "structchig_1_1NodeInstance.html#a664d68ae63b0ec095892d17597ef9623", null ],
     [ "function", "structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2", null ],
-    [ "id", "structchig_1_1NodeInstance.html#a1468afe4799106831566bd283332a516", null ],
-    [ "operator=", "structchig_1_1NodeInstance.html#a30f5680edfb9a8125c973e565d1d2e90", null ],
-    [ "operator=", "structchig_1_1NodeInstance.html#a3c1b4ddc0c288cbacf6e4aaa7810a349", null ],
+    [ "id", "structchig_1_1NodeInstance.html#a0560b8b35612fc845d6464866c425c71", null ],
     [ "setType", "structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153", null ],
     [ "setX", "structchig_1_1NodeInstance.html#aabfe2a7ddc3bb8a0feb5074e96dad3e9", null ],
     [ "setY", "structchig_1_1NodeInstance.html#afc3a13b2848e7cd3360b46c3aee48d8e", null ],

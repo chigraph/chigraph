@@ -24,13 +24,13 @@ if (edges && edges.length) {
                 <circle id="rim" cx="0" cy="0" r="7"/>
                 <circle id="rim2" cx="0" cy="0" r="3.5"/>
                 <g id="zoomPlus">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomplus.mouseover" end="zoomplus.mouseout"/>
                         </use>
                         <path d="M-4,0h8M0,-4v8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
                 </g>
                 <g id="zoomMin">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomminus.mouseover" end="zoomminus.mouseout"/>
                         </use>
                         <path d="M-4,0h8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
@@ -39,7 +39,7 @@ if (edges && edges.length) {
                         <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
                <g id="resetDef">
-                       <use xlink:href="#rim2" fill="#404040">
+                       <use xlink:href="#rim2" target="_top" fill="#404040">
                                <set attributeName="fill" to="#808080" begin="reset.mouseover" end="reset.mouseout"/>
                        </use>
                </g>
@@ -50,7 +50,7 @@ var viewWidth = 1638;
 var viewHeight = 386;
 var sectionId = 'dynsection-0';
 </script>
-<script xlink:href="svgpan.js"/>
+<script xlink:href="svgpan.js" target="_top"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>src/CModule.cpp</title>
@@ -64,7 +64,7 @@ var sectionId = 'dynsection-0';
 <!-- Node1 -->
 <g id="node2" class="node">
 <title>Node1</title>
-<g id="a_node2"><a xlink:href="CModule_8hpp.html" target="_top" xlink:title="Defines the CModule class. ">
+<g id="a_node2"><a xlink:href="CModule_8hpp.html" target="_top" target="_top" xlink:title="Defines the CModule class. ">
 <polygon fill="#ffffff" stroke="#000000" points="294.1369,-297 294.1369,-316 389.1369,-316 389.1369,-297 294.1369,-297"/>
 <text text-anchor="middle" x="341.6369" y="-304" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/CModule.hpp</text>
 </a>
@@ -79,7 +79,7 @@ var sectionId = 'dynsection-0';
 <!-- Node30 -->
 <g id="node31" class="node">
 <title>Node30</title>
-<g id="a_node31"><a xlink:href="GraphFunction_8hpp.html" target="_top" xlink:title="Declares the GraphFunction class. ">
+<g id="a_node31"><a xlink:href="GraphFunction_8hpp.html" target="_top" target="_top" xlink:title="Declares the GraphFunction class. ">
 <polygon fill="#ffffff" stroke="#000000" points="212.6369,-123.5 212.6369,-142.5 332.6369,-142.5 332.6369,-123.5 212.6369,-123.5"/>
 <text text-anchor="middle" x="272.6369" y="-130.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/GraphFunction.hpp</text>
 </a>
@@ -94,7 +94,7 @@ var sectionId = 'dynsection-0';
 <!-- Node32 -->
 <g id="node33" class="node">
 <title>Node32</title>
-<g id="a_node33"><a xlink:href="JsonDeserializer_8hpp_source.html" target="_top" xlink:title="chig/JsonDeserializer.hpp">
+<g id="a_node33"><a xlink:href="JsonDeserializer_8hpp_source.html" target="_top" target="_top" xlink:title="chig/JsonDeserializer.hpp">
 <polygon fill="#ffffff" stroke="#000000" points="66.6369,-123.5 66.6369,-142.5 194.6369,-142.5 194.6369,-123.5 66.6369,-123.5"/>
 <text text-anchor="middle" x="130.6369" y="-130.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/JsonDeserializer.hpp</text>
 </a>
@@ -207,7 +207,7 @@ var sectionId = 'dynsection-0';
 <!-- Node41 -->
 <g id="node42" class="node">
 <title>Node41</title>
-<g id="a_node42"><a xlink:href="ctollvm_8hpp_source.html" target="_top" xlink:title="../ctollvm/ctollvm.hpp">
+<g id="a_node42"><a xlink:href="ctollvm_8hpp_source.html" target="_top" target="_top" xlink:title="../ctollvm/ctollvm.hpp">
 <polygon fill="#ffffff" stroke="#000000" points="1492.6369,-297 1492.6369,-316 1602.6369,-316 1602.6369,-297 1492.6369,-297"/>
 <text text-anchor="middle" x="1547.6369" y="-304" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">../ctollvm/ctollvm.hpp</text>
 </a>
@@ -282,7 +282,7 @@ var sectionId = 'dynsection-0';
 <!-- Node7 -->
 <g id="node8" class="node">
 <title>Node7</title>
-<g id="a_node8"><a xlink:href="ChigModule_8hpp.html" target="_top" xlink:title="Defines the ChigModule class. ">
+<g id="a_node8"><a xlink:href="ChigModule_8hpp.html" target="_top" target="_top" xlink:title="Defines the ChigModule class. ">
 <polygon fill="#ffffff" stroke="#000000" points="713.1369,-123.5 713.1369,-142.5 820.1369,-142.5 820.1369,-123.5 713.1369,-123.5"/>
 <text text-anchor="middle" x="766.6369" y="-130.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/ChigModule.hpp</text>
 </a>
@@ -297,7 +297,7 @@ var sectionId = 'dynsection-0';
 <!-- Node8 -->
 <g id="node9" class="node">
 <title>Node8</title>
-<g id="a_node9"><a xlink:href="Fwd_8hpp.html" target="_top" xlink:title="Forward declares all the chigraph data types. ">
+<g id="a_node9"><a xlink:href="Fwd_8hpp.html" target="_top" target="_top" xlink:title="Forward declares all the chigraph data types. ">
 <polygon fill="#ffffff" stroke="#000000" points="16.6369,-62 16.6369,-81 90.6369,-81 90.6369,-62 16.6369,-62"/>
 <text text-anchor="middle" x="53.6369" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/Fwd.hpp</text>
 </a>
@@ -324,7 +324,7 @@ var sectionId = 'dynsection-0';
 <!-- Node17 -->
 <g id="node18" class="node">
 <title>Node17</title>
-<g id="a_node18"><a xlink:href="NodeType_8hpp.html" target="_top" xlink:title="Defines the NodeType class. ">
+<g id="a_node18"><a xlink:href="NodeType_8hpp.html" target="_top" target="_top" xlink:title="Defines the NodeType class. ">
 <polygon fill="#ffffff" stroke="#000000" points="627.1369,-235.5 627.1369,-254.5 728.1369,-254.5 728.1369,-235.5 627.1369,-235.5"/>
 <text text-anchor="middle" x="677.6369" y="-242.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/NodeType.hpp</text>
 </a>
@@ -345,7 +345,7 @@ var sectionId = 'dynsection-0';
 <!-- Node9 -->
 <g id="node10" class="node">
 <title>Node9</title>
-<g id="a_node10"><a xlink:href="ToString_8hpp_source.html" target="_top" xlink:title="chig/ToString.hpp">
+<g id="a_node10"><a xlink:href="ToString_8hpp_source.html" target="_top" target="_top" xlink:title="chig/ToString.hpp">
 <polygon fill="#ffffff" stroke="#000000" points="758.1369,-62 758.1369,-81 851.1369,-81 851.1369,-62 758.1369,-62"/>
 <text text-anchor="middle" x="804.6369" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/ToString.hpp</text>
 </a>
@@ -366,7 +366,7 @@ var sectionId = 'dynsection-0';
 <!-- Node12 -->
 <g id="node13" class="node">
 <title>Node12</title>
-<g id="a_node13"><a xlink:href="HashFilesystemPath_8hpp_source.html" target="_top" xlink:title="chig/HashFilesystemPath.hpp">
+<g id="a_node13"><a xlink:href="HashFilesystemPath_8hpp_source.html" target="_top" target="_top" xlink:title="chig/HashFilesystemPath.hpp">
 <polygon fill="#ffffff" stroke="#000000" points="440.1369,-62 440.1369,-81 587.1369,-81 587.1369,-62 440.1369,-62"/>
 <text text-anchor="middle" x="513.6369" y="-69" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/HashFilesystemPath.hpp</text>
 </a>
@@ -447,7 +447,7 @@ var sectionId = 'dynsection-0';
 <!-- Node18 -->
 <g id="node19" class="node">
 <title>Node18</title>
-<g id="a_node19"><a xlink:href="Context_8hpp.html" target="_top" xlink:title="Defines the Context class and related functions. ">
+<g id="a_node19"><a xlink:href="Context_8hpp.html" target="_top" target="_top" xlink:title="Defines the Context class and related functions. ">
 <polygon fill="#ffffff" stroke="#000000" points="960.6369,-123.5 960.6369,-142.5 1050.6369,-142.5 1050.6369,-123.5 960.6369,-123.5"/>
 <text text-anchor="middle" x="1005.6369" y="-130.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/Context.hpp</text>
 </a>
@@ -462,7 +462,7 @@ var sectionId = 'dynsection-0';
 <!-- Node23 -->
 <g id="node24" class="node">
 <title>Node23</title>
-<g id="a_node24"><a xlink:href="DataType_8hpp.html" target="_top" xlink:title="Defines the DataType class. ">
+<g id="a_node24"><a xlink:href="DataType_8hpp.html" target="_top" target="_top" xlink:title="Defines the DataType class. ">
 <polygon fill="#ffffff" stroke="#000000" points="879.6369,-179.5 879.6369,-198.5 977.6369,-198.5 977.6369,-179.5 879.6369,-179.5"/>
 <text text-anchor="middle" x="928.6369" y="-186.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/DataType.hpp</text>
 </a>
@@ -477,7 +477,7 @@ var sectionId = 'dynsection-0';
 <!-- Node24 -->
 <g id="node25" class="node">
 <title>Node24</title>
-<g id="a_node25"><a xlink:href="Result_8hpp.html" target="_top" xlink:title="Defines the Result class and related functions. ">
+<g id="a_node25"><a xlink:href="Result_8hpp.html" target="_top" target="_top" xlink:title="Defines the Result class and related functions. ">
 <polygon fill="#ffffff" stroke="#000000" points="526.6369,-123.5 526.6369,-142.5 610.6369,-142.5 610.6369,-123.5 526.6369,-123.5"/>
 <text text-anchor="middle" x="568.6369" y="-130.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig/Result.hpp</text>
 </a>
@@ -788,29 +788,29 @@ var sectionId = 'dynsection-0';
 </svg>
         <g id="navigator" transform="translate(0 0)" fill="#404254">
                 <rect fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width=".5" x="0" y="0" width="60" height="60"/>
-                <use id="zoomplus" xlink:href="#zoomPlus" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
-                <use id="zoomminus" xlink:href="#zoomMin" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
-                <use id="reset" xlink:href="#resetDef" x="30" y="36" onmousedown="handleReset()"/>
-                <g id="arrowUp" xlink:href="#dirArrow" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <use id="zoomplus" xlink:href="#zoomPlus" target="_top" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
+                <use id="zoomminus" xlink:href="#zoomMin" target="_top" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
+                <use id="reset" xlink:href="#resetDef" target="_top" x="30" y="36" onmousedown="handleReset()"/>
+                <g id="arrowUp" xlink:href="#dirArrow" target="_top" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowUp.mouseover" end="arrowUp.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowRight" xlink:href="#dirArrow" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowRight" xlink:href="#dirArrow" target="_top" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowRight.mouseover" end="arrowRight.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowDown" xlink:href="#dirArrow" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowDown" xlink:href="#dirArrow" target="_top" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowDown.mouseover" end="arrowDown.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowLeft" xlink:href="#dirArrow" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowLeft" xlink:href="#dirArrow" target="_top" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowLeft.mouseover" end="arrowLeft.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
@@ -818,7 +818,7 @@ var sectionId = 'dynsection-0';
         </g>
         <svg viewBox="0 0 15 15" width="100%" height="30px" preserveAspectRatio="xMaxYMin meet">
          <g id="arrow_out" transform="scale(0.3 0.3)">
-          <a xlink:href="CModule_8cpp__incl_org.svg" target="_base">
+          <a xlink:href="CModule_8cpp__incl_org.svg" target="_top" target="_base">
            <rect id="button" ry="5" rx="5" y="6" x="6" height="38" width="38"
                 fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width="1.0"/>
            <path id="arrow"

@@ -1,0 +1,22 @@
+digraph "chig::GraphFunction::entryNode"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node194 [label="chig::GraphFunction\l::entryNode",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node194 -> Node195 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node195 [label="chig::compileFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30",tooltip="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..."];
+  Node195 -> Node196 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node196 [label="chig::GraphModule::\lgenerateModule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6",tooltip="Generate a llvm::Module from the module. "];
+  Node194 -> Node197 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node197 [label="chig::GraphFunction\l::getOrInsertEntryNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#a6b52aef92086d65539ad8be1ad78469e",tooltip="Creates an entry node if it doesn&#39;t already exist, else just return it. "];
+  Node197 -> Node198 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node198 [label="chig::GraphFunction\l::nodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structchig_1_1GraphFunction.html#aed770126edca8a167de5e44582e646de"];
+  Node194 -> Node198 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node194 -> Node199 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node199 [label="chig::validateFunctionNode\lInputs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#ad868894793d664b6ae994f24fc781b4b",tooltip="The make sure that nodes are called before their outputs are used. "];
+  Node199 -> Node200 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node200 [label="chig::validateFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$namespacechig.html#afccf44a2370371aae836862d9731155e",tooltip="Validate that a function is compilable. "];
+  Node200 -> Node195 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}
