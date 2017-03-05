@@ -10,7 +10,7 @@ set(DEBUGGER_HEADERS
 
 add_library(chigdebugger STATIC ${DEBUGGER_SRCS} ${DEBUGGER_HEADERS})
 
-target_include_directories(chigdebugger 
+target_include_directories(chigdebugger
 PUBLIC
 	include
 )
@@ -18,5 +18,6 @@ PUBLIC
 target_link_libraries(chigdebugger
 PUBLIC 
 	libchig
+	lldb
 )
 

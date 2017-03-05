@@ -16,7 +16,7 @@ std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 			ret += prettyPrintJson(elem, indentLevel + 1);
 			ret += ",\n";
 		}
-		ret += indentString + "]\n";
+		ret += indentString + "]";
 
 	} else if (j.is_string()) {
 		std::string str = j;

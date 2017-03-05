@@ -94,8 +94,8 @@ chig::Result chig::Context::loadModule(const fs::path& name, ChigModule** toFill
 	}
 
 	if (workspacePath().empty()) {
-		res.addEntry("EUKN", "Cannot load module without a workspace path",
-		             {{"Requested Module"}, name.generic_string()});
+		res.addEntry("E52", "Cannot load module without a workspace path",
+		             {{"Requested Module", name.generic_string()}});
 		return res;
 	}
 
@@ -318,15 +318,33 @@ std::string stringifyLLVMType(llvm::Type* ty) {
 	return data;
 }
 
+namespace {
+	
+	std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel, std::string& errMsg) {
+		llvm::InitializeNativeTarget();
+		llvm::InitializeNativeTargetAsmPrinter();
+		llvm::InitializeNativeTargetAsmParser();
+		
+		llvm::EngineBuilder EEBuilder(std::move(mod));
+
+		EEBuilder.setEngineKind(llvm::EngineKind::JIT);
+		EEBuilder.setVerifyModules(true);
+
+		EEBuilder.setOptLevel(optLevel);
+
+		EEBuilder.setErrorStr(&errMsg);
+
+		return std::unique_ptr<llvm::ExecutionEngine>(EEBuilder.create());
+	}
+	
+} // anonymous namespace
+
 Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
                        std::vector<llvm::GenericValue> args, llvm::GenericValue* ret,
                        llvm::Function* funcToRun) {
 	Result res;
 
-	llvm::InitializeNativeTarget();
-	llvm::InitializeNativeTargetAsmPrinter();
-	llvm::InitializeNativeTargetAsmParser();
-
+	
 	if (funcToRun == nullptr) {
 		funcToRun = mod->getFunction("main");
 
@@ -337,17 +355,8 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 		}
 	}
 
-	llvm::EngineBuilder EEBuilder(std::move(mod));
-
-	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
-	EEBuilder.setVerifyModules(true);
-
-	EEBuilder.setOptLevel(optLevel);
-
 	std::string errMsg;
-	EEBuilder.setErrorStr(&errMsg);
-
-	std::unique_ptr<llvm::ExecutionEngine> EE(EEBuilder.create());
+	auto EE = createEE(std::move(mod), optLevel, errMsg);
 
 	if (!EE) {
 		res.addEntry("EINT", "Failed to create an LLVM ExecutionEngine", {{"Error", errMsg}});
@@ -357,6 +366,39 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 	auto returnValue = EE->runFunction(funcToRun, args);
 
 	if (ret != nullptr) { *ret = returnValue; }
+	
+	return res;
+}
+
+Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module>   mod,
+                       llvm::CodeGenOpt::Level optLevel,
+                       std::vector<std::string> args, int* ret, llvm::Function* funcToRun) {
+	Result res;
+
+	
+	if (funcToRun == nullptr) {
+		funcToRun = mod->getFunction("main");
+
+		if (funcToRun == nullptr) {
+			res.addEntry("EUKN", "Failed to find main function in module",
+			             {{"Module Name", mod->getName()}});
+			return res;
+		}
+	}
+
+	std::string errMsg;
+	auto EE = createEE(std::move(mod), optLevel, errMsg);
+
+	if (!EE) {
+		res.addEntry("EINT", "Failed to create an LLVM ExecutionEngine", {{"Error", errMsg}});
+		return res;
+	}
+
+	auto returnValue = EE->runFunctionAsMain(funcToRun, args, nullptr);
+
+	if (ret != nullptr) { *ret = returnValue; }
+	
+	return res;
 }
 
 }  // namespace chig

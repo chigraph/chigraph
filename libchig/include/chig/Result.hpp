@@ -80,9 +80,10 @@ struct Result {
 	bool success;
 
 	/// Success test
-	operator bool() { return success; }
+	operator bool() const { return success; }
+	
 	/// !Success test
-	bool operator!() { return !success; }
+	bool operator!() const { return !success; }
 	/// Dump to a pretty-printed error message
 	std::string dump() const;
 };

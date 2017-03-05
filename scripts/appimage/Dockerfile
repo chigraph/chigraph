@@ -2,8 +2,9 @@ FROM ubuntu:trusty
 
 RUN apt-get update && apt-get install -yy software-properties-common wget
 RUN add-apt-repository 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-4.0 main' && \
-	apt-add-repository 'ppa:beineri/opt-qt58-trusty' && \
-	apt-add-repository 'ppa:presslabs/gitfs' && \
+	add-apt-repository 'ppa:ubuntu-toolchain-r/test' && \
+	add-apt-repository 'ppa:beineri/opt-qt58-trusty' && \
+	add-apt-repository 'ppa:presslabs/gitfs' && \
 	wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
 
 

@@ -15,8 +15,8 @@
 #include <vector>
 
 extern int compile(const std::vector<std::string>& opts);
-extern int run(const std::vector<std::string>& opts);
-extern int interpret(const std::vector<std::string>& opts);
+extern int run(const std::vector<std::string>& opts, const char* argv0);
+extern int interpret(const std::vector<std::string>& opts, const char* argv0);
 
 
 using namespace chig;
@@ -65,8 +65,8 @@ int main(int argc, char** argv) {
 	opts.erase(opts.begin());  // remove the command
 
 	if (cmd == "compile") { return compile(opts); }
-	if (cmd == "run") { return run(opts); }
-	if (cmd == "interpret") { return interpret(opts); }
+	if (cmd == "run") { return run(opts, argv[0]); }
+	if (cmd == "interpret") { return interpret(opts, argv[0]); }
 	// TODO: write other ones
 
 	std::cerr << "Unrecognized command: " << cmd << std::endl;

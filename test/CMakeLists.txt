@@ -18,11 +18,23 @@ set(TEST_SRCS
 	GraphFunctionInOutsTest.cpp
 )
 
+set(DEBUGGER_TEST_SRCS
+	DebuggerTests.cpp
+)
+
+if (CG_BUILD_DEBUGGER) 
+	list(APPEND TEST_SRCS ${DEBUGGER_TEST_SRCS})
+endif()
+
 add_executable(api_tests ${TEST_SRCS})
 target_link_libraries(api_tests PUBLIC libchig)
 
+if (CG_BUILD_DEBUGGER)
+	target_link_libraries(api_tests PUBLIC chigdebugger)
+endif()
+
 add_test(NAME api_tests 
-	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMAND api_tests
 )
 
