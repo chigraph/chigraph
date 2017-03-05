@@ -361,12 +361,16 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	llvm::Function* f =
 	    llvm::cast<llvm::Function>(mod->getOrInsertFunction(mangledName, func.functionType()));
 
+	
+	auto nodeLocations = func.module().createLineNumberAssoc();
+	auto entryLN = nodeLocations.right.find(entry)->second;
+		
 	// TODO(#65): line numbers?
 	auto debugFunc = debugBuilder.createFunction(
-	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, 1,
+	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, entryLN,
 	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false);
 
-	// f->setSubprogram(debugFunc); TODO TODO TODO please don't comment this out
+	f->setSubprogram(debugFunc);
 	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
 	llvm::BasicBlock* block      = llvm::BasicBlock::Create(mod->getContext(), boost::uuids::to_string(entry->id()), f);
 	auto              blockcpy   = block;
@@ -386,14 +390,14 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			    debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 			    createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc, "inputexec_id",
-			                        debugFile, 0, intDataType.debugType());
+			                        debugFile, entryLN, intDataType.debugType());
 #else
 
-			    createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, 0,
+			    createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, entryLN,
 			                            intDataType.debugType());
 #endif
 			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
-			                           llvm::DebugLoc::get(1, 1, debugFunc),
+			                           llvm::DebugLoc::get(entryLN, 1, debugFunc),
 			                           allocBlock);  // TODO(#65): "line" numbers
 
 			++idx;
@@ -416,20 +420,19 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		auto          debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
-		                                      tyAndName.name, debugFile, 0, dType);
+		                                      tyAndName.name, debugFile, entryLN, dType);
 #else
 		                  createParameterVariable(debugFunc, tyAndName.name,
 		                                          idx + 1,  // + 1 because it starts at 1
-		                                          debugFile, 0, dType);
+		                                          debugFile, entryLN, dType);
 #endif
 		debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
-		                           llvm::DebugLoc::get(1, 1, debugFunc),
+		                           llvm::DebugLoc::get(entryLN, 1, debugFunc),
 		                           allocBlock);  // TODO(#65): line numbers
 
 		++idx;
 	}
 
-	auto            nodeLocations = func.module().createLineNumberAssoc();
 	codegenMetadata codeMetadata{allocBlock, &debugBuilder, debugFunc,
 	                             std::unordered_map<NodeInstance*, Cache>{}, nodeLocations};
 

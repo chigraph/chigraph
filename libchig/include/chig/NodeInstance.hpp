@@ -12,6 +12,7 @@
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 namespace chig {
 /// An instance of a node
@@ -57,6 +58,11 @@ struct NodeInstance {
 	/// Get the ID of the instance, unique to the graph
 	/// \return The ID
 	boost::uuids::uuid id() const { return mId; }
+	
+	/// Get the ID as a string
+	/// \return String representation of the id
+	std::string stringId() const { return boost::uuids::to_string(id()); }
+	
 	// connections
 
 	// TODO: better documentation here and OOify

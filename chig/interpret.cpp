@@ -23,17 +23,25 @@
 
 namespace po = boost::program_options;
 
-int interpret(const std::vector<std::string>& opts) {
+int interpret(const std::vector<std::string>& opts, const char* argv0) {
 	po::options_description interpret_ops("interpret options");
-	interpret_ops.add_options()("input-file", po::value<std::vector<std::string>>()->default_value(std::vector<std::string>({"-"}), "-"), "Input file, - for stdin")("optimization,O", po::value<int>()->default_value(2), "Optimization value, either 0, 1, 2, or 3")("function,f", po::value<std::string>()->default_value("main"), "The function to run");
+	interpret_ops.add_options()("input-file,i", po::value<std::vector<std::string>>()->default_value(std::vector<std::string>({"-"}), "-"), "Input file, - for stdin")("optimization,O", po::value<int>()->default_value(2), "Optimization value, either 0, 1, 2, or 3")("function,f", po::value<std::string>()->default_value("main"), "The function to run")("subargs", po::value<std::vector<std::string>>(), "arguments for command");
 	
 	po::positional_options_description pos;
-	pos.add("input-file", -1);
-	
+	pos.add("subargs", -1);
 	
 	po::variables_map vm;
-	po::store(po::command_line_parser(opts).options(interpret_ops).positional(pos).run(), vm);
+	
+	auto parsed_options = po::command_line_parser(opts).options(interpret_ops).positional(pos).allow_unregistered().run();
+	po::store(parsed_options, vm);
+	po::notify(vm);
 
+	std::vector<std::string> command_opts =
+	    po::collect_unrecognized(parsed_options.options, po::include_positional);
+	// add the name into it
+	command_opts.insert(command_opts.begin(), argv0);
+	
+	
 	auto infiles = vm["input-file"].as<std::vector<std::string>>();
 	
 	// get opt value
@@ -91,12 +99,13 @@ int interpret(const std::vector<std::string>& opts) {
 		return 1;
 	}
 	
-	llvm::GenericValue ret;
-	auto res = chig::interpretLLVMIR(std::move(realMod), optLevel, {}, &ret, func);
+	int ret;
+	
+	auto res = chig::interpretLLVMIRAsMain(std::move(realMod), optLevel, command_opts, &ret, func);
 	if (!res) {
 		std::cerr << "Faied to run module: " << std::endl << res << std::endl;
 		return 1;
 	}
 	
-	return ret.IntVal.getZExtValue();
+	return ret;
 }

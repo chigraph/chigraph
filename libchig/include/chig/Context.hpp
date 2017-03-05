@@ -174,6 +174,17 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
                        llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
                        std::vector<llvm::GenericValue> args = {}, llvm::GenericValue* ret = nullptr,
                        llvm::Function* funcToRun = nullptr);
+
+/// Interpret LLVM IR as if it were the main function
+/// \param mod The module to interpret
+/// \param optLevel The optimization level
+/// \param args The arguments to main
+/// \param ret The return from main. Optional.
+/// \param funcToRun The function, defaults to "main" from \c mod
+Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module>   mod,
+                       llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
+                       std::vector<std::string> args = {}, int* ret = nullptr, llvm::Function* funcToRun = nullptr);
+
 }
 
 #endif  // CHIG_CONTEXT_HPP
