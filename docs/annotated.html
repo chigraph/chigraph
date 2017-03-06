@@ -2,13 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="icon" type="image/x-icon" href="favicon.ico" />
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>chigraph: Class List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="material.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script type="text/javascript" src="doxy-boot.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
@@ -22,6 +26,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="customdoxygen.css">
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -95,25 +100,27 @@ $(document).ready(function(){initNavTree('annotated.html','');});
 <tr id="row_0_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1CModule.html" target="_self">CModule</a></td><td class="desc">The <a class="el" href="structchig_1_1CModule.html" title="The CModule is the module that supplies functionality to create C bindings. ">CModule</a> is the module that supplies functionality to create C bindings </td></tr>
 <tr id="row_0_2_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1Context.html" target="_self">Context</a></td><td class="desc">The class that handles the loading, creation, storing, and compilation of modules It also stores a <code>LLVMContext</code> object to be used everywhere </td></tr>
 <tr id="row_0_3_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1DataType.html" target="_self">DataType</a></td><td class="desc">A type of data Loose wrapper around llvm::Type*, except it knows which <a class="el" href="structchig_1_1ChigModule.html" title="An abstract class that represents a module of code in Chigraph Can be compiled to a llvm::Module...">ChigModule</a> it's in and it embeds debug types </td></tr>
-<tr id="row_0_4_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1GraphFunction.html" target="_self">GraphFunction</a></td><td class="desc">This is an AST-like representation of a function in a graph It is used for IDE-like behavior, codegen, and JSON generation </td></tr>
-<tr id="row_0_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1GraphModule.html" target="_self">GraphModule</a></td><td class="desc">Module that holds graph functions </td></tr>
-<tr id="row_0_6_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1GraphStruct.html" target="_self">GraphStruct</a></td><td class="desc">A class holding a compound type defined in a <a class="el" href="structchig_1_1GraphModule.html" title="Module that holds graph functions. ">GraphModule</a> </td></tr>
-<tr id="row_0_7_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1LangModule.html" target="_self">LangModule</a></td><td class="desc">The module that provides built-in operations like literals, math operations, etc </td></tr>
-<tr id="row_0_8_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1NamedDataType.html" target="_self">NamedDataType</a></td><td class="desc">Basicaly a std::pair&lt;std::string, DataType&gt;, except it has nicer names </td></tr>
-<tr id="row_0_9_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1NodeInstance.html" target="_self">NodeInstance</a></td><td class="desc">An instance of a node </td></tr>
-<tr id="row_0_10_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1NodeType.html" target="_self">NodeType</a></td><td class="desc">A generic node type </td></tr>
-<tr id="row_0_11_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1Result.html" target="_self">Result</a></td><td class="desc">The result object, used for identifiying errors with good diagnostics </td></tr>
-<tr id="row_1_"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_1_" class="arrow" onclick="toggleFolder('1_')">&#9660;</span><span class="icona"><span class="icon">N</span></span><b>std</b></td><td class="desc">STL namespace </td></tr>
-<tr id="row_1_0_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structstd_1_1hash_3_01boost_1_1filesystem_1_1path_01_4.html" target="_self">hash&lt; boost::filesystem::path &gt;</a></td><td class="desc"></td></tr>
-<tr id="row_1_1_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structstd_1_1hash_3_01boost_1_1uuids_1_1uuid_01_4.html" target="_self">hash&lt; boost::uuids::uuid &gt;</a></td><td class="desc"></td></tr>
+<tr id="row_0_4_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="classchig_1_1Debugger.html" target="_self">Debugger</a></td><td class="desc">Helper class for using LLDB with chigraph </td></tr>
+<tr id="row_0_5_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1GraphFunction.html" target="_self">GraphFunction</a></td><td class="desc">This is an AST-like representation of a function in a graph It is used for IDE-like behavior, codegen, and JSON generation </td></tr>
+<tr id="row_0_6_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1GraphModule.html" target="_self">GraphModule</a></td><td class="desc">Module that holds graph functions </td></tr>
+<tr id="row_0_7_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1GraphStruct.html" target="_self">GraphStruct</a></td><td class="desc">A class holding a compound type defined in a <a class="el" href="structchig_1_1GraphModule.html" title="Module that holds graph functions. ">GraphModule</a> </td></tr>
+<tr id="row_0_8_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1LangModule.html" target="_self">LangModule</a></td><td class="desc">The module that provides built-in operations like literals, math operations, etc </td></tr>
+<tr id="row_0_9_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1NamedDataType.html" target="_self">NamedDataType</a></td><td class="desc">Basicaly a std::pair&lt;std::string, DataType&gt;, except it has nicer names </td></tr>
+<tr id="row_0_10_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1NodeInstance.html" target="_self">NodeInstance</a></td><td class="desc">An instance of a node </td></tr>
+<tr id="row_0_11_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1NodeType.html" target="_self">NodeType</a></td><td class="desc">A generic node type </td></tr>
+<tr id="row_0_12_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structchig_1_1Result.html" target="_self">Result</a></td><td class="desc">The result object, used for identifiying errors with good diagnostics </td></tr>
+<tr id="row_1_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_1_" class="arrow" onclick="toggleFolder('1_')">&#9660;</span><span class="icona"><span class="icon">N</span></span><b>std</b></td><td class="desc">STL namespace </td></tr>
+<tr id="row_1_0_"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structstd_1_1hash_3_01boost_1_1filesystem_1_1path_01_4.html" target="_self">hash&lt; boost::filesystem::path &gt;</a></td><td class="desc"></td></tr>
+<tr id="row_1_1_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structstd_1_1hash_3_01boost_1_1uuids_1_1uuid_01_4.html" target="_self">hash&lt; boost::uuids::uuid &gt;</a></td><td class="desc"></td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.8.13-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Mar 5 2017 07:14:42 for chigraph by
+    <li class="footer">Generated on Sun Mar 5 2017 22:16:26 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

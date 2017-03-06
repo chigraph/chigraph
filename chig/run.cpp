@@ -31,25 +31,25 @@ namespace fs = boost::filesystem;
 using namespace chig;
 
 int run(const std::vector<std::string>& opts, const char* argv0) {
-
 	po::options_description run_opts;
 	run_opts.add_options()("input-file", po::value<std::string>(),
-	                       "The input file, - for stdin. Should be a chig module")("subargs", po::value<std::vector<std::string>>(), "Arguments to call main with");
+	                       "The input file, - for stdin. Should be a chig module")(
+	    "subargs", po::value<std::vector<std::string>>(), "Arguments to call main with");
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1).add("subargs", -1);
 
 	po::variables_map vm;
-	auto parsed_opts = po::command_line_parser(opts).options(run_opts).positional(pos).allow_unregistered().run();
+	auto              parsed_opts =
+	    po::command_line_parser(opts).options(run_opts).positional(pos).allow_unregistered().run();
 	po::store(parsed_opts, vm);
 	po::notify(vm);
 
 	std::vector<std::string> command_opts =
-		po::collect_unrecognized(parsed_opts.options, po::include_positional);
+	    po::collect_unrecognized(parsed_opts.options, po::include_positional);
 	// add the name into it
 	command_opts.insert(command_opts.begin(), argv0);
-	
-	
+
 	if (vm.count("input-file") == 0) {
 		std::cerr << "chig compile: error: no input files" << std::endl;
 		return 1;
@@ -100,7 +100,7 @@ int run(const std::vector<std::string>& opts, const char* argv0) {
 	// run it!
 
 	int ret;
-	res += interpretLLVMIRAsMain(std::move(llmod), llvm::CodeGenOpt::Default, command_opts, &ret);
+	res += interpretLLVMIRAsMain(std::move(llmod), llvm::CodeGenOpt::Default, command_opts, nullptr, &ret);
 	if (!res) {
 		std::cerr << res << std::endl;
 		return 1;

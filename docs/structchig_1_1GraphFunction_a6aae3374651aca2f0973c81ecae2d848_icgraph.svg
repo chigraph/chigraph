@@ -9,57 +9,57 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 79)">
 <title>chig::GraphFunction::functionType</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-79 396,-79 396,4 -4,4"/>
-<!-- Node266 -->
+<!-- Node267 -->
 <g id="node1" class="node">
-<title>Node266</title>
+<title>Node267</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-22.5 0,-52.5 104,-52.5 104,-22.5 0,-22.5"/>
 <text text-anchor="start" x="8" y="-40.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="52" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::functionType</text>
 </g>
-<!-- Node267 -->
+<!-- Node268 -->
 <g id="node2" class="node">
-<title>Node267</title>
-<g id="a_node2"><a xlink:href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" target="_top" target="_top" xlink:title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ...">
+<title>Node268</title>
+<g id="a_node2"><a xlink:href="namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" target="_top" xlink:title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ...">
 <polygon fill="#ffffff" stroke="#000000" points="140,-50 140,-69 252,-69 252,-50 140,-50"/>
 <text text-anchor="middle" x="196" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::compileFunction</text>
 </a>
 </g>
 </g>
-<!-- Node266&#45;&gt;Node267 -->
+<!-- Node267&#45;&gt;Node268 -->
 <g id="edge1" class="edge">
-<title>Node266&#45;&gt;Node267</title>
+<title>Node267&#45;&gt;Node268</title>
 <path fill="none" stroke="#191970" d="M114.4449,-47.0402C122.7803,-48.3137 131.2896,-49.6137 139.5152,-50.8704"/>
 <polygon fill="#191970" stroke="#191970" points="114.8086,-43.5552 104.3947,-45.5047 113.7513,-50.4749 114.8086,-43.5552"/>
 </g>
-<!-- Node269 -->
+<!-- Node270 -->
 <g id="node4" class="node">
-<title>Node269</title>
-<g id="a_node4"><a xlink:href="structchig_1_1GraphFunction.html#a79cbfaf26d9a966ae8048c81dc09777e" target="_top" target="_top" xlink:title="chig::GraphFunction\l::nodes">
+<title>Node270</title>
+<g id="a_node4"><a xlink:href="structchig_1_1GraphFunction.html#aed770126edca8a167de5e44582e646de" target="_top" xlink:title="chig::GraphFunction\l::nodes">
 <polygon fill="#ffffff" stroke="#000000" points="144,-.5 144,-30.5 248,-30.5 248,-.5 144,-.5"/>
 <text text-anchor="start" x="152" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
 <text text-anchor="middle" x="196" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::nodes</text>
 </a>
 </g>
 </g>
-<!-- Node266&#45;&gt;Node269 -->
+<!-- Node267&#45;&gt;Node270 -->
 <g id="edge3" class="edge">
-<title>Node266&#45;&gt;Node269</title>
+<title>Node267&#45;&gt;Node270</title>
 <path fill="none" stroke="#191970" d="M114.4953,-27.9521C124.3009,-26.454 134.3458,-24.9194 143.8855,-23.4619"/>
 <polygon fill="#191970" stroke="#191970" points="113.7513,-24.5251 104.3947,-29.4953 114.8086,-31.4448 113.7513,-24.5251"/>
 </g>
-<!-- Node268 -->
+<!-- Node269 -->
 <g id="node3" class="node">
-<title>Node268</title>
-<g id="a_node3"><a xlink:href="structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6" target="_top" target="_top" xlink:title="Generate a llvm::Module from the module. ">
+<title>Node269</title>
+<g id="a_node3"><a xlink:href="structchig_1_1GraphModule.html#a4c3a1ba833c0bd7e9a3daf0fd42eb6c6" target="_top" xlink:title="Generate a llvm::Module from the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="288,-44.5 288,-74.5 392,-74.5 392,-44.5 288,-44.5"/>
 <text text-anchor="start" x="296" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
 <text text-anchor="middle" x="340" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">generateModule</text>
 </a>
 </g>
 </g>
-<!-- Node267&#45;&gt;Node268 -->
+<!-- Node268&#45;&gt;Node269 -->
 <g id="edge2" class="edge">
-<title>Node267&#45;&gt;Node268</title>
+<title>Node268&#45;&gt;Node269</title>
 <path fill="none" stroke="#191970" d="M262.3376,-59.5C270.8106,-59.5 279.3888,-59.5 287.599,-59.5"/>
 <polygon fill="#191970" stroke="#191970" points="262.0865,-56.0001 252.0865,-59.5 262.0865,-63.0001 262.0865,-56.0001"/>
 </g>

@@ -1,9 +1,9 @@
 #include "subprocessoutputview.hpp"
 
+#include <QApplication>
 #include <QLabel>
 #include <QPlainTextEdit>
 #include <QVBoxLayout>
-#include <QApplication>
 
 #include <KLocalizedString>
 #include <KMessageBox>
@@ -39,12 +39,14 @@ SubprocessOutputView::SubprocessOutputView(chig::GraphModule* module) : mModule(
 
 		llvm::WriteBitcodeToFile(llmod.get(), os);
 	}
-	boost::filesystem::path chigPath = boost::filesystem::path(QApplication::applicationFilePath().toStdString()).parent_path() / "chig"
+	boost::filesystem::path chigPath =
+	    boost::filesystem::path(QApplication::applicationFilePath().toStdString()).parent_path() /
+	        "chig"
 #ifdef _WIN32
-		+ ".exe"
+	    + ".exe"
 #endif
-	;
-	
+	    ;
+
 	// run in lli
 	mProcess = new QProcess(this);
 	mProcess->setProgram(QString::fromStdString(chigPath.string()));

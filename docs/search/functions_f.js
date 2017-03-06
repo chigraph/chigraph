@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['removebreakpoint',['removeBreakpoint',['../classchig_1_1Debugger.html#a5fb2561752a8c60c948510cdde8a4b4b',1,'chig::Debugger']]],
   ['removedatainput',['removeDataInput',['../structchig_1_1GraphFunction.html#a37067fab63f7d4c0299973382ef5607b',1,'chig::GraphFunction']]],
   ['removedataoutput',['removeDataOutput',['../structchig_1_1GraphFunction.html#a6e4628bd6cede9f39bebebce287b3a29',1,'chig::GraphFunction']]],
   ['removedependency',['removeDependency',['../structchig_1_1ChigModule.html#a0d896e122a16c304bc465d212f46b9e1',1,'chig::ChigModule']]],
@@ -18,5 +19,6 @@ var searchData=
   ['result',['Result',['../structchig_1_1Result.html#a0b7d8acbc4d8ed473f32709dd9101b1c',1,'chig::Result']]],
   ['retypedatainput',['retypeDataInput',['../structchig_1_1GraphFunction.html#ad1ae363954d22ece7f8234b623330a47',1,'chig::GraphFunction']]],
   ['retypedataoutput',['retypeDataOutput',['../structchig_1_1GraphFunction.html#af2980bb8a9b2ed91f19c799cb09e9c54',1,'chig::GraphFunction']]],
-  ['retypelocalvariable',['retypeLocalVariable',['../structchig_1_1GraphFunction.html#a905a09106e02a246daac43a37c42b97b',1,'chig::GraphFunction']]]
+  ['retypelocalvariable',['retypeLocalVariable',['../structchig_1_1GraphFunction.html#a905a09106e02a246daac43a37c42b97b',1,'chig::GraphFunction']]],
+  ['running',['running',['../classchig_1_1Debugger.html#a9c77e0119f3b81fabce49ea20879fd33',1,'chig::Debugger']]]
 ];

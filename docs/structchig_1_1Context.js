@@ -7,6 +7,7 @@ var structchig_1_1Context =
     [ "addModuleFromJson", "structchig_1_1Context.html#a077f8ef8c0dd541ec2e2d64bcd8f9fc0", null ],
     [ "cModule", "structchig_1_1Context.html#a60f9e7347a5843b31c4c342a014683c7", null ],
     [ "compileModule", "structchig_1_1Context.html#a76268c7aba0f643cf3242a87872de711", null ],
+    [ "compileModule", "structchig_1_1Context.html#ac585794db13b27b3f69a51aa9d7fd01c", null ],
     [ "hasWorkspace", "structchig_1_1Context.html#aa4fb30ced50d32c629ad50669b8b1e05", null ],
     [ "langModule", "structchig_1_1Context.html#a7a477a9a4e450aa171814e494d0ff631", null ],
     [ "listModulesInWorkspace", "structchig_1_1Context.html#af57b8e285632b803f1a3a026fc4936f9", null ],

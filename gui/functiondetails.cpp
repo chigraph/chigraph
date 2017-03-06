@@ -25,8 +25,11 @@ FunctionDetails::FunctionDetails(QWidget* parent) {
 	descHBox->addWidget(mDescEdit);
 	connect(mDescEdit, &QLineEdit::textChanged, this, [this](const QString& newText) {
 		if (mFunction != nullptr) {
-			mFunction->function()->setDescription(newText.toStdString());
-			dirtied();
+			auto stdStrNewText = newText.toStdString();
+			if (stdStrNewText != mFunction->function()->description()) {
+				mFunction->function()->setDescription(stdStrNewText);
+				dirtied();
+			}
 		}
 	});
 

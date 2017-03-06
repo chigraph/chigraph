@@ -226,15 +226,15 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, gsl::cstring_span
 }
 
 Result Context::compileModule(const boost::filesystem::path& fullName,
-						std::unique_ptr<llvm::Module>* toFill) {
+                              std::unique_ptr<llvm::Module>* toFill) {
 	Result res;
-	
+
 	auto mod = moduleByFullName(fullName);
 	if (mod == nullptr) {
 		res.addEntry("E36", "Could not find module", {{"module", fullName.generic_string()}});
 		return res;
 	}
-	
+
 	return compileModule(*mod, toFill);
 }
 
@@ -284,9 +284,8 @@ Result Context::compileModule(ChigModule& mod, std::unique_ptr<llvm::Module>* to
 				llmod->print(printerStr, nullptr);
 			}
 
-			res.addEntry(
-			    "EINT", "Internal compiler error: Invalid module created",
-			    {{"Error", err}, {"Full Name", mod.fullName()}, {"Module", moduleStr}});
+			res.addEntry("EINT", "Internal compiler error: Invalid module created",
+			             {{"Error", err}, {"Full Name", mod.fullName()}, {"Module", moduleStr}});
 		}
 	}
 
@@ -319,32 +318,32 @@ std::string stringifyLLVMType(llvm::Type* ty) {
 }
 
 namespace {
-	
-	std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel, std::string& errMsg) {
-		llvm::InitializeNativeTarget();
-		llvm::InitializeNativeTargetAsmPrinter();
-		llvm::InitializeNativeTargetAsmParser();
-		
-		llvm::EngineBuilder EEBuilder(std::move(mod));
 
-		EEBuilder.setEngineKind(llvm::EngineKind::JIT);
-		EEBuilder.setVerifyModules(true);
+std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mod,
+                                                llvm::CodeGenOpt::Level       optLevel,
+                                                std::string&                  errMsg) {
+	llvm::InitializeNativeTarget();
+	llvm::InitializeNativeTargetAsmPrinter();
+	llvm::InitializeNativeTargetAsmParser();
 
-		EEBuilder.setOptLevel(optLevel);
+	llvm::EngineBuilder EEBuilder(std::move(mod));
 
-		EEBuilder.setErrorStr(&errMsg);
+	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
+	EEBuilder.setVerifyModules(true);
 
-		return std::unique_ptr<llvm::ExecutionEngine>(EEBuilder.create());
-	}
-	
-} // anonymous namespace
+	EEBuilder.setOptLevel(optLevel);
+
+	EEBuilder.setErrorStr(&errMsg);
+
+	return std::unique_ptr<llvm::ExecutionEngine>(EEBuilder.create());
+}
+
+}  // anonymous namespace
 
 Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
-                       std::vector<llvm::GenericValue> args, llvm::GenericValue* ret,
-                       llvm::Function* funcToRun) {
+                       std::vector<llvm::GenericValue> args, llvm::Function* funcToRun, llvm::GenericValue* ret) {
 	Result res;
 
-	
 	if (funcToRun == nullptr) {
 		funcToRun = mod->getFunction("main");
 
@@ -356,7 +355,7 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 	}
 
 	std::string errMsg;
-	auto EE = createEE(std::move(mod), optLevel, errMsg);
+	auto        EE = createEE(std::move(mod), optLevel, errMsg);
 
 	if (!EE) {
 		res.addEntry("EINT", "Failed to create an LLVM ExecutionEngine", {{"Error", errMsg}});
@@ -366,16 +365,14 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 	auto returnValue = EE->runFunction(funcToRun, args);
 
 	if (ret != nullptr) { *ret = returnValue; }
-	
+
 	return res;
 }
 
-Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module>   mod,
-                       llvm::CodeGenOpt::Level optLevel,
-                       std::vector<std::string> args, int* ret, llvm::Function* funcToRun) {
+Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
+                             std::vector<std::string> args, llvm::Function* funcToRun, int* ret) {
 	Result res;
 
-	
 	if (funcToRun == nullptr) {
 		funcToRun = mod->getFunction("main");
 
@@ -387,7 +384,7 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module>   mod,
 	}
 
 	std::string errMsg;
-	auto EE = createEE(std::move(mod), optLevel, errMsg);
+	auto        EE = createEE(std::move(mod), optLevel, errMsg);
 
 	if (!EE) {
 		res.addEntry("EINT", "Failed to create an LLVM ExecutionEngine", {{"Error", errMsg}});
@@ -397,7 +394,7 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module>   mod,
 	auto returnValue = EE->runFunctionAsMain(funcToRun, args, nullptr);
 
 	if (ret != nullptr) { *ret = returnValue; }
-	
+
 	return res;
 }
 

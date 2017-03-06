@@ -39,23 +39,28 @@ TEST_CASE("Create and manipulate inputs and outputs in GraphFunctions", "") {
 
 	std::unique_ptr<NodeType> exitType2 = exitType->clone();
 	NodeInstance*             exitNode1;
-	res = func->insertNode(std::move(exitType), 0.f, 0.f, boost::uuids::random_generator()(), &exitNode1);
+	res = func->insertNode(std::move(exitType), 0.f, 0.f, boost::uuids::random_generator()(),
+	                       &exitNode1);
 	REQUIRE(!!res);
 
 	NodeInstance* exitNode2;
-	res = func->insertNode(std::move(exitType2), 0.f, 0.f, boost::uuids::random_generator()(), &exitNode2);
+	res = func->insertNode(std::move(exitType2), 0.f, 0.f, boost::uuids::random_generator()(),
+	                       &exitNode2);
 
 	// add a local so we can have get and set nodes to test if they disconnected correctly
 	func->getOrCreateLocalVariable("var", langMod.typeFromName("i32"));
 
 	NodeInstance* setNode;
-	func->insertNode("test/main", "_set_var", "lang:i32", 0, 0, boost::uuids::random_generator()(), &setNode);
+	func->insertNode("test/main", "_set_var", "lang:i32", 0, 0, boost::uuids::random_generator()(),
+	                 &setNode);
 
 	NodeInstance* setNode2;
-	func->insertNode("test/main", "_set_var", "lang:i32", 0, 0, boost::uuids::random_generator()(), &setNode2);
+	func->insertNode("test/main", "_set_var", "lang:i32", 0, 0, boost::uuids::random_generator()(),
+	                 &setNode2);
 
 	NodeInstance* getNode;
-	func->insertNode("test/main", "_get_var", "lang:i32", 0, 0, boost::uuids::random_generator()(), &getNode);
+	func->insertNode("test/main", "_get_var", "lang:i32", 0, 0, boost::uuids::random_generator()(),
+	                 &getNode);
 
 	WHEN("We add a data input") {
 		NamedDataType toAdd{"param1", langMod.typeFromName("i32")};

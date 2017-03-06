@@ -15,7 +15,7 @@ NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeTy
       mId{nodeID},
       mContext{&mType->context()},
       mFunction{func},
-	  mGraphModule{&func->module()}{
+      mGraphModule{&func->module()} {
 	Expects(mType != nullptr && mFunction != nullptr);
 
 	mType->mNodeInstance = this;

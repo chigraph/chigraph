@@ -152,7 +152,7 @@ FULL_PATH_NAMES        = YES
 # will be relative from the directory where doxygen is started.
 # This tag requires that the tag FULL_PATH_NAMES is set to YES.
 
-STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@/libchig
+STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@/
 
 # The STRIP_FROM_INC_PATH tag can be used to strip a user-defined part of the
 # path mentioned in the documentation of a class, which tells the reader which
@@ -161,8 +161,7 @@ STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@/libchig
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    = @PROJECT_SOURCE_DIR@/libchig/include
-
+STRIP_FROM_INC_PATH    = "@PROJECT_SOURCE_DIR@/libchig/include" "@PROJECT_SOURCE_DIR@/libchigdebugger/include"
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
 # support long names like on DOS, Mac, or CD-ROM.
@@ -781,6 +780,7 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = @PROJECT_SOURCE_DIR@/libchig \
+                         @PROJECT_SOURCE_DIR@/libchigdebugger \
                          @PROJECT_SOURCE_DIR@/doc/mainpage.md
 
 # This tag can be used to specify the character encoding of the source files

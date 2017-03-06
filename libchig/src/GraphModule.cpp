@@ -476,9 +476,9 @@ std::vector<std::string> GraphModule::nodeTypeNames() const {
 	return ret;
 }
 
-boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() const {
+boost::bimap<unsigned int, const NodeInstance*> GraphModule::createLineNumberAssoc() const {
 	// create a sorted list of GraphFunctions
-	std::vector<NodeInstance*> nodes;
+	std::vector<const NodeInstance*> nodes;
 	for (const auto& f : functions()) {
 		for (const auto& node : f->nodes()) {
 			Expects(node.second != nullptr);
@@ -491,7 +491,7 @@ boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() c
 		       (rhs->function().name() + ":" + boost::uuids::to_string(rhs->id()));
 	});
 
-	boost::bimap<unsigned, NodeInstance*> ret;
+	boost::bimap<unsigned, const NodeInstance*> ret;
 	for (unsigned i = 0; i < nodes.size(); ++i) {
 		ret.left.insert({i + 1, nodes[i]});  // + 1 because line numbers start at 1
 	}

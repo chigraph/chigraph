@@ -31,7 +31,8 @@ struct NodeInstance {
 	NodeInstance(NodeInstance&&) = default;
 
 	/// Copy constructor
-	explicit NodeInstance(const NodeInstance& other, boost::uuids::uuid id = boost::uuids::random_generator()());
+	explicit NodeInstance(const NodeInstance& other,
+	                      boost::uuids::uuid  id = boost::uuids::random_generator()());
 
 	/// Set the type of the node instance
 	/// \param newType The new type
@@ -58,11 +59,11 @@ struct NodeInstance {
 	/// Get the ID of the instance, unique to the graph
 	/// \return The ID
 	boost::uuids::uuid id() const { return mId; }
-	
+
 	/// Get the ID as a string
 	/// \return String representation of the id
 	std::string stringId() const { return boost::uuids::to_string(id()); }
-	
+
 	// connections
 
 	// TODO: better documentation here and OOify
@@ -83,7 +84,7 @@ struct NodeInstance {
 
 	/// Get the containing GraphFunction
 	GraphFunction& function() const { return *mFunction; }
-	
+
 	/// Get the containing GraphModule
 	GraphModule& module() const { return *mGraphModule; }
 
@@ -96,8 +97,8 @@ private:
 	boost::uuids::uuid mId;
 
 	Context*       mContext;
-	GraphFunction* mFunction = nullptr;
-	GraphModule* mGraphModule = nullptr;
+	GraphFunction* mFunction    = nullptr;
+	GraphModule*   mGraphModule = nullptr;
 };
 
 /// \name Connection Manipulation
