@@ -98,14 +98,8 @@ PRIVATE
 	ctollvm
 PUBLIC
 	${LLVM_SYSTEM_LINK_LIST}
+	ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
 )
-
-if (CHIG_LINK_FFI)
-	target_link_libraries(libchig
-	PUBLIC
-		ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
-	)
-endif()
 
 target_include_directories(libchig
 PUBLIC

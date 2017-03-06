@@ -8,7 +8,6 @@ set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 option(CG_BUILD_GUI "Should the GUI be built" ON)
-option(CG_LINK_FFI "Should FFI be linked in--llvm sometimes forgets to link it" ON)
 option(CG_BUILD_DEBUGGER "Should the debugger be built" ON)
 
 # this is really important to keep install-like paths
