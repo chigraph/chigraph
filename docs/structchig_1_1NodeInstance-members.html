@@ -2,13 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="icon" type="image/x-icon" href="favicon.ico" />
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>chigraph: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="material.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script type="text/javascript" src="doxy-boot.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
@@ -22,6 +26,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="customdoxygen.css">
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -96,24 +101,27 @@ $(document).ready(function(){initNavTree('structchig_1_1NodeInstance.html','');}
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a0560b8b35612fc845d6464866c425c71">id</a>() const</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#ada9f137d9c85f8e9d84b4d2f2aed5a12">inputDataConnections</a></td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a73fc840bb83c6d7ad6abfdcc873f4152">inputExecConnections</a></td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#ab6f16e2744ebee55b067bc30c24338be">NodeInstance</a>(GraphFunction *func, std::unique_ptr&lt; NodeType &gt; nodeType, float posX, float posY, boost::uuids::uuid nodeID=boost::uuids::random_generator()())</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a94fa44f7a1bc6dcdd56955c66d0ab6e5">NodeInstance</a>(NodeInstance &amp;&amp;)=default</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#ad751b7946e23cd9c8df3497632d286b7">NodeInstance</a>(const NodeInstance &amp;other, boost::uuids::uuid id=boost::uuids::random_generator()())</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a8cab24028f6348e883362a3199e03c72">outputDataConnections</a></td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#ad4746e1a747df527921e7aadd8c6d1d9">outputExecConnections</a></td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153">setType</a>(std::unique_ptr&lt; NodeType &gt; newType)</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#aabfe2a7ddc3bb8a0feb5074e96dad3e9">setX</a>(float newX)</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#afc3a13b2848e7cd3360b46c3aee48d8e">setY</a>(float newY)</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#acb8bab6d96bbfa9facdfb5aca22d43a1">module</a>() const</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#ab6f16e2744ebee55b067bc30c24338be">NodeInstance</a>(GraphFunction *func, std::unique_ptr&lt; NodeType &gt; nodeType, float posX, float posY, boost::uuids::uuid nodeID=boost::uuids::random_generator()())</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a94fa44f7a1bc6dcdd56955c66d0ab6e5">NodeInstance</a>(NodeInstance &amp;&amp;)=default</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#ad751b7946e23cd9c8df3497632d286b7">NodeInstance</a>(const NodeInstance &amp;other, boost::uuids::uuid id=boost::uuids::random_generator()())</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a8cab24028f6348e883362a3199e03c72">outputDataConnections</a></td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#ad4746e1a747df527921e7aadd8c6d1d9">outputExecConnections</a></td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#ab7b23fb84fff7176f7a6e62ce3762153">setType</a>(std::unique_ptr&lt; NodeType &gt; newType)</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#aabfe2a7ddc3bb8a0feb5074e96dad3e9">setX</a>(float newX)</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#afc3a13b2848e7cd3360b46c3aee48d8e">setY</a>(float newY)</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#afacc72392d31c168d5a769f13d0fa3ec">stringId</a>() const</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a5c9d6934e14f56ff4317ff08e170e83a">type</a>()</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a016cbfd361afbebd45bfee6b4522062d">type</a>() const</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a556e256f3ec1c2a02c91c63497307201">x</a>() const</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html#a4bfa5d5e7626c24dc5ee5bef7ef1459b">y</a>() const</td><td class="entry"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.8.13-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Mar 5 2017 07:14:42 for chigraph by
+    <li class="footer">Generated on Sun Mar 5 2017 22:16:26 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

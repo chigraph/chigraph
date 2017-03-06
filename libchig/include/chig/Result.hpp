@@ -81,7 +81,7 @@ struct Result {
 
 	/// Success test
 	operator bool() const { return success; }
-	
+
 	/// !Success test
 	bool operator!() const { return !success; }
 	/// Dump to a pretty-printed error message

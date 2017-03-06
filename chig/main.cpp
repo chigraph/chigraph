@@ -18,7 +18,6 @@ extern int compile(const std::vector<std::string>& opts);
 extern int run(const std::vector<std::string>& opts, const char* argv0);
 extern int interpret(const std::vector<std::string>& opts, const char* argv0);
 
-
 using namespace chig;
 
 int main(int argc, char** argv) {

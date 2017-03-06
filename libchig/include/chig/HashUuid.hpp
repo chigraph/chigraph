@@ -6,14 +6,13 @@
 #include <utility>
 
 namespace std {
-	
-	template<>
-	struct hash<boost::uuids::uuid> {
-		size_t operator()(const boost::uuids::uuid& toHash) const {
-			return boost::uuids::hash_value(toHash);
-		}
-	};
-	
+
+template <>
+struct hash<boost::uuids::uuid> {
+	size_t operator()(const boost::uuids::uuid& toHash) const {
+		return boost::uuids::hash_value(toHash);
+	}
+};
 }
 
-#endif // CHIG_HAS_UUID
+#endif  // CHIG_HAS_UUID

@@ -12,15 +12,13 @@
 using namespace chig;
 using namespace nlohmann;
 
-template<typename ... Args>
-std::string string_format( const std::string& format, Args ... args )
-{
-    size_t size = snprintf( nullptr, 0, format.c_str(), args ... ) + 1; // Extra space for '\0'
-    std::unique_ptr<char[]> buf( new char[ size ] ); 
-    snprintf( buf.get(), size, format.c_str(), args ... );
-    return std::string( buf.get(), buf.get() + size - 1 ); // We don't want the '\0' inside
+template <typename... Args>
+std::string string_format(const std::string& format, Args... args) {
+	size_t size = snprintf(nullptr, 0, format.c_str(), args...) + 1;  // Extra space for '\0'
+	std::unique_ptr<char[]> buf(new char[size]);
+	snprintf(buf.get(), size, format.c_str(), args...);
+	return std::string(buf.get(), buf.get() + size - 1);  // We don't want the '\0' inside
 }
-
 
 TEST_CASE("JsonSerializer", "[json]") {
 	GIVEN("A default constructed Context with a LangModule and GraphFunction named hello") {
@@ -75,12 +73,12 @@ TEST_CASE("JsonSerializer", "[json]") {
 			    "lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
 			REQUIRE(!!res);
 			NodeInstance* entry;
-			res += func->insertNode(std::move(toFill), 32, 32, boost::uuids::random_generator()(), &entry);
+			res += func->insertNode(std::move(toFill), 32, 32, boost::uuids::random_generator()(),
+			                        &entry);
 			std::string entryUUID = boost::uuids::to_string(entry->id());
 			REQUIRE(!!res);
 
 			THEN("The JSON should be correct") {
-				
 				auto correctJSON = string_format(R"(
 					{
 						"type": "function",
@@ -103,7 +101,8 @@ TEST_CASE("JsonSerializer", "[json]") {
 					"exec_outputs": [""] ,
 					"local_variables": {}
 					}
-					)", entryUUID.c_str());
+					)",
+				                                 entryUUID.c_str());
 
 				requireWorks(json::parse(correctJSON));
 			}
@@ -113,7 +112,8 @@ TEST_CASE("JsonSerializer", "[json]") {
 				res = c.nodeTypeFromModule("lang", "if", {}, &ifType);
 				REQUIRE(!!res);
 				NodeInstance* ifNode;
-				res += func->insertNode(std::move(ifType), 44.f, 23.f, boost::uuids::random_generator()(), &ifNode);
+				res += func->insertNode(std::move(ifType), 44.f, 23.f,
+				                        boost::uuids::random_generator()(), &ifNode);
 				std::string ifUUID = boost::uuids::to_string(ifNode->id());
 				REQUIRE(!!res);
 
@@ -145,7 +145,8 @@ TEST_CASE("JsonSerializer", "[json]") {
 							"exec_outputs": [""],
 							"local_variables": {}
 						}
-						)ENDJSON", entryUUID.c_str(), ifUUID.c_str());
+						)ENDJSON",
+					                                 entryUUID.c_str(), ifUUID.c_str());
 
 					requireWorks(json::parse(correctJSON));
 				}
@@ -187,7 +188,9 @@ TEST_CASE("JsonSerializer", "[json]") {
 								"exec_outputs": [""],
 								"local_variables": {}
 							}
-						)ENDJSON", entryUUID.c_str(), ifUUID.c_str(), entryUUID.c_str(), ifUUID.c_str());
+						)ENDJSON",
+						                                 entryUUID.c_str(), ifUUID.c_str(),
+						                                 entryUUID.c_str(), ifUUID.c_str());
 
 						requireWorks(json::parse(correctJSON));
 					}
@@ -198,7 +201,8 @@ TEST_CASE("JsonSerializer", "[json]") {
 						REQUIRE(res.result_json == json::array());
 
 						THEN("The JSON should be correct") {
-							auto correctJSON = string_format(R"ENDJSON(
+							auto correctJSON =
+							    string_format(R"ENDJSON(
 								{
 								"type": "function",
 								"name": "hello",
@@ -235,7 +239,9 @@ TEST_CASE("JsonSerializer", "[json]") {
 								"exec_inputs": [""],
 								"exec_outputs": [""],
 								"local_variables": {}
-								})ENDJSON", entryUUID.c_str(), ifUUID.c_str(),entryUUID.c_str(), ifUUID.c_str(), entryUUID.c_str(), ifUUID.c_str());
+								})ENDJSON",
+							                  entryUUID.c_str(), ifUUID.c_str(), entryUUID.c_str(),
+							                  ifUUID.c_str(), entryUUID.c_str(), ifUUID.c_str());
 
 							requireWorks(json::parse(correctJSON));
 						}

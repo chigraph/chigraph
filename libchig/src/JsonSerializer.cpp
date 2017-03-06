@@ -5,7 +5,7 @@
 #include "chig/GraphStruct.hpp"
 #include "chig/NodeInstance.hpp"
 
-#include <boost/uuid/uuid_io.hpp> // for boost::uuids::to_string
+#include <boost/uuid/uuid_io.hpp>  // for boost::uuids::to_string
 
 namespace chig {
 
@@ -68,9 +68,10 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 			auto& conn = node->outputExecConnections[conn_id];
 			// if there is actually a connection
 			if (conn.first != nullptr) {
-				jsonConnections.push_back({{"type", "exec"},
-				                           {"input", {nodeID, conn_id}},
-				                           {"output", {boost::uuids::to_string(conn.first->id()), conn.second}}});
+				jsonConnections.push_back(
+				    {{"type", "exec"},
+				     {"input", {nodeID, conn_id}},
+				     {"output", {boost::uuids::to_string(conn.first->id()), conn.second}}});
 			}
 		}
 
@@ -79,9 +80,10 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 			// if there is actually a connection
 			auto& connpair = node->inputDataConnections[conn_id];
 			if (connpair.first != nullptr) {
-				jsonConnections.push_back({{"type", "data"},
-				                           {"input", {boost::uuids::to_string(connpair.first->id()), connpair.second}},
-				                           {"output", {nodeID, conn_id}}});
+				jsonConnections.push_back(
+				    {{"type", "data"},
+				     {"input", {boost::uuids::to_string(connpair.first->id()), connpair.second}},
+				     {"output", {nodeID, conn_id}}});
 			}
 		}
 	}

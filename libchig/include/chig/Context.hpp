@@ -52,15 +52,15 @@ struct Context {
 	std::vector<std::string> listModulesInWorkspace() const noexcept;
 
 	/// Load a module from disk
-	/// \param name The name of the moudle
-	/// \retval toFill The module that was loaded, optional
+	/// \param[in] name The name of the moudle
+	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
 	Result loadModule(const boost::filesystem::path& name, ChigModule** toFill = nullptr);
 
 	/// Load a module from JSON -- avoid this use the string overload
-	/// \param fullName The full path of the module, including URL
-	/// \param json The JSON data
-	/// \retval toFill The GraphModule* to fill into, optional
+	/// \param[in] fullName The full path of the module, including URL
+	/// \param[in] json The JSON data
+	/// \param[out] toFill The GraphModule* to fill into, optional
 	/// \return The Result
 	Result addModuleFromJson(const boost::filesystem::path& fullName, const nlohmann::json& json,
 	                         GraphModule** toFill = nullptr);
@@ -77,20 +77,21 @@ struct Context {
 	bool unloadModule(const boost::filesystem::path& fullName);
 
 	/// Gets a DataType from a module
-	/// \param module The full name of the module
-	/// \param name The name of the type, required
-	/// \retval toFill The type to fill
+	/// \param[in] module The full name of the module
+	/// \param[in] name The name of the type, required
+	/// \param[out] toFill The type to fill
+	/// \pre `toFill != nullptr`
 	/// \return The result
 	Result typeFromModule(const boost::filesystem::path& module, gsl::cstring_span<> name,
 	                      DataType* toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
-	/// \param moduleName The full module name.
-	/// \param typeName The name of the node type
-	/// \param data The JSON data that is used to construct the NodeType.
-	/// \retval toFill The point to fill
-	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
-	/// pointer to the unique_ptr)
+	/// \param[in] moduleName The full module name.
+	/// \param[in] typeName The name of the node type
+	/// \param[in] data The JSON data that is used to construct the NodeType.
+	/// \param[out] toFill The point to fill
+	/// \pre `toFill != nullptr` (the value the `unique_ptr` points to be can be null, but not the
+	/// pointer to the `unique_ptr`)
 	/// \return The Result
 	Result nodeTypeFromModule(const boost::filesystem::path& moduleName,
 	                          gsl::cstring_span<> typeName, const nlohmann::json& data,
@@ -102,49 +103,45 @@ struct Context {
 	/// Check if this context has a workspace bound to it -- same as !workspacePath().empty()
 	/// \return If it has a workspace
 	bool hasWorkspace() const noexcept { return !workspacePath().empty(); }
-	
+
 	/// Compile a module to a \c llvm::Module
-	/// \param fullName The full name of the module to compile
-	/// \retval toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
+	/// \param[in] fullName The full name of the module to compile. 
+	/// If `moduleByFullName(fullName) == nullptr`, this function has no side-effects
+	/// \param[out] toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
-	/// \pre moduleByFullName(fullName) exists
-	/// \return The result
+	/// \return The `Result`
 	Result compileModule(const boost::filesystem::path& fullName,
 	                     std::unique_ptr<llvm::Module>* toFill);
-	
+
 	/// Compile a module to a \c llvm::Module
-	/// \param module The module to compile
-	/// \retval toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
-	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
-	/// pointer to the unique_ptr)
-	/// \return The result
-	Result compileModule(ChigModule& mod,
-	                     std::unique_ptr<llvm::Module>* toFill);
+	/// \param[in] mod The module to compile
+	/// \param[out] toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
+	/// \pre `toFill != nullptr` (the value the `unique_ptr` points to be can be null, but not the
+	/// pointer to the `unique_ptr`)
+	/// \return The `Result`
+	Result compileModule(ChigModule& mod, std::unique_ptr<llvm::Module>* toFill);
 
 	/// Get the number of modules this Context has
 	/// \return The module count
 	size_t numModules() const { return mModules.size(); }
-	/// Get the associated LLVMContext
-	/// \return The LLVMContext
+	/// Get the `LLVMContext`
+	/// \return The `LLVMContext`
 	llvm::LLVMContext& llvmContext() const { return *mLLVMContext; }
 
-	/// Get the LangModule, if it has been loaded
-	/// \return The LangModule
+	/// Get the `LangModule`, if it has been loaded
+	/// \return The `LangModule`
 	LangModule* langModule() const { return mLangModule; }
 
-	/// Get the CModule, if it has been loaded
-	/// \return The CModule
+	/// Get the `CModule`, if it has been loaded
+	/// \return The `CModule`
 	CModule* cModule() const { return mCModule; }
 
 private:
-	/// The workspace path for the module
 	boost::filesystem::path mWorkspacePath;
-
-	/// The LLVM context to use with everything under the context
+	
 	std::unique_ptr<llvm::LLVMContext> mLLVMContext;
 
-	/// The modules that have been loaded.
 	std::vector<std::unique_ptr<ChigModule>> mModules;
 
 	// This cache is only for use during compilation to not duplicate modules
@@ -168,23 +165,24 @@ boost::filesystem::path workspaceFromChildPath(const boost::filesystem::path& pa
 std::string stringifyLLVMType(llvm::Type* ty);
 
 /// Interpret LLVM IR, just a convenience function
-/// \param mod The LLVM Module to interpret
-/// \parmam funcToRun The function to run, or leave a nullptr for main
+/// \param[in] mod The LLVM Module to interpret
+/// \param[in] optLevel How much the optimization should be applied. The default is roughly equilivant to -O2
+/// \param[in] args The arguments to pass to the function, empty by default
+/// \param[in] funcToRun The function to run. By default it uses "main".
+/// \param[out] ret The `GenericValue` to fill with the result of the function. Optional
 Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
                        llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
-                       std::vector<llvm::GenericValue> args = {}, llvm::GenericValue* ret = nullptr,
-                       llvm::Function* funcToRun = nullptr);
+                       std::vector<llvm::GenericValue> args = {}, llvm::Function* funcToRun = nullptr, llvm::GenericValue* ret = nullptr);
 
 /// Interpret LLVM IR as if it were the main function
-/// \param mod The module to interpret
-/// \param optLevel The optimization level
-/// \param args The arguments to main
-/// \param ret The return from main. Optional.
-/// \param funcToRun The function, defaults to "main" from \c mod
-Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module>   mod,
-                       llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
-                       std::vector<std::string> args = {}, int* ret = nullptr, llvm::Function* funcToRun = nullptr);
-
-}
+/// \param[in] mod The module to interpret
+/// \param[in] optLevel The optimization level
+/// \param[in] args The arguments to main
+/// \param[in] funcToRun The function, defaults to "main" from `mod`
+/// \param[out] ret The return from main. Optional.
+Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod,
+                             llvm::CodeGenOpt::Level       optLevel = llvm::CodeGenOpt::Default,
+                             std::vector<std::string> args = {}, llvm::Function* funcToRun = nullptr, int* ret = nullptr);
+} // namespace chig
 
 #endif  // CHIG_CONTEXT_HPP

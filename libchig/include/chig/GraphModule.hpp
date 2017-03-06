@@ -43,7 +43,7 @@ struct GraphModule : public ChigModule {
 
 	/// Create the associations from line number and function in debug info
 	/// \return A bimap of function to line number
-	boost::bimap<unsigned, NodeInstance*> createLineNumberAssoc() const;
+	boost::bimap<unsigned, const NodeInstance*> createLineNumberAssoc() const;
 
 	/// Serialize to disk in the context
 	/// \return The Result

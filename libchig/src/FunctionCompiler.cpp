@@ -32,7 +32,7 @@ struct codegenMetadata {
 	llvm::DIBuilder*    dbuilder;
 	llvm::DISubprogram* diFunc;
 	std::unordered_map<NodeInstance*, Cache>               nodeCache;
-	boost::bimap<unsigned, NodeInstance*>                  nodeLocations;
+	boost::bimap<unsigned, const NodeInstance*>                  nodeLocations;
 	std::unordered_map<std::string, std::shared_ptr<void>> compileCache;
 };
 
@@ -44,8 +44,8 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 	auto              f   = data.allocBlock->getParent();
 	auto              mod = data.allocBlock->getModule();
 
-	auto codeBlock =
-	    llvm::BasicBlock::Create(node->context().llvmContext(), boost::uuids::to_string(node->id()) + "_code", f);
+	auto codeBlock = llvm::BasicBlock::Create(node->context().llvmContext(),
+	                                          boost::uuids::to_string(node->id()) + "_code", f);
 	llvm::IRBuilder<> builder(codeBlock);
 
 	// get inputs and outputs
@@ -63,9 +63,11 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 					const auto& cache  = data.nodeCache[param.first];
 					if (cache.lastNodeCodegenned != impure) {
 						pureDependencies.push_back(param.first);
-						pureBBs.push_back(
-						    llvm::BasicBlock::Create(node->context().llvmContext(),
-						                             boost::uuids::to_string(param.first->id()) + "____" + boost::uuids::to_string(impure->id()), f));
+						pureBBs.push_back(llvm::BasicBlock::Create(
+						    node->context().llvmContext(),
+						    boost::uuids::to_string(param.first->id()) + "____" +
+						        boost::uuids::to_string(impure->id()),
+						    f));
 					}
 				}
 			}
@@ -152,7 +154,8 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			}
 
 			llvm::AllocaInst* alloc = allocBuilder.CreateAlloca(
-			    output.type.llvmType(), nullptr, boost::uuids::to_string(node->id()) + "__" + std::to_string(id));
+			    output.type.llvmType(), nullptr,
+			    boost::uuids::to_string(node->id()) + "__" + std::to_string(id));
 			outputCache[id] = alloc;
 			io.push_back(alloc);
 
@@ -162,15 +165,16 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 				llvm::DIType* dType = output.type.debugType();
 
 				// TODO(#63): better names
-				auto debugVar =
-				    data.dbuilder->
+				auto debugVar = data.dbuilder->
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-				    createLocalVariable(llvm::dwarf::DW_TAG_auto_variable,
+				                createLocalVariable(
+				                    llvm::dwarf::DW_TAG_auto_variable,
 #else
-				    createAutoVariable(
+				                createAutoVariable(
 #endif
-				                        data.diFunc, boost::uuids::to_string(node->id()) + "__" + std::to_string(id),
-				                        data.diFunc->getFile(), 1, dType);
+				                    data.diFunc,
+				                    boost::uuids::to_string(node->id()) + "__" + std::to_string(id),
+				                    data.diFunc->getFile(), 1, dType);
 
 				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
 				                             llvm::DebugLoc::get(1, 1, data.diFunc),
@@ -221,7 +225,8 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			outputBlocks.push_back(outBlock);
 			needsCodegen.push_back(true);  // these need codegen
 			if (node->outputExecConnections[idx].first != nullptr) {
-				outBlock->setName("node_" + boost::uuids::to_string(node->outputExecConnections[idx].first->id()));
+				outBlock->setName("node_" + boost::uuids::to_string(
+				                                node->outputExecConnections[idx].first->id()));
 			} else {
 				unusedBlocks.push_back(outBlock);
 			}
@@ -361,10 +366,9 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	llvm::Function* f =
 	    llvm::cast<llvm::Function>(mod->getOrInsertFunction(mangledName, func.functionType()));
 
-	
 	auto nodeLocations = func.module().createLineNumberAssoc();
-	auto entryLN = nodeLocations.right.find(entry)->second;
-		
+	auto entryLN       = nodeLocations.right.find(entry)->second;
+
 	// TODO(#65): line numbers?
 	auto debugFunc = debugBuilder.createFunction(
 	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, entryLN,
@@ -372,8 +376,9 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 	f->setSubprogram(debugFunc);
 	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
-	llvm::BasicBlock* block      = llvm::BasicBlock::Create(mod->getContext(), boost::uuids::to_string(entry->id()), f);
-	auto              blockcpy   = block;
+	llvm::BasicBlock* block =
+	    llvm::BasicBlock::Create(mod->getContext(), boost::uuids::to_string(entry->id()), f);
+	auto blockcpy = block;
 
 	// set argument names
 	auto idx = 0ull;

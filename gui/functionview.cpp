@@ -350,7 +350,8 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 
 			auto name = ty->qualifiedName();  // cache the name because ty is moved from
 			reg->registerModel(std::make_unique<ChigraphNodeModel>(
-			    new chig::NodeInstance(mFunction, std::move(ty), 0, 0, boost::uuids::random_generator()()),
+			    new chig::NodeInstance(mFunction, std::move(ty), 0, 0,
+			                           boost::uuids::random_generator()()),
 			    this));  // TODO: this is a memory leak
 		}
 	}

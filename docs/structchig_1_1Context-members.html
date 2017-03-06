@@ -2,13 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="icon" type="image/x-icon" href="favicon.ico" />
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>chigraph: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="material.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script type="text/javascript" src="doxy-boot.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
@@ -22,6 +26,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="customdoxygen.css">
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -95,27 +100,29 @@ $(document).ready(function(){initNavTree('structchig_1_1Context.html','');});
   <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#a077f8ef8c0dd541ec2e2d64bcd8f9fc0">addModuleFromJson</a>(const boost::filesystem::path &amp;fullName, const nlohmann::json &amp;json, GraphModule **toFill=nullptr)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#a60f9e7347a5843b31c4c342a014683c7">cModule</a>() const</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#a76268c7aba0f643cf3242a87872de711">compileModule</a>(const boost::filesystem::path &amp;fullName, std::unique_ptr&lt; llvm::Module &gt; *toFill)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#aa524b83a49d7109a09e8d32d098bf2d5">Context</a>(const boost::filesystem::path &amp;workPath={})</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>Context</b>(const Context &amp;context)=delete (defined in <a class="el" href="structchig_1_1Context.html">chig::Context</a>)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Context</b>(Context &amp;&amp;)=delete (defined in <a class="el" href="structchig_1_1Context.html">chig::Context</a>)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#aa4fb30ced50d32c629ad50669b8b1e05">hasWorkspace</a>() const noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#a7a477a9a4e450aa171814e494d0ff631">langModule</a>() const</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#af57b8e285632b803f1a3a026fc4936f9">listModulesInWorkspace</a>() const noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#a782020dfc6a44bdbacbea2a72cfd38e6">llvmContext</a>() const</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2">loadModule</a>(const boost::filesystem::path &amp;name, ChigModule **toFill=nullptr)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#ae9794348cb6c594497574b13852d6fd1">moduleByFullName</a>(const boost::filesystem::path &amp;fullModuleName) const noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#abc23e74bddad2f97fecc6041dee22b2b">newGraphModule</a>(const boost::filesystem::path &amp;fullName)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#ae9a1bc6f91e7ee0a5363722e5f8916e3">nodeTypeFromModule</a>(const boost::filesystem::path &amp;moduleName, gsl::cstring_span&lt;&gt; typeName, const nlohmann::json &amp;data, std::unique_ptr&lt; NodeType &gt; *toFill) noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#a92c913aaa730281508e2048807472cee">numModules</a>() const</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#a0a1a3f31844162754866d7d0e877e176">typeFromModule</a>(const boost::filesystem::path &amp;module, gsl::cstring_span&lt;&gt; name, DataType *toFill) noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#af692ac28d1822e686430bc28228244c5">unloadModule</a>(const boost::filesystem::path &amp;fullName)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f">workspacePath</a>() const</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#ac585794db13b27b3f69a51aa9d7fd01c">compileModule</a>(ChigModule &amp;mod, std::unique_ptr&lt; llvm::Module &gt; *toFill)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#aa524b83a49d7109a09e8d32d098bf2d5">Context</a>(const boost::filesystem::path &amp;workPath={})</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Context</b>(const Context &amp;context)=delete (defined in <a class="el" href="structchig_1_1Context.html">chig::Context</a>)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>Context</b>(Context &amp;&amp;)=delete (defined in <a class="el" href="structchig_1_1Context.html">chig::Context</a>)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#aa4fb30ced50d32c629ad50669b8b1e05">hasWorkspace</a>() const noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#a7a477a9a4e450aa171814e494d0ff631">langModule</a>() const</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#af57b8e285632b803f1a3a026fc4936f9">listModulesInWorkspace</a>() const noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#a782020dfc6a44bdbacbea2a72cfd38e6">llvmContext</a>() const</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2">loadModule</a>(const boost::filesystem::path &amp;name, ChigModule **toFill=nullptr)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#ae9794348cb6c594497574b13852d6fd1">moduleByFullName</a>(const boost::filesystem::path &amp;fullModuleName) const noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#abc23e74bddad2f97fecc6041dee22b2b">newGraphModule</a>(const boost::filesystem::path &amp;fullName)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#ae9a1bc6f91e7ee0a5363722e5f8916e3">nodeTypeFromModule</a>(const boost::filesystem::path &amp;moduleName, gsl::cstring_span&lt;&gt; typeName, const nlohmann::json &amp;data, std::unique_ptr&lt; NodeType &gt; *toFill) noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#a92c913aaa730281508e2048807472cee">numModules</a>() const</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#a0a1a3f31844162754866d7d0e877e176">typeFromModule</a>(const boost::filesystem::path &amp;module, gsl::cstring_span&lt;&gt; name, DataType *toFill) noexcept</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchig_1_1Context.html#af692ac28d1822e686430bc28228244c5">unloadModule</a>(const boost::filesystem::path &amp;fullName)</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f">workspacePath</a>() const</td><td class="entry"><a class="el" href="structchig_1_1Context.html">chig::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.8.13-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Mar 5 2017 07:14:42 for chigraph by
+    <li class="footer">Generated on Sun Mar 5 2017 22:16:26 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

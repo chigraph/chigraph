@@ -292,19 +292,15 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 			             {{"nodeid", nodeid}});
 			continue;
 		}
-		
-		
+
 		try {
 			auto uuidNodeID = boost::uuids::string_generator()(nodeid);
-			
+
 			createInside.insertNode(std::move(nodeType), node["location"][0], node["location"][1],
-									uuidNodeID);
-		} catch(std::exception& e) {
-			
+			                        uuidNodeID);
+		} catch (std::exception& e) {
 			res.addEntry("E51", "Invalid UUID string", {{"string", nodeid}});
-			
 		}
-		
 	}
 
 	size_t connID = 0;
@@ -344,17 +340,18 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 				    {{"connectionid", connID}, {"Requested Type", *connection.find("input")}});
 				continue;
 			}
-			std::string InputNodeID       = connection["input"][0];
-			
+			std::string InputNodeID = connection["input"][0];
+
 			boost::uuids::uuid InputNodeIDUUID;
 			try {
 				InputNodeIDUUID = boost::uuids::string_generator()(InputNodeID);
-			} catch(std::exception&) {
-				res.addEntry("EUKN", "Invalid UUID string in connection", {{"string", InputNodeID}});
-				
+			} catch (std::exception&) {
+				res.addEntry("EUKN", "Invalid UUID string in connection",
+				             {{"string", InputNodeID}});
+
 				return res;
 			}
-			int         InputConnectionID = connection["input"][1];
+			int InputConnectionID = connection["input"][1];
 
 			if (connection.find("output") == connection.end()) {
 				res.addEntry("E18", "No output element in connection", {{"connectionid", connID}});
@@ -370,18 +367,18 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 				    {{"connectionid", connID}, {"Requested Type", *connection.find("output")}});
 				continue;
 			}
-			std::string OutputNodeID       = connection["output"][0];
-			
+			std::string OutputNodeID = connection["output"][0];
+
 			boost::uuids::uuid OutputNodeIDUUID;
 			try {
 				OutputNodeIDUUID = boost::uuids::string_generator()(OutputNodeID);
 			} catch (std::exception&) {
-				
-				res.addEntry("EUKN", "Invalid UUID string in connection", {{"string", OutputNodeID}});
-				
+				res.addEntry("EUKN", "Invalid UUID string in connection",
+				             {{"string", OutputNodeID}});
+
 				return res;
 			}
-			int         OutputConnectionID = connection["output"][1];
+			int OutputConnectionID = connection["output"][1];
 
 			// make sure the nodes exist
 			if (createInside.nodes().find(InputNodeIDUUID) == createInside.nodes().end()) {
