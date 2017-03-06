@@ -10,14 +10,14 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 			-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
 			-DCMAKE_C_COMPILER=$C_COMPILER \
 			-GNinja -DCMAKE_CXX_FLAGS='--coverage' \
-			-DLLVM_CONFIG="/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config"
+			-DLLVM_CONFIG="/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config" -DCG_BUILD_DEBUGGER=OFF
 	else
 
 		cmake . -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
 			-DCMAKE_CXX_COMPILER=$CXX_COMPILER \
 			-DCMAKE_C_COMPILER=$C_COMPILER \
 			-GNinja \
-			-DLLVM_CONFIG="/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config"
+			-DLLVM_CONFIG="/usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config" -DCG_BUILD_DEBUGGER=OFF
 			
 	fi
 
@@ -36,7 +36,7 @@ else
 		-DCMAKE_PREFIX_PATH='/usr/local/opt/qt5/;/usr/local/opt/gettext' \
 		-DCMAKE_BUILD_TYPE=Debug \
 		-DLLVM_CONFIG=/usr/local/opt/llvm/bin/llvm-config \
-		-DLLI_EXE=/usr/local/opt/llvm/bin/lli -GNinja
+		-DLLI_EXE=/usr/local/opt/llvm/bin/lli -GNinja -DCG_BUILD_DEBUGGER=OFF
 	ninja
 	# ninja test
 	
