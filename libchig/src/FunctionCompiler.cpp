@@ -372,9 +372,16 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	// TODO(#65): line numbers?
 	auto debugFunc = debugBuilder.createFunction(
 	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, entryLN,
-	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false);
-
+	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false
+	
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+	, f);
+#else
+								);
+	
 	f->setSubprogram(debugFunc);
+#endif
+
 	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
 	llvm::BasicBlock* block =
 	    llvm::BasicBlock::Create(mod->getContext(), boost::uuids::to_string(entry->id()), f);
