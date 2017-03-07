@@ -29,11 +29,11 @@ public:
 	/// \param mod The module to create the NodeType in
 	/// \param name The name of the NodeType
 	/// \param description The description of the NodeType
-	NodeType(ChigModule& mod, gsl::cstring_span<> name = {}, gsl::cstring_span<> description = {})
+	NodeType(ChigModule& mod, std::string name = {}, std::string description = {})
 	    : mModule{&mod},
 	      mContext{&mod.context()},
-	      mName{gsl::to_string(name)},
-	      mDescription{gsl::to_string(description)} {}
+	      mName{std::move(name)},
+	      mDescription{std::move(description)} {}
 	/// Destructor
 	virtual ~NodeType() = default;
 
@@ -113,11 +113,11 @@ protected:
 
 	/// Set the name of the type
 	/// \param newName The new name
-	void setName(gsl::cstring_span<> newName) { mName = gsl::to_string(newName); }
+	void setName(std::string newName) { mName = std::move(newName); }
 
 	/// Set the description of the node
 	/// \param newDesc The new description
-	void setDescription(gsl::cstring_span<> newDesc) { mDescription = gsl::to_string(newDesc); }
+	void setDescription(std::string newDesc) { mDescription = std::move(newDesc); }
 
 	/// Make this node pure
 	/// For more info on what this means, see https://en.wikipedia.org/wiki/Pure_function

@@ -19,6 +19,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid.hpp>
+#include <boost/utility/string_view.hpp>
 
 namespace chig {
 /// this is an AST-like representation of a function in a graph
@@ -31,7 +32,7 @@ struct GraphFunction {
 	/// \param dataOuts The data outputs of the function
 	/// \param execIns The exec inputs to the function
 	/// \param execOuts The exec outputs to the function
-	GraphFunction(GraphModule& mod, gsl::cstring_span<> name, std::vector<NamedDataType> dataIns,
+	GraphFunction(GraphModule& mod, std::string name, std::vector<NamedDataType> dataIns,
 	              std::vector<NamedDataType> dataOuts, std::vector<std::string> execIns,
 	              std::vector<std::string> execOuts);
 
@@ -81,7 +82,7 @@ struct GraphFunction {
 	/// \param name The name of the type
 	/// \return A vector of NodeInstance
 	std::vector<NodeInstance*> nodesWithType(const boost::filesystem::path& module,
-	                                         gsl::cstring_span<>            name) const noexcept;
+	                                         boost::string_view            name) const noexcept;
 
 	/// Add a node to the graph using module, type, and json
 	/// \param moduleName The name of the module that typeName is in
@@ -92,7 +93,7 @@ struct GraphFunction {
 	/// \param id The node ID
 	/// \retval toFill The NodeInstance* to fill to, optional
 	/// \return The Result
-	Result insertNode(const boost::filesystem::path& moduleName, gsl::cstring_span<> typeName,
+	Result insertNode(const boost::filesystem::path& moduleName, boost::string_view typeName,
 	                  const nlohmann::json& typeJSON, float x, float y,
 	                  boost::uuids::uuid id     = boost::uuids::random_generator()(),
 	                  NodeInstance**     toFill = nullptr);
@@ -145,7 +146,7 @@ struct GraphFunction {
 	/// \param type The new input type
 	/// \param name The name of the input (just for documentation)
 	/// \param addBefore The input ID to add before, default is end
-	void addDataInput(const DataType& type, gsl::cstring_span<> name,
+	void addDataInput(const DataType& type, std::string name,
 	                  size_t addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an input from the argument list
@@ -180,7 +181,7 @@ struct GraphFunction {
 	/// \param type The new output type
 	/// \param name The name of the output (just for documentation)
 	/// \param addBefore The output to add before, default is end
-	void addDataOutput(const DataType& type, gsl::cstring_span<> name,
+	void addDataOutput(const DataType& type, std::string name,
 	                   size_t addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an data output from the argument list
@@ -215,7 +216,7 @@ struct GraphFunction {
 	/// Add an exec input to the end of the argument list
 	/// \param name The name of the input (just for documentation)
 	/// \param addBefore the input to add after
-	void addExecInput(gsl::cstring_span<> name,
+	void addExecInput(std::string name,
 	                  size_t              addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an exec input from the argument list
@@ -241,7 +242,7 @@ struct GraphFunction {
 	/// Add an exec output to the end of the argument list
 	/// \param name The name of the output (just for documentation)
 	/// \param addBefore The output to add after
-	void addExecOutput(gsl::cstring_span<> name,
+	void addExecOutput(std::string name,
 	                   size_t              addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an exec output from the argument list
@@ -267,7 +268,7 @@ struct GraphFunction {
 	/// Get a local varaible by name
 	/// \param name The name of the variable
 	/// \return The local or {} if not found
-	NamedDataType localVariableFromName(gsl::cstring_span<> name) const;
+	NamedDataType localVariableFromName(boost::string_view name) const;
 
 	/// Create a new local varaible in the module
 	/// \param name The name of the local variable
@@ -280,7 +281,7 @@ struct GraphFunction {
 	/// Remove a local variable from the function by name
 	/// \param name The name of the local variable to remove
 	/// \return True if a local was actually removed, false if no local by that name existed
-	bool removeLocalVariable(gsl::cstring_span<> name);
+	bool removeLocalVariable(boost::string_view name);
 
 	/// Rename a local variable
 	/// \param oldName The name of the existing local to change
@@ -290,7 +291,7 @@ struct GraphFunction {
 	/// Set a new type to a local variable
 	/// \param name The name of the local to change
 	/// \param newType The new type
-	void retypeLocalVariable(gsl::cstring_span<> name, DataType newType);
+	void retypeLocalVariable(boost::string_view name, DataType newType);
 
 	/// \}
 

@@ -32,7 +32,7 @@ struct codegenMetadata {
 	llvm::DIBuilder*    dbuilder;
 	llvm::DISubprogram* diFunc;
 	std::unordered_map<NodeInstance*, Cache>               nodeCache;
-	boost::bimap<unsigned, const NodeInstance*>                  nodeLocations;
+	boost::bimap<unsigned, NodeInstance*>                  nodeLocations;
 	std::unordered_map<std::string, std::shared_ptr<void>> compileCache;
 };
 

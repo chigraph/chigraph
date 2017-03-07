@@ -838,24 +838,24 @@ LangModule::LangModule(Context& ctx) : ChigModule(ctx, "lang") {
 	    charType, 64, 64, 0, llvm::DINode::DIFlags());  // TODO: 32bit support?
 }
 
-Result LangModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
+Result LangModule::nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
                                     std::unique_ptr<NodeType>* toFill) {
 	Result res;
 
-	auto iter = nodes.find(gsl::to_string(name));
+	auto iter = nodes.find(name.to_string());
 	if (iter != nodes.end()) {
 		*toFill = iter->second(jsonData, res);
 		return res;
 	}
 
 	res.addEntry("E37", "Failed to find node in module",
-	             {{"Module", "lang"}, {"Requested Node Type", gsl::to_string(name)}});
+	             {{"Module", "lang"}, {"Requested Node Type", name.to_string()}});
 
 	return res;
 }
 
 // the lang module just has the basic llvm types.
-DataType LangModule::typeFromName(gsl::cstring_span<> name) {
+DataType LangModule::typeFromName(boost::string_view name) {
 	using namespace std::string_literals;
 
 	llvm::Type* ty;
@@ -863,7 +863,7 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 	auto err = llvm::SMDiagnostic();
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 8
 	// just parse the type
-	auto IR = "@G = external global "s + gsl::to_string(name);
+	auto IR = "@G = external global "s + name;
 
 	auto tmpModule = llvm::parseAssemblyString(IR, err, context().llvmContext());
 	if (!tmpModule) { return nullptr; }
@@ -872,16 +872,15 @@ DataType LangModule::typeFromName(gsl::cstring_span<> name) {
 #else
 	{
 		llvm::Module tMod("tmp", context().llvmContext());
-		ty = llvm::parseType(gsl::to_string(name), err, tMod, nullptr);
+		ty = llvm::parseType(name.to_string(), err, tMod, nullptr);
 	}
 #endif
 
 	// get debug type
-	auto iter = mDebugTypes.find(gsl::to_string(name));
+	auto iter = mDebugTypes.find(name.to_string());
 	if (iter == mDebugTypes.end()) { return {}; }
 
-	// returns the pointer type, so get the contained type
-	return DataType{this, gsl::to_string(name), ty, iter->second};
+	return DataType{this, name.to_string(), ty, iter->second};
 }
 
 }  // namespace chig

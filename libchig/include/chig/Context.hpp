@@ -21,6 +21,8 @@
 
 #include <gsl/gsl>
 
+#include <boost/utility/string_view.hpp>
+
 #include <boost/filesystem.hpp>
 #include <boost/optional.hpp>
 
@@ -82,7 +84,7 @@ struct Context {
 	/// \param[out] toFill The type to fill
 	/// \pre `toFill != nullptr`
 	/// \return The result
-	Result typeFromModule(const boost::filesystem::path& module, gsl::cstring_span<> name,
+	Result typeFromModule(const boost::filesystem::path& module, boost::string_view name,
 	                      DataType* toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
@@ -94,7 +96,7 @@ struct Context {
 	/// pointer to the `unique_ptr`)
 	/// \return The Result
 	Result nodeTypeFromModule(const boost::filesystem::path& moduleName,
-	                          gsl::cstring_span<> typeName, const nlohmann::json& data,
+	                          boost::string_view typeName, const nlohmann::json& data,
 	                          std::unique_ptr<NodeType>* toFill) noexcept;
 
 	/// Get the workspace path of the Context

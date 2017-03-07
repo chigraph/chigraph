@@ -44,12 +44,12 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, const std::stri
 
 /// The NodeType for calling C functions
 struct CFuncNode : NodeType {
-	CFuncNode(CModule& mod, gsl::cstring_span<> cCode, gsl::cstring_span<> functionName,
+	CFuncNode(CModule& mod, std::string cCode, std::string functionName,
 	          std::vector<std::string> extraArgs, std::vector<NamedDataType> inputs,
 	          DataType output)
 	    : NodeType{mod, "func", "call C code"},
-	      mFunctionName{gsl::to_string(functionName)},
-	      mCCode(gsl::to_string(cCode)),
+	      mFunctionName{std::move(functionName)},
+	      mCCode(std::move(cCode)),
 	      mExtraArguments{std::move(extraArgs)},
 	      mInputs{std::move(inputs)},
 	      mOutput{std::move(output)},
@@ -170,13 +170,13 @@ struct CFuncNode : NodeType {
 
 CModule::CModule(Context& ctx) : ChigModule(ctx, "c") {}
 
-DataType CModule::typeFromName(gsl::cstring_span<> /*typeName*/) {
+DataType CModule::typeFromName(boost::string_view /*typeName*/) {
 	// TODO(#8) : implement
 
 	return {};
 }
 
-Result CModule::nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& jsonData,
+Result CModule::nodeTypeFromName(boost::string_view typeName, const nlohmann::json& jsonData,
                                  std::unique_ptr<NodeType>* toFill) {
 	Result res;
 

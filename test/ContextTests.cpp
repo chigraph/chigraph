@@ -92,7 +92,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 			}
 
 			THEN("getType should work for basic types") {
-				auto checkTy = [&](gsl::cstring_span<> ty) {
+				auto checkTy = [&](boost::string_view ty) {
 					DataType chigty;
 					res = c.typeFromModule("lang", ty, &chigty);
 					REQUIRE(stringifyLLVMType(chigty.llvmType()) == ty);

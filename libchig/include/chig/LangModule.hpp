@@ -20,10 +20,10 @@ struct LangModule : ChigModule {
 	/// Destructor
 	~LangModule() = default;
 
-	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
+	Result nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
 	                        std::unique_ptr<NodeType>* toFill) override;
 
-	DataType typeFromName(gsl::cstring_span<> name) override;
+	DataType typeFromName(boost::string_view name) override;
 
 	std::vector<std::string> nodeTypeNames() const override {
 		std::vector<std::string> ret;

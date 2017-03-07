@@ -26,9 +26,9 @@ struct CModule : ChigModule {
 	/// Destructor
 	~CModule() = default;
 
-	Result nodeTypeFromName(gsl::cstring_span<> typeName, const nlohmann::json& jsonData,
+	Result nodeTypeFromName(boost::string_view typeName, const nlohmann::json& jsonData,
 	                        std::unique_ptr<NodeType>* toFill) override;
-	DataType typeFromName(gsl::cstring_span<> name) override;
+	DataType typeFromName(boost::string_view name) override;
 	std::vector<std::string> nodeTypeNames() const override { return {"func"}; }
 	std::vector<std::string> typeNames() const override { return {}; }
 	Result                   generateModule(llvm::Module& /*module*/) override { return {}; }

@@ -30,10 +30,10 @@ struct GraphModule : public ChigModule {
 	// ChigModule interface
 	///////////////////////
 
-	Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
+	Result nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
 	                        std::unique_ptr<NodeType>* toFill) override;
 
-	DataType typeFromName(gsl::cstring_span<> name) override;
+	DataType typeFromName(boost::string_view name) override;
 	std::vector<std::string> nodeTypeNames() const override;
 
 	std::vector<std::string> typeNames() const override;
@@ -43,7 +43,7 @@ struct GraphModule : public ChigModule {
 
 	/// Create the associations from line number and function in debug info
 	/// \return A bimap of function to line number
-	boost::bimap<unsigned, const NodeInstance*> createLineNumberAssoc() const;
+	boost::bimap<unsigned, NodeInstance*> createLineNumberAssoc() const;
 
 	/// Serialize to disk in the context
 	/// \return The Result
@@ -68,7 +68,7 @@ struct GraphModule : public ChigModule {
 	/// \param inserted Pointer of a bool to fill; sets to true if it was inserted and false if it
 	/// already existed
 	/// \return The function
-	GraphFunction* getOrCreateFunction(gsl::cstring_span<> name, std::vector<NamedDataType> dataIns,
+	GraphFunction* getOrCreateFunction(std::string name, std::vector<NamedDataType> dataIns,
 	                                   std::vector<NamedDataType> dataOuts,
 	                                   std::vector<std::string>   execIns,
 	                                   std::vector<std::string> execOuts, bool* inserted = nullptr);
@@ -76,7 +76,7 @@ struct GraphModule : public ChigModule {
 	/// Remove a function from the module
 	/// \param name The name of the function to remove
 	/// \return True if there was a function matching name that was removed
-	bool removeFunction(gsl::cstring_span<> name);
+	bool removeFunction(boost::string_view name);
 
 	/// Remove a function from the module
 	/// \param func The function to remove
@@ -85,7 +85,7 @@ struct GraphModule : public ChigModule {
 	/// Get a function from the name
 	/// \param name The name to get
 	/// \return The GraphFunction or nullptr if it doesn't exist
-	GraphFunction* functionFromName(gsl::cstring_span<> name) const;
+	GraphFunction* functionFromName(boost::string_view name) const;
 
 	/// Get functions
 	/// \return The functions
@@ -101,7 +101,7 @@ struct GraphModule : public ChigModule {
 	/// Get a struct by name
 	/// \param name The name of the struct
 	/// \return The struct or nullptr if not found
-	GraphStruct* structFromName(gsl::cstring_span<> name) const;
+	GraphStruct* structFromName(boost::string_view name) const;
 
 	/// Create a new struct in the module
 	/// \param name The name of the struct
@@ -112,7 +112,7 @@ struct GraphModule : public ChigModule {
 	/// Remove a struct from the module by name
 	/// \param name The name of the struct to remove
 	/// \return True if a struct was actually removed, false if no struct by that name existed
-	bool removeStruct(gsl::cstring_span<> name);
+	bool removeStruct(boost::string_view name);
 
 	/// Remove a struct from the module by pointer
 	/// \param tyToDel Struct to delete, must be in this module

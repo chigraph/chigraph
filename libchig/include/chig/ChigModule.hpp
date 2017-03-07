@@ -11,8 +11,7 @@
 #include "chig/ToString.hpp"
 #include "chig/json.hpp"
 
-#include <gsl/gsl>
-
+#include <boost/utility/string_view.hpp>
 #include <boost/filesystem.hpp>
 
 #include <unordered_set>
@@ -39,13 +38,13 @@ struct ChigModule {
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \return The result
-	virtual Result nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
+	virtual Result nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
 	                                std::unique_ptr<NodeType>* toFill) = 0;
 
 	/// Get a DataType from the name
 	/// \param name The name of the type
 	/// \return The data type, or an invalid DataType if failed
-	virtual DataType typeFromName(gsl::cstring_span<> name) = 0;
+	virtual DataType typeFromName(boost::string_view name) = 0;
 
 	/// Get the possible node type names
 	/// \return A std::vector of the possible names
@@ -84,8 +83,8 @@ struct ChigModule {
 	/// Does not unload from context
 	/// \param depName The name of the dependency to remove
 	/// \return If one was removed
-	bool removeDependency(gsl::cstring_span<> depName) {
-		return mDependencies.erase(gsl::to_string(depName)) == 1;
+	bool removeDependency(std::string depName) {
+		return mDependencies.erase(std::move(depName)) == 1;
 	}
 
 private:
