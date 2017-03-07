@@ -3,7 +3,7 @@
 set -xe
 
 SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd $SCRIPTSDIR/..
+SCRIPTSDIR=$SCRIPTSDIR/..
 
 btype=$1
 
