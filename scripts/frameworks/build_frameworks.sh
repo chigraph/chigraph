@@ -8,17 +8,19 @@ cd $SCRIPTSDIR/..
 btype=$1
 
 kf5dir=$SCRIPTSDIR/../third_party/kf5-${btype,,}
-mkdir -p $kf5dir/build
+mkdir -p $kf5dir
 
 version=5.31.0
 sversion=${version:0:4}
 
 flags=$2
 
+builddir=`mktemp -d`
+
 build_framework() {
     framework=$1
     
-    cd $kf5dir/build
+    cd $builddir
 
     foldername=$framework-$version
 
