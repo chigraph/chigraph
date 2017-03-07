@@ -8,6 +8,7 @@
 #include "chig/NodeInstance.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
+#include <llvm/ExecutionEngine/SectionMemoryManager.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/TargetRegistry.h>
@@ -334,6 +335,9 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	EEBuilder.setOptLevel(optLevel);
 
 	EEBuilder.setErrorStr(&errMsg);
+	
+	EEBuilder.setMCJITMemoryManager(
+		std::make_unique<llvm::SectionMemoryManager>());
 
 	return std::unique_ptr<llvm::ExecutionEngine>(EEBuilder.create());
 }
