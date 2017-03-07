@@ -5,8 +5,7 @@
 #include <vector>
 
 namespace chig {
-std::string mangleFunctionName(gsl::cstring_span<> fullModuleName, gsl::cstring_span<> name) {
-	std::string modName = gsl::to_string(fullModuleName);
+std::string mangleFunctionName(std::string modName, const std::string& name) {
 	// escape characters
 
 	// if it is the special main module, then just return main
@@ -40,13 +39,11 @@ std::string mangleFunctionName(gsl::cstring_span<> fullModuleName, gsl::cstring_
 		id = modName.find('.', id);
 	}
 
-	return modName + "_m" + gsl::to_string(name);
+	return modName + "_m" + name;
 }
 
-std::pair<std::string, std::string> unmangleFunctionName(gsl::cstring_span<> mangledName) {
-	if (mangledName == "main") { return {"main", "main"}; }
-
-	std::string mangled = gsl::to_string(mangledName);
+std::pair<std::string, std::string> unmangleFunctionName(std::string mangled) {
+	if (mangled == "main") { return {"main", "main"}; }
 
 	size_t      splitter = mangled.find("_m");
 	std::string modName  = mangled.substr(0, splitter);

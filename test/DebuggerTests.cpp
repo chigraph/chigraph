@@ -29,29 +29,34 @@ TEST_CASE("Debugger", "") {
 	GraphModule* gMod;
 	{
 		ChigModule* cMod;
-		res += ctx.loadModule("if/main", &cMod);
+		res += ctx.loadModule("intermodule/main", &cMod);
 		gMod = static_cast<GraphModule*>(cMod);
 	}
 	REQUIRE(res.dump() == "");
-
-	GraphFunction* func = gMod->functionFromName("main");
+	
+	GraphModule* printerMod;
+	{
+		ChigModule* cMod = ctx.moduleByFullName("intermodule/printer");
+		printerMod = static_cast<GraphModule*>(cMod);
+	}
+	
+	auto mainFunc = gMod->functionFromName("main");
+	auto mainEntry = mainFunc->entryNode();
+	
+	auto firstCall = mainEntry->outputExecConnections[0].first;
+	auto yayHappyStrLiteral = firstCall->inputDataConnections[0].first;
+	
+	auto func = printerMod->functionFromName("docall");
 	REQUIRE(func != nullptr);
-
-	NodeInstance* entryNode = func->entryNode();
-	REQUIRE(entryNode != nullptr);
-
-	NodeInstance* ifNode = entryNode->outputExecConnections[0].first;
-	REQUIRE(ifNode != nullptr);
-	REQUIRE(ifNode->type().qualifiedName() == "lang:if");
-
-	NodeInstance* callNode = ifNode->outputExecConnections[0].first;
-	REQUIRE(callNode != nullptr);
-	REQUIRE(callNode->type().qualifiedName() == "c:func");
-
-	NodeInstance* boolLiteral = ifNode->inputDataConnections[0].first;
-	REQUIRE(boolLiteral != nullptr);
-	REQUIRE(boolLiteral->type().qualifiedName() == "lang:const-bool");
-
+	
+	auto entry = func->entryNode();
+	REQUIRE(entry != nullptr);
+	
+	auto putsNode = entry->outputExecConnections[0].first;
+	REQUIRE(putsNode != nullptr);
+	
+	auto exitNode = putsNode->outputExecConnections[0].first;
+	
 	// make a debugger
 	boost::filesystem::path chigPath =
 	    boost::filesystem::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
@@ -63,7 +68,8 @@ TEST_CASE("Debugger", "") {
 
 	Debugger dbg{chigPath.c_str(), *gMod};
 
-	dbg.setBreakpoint(*callNode);
+	dbg.setBreakpoint(*putsNode);
+	dbg.setBreakpoint(*exitNode);
 
 	dbg.start();
 
@@ -91,10 +97,56 @@ TEST_CASE("Debugger", "") {
 		if (lldb::SBProcess::GetStateFromEvent(ev) == lldb::eStateStopped) break;
 	}
 
-	auto value = dbg.inspectNodeOutput(*boolLiteral, 0);
+	REQUIRE(dbg.nodeFromFrame() == putsNode);
+	
+	auto value = dbg.inspectNodeOutput(*entry, 0);
 	REQUIRE(value.IsValid());
 
-	REQUIRE(value.GetValue() == std::string("true"));
+	REQUIRE(value.GetSummary() == std::string(R"("Yay happy!")"));
+	
+	// go up the call stack
+	auto thread = dbg.lldbProcess().GetSelectedThread();
+	
+	// select frame 1
+	thread.SetSelectedFrame(1);
+	
+	REQUIRE(dbg.nodeFromFrame() == firstCall);
+	
+	REQUIRE(dbg.inspectNodeOutput(*yayHappyStrLiteral, 0).GetSummary() == std::string(R"("Yay happy!")"));
+	
+	thread.SetSelectedFrame(0);
+	
+	// step
+	dbg.processContinue();
+	
+	// wait until we're back in business
+	while (true) {
+		listener.WaitForEvent(5, ev);
+		if (ev.IsValid())
+			std::cout << "EVENT" << ev.GetDataFlavor() << ", " << ev.GetBroadcasterClass() << ", "
+			          << lldb::SBProcess::GetStateFromEvent(ev) << std::endl;
+		std::cout.flush();
+
+		if (lldb::SBProcess::GetStateFromEvent(ev) == lldb::eStateStopped) break;
+	}
+	
+		listener.WaitForEvent(5, ev);
+		listener.WaitForEvent(5, ev);
+	
+	std::cout << std::endl << std::endl << "NODE TYPE: " << dbg.nodeFromFrame()->type().qualifiedName() << std::endl << std::endl;
+	std::cout.flush();
+	REQUIRE(dbg.nodeFromFrame() == exitNode);
+	
+	value = dbg.inspectNodeOutput(*entry, 0);
+	REQUIRE(value.IsValid());
+
+	REQUIRE(value.GetSummary() == std::string(R"("Yay happy!")"));
+	
+	value = dbg.inspectNodeOutput(*putsNode, 0);
+	REQUIRE(value.IsValid());
+
+	REQUIRE(value.GetValue() == std::string("12"));
+	
 
 	dbg.terminate();
 }

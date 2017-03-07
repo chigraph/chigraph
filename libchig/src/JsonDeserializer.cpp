@@ -408,7 +408,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 	return res;
 }
 
-Result jsonToGraphStruct(GraphModule& mod, gsl::cstring_span<> name, const nlohmann::json& input,
+Result jsonToGraphStruct(GraphModule& mod, boost::string_view name, const nlohmann::json& input,
                          GraphStruct** toFill) {
 	Result res;
 
@@ -417,7 +417,7 @@ Result jsonToGraphStruct(GraphModule& mod, gsl::cstring_span<> name, const nlohm
 		return res;
 	}
 
-	auto createdStruct = mod.getOrCreateStruct(gsl::to_string(name));
+	auto createdStruct = mod.getOrCreateStruct(name.to_string());
 	if (toFill != nullptr) { *toFill = createdStruct; }
 
 	for (const auto& str : input) {

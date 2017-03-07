@@ -6,8 +6,7 @@
 #include "chig/Fwd.hpp"
 #include "chig/json.hpp"
 
-#include <gsl/gsl>
-
+#include <boost/utility/string_view.hpp>
 #include <boost/filesystem.hpp>
 
 namespace chig {
@@ -40,7 +39,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 /// \param mod The module to create it inside
 /// \param input The JSON to load
 /// \retval toFill The object to fill, optional
-Result jsonToGraphStruct(GraphModule& mod, gsl::cstring_span<> name, const nlohmann::json& input,
+Result jsonToGraphStruct(GraphModule& mod, boost::string_view name, const nlohmann::json& input,
                          GraphStruct** toFill = nullptr);
 
 /// Parse something that looks like: {"hello": "there"} into {"hello", "there"}

@@ -17,13 +17,13 @@
 #include <boost/uuid/uuid_io.hpp>
 
 namespace chig {
-GraphFunction::GraphFunction(GraphModule& mod, gsl::cstring_span<> name,
+GraphFunction::GraphFunction(GraphModule& mod, std::string name,
                              std::vector<NamedDataType> dataIns,
                              std::vector<NamedDataType> dataOuts, std::vector<std::string> execIns,
                              std::vector<std::string> execOuts)
     : mModule{&mod},
       mContext{&mod.context()},
-      mName{gsl::to_string(name)},
+      mName{std::move(name)},
       mDataInputs(std::move(dataIns)),
       mDataOutputs(std::move(dataOuts)),
       mExecInputs(std::move(execIns)),
@@ -72,7 +72,7 @@ Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float 
 }
 
 std::vector<NodeInstance*> GraphFunction::nodesWithType(const boost::filesystem::path& module,
-                                                        gsl::cstring_span<> name) const noexcept {
+                                                        boost::string_view name) const noexcept {
 	std::vector<NodeInstance*> ret;
 	for (const auto& node : mNodes) {
 		if (node.second->type().module().fullName() == module &&
@@ -85,7 +85,7 @@ std::vector<NodeInstance*> GraphFunction::nodesWithType(const boost::filesystem:
 }
 
 Result GraphFunction::insertNode(const boost::filesystem::path& moduleName,
-                                 gsl::cstring_span<> typeName, const nlohmann::json& typeJSON,
+                                 boost::string_view typeName, const nlohmann::json& typeJSON,
                                  float x, float y, boost::uuids::uuid id, NodeInstance** toFill) {
 	std::unique_ptr<NodeType> nodeType;
 	Result res = context().nodeTypeFromModule(moduleName, typeName, typeJSON, &nodeType);
@@ -187,12 +187,11 @@ Result GraphFunction::getOrInsertEntryNode(float x, float y, boost::uuids::uuid 
 	return res;
 }
 
-void GraphFunction::addDataInput(const DataType& type, gsl::cstring_span<> name, size_t addBefore) {
+void GraphFunction::addDataInput(const DataType& type, std::string name, size_t addBefore) {
 	if (addBefore < mDataInputs.size()) {
-		// +1 because emplace adds before
-		mDataInputs.emplace(mDataInputs.cbegin() + addBefore, gsl::to_string(name), type);
+		mDataInputs.emplace(mDataInputs.cbegin() + addBefore, std::move(name), type);
 	} else {
-		mDataInputs.emplace_back(gsl::to_string(name), type);
+		mDataInputs.emplace_back(std::move(name), type);
 	}
 	updateEntries();
 }
@@ -212,14 +211,14 @@ void GraphFunction::retypeDataInput(size_t idx, DataType newType) {
 	updateEntries();
 }
 
-void GraphFunction::addDataOutput(const DataType& type, gsl::cstring_span<> name,
+void GraphFunction::addDataOutput(const DataType& type, std::string name,
                                   size_t addBefore) {
 	Expects(addBefore >= 0);
 
 	if (addBefore < mDataOutputs.size()) {
-		mDataOutputs.emplace(mDataOutputs.cbegin() + addBefore, gsl::to_string(name), type);
+		mDataOutputs.emplace(mDataOutputs.cbegin() + addBefore, std::move(name), type);
 	} else {
-		mDataOutputs.emplace_back(gsl::to_string(name), type);
+		mDataOutputs.emplace_back(std::move(name), type);
 	}
 	updateExits();
 }
@@ -257,12 +256,12 @@ llvm::FunctionType* GraphFunction::functionType() const {
 	                               arguments, false);
 }
 
-void GraphFunction::addExecInput(gsl::cstring_span<> name, size_t addBefore) {
+void GraphFunction::addExecInput(std::string name, size_t addBefore) {
 	if (addBefore < mExecInputs.size()) {
 		// +1 because emplace adds before
-		mExecInputs.emplace(mExecInputs.cbegin() + addBefore, gsl::to_string(name));
+		mExecInputs.emplace(mExecInputs.cbegin() + addBefore, std::move(name));
 	} else {
-		mExecInputs.emplace_back(gsl::to_string(name));
+		mExecInputs.emplace_back(std::move(name));
 	}
 	updateEntries();
 }
@@ -277,12 +276,12 @@ void GraphFunction::renameExecInput(size_t idx, std::string name) {
 	updateEntries();
 }
 
-void GraphFunction::addExecOutput(gsl::cstring_span<> name, size_t addBefore) {
+void GraphFunction::addExecOutput(std::string name, size_t addBefore) {
 	if (addBefore < mExecOutputs.size()) {
 		// +1 because emplace adds before
-		mExecOutputs.emplace(mExecOutputs.cbegin() + addBefore, gsl::to_string(name));
+		mExecOutputs.emplace(mExecOutputs.cbegin() + addBefore, std::move(name));
 	} else {
-		mExecOutputs.emplace_back(gsl::to_string(name));
+		mExecOutputs.emplace_back(std::move(name));
 	}
 	updateExits();
 }
@@ -319,7 +318,7 @@ void GraphFunction::updateExits() {
 	}
 }
 
-NamedDataType GraphFunction::localVariableFromName(gsl::cstring_span<> name) const {
+NamedDataType GraphFunction::localVariableFromName(boost::string_view name) const {
 	for (auto local : mLocalVariables) {
 		if (local.name == name) { return local; }
 	}
@@ -342,7 +341,7 @@ NamedDataType GraphFunction::getOrCreateLocalVariable(std::string name, DataType
 	return mLocalVariables[mLocalVariables.size() - 1];
 }
 
-bool GraphFunction::removeLocalVariable(gsl::cstring_span<> name) {
+bool GraphFunction::removeLocalVariable(boost::string_view name) {
 	auto iter = std::find_if(mLocalVariables.begin(), mLocalVariables.end(),
 	                         [&](auto& toTest) { return toTest.name == name; });
 
@@ -354,9 +353,9 @@ bool GraphFunction::removeLocalVariable(gsl::cstring_span<> name) {
 	if (!erased) { return false; }
 
 	// remove set and get nodes
-	auto setNodes = nodesWithType(module().fullName(), "_set_" + gsl::to_string(name));
+	auto setNodes = nodesWithType(module().fullName(), "_set_" + name.to_string());
 	for (const auto& node : setNodes) { removeNode(node); }
-	auto             getNodes = nodesWithType(module().fullName(), "_get_" + gsl::to_string(name));
+	auto             getNodes = nodesWithType(module().fullName(), "_get_" + name.to_string());
 	for (const auto& node : getNodes) { removeNode(node); }
 
 	return true;
@@ -400,7 +399,7 @@ void GraphFunction::renameLocalVariable(std::string oldName, std::string newName
 	}
 }
 
-void GraphFunction::retypeLocalVariable(gsl::cstring_span<> name, DataType newType) {
+void GraphFunction::retypeLocalVariable(boost::string_view name, DataType newType) {
 	std::string qualifiedName = newType.qualifiedName();
 
 	for (auto& var : mLocalVariables) {
@@ -411,23 +410,23 @@ void GraphFunction::retypeLocalVariable(gsl::cstring_span<> name, DataType newTy
 	}
 
 	// update existing nodes
-	auto setNodes = nodesWithType(module().fullName(), "_set_" + gsl::to_string(name));
+	auto setNodes = nodesWithType(module().fullName(), "_set_" + name.to_string());
 	for (const auto& node : setNodes) {
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
 
-		auto res = module().nodeTypeFromName("_set_" + gsl::to_string(name), qualifiedName, &ty);
+		auto res = module().nodeTypeFromName("_set_" + name.to_string(), qualifiedName, &ty);
 		Expects(!!res);
 
 		node->setType(std::move(ty));
 	}
 
-	auto getNodes = nodesWithType(module().fullName(), "_get_" + gsl::to_string(name));
+	auto getNodes = nodesWithType(module().fullName(), "_get_" + name.to_string());
 	for (const auto& node : getNodes) {
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
 
-		auto res = module().nodeTypeFromName("_get_" + gsl::to_string(name), qualifiedName, &ty);
+		auto res = module().nodeTypeFromName("_get_" + name.to_string(), qualifiedName, &ty);
 		Expects(!!res);
 
 		node->setType(std::move(ty));

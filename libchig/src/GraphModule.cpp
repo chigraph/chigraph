@@ -24,17 +24,17 @@ namespace chig {
 
 namespace {
 struct GraphFuncCallType : public NodeType {
-	GraphFuncCallType(GraphModule& json_module, gsl::cstring_span<> funcname, Result* resPtr)
-	    : NodeType(json_module, funcname, ""), JModule(&json_module) {
+	GraphFuncCallType(GraphModule& json_module, std::string funcname, Result* resPtr)
+	    : NodeType(json_module, std::move(funcname), ""), JModule(&json_module) {
 		Result& res = *resPtr;
 
-		auto* mygraph = JModule->functionFromName(funcname);
+		auto* mygraph = JModule->functionFromName(name());
 		setDescription(mygraph->description());
 
 		if (mygraph == nullptr) {
 			res.addEntry("EINT", "Graph doesn't exist in module",
 			             {{"Module Name", JModule->fullName()},
-			              {"Requested Name", gsl::to_string(funcname)}});
+			              {"Requested Name", name()}});
 			return;
 		}
 
@@ -340,7 +340,7 @@ Result GraphModule::saveToDisk() const {
 	return res;
 }
 
-GraphFunction* GraphModule::getOrCreateFunction(gsl::cstring_span<>        name,
+GraphFunction* GraphModule::getOrCreateFunction(std::string        name,
                                                 std::vector<NamedDataType> dataIns,
                                                 std::vector<NamedDataType> dataOuts,
                                                 std::vector<std::string>   execIns,
@@ -352,15 +352,15 @@ GraphFunction* GraphModule::getOrCreateFunction(gsl::cstring_span<>        name,
 		return foundFunc;
 	}
 
-	mFunctions.push_back(std::make_unique<GraphFunction>(*this, name, std::move(dataIns),
+	mFunctions.push_back(std::make_unique<GraphFunction>(*this, std::move(name), std::move(dataIns),
 	                                                     std::move(dataOuts), std::move(execIns),
-	                                                     std::move(execOuts)));
+	                                                     std::move(execOuts) ));
 
 	if (inserted != nullptr) { *inserted = true; }
 	return mFunctions[mFunctions.size() - 1].get();
 }
 
-bool GraphModule::removeFunction(gsl::cstring_span<> name) {
+bool GraphModule::removeFunction(boost::string_view name) {
 	auto funcPtr = functionFromName(name);
 
 	if (funcPtr == nullptr) { return false; }
@@ -380,7 +380,7 @@ void GraphModule::removeFunction(GraphFunction* func) {
 	mFunctions.erase(iter);
 }
 
-GraphFunction* GraphModule::functionFromName(gsl::cstring_span<> name) const {
+GraphFunction* GraphModule::functionFromName(boost::string_view name) const {
 	auto iter = std::find_if(mFunctions.begin(), mFunctions.end(),
 	                         [&](auto& ptr) { return ptr->name() == name; });
 
@@ -388,7 +388,7 @@ GraphFunction* GraphModule::functionFromName(gsl::cstring_span<> name) const {
 	return nullptr;
 }
 
-Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::json& jsonData,
+Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
                                      std::unique_ptr<NodeType>* toFill) {
 	Result res = {};
 
@@ -396,7 +396,7 @@ Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::j
 
 	if (graph == nullptr) {
 		// if it wasn't found, then see if it's a struct breaker or maker
-		std::string nameStr = gsl::to_string(name);
+		std::string nameStr{name};
 		if (nameStr.substr(0, 6) == "_make_") {
 			auto str = structFromName(nameStr.substr(6));
 			if (str != nullptr) {
@@ -448,14 +448,14 @@ Result GraphModule::nodeTypeFromName(gsl::cstring_span<> name, const nlohmann::j
 
 		// if we get here than it's for sure not a thing
 		res.addEntry("EUKN", "Graph not found in module",
-		             {{"Module Name", fullName()}, {"Requested Graph", gsl::to_string(name)}});
+		             {{"Module Name", fullName()}, {"Requested Graph", name.to_string()}});
 	}
 
-	*toFill = std::make_unique<GraphFuncCallType>(*this, name, &res);
+	*toFill = std::make_unique<GraphFuncCallType>(*this, name.to_string(), &res);
 	return res;
 }
 
-DataType GraphModule::typeFromName(gsl::cstring_span<> name) {
+DataType GraphModule::typeFromName(boost::string_view name) {
 	auto func = structFromName(name);
 
 	if (func == nullptr) { return {}; }
@@ -476,9 +476,9 @@ std::vector<std::string> GraphModule::nodeTypeNames() const {
 	return ret;
 }
 
-boost::bimap<unsigned int, const NodeInstance*> GraphModule::createLineNumberAssoc() const {
+boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() const {
 	// create a sorted list of GraphFunctions
-	std::vector<const NodeInstance*> nodes;
+	std::vector<NodeInstance*> nodes;
 	for (const auto& f : functions()) {
 		for (const auto& node : f->nodes()) {
 			Expects(node.second != nullptr);
@@ -491,7 +491,7 @@ boost::bimap<unsigned int, const NodeInstance*> GraphModule::createLineNumberAss
 		       (rhs->function().name() + ":" + boost::uuids::to_string(rhs->id()));
 	});
 
-	boost::bimap<unsigned, const NodeInstance*> ret;
+	boost::bimap<unsigned, NodeInstance*> ret;
 	for (unsigned i = 0; i < nodes.size(); ++i) {
 		ret.left.insert({i + 1, nodes[i]});  // + 1 because line numbers start at 1
 	}
@@ -499,7 +499,7 @@ boost::bimap<unsigned int, const NodeInstance*> GraphModule::createLineNumberAss
 	return ret;
 }
 
-GraphStruct* GraphModule::structFromName(gsl::cstring_span<> name) const {
+GraphStruct* GraphModule::structFromName(boost::string_view name) const {
 	for (const auto& str : structs()) {
 		if (str->name() == name) { return str.get(); }
 	}
@@ -520,13 +520,15 @@ GraphStruct* GraphModule::getOrCreateStruct(std::string name, bool* inserted) {
 	return mStructs[mStructs.size() - 1].get();
 }
 
-bool GraphModule::removeStruct(gsl::cstring_span<> name) {
+bool GraphModule::removeStruct(boost::string_view name) {
 	for (auto iter = structs().begin(); iter != structs().end(); ++iter) {
 		if ((*iter)->name() == name) {
 			mStructs.erase(iter);
 			return true;
 		}
 	}
+	
+	// TODO: remove referencing nodes
 	return false;
 }
 

@@ -188,7 +188,7 @@ bool Context::unloadModule(const fs::path& fullName) {
 	return false;
 }
 
-Result Context::typeFromModule(const fs::path& module, gsl::cstring_span<> name,
+Result Context::typeFromModule(const fs::path& module, boost::string_view name,
                                DataType* toFill) noexcept {
 	Expects(toFill != nullptr);
 
@@ -203,13 +203,13 @@ Result Context::typeFromModule(const fs::path& module, gsl::cstring_span<> name,
 	*toFill = mod->typeFromName(name);
 	if (!toFill->valid()) {
 		res.addEntry("E37", "Could not find type in module",
-		             {{"type", gsl::to_string(name)}, {"module", module.generic_string()}});
+		             {{"type", name.to_string()}, {"module", module.generic_string()}});
 	}
 
 	return res;
 }
 
-Result Context::nodeTypeFromModule(const fs::path& moduleName, gsl::cstring_span<> typeName,
+Result Context::nodeTypeFromModule(const fs::path& moduleName, boost::string_view typeName,
                                    const nlohmann::json&      data,
                                    std::unique_ptr<NodeType>* toFill) noexcept {
 	Result res;

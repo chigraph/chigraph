@@ -3,6 +3,7 @@
 #include "chig/Debugger.hpp"
 
 #include <chig/NodeInstance.hpp>
+#include <chig/NameMangler.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -96,7 +97,7 @@ Result Debugger::pause() {
 	return res;
 }
 
-Result Debugger::setBreakpoint(const NodeInstance& node, lldb::SBBreakpoint* bp) {
+Result Debugger::setBreakpoint(NodeInstance& node, lldb::SBBreakpoint* bp) {
 	Result res;
 	
 	int linenum = lineNumberFromNode(node);
@@ -124,7 +125,7 @@ Result Debugger::setBreakpoint(const NodeInstance& node, lldb::SBBreakpoint* bp)
 	return res;
 }
 
-bool Debugger::removeBreakpoint(const NodeInstance& node) {
+bool Debugger::removeBreakpoint(NodeInstance& node) {
 	auto iter = mBreakpoints.find(&node);
 	if (iter == mBreakpoints.end()) { return false; }
 
@@ -164,6 +165,8 @@ Result Debugger::start(const char** argv, const char** envp,
 		args.push_back("interpret");
 		args.push_back("-i");
 		args.push_back(tmpIRPath.c_str());
+		args.push_back("-O");
+		args.push_back("0");
 
 		if (argv != nullptr) {
 			for (; *argv != nullptr; ++argv) { args.push_back(*argv); }
@@ -197,13 +200,23 @@ std::vector<const NodeInstance*> Debugger::listBreakpoints() const {
 
 lldb::SBValue Debugger::inspectNodeOutput(const NodeInstance& inst, size_t id, lldb::SBFrame frame) {
 	Expects(id < inst.outputDataConnections.size());
-	
+
 	// if frame isn't valid, use the default
 	if (!frame.IsValid()) {
-		frame = lldbProcess().GetSelectedThread().GetSelectedFrame();
+		auto thread= lldbProcess().GetSelectedThread();
+		if (!thread.IsValid()) {
+			return {};
+		}
+		frame = thread.GetSelectedFrame();
 	}
 	
 	if (!frame.IsValid()) {
+		return {};
+	}
+
+	// make sure it's in scope
+	auto func = &nodeFromFrame(frame)->function();
+	if (func != &inst.function()) {
 		return {};
 	}
 	
@@ -211,8 +224,60 @@ lldb::SBValue Debugger::inspectNodeOutput(const NodeInstance& inst, size_t id, l
 	return frame.FindVariable(variableName.c_str());
 }
 
+NodeInstance* Debugger::nodeFromFrame(lldb::SBFrame frame) {
+	
+	using namespace std::string_literals;
+	
+	// if frame isn't valid, use the default
+	if (!frame.IsValid()) {
+		auto thread= lldbProcess().GetSelectedThread();
+		if (!thread.IsValid()) {
+			return {};
+		}
+		frame = thread.GetSelectedFrame();
+	}
+	
+	if (!frame.IsValid()) {
+		return {};
+	}
 
-unsigned lineNumberFromNode(const NodeInstance& inst) {
+	
+	auto mangledFunctionName = frame.GetFunctionName();
+	// demangle that
+	std::string moduleName, functionName;
+	std::tie(moduleName, functionName) = unmangleFunctionName(mangledFunctionName);
+	
+	GraphFunction* func = nullptr;
+	
+	if (mangledFunctionName == "main"s) {
+		func = module().functionFromName("main");
+	}
+	
+	if (func == nullptr) {
+		auto mod = static_cast<GraphModule*>(module().context().moduleByFullName(moduleName));
+		if (!mod) {
+			return nullptr;
+		}
+		func = mod->functionFromName(functionName);
+	}
+	
+	
+	unsigned lineNo = frame.GetLineEntry().GetLine();
+	
+	// create assoc TODO: cache these
+	auto assoc = func->module().createLineNumberAssoc();
+	
+	auto nodeIter = assoc.left.find(lineNo);
+	if (nodeIter == assoc.left.end()) {
+		return nullptr;
+	}
+	
+	return nodeIter->second;
+}
+
+
+
+unsigned lineNumberFromNode(NodeInstance& inst) {
 	// TODO: cache these, they're kinda expensive to make
 	auto lineAssoc =
 		inst.module()

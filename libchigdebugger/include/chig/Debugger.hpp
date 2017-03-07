@@ -75,12 +75,12 @@ public:
 	/// \param[in] node The node to set the breakpoint on
 	/// \param[out] bp The (optional) `SBBreakpoint` object to fill
 	/// \return The result
-	Result setBreakpoint(const NodeInstance& node, lldb::SBBreakpoint* bp = nullptr);
+	Result setBreakpoint(NodeInstance& node, lldb::SBBreakpoint* bp = nullptr);
 	
 	/// Remove a breakpoint from a node
 	/// \param[in] node The node to remove the breakpoint from
 	/// \return True if a breakpoint was removed, false otherwise
-	bool removeBreakpoint(const NodeInstance& node);
+	bool removeBreakpoint(NodeInstance& node);
 
 	/// List the curretnly set breakpoints
 	/// \return The breakpoints
@@ -92,6 +92,11 @@ public:
 	/// \pre `id < inst.outputDataConnections.size()`
 	/// \param frame The frame. If this isn't a valid `SBFrame` (the default), then it uses `lldbProcess().GetSelectedThread().GetSelectedFrame()`
 	lldb::SBValue inspectNodeOutput(const NodeInstance& inst, size_t id, lldb::SBFrame frame = {});
+	
+	/// Get a NodeInstance from a frame
+	/// \param frame The frame to get the function for. If this isn't a valid `SBFrame` (the default), then it uses `lldbProcess().GetSelectedThread().GetSelectedFrame()`
+	/// \return The NodeInstance, or nullptr if one wasn't found
+	NodeInstance* nodeFromFrame(lldb::SBFrame frame = {});
 	
 	/// Get the module that's being debugged by this debugger
 	/// \return The module
@@ -121,7 +126,7 @@ private:
 };
 
 
-unsigned lineNumberFromNode(const NodeInstance& inst);
+unsigned lineNumberFromNode(NodeInstance& inst);
 
 }  // namespace chig
 

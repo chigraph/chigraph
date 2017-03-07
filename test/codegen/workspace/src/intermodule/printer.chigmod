@@ -1,7 +1,7 @@
 {
   "dependencies": [
-    "lang",
-    "c"
+    "c",
+    "lang"
   ],
   "graphs": [
     {
@@ -90,7 +90,7 @@
         },
         "67469f63-c2ae-40b5-9524-f0758c3fab27": {
           "data": {
-            "code": "#include <stdio.h> \n\nint doputs(const char* mystr) {\n\treturn puts(mystr); \n}",
+            "code": "#include <stdio.h> \n\nint doputs(const char* mystr) {\n\tputs(mystr); \n\treturn 12;\n}",
             "extraflags": [],
             "function": "doputs",
             "inputs": [
