@@ -9,81 +9,81 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 138)">
 <title>chig::Debugger::isAttached</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-138 490,-138 490,4 -4,4"/>
-<!-- Node33 -->
+<!-- Node41 -->
 <g id="node1" class="node">
-<title>Node33</title>
+<title>Node41</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-57.5 0,-76.5 134,-76.5 134,-57.5 0,-57.5"/>
 <text text-anchor="middle" x="67" y="-64.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Debugger::isAttached</text>
 </g>
-<!-- Node34 -->
+<!-- Node42 -->
 <g id="node2" class="node">
-<title>Node34</title>
+<title>Node42</title>
 <g id="a_node2"><a xlink:href="classchig_1_1Debugger.html#adfad4fb7129b009e2f423e6e5f0c907f" target="_top" xlink:title="Pause the execution state. ">
 <polygon fill="#ffffff" stroke="#000000" points="193.5,-114.5 193.5,-133.5 307.5,-133.5 307.5,-114.5 193.5,-114.5"/>
 <text text-anchor="middle" x="250.5" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Debugger::pause</text>
 </a>
 </g>
 </g>
-<!-- Node33&#45;&gt;Node34 -->
+<!-- Node41&#45;&gt;Node42 -->
 <g id="edge1" class="edge">
-<title>Node33&#45;&gt;Node34</title>
+<title>Node41&#45;&gt;Node42</title>
 <path fill="none" stroke="#191970" d="M105.8898,-79.6653C125.1477,-85.8847 148.7659,-93.4338 170,-100 185.7439,-104.8685 203.2735,-110.1151 217.9448,-114.4575"/>
 <polygon fill="#191970" stroke="#191970" points="106.8441,-76.2955 96.2523,-76.5465 104.6888,-82.9555 106.8441,-76.2955"/>
 </g>
-<!-- Node35 -->
+<!-- Node43 -->
 <g id="node3" class="node">
-<title>Node35</title>
+<title>Node43</title>
 <g id="a_node3"><a xlink:href="classchig_1_1Debugger.html#a9c77e0119f3b81fabce49ea20879fd33" target="_top" xlink:title="Check if the process is executing. ">
 <polygon fill="#ffffff" stroke="#000000" points="367,-76.5 367,-95.5 486,-95.5 486,-76.5 367,-76.5"/>
 <text text-anchor="middle" x="426.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Debugger::running</text>
 </a>
 </g>
 </g>
-<!-- Node33&#45;&gt;Node35 -->
+<!-- Node41&#45;&gt;Node43 -->
 <g id="edge5" class="edge">
-<title>Node33&#45;&gt;Node35</title>
+<title>Node41&#45;&gt;Node43</title>
 <path fill="none" stroke="#191970" d="M144.2319,-71.0818C210.8943,-74.605 305.817,-79.6218 366.7931,-82.8444"/>
 <polygon fill="#191970" stroke="#191970" points="144.3683,-67.5842 134.1975,-70.5515 143.9988,-74.5745 144.3683,-67.5842"/>
 </g>
-<!-- Node36 -->
+<!-- Node44 -->
 <g id="node4" class="node">
-<title>Node36</title>
+<title>Node44</title>
 <g id="a_node4"><a xlink:href="classchig_1_1Debugger.html#ae0267bb067b5135426f94ec572b43417" target="_top" xlink:title="Continue the execution of the process. ">
 <polygon fill="#ffffff" stroke="#000000" points="170,-38.5 170,-57.5 331,-57.5 331,-38.5 170,-38.5"/>
 <text text-anchor="middle" x="250.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Debugger::processContinue</text>
 </a>
 </g>
 </g>
-<!-- Node33&#45;&gt;Node36 -->
+<!-- Node41&#45;&gt;Node44 -->
 <g id="edge3" class="edge">
-<title>Node33&#45;&gt;Node36</title>
+<title>Node41&#45;&gt;Node44</title>
 <path fill="none" stroke="#191970" d="M143.9927,-59.028C152.5673,-58.1402 161.3185,-57.2341 169.936,-56.3418"/>
 <polygon fill="#191970" stroke="#191970" points="143.613,-55.5485 134.0266,-60.0599 144.334,-62.5113 143.613,-55.5485"/>
 </g>
-<!-- Node37 -->
+<!-- Node45 -->
 <g id="node5" class="node">
-<title>Node37</title>
+<title>Node45</title>
 <g id="a_node5"><a xlink:href="classchig_1_1Debugger.html#ab7c2b6a7c3c0f6950a21dd0d2a706a3b" target="_top" xlink:title="Terminate the inferior process. ">
 <polygon fill="#ffffff" stroke="#000000" points="186.5,-.5 186.5,-19.5 314.5,-19.5 314.5,-.5 186.5,-.5"/>
 <text text-anchor="middle" x="250.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Debugger::terminate</text>
 </a>
 </g>
 </g>
-<!-- Node33&#45;&gt;Node37 -->
+<!-- Node41&#45;&gt;Node45 -->
 <g id="edge6" class="edge">
-<title>Node33&#45;&gt;Node37</title>
+<title>Node41&#45;&gt;Node45</title>
 <path fill="none" stroke="#191970" d="M99.7626,-53.752C119.8329,-45.9281 146.161,-36.1817 170,-29 181.4119,-25.562 193.8859,-22.3562 205.5337,-19.5932"/>
 <polygon fill="#191970" stroke="#191970" points="98.4731,-50.4981 90.4509,-57.4188 101.0379,-57.0114 98.4731,-50.4981"/>
 </g>
-<!-- Node34&#45;&gt;Node35 -->
+<!-- Node42&#45;&gt;Node43 -->
 <g id="edge2" class="edge">
-<title>Node34&#45;&gt;Node35</title>
+<title>Node42&#45;&gt;Node43</title>
 <path fill="none" stroke="#191970" d="M304.933,-112.2474C329.8194,-106.8742 358.9188,-100.5914 382.4071,-95.5201"/>
 <polygon fill="#191970" stroke="#191970" points="303.9483,-108.8793 294.9122,-114.411 305.4257,-115.7216 303.9483,-108.8793"/>
 </g>
-<!-- Node36&#45;&gt;Node35 -->
+<!-- Node44&#45;&gt;Node43 -->
 <g id="edge4" class="edge">
-<title>Node36&#45;&gt;Node35</title>
+<title>Node44&#45;&gt;Node43</title>
 <path fill="none" stroke="#191970" d="M304.933,-59.7526C329.8194,-65.1258 358.9188,-71.4086 382.4071,-76.4799"/>
 <polygon fill="#191970" stroke="#191970" points="305.4257,-56.2784 294.9122,-57.589 303.9483,-63.1207 305.4257,-56.2784"/>
 </g>

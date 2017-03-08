@@ -8,10 +8,10 @@ var structchig_1_1LangModule =
     [ "fullName", "structchig_1_1LangModule.html#ad730121a133fbc474fcb71d49f31f7b3", null ],
     [ "fullNamePath", "structchig_1_1LangModule.html#a651be48a766a650715a14f230ea93cde", null ],
     [ "generateModule", "structchig_1_1LangModule.html#adf8c5c75b170ca07f9b0cf6c7b6e34ff", null ],
-    [ "nodeTypeFromName", "structchig_1_1LangModule.html#a37aba881a58ba961fbf9c77196dc810e", null ],
+    [ "nodeTypeFromName", "structchig_1_1LangModule.html#a49edb97f2b08cf503872d97fcd7edc34", null ],
     [ "nodeTypeNames", "structchig_1_1LangModule.html#a5e64061d5bb9dc4da2da1dcebd2ccb40", null ],
-    [ "removeDependency", "structchig_1_1LangModule.html#a0d896e122a16c304bc465d212f46b9e1", null ],
+    [ "removeDependency", "structchig_1_1LangModule.html#ab1456e263ec188dc76dd34e2bacd7ae2", null ],
     [ "shortName", "structchig_1_1LangModule.html#ae2f6e925a6a05f653c3dddc1eac36667", null ],
-    [ "typeFromName", "structchig_1_1LangModule.html#a8c6c7b9ada9f7dc770842e9a065ca1b2", null ],
+    [ "typeFromName", "structchig_1_1LangModule.html#a3fc9d42e16593f44f40dc1a231bca481", null ],
     [ "typeNames", "structchig_1_1LangModule.html#ae3a2d8f60f99e64cbba858d99a0c0f86", null ]
 ];

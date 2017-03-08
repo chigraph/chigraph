@@ -55,107 +55,107 @@ var sectionId = 'dynsection-6';
 <g id="viewport">
 <title>chig::createGraphFunctionDeclarationFromJson</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-341.5 525,-341.5 525,4 -4,4"/>
-<!-- Node104 -->
+<!-- Node106 -->
 <g id="node1" class="node">
-<title>Node104</title>
+<title>Node106</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-159 0,-189 131,-189 131,-159 0,-159"/>
 <text text-anchor="start" x="8" y="-177" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::createGraphFunction</text>
 <text text-anchor="middle" x="65.5" y="-166" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">DeclarationFromJson</text>
 </g>
-<!-- Node105 -->
+<!-- Node107 -->
 <g id="node2" class="node">
-<title>Node105</title>
+<title>Node107</title>
 <g id="a_node2"><a xlink:href="structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" target="_top" xlink:title="Add a entry to the result, either a warning or an error. ">
 <polygon fill="#ffffff" stroke="#000000" points="382,-90.5 382,-109.5 495,-109.5 495,-90.5 382,-90.5"/>
 <text text-anchor="middle" x="438.5" y="-97.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Result::addEntry</text>
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node105 -->
+<!-- Node106&#45;&gt;Node107 -->
 <g id="edge1" class="edge">
-<title>Node104&#45;&gt;Node105</title>
+<title>Node106&#45;&gt;Node107</title>
 <path fill="none" stroke="#191970" d="M131.1071,-166.8889C182.7937,-160.6427 256.4797,-150.3096 320,-136 347.5904,-129.7845 378.1124,-120.4522 401.2695,-112.8468"/>
 <polygon fill="#191970" stroke="#191970" points="402.6485,-116.0768 411.0329,-109.5996 400.4393,-109.4345 402.6485,-116.0768"/>
 </g>
-<!-- Node106 -->
+<!-- Node108 -->
 <g id="node3" class="node">
-<title>Node106</title>
+<title>Node108</title>
 <g id="a_node3"><a xlink:href="structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" target="_top" xlink:title="Get the Context that this module belongs to. ">
 <polygon fill="#ffffff" stroke="#000000" points="178.5,-311.5 178.5,-330.5 308.5,-330.5 308.5,-311.5 178.5,-311.5"/>
 <text text-anchor="middle" x="243.5" y="-318.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::context</text>
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node106 -->
+<!-- Node106&#45;&gt;Node108 -->
 <g id="edge2" class="edge">
-<title>Node104&#45;&gt;Node106</title>
+<title>Node106&#45;&gt;Node108</title>
 <path fill="none" stroke="#191970" d="M73.5945,-189.3929C88.4364,-216.0866 122.6011,-270.8926 167,-300 171.6072,-303.0204 176.6423,-305.6097 181.8592,-307.8287"/>
 <polygon fill="#191970" stroke="#191970" points="180.8011,-311.1705 191.3926,-311.4364 183.2786,-304.6236 180.8011,-311.1705"/>
 </g>
-<!-- Node108 -->
+<!-- Node110 -->
 <g id="node5" class="node">
-<title>Node108</title>
+<title>Node110</title>
 <g id="a_node5"><a xlink:href="structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3" target="_top" xlink:title="Get the full name of the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="175.5,-221.5 175.5,-240.5 311.5,-240.5 311.5,-221.5 175.5,-221.5"/>
 <text text-anchor="middle" x="243.5" y="-228.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::fullName</text>
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node108 -->
+<!-- Node106&#45;&gt;Node110 -->
 <g id="edge4" class="edge">
-<title>Node104&#45;&gt;Node108</title>
+<title>Node106&#45;&gt;Node110</title>
 <path fill="none" stroke="#191970" d="M102.7428,-189.1141C121.7848,-196.5416 145.4349,-205.3094 167,-212 174.8053,-214.4216 183.132,-216.7474 191.3121,-218.8902"/>
 <polygon fill="#191970" stroke="#191970" points="190.6174,-222.325 201.1724,-221.4074 192.3489,-215.5425 190.6174,-222.325"/>
 </g>
-<!-- Node109 -->
+<!-- Node111 -->
 <g id="node6" class="node">
-<title>Node109</title>
-<g id="a_node6"><a xlink:href="structchig_1_1GraphModule.html#a628d997f3978987e06a1fc05f86aab36" target="_top" xlink:title="Create a new function if it does&#39;t already exist. ">
+<title>Node111</title>
+<g id="a_node6"><a xlink:href="structchig_1_1GraphModule.html#aba0575313101f6bed261077685d03be7" target="_top" xlink:title="Create a new function if it does&#39;t already exist. ">
 <polygon fill="#ffffff" stroke="#000000" points="190,-260 190,-290 297,-290 297,-260 190,-260"/>
 <text text-anchor="start" x="198" y="-278" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
 <text text-anchor="middle" x="243.5" y="-267" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">getOrCreateFunction</text>
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node109 -->
+<!-- Node106&#45;&gt;Node111 -->
 <g id="edge5" class="edge">
-<title>Node104&#45;&gt;Node109</title>
+<title>Node106&#45;&gt;Node111</title>
 <path fill="none" stroke="#191970" d="M81.9452,-189.0231C101.1247,-205.8703 134.3791,-233.0469 167,-250 171.2696,-252.2189 175.7748,-254.2933 180.3751,-256.2218"/>
 <polygon fill="#191970" stroke="#191970" points="179.319,-259.5674 189.906,-259.975 181.8839,-253.0542 179.319,-259.5674"/>
 </g>
-<!-- Node111 -->
+<!-- Node113 -->
 <g id="node8" class="node">
-<title>Node111</title>
+<title>Node113</title>
 <g id="a_node8"><a xlink:href="namespacechig.html#afcb097e8f99cd26ed33dd582f0d952f0" target="_top" xlink:title="Parse a colonated pair Example: lang:i32 would turn into {lang, i32}. ">
 <polygon fill="#ffffff" stroke="#000000" points="190,-183.5 190,-202.5 297,-202.5 297,-183.5 190,-183.5"/>
 <text text-anchor="middle" x="243.5" y="-190.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::parseColonPair</text>
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node111 -->
+<!-- Node106&#45;&gt;Node113 -->
 <g id="edge7" class="edge">
-<title>Node104&#45;&gt;Node111</title>
+<title>Node106&#45;&gt;Node113</title>
 <path fill="none" stroke="#191970" d="M131.0223,-180.994C146.8789,-182.6865 163.8064,-184.4934 179.5878,-186.1779"/>
 <polygon fill="#191970" stroke="#191970" points="179.4551,-189.6836 189.7702,-187.2648 180.1982,-182.7231 179.4551,-189.6836"/>
 </g>
-<!-- Node114 -->
+<!-- Node116 -->
 <g id="node11" class="node">
-<title>Node114</title>
+<title>Node116</title>
 <g id="a_node11"><a xlink:href="namespacechig.html#a6326319f539f0f122c9784079c859bd3" target="_top" xlink:title="Parse something that looks like: {&quot;hello&quot;: &quot;there&quot;} into {&quot;hello&quot;, &quot;there&quot;}. ">
 <polygon fill="#ffffff" stroke="#000000" points="188.5,-107.5 188.5,-126.5 298.5,-126.5 298.5,-107.5 188.5,-107.5"/>
 <text text-anchor="middle" x="243.5" y="-114.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::parseObjectPair</text>
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node114 -->
+<!-- Node106&#45;&gt;Node116 -->
 <g id="edge10" class="edge">
-<title>Node104&#45;&gt;Node114</title>
+<title>Node106&#45;&gt;Node116</title>
 <path fill="none" stroke="#191970" d="M111.4473,-158.9503C128.8378,-153.2834 148.8196,-146.8071 167,-141 178.8093,-137.2279 191.6608,-133.1757 203.4,-129.4947"/>
 <polygon fill="#191970" stroke="#191970" points="204.4545,-132.8321 212.9521,-126.5043 202.3631,-126.1518 204.4545,-132.8321"/>
 </g>
-<!-- Node115 -->
+<!-- Node117 -->
 <g id="node12" class="node">
-<title>Node115</title>
+<title>Node117</title>
 <g id="a_node12"><a xlink:href="structchig_1_1GraphFunction.html#af4c4bb89b9458debff0efc8f9693d996" target="_top" xlink:title="Set the description of the function. ">
 <polygon fill="#ffffff" stroke="#000000" points="191.5,-58 191.5,-88 295.5,-88 295.5,-58 191.5,-58"/>
 <text text-anchor="start" x="199.5" y="-76" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
@@ -163,30 +163,30 @@ var sectionId = 'dynsection-6';
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node115 -->
+<!-- Node106&#45;&gt;Node117 -->
 <g id="edge11" class="edge">
-<title>Node104&#45;&gt;Node115</title>
+<title>Node106&#45;&gt;Node117</title>
 <path fill="none" stroke="#191970" d="M81.9452,-158.9769C101.1247,-142.1297 134.3791,-114.9531 167,-98 171.6086,-95.6049 176.4918,-93.3782 181.4726,-91.3216"/>
 <polygon fill="#191970" stroke="#191970" points="183.068,-94.4569 191.1248,-87.5766 180.5359,-87.9309 183.068,-94.4569"/>
 </g>
-<!-- Node116 -->
+<!-- Node118 -->
 <g id="node13" class="node">
-<title>Node116</title>
-<g id="a_node13"><a xlink:href="structchig_1_1Context.html#a0a1a3f31844162754866d7d0e877e176" target="_top" xlink:title="Gets a DataType from a module. ">
+<title>Node118</title>
+<g id="a_node13"><a xlink:href="structchig_1_1Context.html#a33b452c12e6bf340b231efe483a5209a" target="_top" xlink:title="Gets a DataType from a module. ">
 <polygon fill="#ffffff" stroke="#000000" points="167,-19.5 167,-38.5 320,-38.5 320,-19.5 167,-19.5"/>
 <text text-anchor="middle" x="243.5" y="-26.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::typeFromModule</text>
 </a>
 </g>
 </g>
-<!-- Node104&#45;&gt;Node116 -->
+<!-- Node106&#45;&gt;Node118 -->
 <g id="edge12" class="edge">
-<title>Node104&#45;&gt;Node116</title>
+<title>Node106&#45;&gt;Node118</title>
 <path fill="none" stroke="#191970" d="M73.2899,-158.9191C87.8923,-132.2113 122.0115,-76.7132 167,-48 170.3435,-45.8661 173.9105,-43.9718 177.6076,-42.2902"/>
 <polygon fill="#191970" stroke="#191970" points="179.0243,-45.4933 187.0122,-38.5333 176.4274,-38.9928 179.0243,-45.4933"/>
 </g>
-<!-- Node107 -->
+<!-- Node109 -->
 <g id="node4" class="node">
-<title>Node107</title>
+<title>Node109</title>
 <g id="a_node4"><a xlink:href="structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" target="_top" xlink:title="Generate a llvm::Module from the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="371,-307 371,-337 506,-337 506,-307 371,-307"/>
 <text text-anchor="start" x="379" y="-325" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::generate</text>
@@ -194,31 +194,31 @@ var sectionId = 'dynsection-6';
 </a>
 </g>
 </g>
-<!-- Node106&#45;&gt;Node107 -->
+<!-- Node108&#45;&gt;Node109 -->
 <g id="edge3" class="edge">
-<title>Node106&#45;&gt;Node107</title>
+<title>Node108&#45;&gt;Node109</title>
 <path fill="none" stroke="#191970" d="M308.7033,-321.3344C325.363,-321.4198 343.4409,-321.5125 360.6646,-321.6008"/>
 <polygon fill="#191970" stroke="#191970" points="360.6719,-325.1008 370.6898,-321.6523 360.7079,-318.1009 360.6719,-325.1008"/>
 </g>
-<!-- Node110 -->
+<!-- Node112 -->
 <g id="node7" class="node">
-<title>Node110</title>
-<g id="a_node7"><a xlink:href="structchig_1_1GraphModule.html#acf2cd8568f77bb56185e87e8ccb5889c" target="_top" xlink:title="Get a function from the name. ">
+<title>Node112</title>
+<g id="a_node7"><a xlink:href="structchig_1_1GraphModule.html#a6d7310e0a9703fdee65b73163546132e" target="_top" xlink:title="Get a function from the name. ">
 <polygon fill="#ffffff" stroke="#000000" points="386.5,-258 386.5,-288 490.5,-288 490.5,-258 386.5,-258"/>
 <text text-anchor="start" x="394.5" y="-276" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphModule::</text>
 <text text-anchor="middle" x="438.5" y="-265" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">functionFromName</text>
 </a>
 </g>
 </g>
-<!-- Node109&#45;&gt;Node110 -->
+<!-- Node111&#45;&gt;Node112 -->
 <g id="edge6" class="edge">
-<title>Node109&#45;&gt;Node110</title>
+<title>Node111&#45;&gt;Node112</title>
 <path fill="none" stroke="#191970" d="M297.0425,-274.4508C321.5193,-274.1998 350.6707,-273.9008 376.1322,-273.6397"/>
 <polygon fill="#191970" stroke="#191970" points="376.4607,-277.1366 386.4242,-273.5341 376.3888,-270.1369 376.4607,-277.1366"/>
 </g>
-<!-- Node112 -->
+<!-- Node114 -->
 <g id="node9" class="node">
-<title>Node112</title>
+<title>Node114</title>
 <g id="a_node9"><a xlink:href="structchig_1_1GraphFunction.html#a2eddb58def91a9e0fce7212db3834827" target="_top" xlink:title="Get the GraphModule that contains this GraphFunction. ">
 <polygon fill="#ffffff" stroke="#000000" points="386.5,-150 386.5,-180 490.5,-180 490.5,-150 386.5,-150"/>
 <text text-anchor="start" x="394.5" y="-168" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
@@ -226,15 +226,15 @@ var sectionId = 'dynsection-6';
 </a>
 </g>
 </g>
-<!-- Node111&#45;&gt;Node112 -->
+<!-- Node113&#45;&gt;Node114 -->
 <g id="edge8" class="edge">
-<title>Node111&#45;&gt;Node112</title>
+<title>Node113&#45;&gt;Node114</title>
 <path fill="none" stroke="#191970" d="M297.0425,-185.3118C321.6281,-181.7816 350.9299,-177.5742 376.4714,-173.9067"/>
 <polygon fill="#191970" stroke="#191970" points="377.0232,-177.3634 386.4242,-172.4775 376.0283,-170.4345 377.0232,-177.3634"/>
 </g>
-<!-- Node113 -->
+<!-- Node115 -->
 <g id="node10" class="node">
-<title>Node113</title>
+<title>Node115</title>
 <g id="a_node10"><a xlink:href="structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37" target="_top" xlink:title="Get the name of the function. ">
 <polygon fill="#ffffff" stroke="#000000" points="386.5,-199 386.5,-229 490.5,-229 490.5,-199 386.5,-199"/>
 <text text-anchor="start" x="394.5" y="-217" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::GraphFunction</text>
@@ -242,45 +242,45 @@ var sectionId = 'dynsection-6';
 </a>
 </g>
 </g>
-<!-- Node111&#45;&gt;Node113 -->
+<!-- Node113&#45;&gt;Node115 -->
 <g id="edge9" class="edge">
-<title>Node111&#45;&gt;Node113</title>
+<title>Node113&#45;&gt;Node115</title>
 <path fill="none" stroke="#191970" d="M297.0425,-198.7661C321.6281,-201.4138 350.9299,-204.5694 376.4714,-207.32"/>
 <polygon fill="#191970" stroke="#191970" points="376.1069,-210.8009 386.4242,-208.3918 376.8565,-203.8411 376.1069,-210.8009"/>
 </g>
-<!-- Node116&#45;&gt;Node105 -->
+<!-- Node118&#45;&gt;Node107 -->
 <g id="edge14" class="edge">
-<title>Node116&#45;&gt;Node105</title>
+<title>Node118&#45;&gt;Node107</title>
 <path fill="none" stroke="#191970" d="M289.7685,-38.5757C299.8743,-41.1951 310.4108,-44.3409 320,-48 336.9029,-54.4499 339.5785,-59.4078 356,-67 371.1311,-73.9956 388.1882,-80.9654 402.8491,-86.6846"/>
 <polygon fill="#191970" stroke="#191970" points="401.9734,-90.098 412.5631,-90.4292 404.4912,-83.5665 401.9734,-90.098"/>
 </g>
-<!-- Node117 -->
+<!-- Node119 -->
 <g id="node14" class="node">
-<title>Node117</title>
+<title>Node119</title>
 <g id="a_node14"><a xlink:href="structchig_1_1Context.html#ae9794348cb6c594497574b13852d6fd1" target="_top" xlink:title="Gets the module by the full name. ">
 <polygon fill="#ffffff" stroke="#000000" points="356,-.5 356,-19.5 521,-19.5 521,-.5 356,-.5"/>
 <text text-anchor="middle" x="438.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::moduleByFullName</text>
 </a>
 </g>
 </g>
-<!-- Node116&#45;&gt;Node117 -->
+<!-- Node118&#45;&gt;Node119 -->
 <g id="edge13" class="edge">
-<title>Node116&#45;&gt;Node117</title>
+<title>Node118&#45;&gt;Node119</title>
 <path fill="none" stroke="#191970" d="M320.0095,-21.5452C328.4455,-20.7233 337.1015,-19.8799 345.7085,-19.0412"/>
 <polygon fill="#191970" stroke="#191970" points="346.1603,-22.5139 355.7737,-18.0605 345.4814,-15.5469 346.1603,-22.5139"/>
 </g>
-<!-- Node118 -->
+<!-- Node120 -->
 <g id="node15" class="node">
-<title>Node118</title>
-<g id="a_node15"><a xlink:href="structchig_1_1ChigModule.html#a7bb138db48ea320a09312ffd1af0999a" target="_top" xlink:title="Get a DataType from the name. ">
+<title>Node120</title>
+<g id="a_node15"><a xlink:href="structchig_1_1ChigModule.html#a4da097ea0878d559ffe0d6e2b026fa15" target="_top" xlink:title="Get a DataType from the name. ">
 <polygon fill="#ffffff" stroke="#000000" points="356.5,-38.5 356.5,-57.5 520.5,-57.5 520.5,-38.5 356.5,-38.5"/>
 <text text-anchor="middle" x="438.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::ChigModule::typeFromName</text>
 </a>
 </g>
 </g>
-<!-- Node116&#45;&gt;Node118 -->
+<!-- Node118&#45;&gt;Node120 -->
 <g id="edge15" class="edge">
-<title>Node116&#45;&gt;Node118</title>
+<title>Node118&#45;&gt;Node120</title>
 <path fill="none" stroke="#191970" d="M320.0095,-36.4548C328.6922,-37.3008 337.6081,-38.1695 346.4636,-39.0324"/>
 <polygon fill="#191970" stroke="#191970" points="346.1283,-42.5162 356.4206,-40.0025 346.8072,-35.5492 346.1283,-42.5162"/>
 </g>

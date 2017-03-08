@@ -2,17 +2,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>chigraph: libchig/src/NodeInstance.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" href="material.min.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="material.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<script type="text/javascript" src="doxy-boot.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
@@ -26,7 +22,6 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="customdoxygen.css">
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -97,7 +92,7 @@ $(document).ready(function(){initNavTree('NodeInstance_8cpp_source.html','');});
 <div class="ttc" id="structchig_1_1NodeInstance_html_ad4746e1a747df527921e7aadd8c6d1d9"><div class="ttname"><a href="structchig_1_1NodeInstance.html#ad4746e1a747df527921e7aadd8c6d1d9">chig::NodeInstance::outputExecConnections</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; NodeInstance *, size_t &gt; &gt; outputExecConnections</div><div class="ttdoc">The connections that go out of this node, exec. </div><div class="ttdef"><b>Definition:</b> <a href="NodeInstance_8hpp_source.html#l00077">NodeInstance.hpp:77</a></div></div>
 <div class="ttc" id="structchig_1_1NodeInstance_html_a8cab24028f6348e883362a3199e03c72"><div class="ttname"><a href="structchig_1_1NodeInstance.html#a8cab24028f6348e883362a3199e03c72">chig::NodeInstance::outputDataConnections</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; std::pair&lt; NodeInstance *, size_t &gt; &gt; &gt; outputDataConnections</div><div class="ttdoc">The connections that lead out of this node, data. </div><div class="ttdef"><b>Definition:</b> <a href="NodeInstance_8hpp_source.html#l00080">NodeInstance.hpp:80</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_ad5ef2ca8fec103e87c31ed39564fa050"><div class="ttname"><a href="structchig_1_1NodeType.html#ad5ef2ca8fec103e87c31ed39564fa050">chig::NodeType::execInputs</a></div><div class="ttdeci">gsl::span&lt; const std::string &gt; execInputs() const</div><div class="ttdoc">Get the execution inputs for the node. </div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00087">NodeType.hpp:87</a></div></div>
-<div class="ttc" id="structchig_1_1GraphFunction_html"><div class="ttname"><a href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></div><div class="ttdoc">this is an AST-like representation of a function in a graph It is used for IDE-like behavior...</div><div class="ttdef"><b>Definition:</b> <a href="GraphFunction_8hpp_source.html#l00026">GraphFunction.hpp:26</a></div></div>
+<div class="ttc" id="structchig_1_1GraphFunction_html"><div class="ttname"><a href="structchig_1_1GraphFunction.html">chig::GraphFunction</a></div><div class="ttdoc">this is an AST-like representation of a function in a graph It is used for IDE-like behavior...</div><div class="ttdef"><b>Definition:</b> <a href="GraphFunction_8hpp_source.html#l00027">GraphFunction.hpp:27</a></div></div>
 <div class="ttc" id="FunctionValidator_8hpp_html"><div class="ttname"><a href="FunctionValidator_8hpp.html">FunctionValidator.hpp</a></div><div class="ttdoc">Defines functions for validating GraphFunction objects. </div></div>
 <div class="ttc" id="structchig_1_1NodeInstance_html_ac06ee5988ee5f130088fee83a550f4d2"><div class="ttname"><a href="structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2">chig::NodeInstance::function</a></div><div class="ttdeci">GraphFunction &amp; function() const</div><div class="ttdoc">Get the containing GraphFunction. </div><div class="ttdef"><b>Definition:</b> <a href="NodeInstance_8hpp_source.html#l00086">NodeInstance.hpp:86</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_ae03c2c70c06ea281a87b1b40c0514064"><div class="ttname"><a href="structchig_1_1NodeType.html#ae03c2c70c06ea281a87b1b40c0514064">chig::NodeType::dataInputs</a></div><div class="ttdeci">const std::vector&lt; NamedDataType &gt; &amp; dataInputs() const</div><div class="ttdoc">Get the data inputs for the node. </div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00081">NodeType.hpp:81</a></div></div>
@@ -110,7 +105,7 @@ $(document).ready(function(){initNavTree('NodeInstance_8cpp_source.html','');});
 <div class="ttc" id="structchig_1_1NodeType_html_aec01c9c30813ec9f0e15dda0f7ae34f3"><div class="ttname"><a href="structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3">chig::NodeType::qualifiedName</a></div><div class="ttdeci">std::string qualifiedName() const</div><div class="ttdoc">Get the qualified name of the node type, like module.name():name() </div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00042">NodeType.hpp:42</a></div></div>
 <div class="ttc" id="structchig_1_1NodeType_html_aed44920726e20a4403f3d43f88cadb54"><div class="ttname"><a href="structchig_1_1NodeType.html#aed44920726e20a4403f3d43f88cadb54">chig::NodeType::dataOutputs</a></div><div class="ttdeci">const std::vector&lt; NamedDataType &gt; &amp; dataOutputs() const</div><div class="ttdoc">Get the data outputs for the node. </div><div class="ttdef"><b>Definition:</b> <a href="NodeType_8hpp_source.html#l00084">NodeType.hpp:84</a></div></div>
 <div class="ttc" id="structchig_1_1NodeInstance_html_a73fc840bb83c6d7ad6abfdcc873f4152"><div class="ttname"><a href="structchig_1_1NodeInstance.html#a73fc840bb83c6d7ad6abfdcc873f4152">chig::NodeInstance::inputExecConnections</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; std::pair&lt; NodeInstance *, size_t &gt; &gt; &gt; inputExecConnections</div><div class="ttdoc">The connections that lead to this node, exec. </div><div class="ttdef"><b>Definition:</b> <a href="NodeInstance_8hpp_source.html#l00071">NodeInstance.hpp:71</a></div></div>
-<div class="ttc" id="namespacechig_html"><div class="ttname"><a href="namespacechig.html">chig</a></div><div class="ttdoc">The namespace where chigraph lives. </div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00023">ChigModule.hpp:23</a></div></div>
+<div class="ttc" id="namespacechig_html"><div class="ttname"><a href="namespacechig.html">chig</a></div><div class="ttdoc">The namespace where chigraph lives. </div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00022">ChigModule.hpp:22</a></div></div>
 <div class="ttc" id="namespacechig_html_a26aa6586df79345493de9fc130291c18"><div class="ttname"><a href="namespacechig.html#a26aa6586df79345493de9fc130291c18">chig::disconnectData</a></div><div class="ttdeci">Result disconnectData(NodeInstance &amp;lhs, size_t lhsConnID, NodeInstance &amp;rhs)</div><div class="ttdoc">Disconnect a data connection. </div><div class="ttdef"><b>Definition:</b> <a href="NodeInstance_8cpp_source.html#l00203">NodeInstance.cpp:203</a></div></div>
 <div class="ttc" id="structchig_1_1NodeInstance_html_a5c9d6934e14f56ff4317ff08e170e83a"><div class="ttname"><a href="structchig_1_1NodeInstance.html#a5c9d6934e14f56ff4317ff08e170e83a">chig::NodeInstance::type</a></div><div class="ttdeci">NodeType &amp; type()</div><div class="ttdoc">Get the type of the instance. </div><div class="ttdef"><b>Definition:</b> <a href="NodeInstance_8hpp_source.html#l00043">NodeInstance.hpp:43</a></div></div>
 <div class="ttc" id="structchig_1_1NodeInstance_html_ada9f137d9c85f8e9d84b4d2f2aed5a12"><div class="ttname"><a href="structchig_1_1NodeInstance.html#ada9f137d9c85f8e9d84b4d2f2aed5a12">chig::NodeInstance::inputDataConnections</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; NodeInstance *, size_t &gt; &gt; inputDataConnections</div><div class="ttdoc">The connections that go into this node, data. </div><div class="ttdef"><b>Definition:</b> <a href="NodeInstance_8hpp_source.html#l00074">NodeInstance.hpp:74</a></div></div>
@@ -123,12 +118,11 @@ $(document).ready(function(){initNavTree('NodeInstance_8cpp_source.html','');});
 <div class="ttc" id="namespacechig_html_ad3c2fc880f6843f9a8a0f5ee0d62249d"><div class="ttname"><a href="namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d">chig::connectData</a></div><div class="ttdeci">Result connectData(NodeInstance &amp;lhs, size_t lhsConnID, NodeInstance &amp;rhs, size_t rhsConnID)</div><div class="ttdoc">Connects two nodes&amp;#39; data connections. </div><div class="ttdef"><b>Definition:</b> <a href="NodeInstance_8cpp_source.html#l00098">NodeInstance.cpp:98</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.13-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_dd1823b115988dc5433ea160a3de4758.html">libchig</a></li><li class="navelem"><a class="el" href="dir_9bf335b5320363225b181f82b328b05f.html">src</a></li><li class="navelem"><a class="el" href="NodeInstance_8cpp.html">NodeInstance.cpp</a></li>
-    <li class="footer">Generated on Sun Mar 5 2017 22:16:26 for chigraph by
+    <li class="footer">Generated on Wed Mar 8 2017 10:12:17 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

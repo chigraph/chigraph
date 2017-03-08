@@ -1,6 +1,6 @@
 var structchig_1_1NodeType =
 [
-    [ "NodeType", "structchig_1_1NodeType.html#a83c7ce04c8c7b38c1a3fac17bf0dbe3d", null ],
+    [ "NodeType", "structchig_1_1NodeType.html#acf2e5b37a9df37995249829d182e727b", null ],
     [ "~NodeType", "structchig_1_1NodeType.html#afa1cdaa90d27cd073f5cb86878aaee72", null ],
     [ "clone", "structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513", null ],
     [ "codegen", "structchig_1_1NodeType.html#a07fe116ce84fbf50afd292e82203aedf", null ],
@@ -18,9 +18,9 @@ var structchig_1_1NodeType =
     [ "qualifiedName", "structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3", null ],
     [ "setDataInputs", "structchig_1_1NodeType.html#a3ff276bee8747ab992de1299fc32eb5f", null ],
     [ "setDataOutputs", "structchig_1_1NodeType.html#a7a46fb28c4a3982fee872d99c2fd1bd5", null ],
-    [ "setDescription", "structchig_1_1NodeType.html#a747e209832a5b7d2db9d9c608f8aaa2a", null ],
+    [ "setDescription", "structchig_1_1NodeType.html#aa00da652485146ebd55ca13e980ea069", null ],
     [ "setExecInputs", "structchig_1_1NodeType.html#af2c90f6feb76c07a1a60aec4e6f44b18", null ],
     [ "setExecOutputs", "structchig_1_1NodeType.html#af0820866c93d3c2975aea01d582501a6", null ],
-    [ "setName", "structchig_1_1NodeType.html#ab293155e9460646933fa7f41e426a2f3", null ],
+    [ "setName", "structchig_1_1NodeType.html#a0e2dd2bda020702d2c62e1d9be923c32", null ],
     [ "toJSON", "structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c", null ]
 ];
