@@ -33,8 +33,8 @@ urls=[]
 
 if platform.system() == "Linux":
 	
-	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/kf5-5.31.0-debug-gcc6.3-linux64.tar.xz', os.path.join(thirdPartyDir, "kf5-debug.tar.xz"), thirdPartyDir))
-	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/kf5-5.31.0-release-gcc6.3-linux64.tar.xz', os.path.join(thirdPartyDir, "kf5-release.tar.xz"), thirdPartyDir))
+	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/kf5-debug-gcc-linux64.tar.xz', os.path.join(thirdPartyDir, "kf5-debug.tar.xz"), thirdPartyDir))
+	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/kf5-release-gcc-linux64.tar.xz', os.path.join(thirdPartyDir, "kf5-release.tar.xz"), thirdPartyDir))
 	
 elif platform.system() == "Windows":
 	urls.append(('https://github.com/chigraph/chigraph/releases/download/dependencies/kf5-5.31.0-release-gcc6.3-win64.tar.xz', os.path.join(thirdPartyDir, "kf5-release.tar.xz"), thirdPartyDir))
