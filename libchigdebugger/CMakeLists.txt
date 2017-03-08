@@ -19,6 +19,11 @@ set(DEBUGGER_HEADERS
 
 add_library(chigdebugger STATIC ${DEBUGGER_SRCS} ${DEBUGGER_HEADERS})
 
+target_compile_options(chigdebugger 
+PUBLIC
+	${LLVM_CXX_FLAGS_LIST}
+)
+
 target_include_directories(chigdebugger
 PUBLIC
 	include
@@ -27,6 +32,7 @@ PUBLIC
 target_link_libraries(chigdebugger
 PUBLIC 
 	libchig
+	${LLVM_LD_FLAGS_LIST}
 	lldb
 )
 
