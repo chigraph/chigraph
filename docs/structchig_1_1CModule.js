@@ -10,11 +10,11 @@ var structchig_1_1CModule =
     [ "fullName", "structchig_1_1CModule.html#ad730121a133fbc474fcb71d49f31f7b3", null ],
     [ "fullNamePath", "structchig_1_1CModule.html#a651be48a766a650715a14f230ea93cde", null ],
     [ "generateModule", "structchig_1_1CModule.html#a96a5a3b26231a11e91cab54f7cbdce09", null ],
-    [ "nodeTypeFromName", "structchig_1_1CModule.html#a2cabea4f20241d1c2451fd5b9c4dc9c7", null ],
+    [ "nodeTypeFromName", "structchig_1_1CModule.html#a15bd1b50bb5487ebdf4b45412879cd67", null ],
     [ "nodeTypeNames", "structchig_1_1CModule.html#a31269b0f3d999787f50a10152abd2597", null ],
-    [ "removeDependency", "structchig_1_1CModule.html#a0d896e122a16c304bc465d212f46b9e1", null ],
+    [ "removeDependency", "structchig_1_1CModule.html#ab1456e263ec188dc76dd34e2bacd7ae2", null ],
     [ "setExtraArguments", "structchig_1_1CModule.html#af284d8e92a7d7df39d8d6c7acdf8d559", null ],
     [ "shortName", "structchig_1_1CModule.html#ae2f6e925a6a05f653c3dddc1eac36667", null ],
-    [ "typeFromName", "structchig_1_1CModule.html#a5e8afdbe3ee16e0a06b83513e033d856", null ],
+    [ "typeFromName", "structchig_1_1CModule.html#a485dcc70504a51129473075bae7299ae", null ],
     [ "typeNames", "structchig_1_1CModule.html#a93686f0f5199b7dc81f1ed7d722b00a8", null ]
 ];

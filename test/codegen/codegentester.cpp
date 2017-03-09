@@ -235,8 +235,8 @@ int main(int argc, char** argv) {
 		}
 
 		if (llistdout != expectedcout) {
-			std::cerr << "(lli ll) Unexpected stdout: " << llistdout << " expected was "
-			          << expectedcout << std::endl
+			std::cerr << "(lli ll) Unexpected stdout: \"" << llistdout << "\" expected was \""
+			          << expectedcout << "\"" << std::endl
 			          << "retcode: \"" << retcodelli << "\"" << std::endl
 			          << "stderr: \"" << llistderr << "\"" << std::endl
 			          << "generated IR" << std::endl
@@ -246,8 +246,8 @@ int main(int argc, char** argv) {
 		}
 
 		if (llistderr != expectedcerr) {
-			std::cerr << "(lli ll) Unexpected stderr: " << stderr << " expected was "
-			          << expectedcerr << std::endl
+			std::cerr << "(lli ll) Unexpected stderr: \"" << stderr << "\" expected was \""
+			          << expectedcerr << '\"' << std::endl
 			          << "retcode: \"" << retcodelli << "\"" << std::endl
 			          << "stdout: \"" << llistdout << "\"" << std::endl
 			          << "generated IR" << std::endl
@@ -283,8 +283,8 @@ int main(int argc, char** argv) {
 		}
 
 		if (generatedstdout != expectedcout) {
-			std::cerr << "(chig run) Unexpected stdout: " << generatedstdout << " expected was "
-			          << expectedcout << std::endl
+			std::cerr << "(chig run) Unexpected stdout: \"" << generatedstdout << "\" expected was \""
+			          << expectedcout << '\"' << std::endl
 			          << "retcode: \"" << retcode << "\"" << std::endl
 			          << "stderr: \"" << generatedstderr << "\"" << std::endl;
 
@@ -292,8 +292,8 @@ int main(int argc, char** argv) {
 		}
 
 		if (generatedstderr != expectedcerr) {
-			std::cerr << "(chig run) Unexpected stderr: " << generatedstderr << " expected was "
-			          << expectedcerr << std::endl
+			std::cerr << "(chig run) Unexpected stderr: \"" << generatedstderr << "\" expected was \""
+			          << expectedcerr << '\"' << std::endl
 			          << "retcode: \"" << retcode << "\"" << std::endl
 			          << "stdout: \"" << generatedstdout << "\"" << std::endl;
 
@@ -388,8 +388,8 @@ int main(int argc, char** argv) {
 		}
 
 		if (llistdout != expectedcout) {
-			std::cerr << "(lli bc) Unexpected stdout: " << llistdout << " expected was "
-			          << expectedcout << std::endl
+			std::cerr << "(lli bc) Unexpected stdout: \"" << llistdout << "\" expected was \""
+			          << expectedcout << '\"' << std::endl
 			          << "retcode: \"" << retcodelli << "\"" << std::endl
 			          << "stderr: \"" << llistderr << "\"" << std::endl;
 
@@ -397,8 +397,8 @@ int main(int argc, char** argv) {
 		}
 
 		if (llistderr != expectedcerr) {
-			std::cerr << "(lli bc) Unexpected stderr: " << stderr << " expected was "
-			          << expectedcerr << std::endl
+			std::cerr << "(lli bc) Unexpected stderr: \"" << stderr << "\" expected was \""
+			          << expectedcerr << '\"' << std::endl
 			          << "retcode: \"" << retcodelli << "\"" << std::endl
 			          << "stdout: \"" << llistdout << "\"" << std::endl;
 

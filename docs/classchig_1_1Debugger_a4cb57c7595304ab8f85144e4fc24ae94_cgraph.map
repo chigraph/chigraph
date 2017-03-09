@@ -1,29 +1,37 @@
 <map id="chig::Debugger::inspectNodeOutput" name="chig::Debugger::inspectNodeOutput">
-<area shape="rect" id="node2" href="$structchig_1_1GraphModule.html#aca14e257ae2353a36d40a66d4ce96036" title="Create the associations from line number and function in debug info. " alt="" coords="253,197,417,239"/>
-<area shape="rect" id="node7" href="$classchig_1_1Debugger.html#ad9fbd67fd159aa09811bc5a0c6ecef82" title="Get the process This will only be valid if there&#39;s an attached process. " alt="" coords="243,361,428,387"/>
-<area shape="rect" id="node8" href="$structchig_1_1NodeInstance.html#acb8bab6d96bbfa9facdfb5aca22d43a1" title="Get the containing GraphModule. " alt="" coords="268,412,403,453"/>
-<area shape="rect" id="node28" href="$structchig_1_1NodeInstance.html#afacc72392d31c168d5a769f13d0fa3ec" title="Get the ID as a string. " alt="" coords="268,477,403,519"/>
-<area shape="rect" id="node3" href="$structchig_1_1GraphModule.html#a3aca789690eb2e7dedc764ae20154c9d" title="Get functions. " alt="" coords="476,68,615,109"/>
-<area shape="rect" id="node4" href="$structchig_1_1GraphModule.html#a64831f6b192140fb9014025717df72ac" title="Get a struct by name. " alt="" coords="928,5,1067,47"/>
-<area shape="rect" id="node5" href="$structchig_1_1GraphModule.html#af766a22d33074aafe823b19218321d6e" title="Create a new struct in the module. " alt="" coords="686,35,825,76"/>
-<area shape="rect" id="node6" href="$structchig_1_1GraphModule.html#a7d3e60b0ac5dcc4304c4cfc0a8b13d07" title="Remove a struct from the module by name. " alt="" coords="686,100,825,141"/>
-<area shape="rect" id="node9" href="$namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d" title="Connects two nodes&#39; data connections. " alt="" coords="482,369,609,395"/>
-<area shape="rect" id="node13" href="$namespacechig.html#a26aa6586df79345493de9fc130291c18" title="Disconnect a data connection. " alt="" coords="683,419,827,446"/>
-<area shape="rect" id="node24" href="$namespacechig.html#a8a2e0029b591b2c20b39d570753f123f" title="Connects two nodes&#39; exec connections. " alt="" coords="480,685,611,711"/>
-<area shape="rect" id="node25" href="$namespacechig.html#ad24a330508033631ef29b2f6e5cf6210" title="Disconnect a exec connection. " alt="" coords="682,774,829,801"/>
-<area shape="rect" id="node10" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. " alt="" coords="922,629,1073,655"/>
-<area shape="rect" id="node11" href="$structchig_1_1NodeType.html#ae03c2c70c06ea281a87b1b40c0514064" title="Get the data inputs for the node. " alt="" coords="906,241,1089,267"/>
-<area shape="rect" id="node12" href="$structchig_1_1NodeType.html#aed44920726e20a4403f3d43f88cadb54" title="Get the data outputs for the node. " alt="" coords="901,314,1093,341"/>
-<area shape="rect" id="node14" href="$structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2" title="Get the containing GraphFunction. " alt="" coords="930,412,1065,453"/>
-<area shape="rect" id="node16" href="$structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3" title="Get the qualified name of the node type, like module.name():name() " alt="" coords="896,718,1099,745"/>
-<area shape="rect" id="node21" href="$structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c" title="Create the JSON necessary to store the object. " alt="" coords="914,178,1081,205"/>
-<area shape="rect" id="node23" href="$structchig_1_1NodeInstance.html#a5c9d6934e14f56ff4317ff08e170e83a" title="Get the type of the instance. " alt="" coords="930,483,1065,524"/>
-<area shape="rect" id="node15" href="$structchig_1_1NodeInstance.html#a0560b8b35612fc845d6464866c425c71" title="Get the ID of the instance, unique to the graph. " alt="" coords="921,558,1073,585"/>
-<area shape="rect" id="node17" href="$structchig_1_1NodeType.html#ad18d6f37b20e92bcd580bcf7c7504e64" title="Get the ChigModule this NodeType belongs to. " alt="" coords="1156,743,1319,770"/>
-<area shape="rect" id="node18" href="$structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3" title="Get the full name of the module. " alt="" coords="1147,794,1328,821"/>
-<area shape="rect" id="node19" href="$structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53" title="Get the name of the NodeType in the ChigModule. " alt="" coords="1161,642,1314,669"/>
-<area shape="rect" id="node20" href="$structchig_1_1NodeType.html#a07fe116ce84fbf50afd292e82203aedf" title="A virtual function that is called when this node needs to be called. " alt="" coords="1152,693,1323,719"/>
-<area shape="rect" id="node22" href="$structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513" title="Clones the type. " alt="" coords="1161,178,1313,205"/>
-<area shape="rect" id="node26" href="$structchig_1_1NodeType.html#afc4ee5b526c87f79a4b4e2a902e209a8" title="Get the execution outputs for the node. " alt="" coords="900,825,1095,851"/>
-<area shape="rect" id="node27" href="$structchig_1_1NodeType.html#ad5ef2ca8fec103e87c31ed39564fa050" title="Get the execution inputs for the node. " alt="" coords="663,723,848,750"/>
+<area shape="rect" id="node2" href="$structchig_1_1NodeInstance.html#ac06ee5988ee5f130088fee83a550f4d2" title="Get the containing GraphFunction. " alt="" coords="1229,293,1363,335"/>
+<area shape="rect" id="node3" href="$classchig_1_1Debugger.html#ad9fbd67fd159aa09811bc5a0c6ecef82" title="Get the process This will only be valid if there&#39;s an attached process. " alt="" coords="483,217,668,243"/>
+<area shape="rect" id="node4" href="$classchig_1_1Debugger.html#a0a1845b9f4c58bf2d989431ad3b82fc4" title="Get a NodeInstance from a frame. " alt="" coords="243,377,417,419"/>
+<area shape="rect" id="node36" href="$structchig_1_1NodeInstance.html#afacc72392d31c168d5a769f13d0fa3ec" title="Get the ID as a string. " alt="" coords="263,443,397,484"/>
+<area shape="rect" id="node5" href="$namespacechig.html#a6495409c0e45e8684eb01065a2b225e7" title="Unmangle a function name. " alt="" coords="478,334,673,361"/>
+<area shape="rect" id="node6" href="$classchig_1_1Debugger.html#a61b089c63ae8a468022fffb9001f3030" title="Get the module that&#39;s being debugged by this debugger. " alt="" coords="496,385,655,411"/>
+<area shape="rect" id="node7" href="$structchig_1_1GraphModule.html#a6d7310e0a9703fdee65b73163546132e" title="Get a function from the name. " alt="" coords="506,436,645,477"/>
+<area shape="rect" id="node8" href="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" title="Get the Context that this module belongs to. " alt="" coords="489,502,662,529"/>
+<area shape="rect" id="node10" href="$structchig_1_1Context.html#ae9794348cb6c594497574b13852d6fd1" title="Gets the module by the full name. " alt="" coords="465,553,685,579"/>
+<area shape="rect" id="node11" href="$structchig_1_1GraphFunction.html#a2eddb58def91a9e0fce7212db3834827" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="506,604,645,645"/>
+<area shape="rect" id="node12" href="$structchig_1_1GraphModule.html#a292eaf6be61fdccb79b54341a34ca6d7" title="Create the associations from line number and function in debug info. " alt="" coords="493,268,657,309"/>
+<area shape="rect" id="node17" href="$structchig_1_1NodeInstance.html#acb8bab6d96bbfa9facdfb5aca22d43a1" title="Get the containing GraphModule. " alt="" coords="508,669,643,711"/>
+<area shape="rect" id="node9" href="$structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" title="Generate a llvm::Module from the module. " alt="" coords="733,472,913,513"/>
+<area shape="rect" id="node13" href="$structchig_1_1GraphModule.html#a3aca789690eb2e7dedc764ae20154c9d" title="Get functions. " alt="" coords="754,68,893,109"/>
+<area shape="rect" id="node14" href="$structchig_1_1GraphModule.html#a01362cdddc3da799db15ec837a8dea1d" title="Get a struct by name. " alt="" coords="1227,5,1365,47"/>
+<area shape="rect" id="node15" href="$structchig_1_1GraphModule.html#af766a22d33074aafe823b19218321d6e" title="Create a new struct in the module. " alt="" coords="985,35,1123,76"/>
+<area shape="rect" id="node16" href="$structchig_1_1GraphModule.html#aa65e5dd0e71ffaa9af3722ab9259a0c9" title="Remove a struct from the module by name. " alt="" coords="985,100,1123,141"/>
+<area shape="rect" id="node18" href="$namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d" title="Connects two nodes&#39; data connections. " alt="" coords="760,538,887,565"/>
+<area shape="rect" id="node22" href="$namespacechig.html#a26aa6586df79345493de9fc130291c18" title="Disconnect a data connection. " alt="" coords="982,513,1126,539"/>
+<area shape="rect" id="node32" href="$namespacechig.html#a8a2e0029b591b2c20b39d570753f123f" title="Connects two nodes&#39; exec connections. " alt="" coords="758,766,889,793"/>
+<area shape="rect" id="node33" href="$namespacechig.html#ad24a330508033631ef29b2f6e5cf6210" title="Disconnect a exec connection. " alt="" coords="981,715,1127,742"/>
+<area shape="rect" id="node19" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. " alt="" coords="1221,570,1371,597"/>
+<area shape="rect" id="node20" href="$structchig_1_1NodeType.html#ae03c2c70c06ea281a87b1b40c0514064" title="Get the data inputs for the node. " alt="" coords="1205,370,1387,397"/>
+<area shape="rect" id="node21" href="$structchig_1_1NodeType.html#aed44920726e20a4403f3d43f88cadb54" title="Get the data outputs for the node. " alt="" coords="1200,442,1392,469"/>
+<area shape="rect" id="node24" href="$structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3" title="Get the qualified name of the node type, like module.name():name() " alt="" coords="1195,709,1397,735"/>
+<area shape="rect" id="node29" href="$structchig_1_1NodeType.html#ae32c95d458c85ea3633a3e5cb9fd321c" title="Create the JSON necessary to store the object. " alt="" coords="1213,507,1379,534"/>
+<area shape="rect" id="node31" href="$structchig_1_1NodeInstance.html#a5c9d6934e14f56ff4317ff08e170e83a" title="Get the type of the instance. " alt="" coords="1229,785,1363,827"/>
+<area shape="rect" id="node23" href="$structchig_1_1NodeInstance.html#a0560b8b35612fc845d6464866c425c71" title="Get the ID of the instance, unique to the graph. " alt="" coords="1220,633,1372,659"/>
+<area shape="rect" id="node25" href="$structchig_1_1NodeType.html#ad18d6f37b20e92bcd580bcf7c7504e64" title="Get the ChigModule this NodeType belongs to. " alt="" coords="1455,633,1617,659"/>
+<area shape="rect" id="node26" href="$structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3" title="Get the full name of the module. " alt="" coords="1445,683,1627,710"/>
+<area shape="rect" id="node27" href="$structchig_1_1NodeType.html#aeba0c62eaae2a477171d83a65c877f53" title="Get the name of the NodeType in the ChigModule. " alt="" coords="1459,734,1613,761"/>
+<area shape="rect" id="node28" href="$structchig_1_1NodeType.html#a07fe116ce84fbf50afd292e82203aedf" title="A virtual function that is called when this node needs to be called. " alt="" coords="1451,785,1621,811"/>
+<area shape="rect" id="node30" href="$structchig_1_1NodeType.html#a4225c75840cda9382e6f5ff169d59513" title="Clones the type. " alt="" coords="1460,507,1612,534"/>
+<area shape="rect" id="node34" href="$structchig_1_1NodeType.html#afc4ee5b526c87f79a4b4e2a902e209a8" title="Get the execution outputs for the node. " alt="" coords="1199,898,1393,925"/>
+<area shape="rect" id="node35" href="$structchig_1_1NodeType.html#ad5ef2ca8fec103e87c31ed39564fa050" title="Get the execution inputs for the node. " alt="" coords="961,867,1147,894"/>
 </map>
