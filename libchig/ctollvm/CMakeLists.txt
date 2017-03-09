@@ -37,6 +37,8 @@ execute_process(COMMAND ${LLVM_CONFIG} --ldflags OUTPUT_VARIABLE LLVM_LD_FLAGS O
 string(REPLACE " " ";" LLVM_LD_FLAGS_LIST "${LLVM_LD_FLAGS}")
 message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 
+execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE CLANG_LIB_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 target_compile_options(ctollvm
 PUBLIC
 	${LLVM_CXX_FLAGS_LIST}
@@ -48,8 +50,7 @@ PUBLIC
 	${LLVM_INCLUDE_DIR}
 )
 
-target_link_libraries(ctollvm 
-PRIVATE
+set(CLANG_LIBS 
 	clangRewrite
 	clangFrontendTool
 	clangCodeGen
@@ -63,6 +64,26 @@ PRIVATE
 	clangLex
 	clangDriver
 	clangBasic
+)
+
+# get clang libraries
+foreach(CLANG_LIB ${CLANG_LIBS})
+	find_library(${CLANG_LIB}_LIBRARY ${CLANG_LIB} PATHS ${CLANG_LIB_DIR})
+	
+	if (NOT CLANG_LIB)
+		message(FATAL_ERROR "Could not locate ${CLANG_LIB}")
+	endif()
+	
+	message(STATUS "${CLANG_LIB} found at ${CLANG_LIB}")
+	
+	target_link_libraries(ctollvm 
+	PRIVATE
+		${${CLANG_LIB}_LIBRARY}
+	)
+	
+endforeach()
+
+target_link_libraries(ctollvm
 PUBLIC
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
