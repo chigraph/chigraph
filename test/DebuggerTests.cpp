@@ -14,8 +14,11 @@
 #include <lldb/API/SBProcess.h>
 #include <lldb/API/SBThread.h>
 
+#include <thread>
+
 using namespace chig;
 using namespace nlohmann;
+using namespace std::chrono_literals;
 
 namespace fs = boost::filesystem;
 
@@ -130,12 +133,13 @@ TEST_CASE("Debugger", "") {
 		if (lldb::SBProcess::GetStateFromEvent(ev) == lldb::eStateStopped) break;
 	}
 	
-		listener.WaitForEvent(5, ev);
-		listener.WaitForEvent(5, ev);
+	std::this_thread::sleep_for(3s);
+	REQUIRE(dbg.isAttached());
+	REQUIRE(!dbg.running());
 	
 	std::cout << std::endl << std::endl << "NODE TYPE: " << dbg.nodeFromFrame()->type().qualifiedName() << std::endl << std::endl;
 	std::cout.flush();
-//	REQUIRE(dbg.nodeFromFrame() == exitNode);
+	REQUIRE(dbg.nodeFromFrame() == exitNode);
 	
 	value = dbg.inspectNodeOutput(*entry, 0);
 	REQUIRE(value.IsValid());
