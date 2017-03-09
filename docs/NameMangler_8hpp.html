@@ -2,17 +2,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>chigraph: libchig/include/chig/NameMangler.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" href="material.min.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="material.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<script type="text/javascript" src="doxy-boot.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
@@ -26,7 +22,6 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="customdoxygen.css">
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -114,7 +109,8 @@ $(document).ready(function(){initNavTree('NameMangler_8hpp.html','');});
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="NameMangler_8hpp__dep__incl.svg" width="100%" height="395"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="NameMangler_8hpp__dep__incl.svg" width="100%" height="406"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="NameMangler_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -130,12 +126,12 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Name Mangling</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>Functions for mangling names into names used natively </p>
 </div></td></tr>
-<tr class="memitem:a2a1a14d23516a3c3d5df010cb9d14edf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#a2a1a14d23516a3c3d5df010cb9d14edf">chig::mangleFunctionName</a> (gsl::cstring_span&lt;&gt; fullModuleName, gsl::cstring_span&lt;&gt; name)</td></tr>
-<tr class="memdesc:a2a1a14d23516a3c3d5df010cb9d14edf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mangle a function name.  <a href="namespacechig.html#a2a1a14d23516a3c3d5df010cb9d14edf">More...</a><br /></td></tr>
-<tr class="separator:a2a1a14d23516a3c3d5df010cb9d14edf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c77ed648dc5624eb8160a69e46bc77a"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#a8c77ed648dc5624eb8160a69e46bc77a">chig::unmangleFunctionName</a> (gsl::cstring_span&lt;&gt; mangledName)</td></tr>
-<tr class="memdesc:a8c77ed648dc5624eb8160a69e46bc77a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unmangle a function name.  <a href="namespacechig.html#a8c77ed648dc5624eb8160a69e46bc77a">More...</a><br /></td></tr>
-<tr class="separator:a8c77ed648dc5624eb8160a69e46bc77a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f81af31fdce1ce176f0dcb8bdb19b91"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#a3f81af31fdce1ce176f0dcb8bdb19b91">chig::mangleFunctionName</a> (std::string fullModuleName, const std::string &amp;name)</td></tr>
+<tr class="memdesc:a3f81af31fdce1ce176f0dcb8bdb19b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mangle a function name.  <a href="namespacechig.html#a3f81af31fdce1ce176f0dcb8bdb19b91">More...</a><br /></td></tr>
+<tr class="separator:a3f81af31fdce1ce176f0dcb8bdb19b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6495409c0e45e8684eb01065a2b225e7"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#a6495409c0e45e8684eb01065a2b225e7">chig::unmangleFunctionName</a> (std::string mangled)</td></tr>
+<tr class="memdesc:a6495409c0e45e8684eb01065a2b225e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unmangle a function name.  <a href="namespacechig.html#a6495409c0e45e8684eb01065a2b225e7">More...</a><br /></td></tr>
+<tr class="separator:a6495409c0e45e8684eb01065a2b225e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definitions for mangling functions. </p>
@@ -143,12 +139,11 @@ Functions</h2></td></tr>
 <p class="definition">Definition in file <a class="el" href="NameMangler_8hpp_source.html">NameMangler.hpp</a>.</p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.13-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_dd1823b115988dc5433ea160a3de4758.html">libchig</a></li><li class="navelem"><a class="el" href="dir_2df3c658836db959e203baafb685799e.html">include</a></li><li class="navelem"><a class="el" href="dir_890592bcd0c4cb6eb1188029a3f1c15e.html">chig</a></li><li class="navelem"><a class="el" href="NameMangler_8hpp.html">NameMangler.hpp</a></li>
-    <li class="footer">Generated on Sun Mar 5 2017 22:16:26 for chigraph by
+    <li class="footer">Generated on Wed Mar 8 2017 10:12:17 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

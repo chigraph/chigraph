@@ -15,9 +15,9 @@ var structchig_1_1Context =
     [ "loadModule", "structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2", null ],
     [ "moduleByFullName", "structchig_1_1Context.html#ae9794348cb6c594497574b13852d6fd1", null ],
     [ "newGraphModule", "structchig_1_1Context.html#abc23e74bddad2f97fecc6041dee22b2b", null ],
-    [ "nodeTypeFromModule", "structchig_1_1Context.html#ae9a1bc6f91e7ee0a5363722e5f8916e3", null ],
+    [ "nodeTypeFromModule", "structchig_1_1Context.html#a1ff826d56334b4777962c35ca4e52e81", null ],
     [ "numModules", "structchig_1_1Context.html#a92c913aaa730281508e2048807472cee", null ],
-    [ "typeFromModule", "structchig_1_1Context.html#a0a1a3f31844162754866d7d0e877e176", null ],
+    [ "typeFromModule", "structchig_1_1Context.html#a33b452c12e6bf340b231efe483a5209a", null ],
     [ "unloadModule", "structchig_1_1Context.html#af692ac28d1822e686430bc28228244c5", null ],
     [ "workspacePath", "structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f", null ]
 ];

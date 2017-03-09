@@ -2,17 +2,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<link rel="icon" type="image/x-icon" href="favicon.ico" />
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>chigraph: libchig/src/ChigModule.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" href="material.min.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="material.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<script type="text/javascript" src="doxy-boot.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
@@ -26,7 +22,6 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="customdoxygen.css">
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -95,22 +90,21 @@ $(document).ready(function(){initNavTree('ChigModule_8cpp_source.html','');});
 <div class="contents">
 <a href="ChigModule_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ChigModule_8hpp.html">chig/ChigModule.hpp</a>&quot;</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Context_8hpp.html">chig/Context.hpp</a>&quot;</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Result_8hpp.html">chig/Result.hpp</a>&quot;</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacechig.html">chig</a> {</div><div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="structchig_1_1ChigModule.html#aa9fe8f356c6c7e020859e74ffcdd78f2">    8</a></span>&#160;<a class="code" href="structchig_1_1ChigModule.html#aa9fe8f356c6c7e020859e74ffcdd78f2">ChigModule::ChigModule</a>(<a class="code" href="structchig_1_1Context.html">Context</a>&amp; contextArg, boost::filesystem::path moduleFullName)</div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    : mFullName{std::move(moduleFullName)}, mContext{&amp;contextArg} {</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    mName = mFullName.filename().string();</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div><div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structchig_1_1ChigModule.html#ad5feee65f261f3777edddd027eb89400">   13</a></span>&#160;<a class="code" href="structchig_1_1Result.html">Result</a> <a class="code" href="structchig_1_1ChigModule.html#ad5feee65f261f3777edddd027eb89400">ChigModule::addDependency</a>(<span class="keyword">const</span> boost::filesystem::path&amp; newDepFullPath) {</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="structchig_1_1Result.html">Result</a> res = <a class="code" href="structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385">context</a>().<a class="code" href="structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2">loadModule</a>(newDepFullPath);</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordflow">if</span> (res) { mDependencies.emplace(std::move(newDepFullPath)); }</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">return</span> res;</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}  <span class="comment">// namespace chig</span></div><div class="ttc" id="structchig_1_1ChigModule_html_ad5feee65f261f3777edddd027eb89400"><div class="ttname"><a href="structchig_1_1ChigModule.html#ad5feee65f261f3777edddd027eb89400">chig::ChigModule::addDependency</a></div><div class="ttdeci">Result addDependency(const boost::filesystem::path &amp;newDepFullPath)</div><div class="ttdoc">Add a dependency to the module Loads the module from context() if it isn&amp;#39;t already loaded...</div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8cpp_source.html#l00013">ChigModule.cpp:13</a></div></div>
 <div class="ttc" id="Result_8hpp_html"><div class="ttname"><a href="Result_8hpp.html">Result.hpp</a></div><div class="ttdoc">Defines the Result class and related functions. </div></div>
-<div class="ttc" id="structchig_1_1ChigModule_html_aad81aae17452ddc5fc43809924236385"><div class="ttname"><a href="structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385">chig::ChigModule::context</a></div><div class="ttdeci">Context &amp; context() const</div><div class="ttdoc">Get the Context that this module belongs to. </div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00066">ChigModule.hpp:66</a></div></div>
+<div class="ttc" id="structchig_1_1ChigModule_html_aad81aae17452ddc5fc43809924236385"><div class="ttname"><a href="structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385">chig::ChigModule::context</a></div><div class="ttdeci">Context &amp; context() const</div><div class="ttdoc">Get the Context that this module belongs to. </div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00065">ChigModule.hpp:65</a></div></div>
 <div class="ttc" id="structchig_1_1Result_html"><div class="ttname"><a href="structchig_1_1Result.html">chig::Result</a></div><div class="ttdoc">The result object, used for identifiying errors with good diagnostics. </div><div class="ttdef"><b>Definition:</b> <a href="Result_8hpp_source.html#l00058">Result.hpp:58</a></div></div>
 <div class="ttc" id="ChigModule_8hpp_html"><div class="ttname"><a href="ChigModule_8hpp.html">ChigModule.hpp</a></div><div class="ttdoc">Defines the ChigModule class. </div></div>
-<div class="ttc" id="namespacechig_html"><div class="ttname"><a href="namespacechig.html">chig</a></div><div class="ttdoc">The namespace where chigraph lives. </div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00023">ChigModule.hpp:23</a></div></div>
-<div class="ttc" id="structchig_1_1Context_html"><div class="ttname"><a href="structchig_1_1Context.html">chig::Context</a></div><div class="ttdoc">The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...</div><div class="ttdef"><b>Definition:</b> <a href="Context_8hpp_source.html#l00030">Context.hpp:30</a></div></div>
+<div class="ttc" id="namespacechig_html"><div class="ttname"><a href="namespacechig.html">chig</a></div><div class="ttdoc">The namespace where chigraph lives. </div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8hpp_source.html#l00022">ChigModule.hpp:22</a></div></div>
+<div class="ttc" id="structchig_1_1Context_html"><div class="ttname"><a href="structchig_1_1Context.html">chig::Context</a></div><div class="ttdoc">The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...</div><div class="ttdef"><b>Definition:</b> <a href="Context_8hpp_source.html#l00032">Context.hpp:32</a></div></div>
 <div class="ttc" id="structchig_1_1ChigModule_html_aa9fe8f356c6c7e020859e74ffcdd78f2"><div class="ttname"><a href="structchig_1_1ChigModule.html#aa9fe8f356c6c7e020859e74ffcdd78f2">chig::ChigModule::ChigModule</a></div><div class="ttdeci">ChigModule(Context &amp;contextArg, boost::filesystem::path moduleFullName)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="ChigModule_8cpp_source.html#l00008">ChigModule.cpp:8</a></div></div>
-<div class="ttc" id="structchig_1_1Context_html_a75ab64b58e168998761ed6ebd5e493b2"><div class="ttname"><a href="structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2">chig::Context::loadModule</a></div><div class="ttdeci">Result loadModule(const boost::filesystem::path &amp;name, ChigModule **toFill=nullptr)</div><div class="ttdoc">Load a module from disk. </div><div class="ttdef"><b>Definition:</b> <a href="Context_8cpp_source.html#l00079">Context.cpp:79</a></div></div>
+<div class="ttc" id="structchig_1_1Context_html_a75ab64b58e168998761ed6ebd5e493b2"><div class="ttname"><a href="structchig_1_1Context.html#a75ab64b58e168998761ed6ebd5e493b2">chig::Context::loadModule</a></div><div class="ttdeci">Result loadModule(const boost::filesystem::path &amp;name, ChigModule **toFill=nullptr)</div><div class="ttdoc">Load a module from disk. </div><div class="ttdef"><b>Definition:</b> <a href="Context_8cpp_source.html#l00080">Context.cpp:80</a></div></div>
 <div class="ttc" id="Context_8hpp_html"><div class="ttname"><a href="Context_8hpp.html">Context.hpp</a></div><div class="ttdoc">Defines the Context class and related functions. </div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<!-- HTML footer for doxygen 1.8.13-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_dd1823b115988dc5433ea160a3de4758.html">libchig</a></li><li class="navelem"><a class="el" href="dir_9bf335b5320363225b181f82b328b05f.html">src</a></li><li class="navelem"><a class="el" href="ChigModule_8cpp.html">ChigModule.cpp</a></li>
-    <li class="footer">Generated on Sun Mar 5 2017 22:16:26 for chigraph by
+    <li class="footer">Generated on Wed Mar 8 2017 10:12:17 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
