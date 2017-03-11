@@ -53,11 +53,9 @@ message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 
 # get llvm libraries
 set(LLVM_COMPONENTS
-	irreader
-	support
-	bitwriter
 	executionengine
 	native
+	interpreter
 	nativecodegen
 	linker
 	mcjit
@@ -100,6 +98,19 @@ PUBLIC
 	${LLVM_SYSTEM_LINK_LIST}
 	ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
 )
+
+if(WIN32)
+
+	find_library(VERSION_LIBRARY version)
+	if (NOT VERSION_LIBRARY)
+		message(FATAL_ERROR "Could not find version library")
+	endif()
+	message(STATUS "Linking to version library: ${VERSION_LIBRARY}")
+	target_link_libraries(libchig
+	PUBLIC
+		${VERSION_LIBRARY}
+	)
+endif()
 
 target_include_directories(libchig
 PUBLIC
