@@ -103,7 +103,7 @@ Result Debugger::setBreakpoint(NodeInstance& node, lldb::SBBreakpoint* bp) {
 	int linenum = lineNumberFromNode(node);
 	
 	// create the breakpoint
-	auto breakpoint = mTarget.BreakpointCreateByLocation(node.module().sourceFilePath().c_str(),
+	auto breakpoint = mTarget.BreakpointCreateByLocation(node.module().sourceFilePath().string().c_str(),
 	                                                     linenum);
 
 	// make sure that
@@ -164,7 +164,7 @@ Result Debugger::start(const char** argv, const char** envp,
 	{
 		args.push_back("interpret");
 		args.push_back("-i");
-		args.push_back(tmpIRPath.c_str());
+		args.push_back(tmpIRPath.string().c_str());
 		args.push_back("-O");
 		args.push_back("0");
 
@@ -180,7 +180,7 @@ Result Debugger::start(const char** argv, const char** envp,
 		lldb::SBError    err;
 		lldb::SBListener invalidListener;
 		mProcess = mTarget.Launch(invalidListener, args.data(), envp, nullptr, nullptr, nullptr,
-		                          workingDirectory.c_str(), lldb::eLaunchFlagDebug, false, err);
+		                          workingDirectory.string().c_str(), lldb::eLaunchFlagDebug, false, err);
 
 		if (err.Fail()) {
 			res.addEntry("EUKN", "Failed to launch process", {{"Error Message", err.GetCString()}});

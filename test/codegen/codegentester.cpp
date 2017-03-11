@@ -214,14 +214,15 @@ int main(int argc, char** argv) {
 		lliexe.in() << generatedir;
 		lliexe.close_in();
 
+		lliexe.close();
+
+		int retcodelli = lliexe.exit_code();
+		
 		llistdout = std::string{std::istreambuf_iterator<char>(lliexe.out()),
 		                        std::istreambuf_iterator<char>()};
 		llistderr = std::string{std::istreambuf_iterator<char>(lliexe.err()),
 		                        std::istreambuf_iterator<char>()};
 
-		lliexe.close();
-
-		int retcodelli = lliexe.exit_code();
 
 		if (retcodelli != expectedreturncode) {
 			std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was "
