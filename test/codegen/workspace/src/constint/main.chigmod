@@ -1,17 +1,15 @@
 {
   "dependencies": [
-    "c",
-    "lang"
+    "intprinter",
+    "lang",
+    "c"
   ],
-  "types": {},
   "graphs": [
     {
-	"description": "main",
-      "local_variables": {},
       "connections": [
         {
           "input": [
-            "c5a79776-d6ff-419b-b571-8a0790ccb7e4",
+            "50bdb6dc-a414-40da-9432-b2939392b38e",
             0
           ],
           "output": [
@@ -26,7 +24,7 @@
             0
           ],
           "output": [
-            "c5a79776-d6ff-419b-b571-8a0790ccb7e4",
+            "50bdb6dc-a414-40da-9432-b2939392b38e",
             0
           ],
           "type": "data"
@@ -37,7 +35,7 @@
             0
           ],
           "output": [
-            "c5a79776-d6ff-419b-b571-8a0790ccb7e4",
+            "50bdb6dc-a414-40da-9432-b2939392b38e",
             0
           ],
           "type": "exec"
@@ -45,21 +43,23 @@
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "main",
       "nodes": {
-        "edd9e57b-b128-4332-9611-858e4547c572": {
-          "data": 42,
+        "50bdb6dc-a414-40da-9432-b2939392b38e": {
+          "data": null,
           "location": [
-            -345.145599365234,
-            190.387191772461
+            -26.6666660308838,
+            50.8333320617676
           ],
-          "type": "lang:const-int"
+          "type": "intprinter:printint"
         },
         "e0e2e6e4-5c4d-452b-8072-9f7a5182041e": {
           "data": {
@@ -82,28 +82,22 @@
             ]
           },
           "location": [
-            171,
-            61
+            186,
+            1.83333337306976
           ],
           "type": "lang:exit"
         },
-        "c5a79776-d6ff-419b-b571-8a0790ccb7e4": {
-          "data": {
-            "code": "#include <stdio.h> \n void printint(int i){printf(\"%i\", i); }",
-            "function": "printint",
-            "extraflags": [],
-            "inputs": [{"i": "lang:i32"}],
-            "output": null
-          },
+        "edd9e57b-b128-4332-9611-858e4547c572": {
+          "data": 42,
           "location": [
-            -54.3120002746582,
-            33.9119987487793
+            -345.145599365234,
+            190.387191772461
           ],
-          "type": "c:func"
+          "type": "lang:const-int"
         }
       },
       "type": "function"
     }
   ],
-  "name": "main"
+  "types": {}
 }

@@ -84,8 +84,22 @@ foreach(CLANG_LIB ${CLANG_LIBS})
 endforeach()
 
 target_link_libraries(ctollvm
-PUBLIC
+PRIVATE
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
 	${LLVM_SYSTEM_LINK_LIST}
 )
+
+if(WIN32)
+
+	find_library(VERSION_LIBRARY version)
+	if (NOT VERSION_LIBRARY)
+		message(FATAL_ERROR "Could not find version library")
+	endif()
+	message(STATUS "Linking to version library: ${VERSION_LIBRARY}")
+	target_link_libraries(ctollvm
+	PUBLIC
+		${VERSION_LIBRARY}
+	)
+endif()
+
