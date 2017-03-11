@@ -71,7 +71,7 @@ foreach(CLANG_LIB ${CLANG_LIBS})
 	find_library(${CLANG_LIB}_LIBRARY ${CLANG_LIB} HINTS ${CLANG_LIB_DIR})
 	
 	if (NOT ${CLANG_LIB}_LIBRARY)
-		message(FATAL_ERROR "Could not locate ${CLANG_LIB}")
+		message(FATAL_ERROR "Could not locate ${CLANG_LIB}: ${${CLANG_LIB}_LIBRARY}")
 	endif()
 	
 	message(STATUS "${CLANG_LIB} found at ${${CLANG_LIB}_LIBRARY}")
