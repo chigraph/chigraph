@@ -70,11 +70,11 @@ set(CLANG_LIBS
 foreach(CLANG_LIB ${CLANG_LIBS})
 	find_library(${CLANG_LIB}_LIBRARY ${CLANG_LIB} PATHS ${CLANG_LIB_DIR})
 	
-	if (NOT CLANG_LIB)
+	if (NOT ${CLANG_LIB}_LIBRARY)
 		message(FATAL_ERROR "Could not locate ${CLANG_LIB}")
 	endif()
 	
-	message(STATUS "${CLANG_LIB} found at ${CLANG_LIB}")
+	message(STATUS "${CLANG_LIB} found at ${${CLANG_LIB}_LIBRARY}")
 	
 	target_link_libraries(ctollvm 
 	PRIVATE
