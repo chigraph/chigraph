@@ -1,33 +1,22 @@
 {
   "dependencies": [
-    "lang",
-    "c"
+    "intprinter",
+    "c",
+    "lang"
   ],
   "graphs": [
     {
-	"description": "main",
       "connections": [
         {
           "input": [
-            "3d7a9f86-6aed-4bb2-866e-cb4489142b06",
+            "f4ec53cb-41db-4e88-a247-cc495d78fd3f",
             0
           ],
           "output": [
-            "8526e191-b534-4910-953f-d10b7b206d50",
+            "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e",
             0
           ],
           "type": "exec"
-        },
-        {
-          "input": [
-            "bb38760c-5018-431b-86c4-087f5d233c29",
-            0
-          ],
-          "output": [
-            "3d7a9f86-6aed-4bb2-866e-cb4489142b06",
-            0
-          ],
-          "type": "data"
         },
         {
           "input": [
@@ -75,6 +64,28 @@
         },
         {
           "input": [
+            "3d7a9f86-6aed-4bb2-866e-cb4489142b06",
+            0
+          ],
+          "output": [
+            "8526e191-b534-4910-953f-d10b7b206d50",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "bb38760c-5018-431b-86c4-087f5d233c29",
+            0
+          ],
+          "output": [
+            "3d7a9f86-6aed-4bb2-866e-cb4489142b06",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
             "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc",
             0
           ],
@@ -94,21 +105,11 @@
             0
           ],
           "type": "data"
-        },
-        {
-          "input": [
-            "f4ec53cb-41db-4e88-a247-cc495d78fd3f",
-            0
-          ],
-          "output": [
-            "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e",
-            0
-          ],
-          "type": "exec"
         }
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
@@ -118,6 +119,14 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
+        "0819c157-5528-431b-a13c-4252ae286b97": {
+          "data": "Yay happy!",
+          "location": [
+            529.68798828125,
+            200.880004882812
+          ],
+          "type": "lang:strliteral"
+        },
         "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e": {
           "data": null,
           "location": [
@@ -126,6 +135,24 @@
           ],
           "type": "call/main:docall"
         },
+        "3d7a9f86-6aed-4bb2-866e-cb4489142b06": {
+          "data": {
+            "code": "#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}",
+            "extraflags": [],
+            "function": "dofree",
+            "inputs": [
+              {
+                "": "lang:i8*"
+              }
+            ],
+            "output": null
+          },
+          "location": [
+            1484.35205078125,
+            84.6719970703125
+          ],
+          "type": "c:func"
+        },
         "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc": {
           "data": null,
           "location": [
@@ -133,19 +160,6 @@
             51.3567962646484
           ],
           "type": "call/main:docall"
-        },
-        "f4ec53cb-41db-4e88-a247-cc495d78fd3f": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            319.54150390625,
-            55.2937431335449
-          ],
-          "type": "lang:entry"
         },
         "8526e191-b534-4910-953f-d10b7b206d50": {
           "data": {
@@ -178,41 +192,27 @@
           ],
           "type": "c:func"
         },
-        "0819c157-5528-431b-a13c-4252ae286b97": {
-          "data": "Yay happy!",
-          "location": [
-            529.68798828125,
-            200.880004882812
-          ],
-          "type": "lang:strliteral"
-        },
-        "3d7a9f86-6aed-4bb2-866e-cb4489142b06": {
+        "f4ec53cb-41db-4e88-a247-cc495d78fd3f": {
           "data": {
-            "code": "#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}",
-            "extraflags": [],
-            "function": "dofree",
-            "inputs": [
-              {
-                "": "lang:i8*"
-              }
-            ],
-            "output": null
+            "data": [],
+            "exec": [
+              ""
+            ]
           },
           "location": [
-            1484.35205078125,
-            84.6719970703125
+            319.54150390625,
+            55.2937431335449
           ],
-          "type": "c:func"
+          "type": "lang:entry"
         }
       },
       "type": "function"
     },
     {
-	"description": "main",
       "connections": [
         {
           "input": [
-            "1256bcd3-0ca1-4675-bc78-6e24ee4b593d",
+            "daa151f3-2ebc-4521-90fb-c1c043a95a75",
             0
           ],
           "output": [
@@ -227,18 +227,7 @@
             0
           ],
           "output": [
-            "1256bcd3-0ca1-4675-bc78-6e24ee4b593d",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "1256bcd3-0ca1-4675-bc78-6e24ee4b593d",
-            0
-          ],
-          "output": [
-            "8526e191-b534-4910-953f-d10b7b206d50",
+            "daa151f3-2ebc-4521-90fb-c1c043a95a75",
             0
           ],
           "type": "data"
@@ -249,10 +238,21 @@
             0
           ],
           "output": [
-            "1256bcd3-0ca1-4675-bc78-6e24ee4b593d",
+            "daa151f3-2ebc-4521-90fb-c1c043a95a75",
             0
           ],
           "type": "exec"
+        },
+        {
+          "input": [
+            "1fd94862-f52a-4589-b6d1-330d176b7cae",
+            0
+          ],
+          "output": [
+            "8526e191-b534-4910-953f-d10b7b206d50",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [
@@ -265,6 +265,7 @@
           "out": "lang:i32"
         }
       ],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
@@ -274,22 +275,13 @@
       "local_variables": {},
       "name": "docall",
       "nodes": {
-        "f4ec53cb-41db-4e88-a247-cc495d78fd3f": {
-          "data": {
-            "data": [
-              {
-                "str": "lang:i8*"
-              }
-            ],
-            "exec": [
-              ""
-            ]
-          },
+        "1fd94862-f52a-4589-b6d1-330d176b7cae": {
+          "data": 11,
           "location": [
-            -110.639999389648,
-            1.03999996185303
+            269,
+            149
           ],
-          "type": "lang:entry"
+          "type": "lang:const-int"
         },
         "8526e191-b534-4910-953f-d10b7b206d50": {
           "data": {
@@ -303,33 +295,39 @@
             ]
           },
           "location": [
-            435,
-            49
+            583,
+            4
           ],
           "type": "lang:exit"
         },
-        "1256bcd3-0ca1-4675-bc78-6e24ee4b593d": {
+        "daa151f3-2ebc-4521-90fb-c1c043a95a75": {
+          "data": null,
+          "location": [
+            142,
+            13
+          ],
+          "type": "intprinter:printstr"
+        },
+        "f4ec53cb-41db-4e88-a247-cc495d78fd3f": {
           "data": {
-            "code": "#include <stdio.h> \nint doputs(const char* mystr) {\n\treturn puts(mystr);\n}",
-            "extraflags": [],
-            "function": "doputs",
-            "inputs": [
+            "data": [
               {
-                "": "lang:i8*"
+                "str": "lang:i8*"
               }
             ],
-            "output": "lang:i32"
+            "exec": [
+              ""
+            ]
           },
           "location": [
-            163.320007324219,
-            28.9599990844727
+            -62.2560005187988,
+            21.7759990692139
           ],
-          "type": "c:func"
+          "type": "lang:entry"
         }
       },
       "type": "function"
     }
   ],
-  "name": "main",
   "types": {}
 }

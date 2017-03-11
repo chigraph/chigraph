@@ -119,7 +119,7 @@ if(WIN32)
 			$<TARGET_FILE_DIR:chiggui>
 		)
 		
-		install(FILE $<TARGET_FILE:${QTLIB}> DESTINATION bin)
+	install(FILES $<TARGET_FILE:${QTLIB}> DESTINATION bin)
 	
 	endforeach()
 	
