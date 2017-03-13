@@ -1,14 +1,15 @@
 {
   "dependencies": [
-    "c",
-    "lang"
+    "intprinter",
+    "lang",
+    "c"
   ],
   "graphs": [
     {
       "connections": [
         {
           "input": [
-            "67469f63-c2ae-40b5-9524-f0758c3fab27",
+            "d8df34a5-340e-40f0-974c-ef26159b2033",
             0
           ],
           "output": [
@@ -23,7 +24,7 @@
             0
           ],
           "output": [
-            "67469f63-c2ae-40b5-9524-f0758c3fab27",
+            "d8df34a5-340e-40f0-974c-ef26159b2033",
             0
           ],
           "type": "data"
@@ -34,14 +35,14 @@
             0
           ],
           "output": [
-            "67469f63-c2ae-40b5-9524-f0758c3fab27",
+            "d8df34a5-340e-40f0-974c-ef26159b2033",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "67469f63-c2ae-40b5-9524-f0758c3fab27",
+            "bdaa7b96-a252-44a4-98f9-ae9139fcbc46",
             0
           ],
           "output": [
@@ -83,28 +84,10 @@
             ]
           },
           "location": [
-            268.200012207031,
-            17.2000007629395
+            570.600036621094,
+            42.4000015258789
           ],
           "type": "lang:exit"
-        },
-        "67469f63-c2ae-40b5-9524-f0758c3fab27": {
-          "data": {
-            "code": "#include <stdio.h> \n\nint doputs(const char* mystr) {\n\tputs(mystr); \n\treturn 12;\n}",
-            "extraflags": [],
-            "function": "doputs",
-            "inputs": [
-              {
-                "": "lang:i8*"
-              }
-            ],
-            "output": "lang:i32"
-          },
-          "location": [
-            7.67999982833862,
-            13
-          ],
-          "type": "c:func"
         },
         "88cc6fb4-6a87-49da-a237-571fb436dcdc": {
           "data": {
@@ -122,6 +105,22 @@
             13.039999961853
           ],
           "type": "lang:entry"
+        },
+        "bdaa7b96-a252-44a4-98f9-ae9139fcbc46": {
+          "data": 12,
+          "location": [
+            302.399993896484,
+            256.799987792969
+          ],
+          "type": "lang:const-int"
+        },
+        "d8df34a5-340e-40f0-974c-ef26159b2033": {
+          "data": null,
+          "location": [
+            99.3600006103516,
+            21.6000003814697
+          ],
+          "type": "intprinter:printstr"
         }
       },
       "type": "function"

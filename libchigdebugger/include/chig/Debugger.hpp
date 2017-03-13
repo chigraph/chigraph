@@ -93,6 +93,11 @@ public:
 	/// \param frame The frame. If this isn't a valid `SBFrame` (the default), then it uses `lldbProcess().GetSelectedThread().GetSelectedFrame()`
 	lldb::SBValue inspectNodeOutput(const NodeInstance& inst, size_t id, lldb::SBFrame frame = {});
 	
+	/// Get the value of a local variable
+	/// \param name The name ofthe local variable to get the value of
+	/// \return The value, or an invalid `SBValue` if the local variable wasn't found
+	lldb::SBValue inspectLocalVariable(boost::string_view name);
+	
 	/// Get a NodeInstance from a frame
 	/// \param frame The frame to get the function for. If this isn't a valid `SBFrame` (the default), then it uses `lldbProcess().GetSelectedThread().GetSelectedFrame()`
 	/// \return The NodeInstance, or nullptr if one wasn't found

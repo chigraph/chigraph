@@ -1,12 +1,56 @@
 {
   "dependencies": [
-    "intprinter",
+    "lang",
     "c",
-    "lang"
+    "intprinter"
   ],
   "graphs": [
     {
       "connections": [
+        {
+          "input": [
+            "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0",
+            0
+          ],
+          "output": [
+            "c8f8c65e-61db-4948-90fa-03bffd4154d4",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "517a7cc0-f061-46be-a5cf-e43d18b57ab1",
+            0
+          ],
+          "output": [
+            "c8f8c65e-61db-4948-90fa-03bffd4154d4",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
+            0
+          ],
+          "output": [
+            "6a776d45-3b04-4571-96df-8d39cc00e13f",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "43a26065-df96-4800-aeab-d42817471307",
+            0
+          ],
+          "output": [
+            "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
+            0
+          ],
+          "type": "data"
+        },
         {
           "input": [
             "795b7296-2148-405a-adb7-015c4f81223c",
@@ -20,77 +64,44 @@
         },
         {
           "input": [
-            "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0",
-            0
-          ],
-          "output": [
-            "43a26065-df96-4800-aeab-d42817471307",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
             "3871d8e8-3e74-4dc4-af28-ae69f4fe7d60",
             0
           ],
           "output": [
             "43a26065-df96-4800-aeab-d42817471307",
-            1
+            0
           ],
           "type": "data"
         },
         {
           "input": [
-            "01ed8720-f811-431d-9ee0-1a59eba2cfa7",
+            "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0",
             0
           ],
           "output": [
-            "5c6a86ab-ae25-42ec-92c2-45eb0b0dbeeb",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "01ed8720-f811-431d-9ee0-1a59eba2cfa7",
-            1
-          ],
-          "output": [
-            "0e54bf34-81c3-48c6-9591-fb1b7d7a44db",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
             "43a26065-df96-4800-aeab-d42817471307",
-            0
-          ],
-          "output": [
-            "01ed8720-f811-431d-9ee0-1a59eba2cfa7",
-            0
+            1
           ],
           "type": "data"
         },
         {
           "input": [
-            "0e54bf34-81c3-48c6-9591-fb1b7d7a44db",
+            "6a776d45-3b04-4571-96df-8d39cc00e13f",
             0
           ],
           "output": [
-            "8ff61eaa-3262-43c3-b625-4625305ee987",
+            "0db4f4f6-1015-4bc2-a00c-58719a856b79",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "242ffa85-57cc-49ab-ba73-643a9edcdfd2",
+            "c8f8c65e-61db-4948-90fa-03bffd4154d4",
             0
           ],
           "output": [
-            "0e54bf34-81c3-48c6-9591-fb1b7d7a44db",
+            "6a776d45-3b04-4571-96df-8d39cc00e13f",
             0
           ],
           "type": "data"
@@ -101,32 +112,10 @@
             0
           ],
           "output": [
-            "01ed8720-f811-431d-9ee0-1a59eba2cfa7",
+            "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
             0
           ],
           "type": "exec"
-        },
-        {
-          "input": [
-            "5c6a86ab-ae25-42ec-92c2-45eb0b0dbeeb",
-            0
-          ],
-          "output": [
-            "bb95db46-4dcb-49d2-8067-db1ed6ec8ac9",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "c3a84e48-5bcf-4417-88e2-7a40b462abe6",
-            0
-          ],
-          "output": [
-            "5c6a86ab-ae25-42ec-92c2-45eb0b0dbeeb",
-            0
-          ],
-          "type": "data"
         }
       ],
       "data_inputs": [],
@@ -141,45 +130,42 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
-        "01ed8720-f811-431d-9ee0-1a59eba2cfa7": {
-          "data": null,
+        "0db4f4f6-1015-4bc2-a00c-58719a856b79": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
           "location": [
-            1024,
-            160
+            1384.80004882812,
+            158.399993896484
           ],
-          "type": "lang:if"
-        },
-        "0e54bf34-81c3-48c6-9591-fb1b7d7a44db": {
-          "data": null,
-          "location": [
-            1519.68957519531,
-            332.198394775391
-          ],
-          "type": "intprinter:printstr"
-        },
-        "242ffa85-57cc-49ab-ba73-643a9edcdfd2": {
-          "data": "false",
-          "location": [
-            1228.80004882812,
-            448.800018310547
-          ],
-          "type": "lang:strliteral"
+          "type": "lang:exit"
         },
         "3871d8e8-3e74-4dc4-af28-ae69f4fe7d60": {
           "data": 0.0,
           "location": [
-            393,
-            494
+            389,
+            213
           ],
           "type": "lang:const-float"
         },
         "43a26065-df96-4800-aeab-d42817471307": {
           "data": null,
           "location": [
-            696,
-            323
+            681,
+            268
           ],
           "type": "lang:float==float"
+        },
+        "517a7cc0-f061-46be-a5cf-e43d18b57ab1": {
+          "data": 32,
+          "location": [
+            514,
+            525
+          ],
+          "type": "lang:const-float"
         },
         "58ac8a9f-2918-4f21-b5ee-54873abb597b": {
           "data": {
@@ -189,66 +175,48 @@
             ]
           },
           "location": [
-            144,
-            153
+            141,
+            135
           ],
           "type": "lang:entry"
         },
-        "5c6a86ab-ae25-42ec-92c2-45eb0b0dbeeb": {
+        "6a776d45-3b04-4571-96df-8d39cc00e13f": {
           "data": null,
           "location": [
-            1488,
-            64.8000030517578
+            1212,
+            171
           ],
-          "type": "intprinter:printstr"
+          "type": "intprinter:printbool"
+        },
+        "769c363e-9ac0-4f7b-b3e5-20323172dbe9": {
+          "data": null,
+          "location": [
+            1041,
+            166
+          ],
+          "type": "intprinter:printbool"
         },
         "795b7296-2148-405a-adb7-015c4f81223c": {
           "data": 32,
           "location": [
-            171,
-            329
+            170,
+            379
           ],
           "type": "lang:const-int"
         },
-        "8ff61eaa-3262-43c3-b625-4625305ee987": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
+        "c8f8c65e-61db-4948-90fa-03bffd4154d4": {
+          "data": null,
           "location": [
-            1669.19995117188,
-            342
+            744,
+            482
           ],
-          "type": "lang:exit"
-        },
-        "bb95db46-4dcb-49d2-8067-db1ed6ec8ac9": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            1652.40002441406,
-            57.5999984741211
-          ],
-          "type": "lang:exit"
-        },
-        "c3a84e48-5bcf-4417-88e2-7a40b462abe6": {
-          "data": "true",
-          "location": [
-            1267.19995117188,
-            208.800003051758
-          ],
-          "type": "lang:strliteral"
+          "type": "lang:float==float"
         },
         "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0": {
           "data": null,
           "location": [
-            437,
-            304
+            433,
+            364
           ],
           "type": "lang:inttofloat"
         }
