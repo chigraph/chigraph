@@ -1,50 +1,15 @@
 {
   "dependencies": [
-    "lang",
-    "c"
+    "intprinter",
+    "c",
+    "lang"
   ],
-  "types": {},
   "graphs": [
     {
-	"description": "main",
-      "local_variables": {},
       "connections": [
         {
           "input": [
-            "2b0c944e-7556-4b1d-b11b-fce5c922c08a",
-            0
-          ],
-          "output": [
-            "4a38557a-2555-4f76-bda7-aa0395d1f6a3",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "ddc2f8f6-5c48-4b49-8d40-d68ad3abfe44",
-            0
-          ],
-          "output": [
-            "2b0c944e-7556-4b1d-b11b-fce5c922c08a",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "a8bf0c2e-04b7-45e0-b674-d17e221d8052",
-            0
-          ],
-          "output": [
-            "d74771c0-a287-4c64-a831-d9cb6cf42a9f",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "425a5fbe-f47a-46b4-a584-02bd5d9a630e",
+            "5723b5fd-e9b1-494a-9642-bdc78a96b20c",
             0
           ],
           "output": [
@@ -59,7 +24,29 @@
             0
           ],
           "output": [
-            "425a5fbe-f47a-46b4-a584-02bd5d9a630e",
+            "5723b5fd-e9b1-494a-9642-bdc78a96b20c",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "b41b38eb-1499-4a60-8d79-8d030b7ae880",
+            0
+          ],
+          "output": [
+            "63abadf1-e165-43b8-9db7-1509039ce99d",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "ddc2f8f6-5c48-4b49-8d40-d68ad3abfe44",
+            0
+          ],
+          "output": [
+            "b41b38eb-1499-4a60-8d79-8d030b7ae880",
             0
           ],
           "type": "data"
@@ -70,7 +57,7 @@
             0
           ],
           "output": [
-            "2b0c944e-7556-4b1d-b11b-fce5c922c08a",
+            "b41b38eb-1499-4a60-8d79-8d030b7ae880",
             0
           ],
           "type": "exec"
@@ -81,7 +68,7 @@
             1
           ],
           "output": [
-            "425a5fbe-f47a-46b4-a584-02bd5d9a630e",
+            "5723b5fd-e9b1-494a-9642-bdc78a96b20c",
             0
           ],
           "type": "exec"
@@ -96,18 +83,73 @@
             0
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "a8bf0c2e-04b7-45e0-b674-d17e221d8052",
+            0
+          ],
+          "output": [
+            "d74771c0-a287-4c64-a831-d9cb6cf42a9f",
+            0
+          ],
+          "type": "exec"
         }
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "main",
       "nodes": {
+        "4a38557a-2555-4f76-bda7-aa0395d1f6a3": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            2042.27709960938,
+            215.726699829102
+          ],
+          "type": "lang:exit"
+        },
+        "5723b5fd-e9b1-494a-9642-bdc78a96b20c": {
+          "data": null,
+          "location": [
+            1782.71997070312,
+            184.320007324219
+          ],
+          "type": "intprinter:printstr"
+        },
+        "63abadf1-e165-43b8-9db7-1509039ce99d": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            2017.43994140625,
+            -168.479995727539
+          ],
+          "type": "lang:exit"
+        },
+        "7bd619d5-0bf6-419f-9182-39c8a463c9fa": {
+          "data": "false",
+          "location": [
+            1386.30639648438,
+            328.896423339844
+          ],
+          "type": "lang:strliteral"
+        },
         "a8bf0c2e-04b7-45e0-b674-d17e221d8052": {
           "data": {
             "data": [],
@@ -121,18 +163,21 @@
           ],
           "type": "lang:entry"
         },
-        "4a38557a-2555-4f76-bda7-aa0395d1f6a3": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
+        "b41b38eb-1499-4a60-8d79-8d030b7ae880": {
+          "data": null,
           "location": [
-            1971.02587890625,
-            -34.3264274597168
+            1760.83337402344,
+            -105.833335876465
           ],
-          "type": "lang:exit"
+          "type": "intprinter:printstr"
+        },
+        "d1fd3c93-85f6-43ea-90bb-437fee5cf9e7": {
+          "data": true,
+          "location": [
+            901.710388183594,
+            143.596801757812
+          ],
+          "type": "lang:const-bool"
         },
         "d74771c0-a287-4c64-a831-d9cb6cf42a9f": {
           "data": null,
@@ -142,42 +187,6 @@
           ],
           "type": "lang:if"
         },
-        "425a5fbe-f47a-46b4-a584-02bd5d9a630e": {
-          "data": {
-            "code": "#include <stdio.h>\n int doputs(const char* arg) { return puts(arg);}",
-            "function": "doputs",
-            "extraflags": [],
-            "inputs": [{"arg": "lang:i8*"}],
-            "output": "lang:i32"
-          },
-          "location": [
-            1693.63049316406,
-            176.43359375
-          ],
-          "type": "c:func"
-        },
-        "2b0c944e-7556-4b1d-b11b-fce5c922c08a": {
-          "data": {
-            "code": "#include <stdio.h>\n int doputs1(const char* arg) { return puts(arg);}",
-            "extraflags": [],
-            "inputs": [{"arg": "lang:i8*"}],
-            "output": "lang:i32",
-            "function": "doputs1"
-          },
-          "location": [
-            1717.24645996094,
-            -171.06721496582
-          ],
-          "type": "c:func"
-        },
-        "7bd619d5-0bf6-419f-9182-39c8a463c9fa": {
-          "data": "false",
-          "location": [
-            1386.30639648438,
-            328.896423339844
-          ],
-          "type": "lang:strliteral"
-        },
         "ddc2f8f6-5c48-4b49-8d40-d68ad3abfe44": {
           "data": "true",
           "location": [
@@ -185,18 +194,10 @@
             34.737606048584
           ],
           "type": "lang:strliteral"
-        },
-        "d1fd3c93-85f6-43ea-90bb-437fee5cf9e7": {
-          "data": true,
-          "location": [
-            901.710388183594,
-            143.596801757812
-          ],
-          "type": "lang:const-bool"
         }
       },
       "type": "function"
     }
   ],
-  "name": "main"
+  "types": {}
 }

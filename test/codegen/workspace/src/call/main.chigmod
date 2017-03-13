@@ -1,8 +1,8 @@
 {
   "dependencies": [
-    "intprinter",
+    "lang",
     "c",
-    "lang"
+    "intprinter"
   ],
   "graphs": [
     {
@@ -157,7 +157,7 @@
           "data": null,
           "location": [
             1304.66247558594,
-            51.3567962646484
+            35.3567962646484
           ],
           "type": "call/main:docall"
         },
@@ -169,8 +169,8 @@
             ]
           },
           "location": [
-            1776.6865234375,
-            35.4581832885742
+            1756.77990722656,
+            20.528263092041
           ],
           "type": "lang:exit"
         },
@@ -212,6 +212,17 @@
       "connections": [
         {
           "input": [
+            "f4ec53cb-41db-4e88-a247-cc495d78fd3f",
+            0
+          ],
+          "output": [
+            "daa151f3-2ebc-4521-90fb-c1c043a95a75",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
             "daa151f3-2ebc-4521-90fb-c1c043a95a75",
             0
           ],
@@ -231,17 +242,6 @@
             0
           ],
           "type": "data"
-        },
-        {
-          "input": [
-            "f4ec53cb-41db-4e88-a247-cc495d78fd3f",
-            0
-          ],
-          "output": [
-            "daa151f3-2ebc-4521-90fb-c1c043a95a75",
-            0
-          ],
-          "type": "exec"
         },
         {
           "input": [

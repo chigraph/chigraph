@@ -74,8 +74,9 @@ TEST_CASE("Debugger", "") {
 	dbg.setBreakpoint(*putsNode);
 	dbg.setBreakpoint(*exitNode);
 
-	dbg.start();
-
+	res = dbg.start();
+	REQUIRE(res.dump() == "");
+	
 	auto          listener = dbg.lldbDebugger().GetListener();
 	lldb::SBEvent ev;
 	while (true) {
@@ -145,12 +146,7 @@ TEST_CASE("Debugger", "") {
 	REQUIRE(value.IsValid());
 
 	REQUIRE(value.GetSummary() == std::string(R"("Yay happy!")"));
-	
-	value = dbg.inspectNodeOutput(*putsNode, 0);
-	REQUIRE(value.IsValid());
 
-	REQUIRE(value.GetValue() == std::string("12"));
-	
 
 	dbg.terminate();
 }

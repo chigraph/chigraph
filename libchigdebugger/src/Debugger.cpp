@@ -9,9 +9,9 @@
 #include <boost/uuid/uuid_io.hpp>
 
 #if LLVM_VERSION_MAJOR <= 3
-#include <llvm/Bitcode/ReaderWriter.h>
+#	include <llvm/Bitcode/ReaderWriter.h>
 #else
-#include <llvm/Bitcode/BitcodeWriter.h>
+#	include <llvm/Bitcode/BitcodeWriter.h>
 #endif
 
 #include <llvm/Support/FileSystem.h>
@@ -106,7 +106,7 @@ Result Debugger::setBreakpoint(NodeInstance& node, lldb::SBBreakpoint* bp) {
 	auto breakpoint = mTarget.BreakpointCreateByLocation(node.module().sourceFilePath().string().c_str(),
 	                                                     linenum);
 
-	// make sure that
+	// make sure that it's good
 	if (!breakpoint.IsValid()) {
 		res.addEntry("EUKN", "Could not set breakpoint on node",
 		             {{"nodeid", node.stringId()},
