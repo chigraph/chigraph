@@ -6,6 +6,8 @@ addons:
   apt: 
     sources:
       - ubuntu-toolchain-r-test
+      - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-4.0 main'
+        key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
       - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main'
         key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
       - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main'
@@ -34,10 +36,10 @@ matrix:
     #- env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='g++-5 gcc-5'
     #- env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=571 PACKAGES='g++-6 gcc-6'
     #- env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=571 PACKAGES='g++-6 gcc-6'
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=58 LLVM_VERSION=3.7 PACKAGES='g++-5 gcc-5' TEST_COV=YES
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=58 LLVM_VERSION=3.8 PACKAGES='g++-5 gcc-5'
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.7 PACKAGES='g++-5 gcc-5' TEST_COV=YES
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=571 LLVM_VERSION=3.8 PACKAGES='g++-5 gcc-5'
     - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=58 LLVM_VERSION=3.9 PACKAGES='g++-6 gcc-6'
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=58 LLVM_VERSION=3.9 PACKAGES='g++-6 gcc-6'
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=58 LLVM_VERSION=4.0 PACKAGES='g++-6 gcc-6'
 
     - os: osx
       osx_image: xcode8.2
