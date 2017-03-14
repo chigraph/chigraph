@@ -14,7 +14,7 @@ class QLineEdit;
 class FunctionDetails : public QWidget {
 	Q_OBJECT
 public:
-	FunctionDetails(QWidget* parent = nullptr);
+	explicit FunctionDetails(QWidget* parent = nullptr);
 
 	void loadFunction(FunctionView* funcView);
 

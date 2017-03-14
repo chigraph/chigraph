@@ -303,18 +303,22 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 		}
 	}
 
-	size_t connID = 0;
 	// read the connections
 	{
+	
 		auto connIter = input.find("connections");
 		if (connIter == input.end() || !connIter->is_array()) {
 			res.addEntry("E13", "No connections array in function", {});
 			return res;
 		}
+		
+		auto connID = 0ull;
 		for (auto& connection : input["connections"]) {
 			if (connection.find("type") == connection.end() ||
 			    !connection.find("type")->is_string()) {
 				res.addEntry("E14", "No type string in connection", {"connectionid", connID});
+			
+				++connID;
 				continue;
 			}
 			std::string type   = connection["type"];
@@ -323,11 +327,15 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 			if (!isData && type != "exec") {
 				res.addEntry("E15", "Unrecognized connection type",
 				             {{"connectionid", connID}, {"Found Type", type}});
+				
+				++connID;
 				continue;
 			}
 
 			if (connection.find("input") == connection.end()) {
 				res.addEntry("E16", "No input element in connection", {{"connectionid", connID}});
+				
+				++connID;
 				continue;
 			}
 			if (!connection.find("input")->is_array() || connection.find("input")->size() != 2 ||
@@ -338,6 +346,8 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 				    "Incorrect connection input format, must be an array of of a string (node id) "
 				    "and int (connection id)",
 				    {{"connectionid", connID}, {"Requested Type", *connection.find("input")}});
+				
+				++connID;
 				continue;
 			}
 			std::string InputNodeID = connection["input"][0];
@@ -349,12 +359,15 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 				res.addEntry("EUKN", "Invalid UUID string in connection",
 				             {{"string", InputNodeID}});
 
-				return res;
+				++connID;
+				continue;
 			}
 			int InputConnectionID = connection["input"][1];
 
 			if (connection.find("output") == connection.end()) {
 				res.addEntry("E18", "No output element in connection", {{"connectionid", connID}});
+				
+				++connID;
 				continue;
 			}
 			if (!connection.find("output")->is_array() || connection.find("output")->size() != 2 ||
@@ -365,6 +378,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 				    "Incorrect connection output format, must be an array of a string (node id) "
 				    "and int (connection id)",
 				    {{"connectionid", connID}, {"Requested Type", *connection.find("output")}});
+				++connID;
 				continue;
 			}
 			std::string OutputNodeID = connection["output"][0];
@@ -376,7 +390,8 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 				res.addEntry("EUKN", "Invalid UUID string in connection",
 				             {{"string", OutputNodeID}});
 
-				return res;
+				++connID;
+				continue;
 			}
 			int OutputConnectionID = connection["output"][1];
 
@@ -384,11 +399,13 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 			if (createInside.nodes().find(InputNodeIDUUID) == createInside.nodes().end()) {
 				res.addEntry("E20", "Input node for connection doesn't exist",
 				             {{"connectionid", connID}, {"Requested Node", InputNodeID}});
+				++connID;
 				continue;
 			}
 			if (createInside.nodes().find(OutputNodeIDUUID) == createInside.nodes().end()) {
 				res.addEntry("E21", "Output node for connection doesn't exist",
 				             {{"connectionid", connID}, {"Requested Node", OutputNodeID}});
+				++connID;
 				continue;
 			}
 
