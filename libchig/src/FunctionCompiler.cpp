@@ -373,12 +373,13 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	auto debugFunc = debugBuilder.createFunction(
 	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, entryLN,
 	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false
-	
+
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-	, f);
+	    ,
+	    f);
 #else
-								);
-	
+	    );
+
 	f->setSubprogram(debugFunc);
 #endif
 

@@ -107,7 +107,7 @@ struct Context {
 	bool hasWorkspace() const noexcept { return !workspacePath().empty(); }
 
 	/// Compile a module to a \c llvm::Module
-	/// \param[in] fullName The full name of the module to compile. 
+	/// \param[in] fullName The full name of the module to compile.
 	/// If `moduleByFullName(fullName) == nullptr`, this function has no side-effects
 	/// \param[out] toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
@@ -123,9 +123,10 @@ struct Context {
 	/// pointer to the `unique_ptr`)
 	/// \return The `Result`
 	Result compileModule(ChigModule& mod, std::unique_ptr<llvm::Module>* toFill);
-	
+
 	/// Find all uses of a node type in all the loaded modules
-	std::vector<NodeInstance*> findInstancesOfType(const boost::filesystem::path& module, boost::string_view typeName) const;
+	std::vector<NodeInstance*> findInstancesOfType(const boost::filesystem::path& module,
+	                                               boost::string_view             typeName) const;
 
 	/// Get the `LLVMContext`
 	/// \return The `LLVMContext`
@@ -138,23 +139,20 @@ struct Context {
 	/// Get the `CModule`, if it has been loaded
 	/// \return The `CModule`
 	CModule* cModule() const { return mCModule; }
-	
-	
+
 	/// Get the modules in the Context
 	/// \return The modules
 	std::vector<ChigModule*> modules() const {
 		std::vector<ChigModule*> ret;
-		
-		for (const auto& mod : mModules) {
-			ret.push_back(mod.get());
-		}
-		
+
+		for (const auto& mod : mModules) { ret.push_back(mod.get()); }
+
 		return ret;
 	}
 
 private:
 	boost::filesystem::path mWorkspacePath;
-	
+
 	std::unique_ptr<llvm::LLVMContext> mLLVMContext;
 
 	std::vector<std::unique_ptr<ChigModule>> mModules;
@@ -181,13 +179,15 @@ std::string stringifyLLVMType(llvm::Type* ty);
 
 /// Interpret LLVM IR, just a convenience function
 /// \param[in] mod The LLVM Module to interpret
-/// \param[in] optLevel How much the optimization should be applied. The default is roughly equilivant to -O2
+/// \param[in] optLevel How much the optimization should be applied. The default is roughly
+/// equilivant to -O2
 /// \param[in] args The arguments to pass to the function, empty by default
 /// \param[in] funcToRun The function to run. By default it uses "main".
 /// \param[out] ret The `GenericValue` to fill with the result of the function. Optional
 Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
                        llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
-                       std::vector<llvm::GenericValue> args = {}, llvm::Function* funcToRun = nullptr, llvm::GenericValue* ret = nullptr);
+                       std::vector<llvm::GenericValue> args     = {},
+                       llvm::Function* funcToRun = nullptr, llvm::GenericValue* ret = nullptr);
 
 /// Interpret LLVM IR as if it were the main function
 /// \param[in] mod The module to interpret
@@ -197,7 +197,8 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
 /// \param[out] ret The return from main. Optional.
 Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod,
                              llvm::CodeGenOpt::Level       optLevel = llvm::CodeGenOpt::Default,
-                             std::vector<std::string> args = {}, llvm::Function* funcToRun = nullptr, int* ret = nullptr);
-} // namespace chig
+                             std::vector<std::string>      args     = {},
+                             llvm::Function* funcToRun = nullptr, int* ret = nullptr);
+}  // namespace chig
 
 #endif  // CHIG_CONTEXT_HPP

@@ -33,8 +33,7 @@ struct GraphFuncCallType : public NodeType {
 
 		if (mygraph == nullptr) {
 			res.addEntry("EINT", "Graph doesn't exist in module",
-			             {{"Module Name", JModule->fullName()},
-			              {"Requested Name", name()}});
+			             {{"Module Name", JModule->fullName()}, {"Requested Name", name()}});
 			return;
 		}
 
@@ -340,7 +339,7 @@ Result GraphModule::saveToDisk() const {
 	return res;
 }
 
-GraphFunction* GraphModule::getOrCreateFunction(std::string        name,
+GraphFunction* GraphModule::getOrCreateFunction(std::string                name,
                                                 std::vector<NamedDataType> dataIns,
                                                 std::vector<NamedDataType> dataOuts,
                                                 std::vector<std::string>   execIns,
@@ -354,7 +353,7 @@ GraphFunction* GraphModule::getOrCreateFunction(std::string        name,
 
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, std::move(name), std::move(dataIns),
 	                                                     std::move(dataOuts), std::move(execIns),
-	                                                     std::move(execOuts) ));
+	                                                     std::move(execOuts)));
 
 	if (inserted != nullptr) { *inserted = true; }
 	return mFunctions[mFunctions.size() - 1].get();
@@ -527,7 +526,7 @@ bool GraphModule::removeStruct(boost::string_view name) {
 			return true;
 		}
 	}
-	
+
 	// TODO: remove referencing nodes
 	return false;
 }

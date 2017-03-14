@@ -100,7 +100,8 @@ int run(const std::vector<std::string>& opts, const char* argv0) {
 	// run it!
 
 	int ret;
-	res += interpretLLVMIRAsMain(std::move(llmod), llvm::CodeGenOpt::Default, command_opts, nullptr, &ret);
+	res += interpretLLVMIRAsMain(std::move(llmod), llvm::CodeGenOpt::Default, command_opts, nullptr,
+	                             &ret);
 	if (!res) {
 		std::cerr << res << std::endl;
 		return 1;

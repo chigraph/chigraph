@@ -213,7 +213,7 @@ int main(int argc, char** argv) {
 
 		lliexe.in() << generatedir;
 		lliexe.close_in();
-		
+
 		llistdout = std::string{std::istreambuf_iterator<char>(lliexe.out()),
 		                        std::istreambuf_iterator<char>()};
 		llistderr = std::string{std::istreambuf_iterator<char>(lliexe.err()),
@@ -222,7 +222,6 @@ int main(int argc, char** argv) {
 		lliexe.close();
 
 		int retcodelli = lliexe.exit_code();
-
 
 		if (retcodelli != expectedreturncode) {
 			std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was "
@@ -284,8 +283,8 @@ int main(int argc, char** argv) {
 		}
 
 		if (generatedstdout != expectedcout) {
-			std::cerr << "(chig run) Unexpected stdout: \"" << generatedstdout << "\" expected was \""
-			          << expectedcout << '\"' << std::endl
+			std::cerr << "(chig run) Unexpected stdout: \"" << generatedstdout
+			          << "\" expected was \"" << expectedcout << '\"' << std::endl
 			          << "retcode: \"" << retcode << "\"" << std::endl
 			          << "stderr: \"" << generatedstderr << "\"" << std::endl;
 
@@ -293,8 +292,8 @@ int main(int argc, char** argv) {
 		}
 
 		if (generatedstderr != expectedcerr) {
-			std::cerr << "(chig run) Unexpected stderr: \"" << generatedstderr << "\" expected was \""
-			          << expectedcerr << '\"' << std::endl
+			std::cerr << "(chig run) Unexpected stderr: \"" << generatedstderr
+			          << "\" expected was \"" << expectedcerr << '\"' << std::endl
 			          << "retcode: \"" << retcode << "\"" << std::endl
 			          << "stdout: \"" << generatedstdout << "\"" << std::endl;
 
