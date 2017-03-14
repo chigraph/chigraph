@@ -4,6 +4,7 @@ var classchig_1_1Debugger =
     [ "Debugger", "classchig_1_1Debugger.html#a423776e7cd115878139c7cb188a3e4dc", null ],
     [ "Debugger", "classchig_1_1Debugger.html#a7320c322b0f122ae326759be5e6ec916", null ],
     [ "~Debugger", "classchig_1_1Debugger.html#af5aa9f94f6a7f0e31b4de692668a04bd", null ],
+    [ "inspectLocalVariable", "classchig_1_1Debugger.html#acd9f975b798e972492718e231013e669", null ],
     [ "inspectNodeOutput", "classchig_1_1Debugger.html#a4cb57c7595304ab8f85144e4fc24ae94", null ],
     [ "isAttached", "classchig_1_1Debugger.html#a374d7926cdf898e947d7e2768f857947", null ],
     [ "listBreakpoints", "classchig_1_1Debugger.html#ae590762af938bf03b0cea653465092ea", null ],
