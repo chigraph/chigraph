@@ -41,7 +41,7 @@ SubprocessOutputView::SubprocessOutputView(chig::GraphModule* module) : mModule(
 	}
 	boost::filesystem::path chigPath =
 	    boost::filesystem::path(QApplication::applicationFilePath().toStdString()).parent_path() /
-	        "chig";
+	    "chig";
 #ifdef _WIN32
 	chigPath.replace_extension(".exe");
 #endif

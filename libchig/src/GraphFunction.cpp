@@ -17,8 +17,7 @@
 #include <boost/uuid/uuid_io.hpp>
 
 namespace chig {
-GraphFunction::GraphFunction(GraphModule& mod, std::string name,
-                             std::vector<NamedDataType> dataIns,
+GraphFunction::GraphFunction(GraphModule& mod, std::string name, std::vector<NamedDataType> dataIns,
                              std::vector<NamedDataType> dataOuts, std::vector<std::string> execIns,
                              std::vector<std::string> execOuts)
     : mModule{&mod},
@@ -211,8 +210,7 @@ void GraphFunction::retypeDataInput(size_t idx, DataType newType) {
 	updateEntries();
 }
 
-void GraphFunction::addDataOutput(const DataType& type, std::string name,
-                                  size_t addBefore) {
+void GraphFunction::addDataOutput(const DataType& type, std::string name, size_t addBefore) {
 	Expects(addBefore >= 0);
 
 	if (addBefore < mDataOutputs.size()) {

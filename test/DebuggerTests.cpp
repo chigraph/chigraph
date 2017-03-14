@@ -36,38 +36,37 @@ TEST_CASE("Debugger", "") {
 		gMod = static_cast<GraphModule*>(cMod);
 	}
 	REQUIRE(res.dump() == "");
-	
+
 	GraphModule* printerMod;
 	{
 		ChigModule* cMod = ctx.moduleByFullName("intermodule/printer");
-		printerMod = static_cast<GraphModule*>(cMod);
+		printerMod       = static_cast<GraphModule*>(cMod);
 	}
-	
-	auto mainFunc = gMod->functionFromName("main");
+
+	auto mainFunc  = gMod->functionFromName("main");
 	auto mainEntry = mainFunc->entryNode();
-	
-	auto firstCall = mainEntry->outputExecConnections[0].first;
+
+	auto firstCall          = mainEntry->outputExecConnections[0].first;
 	auto yayHappyStrLiteral = firstCall->inputDataConnections[0].first;
-	
+
 	auto func = printerMod->functionFromName("docall");
 	REQUIRE(func != nullptr);
-	
+
 	auto entry = func->entryNode();
 	REQUIRE(entry != nullptr);
-	
+
 	auto putsNode = entry->outputExecConnections[0].first;
 	REQUIRE(putsNode != nullptr);
-	
+
 	auto exitNode = putsNode->outputExecConnections[0].first;
-	
+
 	// make a debugger
 	boost::filesystem::path chigPath =
 	    boost::filesystem::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
-	        "chig";
+	    "chig";
 #ifdef _WIN32
 	chigPath.replace_extension(boost::filesystem::path(".exe"));
 #endif
-	
 
 	Debugger dbg{chigPath.string().c_str(), *gMod};
 
@@ -76,7 +75,7 @@ TEST_CASE("Debugger", "") {
 
 	res = dbg.start();
 	REQUIRE(res.dump() == "");
-	
+
 	auto          listener = dbg.lldbDebugger().GetListener();
 	lldb::SBEvent ev;
 	while (true) {
@@ -102,27 +101,28 @@ TEST_CASE("Debugger", "") {
 	}
 
 	REQUIRE(dbg.nodeFromFrame() == putsNode);
-	
+
 	auto value = dbg.inspectNodeOutput(*entry, 0);
 	REQUIRE(value.IsValid());
 
 	REQUIRE(value.GetSummary() == std::string(R"("Yay happy!")"));
-	
+
 	// go up the call stack
 	auto thread = dbg.lldbProcess().GetSelectedThread();
-	
+
 	// select frame 1
 	thread.SetSelectedFrame(1);
-	
+
 	REQUIRE(dbg.nodeFromFrame() == firstCall);
-	
-	REQUIRE(dbg.inspectNodeOutput(*yayHappyStrLiteral, 0).GetSummary() == std::string(R"("Yay happy!")"));
-	
+
+	REQUIRE(dbg.inspectNodeOutput(*yayHappyStrLiteral, 0).GetSummary() ==
+	        std::string(R"("Yay happy!")"));
+
 	thread.SetSelectedFrame(0);
-	
+
 	// step
 	dbg.processContinue();
-	
+
 	// wait until we're back in business
 	while (true) {
 		listener.WaitForEvent(5, ev);
@@ -133,20 +133,22 @@ TEST_CASE("Debugger", "") {
 
 		if (lldb::SBProcess::GetStateFromEvent(ev) == lldb::eStateStopped) break;
 	}
-	
+
 	std::this_thread::sleep_for(3s);
 	REQUIRE(dbg.isAttached());
 	REQUIRE(!dbg.running());
-	
-	std::cout << std::endl << std::endl << "NODE TYPE: " << dbg.nodeFromFrame()->type().qualifiedName() << std::endl << std::endl;
+
+	std::cout << std::endl
+	          << std::endl
+	          << "NODE TYPE: " << dbg.nodeFromFrame()->type().qualifiedName() << std::endl
+	          << std::endl;
 	std::cout.flush();
 	REQUIRE(dbg.nodeFromFrame() == exitNode);
-	
+
 	value = dbg.inspectNodeOutput(*entry, 0);
 	REQUIRE(value.IsValid());
 
 	REQUIRE(value.GetSummary() == std::string(R"("Yay happy!")"));
-
 
 	dbg.terminate();
 }
