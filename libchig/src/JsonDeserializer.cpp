@@ -305,19 +305,18 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 
 	// read the connections
 	{
-	
 		auto connIter = input.find("connections");
 		if (connIter == input.end() || !connIter->is_array()) {
 			res.addEntry("E13", "No connections array in function", {});
 			return res;
 		}
-		
+
 		auto connID = 0ull;
 		for (auto& connection : input["connections"]) {
 			if (connection.find("type") == connection.end() ||
 			    !connection.find("type")->is_string()) {
 				res.addEntry("E14", "No type string in connection", {"connectionid", connID});
-			
+
 				++connID;
 				continue;
 			}
@@ -327,14 +326,14 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 			if (!isData && type != "exec") {
 				res.addEntry("E15", "Unrecognized connection type",
 				             {{"connectionid", connID}, {"Found Type", type}});
-				
+
 				++connID;
 				continue;
 			}
 
 			if (connection.find("input") == connection.end()) {
 				res.addEntry("E16", "No input element in connection", {{"connectionid", connID}});
-				
+
 				++connID;
 				continue;
 			}
@@ -346,7 +345,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 				    "Incorrect connection input format, must be an array of of a string (node id) "
 				    "and int (connection id)",
 				    {{"connectionid", connID}, {"Requested Type", *connection.find("input")}});
-				
+
 				++connID;
 				continue;
 			}
@@ -366,7 +365,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 
 			if (connection.find("output") == connection.end()) {
 				res.addEntry("E18", "No output element in connection", {{"connectionid", connID}});
-				
+
 				++connID;
 				continue;
 			}

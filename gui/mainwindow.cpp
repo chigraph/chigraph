@@ -225,8 +225,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(newModuleAction, &QAction::triggered, this, &MainWindow::newModule);
 
 	// theme selector
-	auto themeAction  = new KActionMenu(i18n("Theme"), this);
-	mThemeManager = std::make_unique<ThemeManager>(themeAction);
+	auto themeAction = new KActionMenu(i18n("Theme"), this);
+	mThemeManager    = std::make_unique<ThemeManager>(themeAction);
 	actColl->addAction(QStringLiteral("theme"), themeAction);
 
 	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
