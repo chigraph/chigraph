@@ -33,7 +33,7 @@ class ParamListWidget : public QWidget {
 public:
 	enum Type { Input, Output };
 
-	ParamListWidget(QWidget* parent = nullptr);
+	explicit ParamListWidget(QWidget* parent = nullptr);
 
 	void setFunction(FunctionView* func, Type ty);
 signals:
@@ -43,9 +43,8 @@ private:
 	void refreshEntry();
 	void refreshExits();
 
-	QListWidget*  mParamList;
 	FunctionView* mFunc = nullptr;
-	Type          mType;
+	Type          mType = Input;
 };
 
 #endif  // CHIGGUI_PARAMLISTWIDGET_HPP
