@@ -295,23 +295,21 @@ Result Context::compileModule(ChigModule& mod, std::unique_ptr<llvm::Module>* to
 	return res;
 }
 
-
-std::vector<NodeInstance*> Context::findInstancesOfType(const boost::filesystem::path& moduleName, boost::string_view typeName) const {
+std::vector<NodeInstance*> Context::findInstancesOfType(const boost::filesystem::path& moduleName,
+                                                        boost::string_view typeName) const {
 	std::vector<NodeInstance*> ret;
-	
+
 	for (const auto& module : mModules) {
 		// see if it's a GraphModule
 		auto castedMod = dynamic_cast<GraphModule*>(module.get());
-		if (castedMod == nullptr) {
-			continue;
-		}
-		
+		if (castedMod == nullptr) { continue; }
+
 		for (const auto& func : castedMod->functions()) {
 			auto vec = func->nodesWithType(moduleName, typeName);
 			std::copy(vec.begin(), vec.end(), std::back_inserter(ret));
 		}
 	}
-	
+
 	return ret;
 }
 
@@ -355,9 +353,8 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	EEBuilder.setOptLevel(optLevel);
 
 	EEBuilder.setErrorStr(&errMsg);
-	
-	EEBuilder.setMCJITMemoryManager(
-		std::make_unique<llvm::SectionMemoryManager>());
+
+	EEBuilder.setMCJITMemoryManager(std::make_unique<llvm::SectionMemoryManager>());
 
 	return std::unique_ptr<llvm::ExecutionEngine>(EEBuilder.create());
 }
@@ -365,7 +362,8 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 }  // anonymous namespace
 
 Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
-                       std::vector<llvm::GenericValue> args, llvm::Function* funcToRun, llvm::GenericValue* ret) {
+                       std::vector<llvm::GenericValue> args, llvm::Function* funcToRun,
+                       llvm::GenericValue* ret) {
 	Result res;
 
 	if (funcToRun == nullptr) {

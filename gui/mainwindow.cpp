@@ -348,7 +348,7 @@ void MainWindow::newModule() {
 	auto fullName = QInputDialog::getText(this, i18n("New Module"), i18n("Full Module Name"));
 	if (fullName.isEmpty()) {
 		KMessageBox::error(this, i18n("Cannot create a module wth an empty name"));
-		
+
 		return;
 	}
 

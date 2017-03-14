@@ -7,8 +7,8 @@
 #pragma once
 
 #include "chig/Fwd.hpp"
-#include "chig/json.hpp"
 #include "chig/HashUuid.hpp"
+#include "chig/json.hpp"
 
 #include <gsl/gsl>
 
@@ -17,9 +17,9 @@
 #include <llvm/IR/DerivedTypes.h>  // for FunctionType
 
 #include <boost/filesystem.hpp>
+#include <boost/utility/string_view.hpp>
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid.hpp>
-#include <boost/utility/string_view.hpp>
 
 namespace chig {
 /// this is an AST-like representation of a function in a graph
@@ -82,7 +82,7 @@ struct GraphFunction {
 	/// \param name The name of the type
 	/// \return A vector of NodeInstance
 	std::vector<NodeInstance*> nodesWithType(const boost::filesystem::path& module,
-	                                         boost::string_view            name) const noexcept;
+	                                         boost::string_view             name) const noexcept;
 
 	/// Add a node to the graph using module, type, and json
 	/// \param moduleName The name of the module that typeName is in
@@ -216,8 +216,7 @@ struct GraphFunction {
 	/// Add an exec input to the end of the argument list
 	/// \param name The name of the input (just for documentation)
 	/// \param addBefore the input to add after
-	void addExecInput(std::string name,
-	                  size_t              addBefore = (std::numeric_limits<size_t>::max)());
+	void addExecInput(std::string name, size_t addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an exec input from the argument list
 	/// If idx is out of range, this function does nothing.
@@ -242,8 +241,7 @@ struct GraphFunction {
 	/// Add an exec output to the end of the argument list
 	/// \param name The name of the output (just for documentation)
 	/// \param addBefore The output to add after
-	void addExecOutput(std::string name,
-	                   size_t              addBefore = (std::numeric_limits<size_t>::max)());
+	void addExecOutput(std::string name, size_t addBefore = (std::numeric_limits<size_t>::max)());
 
 	/// Remove an exec output from the argument list
 	/// If idx is out of range, this function does nothing.

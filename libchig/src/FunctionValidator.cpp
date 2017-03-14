@@ -58,9 +58,9 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 				Expects(connection.first != nullptr);
 
 				if (connection.first->inputDataConnections.size() <= connection.second) {
-					res.addEntry(
-					    "EUKN", "Input data port not found in node",
-					    {{"nodeid", connection.first->stringId()}, {"requested id", connection.second}});
+					res.addEntry("EUKN", "Input data port not found in node",
+					             {{"nodeid", connection.first->stringId()},
+					              {"requested id", connection.second}});
 					continue;
 				}
 
@@ -84,7 +84,7 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 				if (remoteConn.first != node.second.get() || remoteConn.second != id) {
 					res.addEntry("EUKN", "Exec connection doesn't connect back",
 					             {{"Left Node", connection.first->stringId()},
-					             {"Left Node Type", connection.first->type().qualifiedName()},
+					              {"Left Node Type", connection.first->type().qualifiedName()},
 					              {"Right Node", node.second->stringId()},
 					              {"Right Node Type", node.second->type().qualifiedName()},
 					              {"Left output ID", connection.second}});
@@ -98,7 +98,10 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 		for (const auto& connection : node.second->outputExecConnections) {
 			bool connectsBack = false;
 
-			if (connection.first == nullptr) { ++id; continue; }
+			if (connection.first == nullptr) {
+				++id;
+				continue;
+			}
 			for (const auto& remoteConnection :
 			     connection.first->inputExecConnections[connection.second]) {
 				if (remoteConnection.second == id && remoteConnection.first == node.second.get()) {
@@ -110,9 +113,9 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 			if (!connectsBack) {
 				res.addEntry("EUKN", "Exec connection doesn't connect back",
 				             {{"Left Node", node.second->stringId()},
-				             {"Left Node Type", node.second->type().qualifiedName()},
+				              {"Left Node Type", node.second->type().qualifiedName()},
 				              {"Right Node", connection.first->stringId()},
-				              {"Right Node Type", connection.first->type().qualifiedName()},	
+				              {"Right Node Type", connection.first->type().qualifiedName()},
 				              {"Left output ID", id}});
 			}
 
@@ -148,9 +151,10 @@ Result validatePath(
 	auto id = 0ull;
 	for (const auto& conn : inst.inputDataConnections) {
 		if (conn.first == nullptr) {
-			res.addEntry(
-			    "EUKN", "Node is missing an input data connection",
-			    {{"nodeid", inst.stringId()}, {"dataid", id}, {"nodetype", inst.type().qualifiedName()}});
+			res.addEntry("EUKN", "Node is missing an input data connection",
+			             {{"nodeid", inst.stringId()},
+			              {"dataid", id},
+			              {"nodetype", inst.type().qualifiedName()}});
 			++id;
 			continue;
 		}

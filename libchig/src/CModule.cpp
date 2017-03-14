@@ -28,14 +28,12 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, const std::stri
                                            const std::vector<std::string>& args,
                                            llvm::LLVMContext& ctx, Result& res) {
 	std::vector<const char*> cArgs;
-	for (const auto& arg : args) { 
-		cArgs.push_back(arg.c_str()); 
-		
-	}
+	for (const auto& arg : args) { cArgs.push_back(arg.c_str()); }
 	cArgs.push_back("-nostdlib");
 	cArgs.push_back("-I");
-	
-	auto stdlibPath = fs::path(execPath).parent_path().parent_path() / "lib" / "chig" / "stdlib" / "include";
+
+	auto stdlibPath =
+	    fs::path(execPath).parent_path().parent_path() / "lib" / "chig" / "stdlib" / "include";
 	cArgs.push_back(stdlibPath.string().c_str());
 
 	std::string errors;
