@@ -15,7 +15,7 @@ class FunctionView;
 class FunctionInOuts : public QWidget {
 	Q_OBJECT
 public:
-	FunctionInOuts(QWidget* parent = nullptr);
+	explicit FunctionInOuts(QWidget* parent = nullptr);
 
 public slots:
 	void loadFunction(FunctionView* func);

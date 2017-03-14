@@ -13,7 +13,7 @@ namespace {
 
 class StringListValidator : public QValidator {
 public:
-	StringListValidator(QStringList acceptableValues)
+	explicit StringListValidator(QStringList acceptableValues)
 	    : mAcceptableValues{std::move(acceptableValues)} {}
 
 	State validate(QString& input, int& pos) const override {

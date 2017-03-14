@@ -14,7 +14,7 @@ class ThemeManager : public QObject {
 	Q_OBJECT
 
 public:
-	ThemeManager(KActionMenu* menu);
+	explicit ThemeManager(KActionMenu* menu);
 
 	void setTheme(const QString& name);
 	QString     theme();
