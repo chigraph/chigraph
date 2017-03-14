@@ -66,7 +66,7 @@ private:
 	std::unique_ptr<chig::Context> mChigContext   = nullptr;
 	chig::GraphModule*             mModule        = nullptr;
 	ModuleBrowser*                 mModuleBrowser = nullptr;
-	
+
 	std::unique_ptr<ThemeManager> mThemeManager;
 };
 
