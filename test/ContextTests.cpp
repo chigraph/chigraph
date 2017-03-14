@@ -36,7 +36,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 			REQUIRE(workspaceFromChildPath("/").empty());
 		}
 
-		THEN("There will be no modules in it") { REQUIRE(c.numModules() == 0); }
+		THEN("There will be no modules in it") { REQUIRE(c.modules().size() == 0); }
 		THEN("stringifyType return proper strings") {
 			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt32Ty(c.llvmContext())) == "i32");
 			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt1Ty(c.llvmContext())) == "i1");
@@ -56,7 +56,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 				}
 			}
 
-			THEN("There should be 1 module in c") { REQUIRE(c.numModules() == 1); }
+			THEN("There should be 1 module in c") { REQUIRE(c.modules().size() == 1); }
 
 			THEN("Getting other modules should fail") {
 				REQUIRE(c.moduleByFullName("qwerty") == nullptr);

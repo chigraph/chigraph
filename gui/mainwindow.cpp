@@ -243,8 +243,8 @@ void MainWindow::save() {
 			KMessageBox::detailedError(this, i18n("Failed to save module!"),
 			                           QString::fromStdString(res.dump()));
 		}
+		mModuleBrowser->moduleSaved(*mModule);
 	}
-	mModuleBrowser->moduleSaved(*mModule);
 }
 
 void MainWindow::openWorkspaceDialog() {
@@ -346,6 +346,11 @@ void MainWindow::newModule() {
 
 	// TODO: validator
 	auto fullName = QInputDialog::getText(this, i18n("New Module"), i18n("Full Module Name"));
+	if (fullName.isEmpty()) {
+		KMessageBox::error(this, i18n("Cannot create a module wth an empty name"));
+		
+		return;
+	}
 
 	auto mod = context().newGraphModule(fullName.toStdString());
 
