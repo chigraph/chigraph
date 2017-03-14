@@ -23,6 +23,7 @@
 #include "functionview.hpp"
 
 class ModuleBrowser;
+class ThemeManager;
 
 class MainWindow : public KXmlGuiWindow {
 	Q_OBJECT
@@ -65,6 +66,8 @@ private:
 	std::unique_ptr<chig::Context> mChigContext   = nullptr;
 	chig::GraphModule*             mModule        = nullptr;
 	ModuleBrowser*                 mModuleBrowser = nullptr;
+	
+	std::unique_ptr<ThemeManager> mThemeManager;
 };
 
 #endif  // CHIGGUI_MAINWINDOW_H
