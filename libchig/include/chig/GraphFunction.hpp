@@ -7,8 +7,8 @@
 #pragma once
 
 #include "chig/Fwd.hpp"
-#include "chig/json.hpp"
 #include "chig/HashUuid.hpp"
+#include "chig/json.hpp"
 
 #include <gsl/gsl>
 
