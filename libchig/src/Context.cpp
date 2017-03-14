@@ -295,6 +295,26 @@ Result Context::compileModule(ChigModule& mod, std::unique_ptr<llvm::Module>* to
 	return res;
 }
 
+
+std::vector<NodeInstance*> Context::findInstancesOfType(const boost::filesystem::path& moduleName, boost::string_view typeName) const {
+	std::vector<NodeInstance*> ret;
+	
+	for (const auto& module : mModules) {
+		// see if it's a GraphModule
+		auto castedMod = dynamic_cast<GraphModule*>(module.get());
+		if (castedMod == nullptr) {
+			continue;
+		}
+		
+		for (const auto& func : castedMod->functions()) {
+			auto vec = func->nodesWithType(moduleName, typeName);
+			std::copy(vec.begin(), vec.end(), std::back_inserter(ret));
+		}
+	}
+	
+	return ret;
+}
+
 fs::path workspaceFromChildPath(const fs::path& path) {
 	fs::path ret = path;
 
