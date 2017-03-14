@@ -5,9 +5,6 @@
 
 #include <KMessageBox>
 
-#include "../src/Node.hpp"
-#include "../src/NodeGraphicsObject.hpp"
-
 #include <chig/GraphModule.hpp>
 #include <chig/NodeInstance.hpp>
 
@@ -36,6 +33,16 @@ FunctionView::FunctionView(MainWindow* mainWindow, chig::GraphFunction* func_, Q
 	mScene = new FlowScene(createRegistry());
 
 	mView = new FlowView(mScene);
+	
+	// add an action to add a breakpoint
+	auto breakpointAction = new QAction(i18n("Add Breakpoint"));
+	breakpointAction->setShortcut(Qt::Key_B);
+	connect(breakpointAction, &QAction::triggered, this, [this]{
+		for (auto& node : mScene->selectedNodes()) {
+			addBreakpoint(*node);
+        }
+	});
+	mView->addAction(breakpointAction);
 
 	hlayout->addWidget(mView);
 
@@ -44,7 +51,7 @@ FunctionView::FunctionView(MainWindow* mainWindow, chig::GraphFunction* func_, Q
 		auto& guinode =
 		    mScene->createNode(std::make_unique<ChigraphNodeModel>(node.second.get(), this));
 
-		guinode.nodeGraphicsObject().setPos({node.second->x(), node.second->y()});
+		mScene->setNodePosition(guinode, {node.second->x(), node.second->y()});
 
 		mNodeMap[node.second.get()] = &guinode;
 	}
@@ -247,6 +254,10 @@ void FunctionView::nodeDoubleClicked(QtNodes::Node& n) {
 	mMainWindow->newFunctionSelected(func);
 }
 
+void FunctionView::addBreakpoint(QtNodes::Node& n) {
+  // TODO: implement
+}
+
 void FunctionView::refreshGuiForNode(Node* node) {
 	auto model = dynamic_cast<ChigraphNodeModel*>(node->nodeDataModel());
 
@@ -263,7 +274,7 @@ void FunctionView::refreshGuiForNode(Node* node) {
 		}
 	}
 
-	QPointF pos = node->nodeGraphicsObject().pos();
+	QPointF pos = mScene->getNodePosition(*node);
 
 	mNodeMap.erase(inst);  // so the signal doesn't do stuff
 	mScene->removeNode(*node);
@@ -272,7 +283,7 @@ void FunctionView::refreshGuiForNode(Node* node) {
 
 	auto& thisNode = mScene->createNode(std::make_unique<ChigraphNodeModel>(inst, this));
 	mNodeMap[inst] = &thisNode;
-	thisNode.nodeGraphicsObject().setPos(pos);
+	mScene->setNodePosition(thisNode, pos);
 
 	// recreate connections
 	auto id = 0ull;
@@ -352,7 +363,7 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 			reg->registerModel(std::make_unique<ChigraphNodeModel>(
 			    new chig::NodeInstance(mFunction, std::move(ty), 0, 0,
 			                           boost::uuids::random_generator()()),
-			    this));  // TODO: this is a memory leak
+			    this), QString::fromStdString(modName.generic_path().string()));  // TODO: this is a memory leak
 		}
 	}
 	// register exit -- it has to be the speical kind of exit for this function
@@ -360,19 +371,19 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 	mFunction->createExitNodeType(&ty);
 
 	reg->registerModel(std::make_unique<ChigraphNodeModel>(
-	    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this));
+	    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this), QString::fromStdString(mFunction->module().fullName()));
 
 	// register local variable setters and getters
 	for (const auto& local : mFunction->localVariables()) {
 		mFunction->module().nodeTypeFromName("_set_" + local.name, local.type.qualifiedName(), &ty);
 
 		reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this));
+		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this), i18n("Local Variables"));
 
 		mFunction->module().nodeTypeFromName("_get_" + local.name, local.type.qualifiedName(), &ty);
 
 		reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this));
+		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this), i18n("Local Variables"));
 	}
 
 	return reg;
