@@ -45,6 +45,8 @@ private slots:
 	void nodeMoved(QtNodes::Node& n, QPointF newLoc);
 
 	void nodeDoubleClicked(QtNodes::Node& n);
+	
+	void addBreakpoint(QtNodes::Node& n);
 
 signals:
 	void dirtied();
