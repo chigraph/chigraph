@@ -230,9 +230,10 @@ Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
 	                         [&](auto& pair) { return pair.first == &rhs; });
 
 	if (iter == lhs.outputDataConnections[lhsConnID].end()) {
-		res.addEntry(
-		    "EUKN", "Cannot disconnect from connection that doesn't exist",
-		    {{"Left node ID", lhs.stringId()}, {"Right node ID", rhs.stringId()}, {"Left dock ID", lhsConnID}});
+		res.addEntry("EUKN", "Cannot disconnect from connection that doesn't exist",
+		             {{"Left node ID", lhs.stringId()},
+		              {"Right node ID", rhs.stringId()},
+		              {"Left dock ID", lhsConnID}});
 
 		return res;
 	}
