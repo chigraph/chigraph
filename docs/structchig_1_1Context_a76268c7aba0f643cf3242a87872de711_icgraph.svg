@@ -9,54 +9,54 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 100)">
 <title>chig::Context::compileModule</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-100 332,-100 332,4 -4,4"/>
-<!-- Node80 -->
+<!-- Node75 -->
 <g id="node1" class="node">
-<title>Node80</title>
+<title>Node75</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-38.5 0,-57.5 146,-57.5 146,-38.5 0,-38.5"/>
 <text text-anchor="middle" x="73" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::compileModule</text>
 </g>
-<!-- Node81 -->
+<!-- Node76 -->
 <g id="node2" class="node">
-<title>Node81</title>
+<title>Node76</title>
 <g id="a_node2"><a xlink:href="structchig_1_1Context.html#ac585794db13b27b3f69a51aa9d7fd01c" target="_top" xlink:title="Compile a module to a llvm::Module. ">
 <polygon fill="#ffffff" stroke="#000000" points="182,-76.5 182,-95.5 328,-95.5 328,-76.5 182,-76.5"/>
 <text text-anchor="middle" x="255" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::compileModule</text>
 </a>
 </g>
 </g>
-<!-- Node80&#45;&gt;Node81 -->
+<!-- Node75&#45;&gt;Node76 -->
 <g id="edge1" class="edge">
-<title>Node80&#45;&gt;Node81</title>
+<title>Node75&#45;&gt;Node76</title>
 <path fill="none" stroke="#191970" d="M128.9458,-59.681C154.7558,-65.0699 185.0069,-71.3861 209.404,-76.4799"/>
 <polygon fill="#191970" stroke="#191970" points="129.4306,-56.2068 118.9263,-57.589 127.9998,-63.059 129.4306,-56.2068"/>
 </g>
-<!-- Node82 -->
+<!-- Node77 -->
 <g id="node3" class="node">
-<title>Node82</title>
+<title>Node77</title>
 <g id="a_node3"><a xlink:href="structchig_1_1Context.html#aa4fb30ced50d32c629ad50669b8b1e05" target="_top" xlink:title="Check if this context has a workspace bound to it – same as !workspacePath().empty() ...">
 <polygon fill="#ffffff" stroke="#000000" points="182.5,-38.5 182.5,-57.5 327.5,-57.5 327.5,-38.5 182.5,-38.5"/>
 <text text-anchor="middle" x="255" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Context::hasWorkspace</text>
 </a>
 </g>
 </g>
-<!-- Node80&#45;&gt;Node82 -->
+<!-- Node75&#45;&gt;Node77 -->
 <g id="edge2" class="edge">
-<title>Node80&#45;&gt;Node82</title>
+<title>Node75&#45;&gt;Node77</title>
 <path fill="none" stroke="#191970" d="M156.3211,-48C164.9614,-48 173.6947,-48 182.2064,-48"/>
 <polygon fill="#191970" stroke="#191970" points="156.2397,-44.5001 146.2397,-48 156.2396,-51.5001 156.2397,-44.5001"/>
 </g>
-<!-- Node83 -->
+<!-- Node78 -->
 <g id="node4" class="node">
-<title>Node83</title>
+<title>Node78</title>
 <g id="a_node4"><a xlink:href="classchig_1_1Debugger.html#abb630c53f98a284547956128c120bef2" target="_top" xlink:title="Start debugging the process. ">
 <polygon fill="#ffffff" stroke="#000000" points="201.5,-.5 201.5,-19.5 308.5,-19.5 308.5,-.5 201.5,-.5"/>
 <text text-anchor="middle" x="255" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chig::Debugger::start</text>
 </a>
 </g>
 </g>
-<!-- Node80&#45;&gt;Node83 -->
+<!-- Node75&#45;&gt;Node78 -->
 <g id="edge3" class="edge">
-<title>Node80&#45;&gt;Node83</title>
+<title>Node75&#45;&gt;Node78</title>
 <path fill="none" stroke="#191970" d="M128.9458,-36.319C154.7558,-30.9301 185.0069,-24.6139 209.404,-19.5201"/>
 <polygon fill="#191970" stroke="#191970" points="127.9998,-32.941 118.9263,-38.411 129.4306,-39.7932 127.9998,-32.941"/>
 </g>

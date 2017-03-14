@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"structchig_1_1DataType.html#aa63396ca8c48bd0a6be166df245772a9":[2,0,0,3,3],
+"structchig_1_1DataType.html#ad14e85637a15b7f77cbc51d7139ebfd1":[2,0,0,3,7],
 "structchig_1_1GraphFunction.html":[2,0,0,5],
 "structchig_1_1GraphFunction.html#a031cb6238f17b19ad3e416839c54290b":[2,0,0,5,2],
 "structchig_1_1GraphFunction.html#a04b1b8884a857c88ae1eead02d7f49da":[2,0,0,5,22],
