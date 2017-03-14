@@ -10,7 +10,7 @@
 class TypeSelector : public KComboBox {
 	Q_OBJECT
 public:
-	TypeSelector(chig::ChigModule& module, QWidget* parent = nullptr);
+	explicit TypeSelector(chig::ChigModule& module, QWidget* parent = nullptr);
 
 	void setCurrentType(const chig::DataType& ty);
 	chig::DataType currentType();

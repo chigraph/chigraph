@@ -10,7 +10,7 @@
 class LocalVariables : public QWidget {
 	Q_OBJECT
 public:
-	LocalVariables(QWidget* parent = nullptr);
+	explicit LocalVariables(QWidget* parent = nullptr);
 
 	void loadFunction(FunctionView* func);
 

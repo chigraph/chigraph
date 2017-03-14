@@ -27,7 +27,7 @@ class ModuleBrowser;
 class MainWindow : public KXmlGuiWindow {
 	Q_OBJECT
 public:
-	MainWindow(QWidget* parent = nullptr);
+	explicit MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
 	chig::GraphModule* currentModule() const { return mModule; }

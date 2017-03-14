@@ -12,7 +12,7 @@
 
 class FunctionListItem : public QListWidgetItem {
 public:
-	FunctionListItem(chig::GraphFunction* func)
+	explicit FunctionListItem(chig::GraphFunction* func)
 	    : QListWidgetItem(QIcon::fromTheme(QStringLiteral("code-class")),
 	                      QString::fromStdString(func->module().fullName() + ":" + func->name()),
 	                      nullptr, QListWidgetItem::UserType),

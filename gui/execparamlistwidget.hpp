@@ -12,10 +12,10 @@ class FunctionView;
 
 inline void deleteLayout(QLayout* layout) {
 	QLayoutItem* item;
-	QLayout*     sublayout;
 	QWidget*     widget;
 	while ((item = layout->takeAt(0))) {
-		if ((sublayout = item->layout()) != 0) {
+		QLayout* sublayout = item->layout();
+		if (sublayout != 0) {
 			deleteLayout(sublayout);
 		} else if ((widget = item->widget()) != 0) {
 			widget->hide();
@@ -34,7 +34,7 @@ class ExecParamListWidget : public QWidget {
 public:
 	enum Type { Input, Output };
 
-	ExecParamListWidget(QWidget* parent = nullptr);
+	explicit ExecParamListWidget(QWidget* parent = nullptr);
 
 	void setFunction(FunctionView* func, Type ty);
 
@@ -45,9 +45,8 @@ private:
 	void refreshEntry();
 	void refreshExits();
 
-	QListWidget*  mParamList;
 	FunctionView* mFunc = nullptr;
-	Type          mType;
+	Type          mType = Input;
 };
 
 #endif  // CHIGGUI_EXECPARAMLISTWIDGET_HPP
