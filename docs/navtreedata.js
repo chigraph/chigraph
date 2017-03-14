@@ -28,7 +28,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"structchig_1_1GraphFunction.html"
+"structchig_1_1DataType.html#aa63396ca8c48bd0a6be166df245772a9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

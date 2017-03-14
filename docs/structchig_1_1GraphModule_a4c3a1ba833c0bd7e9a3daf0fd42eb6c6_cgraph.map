@@ -1,9 +1,9 @@
 <map id="chig::GraphModule::generateModule" name="chig::GraphModule::generateModule">
 <area shape="rect" id="node2" href="$namespacechig.html#a4f26546c4bc76c31cc822d0365be0f30" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="192,761,341,787"/>
-<area shape="rect" id="node29" href="$structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3" title="Get the full name of the module. " alt="" coords="1161,1223,1343,1250"/>
-<area shape="rect" id="node31" href="$namespacechig.html#a3f81af31fdce1ce176f0dcb8bdb19b91" title="Mangle a function name. " alt="" coords="401,1223,581,1250"/>
-<area shape="rect" id="node44" href="$structchig_1_1GraphModule.html#a2b80440a0bdf4c760a12ea0309d68060" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="197,1384,336,1425"/>
-<area shape="rect" id="node3" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. " alt="" coords="937,1122,1087,1149"/>
+<area shape="rect" id="node29" href="$structchig_1_1ChigModule.html#ad730121a133fbc474fcb71d49f31f7b3" title="Get the full name of the module. " alt="" coords="1161,1237,1343,1263"/>
+<area shape="rect" id="node31" href="$namespacechig.html#a3f81af31fdce1ce176f0dcb8bdb19b91" title="Mangle a function name. " alt="" coords="401,1237,581,1263"/>
+<area shape="rect" id="node44" href="$structchig_1_1GraphModule.html#a2b80440a0bdf4c760a12ea0309d68060" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="197,1397,336,1439"/>
+<area shape="rect" id="node3" href="$structchig_1_1Result.html#aabb30a56760c3a817518912d9eabb491" title="Add a entry to the result, either a warning or an error. " alt="" coords="937,1135,1087,1162"/>
 <area shape="rect" id="node4" href="$structchig_1_1GraphFunction.html#a1e937f70e87b2d783211f31a6ddfb91c" title="Get the context. " alt="" coords="683,501,821,543"/>
 <area shape="rect" id="node5" href="$structchig_1_1GraphModule.html#a292eaf6be61fdccb79b54341a34ca6d7" title="Create the associations from line number and function in debug info. " alt="" coords="409,183,573,224"/>
 <area shape="rect" id="node10" href="$structchig_1_1GraphFunction.html#a42c555949c37c229eae02af3dabae189" title="Get the function data inputs in the format {type, docstring}. " alt="" coords="1183,443,1321,484"/>
@@ -13,7 +13,7 @@
 <area shape="rect" id="node27" href="$structchig_1_1GraphFunction.html#a2eddb58def91a9e0fce7212db3834827" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="1391,768,1529,809"/>
 <area shape="rect" id="node28" href="$structchig_1_1GraphFunction.html#a3291c0b882b4f73e5d60af4ca75b1a37" title="Get the name of the function. " alt="" coords="1391,833,1529,875"/>
 <area shape="rect" id="node30" href="$structchig_1_1GraphFunction.html#a6aae3374651aca2f0973c81ecae2d848" title="Get the LLVM function type for the function. " alt="" coords="422,451,561,492"/>
-<area shape="rect" id="node32" href="$structchig_1_1Context.html#a33b452c12e6bf340b231efe483a5209a" title="Gets a DataType from a module. " alt="" coords="389,995,593,1022"/>
+<area shape="rect" id="node32" href="$structchig_1_1Context.html#a33b452c12e6bf340b231efe483a5209a" title="Gets a DataType from a module. " alt="" coords="389,1009,593,1035"/>
 <area shape="rect" id="node35" href="$structchig_1_1DataType.html#a307eaa94c9f2d408c7a204e364b02b22" title="Check if the DataType is valid (if it&#39;s actually bound to a type and module) " alt="" coords="419,887,564,914"/>
 <area shape="rect" id="node36" href="$namespacechig.html#afccf44a2370371aae836862d9731155e" title="Validate that a function is compilable. " alt="" coords="417,786,566,813"/>
 <area shape="rect" id="node6" href="$structchig_1_1GraphModule.html#a3aca789690eb2e7dedc764ae20154c9d" title="Get functions. " alt="" coords="683,93,821,135"/>
@@ -33,19 +33,19 @@
 <area shape="rect" id="node23" href="$structchig_1_1GraphFunction.html#a93bbd277495761f3ab308d0dd402a8fc" title="Add an exec input to the end of the argument list. " alt="" coords="1391,572,1529,613"/>
 <area shape="rect" id="node24" href="$structchig_1_1GraphFunction.html#a66ce414a8fddb835759fb9e7bacf653d" title="Remove an exec input from the argument list If idx is out of range, this function does nothing..." alt="" coords="1391,637,1529,679"/>
 <area shape="rect" id="node25" href="$structchig_1_1GraphFunction.html#a5d5b8c408ae7ae9692962cf2de1282fd" title="Change the name for an exec input If idx is out of range, this function does nothing. " alt="" coords="1391,703,1529,744"/>
-<area shape="rect" id="node33" href="$structchig_1_1Context.html#ae9794348cb6c594497574b13852d6fd1" title="Gets the module by the full name. " alt="" coords="642,1071,862,1098"/>
-<area shape="rect" id="node34" href="$structchig_1_1ChigModule.html#a4da097ea0878d559ffe0d6e2b026fa15" title="Get a DataType from the name. " alt="" coords="643,1021,861,1047"/>
-<area shape="rect" id="node37" href="$namespacechig.html#ae2ff27777b91f651f86d9a8e8ef0b986" title="Make sure that connections connect back and that they have the same types. " alt="" coords="641,904,863,945"/>
+<area shape="rect" id="node33" href="$structchig_1_1Context.html#ae9794348cb6c594497574b13852d6fd1" title="Gets the module by the full name. " alt="" coords="642,1085,862,1111"/>
+<area shape="rect" id="node34" href="$structchig_1_1ChigModule.html#a4da097ea0878d559ffe0d6e2b026fa15" title="Get a DataType from the name. " alt="" coords="643,1034,861,1061"/>
+<area shape="rect" id="node37" href="$namespacechig.html#ae2ff27777b91f651f86d9a8e8ef0b986" title="Make sure that connections connect back and that they have the same types. " alt="" coords="641,917,863,959"/>
 <area shape="rect" id="node43" href="$namespacechig.html#ad868894793d664b6ae994f24fc781b4b" title="The make sure that nodes are called before their outputs are used. " alt="" coords="663,669,841,711"/>
-<area shape="rect" id="node38" href="$structchig_1_1NodeInstance.html#a0560b8b35612fc845d6464866c425c71" title="Get the ID of the instance, unique to the graph. " alt="" coords="936,1005,1088,1031"/>
-<area shape="rect" id="node39" href="$structchig_1_1GraphFunction.html#a7460b1b14cbf073f576968e1a1ed1cd5" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="943,1056,1081,1097"/>
-<area shape="rect" id="node40" href="$structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3" title="Get the qualified name of the node type, like module.name():name() " alt="" coords="911,887,1113,914"/>
+<area shape="rect" id="node38" href="$structchig_1_1GraphFunction.html#a7460b1b14cbf073f576968e1a1ed1cd5" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="943,1004,1081,1045"/>
+<area shape="rect" id="node39" href="$structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3" title="Get the qualified name of the node type, like module.name():name() " alt="" coords="911,887,1113,914"/>
+<area shape="rect" id="node41" href="$structchig_1_1NodeInstance.html#afacc72392d31c168d5a769f13d0fa3ec" title="Get the ID as a string. " alt="" coords="945,1069,1079,1111"/>
 <area shape="rect" id="node42" href="$structchig_1_1NodeInstance.html#a5c9d6934e14f56ff4317ff08e170e83a" title="Get the type of the instance. " alt="" coords="945,939,1079,980"/>
-<area shape="rect" id="node41" href="$structchig_1_1NodeType.html#ad18d6f37b20e92bcd580bcf7c7504e64" title="Get the ChigModule this NodeType belongs to. " alt="" coords="1171,890,1333,917"/>
-<area shape="rect" id="node45" href="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" title="Get the Context that this module belongs to. " alt="" coords="405,1509,578,1535"/>
-<area shape="rect" id="node47" href="$structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f" title="Get the workspace path of the Context. " alt="" coords="393,1559,589,1586"/>
-<area shape="rect" id="node48" href="$structchig_1_1GraphModule.html#aba0575313101f6bed261077685d03be7" title="Create a new function if it does&#39;t already exist. " alt="" coords="420,1443,563,1484"/>
-<area shape="rect" id="node49" href="$structchig_1_1GraphModule.html#a6d7310e0a9703fdee65b73163546132e" title="Get a function from the name. " alt="" coords="683,1384,821,1425"/>
-<area shape="rect" id="node50" href="$structchig_1_1GraphModule.html#a1765e0a46a7fc7d75c7320ff020cc7d2" title="Remove a function from the module. " alt="" coords="422,1325,561,1367"/>
-<area shape="rect" id="node46" href="$structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" title="Generate a llvm::Module from the module. " alt="" coords="662,1501,842,1543"/>
+<area shape="rect" id="node40" href="$structchig_1_1NodeType.html#ad18d6f37b20e92bcd580bcf7c7504e64" title="Get the ChigModule this NodeType belongs to. " alt="" coords="1171,890,1333,917"/>
+<area shape="rect" id="node45" href="$structchig_1_1ChigModule.html#aad81aae17452ddc5fc43809924236385" title="Get the Context that this module belongs to. " alt="" coords="405,1522,578,1549"/>
+<area shape="rect" id="node47" href="$structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f" title="Get the workspace path of the Context. " alt="" coords="393,1573,589,1599"/>
+<area shape="rect" id="node48" href="$structchig_1_1GraphModule.html#aba0575313101f6bed261077685d03be7" title="Create a new function if it does&#39;t already exist. " alt="" coords="420,1456,563,1497"/>
+<area shape="rect" id="node49" href="$structchig_1_1GraphModule.html#a6d7310e0a9703fdee65b73163546132e" title="Get a function from the name. " alt="" coords="683,1397,821,1439"/>
+<area shape="rect" id="node50" href="$structchig_1_1GraphModule.html#a1765e0a46a7fc7d75c7320ff020cc7d2" title="Remove a function from the module. " alt="" coords="422,1339,561,1380"/>
+<area shape="rect" id="node46" href="$structchig_1_1ChigModule.html#a7864ea1e3388965d05103768757962a4" title="Generate a llvm::Module from the module. " alt="" coords="662,1515,842,1556"/>
 </map>
