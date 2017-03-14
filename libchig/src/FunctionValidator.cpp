@@ -26,9 +26,10 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 		for (const auto& conn : node.second->inputDataConnections) {
 			if (conn.first == nullptr) {
 				res.addEntry("EUKN", "Node is missing an input data connection",
-				             {{"nodeid", node.second->id()},
+				             {{"nodeid", node.second->stringId()},
 				              {"nodetype", node.second->type().qualifiedName()},
 				              {"requested id", id}});
+				++id;
 				continue;
 			}
 
@@ -42,8 +43,8 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 			}
 			if (!connectsBack) {
 				res.addEntry("EUKN", "Data connection doesn't connect back",
-				             {{"Left Node", conn.first->id()},
-				              {"Right Node", node.second->id()},
+				             {{"Left Node", conn.first->stringId()},
+				              {"Right Node", node.second->stringId()},
 				              {"Right input ID", id}});
 			}
 			++id;
@@ -59,15 +60,15 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 				if (connection.first->inputDataConnections.size() <= connection.second) {
 					res.addEntry(
 					    "EUKN", "Input data port not found in node",
-					    {{"nodeid", connection.first->id()}, {"requested id", connection.second}});
+					    {{"nodeid", connection.first->stringId()}, {"requested id", connection.second}});
 					continue;
 				}
 
 				auto& remoteConn = connection.first->inputDataConnections[connection.second];
 				if (remoteConn.first != node.second.get() || remoteConn.second != id) {
 					res.addEntry("EUKN", "Data connection doesn't connect back",
-					             {{"Left Node", node.second->id()},
-					              {"Right Node", connection.first->id()},
+					             {{"Left Node", node.second->stringId()},
+					              {"Right Node", connection.first->stringId()},
 					              {"Right input ID", connection.second}});
 				}
 			}
@@ -82,8 +83,10 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 				auto& remoteConn = connection.first->outputExecConnections[connection.second];
 				if (remoteConn.first != node.second.get() || remoteConn.second != id) {
 					res.addEntry("EUKN", "Exec connection doesn't connect back",
-					             {{"Left Node", connection.first->id()},
-					              {"Right Node", node.second->id()},
+					             {{"Left Node", connection.first->stringId()},
+					             {"Left Node Type", connection.first->type().qualifiedName()},
+					              {"Right Node", node.second->stringId()},
+					              {"Right Node Type", node.second->type().qualifiedName()},
 					              {"Left output ID", connection.second}});
 				}
 			}
@@ -95,7 +98,7 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 		for (const auto& connection : node.second->outputExecConnections) {
 			bool connectsBack = false;
 
-			if (connection.first == nullptr) { continue; }
+			if (connection.first == nullptr) { ++id; continue; }
 			for (const auto& remoteConnection :
 			     connection.first->inputExecConnections[connection.second]) {
 				if (remoteConnection.second == id && remoteConnection.first == node.second.get()) {
@@ -106,8 +109,10 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 
 			if (!connectsBack) {
 				res.addEntry("EUKN", "Exec connection doesn't connect back",
-				             {{"Left Node", node.second->id()},
-				              {"Right Node", connection.first->id()},
+				             {{"Left Node", node.second->stringId()},
+				             {"Left Node Type", node.second->type().qualifiedName()},
+				              {"Right Node", connection.first->stringId()},
+				              {"Right Node Type", connection.first->type().qualifiedName()},	
 				              {"Left output ID", id}});
 			}
 
@@ -145,13 +150,14 @@ Result validatePath(
 		if (conn.first == nullptr) {
 			res.addEntry(
 			    "EUKN", "Node is missing an input data connection",
-			    {{"nodeid", inst.id()}, {"dataid", id}, {"nodetype", inst.type().qualifiedName()}});
+			    {{"nodeid", inst.stringId()}, {"dataid", id}, {"nodetype", inst.type().qualifiedName()}});
+			++id;
 			continue;
 		}
 
 		if (!conn.first->type().pure() && alreadyCalled.find(conn.first) == alreadyCalled.end()) {
 			res.addEntry("EUKN", "Node that accepts data from another node is called first",
-			             {{"nodeid", inst.id()}, {"othernodeid", conn.first->id()}});
+			             {{"nodeid", inst.stringId()}, {"othernodeid", conn.first->stringId()}});
 		}
 
 		++id;

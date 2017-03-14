@@ -11,7 +11,8 @@ TEST_CASE("GraphModuleTest", "[module]") {
 	Context c;
 
 	auto gMod = c.newGraphModule("test/main");
-	REQUIRE(c.numModules() == 1);
+	REQUIRE(c.modules().size() == 1);
+	REQUIRE(c.modules()[0] == gMod);
 	REQUIRE(c.moduleByFullName("test/main") == gMod);
 	REQUIRE(gMod->fullName() == "test/main");
 	REQUIRE(gMod->shortName() == "main");
@@ -19,22 +20,22 @@ TEST_CASE("GraphModuleTest", "[module]") {
 
 	auto res = gMod->addDependency("c");
 	REQUIRE(!!res);
-	REQUIRE(c.numModules() == 2);
+	REQUIRE(c.modules().size() == 2);
 	REQUIRE(c.moduleByFullName("c") != nullptr);
 	REQUIRE(gMod->dependencies().size() == 1);
 	REQUIRE(gMod->dependencies().find("c") != gMod->dependencies().end());
 
 	REQUIRE(gMod->removeDependency("c"));
-	REQUIRE(c.numModules() == 2);  // it didn't unload it
+	REQUIRE(c.modules().size() == 2);  // it didn't unload it
 	REQUIRE(gMod->dependencies().size() == 0);
 
 	REQUIRE(!gMod->removeDependency("lang"));
-	REQUIRE(c.numModules() == 2);  // it didn't unload it
+	REQUIRE(c.modules().size() == 2);  // it didn't unload it
 	REQUIRE(gMod->dependencies().size() == 0);
 
 	res = gMod->addDependency("notarealmodule");
 	REQUIRE(!res);
-	REQUIRE(c.numModules() == 2);
+	REQUIRE(c.modules().size() == 2);
 	REQUIRE(gMod->dependencies().size() == 0);
 
 	WHEN("We create a new struct") {

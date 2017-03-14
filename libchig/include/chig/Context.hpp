@@ -123,10 +123,10 @@ struct Context {
 	/// pointer to the `unique_ptr`)
 	/// \return The `Result`
 	Result compileModule(ChigModule& mod, std::unique_ptr<llvm::Module>* toFill);
+	
+	/// Find all uses of a node type in all the loaded modules
+	std::vector<NodeInstance*> findInstancesOfType(const boost::filesystem::path& module, boost::string_view typeName) const;
 
-	/// Get the number of modules this Context has
-	/// \return The module count
-	size_t numModules() const { return mModules.size(); }
 	/// Get the `LLVMContext`
 	/// \return The `LLVMContext`
 	llvm::LLVMContext& llvmContext() const { return *mLLVMContext; }
@@ -138,6 +138,19 @@ struct Context {
 	/// Get the `CModule`, if it has been loaded
 	/// \return The `CModule`
 	CModule* cModule() const { return mCModule; }
+	
+	
+	/// Get the modules in the Context
+	/// \return The modules
+	std::vector<ChigModule*> modules() const {
+		std::vector<ChigModule*> ret;
+		
+		for (const auto& mod : mModules) {
+			ret.push_back(mod.get());
+		}
+		
+		return ret;
+	}
 
 private:
 	boost::filesystem::path mWorkspacePath;
