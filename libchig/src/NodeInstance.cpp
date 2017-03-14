@@ -20,12 +20,12 @@ NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeTy
 
 	mType->mNodeInstance = this;
 
-	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
+	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0ull});
 	outputDataConnections.resize(type().dataOutputs().size(), {});
 
 	if (!type().pure()) {
 		inputExecConnections.resize(type().execInputs().size(), {});
-		outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0});
+		outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0ull});
 	}
 }
 
@@ -40,11 +40,11 @@ NodeInstance::NodeInstance(const NodeInstance& other, boost::uuids::uuid id)
 
 	mType->mNodeInstance = this;
 
-	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0});
+	inputDataConnections.resize(type().dataInputs().size(), {nullptr, ~0ull});
 	outputDataConnections.resize(type().dataOutputs().size(), {});
 
 	inputExecConnections.resize(type().execInputs().size(), {});
-	outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0});
+	outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0ull});
 }
 
 void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
@@ -62,7 +62,7 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 		auto& conn = outputExecConnections[id];
 		if (conn.first != nullptr) { disconnectExec(*this, id); }
 	}
-	outputExecConnections.resize(newType->execOutputs().size(), std::make_pair(nullptr, ~0));
+	outputExecConnections.resize(newType->execOutputs().size(), std::make_pair(nullptr, ~0ull));
 
 	auto id = 0ull;
 	for (const auto& conn : inputDataConnections) {
@@ -72,7 +72,7 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 		}
 		++id;
 	}
-	inputDataConnections.resize(newType->dataInputs().size(), std::make_pair(nullptr, ~0));
+	inputDataConnections.resize(newType->dataInputs().size(), std::make_pair(nullptr, ~0ull));
 
 	id = 0ull;
 	for (const auto& connSlot : outputDataConnections) {
@@ -232,7 +232,7 @@ Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
 	if (iter == lhs.outputDataConnections[lhsConnID].end()) {
 		res.addEntry(
 		    "EUKN", "Cannot disconnect from connection that doesn't exist",
-		    {{"Left node ID", lhs.id()}, {"Right node ID", rhs.id()}, {"Left dock ID", lhsConnID}});
+		    {{"Left node ID", lhs.stringId()}, {"Right node ID", rhs.stringId()}, {"Left dock ID", lhsConnID}});
 
 		return res;
 	}
@@ -254,13 +254,13 @@ Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
 
 	if (rhs.inputDataConnections[iter->second] != std::make_pair(&lhs, lhsConnID)) {
 		res.addEntry("EUKN", "Cannot disconnect from connection that doesn't exist",
-		             {{"Left node ID", lhs.id()}, {"Right node ID", rhs.id()}});
+		             {{"Left node ID", lhs.stringId()}, {"Right node ID", rhs.stringId()}});
 
 		return res;
 	}
 
 	// finally actually disconnect it
-	rhs.inputDataConnections[iter->second] = {nullptr, ~0};
+	rhs.inputDataConnections[iter->second] = {nullptr, ~0ull};
 	lhs.outputDataConnections[lhsConnID].erase(iter);
 
 	return res;
@@ -287,12 +287,12 @@ Result disconnectExec(NodeInstance& lhs, size_t lhsConnID) {
 
 	if (iter == rhsconns.end()) {
 		res.addEntry("EUKN", "Cannot disconnect an exec connection that doesn't connect back",
-		             {{"Left node ID", lhs.id()}, {"Left node dock id", lhsConnID}});
+		             {{"Left node ID", lhs.stringId()}, {"Left node dock id", lhsConnID}});
 		return res;
 	}
 
 	rhsconns.erase(iter);
-	lhs.outputExecConnections[lhsConnID] = {nullptr, ~0};
+	lhsconn = {nullptr, ~0ull};
 
 	return res;
 }
