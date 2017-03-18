@@ -20,7 +20,7 @@ Chigraph,  pronunced chai-graph, is a new systems programming language. It's fas
 # Components
 Chigraph is made up of three components:
 
-##libchig
+## libchig
 Libchig is the chigraph library that provides all functions for chigraph clients, like code generation, graph representation, etc. Want to compile a chigraph module using libchig?
 
 ```C++
@@ -37,7 +37,7 @@ int main() {
 
 And tada, you have yourself a [`llvm::Module`](http://llvm.org/docs/doxygen/html/classllvm_1_1Module.html) to do whatever you wish to. It'll have all it's dependencies linked in and a main function waiting to run.
 
-##chig
+## chig
 chig is the command line interface to chigraph. It lets you compile and run chigraph modules:
 ```bash
 $ pwd
@@ -46,7 +46,7 @@ $ chig run hellochigraph.chigmod
 Hello World!
 ```
 
-##chiggui
+## chiggui
 Chiggui is the graphical user interface for writing chigraph modules, written in Qt5 and KF5. It's cross-platform, easy to use, and simple. 
 
 ![screenshot](doc/screenshots/if.png)
@@ -60,10 +60,10 @@ Documentation is hosted on github pages, [here](https://chigraph.github.io/chigr
 
 # Installation
 
-##Download installers/appimage
+## Download installers/appimage
 Installers and appimages are avaliable from the [releases page](https://github.com/chigraph/chigraph/releases) (coming soon) for those who don't want to build from sources.
 
-##Building from source
+## Building from source
 See the [guide on building from source](doc/building.md)
 
 # Get Involved
