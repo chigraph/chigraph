@@ -9,7 +9,7 @@
 #include <KComboBox>
 #include <KMessageBox>
 
-#include <chig/GraphFunction.hpp>
+#include <chi/GraphFunction.hpp>
 
 #include "execparamlistwidget.hpp"
 #include "functionview.hpp"
@@ -49,7 +49,7 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 		auto tySelector = new TypeSelector(mFunc->function()->module());
 		tySelector->setCurrentType(param.type);
 		connect(tySelector, &TypeSelector::typeSelected, this,
-		        [this, id](const chig::DataType& newType) {
+		        [this, id](const chi::DataType& newType) {
 
 			        if (!newType.valid()) { return; }
 

@@ -5,7 +5,7 @@
 
 #include <QListWidget>
 
-#include <chig/GraphModule.hpp>
+#include <chi/GraphModule.hpp>
 
 class MainWindow;
 
@@ -16,7 +16,7 @@ public:
 
 public slots:
 
-	void updateModule(chig::GraphModule& mod);
+	void updateModule(chi::GraphModule& mod);
 
 private slots:
 
@@ -24,7 +24,7 @@ private slots:
 
 signals:
 
-	void functionSelected(chig::GraphFunction* funcs);
+	void functionSelected(chi::GraphFunction* funcs);
 };
 
 #endif  // CHIGGUI_FUNCTIONS_PANE_HPP

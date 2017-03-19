@@ -5,7 +5,7 @@
 
 #include <QWidget>
 
-#include <chig/GraphFunction.hpp>
+#include <chi/GraphFunction.hpp>
 
 #include "execparamlistwidget.hpp"
 #include "paramlistwidget.hpp"
@@ -25,7 +25,7 @@ signals:
 
 private:
 	FunctionView*        mFuncView = nullptr;
-	chig::GraphFunction* mFunc     = nullptr;
+	chi::GraphFunction* mFunc     = nullptr;
 
 	ParamListWidget* ins;
 	ParamListWidget* outs;

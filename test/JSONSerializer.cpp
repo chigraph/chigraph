@@ -1,15 +1,15 @@
 #include "catch.hpp"
 
-#include <chig/Context.hpp>
-#include <chig/GraphFunction.hpp>
-#include <chig/GraphModule.hpp>
-#include <chig/JsonSerializer.hpp>
-#include <chig/LangModule.hpp>
-#include <chig/NodeInstance.hpp>
+#include <chi/Context.hpp>
+#include <chi/GraphFunction.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/JsonSerializer.hpp>
+#include <chi/LangModule.hpp>
+#include <chi/NodeInstance.hpp>
 
 #include <boost/uuid/uuid_io.hpp>
 
-using namespace chig;
+using namespace chi;
 using namespace nlohmann;
 
 template <typename... Args>

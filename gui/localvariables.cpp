@@ -7,7 +7,7 @@
 #include <QGridLayout>
 #include <QPushButton>
 
-#include <chig/LangModule.hpp>
+#include <chi/LangModule.hpp>
 
 LocalVariables::LocalVariables(QWidget* parent) : QWidget{parent} {
 	setSizePolicy({QSizePolicy::Preferred, QSizePolicy::Preferred});
@@ -40,7 +40,7 @@ void LocalVariables::loadFunction(FunctionView* func) {
 		auto tySelector = new TypeSelector(mFunctionView->function()->module());
 		tySelector->setCurrentType(var.type);
 		connect(tySelector, &TypeSelector::typeSelected, this,
-		        [this, id](const chig::DataType& newType) {
+		        [this, id](const chi::DataType& newType) {
 			        if (!newType.valid()) { return; }
 
 			        auto localName = mFunctionView->function()->localVariables()[id].name;
@@ -75,7 +75,7 @@ void LocalVariables::loadFunction(FunctionView* func) {
 	auto newButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add")), {});
 	newButton->setSizePolicy({QSizePolicy::Maximum, QSizePolicy::Maximum});
 	connect(newButton, &QPushButton::clicked, this, [this] {
-		chig::DataType ty = mFunctionView->function()->context().langModule()->typeFromName("i32");
+		chi::DataType ty = mFunctionView->function()->context().langModule()->typeFromName("i32");
 
 		mFunctionView->function()->getOrCreateLocalVariable("", ty);
 		mFunctionView->refreshRegistry();

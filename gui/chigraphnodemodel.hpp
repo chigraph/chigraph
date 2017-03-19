@@ -7,9 +7,8 @@
 #include <nodes/DataModelRegistry>
 #include <nodes/NodeDataModel>
 
-#include <chig/ChigModule.hpp>
-#include <chig/NodeInstance.hpp>
-#include <chig/NodeType.hpp>
+#include <chi/NodeInstance.hpp>
+#include <chi/NodeType.hpp>
 
 #include <QCheckBox>
 #include <QDialog>
@@ -29,16 +28,16 @@ class FunctionView;
 
 class ChigraphNodeModel : public QtNodes::NodeDataModel {
 public:
-	ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fview_);
+	ChigraphNodeModel(chi::NodeInstance* inst_, FunctionView* fview_);
 
-	chig::NodeInstance& instance() const { return *mInst; }
+	chi::NodeInstance& instance() const { return *mInst; }
 	QString             caption() const override {
 		auto str = QString::fromStdString(mInst->type().description());
 		return str;
 	}
 	QString name() const override { return QString::fromStdString(mInst->type().qualifiedName()); }
 	std::unique_ptr<NodeDataModel> clone() const override {
-		auto newInst = new chig::NodeInstance(*mInst);
+		auto newInst = new chi::NodeInstance(*mInst);
 		return std::make_unique<ChigraphNodeModel>(newInst, mFunctionView);
 	}
 
@@ -56,7 +55,7 @@ public:
 	QJsonObject save() const override { return {}; }
 
 private:
-	chig::NodeInstance* mInst;
+	chi::NodeInstance* mInst;
 	FunctionView*       mFunctionView;
 	QWidget*            mEmbedded = nullptr;
 };

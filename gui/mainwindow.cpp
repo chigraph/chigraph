@@ -29,12 +29,12 @@
 #include <QSplitter>
 #include <QTextStream>
 
-#include <chig/CModule.hpp>
-#include <chig/Context.hpp>
-#include <chig/GraphFunction.hpp>
-#include <chig/GraphModule.hpp>
-#include <chig/LangModule.hpp>
-#include <chig/json.hpp>
+#include <chi/CModule.hpp>
+#include <chi/Context.hpp>
+#include <chi/GraphFunction.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/LangModule.hpp>
+#include <chi/json.hpp>
 
 #include <llvm/Support/raw_ostream.h>
 
@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	// set icon
 	setWindowIcon(QIcon(":/icons/chigraphsmall.png"));
 
-	mChigContext = std::make_unique<chig::Context>(qApp->arguments()[0].toStdString().c_str());
+	mChigContext = std::make_unique<chi::Context>(qApp->arguments()[0].toStdString().c_str());
 
 	// setup module details
 	auto docker = new QDockWidget(i18n("Module Details"));
@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(modDetails, &ModuleDetails::functionSelected, this, &MainWindow::newFunctionSelected);
 	connect(this, &MainWindow::moduleOpened, modDetails, &ModuleDetails::loadModule);
 	connect(this, &MainWindow::newFunctionCreated, modDetails,
-	        [modDetails](chig::GraphFunction* func) { modDetails->loadModule(func->module()); });
+	        [modDetails](chi::GraphFunction* func) { modDetails->loadModule(func->module()); });
 	auto dependencyUpdatedSlot = [this] {
 		auto count = mFunctionTabs->count();
 		for (auto idx = 0; idx < count; ++idx) {
@@ -72,7 +72,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	};
 	connect(modDetails, &ModuleDetails::dependencyAdded, this, dependencyUpdatedSlot);
 	connect(modDetails, &ModuleDetails::dependencyRemoved, this, dependencyUpdatedSlot);
-	connect(this, &MainWindow::moduleOpened, docker, [docker](chig::GraphModule& mod) {
+	connect(this, &MainWindow::moduleOpened, docker, [docker](chi::GraphModule& mod) {
 		docker->setWindowTitle(i18n("Module Details") + " - " +
 		                       QString::fromStdString(mod.fullName()));
 	});
@@ -87,8 +87,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(this, &MainWindow::workspaceOpened, mModuleBrowser, &ModuleBrowser::loadWorkspace);
 	connect(mModuleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
 	connect(this, &MainWindow::newModuleCreated, mModuleBrowser,
-	        [this](chig::GraphModule* mod) { mModuleBrowser->loadWorkspace(mod->context()); });
-	connect(this, &MainWindow::workspaceOpened, docker, [docker](chig::Context& ctx) {
+	        [this](chi::GraphModule* mod) { mModuleBrowser->loadWorkspace(mod->context()); });
+	connect(this, &MainWindow::workspaceOpened, docker, [docker](chi::Context& ctx) {
 		docker->setWindowTitle(i18n("Modules") + " - " +
 		                       QString::fromStdString(ctx.workspacePath().string()));
 	});
@@ -238,7 +238,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::save() {
 	if (mModule != nullptr) {
-		chig::Result res = mModule->saveToDisk();
+		chi::Result res = mModule->saveToDisk();
 		if (!res) {
 			KMessageBox::detailedError(this, i18n("Failed to save module!"),
 			                           QString::fromStdString(res.dump()));
@@ -261,14 +261,14 @@ void MainWindow::openWorkspaceDialog() {
 }
 
 void MainWindow::openWorkspace(const QUrl& url) {
-	mChigContext = std::make_unique<chig::Context>(url.toLocalFile().toStdString());
+	mChigContext = std::make_unique<chi::Context>(url.toLocalFile().toStdString());
 
 	workspaceOpened(*mChigContext);
 }
 
 void MainWindow::openModule(const QString& fullName) {
-	chig::ChigModule* cmod;
-	chig::Result      res = context().loadModule(fullName.toStdString(), &cmod);
+	chi::ChiModule* cmod;
+	chi::Result      res = context().loadModule(fullName.toStdString(), &cmod);
 
 	if (!res) {
 		KMessageBox::detailedError(this,
@@ -278,7 +278,7 @@ void MainWindow::openModule(const QString& fullName) {
 		return;
 	}
 
-	mModule = dynamic_cast<chig::GraphModule*>(cmod);
+	mModule = dynamic_cast<chi::GraphModule*>(cmod);
 	Expects(mModule != nullptr);
 
 	setWindowTitle(QString::fromStdString(mModule->fullName()));
@@ -287,7 +287,7 @@ void MainWindow::openModule(const QString& fullName) {
 	moduleOpened(*mModule);
 }
 
-void MainWindow::newFunctionSelected(chig::GraphFunction* func) {
+void MainWindow::newFunctionSelected(chi::GraphFunction* func) {
 	Expects(func);
 
 	QString qualifiedFunctionName =
@@ -328,7 +328,7 @@ void MainWindow::newFunction() {
 
 	if (newName == "") { return; }
 
-	chig::GraphFunction* func =
+	chi::GraphFunction* func =
 	    currentModule()->getOrCreateFunction(newName.toStdString(), {}, {}, {""}, {""});
 	func->getOrInsertEntryNode(0, 0, boost::uuids::string_generator()("entry"));
 
@@ -403,7 +403,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 	KXmlGuiWindow::closeEvent(event);
 }
 
-void MainWindow::discardChangesInModule(chig::ChigModule& mod) {
+void MainWindow::discardChangesInModule(chi::ChiModule& mod) {
 	// mark it as clean
 	mModuleBrowser->moduleSaved(mod);
 
@@ -424,15 +424,15 @@ void MainWindow::discardChangesInModule(chig::ChigModule& mod) {
 	std::string fullName = mod.fullName();
 	context().unloadModule(fullName);
 
-	chig::ChigModule* cMod;
+	chi::ChiModule* cMod;
 	context().loadModule(fullName, &cMod);
-	chig::GraphModule* gMod = dynamic_cast<chig::GraphModule*>(cMod);
+	chi::GraphModule* gMod = dynamic_cast<chi::GraphModule*>(cMod);
 
 	if (isCurrentModule) { openModule(QString::fromStdString(fullName)); }
 
 	// re-add the tabs in reverse order to keep the ids
 	for (auto iter = functionNames.rbegin(); iter != functionNames.rend(); ++iter) {
-		chig::GraphFunction* func = gMod->functionFromName(iter->first);
+		chi::GraphFunction* func = gMod->functionFromName(iter->first);
 		QString              qualifiedFunctionName =
 		    QString::fromStdString(gMod->fullName() + ":" + func->name());
 		auto view = new FunctionView(this, func);

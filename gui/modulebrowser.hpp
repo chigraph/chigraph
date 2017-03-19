@@ -7,8 +7,8 @@
 
 class MainWindow;
 
-#include <chig/Context.hpp>
-#include <chig/GraphModule.hpp>
+#include <chi/Context.hpp>
+#include <chi/GraphModule.hpp>
 
 #include <unordered_set>
 
@@ -25,17 +25,17 @@ signals:
 	void discardChanges(const std::string& moduleName);
 
 public slots:
-	void loadWorkspace(chig::Context& context);
-	void moduleDirtied(chig::ChigModule& dirtied);
-	void moduleSaved(chig::ChigModule& saved);
+	void loadWorkspace(chi::Context& context);
+	void moduleDirtied(chi::ChiModule& dirtied);
+	void moduleSaved(chi::ChiModule& saved);
 
-	const std::unordered_set<chig::ChigModule*> dirtyModules() const { return mDirtyModules; }
+	const std::unordered_set<chi::ChiModule*> dirtyModules() const { return mDirtyModules; }
 
 private:
-	void updateDirtyStatus(chig::ChigModule& updated, bool dirty);
+	void updateDirtyStatus(chi::ChiModule& updated, bool dirty);
 
-	chig::Context*                        mContext = nullptr;
-	std::unordered_set<chig::ChigModule*> mDirtyModules;
+	chi::Context*                        mContext = nullptr;
+	std::unordered_set<chi::ChiModule*> mDirtyModules;
 	std::unordered_map<std::string, ModuleTreeItem*> mItems;
 };
 

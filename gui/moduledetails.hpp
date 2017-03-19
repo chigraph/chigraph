@@ -5,7 +5,7 @@
 
 #include <QWidget>
 
-#include <chig/Fwd.hpp>
+#include <chi/Fwd.hpp>
 
 class ModuleDependencies;
 class FunctionsPane;
@@ -15,10 +15,10 @@ class ModuleDetails : public QWidget {
 public:
 	explicit ModuleDetails(QWidget* parent = nullptr);
 
-	void loadModule(chig::GraphModule& module);
+	void loadModule(chi::GraphModule& module);
 
 signals:
-	void functionSelected(chig::GraphFunction* func);
+	void functionSelected(chi::GraphFunction* func);
 	void dependencyAdded(const QString& name);
 	void dependencyRemoved(const QString& name);
 	void dirtied();

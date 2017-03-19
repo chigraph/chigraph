@@ -7,13 +7,13 @@
 
 #include <KMessageBox>
 
-#include <chig/GraphFunction.hpp>
+#include <chi/GraphFunction.hpp>
 
 #include "functionview.hpp"
 
 namespace {
 
-QStringList createTypeOptions(const chig::GraphModule& mod) {
+QStringList createTypeOptions(const chi::GraphModule& mod) {
 	QStringList ret;
 
 	// add the module
