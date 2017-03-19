@@ -62,7 +62,7 @@ set(GUI_SRCS
 )
 
 set(GUI_RESOURCES
-	chiggui.qrc
+	chigraphgui.qrc
 )
 
 set(GUI_HEADERS
@@ -83,18 +83,18 @@ set(GUI_HEADERS
 	typeselector.hpp
 )
 
-add_executable(chiggui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
+add_executable(chigraphgui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
 
 # for some reason cmake doesn't pick up on me wanting to do this...idk
-set_target_properties(chiggui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set_target_properties(chigraphgui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 
-target_link_libraries(chiggui Qt5::Widgets KF5::Completion KF5::TextEditor KF5::Crash KF5::Service KF5::CoreAddons KF5::I18n KF5::Auth KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigraph)
+target_link_libraries(chigraphgui Qt5::Widgets KF5::Completion KF5::TextEditor KF5::Crash KF5::Service KF5::CoreAddons KF5::I18n KF5::Auth KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigraph)
 
-target_compile_features(chiggui PRIVATE cxx_variable_templates)
+target_compile_features(chigraphgui PRIVATE cxx_variable_templates)
 
 if(UNIX)
-	target_compile_options(chiggui PRIVATE "-fexceptions")
+	target_compile_options(chigraphgui PRIVATE "-fexceptions")
 endif()
 
 # copy dlls
@@ -113,10 +113,10 @@ if(WIN32)
 	)
 
 		add_custom_command(
-		TARGET chiggui POST_BUILD
+		TARGET chigraphgui POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different
 			$<TARGET_FILE:${QTLIB}>
-			$<TARGET_FILE_DIR:chiggui>
+			$<TARGET_FILE_DIR:chigraphgui>
 		)
 		
 	install(FILES $<TARGET_FILE:${QTLIB}> DESTINATION bin)
@@ -125,4 +125,4 @@ if(WIN32)
 	
 endif()
 
-install(TARGETS chiggui DESTINATION bin)
+install(TARGETS chigraphgui DESTINATION bin)

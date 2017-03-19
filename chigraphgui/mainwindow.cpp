@@ -45,7 +45,7 @@
 #include "thememanager.hpp"
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
-	Q_INIT_RESOURCE(chiggui);
+	Q_INIT_RESOURCE(chigraphgui);
 
 	// set icon
 	setWindowIcon(QIcon(":/icons/chigraphsmall.png"));
@@ -229,7 +229,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	mThemeManager    = std::make_unique<ThemeManager>(themeAction);
 	actColl->addAction(QStringLiteral("theme"), themeAction);
 
-	setupGUI(Default, ":/share/kxmlgui5/chiggui/chigguiui.rc");
+	setupGUI(Default, ":/share/kxmlgui5/chigraphgui/chigraphguiui.rc");
 }
 
 MainWindow::~MainWindow() {
