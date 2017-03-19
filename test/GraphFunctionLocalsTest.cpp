@@ -1,14 +1,14 @@
 #include <catch.hpp>
 
-#include <chig/Context.hpp>
-#include <chig/GraphFunction.hpp>
-#include <chig/GraphModule.hpp>
-#include <chig/GraphStruct.hpp>
-#include <chig/LangModule.hpp>
-#include <chig/NodeInstance.hpp>
-#include <chig/Result.hpp>
+#include <chi/Context.hpp>
+#include <chi/GraphFunction.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/GraphStruct.hpp>
+#include <chi/LangModule.hpp>
+#include <chi/NodeInstance.hpp>
+#include <chi/Result.hpp>
 
-using namespace chig;
+using namespace chi;
 using namespace nlohmann;
 
 TEST_CASE("Create and manipulate local varables in GraphFunctions", "") {

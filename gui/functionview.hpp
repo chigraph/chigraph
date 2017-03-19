@@ -6,9 +6,9 @@
 #include <nodes/FlowScene>
 #include <nodes/FlowView>
 
-#include <chig/GraphFunction.hpp>
-#include <chig/GraphModule.hpp>
-#include <chig/NodeInstance.hpp>
+#include <chi/GraphFunction.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/NodeInstance.hpp>
 
 #include <memory>
 #include <unordered_map>
@@ -20,17 +20,17 @@ class MainWindow;
 class FunctionView : public QWidget {
 	Q_OBJECT
 public:
-	FunctionView(MainWindow* mainWindow, chig::GraphFunction* func_, QWidget* parent = nullptr);
+	FunctionView(MainWindow* mainWindow, chi::GraphFunction* func_, QWidget* parent = nullptr);
 
-	QtNodes::Node* guiNodeFromChigNode(chig::NodeInstance* inst);
-	chig::NodeInstance* chigNodeFromGuiNode(QtNodes::Node* node);
+	QtNodes::Node* guiNodeFromChigNode(chi::NodeInstance* inst);
+	chi::NodeInstance* chigNodeFromGuiNode(QtNodes::Node* node);
 
 	// refresh I/O for the node
 	void refreshGuiForNode(QtNodes::Node* node);
 
 	void refreshRegistry();
 
-	chig::GraphFunction* function() const { return mFunction; }
+	chi::GraphFunction* function() const { return mFunction; }
 
 	QtNodes::FlowScene& scene() const { return *mScene; }
 private slots:
@@ -55,13 +55,13 @@ private:
 	QtNodes::FlowScene* mScene;
 	QtNodes::FlowView*  mView;
 
-	chig::GraphFunction* mFunction;
+	chi::GraphFunction* mFunction;
 
-	std::unordered_map<chig::NodeInstance*, QtNodes::Node*> mNodeMap;
+	std::unordered_map<chi::NodeInstance*, QtNodes::Node*> mNodeMap;
 
 	// this contains absolute port ids
 	std::unordered_map<const QtNodes::Connection*,
-	                   std::array<std::pair<chig::NodeInstance*, size_t>, 2>>
+	                   std::array<std::pair<chi::NodeInstance*, size_t>, 2>>
 	    conns;
 
 	std::shared_ptr<QtNodes::DataModelRegistry> createRegistry();

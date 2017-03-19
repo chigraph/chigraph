@@ -32,13 +32,13 @@ execute_process(COMMAND ${LLVM_CONFIG} --version OUTPUT_VARIABLE LLVM_VERSION OU
 message(STATUS "LLVM version: ${LLVM_VERSION}")
 
 # add libchig
-add_subdirectory(libchig)
+add_subdirectory(libchigraph)
 
 if (CG_BUILD_DEBUGGER)
-	add_subdirectory(libchigdebugger)
+	add_subdirectory(libchigraphdebugger)
 endif()
 
-add_subdirectory(chig)
+add_subdirectory(chi)
 
 if(CG_BUILD_GUI)
 	set(BUILD_EXAMPLES OFF CACHE BOOL "")

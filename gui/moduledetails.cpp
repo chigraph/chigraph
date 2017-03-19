@@ -1,7 +1,7 @@
 #include "moduledetails.hpp"
 
-#include <chig/GraphFunction.hpp>
-#include <chig/GraphModule.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/GraphFunction.hpp>
 
 #include <QGroupBox>
 #include <QVBoxLayout>
@@ -40,7 +40,7 @@ ModuleDetails::ModuleDetails(QWidget* parent) {
 	depslayout->addWidget(mModDeps);
 }
 
-void ModuleDetails::loadModule(chig::GraphModule& module) {
+void ModuleDetails::loadModule(chi::GraphModule& module) {
 	mModDeps->setModule(module);
 	mFuncBrowser->updateModule(module);
 }

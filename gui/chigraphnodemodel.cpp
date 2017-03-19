@@ -4,7 +4,7 @@
 
 #include "../src/NodeGraphicsObject.hpp"
 
-#include <chig/CModule.hpp>
+#include <chi/CModule.hpp>
 
 #include <KActionCollection>
 #include <KTextEditor/Document>
@@ -15,7 +15,7 @@ using namespace QtNodes;
 
 class EditCodeDialog : public QDialog {
 public:
-	EditCodeDialog(chig::NodeInstance* inst, FunctionView* fview) {
+	EditCodeDialog(chi::NodeInstance* inst, FunctionView* fview) {
 		setWindowTitle(i18n("Edit C Call Node"));
 
 		auto layout = new QVBoxLayout;
@@ -56,7 +56,7 @@ public:
 			std::string function = lineEdit->text().toStdString();
 			std::string code     = doc->text().toStdString();
 
-			std::unique_ptr<chig::NodeType> ty;
+			std::unique_ptr<chi::NodeType> ty;
 			auto res = inst->context().cModule()->createNodeTypeFromCCode(code, function, {}, &ty);
 			if (!res) {
 				KMessageBox::detailedError(this, "Failed to compile C node",
@@ -75,7 +75,7 @@ public:
 	}
 };
 
-ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fview_)
+ChigraphNodeModel::ChigraphNodeModel(chi::NodeInstance* inst_, FunctionView* fview_)
     : mInst{inst_}, mFunctionView{fview_} {
 	if (mInst->type().name() == "const-bool") {
 		QCheckBox* box     = new QCheckBox("");
@@ -83,7 +83,7 @@ ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fv
 		box->setCheckState(checked ? Qt::Checked : Qt::Unchecked);
 
 		connect(box, &QCheckBox::stateChanged, this, [this](int newState) {
-			std::unique_ptr<chig::NodeType> newType;
+			std::unique_ptr<chi::NodeType> newType;
 
 			mInst->context().nodeTypeFromModule("lang", "const-bool", newState == Qt::Checked,
 			                                    &newType);
@@ -101,7 +101,7 @@ ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fv
 		edit->setMaximumSize(edit->sizeHint());
 
 		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
-			std::unique_ptr<chig::NodeType> newType;
+			std::unique_ptr<chi::NodeType> newType;
 
 			mInst->context().nodeTypeFromModule("lang", "strliteral", s.toUtf8().constData(),
 			                                    &newType);
@@ -120,7 +120,7 @@ ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fv
 		edit->setMaximumSize(edit->sizeHint());
 
 		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
-			std::unique_ptr<chig::NodeType> newType;
+			std::unique_ptr<chi::NodeType> newType;
 
 			mInst->context().nodeTypeFromModule("lang", "const-int", s.toInt(), &newType);
 
@@ -149,7 +149,7 @@ ChigraphNodeModel::ChigraphNodeModel(chig::NodeInstance* inst_, FunctionView* fv
 		edit->setMaximumSize(edit->sizeHint());
 
 		connect(edit, &QLineEdit::textChanged, this, [this](const QString& s) {
-			std::unique_ptr<chig::NodeType> newType;
+			std::unique_ptr<chi::NodeType> newType;
 
 			mInst->context().nodeTypeFromModule("lang", "const-float", s.toDouble(), &newType);
 
