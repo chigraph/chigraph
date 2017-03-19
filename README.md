@@ -20,14 +20,14 @@ Chigraph,  pronunced chai-graph, is a new systems programming language. It's fas
 # Components
 Chigraph is made up of three components:
 
-## libchig
-Libchig is the chigraph library that provides all functions for chigraph clients, like code generation, graph representation, etc. Want to compile a chigraph module using libchig?
+## libchigraph
+libchigraph is the chigraph library that provides all functions for chigraph clients, like code generation, graph representation, etc. Want to compile a chigraph module using libchigraph?
 
 ```C++
-#include <chig/Context.hpp>
+#include <chi/Context.hpp>
 
 int main() {
-    chig::Contxt myContext{"/path/to/workspace"};
+    chi::Contxt myContext{"/path/to/workspace"};
 	myContxt.loadModule("github.com/russelltg/hellochigraph");
 	
 	llvm::Module* mod;
@@ -37,12 +37,12 @@ int main() {
 
 And tada, you have yourself a [`llvm::Module`](http://llvm.org/docs/doxygen/html/classllvm_1_1Module.html) to do whatever you wish to. It'll have all it's dependencies linked in and a main function waiting to run.
 
-## chig
-chig is the command line interface to chigraph. It lets you compile and run chigraph modules:
+## chi
+chi is the command line interface to chigraph. It lets you compile and run chigraph modules:
 ```bash
 $ pwd
 ~/chigrpah/src/github.com/russelltg/hellochigraph
-$ chig run hellochigraph.chigmod
+$ chi run hellochigraph.chigmod
 Hello World!
 ```
 

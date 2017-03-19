@@ -12,9 +12,9 @@ int main(int argc, char** argv) {
 	QApplication app(argc, argv);
 	KCrash::initialize();
 
-	KLocalizedString::setApplicationDomain("chiggui");
+	KLocalizedString::setApplicationDomain("chigraphgui");
 
-	KAboutData aboutData(QStringLiteral("chiggui"), i18n("Chigraph GUI"), QStringLiteral("1.0"),
+	KAboutData aboutData(QStringLiteral("chigraphgui"), i18n("Chigraph GUI"), QStringLiteral("1.0"),
 	                     i18n("Chigraph Graphical User Interface"), KAboutLicense::GPL,
 	                     i18n("(c) 2016 Russell Greene"), QStringLiteral(""),
 	                     QStringLiteral("https://github.com/chigraph/chigraph"),

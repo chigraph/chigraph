@@ -43,7 +43,7 @@ add_subdirectory(chi)
 if(CG_BUILD_GUI)
 	set(BUILD_EXAMPLES OFF CACHE BOOL "")
 	add_subdirectory(third_party/nodeeditor)
-	add_subdirectory(gui)
+	add_subdirectory(chigraphgui)
 endif()
 
 # Unit tests...
