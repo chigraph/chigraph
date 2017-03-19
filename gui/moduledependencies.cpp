@@ -1,6 +1,6 @@
 #include "moduledependencies.hpp"
 
-#include <chig/Result.hpp>
+#include <chi/Result.hpp>
 
 #include <QMenu>
 
@@ -18,7 +18,7 @@ ModuleDependencies::ModuleDependencies(QWidget* parent) : QListWidget(parent) {
 		QString mod =
 		    QInputDialog::getItem(this, i18n("Add Dependency"), i18n("Dependency"), modList);
 
-		chig::Result res = mModule->addDependency(mod.toStdString());
+		chi::Result res = mModule->addDependency(mod.toStdString());
 		if (!res) {
 			KMessageBox::detailedError(this, "Failed to load dependency: " + mod,
 			                           QString::fromStdString(res.dump()));

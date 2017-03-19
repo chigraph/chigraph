@@ -62,7 +62,7 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
 	});
 }
 
-void ModuleBrowser::loadWorkspace(chig::Context& context) {
+void ModuleBrowser::loadWorkspace(chi::Context& context) {
 	mContext = &context;
 
 	// clear existing entries
@@ -136,19 +136,19 @@ void ModuleBrowser::loadWorkspace(chig::Context& context) {
 	}
 }
 
-void ModuleBrowser::moduleDirtied(chig::ChigModule& dirtied) {
+void ModuleBrowser::moduleDirtied(chi::ChiModule& dirtied) {
 	mDirtyModules.insert(&dirtied);
 
 	updateDirtyStatus(dirtied, true);
 }
 
-void ModuleBrowser::moduleSaved(chig::ChigModule& saved) {
+void ModuleBrowser::moduleSaved(chi::ChiModule& saved) {
 	mDirtyModules.erase(&saved);
 
 	updateDirtyStatus(saved, false);
 }
 
-void ModuleBrowser::updateDirtyStatus(chig::ChigModule& updated, bool dirty) {
+void ModuleBrowser::updateDirtyStatus(chi::ChiModule& updated, bool dirty) {
 	auto iter = mItems.find(updated.fullName());
 
 	if (iter == mItems.end()) { return; }

@@ -1,10 +1,10 @@
 #include "typeselector.hpp"
 
-#include <chig/ChigModule.hpp>
-#include <chig/Context.hpp>
-#include <chig/DataType.hpp>
-#include <chig/GraphFunction.hpp>
-#include <chig/Result.hpp>
+#include <chi/ChiModule.hpp>
+#include <chi/Context.hpp>
+#include <chi/DataType.hpp>
+#include <chi/GraphFunction.hpp>
+#include <chi/Result.hpp>
 
 #include <KLocalizedString>
 #include <KMessageBox>
@@ -27,7 +27,7 @@ private:
 
 }  // anonymous namespace
 
-TypeSelector::TypeSelector(chig::ChigModule& module, QWidget* parent)
+TypeSelector::TypeSelector(chi::ChiModule& module, QWidget* parent)
     : KComboBox(true, parent), mModule{&module} {
 	KCompletion* completer = completionObject();
 
@@ -54,15 +54,15 @@ TypeSelector::TypeSelector(chig::ChigModule& module, QWidget* parent)
 	        [&module, this]() { typeSelected(currentType()); });
 }
 
-void TypeSelector::setCurrentType(const chig::DataType& ty) {
+void TypeSelector::setCurrentType(const chi::DataType& ty) {
 	setCurrentText(QString::fromStdString(ty.qualifiedName()));
 }
 
-chig::DataType TypeSelector::currentType() {
+chi::DataType TypeSelector::currentType() {
 	std::string mod, name;
-	std::tie(mod, name) = chig::parseColonPair(currentText().toStdString());
+	std::tie(mod, name) = chi::parseColonPair(currentText().toStdString());
 
-	chig::DataType ty;
+	chi::DataType ty;
 	auto           res = mModule->context().typeFromModule(mod, name, &ty);
 	if (!res) {
 		KMessageBox::detailedError(this, i18n("Failed to get type"),

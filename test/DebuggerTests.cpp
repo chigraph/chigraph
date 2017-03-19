@@ -1,11 +1,10 @@
 #include <catch.hpp>
 
-#include <chig/Context.hpp>
-#include <chig/GraphModule.hpp>
-#include <chig/NodeInstance.hpp>
-#include <chig/Result.hpp>
-
-#include <chig/Debugger.hpp>
+#include <chi/Context.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/NodeInstance.hpp>
+#include <chi/Result.hpp>
+#include <chi/Debugger.hpp>
 
 #include <llvm/Support/FileSystem.h>
 
@@ -16,7 +15,7 @@
 
 #include <thread>
 
-using namespace chig;
+using namespace chi;
 using namespace nlohmann;
 using namespace std::chrono_literals;
 
@@ -31,7 +30,7 @@ TEST_CASE("Debugger", "") {
 	// load a mod
 	GraphModule* gMod;
 	{
-		ChigModule* cMod;
+		ChiModule* cMod;
 		res += ctx.loadModule("intermodule/main", &cMod);
 		gMod = static_cast<GraphModule*>(cMod);
 	}
@@ -39,7 +38,7 @@ TEST_CASE("Debugger", "") {
 
 	GraphModule* printerMod;
 	{
-		ChigModule* cMod = ctx.moduleByFullName("intermodule/printer");
+		ChiModule* cMod = ctx.moduleByFullName("intermodule/printer");
 		printerMod       = static_cast<GraphModule*>(cMod);
 	}
 

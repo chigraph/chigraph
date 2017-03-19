@@ -19,12 +19,12 @@
 
 #include <boost/filesystem.hpp>
 
-#include <chig/Result.hpp>
+#include <chi/Result.hpp>
 
-SubprocessOutputView::SubprocessOutputView(chig::GraphModule* module) : mModule(module) {
+SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(module) {
 	// compile!
 	std::unique_ptr<llvm::Module> llmod;
-	chig::Result                  res = module->context().compileModule(module->fullName(), &llmod);
+	chi::Result                  res = module->context().compileModule(module->fullName(), &llmod);
 
 	if (!res) {
 		KMessageBox::detailedError(this, "Failed to compile module",

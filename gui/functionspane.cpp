@@ -2,7 +2,7 @@
 
 #include "mainwindow.hpp"
 
-#include <chig/GraphFunction.hpp>
+#include <chi/GraphFunction.hpp>
 
 #include <gsl/gsl_assert>
 
@@ -12,13 +12,13 @@
 
 class FunctionListItem : public QListWidgetItem {
 public:
-	explicit FunctionListItem(chig::GraphFunction* func)
+	explicit FunctionListItem(chi::GraphFunction* func)
 	    : QListWidgetItem(QIcon::fromTheme(QStringLiteral("code-class")),
 	                      QString::fromStdString(func->module().fullName() + ":" + func->name()),
 	                      nullptr, QListWidgetItem::UserType),
 	      mFunc{func} {}
 
-	chig::GraphFunction* mFunc;
+	chi::GraphFunction* mFunc;
 };
 
 FunctionsPane::FunctionsPane(QWidget* parent) : QListWidget(parent) {
@@ -42,7 +42,7 @@ FunctionsPane::FunctionsPane(QWidget* parent) : QListWidget(parent) {
 			                      auto casted = dynamic_cast<FunctionListItem*>(funcItem);
 			                      if (casted == nullptr) { return; }
 
-			                      chig::GraphModule& mod = casted->mFunc->module();
+			                      chi::GraphModule& mod = casted->mFunc->module();
 			                      mod.removeFunction(casted->mFunc);
 
 			                      updateModule(mod);
@@ -52,7 +52,7 @@ FunctionsPane::FunctionsPane(QWidget* parent) : QListWidget(parent) {
 	});
 }
 
-void FunctionsPane::updateModule(chig::GraphModule& mod) {
+void FunctionsPane::updateModule(chi::GraphModule& mod) {
 	clear();
 
 	// go through functions
