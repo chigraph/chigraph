@@ -6,11 +6,11 @@
 #include <QListWidget>
 #include <QTableView>
 
-#include <chig/GraphModule.hpp>
+#include <chi/GraphModule.hpp>
 
 class FunctionView;
 
-inline QStringList createTypeOptions(const chig::GraphModule& mod) {
+inline QStringList createTypeOptions(const chi::GraphModule& mod) {
 	QStringList ret;
 
 	// add the module

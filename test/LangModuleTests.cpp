@@ -1,17 +1,17 @@
 #include <catch.hpp>
 
-#include <chig/Context.hpp>
-#include <chig/DataType.hpp>
-#include <chig/LangModule.hpp>
-#include <chig/NodeType.hpp>
+#include <chi/Context.hpp>
+#include <chi/DataType.hpp>
+#include <chi/LangModule.hpp>
+#include <chi/NodeType.hpp>
 
-using namespace chig;
+using namespace chi;
 
 TEST_CASE("LangModule", "[module]") {
 	GIVEN("A context with LangModule in it") {
 		Context c;
 		c.loadModule("lang");
-		ChigModule* mod = c.moduleByFullName("lang");
+		ChiModule* mod = c.moduleByFullName("lang");
 
 		THEN("We try to get associated types with correct parameters, it works") {
 			DataType test;

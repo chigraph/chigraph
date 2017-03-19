@@ -14,9 +14,9 @@
 #include <nodes/FlowScene>
 #include <nodes/FlowView>
 
-#include <chig/ChigModule.hpp>
-#include <chig/Context.hpp>
-#include <chig/GraphModule.hpp>
+#include <chi/ChiModule.hpp>
+#include <chi/Context.hpp>
+#include <chi/GraphModule.hpp>
 
 #include <QProcess>
 
@@ -31,27 +31,27 @@ public:
 	explicit MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
-	chig::GraphModule* currentModule() const { return mModule; }
-	chig::Context&     context() const { return *mChigContext; }
+	chi::GraphModule* currentModule() const { return mModule; }
+	chi::Context&     context() const { return *mChigContext; }
 public slots:
 	void openWorkspaceDialog();           // this one opens a dialog
 	void openWorkspace(const QUrl& url);  // and this one doesn't
 	void openModule(const QString& fullName);
-	void newFunctionSelected(chig::GraphFunction* func);
+	void newFunctionSelected(chi::GraphFunction* func);
 	void save();
 	void closeTab(int idx);
 	void newFunction();
 	void newModule();
 	void moduleDirtied();
-	void discardChangesInModule(chig::ChigModule& mod);
+	void discardChangesInModule(chi::ChiModule& mod);
 
 signals:
-	void workspaceOpened(chig::Context& workspace);
-	void moduleOpened(chig::GraphModule& mod);
+	void workspaceOpened(chi::Context& workspace);
+	void moduleOpened(chi::GraphModule& mod);
 	void functionOpened(FunctionView* func);
 
-	void newModuleCreated(chig::GraphModule* newModule);
-	void newFunctionCreated(chig::GraphFunction* func);
+	void newModuleCreated(chi::GraphModule* newModule);
+	void newFunctionCreated(chi::GraphFunction* func);
 
 private:
 	void closeEvent(QCloseEvent* event) override;
@@ -63,8 +63,8 @@ private:
 	QTabWidget* mFunctionTabs = nullptr;
 
 	// context & module
-	std::unique_ptr<chig::Context> mChigContext   = nullptr;
-	chig::GraphModule*             mModule        = nullptr;
+	std::unique_ptr<chi::Context> mChigContext   = nullptr;
+	chi::GraphModule*             mModule        = nullptr;
 	ModuleBrowser*                 mModuleBrowser = nullptr;
 
 	std::unique_ptr<ThemeManager> mThemeManager;

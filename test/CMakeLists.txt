@@ -27,10 +27,10 @@ if (CG_BUILD_DEBUGGER)
 endif()
 
 add_executable(api_tests ${TEST_SRCS})
-target_link_libraries(api_tests PUBLIC libchig)
+target_link_libraries(api_tests PUBLIC chigraph)
 
 if (CG_BUILD_DEBUGGER)
-	target_link_libraries(api_tests PUBLIC chigdebugger)
+	target_link_libraries(api_tests PUBLIC chigraphdebugger)
 endif()
 
 add_test(NAME api_tests 

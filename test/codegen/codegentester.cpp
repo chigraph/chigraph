@@ -1,11 +1,11 @@
-#include <chig/CModule.hpp>
-#include <chig/Context.hpp>
-#include <chig/GraphFunction.hpp>
-#include <chig/GraphModule.hpp>
-#include <chig/JsonSerializer.hpp>
-#include <chig/LangModule.hpp>
-#include <chig/NodeType.hpp>
-#include <chig/Result.hpp>
+#include <chi/CModule.hpp>
+#include <chi/Context.hpp>
+#include <chi/GraphFunction.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/JsonSerializer.hpp>
+#include <chi/LangModule.hpp>
+#include <chi/NodeType.hpp>
+#include <chi/Result.hpp>
 
 #include <libexecstream/exec-stream.h>
 
@@ -29,9 +29,8 @@
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Support/raw_ostream.h>
 
-#include <chig/json.hpp>
 
-using namespace chig;
+using namespace chi;
 using namespace nlohmann;
 
 namespace fs = boost::filesystem;
@@ -42,8 +41,8 @@ const char* exesuffix = "";
 const char* exesuffix = ".exe";
 #endif
 
-std::string areArrayEqualUnordered(nlohmann::json lhs, nlohmann::json rhs) {
-	std::vector<nlohmann::json> objects;
+std::string areArrayEqualUnordered(json lhs, json rhs) {
+	std::vector<json> objects;
 
 	for (auto& obj : lhs) { objects.push_back(obj); }
 
@@ -67,7 +66,7 @@ std::string areArrayEqualUnordered(nlohmann::json lhs, nlohmann::json rhs) {
 	return "";
 }
 
-std::string areJsonEqual(nlohmann::json lhs, nlohmann::json rhs) {
+std::string areJsonEqual(json lhs, json rhs) {
 	std::string errstring;
 
 	errstring = areArrayEqualUnordered(lhs["dependencies"], rhs["dependencies"]);
@@ -311,7 +310,7 @@ int main(int argc, char** argv) {
 		// test serialization and deserialization
 		GraphModule* deserialized;
 		{
-			ChigModule* cMod = nullptr;
+			ChiModule* cMod = nullptr;
 			r += c.loadModule(fullName, &cMod);
 
 			if (!r) {
@@ -322,7 +321,7 @@ int main(int argc, char** argv) {
 			deserialized = dynamic_cast<GraphModule*>(cMod);
 		}
 
-		nlohmann::json serializedmodule = graphModuleToJson(*deserialized);
+		json serializedmodule = graphModuleToJson(*deserialized);
 
 		if (!r) {
 			std::cerr << "Error deserializing module: \n\n" << r << std::endl;

@@ -5,8 +5,8 @@
 
 #include <KMessageBox>
 
-#include <chig/GraphModule.hpp>
-#include <chig/NodeInstance.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/NodeInstance.hpp>
 
 #include <nodes/ConnectionStyle>
 
@@ -14,7 +14,7 @@
 
 using namespace QtNodes;
 
-FunctionView::FunctionView(MainWindow* mainWindow, chig::GraphFunction* func_, QWidget* parent)
+FunctionView::FunctionView(MainWindow* mainWindow, chi::GraphFunction* func_, QWidget* parent)
     : QWidget(parent), mFunction{func_}, mMainWindow{mainWindow} {
 	auto hlayout = new QHBoxLayout(this);
 
@@ -111,7 +111,7 @@ void FunctionView::nodeAdded(Node& n) {
 	if (mNodeMap.find(&ptr->instance()) != mNodeMap.end()) { return; }
 
 	mFunction->nodes()[ptr->instance().id()] =
-	    std::unique_ptr<chig::NodeInstance>(&ptr->instance());
+	    std::unique_ptr<chi::NodeInstance>(&ptr->instance());
 
 	mNodeMap[&ptr->instance()] = &n;
 
@@ -169,11 +169,11 @@ void FunctionView::connectionAdded(Connection& c) {
 
 	bool isExec = inconnid < inptr->instance().type().execOutputs().size();
 
-	chig::Result res;
+	chi::Result res;
 	if (isExec) {
-		res += chig::connectExec(inptr->instance(), inconnid, outptr->instance(), outconnid);
+		res += chi::connectExec(inptr->instance(), inconnid, outptr->instance(), outconnid);
 	} else {
-		res += chig::connectData(
+		res += chi::connectData(
 		    inptr->instance(), inconnid - inptr->instance().type().execOutputs().size(),
 		    outptr->instance(), outconnid - outptr->instance().type().execInputs().size());
 	}
@@ -186,7 +186,7 @@ void FunctionView::connectionAdded(Connection& c) {
 		return;  // don't add to the array
 	}
 
-	conns[&c] = std::array<std::pair<chig::NodeInstance*, size_t>, 2>{
+	conns[&c] = std::array<std::pair<chi::NodeInstance*, size_t>, 2>{
 	    {std::make_pair(&inptr->instance(), inconnid),
 	     std::make_pair(&outptr->instance(), outconnid)}};
 	dirtied();
@@ -202,12 +202,12 @@ void FunctionView::connectionDeleted(Connection& c) {
 	// see if it's data or exec
 	bool isExec = conn[0].second < conn[0].first->outputExecConnections.size();
 
-	chig::Result res;
+	chi::Result res;
 
 	if (isExec) {
-		res += chig::disconnectExec(*conn[0].first, conn[0].second);
+		res += chi::disconnectExec(*conn[0].first, conn[0].second);
 	} else {
-		res += chig::disconnectData(*conn[0].first,
+		res += chi::disconnectData(*conn[0].first,
 		                            conn[0].second - conn[0].first->outputExecConnections.size(),
 		                            *conn[1].first);
 	}
@@ -242,7 +242,7 @@ void FunctionView::nodeDoubleClicked(QtNodes::Node& n) {
 	// see if we can get the implementation
 	auto model = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
 
-	auto* graphMod = dynamic_cast<chig::GraphModule*>(&model->instance().type().module());
+	auto* graphMod = dynamic_cast<chi::GraphModule*>(&model->instance().type().module());
 	if (graphMod == nullptr) { return; }
 
 	auto func = graphMod->functionFromName(model->instance().type().name());
@@ -328,13 +328,13 @@ void FunctionView::refreshGuiForNode(Node* node) {
 
 void FunctionView::refreshRegistry() { mScene->setRegistry(createRegistry()); }
 
-Node* FunctionView::guiNodeFromChigNode(chig::NodeInstance* inst) {
+Node* FunctionView::guiNodeFromChigNode(chi::NodeInstance* inst) {
 	auto iter = mNodeMap.find(inst);
 	if (iter != mNodeMap.end()) { return iter->second; }
 	return nullptr;
 }
 
-chig::NodeInstance* FunctionView::chigNodeFromGuiNode(Node* node) {
+chi::NodeInstance* FunctionView::chigNodeFromGuiNode(Node* node) {
 	auto nodeGui = dynamic_cast<ChigraphNodeModel*>(node->nodeDataModel());
 	if (nodeGui == nullptr) { return nullptr; }
 	return &nodeGui->instance();
@@ -356,34 +356,34 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 			// create that node type unless it's entry or exit
 			if (modName == "lang" && (typeName == "entry" || typeName == "exit")) { continue; }
 
-			std::unique_ptr<chig::NodeType> ty;
+			std::unique_ptr<chi::NodeType> ty;
 			module->nodeTypeFromName(typeName, {}, &ty);
 
 			auto name = ty->qualifiedName();  // cache the name because ty is moved from
 			reg->registerModel(std::make_unique<ChigraphNodeModel>(
-			    new chig::NodeInstance(mFunction, std::move(ty), 0, 0,
+			    new chi::NodeInstance(mFunction, std::move(ty), 0, 0,
 			                           boost::uuids::random_generator()()),
 			    this), QString::fromStdString(modName.generic_path().string()));  // TODO: this is a memory leak
 		}
 	}
 	// register exit -- it has to be the speical kind of exit for this function
-	std::unique_ptr<chig::NodeType> ty;
+	std::unique_ptr<chi::NodeType> ty;
 	mFunction->createExitNodeType(&ty);
 
 	reg->registerModel(std::make_unique<ChigraphNodeModel>(
-	    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this), QString::fromStdString(mFunction->module().fullName()));
+	    new chi::NodeInstance(mFunction, std::move(ty), 0, 0), this), QString::fromStdString(mFunction->module().fullName()));
 
 	// register local variable setters and getters
 	for (const auto& local : mFunction->localVariables()) {
 		mFunction->module().nodeTypeFromName("_set_" + local.name, local.type.qualifiedName(), &ty);
 
 		reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this), i18n("Local Variables"));
+		    new chi::NodeInstance(mFunction, std::move(ty), 0, 0), this), i18n("Local Variables"));
 
 		mFunction->module().nodeTypeFromName("_get_" + local.name, local.type.qualifiedName(), &ty);
 
 		reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		    new chig::NodeInstance(mFunction, std::move(ty), 0, 0), this), i18n("Local Variables"));
+		    new chi::NodeInstance(mFunction, std::move(ty), 0, 0), this), i18n("Local Variables"));
 	}
 
 	return reg;
