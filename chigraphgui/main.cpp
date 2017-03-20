@@ -5,8 +5,13 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QtPlugin>
 
 #include "mainwindow.hpp"
+
+#ifdef CHIGRAPH_WITH_DEBUGGER
+Q_IMPORT_PLUGIN(DebuggerPlugin)
+#endif
 
 int main(int argc, char** argv) {
 	QApplication app(argc, argv);
