@@ -96,4 +96,4 @@ private:
 };
 } // namespace chi
 
-#endif  // CHI_CHIG_MODULE_HPP
+#endif  // CHI_CHI_MODULE_HPP
