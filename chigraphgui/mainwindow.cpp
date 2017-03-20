@@ -5,6 +5,7 @@
 #include "localvariables.hpp"
 #include "modulebrowser.hpp"
 #include "moduledependencies.hpp"
+#include "chigraphplugin.hpp"
 #include "moduledetails.hpp"
 #include "subprocessoutputview.hpp"
 
@@ -17,6 +18,7 @@
 #include <KStandardAction>
 
 #include <QAction>
+#include <QPluginLoader>
 #include <QApplication>
 #include <QDebug>
 #include <QDockWidget>
@@ -79,11 +81,12 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(modDetails, &ModuleDetails::dirtied, this, &MainWindow::moduleDirtied);
 
 	// setup module browser
-	docker = new QDockWidget(i18n("Modules"), this);
-	docker->setObjectName("Modules");
 	mModuleBrowser = new ModuleBrowser(this);
+	docker = new QDockWidget(mModuleBrowser->label(), this);
+	docker->setObjectName("Modules");
+	insertChildClient(mModuleBrowser);
 	docker->setWidget(mModuleBrowser);
-	addDockWidget(Qt::LeftDockWidgetArea, docker);
+	addDockWidget(mModuleBrowser->defaultArea(), docker);
 	connect(this, &MainWindow::workspaceOpened, mModuleBrowser, &ModuleBrowser::loadWorkspace);
 	connect(mModuleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
 	connect(this, &MainWindow::newModuleCreated, mModuleBrowser,
@@ -115,6 +118,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	docker = new QDockWidget(i18n("Function Details"), this);
 	docker->setObjectName("Function Details");
 	auto functionDetails = new FunctionDetails;
+	insertChildClient(functionDetails);
 	auto scroll          = new QScrollArea;
 	scroll->setWidget(functionDetails);
 	scroll->setWidgetResizable(true);
@@ -133,8 +137,23 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		    });
 	connect(functionDetails, &FunctionDetails::dirtied, this, &MainWindow::moduleDirtied);
 
+	/// load plugins
+	for (QObject* plugin : QPluginLoader::staticInstances()) {
+		if (auto chiPlugin = qobject_cast<ChigraphPlugin*>(plugin)) {
+			insertChildClient(chiPlugin);
+			
+			for (auto view : chiPlugin->toolViews()) {
+				docker = new QDockWidget(view->label(), this);
+				
+				insertChildClient(view);
+				
+				addDockWidget(view->defaultArea(), docker);
+			}
+		}
+	}
+	
 	/// Setup actions
-	auto actColl = this->KXmlGuiWindow::actionCollection();
+	auto actColl = actionCollection();
 
 	KStandardAction::quit(qApp, SLOT(quit()), actColl);
 
@@ -229,7 +248,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	mThemeManager    = std::make_unique<ThemeManager>(themeAction);
 	actColl->addAction(QStringLiteral("theme"), themeAction);
 
-	setupGUI(Default, ":/share/kxmlgui5/chigraphgui/chigraphguiui.rc");
+	setupGUI(Default, "chigraphguiui.rc");
 }
 
 MainWindow::~MainWindow() {

@@ -1,9 +1,11 @@
 #pragma once
 
-#ifndef CHIG_GUI_MODULE_BROWSER_HPP
-#define CHIG_GUI_MODULE_BROWSER_HPP
+#ifndef CHIGRAPHGUI_MODULE_BROWSER_HPP
+#define CHIGRAPHGUI_MODULE_BROWSER_HPP
 
 #include <QTreeWidget>
+
+#include <KLocalizedString>
 
 class MainWindow;
 
@@ -12,11 +14,28 @@ class MainWindow;
 
 #include <unordered_set>
 
+#include "toolview.hpp"
+
 class ModuleTreeItem;
 
-class ModuleBrowser : public QTreeWidget {
+class ModuleBrowser : public QTreeWidget, public ToolView {
 	Q_OBJECT
 
+	// ToolView interface
+public:
+	
+	QWidget* toolView() override {
+		return this;
+	}
+	Qt::DockWidgetArea defaultArea() const override {
+		return Qt::LeftDockWidgetArea;
+	}
+	QString label() override {
+		return i18n("Module Browser");
+	}
+	
+	
+	
 public:
 	ModuleBrowser(QWidget* parent = nullptr);
 
@@ -37,6 +56,8 @@ private:
 	chi::Context*                        mContext = nullptr;
 	std::unordered_set<chi::ChiModule*> mDirtyModules;
 	std::unordered_map<std::string, ModuleTreeItem*> mItems;
+	
+	QAction* mDiscardChangesAction = nullptr;
 };
 
-#endif  // CHIG_GUI_MODULE_BROWSER_HPP
+#endif  // CHIGRAPHGUI_MODULE_BROWSER_HPP
