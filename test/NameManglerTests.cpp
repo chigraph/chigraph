@@ -1,8 +1,8 @@
 #include "catch.hpp"
 
-#include <chig/NameMangler.hpp>
+#include <chi/NameMangler.hpp>
 
-using namespace chig;
+using namespace chi;
 
 TEST_CASE("Name Mangler", "") {
 	using namespace std::string_literals;

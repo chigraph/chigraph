@@ -1,13 +1,13 @@
 #include <catch.hpp>
 
-#include <chig/Context.hpp>
-#include <chig/DataType.hpp>
-#include <chig/LangModule.hpp>
-#include <chig/NodeType.hpp>
+#include <chi/Context.hpp>
+#include <chi/DataType.hpp>
+#include <chi/LangModule.hpp>
+#include <chi/NodeType.hpp>
 
 #include <llvm/IR/DerivedTypes.h>
 
-using namespace chig;
+using namespace chi;
 namespace fs = boost::filesystem;
 
 TEST_CASE("Contexts can be created and modules can be added to them", "[Context]") {

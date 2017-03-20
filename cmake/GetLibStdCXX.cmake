@@ -18,7 +18,7 @@ if(UNIX AND NOT APPLE)
 	if (NOT EXISTS ${CMAKE_BINARY_DIR}/glibc-2.19/build)
 		message(STATUS "Building glibc")
 		file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
-		execute_process(COMMAND ../configure --prefix=${CMAKE_BINARY_DIR}/lib/chig/stdlib WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
+		execute_process(COMMAND ../configure --prefix=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
 		
 		execute_process(COMMAND make -j${N} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
 		execute_process(COMMAND make install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
@@ -33,7 +33,7 @@ if(UNIX AND NOT APPLE)
 # 
 # 	message(STATUS "Building libstdc++...")
 # 	file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/gcc/build)
-# 	execute_process(COMMAND ../libstdc++-v3/configure --prefix=${CMAKE_BINARY_DIR}/lib/chig/stdlib WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcc/build)
+# 	execute_process(COMMAND ../libstdc++-v3/configure --prefix=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcc/build)
 # 	execute_process(COMMAND make WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcc/build)
 # 	execute_process(COMMAND make install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcc/build)
 # 	
@@ -49,7 +49,7 @@ elseif(APPLE)
 	
 	message(STATUS "Building libc++abi...")
 	file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/libcxxabi-3.9.1.src/build)
-	execute_process(${CMAKE_COMMAND} ../ -G${CMAKE_GENERATOR} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/lib/chig/stdlib -DCMAKE_BUILD_TYPE=Release WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxxabi-3.9.1.src/build)
+	execute_process(${CMAKE_COMMAND} ../ -G${CMAKE_GENERATOR} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib -DCMAKE_BUILD_TYPE=Release WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxxabi-3.9.1.src/build)
 	execute_process(${CMAKE_COMMAND} --build . --target=install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxxabi-3.9.1.src/build)
 	
 	message(STATUS "Downloading libc++...")
@@ -60,7 +60,7 @@ elseif(APPLE)
 	
 	message(STATUS "Building libc++abi...")
 	file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/libcxx-3.9.1.src/build)
-	execute_process(${CMAKE_COMMAND} ../ -G${CMAKE_GENERATOR} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/lib/chig/stdlib -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/libcxx -DCMAKE_BUILD_TYPE=Release WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxx-3.9.1.src/build)
+	execute_process(${CMAKE_COMMAND} ../ -G${CMAKE_GENERATOR} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/libcxx -DCMAKE_BUILD_TYPE=Release WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxx-3.9.1.src/build)
 	execute_process(${CMAKE_COMMAND} --build . --target=install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxx-3.9.1.src/build)
 	
 	
