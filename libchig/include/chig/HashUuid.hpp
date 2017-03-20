@@ -3,7 +3,7 @@
 
 #include <boost/uuid/uuid.hpp>
 
-#include <utility>
+#include <functional>
 
 namespace std {
 
