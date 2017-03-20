@@ -14,10 +14,7 @@ git clone https://github.com/chigraph/chigraph --recursive --depth 1
 # acquire linuxdeployqt
 cd /
 rm -Rf /linuxdeployqt
-if [ ! -d AppImageKit ] ; then
-  git clone  --depth 1 https://github.com/probonopd/linuxdeployqt.git /linuxdeployqt
-fi
-
+git clone  --depth 1 https://github.com/probonopd/linuxdeployqt.git /linuxdeployqt
 cd /linuxdeployqt/
 qmake linuxdeployqt.pro
 make -j8

@@ -2,14 +2,14 @@
 #include <iostream>
 #include <memory>
 
-#include <chig/Context.hpp>
-#include <chig/GraphFunction.hpp>
-#include <chig/GraphModule.hpp>
-#include <chig/JsonDeserializer.hpp>
-#include <chig/LangModule.hpp>
-#include <chig/json.hpp>
+#include <chi/Context.hpp>
+#include <chi/GraphFunction.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/JsonDeserializer.hpp>
+#include <chi/LangModule.hpp>
+#include <chi/json.hpp>
 
-using namespace chig;
+using namespace chi;
 using namespace nlohmann;
 
 // returns -1 for failure, 1 for keep going  and 0 for success

@@ -1,11 +1,11 @@
 #include <catch.hpp>
 
-#include <chig/Context.hpp>
-#include <chig/GraphModule.hpp>
-#include <chig/GraphStruct.hpp>
-#include <chig/Result.hpp>
+#include <chi/Context.hpp>
+#include <chi/GraphModule.hpp>
+#include <chi/GraphStruct.hpp>
+#include <chi/Result.hpp>
 
-using namespace chig;
+using namespace chi;
 
 TEST_CASE("GraphModuleTest", "[module]") {
 	Context c;
