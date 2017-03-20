@@ -5,14 +5,33 @@
 
 #include <QWidget>
 
+#include <KLocalizedString>
+
+#include "toolview.hpp"
+
 class FunctionView;
 class FunctionInOuts;
 class LocalVariables;
 
 class QLineEdit;
 
-class FunctionDetails : public QWidget {
+class FunctionDetails : public QWidget, public ToolView {
 	Q_OBJECT
+	
+	// ToolView interface
+public:
+	
+	QWidget* toolView() override {
+		return this;
+	}
+	Qt::DockWidgetArea defaultArea() const override {
+		return Qt::RightDockWidgetArea;
+	}
+	QString label() override {
+		return i18n("Function Details");
+	}
+	
+	
 public:
 	explicit FunctionDetails(QWidget* parent = nullptr);
 

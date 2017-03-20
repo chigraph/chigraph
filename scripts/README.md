@@ -11,22 +11,17 @@ It uses the `.clang-format` file for style advice.
 # `clang_tidy.sh`
 Run [clang tidy](http://clang.llvm.org/docs/ClangTidy.html) on the code. Provides nice style, readability and performance diagnostics
 
-# `build_frameworks.sh`
+# `generate_kf5_tarballs.sh`
 Compiles the components from KDE Frameworks 5 that chigraph gui relies on.
-
-It is to be used like:
-```bash
-./build_frameworks.sh <Debug|Release> <CMake Generator>
-```
+It does it in a [docker](https://www.docker.com/) image, so [docker](https://www.docker.com/) must be installed activated.
+It outputs two tarballs in the scripts directory.
 
 # `setup_hooks.sh`
 Setups a hook in git to run `format_code.sh` before each commit
 
-# `create_appimage.sh`
-Creates a linux appimage! It deletes the build directory then reruns cmake with the arguments supplied on the command line, then outputs the appimage in build/
+# `generate_appimage.sh`
+Requies [docker](https://www.docker.com/) to be intalled and activated.
+Warning: This will take quite a while, approx 20-30 minutes.
 
-Usage:
-```bash
-./create_appimage.sh <Extra CMake arguments>
-```
+Outputs an appimage in the scripts directory
 

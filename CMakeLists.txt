@@ -34,6 +34,7 @@ message(STATUS "LLVM version: ${LLVM_VERSION}")
 # add libchig
 add_subdirectory(libchigraph)
 
+# add the debugger module
 if (CG_BUILD_DEBUGGER)
 	add_subdirectory(libchigraphdebugger)
 endif()
