@@ -42,6 +42,10 @@ find_package(KF5 REQUIRED COMPONENTS Archive TextEditor JobWidgets DBusAddons KI
 # make sure QtMain is linked
 cmake_policy(SET CMP0020 NEW)
 
+if (CG_BUILD_DEBUGGER)
+	add_subdirectory(debugger)
+endif()
+
 set(GUI_SRCS
 	main.cpp
 	mainwindow.cpp
@@ -89,9 +93,31 @@ add_executable(chigraphgui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})
 set_target_properties(chigraphgui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 
-target_link_libraries(chigraphgui Qt5::Widgets KF5::Completion KF5::TextEditor KF5::Crash KF5::Service KF5::CoreAddons KF5::I18n KF5::Auth KF5::XmlGui KF5::WidgetsAddons KF5::TextWidgets KF5::IconThemes nodes chigraph)
+target_link_libraries(chigraphgui
+	Qt5::Widgets 
+	KF5::Completion 
+	KF5::TextEditor 
+	KF5::Crash 
+	KF5::Service 
+	KF5::CoreAddons 
+	KF5::I18n 
+	KF5::Auth 
+	KF5::XmlGui 
+	KF5::WidgetsAddons 
+	KF5::TextWidgets 
+	KF5::IconThemes 
+	nodes 
+	chigraph
+)
 
-target_compile_features(chigraphgui PRIVATE cxx_variable_templates)
+if (CG_BUILD_DEBUGGER)
+	target_link_libraries(chigraphgui chigraphguidebugger)
+endif()
+
+target_compile_features(chigraphgui 
+PRIVATE 
+	cxx_variable_templates
+)
 
 if(UNIX)
 	target_compile_options(chigraphgui PRIVATE "-fexceptions")

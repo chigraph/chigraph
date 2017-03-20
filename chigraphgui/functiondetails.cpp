@@ -9,6 +9,8 @@
 #include "localvariables.hpp"
 
 FunctionDetails::FunctionDetails(QWidget* parent) {
+	setXMLFile("chigraphfunctiondetailsui.rc");
+	
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 
