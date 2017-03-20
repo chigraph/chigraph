@@ -33,16 +33,6 @@ FunctionView::FunctionView(MainWindow* mainWindow, chi::GraphFunction* func_, QW
 	mScene = new FlowScene(createRegistry());
 
 	mView = new FlowView(mScene);
-	
-	// add an action to add a breakpoint
-	auto breakpointAction = new QAction(i18n("Add Breakpoint"));
-	breakpointAction->setShortcut(Qt::Key_B);
-	connect(breakpointAction, &QAction::triggered, this, [this]{
-		for (auto& node : mScene->selectedNodes()) {
-			addBreakpoint(*node);
-        }
-	});
-	mView->addAction(breakpointAction);
 
 	hlayout->addWidget(mView);
 

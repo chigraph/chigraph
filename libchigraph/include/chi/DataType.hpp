@@ -16,12 +16,12 @@ namespace chi {
 /// types
 struct DataType {
 	/// Constructor
-	/// \param chigMod The module
+	/// \param chiMod The module
 	/// \param typeName The ID of the type in the module
 	/// \param llvmtype The underlying type
-	DataType(ChiModule* chigMod = nullptr, std::string typeName = {},
+	DataType(ChiModule* chiMod = nullptr, std::string typeName = {},
 	         llvm::Type* llvmtype = nullptr, llvm::DIType* debugTy = nullptr)
-	    : mModule(chigMod), mName{typeName}, mLLVMType{llvmtype}, mDIType{debugTy} {}
+	    : mModule(chiMod), mName{typeName}, mLLVMType{llvmtype}, mDIType{debugTy} {}
 
 	/// Get the module this is a part of
 	/// \return The module
@@ -102,4 +102,4 @@ inline bool operator==(const NamedDataType& lhs, const NamedDataType& rhs) {
 inline bool operator!=(const NamedDataType& lhs, const NamedDataType& rhs) { return !(lhs == rhs); }
 } // namespace chi
 
-#endif  // CHIG_DATA_TYPE_HPP
+#endif  // CHI_DATA_TYPE_HPP
