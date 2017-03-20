@@ -10,7 +10,7 @@ message(STATUS "clang libdir: ${CLANG_LIB_DIR}")
 
 add_subdirectory(ctollvm)
 
-set(CHIG_PUBLIC_FILES
+set(CHI_PUBLIC_FILES
 	include/chi/ChiModule.hpp
 	include/chi/Context.hpp
 	include/chi/GraphFunction.hpp
@@ -28,7 +28,7 @@ set(CHIG_PUBLIC_FILES
 	include/chi/GraphStruct.hpp
 )
 
-set(CHIG_PRIVATE_FILES
+set(CHI_PRIVATE_FILES
 	src/Context.cpp
 	src/NodeInstance.cpp
 	src/GraphFunction.cpp
@@ -46,7 +46,7 @@ set(CHIG_PRIVATE_FILES
 )
 
 
-add_library(chigraph STATIC ${CHIG_PUBLIC_FILES} ${CHIG_PRIVATE_FILES})
+add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
 target_compile_features(chigraph PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
 
