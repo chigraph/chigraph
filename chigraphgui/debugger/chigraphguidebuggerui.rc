@@ -5,7 +5,12 @@
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://www.kde.org/standards/kxmlgui/1.0
                          http://www.kde.org/standards/kxmlgui/1.0/kxmlgui.xsd" >
- 
+	
+ 	<State name="has-main-module">
+		<enable>
+			<Action name="start-debug" />
+		</enable>
+	</State>
   <MenuBar>
     <Menu name="debugger" >
 		<Text>Debug</Text>
@@ -20,5 +25,6 @@
 		<Action name="toggle-breakpoint" />
   </ToolBar>
  
+  
 </gui>
 

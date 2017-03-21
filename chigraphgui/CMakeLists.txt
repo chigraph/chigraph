@@ -63,6 +63,7 @@ set(GUI_SRCS
 	functioninouts.cpp
 	moduledetails.cpp
 	typeselector.cpp
+	functiontabview.cpp
 )
 
 set(GUI_RESOURCES
@@ -85,6 +86,7 @@ set(GUI_HEADERS
 	functioninouts.hpp
 	moduledetails.hpp
 	typeselector.hpp
+	functiontabview.hpp
 )
 
 add_executable(chigraphgui ${GUI_SRCS} ${GUI_HEADERS} ${GUI_RESOURCES})

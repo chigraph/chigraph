@@ -1,4 +1,5 @@
 #include "mainwindow.hpp"
+#include "functiontabview.hpp"
 #include "functiondetails.hpp"
 #include "functionspane.hpp"
 #include "functionview.hpp"
@@ -100,9 +101,10 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		        discardChangesInModule(*context().moduleByFullName(moduleName));
 		    });
 
-	mFunctionTabs = new QTabWidget(this);
+	mFunctionTabs = new FunctionTabView;
 	mFunctionTabs->setMovable(true);
 	mFunctionTabs->setTabsClosable(true);
+	insertChildClient(mFunctionTabs);
 	connect(mFunctionTabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
 
 	setCentralWidget(mFunctionTabs);
@@ -249,6 +251,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	actColl->addAction(QStringLiteral("theme"), themeAction);
 
 	setupGUI(Default, "chigraphguiui.rc");
+	
+	stateChanged("has-main-module", KXMLGUIClient::StateReverse);
 }
 
 MainWindow::~MainWindow() {
@@ -304,6 +308,12 @@ void MainWindow::openModule(const QString& fullName) {
 
 	// call signal
 	moduleOpened(*mModule);
+	
+	if (mModule->shortName() == "main") {
+		stateChanged("has-main-module");
+	} else {
+		stateChanged("has-main-module", KXMLGUIClient::StateReverse);
+	}
 }
 
 void MainWindow::newFunctionSelected(chi::GraphFunction* func) {
