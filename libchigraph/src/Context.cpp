@@ -351,13 +351,14 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	llvm::EngineBuilder EEBuilder(std::move(mod));
 
 	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
-	EEBuilder.setVerifyModules(true);
+	//EEBuilder.setVerifyModules(true);
 
 	EEBuilder.setOptLevel(optLevel);
 
 	EEBuilder.setErrorStr(&errMsg);
 
 	EEBuilder.setMCJITMemoryManager(std::make_unique<llvm::SectionMemoryManager>());
+	
 
 	return std::unique_ptr<llvm::ExecutionEngine>(EEBuilder.create());
 }
@@ -381,6 +382,8 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 
 	std::string errMsg;
 	auto        EE = createEE(std::move(mod), optLevel, errMsg);
+	EE->finalizeObject();
+    EE->runStaticConstructorsDestructors(false);
 
 	if (!EE) {
 		res.addEntry("EINT", "Failed to create an LLVM ExecutionEngine", {{"Error", errMsg}});
@@ -389,6 +392,8 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 
 	auto returnValue = EE->runFunction(funcToRun, args);
 
+    EE->runStaticConstructorsDestructors(true);
+	
 	if (ret != nullptr) { *ret = returnValue; }
 
 	return res;
@@ -410,6 +415,8 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt
 
 	std::string errMsg;
 	auto        EE = createEE(std::move(mod), optLevel, errMsg);
+	EE->finalizeObject();
+    EE->runStaticConstructorsDestructors(false);
 
 	if (!EE) {
 		res.addEntry("EINT", "Failed to create an LLVM ExecutionEngine", {{"Error", errMsg}});
@@ -418,6 +425,8 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt
 
 	auto returnValue = EE->runFunctionAsMain(funcToRun, args, nullptr);
 
+    EE->runStaticConstructorsDestructors(true);
+	
 	if (ret != nullptr) { *ret = returnValue; }
 
 	return res;
