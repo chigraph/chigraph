@@ -2,7 +2,7 @@
 include(ProcessorCount)
 ProcessorCount(N)
 
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT WIN32)
 
 	if (NOT EXISTS ${CMAKE_BINARY_DIR}/glibc.tar.xz)
 		message(STATUS "Downloading glibc...")
@@ -45,23 +45,23 @@ elseif(APPLE)
 	file(DOWNLOAD http://releases.llvm.org/3.9.1/libcxxabi-3.9.1.src.tar.xz ${CMAKE_BINARY_DIR}/libcxxabi.tar.xz SHOW_PROGRESS)
 	
 	message(STATUS "Extracting libc++abi...")
-	execute_process(${CMAKE_COMMAND} -E tar xf libcxxabi.tar.xz WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+	execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf libcxxabi.tar.xz WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 	
 	message(STATUS "Building libc++abi...")
 	file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/libcxxabi-3.9.1.src/build)
-	execute_process(${CMAKE_COMMAND} ../ -G${CMAKE_GENERATOR} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib -DCMAKE_BUILD_TYPE=Release WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxxabi-3.9.1.src/build)
-	execute_process(${CMAKE_COMMAND} --build . --target=install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxxabi-3.9.1.src/build)
+	execute_process(COMMAND ${CMAKE_COMMAND} ../ -G${CMAKE_GENERATOR} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib -DCMAKE_BUILD_TYPE=Release WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxxabi-3.9.1.src/build)
+	execute_process(COMMAND ${CMAKE_COMMAND} --build . --target=install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxxabi-3.9.1.src/build)
 	
 	message(STATUS "Downloading libc++...")
 	file(DOWNLOAD http://releases.llvm.org/3.9.1/libcxx-3.9.1.src.tar.xz ${CMAKE_BINARY_DIR}/libcxx.tar.xz SHOW_PROGRESS)
 	
 	message(STATUS "Extracting libc++...")
-	execute_process(${CMAKE_COMMAND} -E tar xf libcxx.tar.xz WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+	execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf libcxx.tar.xz WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 	
 	message(STATUS "Building libc++abi...")
 	file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/libcxx-3.9.1.src/build)
-	execute_process(${CMAKE_COMMAND} ../ -G${CMAKE_GENERATOR} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/libcxx -DCMAKE_BUILD_TYPE=Release WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxx-3.9.1.src/build)
-	execute_process(${CMAKE_COMMAND} --build . --target=install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxx-3.9.1.src/build)
+	execute_process(COMMAND ${CMAKE_COMMAND} ../ -G${CMAKE_GENERATOR} -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/libcxx -DCMAKE_BUILD_TYPE=Release WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxx-3.9.1.src/build)
+	execute_process(COMMAND ${CMAKE_COMMAND} --build . --target=install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/libcxx-3.9.1.src/build)
 	
 	
 	
