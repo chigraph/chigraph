@@ -173,7 +173,7 @@ int main(int argc, char** argv) {
 
 	int expectedreturncode = j["expectedret"];
 
-	auto chigExePath = fs::current_path() / ("chig" + std::string(exesuffix));
+	auto chigExePath = fs::current_path() / ("chi" + std::string(exesuffix));
 
 	auto         modfile = moduleDir / "main.chigmod";
 	fs::ifstream inmodfile(modfile);
