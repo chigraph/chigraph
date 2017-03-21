@@ -24,6 +24,7 @@
 
 class ModuleBrowser;
 class ThemeManager;
+class FunctionTabView;
 
 class MainWindow : public KXmlGuiWindow {
 	Q_OBJECT
@@ -60,7 +61,7 @@ private:
 	std::unordered_map<QString, FunctionView*> mOpenFunctions;
 
 	// the tabs for open functions
-	QTabWidget* mFunctionTabs = nullptr;
+	FunctionTabView* mFunctionTabs = nullptr;
 
 	// context & module
 	std::unique_ptr<chi::Context> mChigContext   = nullptr;
