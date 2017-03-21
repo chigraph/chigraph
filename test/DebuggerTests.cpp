@@ -62,7 +62,7 @@ TEST_CASE("Debugger", "") {
 	// make a debugger
 	boost::filesystem::path chigPath =
 	    boost::filesystem::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
-	    "chig";
+	    "chi";
 #ifdef _WIN32
 	chigPath.replace_extension(boost::filesystem::path(".exe"));
 #endif
