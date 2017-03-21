@@ -48,7 +48,7 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
 		    });
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	
-	mDiscardChangesAction = new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")), i18n("Discard Changes"));
+	mDiscardChangesAction = new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")), i18n("Discard Changes"), this);
 	connect(mDiscardChangesAction, &QAction::triggered, this, [this]{
 		auto item = currentItem();
 		
