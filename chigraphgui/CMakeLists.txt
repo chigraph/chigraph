@@ -125,6 +125,7 @@ endif()
 
 # copy dlls
 if(WIN32)
+	add_custom_target(copydlls ALL)
 	foreach(QTLIB
 		Qt5::Widgets Qt5::Core Qt5::Gui Qt5::Script
 		Qt5::Network Qt5::DBus Qt5::PrintSupport Qt5::Xml
@@ -139,7 +140,7 @@ if(WIN32)
 	)
 
 		add_custom_command(
-		TARGET chigraphgui POST_BUILD
+		TARGET copydlls POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_if_different
 			$<TARGET_FILE:${QTLIB}>
 			$<TARGET_FILE_DIR:chigraphgui>
@@ -148,6 +149,7 @@ if(WIN32)
 	install(FILES $<TARGET_FILE:${QTLIB}> DESTINATION bin)
 	
 	endforeach()
+	
 	
 endif()
 
