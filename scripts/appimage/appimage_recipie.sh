@@ -53,6 +53,6 @@ QT_BASE_DIR=/opt/qt58
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
 
-/linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/usr/bin/chiggui -bundle-non-qt-libs
-/linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/usr/bin/chiggui -appimage
+/linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/usr/bin/chigraphgui -bundle-non-qt-libs
+/linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/usr/bin/chigraphgui -appimage
 

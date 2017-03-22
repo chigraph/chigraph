@@ -1,14 +1,23 @@
 {
   "dependencies": [
-    "lang",
+    "intprinter",
     "c",
-    "intprinter"
+    "lang"
   ],
   "graphs": [
     {
-	"description": "main",
-      "local_variables": {},
       "connections": [
+        {
+          "input": [
+            "f3c00873-3edf-47bd-ab42-689b24261ee6",
+            0
+          ],
+          "output": [
+            "10bde39c-2d47-4f50-8c18-d55f86b074b5",
+            0
+          ],
+          "type": "exec"
+        },
         {
           "input": [
             "10bde39c-2d47-4f50-8c18-d55f86b074b5",
@@ -30,17 +39,6 @@
             0
           ],
           "type": "data"
-        },
-        {
-          "input": [
-            "f3c00873-3edf-47bd-ab42-689b24261ee6",
-            0
-          ],
-          "output": [
-            "10bde39c-2d47-4f50-8c18-d55f86b074b5",
-            0
-          ],
-          "type": "exec"
         },
         {
           "input": [
@@ -67,27 +65,16 @@
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "main",
       "nodes": {
-        "f3c00873-3edf-47bd-ab42-689b24261ee6": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            181,
-            144
-          ],
-          "type": "lang:entry"
-        },
         "10bde39c-2d47-4f50-8c18-d55f86b074b5": {
           "data": null,
           "location": [
@@ -132,11 +119,23 @@
             392
           ],
           "type": "lang:const-int"
+        },
+        "f3c00873-3edf-47bd-ab42-689b24261ee6": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            179,
+            144
+          ],
+          "type": "lang:entry"
         }
       },
       "type": "function"
     }
   ],
-  "name": "main",
   "types": {}
 }

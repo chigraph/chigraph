@@ -93,6 +93,9 @@ FunctionView::FunctionView(MainWindow* mainWindow, chi::GraphFunction* func_, QW
 
 	connect(mScene, &FlowScene::nodeMoved, this, &FunctionView::nodeMoved);
 	connect(mScene, &FlowScene::nodeDoubleClicked, this, &FunctionView::nodeDoubleClicked);
+    
+    //validate the function
+	updateValidationStates();
 }
 
 void FunctionView::nodeAdded(Node& n) {

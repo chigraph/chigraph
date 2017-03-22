@@ -18,6 +18,10 @@ public:
 	
 	QAction* toggleBreakpointAction;
 	QAction* debugAction;
+	QAction* stepAction;
+	QAction* stepInAction;
+	QAction* stepOutAction;
+	QAction* continueAction;
 	
 	DebuggerPlugin();
 	
