@@ -27,8 +27,21 @@
 #include <boost/optional.hpp>
 
 namespace chi {
+
 /// The class that handles the loading, creation, storing, and compilation of modules
 /// It also stores a \c LLVMContext object to be used everywhere.
+///
+/// It stores all the modules and allows for compilation of them. Basic use looks like this:
+///
+/// ```
+/// chi::Context ctx{"/path/to/workspace"};
+///
+/// chi::Reuslt res = ctx.loadModule("github.com/russelltg/hellochigraph");
+/// if (!res) {
+///     std::cerr << res << std::endl;
+///     return;
+/// }
+/// ```
 struct Context {
 	/// Creates a context with just the lang module
 	/// \param workPath Path to the workspace, or a subdirectory of the workspace
