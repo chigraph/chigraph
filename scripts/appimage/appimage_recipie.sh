@@ -30,7 +30,7 @@ ln -s lib lib64
 
 
 # build KF5
-python3 /chigraph/setup.py
+/chigraph/setup.sh
 rsync -raP /chigraph/third_party/kf5-release/* /chigraph.appdir/usr/
 
 # build chigraph
