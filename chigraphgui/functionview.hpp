@@ -52,6 +52,8 @@ signals:
 	void dirtied();
 
 private:
+	void updateValidationStates();
+	
 	QtNodes::FlowScene* mScene;
 	QtNodes::FlowView*  mView;
 
@@ -65,6 +67,9 @@ private:
 	    conns;
 
 	std::shared_ptr<QtNodes::DataModelRegistry> createRegistry();
+	
+	// stores invalid nodes so we can clear their state when they become valid again
+	std::vector<QtNodes::Node*> mInvalidNodes; 
 
 	MainWindow* mMainWindow;
 };

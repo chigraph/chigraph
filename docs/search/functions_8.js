@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['jsontographfunction',['jsonToGraphFunction',['../namespacechig.html#a62056798e67720d435705b99f7e16cd0',1,'chig']]],
-  ['jsontographmodule',['jsonToGraphModule',['../namespacechig.html#a3b1bc50c9d7b3cdb17ffcb3ad602f7ab',1,'chig']]],
-  ['jsontographstruct',['jsonToGraphStruct',['../namespacechig.html#acb086cb7895a7701e499f9ac65c406aa',1,'chig']]]
+  ['jsontographfunction',['jsonToGraphFunction',['../namespacechi.html#a6a3fedb48e6702c016f996d8a7f445fc',1,'chi']]],
+  ['jsontographmodule',['jsonToGraphModule',['../namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c',1,'chi']]],
+  ['jsontographstruct',['jsonToGraphStruct',['../namespacechi.html#a629f77832b6e7a6e0eaab123c4be1cda',1,'chi']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['success',['success',['../structchig_1_1Result.html#a6d818cb55e17942f46bf8a293c7874b1',1,'chig::Result']]]
+  ['success',['success',['../structchi_1_1Result.html#aec0496e284d993fc6e98288680c2a54e',1,'chi::Result']]]
 ];

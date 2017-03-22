@@ -1,5 +1,5 @@
 var files =
 [
-    [ "libchig", "dir_dd1823b115988dc5433ea160a3de4758.html", "dir_dd1823b115988dc5433ea160a3de4758" ],
-    [ "libchigdebugger", "dir_f7db17fffd45f01cd6fa3ffdefc97194.html", "dir_f7db17fffd45f01cd6fa3ffdefc97194" ]
+    [ "libchigraph", "dir_34e10b5b492257989639aef8a1d83500.html", "dir_34e10b5b492257989639aef8a1d83500" ],
+    [ "libchigraphdebugger", "dir_37e99ae68a3b4401707eb2eb8e0e8b3c.html", "dir_37e99ae68a3b4401707eb2eb8e0e8b3c" ]
 ];
