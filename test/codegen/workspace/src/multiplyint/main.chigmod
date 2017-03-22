@@ -1,8 +1,8 @@
 {
   "dependencies": [
-    "intprinter",
+    "lang",
     "c",
-    "lang"
+    "intprinter"
   ],
   "graphs": [
     {
@@ -46,7 +46,7 @@
             0
           ],
           "output": [
-            "8d3f9c23-be00-41c0-83c0-efd466405a74",
+            "07f5317e-61dc-48fc-acb3-d3fa0a08a635",
             0
           ],
           "type": "exec"
@@ -88,6 +88,19 @@
           ],
           "type": "lang:entry"
         },
+        "07f5317e-61dc-48fc-acb3-d3fa0a08a635": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            972,
+            178
+          ],
+          "type": "lang:exit"
+        },
         "18a61491-04ca-47ee-8a97-bdc5e35cc1ea": {
           "data": 32,
           "location": [
@@ -107,23 +120,10 @@
         "57331dea-ce43-4740-871d-c60776f354f9": {
           "data": null,
           "location": [
-            594,
-            183
+            637,
+            180
           ],
           "type": "intprinter:printint"
-        },
-        "8d3f9c23-be00-41c0-83c0-efd466405a74": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            841.400024414062,
-            180.399993896484
-          ],
-          "type": "lang:exit"
         },
         "febeae96-ac33-44df-a941-dde50fbf37f9": {
           "data": 124,

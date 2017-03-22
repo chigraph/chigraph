@@ -1,25 +1,12 @@
 {
   "dependencies": [
-    "intprinter",
+    "lang",
     "c",
-    "lang"
+    "intprinter"
   ],
   "graphs": [
     {
-	"description": "main",
-      "local_variables": {},
       "connections": [
-        {
-          "input": [
-            "f981aee5-d2d3-493a-a116-b196e919e354",
-            0
-          ],
-          "output": [
-            "fc51039b-29aa-4fc1-a27e-b6e387aa6315",
-            0
-          ],
-          "type": "data"
-        },
         {
           "input": [
             "d3ed0750-c87d-43c5-a392-c3ad139bc065",
@@ -66,14 +53,25 @@
         },
         {
           "input": [
-            "ff68ec21-a1a7-4e17-83fb-b316648f1165",
+            "27abf71a-0d06-40c0-a936-b150be3cdd24",
             0
           ],
           "output": [
-            "df9dfc12-9384-4ba5-9858-b071e26981ea",
+            "07c1a315-6e94-481c-aab4-19fec16d4ce9",
             0
           ],
-          "type": "exec"
+          "type": "data"
+        },
+        {
+          "input": [
+            "f981aee5-d2d3-493a-a116-b196e919e354",
+            0
+          ],
+          "output": [
+            "fc51039b-29aa-4fc1-a27e-b6e387aa6315",
+            0
+          ],
+          "type": "data"
         },
         {
           "input": [
@@ -94,17 +92,6 @@
           "output": [
             "0f76cb0d-1056-4f5a-9ee4-f405e5eb50f3",
             1
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "27abf71a-0d06-40c0-a936-b150be3cdd24",
-            0
-          ],
-          "output": [
-            "07c1a315-6e94-481c-aab4-19fec16d4ce9",
-            0
           ],
           "type": "data"
         },
@@ -133,27 +120,16 @@
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "main",
       "nodes": {
-        "ff68ec21-a1a7-4e17-83fb-b316648f1165": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            -46.1903381347656,
-            72.9763259887695
-          ],
-          "type": "lang:entry"
-        },
         "07c1a315-6e94-481c-aab4-19fec16d4ce9": {
           "data": null,
           "location": [
@@ -174,7 +150,7 @@
           "data": null,
           "location": [
             473.837432861328,
-            203.064697265625
+            189.240692138672
           ],
           "type": "struct/main:_make_intpair"
         },
@@ -217,12 +193,24 @@
             274.187286376953
           ],
           "type": "intprinter:printbool"
+        },
+        "ff68ec21-a1a7-4e17-83fb-b316648f1165": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            -37.857006072998,
+            72.9763259887695
+          ],
+          "type": "lang:entry"
         }
       },
       "type": "function"
     }
   ],
-  "name": "main",
   "types": {
     "intpair": [
       {

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x',['x',['../structchig_1_1NodeInstance.html#a556e256f3ec1c2a02c91c63497307201',1,'chig::NodeInstance']]]
+  ['x',['x',['../structchi_1_1NodeInstance.html#ab5db13413db671fcc03fbc970c900068',1,'chi::NodeInstance']]]
 ];

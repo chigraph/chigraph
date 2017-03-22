@@ -1,6 +1,6 @@
 var DataType_8hpp =
 [
-    [ "DataType", "structchig_1_1DataType.html", "structchig_1_1DataType" ],
-    [ "NamedDataType", "structchig_1_1NamedDataType.html", "structchig_1_1NamedDataType" ],
-    [ "CHIG_DATA_TYPE_HPP", "DataType_8hpp.html#a917edd14b324f39c54a70139ab5e3036", null ]
+    [ "DataType", "structchi_1_1DataType.html", "structchi_1_1DataType" ],
+    [ "NamedDataType", "structchi_1_1NamedDataType.html", "structchi_1_1NamedDataType" ],
+    [ "CHI_DATA_TYPE_HPP", "DataType_8hpp.html#af0a0bf3d603f390c6c4f34d622a0c867", null ]
 ];

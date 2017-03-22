@@ -7,7 +7,6 @@
 #define CHI_FUNCTION_VALIDATOR_HPP
 
 #include "chi/Fwd.hpp"
-#include "chi/Result.hpp"
 
 namespace chi {
 
@@ -27,10 +26,15 @@ Result validateFunction(const GraphFunction& func);
 /// \return The Result
 Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func);
 
-/// The make sure that nodes are called before their outputs are used
+/// Make sure that nodes are called before their outputs are used
 /// \param func The function to check
 /// \return The Result
 Result validateFunctionNodeInputs(const GraphFunction& func);
+
+/// Make sure nodes have an output connection
+/// \param func The function to check
+/// \return The Result
+Result validateFunctionExecOutputs(const GraphFunction& func);
 
 /// \}
 } // namespace chi

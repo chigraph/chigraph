@@ -94,7 +94,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			// make sure everything is A-OK
 			if (param.first == nullptr) {
 				res.addEntry("EUKN", "No data input to node",
-				             {{"nodeid", node->id()},
+				             {{"Node ID", node->id()},
 				              {"input ID", inputID},
 				              {"nodetype", node->type().qualifiedName()}});
 
@@ -103,7 +103,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 
 			auto cacheiter = data.nodeCache.find(param.first);
 			if (cacheiter == data.nodeCache.end()) {
-				res.addEntry("EUKN", "Failed to find in cache", {{"nodeid", param.first->id()}});
+				res.addEntry("EUKN", "Failed to find in cache", {{"Node ID", param.first->id()}});
 
 				return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}};
 			}
@@ -111,7 +111,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 			auto& cacheObject = cacheiter->second;
 			if (param.second >= cacheObject.outputs.size()) {
 				res.addEntry("EUKN", "No data input to node",
-				             {{"nodeid", node->id()},
+				             {{"Node ID", node->id()},
 				              {"input ID", inputID},
 				              {"nodetype", node->type().qualifiedName()}});
 

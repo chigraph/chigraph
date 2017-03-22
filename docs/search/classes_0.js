@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['chigmodule',['ChigModule',['../structchig_1_1ChigModule.html',1,'chig']]],
-  ['cmodule',['CModule',['../structchig_1_1CModule.html',1,'chig']]],
-  ['context',['Context',['../structchig_1_1Context.html',1,'chig']]]
+  ['chimodule',['ChiModule',['../structchi_1_1ChiModule.html',1,'chi']]],
+  ['cmodule',['CModule',['../structchi_1_1CModule.html',1,'chi']]],
+  ['context',['Context',['../structchi_1_1Context.html',1,'chi']]]
 ];
