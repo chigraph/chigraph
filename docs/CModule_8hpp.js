@@ -1,5 +1,5 @@
 var CModule_8hpp =
 [
-    [ "CModule", "structchig_1_1CModule.html", "structchig_1_1CModule" ],
-    [ "CHIG_CMODULE_HPP", "CModule_8hpp.html#a1fe576c55e90cc71448fa463bea9d8b8", null ]
+    [ "CModule", "structchi_1_1CModule.html", "structchi_1_1CModule" ],
+    [ "CHI_CMODULE_HPP", "CModule_8hpp.html#a6a175b93c411697fa6c21a8b2236208a", null ]
 ];

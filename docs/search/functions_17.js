@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['_7echigmodule',['~ChigModule',['../structchig_1_1ChigModule.html#a4dc72bbee58ddbddad0acb4abba1859a',1,'chig::ChigModule']]],
-  ['_7ecmodule',['~CModule',['../structchig_1_1CModule.html#a98afa304d275f26ee1e69de418a59166',1,'chig::CModule']]],
-  ['_7edebugger',['~Debugger',['../classchig_1_1Debugger.html#af5aa9f94f6a7f0e31b4de692668a04bd',1,'chig::Debugger']]],
-  ['_7egraphfunction',['~GraphFunction',['../structchig_1_1GraphFunction.html#afc6fa83b9cdf76140487b2c9653f0375',1,'chig::GraphFunction']]],
-  ['_7elangmodule',['~LangModule',['../structchig_1_1LangModule.html#a097f06eb0ba03f27fa3c8cab690c8bea',1,'chig::LangModule']]],
-  ['_7enodetype',['~NodeType',['../structchig_1_1NodeType.html#afa1cdaa90d27cd073f5cb86878aaee72',1,'chig::NodeType']]]
+  ['_7echimodule',['~ChiModule',['../structchi_1_1ChiModule.html#accb2ff65140708ed943ce167f95694c3',1,'chi::ChiModule']]],
+  ['_7ecmodule',['~CModule',['../structchi_1_1CModule.html#a0ba0d9f865849feff3f29b008ab0f821',1,'chi::CModule']]],
+  ['_7econtext',['~Context',['../structchi_1_1Context.html#a8d2ae730b00104cbd6b60f33c05f4556',1,'chi::Context']]],
+  ['_7edebugger',['~Debugger',['../classchi_1_1Debugger.html#a721bc346986941b78abf1ceacdf62f3b',1,'chi::Debugger']]],
+  ['_7egraphfunction',['~GraphFunction',['../structchi_1_1GraphFunction.html#a89c896ae804c853b4c291897f5f8634c',1,'chi::GraphFunction']]],
+  ['_7elangmodule',['~LangModule',['../structchi_1_1LangModule.html#a3a4d292ffc95e6aecfde097e96811904',1,'chi::LangModule']]],
+  ['_7enodetype',['~NodeType',['../structchi_1_1NodeType.html#ad90b797e880bb52ad6c38f34ee57376b',1,'chi::NodeType']]]
 ];

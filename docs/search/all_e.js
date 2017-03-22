@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['qualifiedname',['qualifiedName',['../structchig_1_1DataType.html#a918a4163252b17b6971b3cf98497d537',1,'chig::DataType::qualifiedName()'],['../structchig_1_1NodeType.html#aec01c9c30813ec9f0e15dda0f7ae34f3',1,'chig::NodeType::qualifiedName()']]]
+  ['qualifiedname',['qualifiedName',['../structchi_1_1DataType.html#ae9fab4c8e69822190df1c28f1793005c',1,'chi::DataType::qualifiedName()'],['../structchi_1_1NodeType.html#a7031e3c04e9a0227b09f8f854ce8b7f9',1,'chi::NodeType::qualifiedName()']]]
 ];

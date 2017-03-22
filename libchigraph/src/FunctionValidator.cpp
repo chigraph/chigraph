@@ -2,6 +2,7 @@
 
 #include "chi/FunctionValidator.hpp"
 #include "chi/GraphFunction.hpp"
+#include "chi/Result.hpp"
 #include "chi/NodeInstance.hpp"
 
 #include <unordered_map>
@@ -12,6 +13,7 @@ Result validateFunction(const GraphFunction& func) {
 	Result res;
 	res += validateFunctionConnectionsAreTwoWay(func);
 	res += validateFunctionNodeInputs(func);
+	res += validateFunctionExecOutputs(func);
 
 	return res;
 }
@@ -26,7 +28,7 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 		for (const auto& conn : node.second->inputDataConnections) {
 			if (conn.first == nullptr) {
 				res.addEntry("EUKN", "Node is missing an input data connection",
-				             {{"nodeid", node.second->stringId()},
+				             {{"Node ID", node.second->stringId()},
 				              {"nodetype", node.second->type().qualifiedName()},
 				              {"requested id", id}});
 				++id;
@@ -59,7 +61,7 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 
 				if (connection.first->inputDataConnections.size() <= connection.second) {
 					res.addEntry("EUKN", "Input data port not found in node",
-					             {{"nodeid", connection.first->stringId()},
+					             {{"Node ID", connection.first->stringId()},
 					              {"requested id", connection.second}});
 					continue;
 				}
@@ -152,7 +154,7 @@ Result validatePath(
 	for (const auto& conn : inst.inputDataConnections) {
 		if (conn.first == nullptr) {
 			res.addEntry("EUKN", "Node is missing an input data connection",
-			             {{"nodeid", inst.stringId()},
+			             {{"Node ID", inst.stringId()},
 			              {"dataid", id},
 			              {"nodetype", inst.type().qualifiedName()}});
 			++id;
@@ -161,7 +163,7 @@ Result validatePath(
 
 		if (!conn.first->type().pure() && alreadyCalled.find(conn.first) == alreadyCalled.end()) {
 			res.addEntry("EUKN", "Node that accepts data from another node is called first",
-			             {{"nodeid", inst.stringId()}, {"othernodeid", conn.first->stringId()}});
+			             {{"Node ID", inst.stringId()}, {"othernodeid", conn.first->stringId()}});
 		}
 
 		++id;
@@ -201,4 +203,27 @@ Result validateFunctionNodeInputs(const GraphFunction& func) {
 
 	return res;
 }
+
+Result validateFunctionExecOutputs(const GraphFunction& func) {
+	// make sure all exec outputs exist, and raise an error otherwise. 
+	// TODO (#70): quickfix to add return
+	
+	Result res;
+	
+	for (const auto& nodepair : func.nodes()) {
+		auto node = nodepair.second.get();
+		
+		auto id = 0ull;
+		for (const auto& conn : node->outputExecConnections) {
+			if (conn.second == ~0ull || conn.first == nullptr) {
+				res.addEntry("EUKN", "Node is missing an output exec connection", {{"Node ID", node->stringId()}, {"Missing ID", id}});
+			}
+			
+			++id;
+		}
+	}
+	
+	return res;
+}
+
 }  // namespace chi

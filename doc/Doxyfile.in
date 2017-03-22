@@ -161,7 +161,7 @@ STRIP_FROM_PATH        = @PROJECT_SOURCE_DIR@/
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    = "@PROJECT_SOURCE_DIR@/libchig/include" "@PROJECT_SOURCE_DIR@/libchigdebugger/include"
+STRIP_FROM_INC_PATH    = "@PROJECT_SOURCE_DIR@/libchigraph/include" "@PROJECT_SOURCE_DIR@/libchigraphdebugger/include"
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
 # support long names like on DOS, Mac, or CD-ROM.
@@ -779,8 +779,8 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = @PROJECT_SOURCE_DIR@/libchig \
-                         @PROJECT_SOURCE_DIR@/libchigdebugger \
+INPUT                  = @PROJECT_SOURCE_DIR@/libchigraph \
+                         @PROJECT_SOURCE_DIR@/libchigraphdebugger \
                          @PROJECT_SOURCE_DIR@/doc/mainpage.md
 
 # This tag can be used to specify the character encoding of the source files
@@ -822,7 +822,7 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = @PROJECT_SOURCE_DIR@/libchig/include/chig/json.hpp
+EXCLUDE                = @PROJECT_SOURCE_DIR@/libchigraph/include/chi/json.hpp
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded

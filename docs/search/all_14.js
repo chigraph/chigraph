@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['workspacefromchildpath',['workspaceFromChildPath',['../namespacechig.html#a32e319a56d723f024b5f47727adaf17c',1,'chig']]],
-  ['workspacepath',['workspacePath',['../structchig_1_1Context.html#a21a5a702d92a00b87700e03782f9cb5f',1,'chig::Context']]]
+  ['workspacefromchildpath',['workspaceFromChildPath',['../namespacechi.html#a6f41c84de5ee1febedce5a5385f9c632',1,'chi']]],
+  ['workspacepath',['workspacePath',['../structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846',1,'chi::Context']]]
 ];

@@ -6,8 +6,10 @@
 #include <KMessageBox>
 
 #include <chi/GraphModule.hpp>
+#include <chi/FunctionValidator.hpp>
 #include <chi/NodeInstance.hpp>
 
+#include <../src/Node.hpp>
 #include <nodes/ConnectionStyle>
 
 #include "chigraphnodemodel.hpp"
@@ -106,6 +108,7 @@ void FunctionView::nodeAdded(Node& n) {
 	mNodeMap[&ptr->instance()] = &n;
 
 	dirtied();
+	updateValidationStates();
 }
 
 void FunctionView::nodeDeleted(Node& n) {
@@ -137,6 +140,7 @@ void FunctionView::nodeDeleted(Node& n) {
 
 	mNodeMap.erase(&ptr->instance());
 	dirtied();
+	updateValidationStates();
 }
 
 void FunctionView::connectionAdded(Connection& c) {
@@ -180,6 +184,7 @@ void FunctionView::connectionAdded(Connection& c) {
 	    {std::make_pair(&inptr->instance(), inconnid),
 	     std::make_pair(&outptr->instance(), outconnid)}};
 	dirtied();
+	updateValidationStates();
 }
 void FunctionView::connectionDeleted(Connection& c) {
 	auto conniter = conns.find(&c);
@@ -209,6 +214,7 @@ void FunctionView::connectionDeleted(Connection& c) {
 
 	conns.erase(&c);
 	dirtied();
+	updateValidationStates();
 }
 
 void FunctionView::connectionUpdated(Connection& c) {
@@ -377,4 +383,44 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 	}
 
 	return reg;
+}
+
+void FunctionView::updateValidationStates() {
+	// validate the function
+	auto result = chi::validateFunction(*mFunction);
+	
+	// clear validation states of the other nodes
+	for (auto n : mInvalidNodes) {
+		auto castedModel = dynamic_cast<ChigraphNodeModel*>(n->nodeDataModel());
+		castedModel->setErrorState(QtNodes::NodeValidationState::Valid, {});
+	}
+	mInvalidNodes.clear();
+	
+	// reset those which which are invaid now
+	for (auto errJson : result.result_json) {
+		auto& data = errJson["data"];
+		
+		// parse out Node ID
+		if (data.find("Node ID") != data.end()) {
+			std::string s = data["Node ID"];
+			auto id =  boost::uuids::string_generator()(s);
+			
+			std::string errCode = errJson["errorcode"];
+			bool isError = errCode[0] == 'E';
+			
+			std::string overview = errJson["overview"];
+			
+			auto node = mFunction->nodeByID(id);
+			if (node != nullptr) {
+				auto guiNode = guiNodeFromChigNode(node);
+				if (guiNode != nullptr) {
+					auto castedModel = dynamic_cast<ChigraphNodeModel*>(guiNode->nodeDataModel());
+					castedModel->setErrorState(isError ? QtNodes::NodeValidationState::Error : 
+						QtNodes::NodeValidationState::Warning, QString::fromStdString(overview));
+				}
+				mInvalidNodes.push_back(guiNode);
+			}
+		}
+	}
+	
 }
