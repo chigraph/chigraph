@@ -40,6 +40,15 @@ namespace chi {
 /// Result res;
 /// res += connectExec(...); // or any function that returns a Result
 /// ```
+/// ## Standardized names in data:
+/// In order to have good parsing of errors, some standards are good.
+/// If you are trying to represent this data in your error, use these
+/// standards so it can be parsed later on and presented to the user in a nice way
+///
+/// Name in JSON  | Description
+/// ------------- | -------------
+/// `Node ID`     | The ID of the node that errored
+
 ///
 /// ## Implementation Details:
 /// Result objects store a json object that represents the error metadata.

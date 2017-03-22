@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>chigraph: libchig/include/chig/NodeInstance.hpp File Reference</title>
+<title>chigraph: libchigraph/include/chi/NodeInstance.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('NodeInstance_8hpp.html','');});
 
 <p>Defines the NodeInstance class and related functions.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="NodeType_8hpp_source.html">chig/NodeType.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="NodeType_8hpp_source.html">chi/NodeType.hpp</a>&quot;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;boost/uuid/uuid.hpp&gt;</code><br />
 <code>#include &lt;boost/uuid/uuid_generators.hpp&gt;</code><br />
@@ -118,14 +118,14 @@ $(document).ready(function(){initNavTree('NodeInstance_8hpp.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchig_1_1NodeInstance.html">chig::NodeInstance</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An instance of a node.  <a href="structchig_1_1NodeInstance.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1NodeInstance.html">chi::NodeInstance</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An instance of a node.  <a href="structchi_1_1NodeInstance.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacechig"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html">chig</a></td></tr>
-<tr class="memdesc:namespacechig"><td class="mdescLeft">&#160;</td><td class="mdescRight">The namespace where chigraph lives. <br /></td></tr>
+<tr class="memitem:namespacechi"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html">chi</a></td></tr>
+<tr class="memdesc:namespacechi"><td class="mdescLeft">&#160;</td><td class="mdescRight">The namespace where chigraph lives. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -133,18 +133,18 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Connection Manipulation</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>Functions for connecting and disconnecting nodes </p>
 </div></td></tr>
-<tr class="memitem:ad3c2fc880f6843f9a8a0f5ee0d62249d"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d">chig::connectData</a> (NodeInstance &amp;lhs, size_t lhsConnID, NodeInstance &amp;rhs, size_t rhsConnID)</td></tr>
-<tr class="memdesc:ad3c2fc880f6843f9a8a0f5ee0d62249d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects two nodes' data connections.  <a href="namespacechig.html#ad3c2fc880f6843f9a8a0f5ee0d62249d">More...</a><br /></td></tr>
-<tr class="separator:ad3c2fc880f6843f9a8a0f5ee0d62249d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a2e0029b591b2c20b39d570753f123f"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#a8a2e0029b591b2c20b39d570753f123f">chig::connectExec</a> (NodeInstance &amp;lhs, size_t lhsConnID, NodeInstance &amp;rhs, size_t rhsConnID)</td></tr>
-<tr class="memdesc:a8a2e0029b591b2c20b39d570753f123f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects two nodes' exec connections.  <a href="namespacechig.html#a8a2e0029b591b2c20b39d570753f123f">More...</a><br /></td></tr>
-<tr class="separator:a8a2e0029b591b2c20b39d570753f123f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26aa6586df79345493de9fc130291c18"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#a26aa6586df79345493de9fc130291c18">chig::disconnectData</a> (NodeInstance &amp;lhs, size_t lhsConnID, NodeInstance &amp;rhs)</td></tr>
-<tr class="memdesc:a26aa6586df79345493de9fc130291c18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect a data connection.  <a href="namespacechig.html#a26aa6586df79345493de9fc130291c18">More...</a><br /></td></tr>
-<tr class="separator:a26aa6586df79345493de9fc130291c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad24a330508033631ef29b2f6e5cf6210"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechig.html#ad24a330508033631ef29b2f6e5cf6210">chig::disconnectExec</a> (NodeInstance &amp;lhs, size_t lhsConnID)</td></tr>
-<tr class="memdesc:ad24a330508033631ef29b2f6e5cf6210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect a exec connection.  <a href="namespacechig.html#ad24a330508033631ef29b2f6e5cf6210">More...</a><br /></td></tr>
-<tr class="separator:ad24a330508033631ef29b2f6e5cf6210"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab69b013712d615bf9901d7bf2b0b11fb"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#ab69b013712d615bf9901d7bf2b0b11fb">chi::connectData</a> (NodeInstance &amp;lhs, size_t lhsConnID, NodeInstance &amp;rhs, size_t rhsConnID)</td></tr>
+<tr class="memdesc:ab69b013712d615bf9901d7bf2b0b11fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects two nodes' data connections.  <a href="namespacechi.html#ab69b013712d615bf9901d7bf2b0b11fb">More...</a><br /></td></tr>
+<tr class="separator:ab69b013712d615bf9901d7bf2b0b11fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79423caa23a58e57b775c5137a03ee31"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#a79423caa23a58e57b775c5137a03ee31">chi::connectExec</a> (NodeInstance &amp;lhs, size_t lhsConnID, NodeInstance &amp;rhs, size_t rhsConnID)</td></tr>
+<tr class="memdesc:a79423caa23a58e57b775c5137a03ee31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects two nodes' exec connections.  <a href="namespacechi.html#a79423caa23a58e57b775c5137a03ee31">More...</a><br /></td></tr>
+<tr class="separator:a79423caa23a58e57b775c5137a03ee31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4694f9910cf90fd7c202fe117c4f257e"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e">chi::disconnectData</a> (NodeInstance &amp;lhs, size_t lhsConnID, NodeInstance &amp;rhs)</td></tr>
+<tr class="memdesc:a4694f9910cf90fd7c202fe117c4f257e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect a data connection.  <a href="namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e">More...</a><br /></td></tr>
+<tr class="separator:a4694f9910cf90fd7c202fe117c4f257e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a103b99abd766aa4d303a5004fe783c03"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#a103b99abd766aa4d303a5004fe783c03">chi::disconnectExec</a> (NodeInstance &amp;lhs, size_t lhsConnID)</td></tr>
+<tr class="memdesc:a103b99abd766aa4d303a5004fe783c03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnect a exec connection.  <a href="namespacechi.html#a103b99abd766aa4d303a5004fe783c03">More...</a><br /></td></tr>
+<tr class="separator:a103b99abd766aa4d303a5004fe783c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines the NodeInstance class and related functions. </p>
@@ -155,8 +155,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_dd1823b115988dc5433ea160a3de4758.html">libchig</a></li><li class="navelem"><a class="el" href="dir_2df3c658836db959e203baafb685799e.html">include</a></li><li class="navelem"><a class="el" href="dir_890592bcd0c4cb6eb1188029a3f1c15e.html">chig</a></li><li class="navelem"><a class="el" href="NodeInstance_8hpp.html">NodeInstance.hpp</a></li>
-    <li class="footer">Generated on Mon Mar 13 2017 21:09:49 for chigraph by
+    <li class="navelem"><a class="el" href="dir_34e10b5b492257989639aef8a1d83500.html">libchigraph</a></li><li class="navelem"><a class="el" href="dir_75c0988e4ae6b2079d4f109cef45c903.html">include</a></li><li class="navelem"><a class="el" href="dir_60466ddfe13da60bd53dc7b440efbf98.html">chi</a></li><li class="navelem"><a class="el" href="NodeInstance_8hpp.html">NodeInstance.hpp</a></li>
+    <li class="footer">Generated on Wed Mar 22 2017 09:06:06 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

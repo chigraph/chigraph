@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['chig',['chig',['../namespacechig.html',1,'']]]
+  ['chi',['chi',['../namespacechi.html',1,'']]]
 ];

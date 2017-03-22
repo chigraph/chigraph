@@ -62,6 +62,8 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 		NodeInstance* inst;
 		auto          entryUUID = boost::uuids::random_generator()();
 		res += func->insertNode(std::move(ty), 213.f, 123.f, entryUUID, &inst);
+		REQUIRE(func->nodeByID(entryUUID) == inst);
+		REQUIRE(func->nodeByID(boost::uuids::random_generator()()) == nullptr);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
 

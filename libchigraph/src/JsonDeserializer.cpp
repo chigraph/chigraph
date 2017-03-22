@@ -250,7 +250,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 		auto        node   = nodeiter.value();
 		std::string nodeid = nodeiter.key();
 		if (node.find("type") == node.end() || !node.find("type")->is_string()) {
-			res.addEntry("E6", R"(Node doesn't have a "type" string)", {{"nodeid", nodeid}});
+			res.addEntry("E6", R"(Node doesn't have a "type" string)", {{"Node ID", nodeid}});
 			return res;
 		}
 		std::string fullType = node["type"];
@@ -259,12 +259,12 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 
 		if (moduleName.empty() || typeName.empty()) {
 			res.addEntry("E7", "Incorrect qualified module name (should be module:type)",
-			             {{"nodeid", nodeid}, {"Requested Qualified Name", fullType}});
+			             {{"Node ID", nodeid}, {"Requested Qualified Name", fullType}});
 			return res;
 		}
 
 		if (node.find("data") == node.end()) {
-			res.addEntry("E9", "Node doens't have a data section", {"nodeid", nodeid});
+			res.addEntry("E9", "Node doens't have a data section", {"Node ID", nodeid});
 			return res;
 		}
 
@@ -275,20 +275,20 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 
 		auto testIter = node.find("location");
 		if (testIter == node.end()) {
-			res.addEntry("E12", "Node doesn't have a location.", {{"nodeid", nodeid}});
+			res.addEntry("E12", "Node doesn't have a location.", {{"Node ID", nodeid}});
 			continue;
 		}
 
 		// make sure it is the right size
 		if (!testIter.value().is_array()) {
 			res.addEntry("E10", "Node doesn't have a location that is an array.",
-			             {{"nodeid", nodeid}});
+			             {{"Node ID", nodeid}});
 			continue;
 		}
 
 		if (testIter.value().size() != 2) {
 			res.addEntry("E11", "Node doesn't have a location that is an array of size 2.",
-			             {{"nodeid", nodeid}});
+			             {{"Node ID", nodeid}});
 			continue;
 		}
 

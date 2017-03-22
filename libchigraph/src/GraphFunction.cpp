@@ -30,6 +30,14 @@ GraphFunction::GraphFunction(GraphModule& mod, std::string name, std::vector<Nam
 	// TODO(#66): check that it has at least 1 exec input and output
 }
 
+NodeInstance* GraphFunction::nodeByID(const boost::uuids::uuid& id) const {
+	auto iter = nodes().find(id);
+	if (iter != nodes().end()) {
+		return iter->second.get();
+	}
+	return nullptr;
+}
+
 NodeInstance* GraphFunction::entryNode() const noexcept {
 	auto matching = nodesWithType("lang", "entry");
 
