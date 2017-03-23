@@ -13,5 +13,6 @@ docker cp ./appimage_recipie.sh $DOCKER_PROCESS:/appimage_recipie.sh
 docker exec $DOCKER_PROCESS bash /appimage_recipie.sh
 docker cp $DOCKER_PROCESS:/chigraph.appdir/Chigraph-x86_64.AppImage ../../
 
-docker rm $DOCKER_PROCESS
+docker kill $DOCKER_PROCESS
+docker rm  $DOCKER_PROCESS
 
