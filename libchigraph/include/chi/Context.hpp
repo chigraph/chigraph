@@ -74,6 +74,13 @@ struct Context {
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
 	Result loadModule(const boost::filesystem::path& name, ChiModule** toFill = nullptr);
+	
+	/// Downloads a module from a remote URL, currently supports
+	///  - github
+	///  - bitbucket
+	/// \pre `hasWorkspace() == true`
+	/// \param name The name of the module to fetch
+	Result fetchModule(const boost::filesystem::path& name);
 
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param[in] fullName The full path of the module, including URL
