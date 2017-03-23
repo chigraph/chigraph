@@ -18,7 +18,7 @@ ModuleDependencies::ModuleDependencies(QWidget* parent) : QListWidget(parent) {
 		QString mod =
 		    QInputDialog::getItem(this, i18n("Add Dependency"), i18n("Dependency"), modList);
 
-		chi::Result res = mModule->addDependency(mod.toStdString());
+		auto res = mModule->addDependency(mod.toStdString());
 		if (!res) {
 			KMessageBox::detailedError(this, "Failed to load dependency: " + mod,
 			                           QString::fromStdString(res.dump()));
