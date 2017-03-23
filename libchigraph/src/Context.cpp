@@ -132,6 +132,10 @@ Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
 	return res;
 }
 
+Result Context::fetchModule(const fs::path& name) {
+	
+}
+
 Result Context::addModuleFromJson(const fs::path& fullName, const nlohmann::json& json,
                                   GraphModule** toFill) {
 	Result res;
