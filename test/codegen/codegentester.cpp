@@ -175,7 +175,7 @@ int main(int argc, char** argv) {
 
 	auto chigExePath = fs::current_path() / ("chi" + std::string(exesuffix));
 
-	auto         modfile = moduleDir / "main.chigmod";
+	auto         modfile = moduleDir / "main.chimod";
 	fs::ifstream inmodfile(modfile);
 	json         chigmodule;
 	inmodfile >> chigmodule;
@@ -188,7 +188,7 @@ int main(int argc, char** argv) {
 		// go through chig compile
 		exec_stream_t chigexe;
 		chigexe.set_wait_timeout(exec_stream_t::s_out, 10000);
-		chigexe.start(chigExePath.string(), "compile main.chigmod");
+		chigexe.start(chigExePath.string(), "compile main.chimod");
 
 		generatedir = std::string{std::istreambuf_iterator<char>(chigexe.out()),
 		                          std::istreambuf_iterator<char>()};
@@ -262,7 +262,7 @@ int main(int argc, char** argv) {
 		// go through chig compile
 		exec_stream_t chigexe;
 		chigexe.set_wait_timeout(exec_stream_t::s_out, 10000);
-		chigexe.start(chigExePath.string(), "run main.chigmod");
+		chigexe.start(chigExePath.string(), "run main.chimod");
 
 		generatedstdout = std::string{std::istreambuf_iterator<char>(chigexe.out()),
 		                              std::istreambuf_iterator<char>()};
@@ -344,7 +344,7 @@ int main(int argc, char** argv) {
 		// go through chig compile
 		exec_stream_t chigexe;
 		chigexe.set_wait_timeout(exec_stream_t::s_out, 10000);
-		chigexe.start(chigExePath.string(), "compile -tbc main.chigmod");
+		chigexe.start(chigExePath.string(), "compile -tbc main.chimod");
 
 		generatedir = std::string{std::istreambuf_iterator<char>(chigexe.out()),
 		                          std::istreambuf_iterator<char>()};
