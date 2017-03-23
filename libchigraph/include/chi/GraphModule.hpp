@@ -53,7 +53,7 @@ struct GraphModule : public ChiModule {
 	/// It's not garunteed to exist, because it could have not been saved
 	/// \return The path
 	boost::filesystem::path sourceFilePath() const {
-		return context().workspacePath() / "src" / (fullName() + ".chigmod");
+		return context().workspacePath() / "src" / (fullName() + ".chimod");
 	}
 
 	/// \name Function Creation and Manipulation
