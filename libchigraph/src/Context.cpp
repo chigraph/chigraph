@@ -153,7 +153,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 
 	
 	// see if it exists
-	bool exists = fs::is_regular_file(workspacePath() / "src" / fs::path(name).replace_extension(".chimod"));
+	auto fileName = workspacePath() / "src" / fs::path(name).replace_extension(".chimod");
+	bool exists = fs::is_regular_file(fileName);
 	
 	if (exists) {
 		// try to pull it
@@ -235,16 +236,22 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 	}
 	
 	if (recursive) {
-		// load the module
-		ChiModule* mod;
-		res += loadModule(name, false, &mod);
+		// peek at the dependencies
+		// TODO: is there a cleaner way to do this?
+		nlohmann::json j;
+		try {
+			fs::ifstream file{fileName};
+			file >> j;
+		} catch (std::exception& e) {
+			res.addEntry("EUKN", "Failed to parse JSON", {{"File", fileName}, {"Error Message", e.what()}});
+		}
 		
-		if (!res) {
+		if (j.find("dependencies") != j.end() || !j["dependencies"].is_array()) {
 			return res;
 		}
 		
 		// fetch the dependencies
-		for (const auto& dep : mod->dependencies()) {
+		for (const auto& dep : j["dependencies"]) {
 			fetchModule(dep, true);
 		}
 		
