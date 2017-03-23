@@ -2,7 +2,7 @@ add_executable(error_tester errorchecker.cpp)
 target_link_libraries(error_tester PUBLIC chigraph)
 
 # Errors
-file(GLOB ERROR_TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.chigfn")
+file(GLOB ERROR_TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.chifn")
 
 
 foreach(JSON_FILE ${ERROR_TESTS})
@@ -19,7 +19,7 @@ foreach(JSON_FILE ${ERROR_TESTS})
 	
 endforeach()
 
-file(GLOB MOD_TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.chigmod")
+file(GLOB MOD_TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.chimod")
 
 foreach(JSON_FILE ${MOD_TESTS})
 	
