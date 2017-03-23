@@ -22,6 +22,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
 
+#include <git2.h>
+
 #include <gsl/gsl>
 
 namespace fs = boost::filesystem;
@@ -31,6 +33,9 @@ Context::Context(const fs::path& workPath) {
 	mLLVMContext = std::make_unique<llvm::LLVMContext>();
 
 	mWorkspacePath = workspaceFromChildPath(workPath);
+	
+	git_libgit2_init();
+
 }
 
 Context::~Context() = default;
@@ -82,7 +87,7 @@ std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
 
 Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
 	Result res;
-
+	
 	// check for built-in modules
 	if (name == "lang") {
 		auto mod = std::make_unique<LangModule>(*this);
@@ -128,12 +133,124 @@ Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
 	GraphModule* toFillJson = nullptr;
 	res += addModuleFromJson(name.generic_string(), readJson, &toFillJson);
 	if (toFill != nullptr) { *toFill = toFillJson; }
-
+	
 	return res;
 }
 
-Result Context::fetchModule(const fs::path& name) {
+Result Context::fetchModule(const fs::path& name, bool recursive) {
+	Result res;
 	
+	if (name == "c" || name == "lang") {
+		return res;
+	}
+	
+	// get the url
+	std::string url;
+	std::string cloneInto;
+	VCSType type;
+	std::tie(type, url, cloneInto) = resolveUrlFromModuleName(name);
+	
+
+	
+	// see if it exists
+	bool exists = fs::is_regular_file(workspacePath() / "src" / fs::path(name).replace_extension(".chimod"));
+	
+	if (exists) {
+		// try to pull it
+		
+		// see if it's actually a git repository
+		auto repoPath = workspacePath() / "src" / cloneInto;
+		if (cloneInto == "" || !fs::is_directory(repoPath / ".git")) {
+			// it's not a git repo, just exit
+			
+			return res;
+		}
+		
+		if (type == VCSType::Unknown) {
+			res.addEntry("EUKN", "Could not resolve URL for module", {{"Module Name", name.string()}});
+			return res;
+		}
+		Expects(type == VCSType::Git);
+	
+		
+		// open the repository
+		git_repository* repo;
+		int err = git_repository_open(&repo, repoPath.c_str());
+		if (err != 0) {
+			res.addEntry("EUKN", "Failed to open git repository", {{"Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			return res;
+		}
+		
+		// get the remote
+		git_remote* origin;
+		err = git_remote_lookup(&origin, repo, "origin");
+		if (err != 0) {
+			res.addEntry("EUKN", "Failed to get remote origin", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			return res;
+		}
+		
+		// fetch
+		git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
+		err = git_remote_fetch(origin, nullptr, &opts, nullptr);
+		if (err != 0) {
+			res.addEntry("EUKN", "Failed to fetch repo", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			return res;
+		}
+		
+		// get origin/master
+		git_annotated_commit* originmaster;
+		git_oid refspec = {"origin/master"};
+		err = git_annotated_commit_lookup(&originmaster, repo, &refspec);
+		if (!err) {
+			res.addEntry("EUKN", "Failed to get origin/master from repo", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			return res;
+		}
+		
+		// merge
+		git_merge_options mergeOpts = GIT_MERGE_OPTIONS_INIT;
+		git_checkout_options checkoutOpts = GIT_CHECKOUT_OPTIONS_INIT;
+		err = git_merge(repo, const_cast<const git_annotated_commit**>(&originmaster), 1, &mergeOpts, &checkoutOpts);
+		
+	} else {
+		// doesn't exist, clone
+		
+		if (type == VCSType::Unknown) {
+			res.addEntry("EUKN", "Could not resolve URL for module", {{"Module Name", name.string()}});
+			return res;
+		}
+		Expects(type == VCSType::Git);
+	
+
+		auto absCloneInto = workspacePath() / "src" / cloneInto;
+		
+		// clone it
+		git_repository* repo;
+		int err = git_clone(&repo, url.c_str(), absCloneInto.c_str(), nullptr);
+		
+		// check for error
+		if (err != 0) {
+			res.addEntry("EUKN", "Failed to clone repository", {{"Error Code", err}, {"Error Message", giterr_last()->message}});
+			return res;
+		}
+	}
+	
+	if (recursive) {
+		// load the module
+		ChiModule* mod;
+		res += loadModule(name, false, &mod);
+		
+		if (!res) {
+			return res;
+		}
+		
+		// fetch the dependencies
+		for (const auto& dep : mod->dependencies()) {
+			fetchModule(dep, true);
+		}
+		
+	}
+	
+	return res;
 }
 
 Result Context::addModuleFromJson(const fs::path& fullName, const nlohmann::json& json,
@@ -233,7 +350,7 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, boost::string_vie
 	return res;
 }
 
-Result Context::compileModule(const boost::filesystem::path& fullName,
+Result Context::compileModule(const fs::path& fullName,
                               std::unique_ptr<llvm::Module>* toFill) {
 	Result res;
 
@@ -302,7 +419,7 @@ Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toF
 	return res;
 }
 
-std::vector<NodeInstance*> Context::findInstancesOfType(const boost::filesystem::path& moduleName,
+std::vector<NodeInstance*> Context::findInstancesOfType(const fs::path& moduleName,
                                                         boost::string_view typeName) const {
 	std::vector<NodeInstance*> ret;
 
@@ -434,6 +551,31 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt
 	if (ret != nullptr) { *ret = returnValue; }
 
 	return res;
+}
+
+std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(const fs::path& path) {
+	// handle github
+	{
+		auto beginIter = path.begin();
+		if (beginIter != path.end() && *beginIter == "github.com") {
+			std::string folderName = beginIter->string();
+			
+			// get the url
+			++beginIter;
+			if (beginIter != path.end()) {
+				folderName += "/";
+				folderName += beginIter->string();
+				++beginIter;
+				if(beginIter != path.end()) {
+					folderName += "/";
+					folderName += beginIter->string();
+				}
+				return {VCSType::Git, "https://" + folderName, folderName};
+			}
+			
+		}
+	}
+	return {VCSType::Unknown, {}, {}};
 }
 
 }  // namespace chi
