@@ -15,6 +15,7 @@
 #include <vector>
 
 extern int compile(const std::vector<std::string>& opts);
+extern int get(const std::vector<std::string>& opts);
 extern int run(const std::vector<std::string>& opts, const char* argv0);
 extern int interpret(const std::vector<std::string>& opts, const char* argv0);
 
@@ -66,6 +67,7 @@ int main(int argc, char** argv) {
 	if (cmd == "compile") { return compile(opts); }
 	if (cmd == "run") { return run(opts, argv[0]); }
 	if (cmd == "interpret") { return interpret(opts, argv[0]); }
+	if (cmd == "get") { return get(opts); }
 	// TODO: write other ones
 
 	std::cerr << "Unrecognized command: " << cmd << std::endl;
