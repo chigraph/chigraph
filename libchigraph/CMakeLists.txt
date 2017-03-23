@@ -93,6 +93,7 @@ target_link_libraries(chigraph
 PUBLIC
 	libexecstream
 	boost_filesystem
+	git2
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
 PRIVATE
@@ -121,6 +122,7 @@ PUBLIC
 	${CMAKE_BINARY_DIR}/ # for config.h
 	../third_party/GSL/include
 	../third_party/libexecstream/include
+	../third_party/libgit2/include
 	${LLVM_INCLUDE_DIR}
 )
 

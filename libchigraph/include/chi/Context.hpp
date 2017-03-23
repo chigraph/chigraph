@@ -69,7 +69,7 @@ struct Context {
 	/// \return The module list
 	std::vector<std::string> listModulesInWorkspace() const noexcept;
 
-	/// Load a module from disk
+	/// Load a module from disk, also loads dependencies
 	/// \param[in] name The name of the moudle
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
@@ -77,10 +77,11 @@ struct Context {
 	
 	/// Downloads a module from a remote URL, currently supports
 	///  - github
-	///  - bitbucket
 	/// \pre `hasWorkspace() == true`
 	/// \param name The name of the module to fetch
-	Result fetchModule(const boost::filesystem::path& name);
+	/// \param recursive Should all dependencies be cloned as well?
+	/// \return The Result
+	Result fetchModule(const boost::filesystem::path& name, bool recursive);
 
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param[in] fullName The full path of the module, including URL
@@ -222,6 +223,20 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod,
                              llvm::CodeGenOpt::Level       optLevel = llvm::CodeGenOpt::Default,
                              std::vector<std::string>      args     = {},
                              llvm::Function* funcToRun = nullptr, int* ret = nullptr);
+
+/// The Version Control Types
+enum class VCSType {
+	/// Git
+	Git,
+	// TODO (#72): Implement more
+	Unknown,
+};
+
+/// Get the URL for a VCS repository from a module name.
+/// \param path The module name
+/// \return {The type of VCS that it is, the URL to clone, the relative path to clone to}
+std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(const boost::filesystem::path& path);
+
 }  // namespace chi
 
 #endif  // CHI_CONTEXT_HPP
