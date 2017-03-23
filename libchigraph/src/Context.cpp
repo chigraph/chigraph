@@ -198,19 +198,156 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			return res;
 		}
 		
+		// get which heads we need to merge
+		std::pair<std::string, git_oid> oid_to_merge;
+		git_repository_fetchhead_foreach(repo, [](const char *name, const char *url,
+			const git_oid *oid, unsigned int is_merge, void *payload) -> int {
+			auto& oids_to_merge = *reinterpret_cast<std::pair<std::string, git_oid>*>(payload);
+			
+			if (is_merge) {
+				oids_to_merge = {name, *oid};
+			}
+			
+			return 0;
+			
+		}, &oid_to_merge );
+		
 		// get origin/master
 		git_annotated_commit* originmaster;
-		git_oid refspec = {"origin/master"};
-		err = git_annotated_commit_lookup(&originmaster, repo, &refspec);
-		if (!err) {
-			res.addEntry("EUKN", "Failed to get origin/master from repo", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+		err = git_annotated_commit_lookup(&originmaster, repo, &oid_to_merge.second);
+		if (err != 0) {
+			res.addEntry("EUKN", "Failed to get new head from repo", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
 			return res;
 		}
 		
-		// merge
-		git_merge_options mergeOpts = GIT_MERGE_OPTIONS_INIT;
-		git_checkout_options checkoutOpts = GIT_CHECKOUT_OPTIONS_INIT;
-		err = git_merge(repo, const_cast<const git_annotated_commit**>(&originmaster), 1, &mergeOpts, &checkoutOpts);
+			
+		auto annotatedCommits = const_cast<const git_annotated_commit**>(&originmaster);
+		
+		// see what we need to do
+		git_merge_analysis_t anaylisis;
+		git_merge_preference_t pref;
+		git_merge_analysis(&anaylisis, &pref, repo, annotatedCommits, 1);
+		
+		if (anaylisis & GIT_MERGE_ANALYSIS_UP_TO_DATE || anaylisis & GIT_MERGE_ANALYSIS_NONE) {
+			// nothing to do, just return
+			return res;
+		}
+		
+		if (anaylisis & GIT_MERGE_ANALYSIS_FASTFORWARD) {
+			// we can fast forward, do it
+			
+			// get master
+			git_reference* master;
+			err = git_repository_head(&master, repo);
+			
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to get reference to master", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				return res;
+			}
+			
+			// fast forward
+			git_reference* createdRef;
+			err = git_reference_set_target(&createdRef, master, &oid_to_merge.second, "pull");
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to fast forward", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				return res;
+			}
+			
+			// get head
+			git_index* head;
+			err = git_repository_index(&head, repo);
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to get HEAD", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				return res;
+			}
+			
+			
+			// reset to it
+			git_oid oid;
+			err = git_index_write_tree_to(&oid, head, repo);
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to write index to tree", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				return res;
+			}
+			
+		} else if (anaylisis & GIT_MERGE_ANALYSIS_NORMAL) {
+			
+			// merge and commit
+			git_merge_options mergeOpts = GIT_MERGE_OPTIONS_INIT;
+			git_checkout_options checkoutOpts = GIT_CHECKOUT_OPTIONS_INIT;
+			checkoutOpts.checkout_strategy = GIT_CHECKOUT_SAFE; // see http://stackoverflow.com/questions/39651287/doing-a-git-pull-with-libgit2
+			err = git_merge(repo, annotatedCommits, 1, &mergeOpts, &checkoutOpts);
+			
+			// see if there are conflicts
+			
+			// get head
+			git_index* head;
+			err = git_repository_index(&head, repo);
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to get HEAD", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				return res;
+			}
+			
+			// check for conflicts
+			if (git_index_has_conflicts(head) != 0) {
+				// there are conflicts
+				res.addEntry("WUKN", "Merge conflicts when pulling, manually resolve them.", {});
+				return res;
+			}
+			
+			// commit the merge
+			
+			// create a signature for this code
+			git_signature* committerSignature;
+			err = git_signature_now(&committerSignature, "Chigraph Fetch", "russellgreene8@gmail.com");
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to create git signature", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				return res;
+			}
+			
+			// get the origin/master commit
+			git_commit* origin_master_commit;
+			err = git_commit_lookup(&origin_master_commit, repo, &oid_to_merge.second);
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to get commit for origin/master", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				return res;
+			}
+			
+			// get the head commit
+			git_oid* parent_headoid;
+			err = git_reference_name_to_id(parent_headoid, repo, "HEAD");
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to get reference to HEAD", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				return res;
+			}
+			
+			git_commit* head_parent;
+			err = git_commit_lookup(&head_parent, repo, parent_headoid);
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to get commit from oid", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				return res;
+			}
+			
+			// get the tree
+			git_tree* tree;
+			err = git_commit_tree(&tree, head_parent);
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to git tree from commit", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			}
+			
+			const git_commit* parents[] = {head_parent, origin_master_commit};
+			
+			git_oid newCommit;
+			std::string commitMsg = std::string("Merge ") + git_oid_tostr_s(&oid_to_merge.second);
+			err = git_commit_create(&newCommit, repo, "HEAD", committerSignature, committerSignature, "UTF-8", commitMsg.c_str(), tree, 2, parents);
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to create commit", {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			}
+		}
+	
+		git_annotated_commit_free(originmaster);
+		git_repository_state_cleanup(repo);
+
 		
 	} else {
 		// doesn't exist, clone
