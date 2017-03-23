@@ -16,6 +16,7 @@ set(TEST_SRCS
 	GraphFunctionLocalsTest.cpp
 	GraphFunctionExitTest.cpp
 	GraphFunctionInOutsTest.cpp
+	FetchTests.cpp
 )
 
 set(DEBUGGER_TEST_SRCS
