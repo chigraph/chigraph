@@ -69,10 +69,10 @@ std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
 		const fs::path& p = dirEntry;
 
 		// see if it's a chigraph module
-		if (fs::is_regular_file(p) && p.extension() == ".chigmod") {
+		if (fs::is_regular_file(p) && p.extension() == ".chimod") {
 			fs::path relPath = fs::relative(p, srcDir);
 
-			relPath.replace_extension("");  // remove .chigmod
+			relPath.replace_extension("");  // remove .chimod
 			moduleList.emplace_back(relPath.string());
 		}
 	}
@@ -105,7 +105,7 @@ Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
 
 	// find it in the workspace
 	fs::path fullPath = workspacePath() / "src" / name;
-	fullPath.replace_extension(".chigmod");
+	fullPath.replace_extension(".chimod");
 
 	if (!fs::is_regular_file(fullPath)) {
 		res.addEntry(
