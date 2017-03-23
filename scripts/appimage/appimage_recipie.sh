@@ -46,7 +46,7 @@ cd /chigraph.appdir/
 rm -rf ./usr/include
 find . -name '*.a' -exec rm {} \;
 
-cp /chigraph/scripts/appimage/chiggui.desktop /chigraph.appdir/
+cp /chigraph/scripts/appimage/chigraph.desktop /chigraph.appdir/
 cp /chigraph/scripts/appimage/chigraph.png /chigraph.appdir/
 
 QT_BASE_DIR=/opt/qt58
