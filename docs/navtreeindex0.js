@@ -209,6 +209,7 @@ var NAVTREEINDEX0 =
 "namespacechi.html":[2,0,0],
 "namespacemembers.html":[1,1,0],
 "namespacemembers_enum.html":[1,1,2],
+"namespacemembers_eval.html":[1,1,3],
 "namespacemembers_func.html":[1,1,1],
 "namespaces.html":[1,0],
 "pages.html":[],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "structchi_1_1Context.html":[2,0,0,2],
 "structchi_1_1Context.html#a17e4d810afed483542eafea5b36792c5":[2,0,0,2,21],
 "structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846":[2,0,0,2,22],
-"structchi_1_1Context.html#a28706d36f049088c98cd726921512668":[2,0,0,2,19],
-"structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f":[2,0,0,2,5]
+"structchi_1_1Context.html#a28706d36f049088c98cd726921512668":[2,0,0,2,19]
 };
