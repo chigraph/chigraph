@@ -39,7 +39,7 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 
 		llvm::WriteBitcodeToFile(llmod.get(), os);
 	}
-	boost::filesystem::path chigPath =
+	boost::filesystem::path chiPath =
 	    boost::filesystem::path(QApplication::applicationFilePath().toStdString()).parent_path() /
 	    "chi";
 #ifdef _WIN32
@@ -48,7 +48,7 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 
 	// run in lli
 	mProcess = new QProcess(this);
-	mProcess->setProgram(QString::fromStdString(chigPath.string()));
+	mProcess->setProgram(QString::fromStdString(chiPath.string()));
 	mProcess->setArguments(QStringList(QStringLiteral("interpret")));
 	mProcess->start();
 	mProcess->write(str.c_str(), str.length());

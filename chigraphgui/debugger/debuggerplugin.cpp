@@ -3,6 +3,12 @@
 #include <KLocalizedString>
 #include <KActionCollection>
 
+#include <QApplication>
+#include <QDebug>
+
+#include <thread>
+
+#include <../mainwindow.hpp>
 
 DebuggerPlugin::DebuggerPlugin() {
 	Q_INIT_RESOURCE(chigraphdebugger);
@@ -11,35 +17,64 @@ DebuggerPlugin::DebuggerPlugin() {
 	debugAction =
 		actionCollection()->addAction(QStringLiteral("start-debug"),
 									new QAction(QIcon::fromTheme(QStringLiteral("debug-run")), i18n("Debug")));
-	debugAction->setShortcut(Qt::Key_F8);
+	actionCollection()->setDefaultShortcut(debugAction, Qt::Key_F8);
+	connect(debugAction, &QAction::triggered, this, &DebuggerPlugin::debugStart);
 
 	toggleBreakpointAction =
 		actionCollection()->addAction(QStringLiteral("toggle-breakpoint"),
 									new QAction(QIcon::fromTheme(QStringLiteral("draw-donut")), i18n("Toggle Breakpoint")));
-	toggleBreakpointAction->setShortcut(Qt::Key_F9);
+	actionCollection()->setDefaultShortcut(toggleBreakpointAction, Qt::Key_F9);
 		
 	stepAction = 
 		actionCollection()->addAction(QStringLiteral("debug-step"),
 			new QAction(QIcon::fromTheme(QStringLiteral("debug-step-over")), i18n("Step Over")));
-	stepAction->setShortcut(Qt::Key_F10);
+	actionCollection()->setDefaultShortcut(stepAction, Qt::Key_F10);
 		
 	stepOutAction =
 		actionCollection()->addAction(QStringLiteral("debug-step-out"),
 			new QAction(QIcon::fromTheme(QStringLiteral("debug-step-out")), i18n("Step Out")));
-	stepOutAction->setShortcut(Qt::Key_F12);
+	actionCollection()->setDefaultShortcut(stepOutAction, Qt::Key_F12);
 	
 	stepInAction =
 		actionCollection()->addAction(QStringLiteral("debug-step-into"),
 									  new QAction(QIcon::fromTheme(QStringLiteral("debug-step-into")), i18n("Step Into")));
-	stepInAction->setShortcut(Qt::Key_F11);
+	actionCollection()->setDefaultShortcut(stepInAction, Qt::Key_F11);
 	
 	continueAction =
 		actionCollection()->addAction(QStringLiteral("debug-continue"),
 			new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")), i18n("Continue")));
-	continueAction->setShortcut(Qt::Key_F5);
+	actionCollection()->setDefaultShortcut(continueAction, Qt::Key_F5);
 	
 	
 	setXMLFile("chigraphguidebuggerui.rc");
+	
+	
+}
+
+void DebuggerPlugin::debugStart()
+{
+	
+	boost::filesystem::path chiPath =
+	    boost::filesystem::path(QApplication::applicationFilePath().toStdString()).parent_path() /
+	    "chi";
+#ifdef _WIN32
+	chigPath.replace_extension(".exe");
+#endif
+	
+	MainWindow* window = MainWindow::instance();
+	if (window->currentModule() == nullptr) {
+		return;
+	}
+	
+	mDebugger = std::make_unique<chi::Debugger>(chiPath.c_str(), *window->currentModule());
+	
+	std::this_thread::sleep_for(std::chrono::seconds(3));
+	
+	auto res = mDebugger->start();
+	if (!res) {
+		qDebug() << QString::fromStdString(res.dump());
+		return;
+	}
 	
 	
 }

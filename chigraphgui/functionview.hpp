@@ -15,12 +15,10 @@
 
 #include "chigraphnodemodel.hpp"
 
-class MainWindow;
-
 class FunctionView : public QWidget {
 	Q_OBJECT
 public:
-	FunctionView(MainWindow* mainWindow, chi::GraphFunction* func_, QWidget* parent = nullptr);
+	FunctionView(chi::GraphFunction& func_, QWidget* parent = nullptr);
 
 	QtNodes::Node* guiNodeFromChigNode(chi::NodeInstance* inst);
 	chi::NodeInstance* chigNodeFromGuiNode(QtNodes::Node* node);
@@ -50,6 +48,7 @@ private slots:
 
 signals:
 	void dirtied();
+	void functionDoubleClicked(chi::GraphFunction& func);
 
 private:
 	void updateValidationStates();
@@ -71,7 +70,6 @@ private:
 	// stores invalid nodes so we can clear their state when they become valid again
 	std::vector<QtNodes::Node*> mInvalidNodes; 
 
-	MainWindow* mMainWindow;
 };
 
 #endif  // CHIGGUI_FUNCTIONVIEW_HPP
