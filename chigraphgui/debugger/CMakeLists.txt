@@ -21,6 +21,9 @@ PUBLIC
 	Qt5::Widgets
 	KF5::I18n
 	KF5::XmlGui
+	KF5::TextEditor
+	
+	nodes
 
 	chigraphdebugger
 )

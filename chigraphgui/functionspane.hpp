@@ -24,7 +24,7 @@ private slots:
 
 signals:
 
-	void functionSelected(chi::GraphFunction* funcs);
+	void functionSelected(chi::GraphFunction& funcs);
 };
 
 #endif  // CHIGGUI_FUNCTIONS_PANE_HPP
