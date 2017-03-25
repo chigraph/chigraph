@@ -16,8 +16,8 @@
 
 using namespace QtNodes;
 
-FunctionView::FunctionView(MainWindow* mainWindow, chi::GraphFunction* func_, QWidget* parent)
-    : QWidget(parent), mFunction{func_}, mMainWindow{mainWindow} {
+FunctionView::FunctionView(chi::GraphFunction& func_, QWidget* parent)
+    : QWidget(parent), mFunction{&func_} {
 	auto hlayout = new QHBoxLayout(this);
 
 	// TODO: see how to actually set the colors
@@ -246,11 +246,9 @@ void FunctionView::nodeDoubleClicked(QtNodes::Node& n) {
 
 	auto func = graphMod->functionFromName(model->instance().type().name());
 	if (func == nullptr) { return; }
-	// load the right module
-	mMainWindow->openModule(QString::fromStdString(graphMod->fullName()));
-
-	// load the right function
-	mMainWindow->newFunctionSelected(func);
+	
+	// emit the signal
+	functionDoubleClicked(*func);
 }
 
 void FunctionView::addBreakpoint(QtNodes::Node& n) {

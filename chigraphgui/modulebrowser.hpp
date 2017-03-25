@@ -9,10 +9,10 @@
 
 class MainWindow;
 
-#include <chi/Context.hpp>
-#include <chi/GraphModule.hpp>
+#include <chi/Fwd.hpp>
 
 #include <unordered_set>
+#include <unordered_map>
 
 #include "toolview.hpp"
 
@@ -41,20 +41,20 @@ public:
 
 signals:
 	void moduleSelected(const QString& name);
-	void discardChanges(const std::string& moduleName);
+	void discardChanges(chi::GraphModule& moduleName);
 
 public slots:
 	void loadWorkspace(chi::Context& context);
-	void moduleDirtied(chi::ChiModule& dirtied);
-	void moduleSaved(chi::ChiModule& saved);
+	void moduleDirtied(chi::GraphModule& dirtied);
+	void moduleSaved(chi::GraphModule& saved);
 
-	const std::unordered_set<chi::ChiModule*> dirtyModules() const { return mDirtyModules; }
+	const std::unordered_set<chi::GraphModule*> dirtyModules() const { return mDirtyModules; }
 
 private:
-	void updateDirtyStatus(chi::ChiModule& updated, bool dirty);
+	void updateDirtyStatus(chi::GraphModule& updated, bool dirty);
 
 	chi::Context*                        mContext = nullptr;
-	std::unordered_set<chi::ChiModule*> mDirtyModules;
+	std::unordered_set<chi::GraphModule*> mDirtyModules;
 	std::unordered_map<std::string, ModuleTreeItem*> mItems;
 	
 	QAction* mDiscardChangesAction = nullptr;

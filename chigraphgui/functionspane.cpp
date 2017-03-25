@@ -65,5 +65,5 @@ void FunctionsPane::selectItem(QListWidgetItem* newitem) {
 	auto casted = dynamic_cast<FunctionListItem*>(newitem);
 	if (casted == nullptr) { return; }
 
-	functionSelected(casted->mFunc);
+	functionSelected(*casted->mFunc);
 }

@@ -7,7 +7,7 @@
 
 #include <QAction>
 
-
+#include <chi/Debugger.hpp>
 
 class DebuggerPlugin : public QObject, public ChigraphPlugin {
 	Q_OBJECT
@@ -16,6 +16,17 @@ class DebuggerPlugin : public QObject, public ChigraphPlugin {
 	
 public:
 	
+	
+	DebuggerPlugin();
+	
+	
+private:
+	
+	// ChigraphPlugin interface
+	QVector<ToolView*> toolViews() override {
+		return {};
+	}
+	
 	QAction* toggleBreakpointAction;
 	QAction* debugAction;
 	QAction* stepAction;
@@ -23,11 +34,10 @@ public:
 	QAction* stepOutAction;
 	QAction* continueAction;
 	
-	DebuggerPlugin();
+	void debugStart();
 	
-	virtual QVector<ToolView*> toolViews() {
-		return {};
-	}
+	
+	std::unique_ptr<chi::Debugger> mDebugger;
 
 };
 
