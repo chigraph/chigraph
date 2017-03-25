@@ -13,10 +13,11 @@ platform:
 
 before_build:
   - 'git submodule update --init --recursive'
-  - 'set PATH=%QTDIR%\bin;C:\msys64\usr\bin;C:\msys64\mingw64\bin;%PATH%'
+  - 'set PATH=%QTDIR%\bin;C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%'
   - "sh -c 'pacman -Syu --noconfirm'"
   - 'sh scripts\setup_msys2.sh'
   - mkdir build
+  - 'ls C:\msys64\mingw64\lib'
   - cd build
   - cmake "-GNinja" -DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_PREFIX_PATH="%QTDIR%" ..
   - ninja
