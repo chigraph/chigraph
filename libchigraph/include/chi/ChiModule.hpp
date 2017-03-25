@@ -14,7 +14,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/utility/string_view.hpp>
 
-#include <unordered_set>
+#include <set>
 
 #include <llvm/IR/Module.h>
 
@@ -70,7 +70,7 @@ struct ChiModule {
 
 	/// Get the dependencies
 	/// \return The dependencies
-	const std::unordered_set<boost::filesystem::path>& dependencies() const {
+	const std::set<boost::filesystem::path>& dependencies() const {
 		return mDependencies;
 	}
 	/// Add a dependency to the module
@@ -92,7 +92,7 @@ private:
 	std::string             mName;
 	Context*                mContext;
 
-	std::unordered_set<boost::filesystem::path> mDependencies;
+	std::set<boost::filesystem::path> mDependencies;
 };
 } // namespace chi
 
