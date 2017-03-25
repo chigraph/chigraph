@@ -39,22 +39,23 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 
 		llvm::WriteBitcodeToFile(llmod.get(), os);
 	}
+	
+	
+	setReadOnly(true);
+	
 	boost::filesystem::path chiPath =
 	    boost::filesystem::path(QApplication::applicationFilePath().toStdString()).parent_path() /
 	    "chi";
 #ifdef _WIN32
-	chigPath.replace_extension(".exe");
+	chiPath.replace_extension(".exe");
 #endif
+	
+	assert(boost::filesystem::is_regular_file(chiPath));
 
 	// run in lli
 	mProcess = new QProcess(this);
 	mProcess->setProgram(QString::fromStdString(chiPath.string()));
 	mProcess->setArguments(QStringList(QStringLiteral("interpret")));
-	mProcess->start();
-	mProcess->write(str.c_str(), str.length());
-	mProcess->closeWriteChannel();
-
-	setReadOnly(true);
 
 	connect(mProcess, &QProcess::readyReadStandardOutput, this,
 	        [this] { appendPlainText(mProcess->readAllStandardOutput().constData()); });
@@ -68,6 +69,12 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 	connect(mProcess,
 	        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this,
 	        &SubprocessOutputView::processFinished);
+	
+	
+	mProcess->start();
+	mProcess->write(str.c_str(), str.length());
+	mProcess->closeWriteChannel();
+
 }
 
 void SubprocessOutputView::cancelProcess() {
