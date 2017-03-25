@@ -24,7 +24,7 @@ signals:
 	void dirtied();
 
 private:
-	FunctionView*        mFuncView = nullptr;
+	FunctionView*       mFuncView = nullptr;
 	chi::GraphFunction* mFunc     = nullptr;
 
 	ParamListWidget* ins;

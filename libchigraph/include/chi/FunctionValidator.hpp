@@ -37,6 +37,6 @@ Result validateFunctionNodeInputs(const GraphFunction& func);
 Result validateFunctionExecOutputs(const GraphFunction& func);
 
 /// \}
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_FUNCTION_VALIDATOR_HPP

@@ -138,7 +138,7 @@ protected:
 	NodeInstance* nodeInstance() const { return mNodeInstance; }
 
 private:
-	ChiModule* mModule;
+	ChiModule*  mModule;
 	Context*    mContext;
 	std::string mName, mDescription;
 
@@ -152,6 +152,6 @@ private:
 
 	bool mPure = false;
 };
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_NODE_TYPE_HPP

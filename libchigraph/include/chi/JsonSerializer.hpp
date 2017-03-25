@@ -29,6 +29,6 @@ nlohmann::json graphModuleToJson(const GraphModule& mod);
 nlohmann::json graphStructToJson(const GraphStruct& struc);
 
 /// \}
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_JSON_SERIALIZER_HPP

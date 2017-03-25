@@ -21,7 +21,7 @@ signals:
 
 private:
 	chi::GraphModule* mModule;
-	QProcess*          mProcess = nullptr;
+	QProcess*         mProcess = nullptr;
 };
 
 #endif  // CHIGGUI_SUBPROCESS_OUTPUT_VIEW_HPP

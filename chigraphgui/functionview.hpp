@@ -43,7 +43,7 @@ private slots:
 	void nodeMoved(QtNodes::Node& n, QPointF newLoc);
 
 	void nodeDoubleClicked(QtNodes::Node& n);
-	
+
 	void addBreakpoint(QtNodes::Node& n);
 
 signals:
@@ -52,7 +52,7 @@ signals:
 
 private:
 	void updateValidationStates();
-	
+
 	QtNodes::FlowScene* mScene;
 	QtNodes::FlowView*  mView;
 
@@ -66,10 +66,9 @@ private:
 	    conns;
 
 	std::shared_ptr<QtNodes::DataModelRegistry> createRegistry();
-	
-	// stores invalid nodes so we can clear their state when they become valid again
-	std::vector<QtNodes::Node*> mInvalidNodes; 
 
+	// stores invalid nodes so we can clear their state when they become valid again
+	std::vector<QtNodes::Node*> mInvalidNodes;
 };
 
 #endif  // CHIGGUI_FUNCTIONVIEW_HPP

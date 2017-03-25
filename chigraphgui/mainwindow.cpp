@@ -1,12 +1,12 @@
 #include "mainwindow.hpp"
-#include "functiontabview.hpp"
+#include "chigraphplugin.hpp"
 #include "functiondetails.hpp"
 #include "functionspane.hpp"
+#include "functiontabview.hpp"
 #include "functionview.hpp"
 #include "localvariables.hpp"
 #include "modulebrowser.hpp"
 #include "moduledependencies.hpp"
-#include "chigraphplugin.hpp"
 #include "moduledetails.hpp"
 #include "subprocessoutputview.hpp"
 
@@ -19,7 +19,6 @@
 #include <KStandardAction>
 
 #include <QAction>
-#include <QPluginLoader>
 #include <QApplication>
 #include <QDebug>
 #include <QDockWidget>
@@ -27,6 +26,7 @@
 #include <QHBoxLayout>
 #include <QInputDialog>
 #include <QPlainTextEdit>
+#include <QPluginLoader>
 #include <QProcess>
 #include <QScrollArea>
 #include <QSplitter>
@@ -51,7 +51,7 @@ MainWindow* MainWindow::mInstance = nullptr;
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	Q_INIT_RESOURCE(chigraphgui);
-	
+
 	mInstance = this;
 
 	// set icon
@@ -65,7 +65,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	auto modDetails = new ModuleDetails;
 	docker->setWidget(modDetails);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
-	connect(modDetails, &ModuleDetails::functionSelected, this, [this](chi::GraphFunction& func) { tabView().selectNewFunction(func); });
+	connect(modDetails, &ModuleDetails::functionSelected, this,
+	        [this](chi::GraphFunction& func) { tabView().selectNewFunction(func); });
 	connect(this, &MainWindow::moduleOpened, modDetails, &ModuleDetails::loadModule);
 	auto dependencyUpdatedSlot = [this] {
 		auto count = mFunctionTabs->count();
@@ -81,11 +82,11 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		docker->setWindowTitle(i18n("Module Details") + " - " +
 		                       QString::fromStdString(mod.fullName()));
 	});
-	connect(modDetails, &ModuleDetails::dirtied, this, [this]{moduleDirtied(*currentModule());});
+	connect(modDetails, &ModuleDetails::dirtied, this, [this] { moduleDirtied(*currentModule()); });
 
 	// setup module browser
 	mModuleBrowser = new ModuleBrowser(this);
-	docker = new QDockWidget(mModuleBrowser->label(), this);
+	docker         = new QDockWidget(mModuleBrowser->label(), this);
 	docker->setObjectName("Modules");
 	insertChildClient(mModuleBrowser);
 	docker->setWidget(mModuleBrowser);
@@ -98,7 +99,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		docker->setWindowTitle(i18n("Modules") + " - " +
 		                       QString::fromStdString(ctx.workspacePath().string()));
 	});
-	connect(mModuleBrowser, &ModuleBrowser::discardChanges, this, &MainWindow::discardChangesInModule);
+	connect(mModuleBrowser, &ModuleBrowser::discardChanges, this,
+	        &MainWindow::discardChangesInModule);
 
 	mFunctionTabs = new FunctionTabView;
 	mFunctionTabs->setMovable(true);
@@ -120,7 +122,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	docker->setObjectName("Function Details");
 	auto functionDetails = new FunctionDetails;
 	insertChildClient(functionDetails);
-	auto scroll          = new QScrollArea;
+	auto scroll = new QScrollArea;
 	scroll->setWidget(functionDetails);
 	scroll->setWidgetResizable(true);
 	docker->setWidget(scroll);
@@ -136,23 +138,24 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 			                               QString::fromStdString(funcView->function()->name()));
 		        }
 		    });
-	connect(functionDetails, &FunctionDetails::dirtied, this, [this, functionDetails]{moduleDirtied(functionDetails->chiFunc()->module());});
+	connect(functionDetails, &FunctionDetails::dirtied, this,
+	        [this, functionDetails] { moduleDirtied(functionDetails->chiFunc()->module()); });
 
 	/// load plugins
 	for (QObject* plugin : QPluginLoader::staticInstances()) {
 		if (auto chiPlugin = qobject_cast<ChigraphPlugin*>(plugin)) {
 			insertChildClient(chiPlugin);
-			
+
 			for (auto view : chiPlugin->toolViews()) {
 				docker = new QDockWidget(view->label(), this);
-				
+
 				insertChildClient(view);
-				
+
 				addDockWidget(view->defaultArea(), docker);
 			}
 		}
 	}
-	
+
 	/// Setup actions
 	auto actColl = actionCollection();
 
@@ -288,7 +291,8 @@ void MainWindow::openWorkspace(const QUrl& url) {
 
 void MainWindow::openModule(const QString& fullName) {
 	chi::ChiModule* cmod;
-	chi::Result      res = context().loadModule(fullName.toStdString(), chi::LoadSettings::Default, &cmod);
+	chi::Result     res =
+	    context().loadModule(fullName.toStdString(), chi::LoadSettings::Default, &cmod);
 
 	if (!res) {
 		KMessageBox::detailedError(this,
@@ -305,9 +309,7 @@ void MainWindow::openModule(const QString& fullName) {
 
 	// call signal
 	moduleOpened(*mModule);
-
 }
-
 
 void MainWindow::newFunction() {
 	if (currentModule() == nullptr) {
@@ -324,7 +326,7 @@ void MainWindow::newFunction() {
 	func->getOrInsertEntryNode(0, 0, boost::uuids::random_generator()());
 
 	newFunctionCreated(*func);
-	
+
 	tabView().selectNewFunction(*func);  // open the newly created function
 }
 
@@ -357,9 +359,7 @@ void MainWindow::newModule() {
 	openModule(QString::fromStdString(mod->fullName()));
 }
 
-void MainWindow::moduleDirtied(chi::GraphModule& mod) {
-	mModuleBrowser->moduleDirtied(mod);
-}
+void MainWindow::moduleDirtied(chi::GraphModule& mod) { mModuleBrowser->moduleDirtied(mod); }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
 	// check through dirty modules
@@ -397,10 +397,9 @@ void MainWindow::discardChangesInModule(chi::GraphModule& mod) {
 	// mark it as clean
 	mModuleBrowser->moduleSaved(mod);
 
-
 	bool isCurrentModule = &mod == currentModule();
 
 	tabView().refreshModule(mod);
-	
+
 	if (isCurrentModule) { openModule(QString::fromStdString(mod.fullName())); }
 }

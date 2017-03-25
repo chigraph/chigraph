@@ -5,14 +5,13 @@
 
 #include "toolview.hpp"
 
-#include <QtPlugin>
 #include <QVector>
-
+#include <QtPlugin>
 
 class ChigraphPlugin : public KXMLGUIClient {
 public:
 	virtual ~ChigraphPlugin() = default;
-	
+
 	virtual QVector<ToolView*> toolViews() = 0;
 };
 
@@ -20,5 +19,4 @@ public:
 #define ChigraphPlugin_iid "org.chigraph.chigraphgui.ChigraphPlugin"
 Q_DECLARE_INTERFACE(ChigraphPlugin, ChigraphPlugin_iid)
 
-
-#endif // CHIGRAPHGUI_CHIGRAPH_PLUGIN
+#endif  // CHIGRAPHGUI_CHIGRAPH_PLUGIN

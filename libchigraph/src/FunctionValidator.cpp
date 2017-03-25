@@ -2,8 +2,8 @@
 
 #include "chi/FunctionValidator.hpp"
 #include "chi/GraphFunction.hpp"
-#include "chi/Result.hpp"
 #include "chi/NodeInstance.hpp"
+#include "chi/Result.hpp"
 
 #include <unordered_map>
 
@@ -205,24 +205,25 @@ Result validateFunctionNodeInputs(const GraphFunction& func) {
 }
 
 Result validateFunctionExecOutputs(const GraphFunction& func) {
-	// make sure all exec outputs exist, and raise an error otherwise. 
+	// make sure all exec outputs exist, and raise an error otherwise.
 	// TODO (#70): quickfix to add return
-	
+
 	Result res;
-	
+
 	for (const auto& nodepair : func.nodes()) {
 		auto node = nodepair.second.get();
-		
+
 		auto id = 0ull;
 		for (const auto& conn : node->outputExecConnections) {
 			if (conn.second == ~0ull || conn.first == nullptr) {
-				res.addEntry("EUKN", "Node is missing an output exec connection", {{"Node ID", node->stringId()}, {"Missing ID", id}});
+				res.addEntry("EUKN", "Node is missing an output exec connection",
+				             {{"Node ID", node->stringId()}, {"Missing ID", id}});
 			}
-			
+
 			++id;
 		}
 	}
-	
+
 	return res;
 }
 

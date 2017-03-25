@@ -161,11 +161,9 @@ ChigraphNodeModel::ChigraphNodeModel(chi::NodeInstance* inst_, FunctionView* fvi
 	}
 }
 
-
 void ChigraphNodeModel::setErrorState(QtNodes::NodeValidationState state, QString message) {
-    mValidationState = state;
-    mValidationMessage = message;
-
+	mValidationState   = state;
+	mValidationMessage = message;
 }
 
 unsigned int ChigraphNodeModel::nPorts(PortType portType) const {
@@ -214,14 +212,8 @@ NodeDataType ChigraphNodeModel::dataType(PortType pType, PortIndex pIndex) const
 	return {};
 }
 
+QtNodes::NodeValidationState ChigraphNodeModel::validationState() const { return mValidationState; }
 
-QtNodes::NodeValidationState ChigraphNodeModel::validationState() const {
-	return mValidationState;
-}
-
-QString ChigraphNodeModel::validationMessage() const {
-	return mValidationMessage;	
-}
-
+QString ChigraphNodeModel::validationMessage() const { return mValidationMessage; }
 
 QWidget* ChigraphNodeModel::embeddedWidget() { return mEmbedded; }
