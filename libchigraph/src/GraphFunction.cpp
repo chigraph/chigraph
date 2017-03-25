@@ -32,9 +32,7 @@ GraphFunction::GraphFunction(GraphModule& mod, std::string name, std::vector<Nam
 
 NodeInstance* GraphFunction::nodeByID(const boost::uuids::uuid& id) const {
 	auto iter = nodes().find(id);
-	if (iter != nodes().end()) {
-		return iter->second.get();
-	}
+	if (iter != nodes().end()) { return iter->second.get(); }
 	return nullptr;
 }
 

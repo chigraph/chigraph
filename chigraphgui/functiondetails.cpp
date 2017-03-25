@@ -11,7 +11,7 @@
 
 FunctionDetails::FunctionDetails(QWidget* parent) : QWidget{parent} {
 	setXMLFile("chigraphfunctiondetailsui.rc");
-	
+
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 
@@ -67,9 +67,6 @@ void FunctionDetails::loadFunction(FunctionView* funcView) {
 }
 
 chi::GraphFunction* FunctionDetails::chiFunc() const {
-    if (mFunction) {
-        return mFunction->function();
-    }
-    return nullptr;
+	if (mFunction) { return mFunction->function(); }
+	return nullptr;
 }
-

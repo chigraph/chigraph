@@ -24,7 +24,7 @@
 SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(module) {
 	// compile!
 	std::unique_ptr<llvm::Module> llmod;
-	chi::Result                  res = module->context().compileModule(module->fullName(), &llmod);
+	chi::Result                   res = module->context().compileModule(module->fullName(), &llmod);
 
 	if (!res) {
 		KMessageBox::detailedError(this, "Failed to compile module",
@@ -39,17 +39,16 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 
 		llvm::WriteBitcodeToFile(llmod.get(), os);
 	}
-	
-	
+
 	setReadOnly(true);
-	
+
 	boost::filesystem::path chiPath =
 	    boost::filesystem::path(QApplication::applicationFilePath().toStdString()).parent_path() /
 	    "chi";
 #ifdef _WIN32
 	chiPath.replace_extension(".exe");
 #endif
-	
+
 	assert(boost::filesystem::is_regular_file(chiPath));
 
 	// run in lli
@@ -69,12 +68,10 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 	connect(mProcess,
 	        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this,
 	        &SubprocessOutputView::processFinished);
-	
-	
+
 	mProcess->start();
 	mProcess->write(str.c_str(), str.length());
 	mProcess->closeWriteChannel();
-
 }
 
 void SubprocessOutputView::cancelProcess() {

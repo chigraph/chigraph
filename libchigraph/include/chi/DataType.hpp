@@ -19,8 +19,8 @@ struct DataType {
 	/// \param chiMod The module
 	/// \param typeName The ID of the type in the module
 	/// \param llvmtype The underlying type
-	DataType(ChiModule* chiMod = nullptr, std::string typeName = {},
-	         llvm::Type* llvmtype = nullptr, llvm::DIType* debugTy = nullptr)
+	DataType(ChiModule* chiMod = nullptr, std::string typeName = {}, llvm::Type* llvmtype = nullptr,
+	         llvm::DIType* debugTy = nullptr)
 	    : mModule(chiMod), mName{typeName}, mLLVMType{llvmtype}, mDIType{debugTy} {}
 
 	/// Get the module this is a part of
@@ -44,7 +44,7 @@ struct DataType {
 	}
 
 private:
-	ChiModule*   mModule;
+	ChiModule*    mModule;
 	std::string   mName;
 	llvm::Type*   mLLVMType;
 	llvm::DIType* mDIType;
@@ -100,6 +100,6 @@ inline bool operator==(const NamedDataType& lhs, const NamedDataType& rhs) {
 /// \return if they aren't equal
 /// \relates NamedDataType
 inline bool operator!=(const NamedDataType& lhs, const NamedDataType& rhs) { return !(lhs == rhs); }
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_DATA_TYPE_HPP

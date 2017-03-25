@@ -23,6 +23,6 @@ namespace chi {
 /// \return The result
 Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
                        llvm::DIBuilder& debugBuilder);
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_FUNCTION_COMPILER_HPP

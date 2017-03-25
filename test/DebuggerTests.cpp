@@ -1,10 +1,10 @@
 #include <catch.hpp>
 
 #include <chi/Context.hpp>
+#include <chi/Debugger.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/Result.hpp>
-#include <chi/Debugger.hpp>
 
 #include <llvm/Support/FileSystem.h>
 
@@ -39,7 +39,7 @@ TEST_CASE("Debugger", "") {
 	GraphModule* printerMod;
 	{
 		ChiModule* cMod = ctx.moduleByFullName("intermodule/printer");
-		printerMod       = static_cast<GraphModule*>(cMod);
+		printerMod      = static_cast<GraphModule*>(cMod);
 	}
 
 	auto mainFunc  = gMod->functionFromName("main");

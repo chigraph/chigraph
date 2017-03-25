@@ -21,4 +21,4 @@ struct Result;
 struct DataType;
 }
 
-#endif // CHI_FWD_HPP
+#endif  // CHI_FWD_HPP

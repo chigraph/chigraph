@@ -50,6 +50,6 @@ struct CModule : ChiModule {
 private:
 	std::vector<std::string> mExtraCArgs;
 };
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_CMODULE_HPP

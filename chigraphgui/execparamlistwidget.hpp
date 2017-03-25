@@ -30,14 +30,14 @@ inline void deleteLayout(QLayout* layout) {
 
 class ExecParamListWidget : public QWidget {
 	Q_OBJECT
-	
+
 public:
 	enum Type { Input, Output };
 
 	explicit ExecParamListWidget(QWidget* parent = nullptr);
 
 	void setFunction(FunctionView* func, Type ty);
-	
+
 signals:
 	void dirtied();
 

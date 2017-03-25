@@ -479,4 +479,4 @@ std::pair<std::string, std::string> parseObjectPair(const nlohmann::json& object
 
 	return {key, val};
 }
-} // namespace chi
+}  // namespace chi

@@ -31,7 +31,7 @@ public:
 
 ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
 	setXMLFile("chigraphmodulebrowserui.rc");
-	
+
 	setColumnCount(1);
 	setAnimated(true);
 	setSortingEnabled(true);
@@ -47,24 +47,25 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
 		        moduleSelected(QString::fromStdString(casted->mName.string()));
 		    });
 	setContextMenuPolicy(Qt::CustomContextMenu);
-	
-	mDiscardChangesAction = new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")), i18n("Discard Changes"), this);
-	connect(mDiscardChangesAction, &QAction::triggered, this, [this]{
+
+	mDiscardChangesAction = new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")),
+	                                    i18n("Discard Changes"), this);
+	connect(mDiscardChangesAction, &QAction::triggered, this, [this] {
 		auto item = currentItem();
-		
+
 		auto castedItem = dynamic_cast<ModuleTreeItem*>(item);
 		if (!castedItem || !castedItem->dirty) { return; }
-		
+
 		// get the module
 		auto mod = mContext->moduleByFullName(castedItem->mName.string());
-		if (!mod) {return;}
+		if (!mod) { return; }
 		auto casted = dynamic_cast<chi::GraphModule*>(mod);
-		if(!casted){return;}
-		
+		if (!casted) { return; }
+
 		discardChanges(*casted);
 	});
 	actionCollection()->addAction(QStringLiteral("discard-changes"), mDiscardChangesAction);
-	
+
 	connect(this, &QWidget::customContextMenuRequested, this, [this](QPoint p) {
 		QTreeWidgetItem* itemRaw = itemAt(p);
 		if (!itemRaw) { return; }
@@ -72,7 +73,7 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
 		auto item = dynamic_cast<ModuleTreeItem*>(itemRaw);
 
 		if (!item || !item->dirty) { return; }
-		
+
 		setCurrentItem(item);
 
 		QMenu contextMenu;

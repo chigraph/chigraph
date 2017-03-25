@@ -30,11 +30,11 @@ public:
 	ChigraphNodeModel(chi::NodeInstance* inst_, FunctionView* fview_);
 
 	chi::NodeInstance& instance() const { return *mInst; }
-	
+
 	void setErrorState(QtNodes::NodeValidationState state, QString message);
-	
+
 	// NodeDataModel interface
-	QString             caption() const override {
+	QString caption() const override {
 		auto str = QString::fromStdString(mInst->type().description());
 		return str;
 	}
@@ -54,20 +54,20 @@ public:
 		return nullptr;
 	}
 	virtual QWidget* embeddedWidget() override;
-	
+
 	QtNodes::NodeValidationState validationState() const override;
 
 	QString validationMessage() const override;
-	
+
 	// We don't need saving...chigraph has its own serialization
 	QJsonObject save() const override { return {}; }
-	
+
 private:
 	QtNodes::NodeValidationState mValidationState = QtNodes::NodeValidationState::Valid;
-	QString mValidationMessage;
-	chi::NodeInstance* mInst;
-	FunctionView*       mFunctionView;
-	QWidget*            mEmbedded = nullptr;
+	QString                      mValidationMessage;
+	chi::NodeInstance*           mInst;
+	FunctionView*                mFunctionView;
+	QWidget*                     mEmbedded = nullptr;
 };
 
 #endif  // CHIG_GUI_CHIGNODEGUI_HPP
