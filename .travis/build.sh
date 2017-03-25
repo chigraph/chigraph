@@ -22,7 +22,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	fi
 
 	ninja
-	if [ "$LLVM_VERSION" == "3.9"]; then
+	if [ "$LLVM_VERSION" == "3.9" ]; then
 		CTEST_OUTPUT_ON_FAILURE=1 ninja test
 	fi
 	
