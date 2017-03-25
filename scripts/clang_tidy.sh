@@ -11,5 +11,5 @@ cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON &> /dev/null
 cd ..
 
 
-clang-tidy -p build -checks='*,-google*' $(find libchig chig gui -name "*.cpp")
+clang-tidy -p build -checks='*' $(find libchigraph chi chigraphgui -name "*.cpp")
 
