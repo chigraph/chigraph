@@ -5,6 +5,7 @@ var searchData=
   ['namemangler_2ecpp',['NameMangler.cpp',['../NameMangler_8cpp.html',1,'']]],
   ['namemangler_2ehpp',['NameMangler.hpp',['../NameMangler_8hpp.html',1,'']]],
   ['newgraphmodule',['newGraphModule',['../structchi_1_1Context.html#a906c9187e13e2194a3f68d48973529f6',1,'chi::Context']]],
+  ['nodebyid',['nodeByID',['../structchi_1_1GraphFunction.html#acb3281f6b313b7070efb0ee84b937523',1,'chi::GraphFunction']]],
   ['nodefromframe',['nodeFromFrame',['../classchi_1_1Debugger.html#ae142902fa85248f40cbeea7199c86ad9',1,'chi::Debugger']]],
   ['nodeinstance',['NodeInstance',['../structchi_1_1NodeInstance.html',1,'chi::NodeInstance'],['../structchi_1_1NodeInstance.html#ac662b0ce416745792a336e9735c8b09d',1,'chi::NodeInstance::NodeInstance(GraphFunction *func, std::unique_ptr&lt; NodeType &gt; nodeType, float posX, float posY, boost::uuids::uuid nodeID=boost::uuids::random_generator()())'],['../structchi_1_1NodeInstance.html#a2217cb2480f31aea604b2a61d4098eea',1,'chi::NodeInstance::NodeInstance(NodeInstance &amp;&amp;)=default'],['../structchi_1_1NodeInstance.html#addf825d934542d46f8721e2516928776',1,'chi::NodeInstance::NodeInstance(const NodeInstance &amp;other, boost::uuids::uuid id=boost::uuids::random_generator()())'],['../structchi_1_1NodeType.html#a3ccec210c4e7b7dac906d34359538d3f',1,'chi::NodeType::nodeInstance()']]],
   ['nodeinstance_2ecpp',['NodeInstance.cpp',['../NodeInstance_8cpp.html',1,'']]],

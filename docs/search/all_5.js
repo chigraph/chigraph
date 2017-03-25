@@ -5,6 +5,7 @@ var searchData=
   ['getorcreatelocalvariable',['getOrCreateLocalVariable',['../structchi_1_1GraphFunction.html#a9a3b003e74692f5d0aa474d28c0dd23d',1,'chi::GraphFunction']]],
   ['getorcreatestruct',['getOrCreateStruct',['../structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55',1,'chi::GraphModule']]],
   ['getorinsertentrynode',['getOrInsertEntryNode',['../structchi_1_1GraphFunction.html#a0e722c9bae3101c4bb54ad9baae6f841',1,'chi::GraphFunction']]],
+  ['git',['Git',['../namespacechi.html#a0019cbd6ec4fd8ff0206bac877add0c1a0bcc70105ad279503e31fe7b3f47b665',1,'chi']]],
   ['graphfunction',['GraphFunction',['../structchi_1_1GraphFunction.html',1,'chi::GraphFunction'],['../structchi_1_1GraphFunction.html#a44459c33f26a8f4d9529619991988100',1,'chi::GraphFunction::GraphFunction()']]],
   ['graphfunction_2ecpp',['GraphFunction.cpp',['../GraphFunction_8cpp.html',1,'']]],
   ['graphfunction_2ehpp',['GraphFunction.hpp',['../GraphFunction_8hpp.html',1,'']]],
