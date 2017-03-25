@@ -47,8 +47,12 @@
 #include "chigraphnodemodel.hpp"
 #include "thememanager.hpp"
 
+MainWindow* MainWindow::mInstance = nullptr;
+
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	Q_INIT_RESOURCE(chigraphgui);
+	
+	mInstance = this;
 
 	// set icon
 	setWindowIcon(QIcon(":/icons/chigraphsmall.png"));
@@ -61,10 +65,8 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	auto modDetails = new ModuleDetails;
 	docker->setWidget(modDetails);
 	addDockWidget(Qt::LeftDockWidgetArea, docker);
-	connect(modDetails, &ModuleDetails::functionSelected, this, &MainWindow::newFunctionSelected);
+	connect(modDetails, &ModuleDetails::functionSelected, this, [this](chi::GraphFunction& func) { tabView().selectNewFunction(func); });
 	connect(this, &MainWindow::moduleOpened, modDetails, &ModuleDetails::loadModule);
-	connect(this, &MainWindow::newFunctionCreated, modDetails,
-	        [modDetails](chi::GraphFunction* func) { modDetails->loadModule(func->module()); });
 	auto dependencyUpdatedSlot = [this] {
 		auto count = mFunctionTabs->count();
 		for (auto idx = 0; idx < count; ++idx) {
@@ -79,7 +81,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		docker->setWindowTitle(i18n("Module Details") + " - " +
 		                       QString::fromStdString(mod.fullName()));
 	});
-	connect(modDetails, &ModuleDetails::dirtied, this, &MainWindow::moduleDirtied);
+	connect(modDetails, &ModuleDetails::dirtied, this, [this]{moduleDirtied(*currentModule());});
 
 	// setup module browser
 	mModuleBrowser = new ModuleBrowser(this);
@@ -91,21 +93,18 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(this, &MainWindow::workspaceOpened, mModuleBrowser, &ModuleBrowser::loadWorkspace);
 	connect(mModuleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
 	connect(this, &MainWindow::newModuleCreated, mModuleBrowser,
-	        [this](chi::GraphModule* mod) { mModuleBrowser->loadWorkspace(mod->context()); });
+	        [this](chi::GraphModule& mod) { mModuleBrowser->loadWorkspace(mod.context()); });
 	connect(this, &MainWindow::workspaceOpened, docker, [docker](chi::Context& ctx) {
 		docker->setWindowTitle(i18n("Modules") + " - " +
 		                       QString::fromStdString(ctx.workspacePath().string()));
 	});
-	connect(mModuleBrowser, &ModuleBrowser::discardChanges, this,
-	        [this](const std::string& moduleName) {
-		        discardChangesInModule(*context().moduleByFullName(moduleName));
-		    });
+	connect(mModuleBrowser, &ModuleBrowser::discardChanges, this, &MainWindow::discardChangesInModule);
 
 	mFunctionTabs = new FunctionTabView;
 	mFunctionTabs->setMovable(true);
 	mFunctionTabs->setTabsClosable(true);
+	connect(mFunctionTabs, &FunctionTabView::dirtied, this, &MainWindow::moduleDirtied);
 	insertChildClient(mFunctionTabs);
-	connect(mFunctionTabs, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
 
 	setCentralWidget(mFunctionTabs);
 
@@ -137,7 +136,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 			                               QString::fromStdString(funcView->function()->name()));
 		        }
 		    });
-	connect(functionDetails, &FunctionDetails::dirtied, this, &MainWindow::moduleDirtied);
+	connect(functionDetails, &FunctionDetails::dirtied, this, [this, functionDetails]{moduleDirtied(functionDetails->chiFunc()->module());});
 
 	/// load plugins
 	for (QObject* plugin : QPluginLoader::staticInstances()) {
@@ -309,36 +308,6 @@ void MainWindow::openModule(const QString& fullName) {
 
 }
 
-void MainWindow::newFunctionSelected(chi::GraphFunction* func) {
-	Expects(func);
-
-	QString qualifiedFunctionName =
-	    QString::fromStdString(func->module().fullName() + ":" + func->name());
-
-	// see if it's already open
-	auto funcViewIter = mOpenFunctions.find(qualifiedFunctionName);
-	if (funcViewIter != mOpenFunctions.end()) {
-		mFunctionTabs->setCurrentWidget(funcViewIter->second);
-		return;
-	}
-	// if it's not already open, we'll have to create our own
-
-	auto view                             = new FunctionView(this, func, mFunctionTabs);
-	int  idx                              = mFunctionTabs->addTab(view, qualifiedFunctionName);
-	mOpenFunctions[qualifiedFunctionName] = view;
-	mFunctionTabs->setTabText(idx, qualifiedFunctionName);
-	mFunctionTabs->setCurrentWidget(view);
-	connect(view, &FunctionView::dirtied, this, &MainWindow::moduleDirtied);
-
-	functionOpened(view);
-}
-
-void MainWindow::closeTab(int idx) {
-	mOpenFunctions.erase(std::find_if(mOpenFunctions.begin(), mOpenFunctions.end(), [&](auto& p) {
-		return p.second == mFunctionTabs->widget(idx);
-	}));
-	mFunctionTabs->removeTab(idx);
-}
 
 void MainWindow::newFunction() {
 	if (currentModule() == nullptr) {
@@ -354,8 +323,9 @@ void MainWindow::newFunction() {
 	    currentModule()->getOrCreateFunction(newName.toStdString(), {}, {}, {""}, {""});
 	func->getOrInsertEntryNode(0, 0, boost::uuids::random_generator()());
 
-	newFunctionCreated(func);
-	newFunctionSelected(func);  // open the newly created function
+	newFunctionCreated(*func);
+	
+	tabView().selectNewFunction(*func);  // open the newly created function
 }
 
 void MainWindow::newModule() {
@@ -382,15 +352,13 @@ void MainWindow::newModule() {
 
 	mod->saveToDisk();
 
-	newModuleCreated(mod);
+	newModuleCreated(*mod);
 	// then load the module
 	openModule(QString::fromStdString(mod->fullName()));
 }
 
-void MainWindow::moduleDirtied() {
-	if (!currentModule()) { return; }
-
-	mModuleBrowser->moduleDirtied(*currentModule());
+void MainWindow::moduleDirtied(chi::GraphModule& mod) {
+	mModuleBrowser->moduleDirtied(mod);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
@@ -425,43 +393,14 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 	KXmlGuiWindow::closeEvent(event);
 }
 
-void MainWindow::discardChangesInModule(chi::ChiModule& mod) {
+void MainWindow::discardChangesInModule(chi::GraphModule& mod) {
 	// mark it as clean
 	mModuleBrowser->moduleSaved(mod);
 
-	int currTabId = mFunctionTabs->currentIndex();
-
-	// close the function views
-	std::vector<std::pair<std::string, int>> functionNames;
-	for (const auto& pair : mOpenFunctions) {
-		if (&pair.second->function()->module() == &mod) {
-			auto idx = mFunctionTabs->indexOf(pair.second);
-			functionNames.emplace_back(pair.second->function()->name(), idx);
-			mFunctionTabs->removeTab(idx);
-		}
-	}
 
 	bool isCurrentModule = &mod == currentModule();
 
-	std::string fullName = mod.fullName();
-	context().unloadModule(fullName);
-
-	chi::ChiModule* cMod;
-	context().loadModule(fullName, &cMod);
-	chi::GraphModule* gMod = dynamic_cast<chi::GraphModule*>(cMod);
-
-	if (isCurrentModule) { openModule(QString::fromStdString(fullName)); }
-
-	// re-add the tabs in reverse order to keep the ids
-	for (auto iter = functionNames.rbegin(); iter != functionNames.rend(); ++iter) {
-		chi::GraphFunction* func = gMod->functionFromName(iter->first);
-		QString              qualifiedFunctionName =
-		    QString::fromStdString(gMod->fullName() + ":" + func->name());
-		auto view = new FunctionView(this, func);
-		mFunctionTabs->insertTab(iter->second, view, qualifiedFunctionName);
-		mOpenFunctions[qualifiedFunctionName] = view;
-		connect(view, &FunctionView::dirtied, this, &MainWindow::moduleDirtied);
-	}
-
-	mFunctionTabs->setCurrentIndex(currTabId);
+	tabView().refreshModule(mod);
+	
+	if (isCurrentModule) { openModule(QString::fromStdString(mod.fullName())); }
 }

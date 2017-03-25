@@ -9,6 +9,8 @@
 
 #include "toolview.hpp"
 
+#include <chi/Fwd.hpp>
+
 class FunctionView;
 class FunctionInOuts;
 class LocalVariables;
@@ -30,6 +32,8 @@ public:
 	QString label() override {
 		return i18n("Function Details");
 	}
+	
+	chi::GraphFunction* chiFunc() const;
 	
 	
 public:

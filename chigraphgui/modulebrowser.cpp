@@ -55,7 +55,13 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
 		auto castedItem = dynamic_cast<ModuleTreeItem*>(item);
 		if (!castedItem || !castedItem->dirty) { return; }
 		
-		discardChanges(castedItem->mName.string());
+		// get the module
+		auto mod = mContext->moduleByFullName(castedItem->mName.string());
+		if (!mod) {return;}
+		auto casted = dynamic_cast<chi::GraphModule*>(mod);
+		if(!casted){return;}
+		
+		discardChanges(*casted);
 	});
 	actionCollection()->addAction(QStringLiteral("discard-changes"), mDiscardChangesAction);
 	
@@ -149,19 +155,19 @@ void ModuleBrowser::loadWorkspace(chi::Context& context) {
 	}
 }
 
-void ModuleBrowser::moduleDirtied(chi::ChiModule& dirtied) {
+void ModuleBrowser::moduleDirtied(chi::GraphModule& dirtied) {
 	mDirtyModules.insert(&dirtied);
 
 	updateDirtyStatus(dirtied, true);
 }
 
-void ModuleBrowser::moduleSaved(chi::ChiModule& saved) {
+void ModuleBrowser::moduleSaved(chi::GraphModule& saved) {
 	mDirtyModules.erase(&saved);
 
 	updateDirtyStatus(saved, false);
 }
 
-void ModuleBrowser::updateDirtyStatus(chi::ChiModule& updated, bool dirty) {
+void ModuleBrowser::updateDirtyStatus(chi::GraphModule& updated, bool dirty) {
 	auto iter = mItems.find(updated.fullName());
 
 	if (iter == mItems.end()) { return; }

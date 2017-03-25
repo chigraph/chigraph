@@ -6,9 +6,10 @@
 #include <QVBoxLayout>
 
 #include "functioninouts.hpp"
+#include "functionview.hpp"
 #include "localvariables.hpp"
 
-FunctionDetails::FunctionDetails(QWidget* parent) {
+FunctionDetails::FunctionDetails(QWidget* parent) : QWidget{parent} {
 	setXMLFile("chigraphfunctiondetailsui.rc");
 	
 	auto layout = new QVBoxLayout;
@@ -64,3 +65,11 @@ void FunctionDetails::loadFunction(FunctionView* funcView) {
 	mInOuts->loadFunction(funcView);
 	mLocals->loadFunction(funcView);
 }
+
+chi::GraphFunction* FunctionDetails::chiFunc() const {
+    if (mFunction) {
+        return mFunction->function();
+    }
+    return nullptr;
+}
+

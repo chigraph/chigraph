@@ -18,7 +18,7 @@ public:
 	void loadModule(chi::GraphModule& module);
 
 signals:
-	void functionSelected(chi::GraphFunction* func);
+	void functionSelected(chi::GraphFunction& func);
 	void dependencyAdded(const QString& name);
 	void dependencyRemoved(const QString& name);
 	void dirtied();
