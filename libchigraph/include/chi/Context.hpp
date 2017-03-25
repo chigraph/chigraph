@@ -28,10 +28,14 @@
 #include <boost/optional.hpp>
 
 namespace chi {
-	
+
+/// Settings for loading modules
 enum LoadSettings {
+	/// default, just load from disk
 	Default = 0u,
+	/// fetch the repository that's being loaded
 	Fetch = 1u,
+	/// also fetch dependencies
 	FetchRecursive = Fetch | 1u << 1,
 };
 
