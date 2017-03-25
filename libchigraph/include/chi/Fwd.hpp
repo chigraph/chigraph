@@ -21,4 +21,20 @@ struct Result;
 struct DataType;
 }
 
+// some basic LLVM stuff to make compiles speedy quick
+namespace llvm {
+class Module;
+class LLVMContext;
+class Type;
+class DIType;
+class DIBuilder;
+class DICompileUnit;
+class Function;
+class FunctionType;
+class BasicBlock;
+class DebugLoc;
+class Value;
+class GenericValue;
+}
+
 #endif  // CHI_FWD_HPP

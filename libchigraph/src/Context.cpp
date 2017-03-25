@@ -1,5 +1,6 @@
 /// \file Context.cpp
 
+#include "chi/Context.hpp"
 #include "chi/CModule.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
@@ -7,9 +8,11 @@
 #include "chi/JsonDeserializer.hpp"
 #include "chi/LangModule.hpp"
 #include "chi/NodeInstance.hpp"
+#include "chi/Result.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/SectionMemoryManager.h>
+#include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/TargetRegistry.h>
@@ -335,8 +338,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			}
 
 			// get the head commit
-			git_oid* parent_headoid;
-			err = git_reference_name_to_id(parent_headoid, repo, "HEAD");
+			git_oid parent_headoid;
+			err = git_reference_name_to_id(&parent_headoid, repo, "HEAD");
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to get reference to HEAD",
@@ -345,7 +348,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			}
 
 			git_commit* head_parent;
-			err = git_commit_lookup(&head_parent, repo, parent_headoid);
+			err = git_commit_lookup(&head_parent, repo, &parent_headoid);
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to get commit from oid",

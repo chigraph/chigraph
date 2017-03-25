@@ -7,6 +7,7 @@
 #include <QTableView>
 
 #include <chi/GraphModule.hpp>
+#include <chi/Context.hpp>
 
 class FunctionView;
 

@@ -3,6 +3,9 @@
 #include "chi/NodeInstance.hpp"
 #include "chi/FunctionValidator.hpp"
 #include "chi/GraphFunction.hpp"
+#include "chi/NodeType.hpp"
+#include "chi/DataType.hpp"
+#include "chi/Result.hpp"
 
 #include <gsl/gsl>
 
@@ -46,6 +49,8 @@ NodeInstance::NodeInstance(const NodeInstance& other, boost::uuids::uuid id)
 	inputExecConnections.resize(type().execInputs().size(), {});
 	outputExecConnections.resize(type().execOutputs().size(), {nullptr, ~0ull});
 }
+
+NodeInstance::~NodeInstance() = default;
 
 void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 	// delete exec connections that are out of range

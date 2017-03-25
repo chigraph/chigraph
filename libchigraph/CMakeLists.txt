@@ -43,6 +43,8 @@ set(CHI_PRIVATE_FILES
 	src/JsonDeserializer.cpp
 	src/JsonSerializer.cpp
 	src/GraphStruct.cpp
+	src/NodeType.cpp
+	src/DataType.cpp
 )
 
 
@@ -91,7 +93,6 @@ link_directories(${CLANG_LIB_DIR})
 
 target_link_libraries(chigraph
 PUBLIC
-	libexecstream
 	boost_filesystem
 	git2
 	${LLVM_LD_FLAGS_LIST}

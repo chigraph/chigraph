@@ -2,7 +2,11 @@
 
 #include "chi/LangModule.hpp"
 #include "chi/NodeType.hpp"
+#include "chi/DataType.hpp"
+#include "chi/Result.hpp"
+#include "chi/Context.hpp"
 
+#include <llvm/IR/Module.h>
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/DebugInfoMetadata.h>
@@ -883,4 +887,6 @@ DataType LangModule::typeFromName(boost::string_view name) {
 	return DataType{this, name.to_string(), ty, iter->second};
 }
 
+
+Result LangModule::generateModule(llvm::Module&){ return {}; }
 }  // namespace chi

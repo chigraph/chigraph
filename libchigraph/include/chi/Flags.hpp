@@ -3,6 +3,8 @@
 #ifndef CHI_FLAGS_HPP
 #define CHI_FLAGS_HPP
 
+#include <type_traits>
+
 namespace chi {
 
 /// A template class for type-safe flags

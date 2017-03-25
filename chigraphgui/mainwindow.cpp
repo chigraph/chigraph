@@ -38,6 +38,8 @@
 #include <chi/GraphModule.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/json.hpp>
+#include <chi/Result.hpp>
+#include <chi/DataType.hpp>
 
 #include <llvm/Support/raw_ostream.h>
 
