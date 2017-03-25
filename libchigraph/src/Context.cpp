@@ -183,7 +183,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		
 		// open the repository
 		git_repository* repo;
-		int err = git_repository_open(&repo, repoPath.c_str());
+		int err = git_repository_open(&repo, repoPath.string().c_str());
 		if (err != 0) {
 			res.addEntry("EUKN", "Failed to open git repository", {{"Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
 			return res;
@@ -370,7 +370,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		
 		// clone it
 		git_repository* repo;
-		int err = git_clone(&repo, url.c_str(), absCloneInto.c_str(), nullptr);
+		int err = git_clone(&repo, url.c_str(), absCloneInto.string().c_str(), nullptr);
 		
 		// check for error
 		if (err != 0) {
