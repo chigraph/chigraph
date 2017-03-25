@@ -85,8 +85,15 @@ std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
 	return moduleList;
 }
 
-Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
+Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, ChiModule** toFill) {
 	Result res;
+	
+	if (settings & LoadSettings::Fetch) {
+		res += fetchModule(name, bool(settings & LoadSettings::FetchRecursive));
+		if (!res) {
+			return res;
+		}
+	}
 	
 	// check for built-in modules
 	if (name == "lang") {
