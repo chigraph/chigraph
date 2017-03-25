@@ -2,7 +2,6 @@
 #define CHI_HASH_UUID
 
 #include <boost/uuid/uuid.hpp>
-
 #include <functional>
 
 namespace std {

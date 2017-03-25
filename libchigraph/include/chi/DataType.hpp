@@ -6,9 +6,9 @@
 #ifndef CHI_DATA_TYPE_HPP
 #define CHI_DATA_TYPE_HPP
 
-#include "chi/ChiModule.hpp"
+#include "chi/Fwd.hpp"
 
-#include <llvm/IR/Type.h>
+#include <string>
 
 namespace chi {
 /// A type of data
@@ -31,7 +31,7 @@ struct DataType {
 	const std::string& unqualifiedName() const { return mName; }
 	/// Get the qualified name of the type (module().fullName() + ":" name())
 	/// \return The qualified name
-	std::string qualifiedName() const { return module().fullName() + ":" + unqualifiedName(); }
+	std::string qualifiedName() const;
 	/// Get the underlying \c llvm::Type
 	/// \return the \c llvm::Type
 	llvm::Type* llvmType() const { return mLLVMType; }

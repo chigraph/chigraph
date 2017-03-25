@@ -5,6 +5,9 @@
 #include "../src/NodeGraphicsObject.hpp"
 
 #include <chi/CModule.hpp>
+#include <chi/Context.hpp>
+#include <chi/DataType.hpp>
+#include <chi/Result.hpp>
 
 #include <KActionCollection>
 #include <KTextEditor/Document>

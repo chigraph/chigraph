@@ -6,16 +6,14 @@
 
 #pragma once
 
-#include "chi/Context.hpp"
-#include "chi/DataType.hpp"
-#include "chi/Result.hpp"
+#include <vector>
+#include <unordered_map>
+#include <memory>
 
-#include <iterator>
-#include <utility>
+#include "chi/Fwd.hpp"
+#include "chi/json.hpp"
 
-#include <llvm/IR/DIBuilder.h>
-#include <llvm/IR/Function.h>
-#include <llvm/IR/Value.h>
+#include <gsl/span>
 
 namespace chi {
 /// A generic node type. All user made types are of JsonNo  deType type, which is defined in
@@ -29,17 +27,13 @@ public:
 	/// \param mod The module to create the NodeType in
 	/// \param name The name of the NodeType
 	/// \param description The description of the NodeType
-	NodeType(ChiModule& mod, std::string name = {}, std::string description = {})
-	    : mModule{&mod},
-	      mContext{&mod.context()},
-	      mName{std::move(name)},
-	      mDescription{std::move(description)} {}
+	NodeType(ChiModule& mod, std::string name = {}, std::string description = {});
 	/// Destructor
-	virtual ~NodeType() = default;
+	virtual ~NodeType();
 
 	/// Get the qualified name of the node type, like module.name():name()
 	/// \return The qualified name
-	std::string qualifiedName() const { return module().fullName() + ":" + name(); }
+	std::string qualifiedName() const;
 	/// A virtual function that is called when this node needs to be called
 	/// \param execInputID The ID of the exec input
 	/// \param nodeLocation The location of the node
@@ -96,28 +90,24 @@ public:
 protected:
 	/// Set the data inputs for the NodeType
 	/// \param newInputs The new inputs
-	void setDataInputs(std::vector<NamedDataType> newInputs) { mDataInputs = std::move(newInputs); }
+	void setDataInputs(std::vector<NamedDataType> newInputs);
 	/// Set the data outputs for the NodeType
 	/// \param newOutputs The new outputs
-	void setDataOutputs(std::vector<NamedDataType> newOutputs) {
-		mDataOutputs = std::move(newOutputs);
-	}
+	void setDataOutputs(std::vector<NamedDataType> newOutputs);
 	/// Set the exec inputs for the NodeType
 	/// \param newInputs The new inputs
-	void setExecInputs(std::vector<std::string> newInputs) { mExecInputs = std::move(newInputs); }
+	void setExecInputs(std::vector<std::string> newInputs);
 	/// Set the exec outputs for the NodeType
 	/// \param newOutputs The new outputs
-	void setExecOutputs(std::vector<std::string> newOutputs) {
-		mExecOutputs = std::move(newOutputs);
-	}
+	void setExecOutputs(std::vector<std::string> newOutputs);
 
 	/// Set the name of the type
 	/// \param newName The new name
-	void setName(std::string newName) { mName = std::move(newName); }
+	void setName(std::string newName);
 
 	/// Set the description of the node
 	/// \param newDesc The new description
-	void setDescription(std::string newDesc) { mDescription = std::move(newDesc); }
+	void setDescription(std::string newDesc);
 
 	/// Make this node pure
 	/// For more info on what this means, see https://en.wikipedia.org/wiki/Pure_function
@@ -126,16 +116,11 @@ protected:
 	/// Pure nodes only have no inexecs and no outexecs
 	/// When they are called they are backpropagated and all called
 	/// They should usually be cheap and sideaffectless
-	void makePure() {
-		setExecInputs({});
-		setExecOutputs({});
-
-		mPure = true;
-	}
+	void makePure();
 
 	/// Get the node instance
 	/// \return the node instance
-	NodeInstance* nodeInstance() const { return mNodeInstance; }
+	NodeInstance* nodeInstance() const;
 
 private:
 	ChiModule*  mModule;

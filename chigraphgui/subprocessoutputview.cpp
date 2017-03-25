@@ -20,6 +20,7 @@
 #include <boost/filesystem.hpp>
 
 #include <chi/Result.hpp>
+#include <chi/Context.hpp>
 
 SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(module) {
 	// compile!

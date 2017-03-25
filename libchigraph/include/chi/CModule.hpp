@@ -12,9 +12,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "chi/ChiModule.hpp"
 #include "chi/Fwd.hpp"
-#include "chi/NodeType.hpp"
+#include "chi/ChiModule.hpp"
 #include "chi/json.hpp"
 
 namespace chi {
@@ -31,7 +30,7 @@ struct CModule : ChiModule {
 	DataType typeFromName(boost::string_view name) override;
 	std::vector<std::string> nodeTypeNames() const override { return {"func"}; }
 	std::vector<std::string> typeNames() const override { return {}; }
-	Result                   generateModule(llvm::Module& /*module*/) override { return {}; }
+	Result                   generateModule(llvm::Module& /*module*/) override;
 
 	/// Set extra arguments to pass to clang for generating C code
 	/// \param extraArgs The new extra arguments

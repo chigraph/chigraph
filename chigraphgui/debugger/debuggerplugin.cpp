@@ -1,5 +1,7 @@
 #include "debuggerplugin.hpp"
 
+#include <chi/Result.hpp>
+
 #include <KActionCollection>
 #include <KLocalizedString>
 

@@ -4,6 +4,9 @@
 #include <chi/DataType.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/NodeType.hpp>
+#include <chi/Result.hpp>
+
+#include <llvm/IR/DerivedTypes.h>
 
 using namespace chi;
 

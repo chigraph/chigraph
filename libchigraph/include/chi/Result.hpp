@@ -6,10 +6,7 @@
 
 #pragma once
 
-#include "chi/ToString.hpp"
 #include "chi/json.hpp"
-
-#include <gsl/gsl>
 
 namespace chi {
 /// The result object, used for identifiying errors with good diagnostics
@@ -78,13 +75,7 @@ struct Result {
 	/// \param overview Basic overview of the error, this shouldn't change based on the instance of
 	/// the error
 	/// \param data The detailed description this instance of the error
-	void addEntry(const char* ec, const char* overview, nlohmann::json data) {
-		Expects(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
-
-		result_json.push_back(
-		    nlohmann::json({{"errorcode", ec}, {"overview", overview}, {"data", data}}));
-		if (ec[0] == 'E') success = false;
-	}
+	void addEntry(const char* ec, const char* overview, nlohmann::json data);
 
 	/// The result JSON
 	nlohmann::json result_json;

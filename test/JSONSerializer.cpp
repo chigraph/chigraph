@@ -6,6 +6,9 @@
 #include <chi/JsonSerializer.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/NodeInstance.hpp>
+#include <chi/Result.hpp>
+#include <chi/DataType.hpp>
+#include <chi/NodeType.hpp>
 
 #include <boost/uuid/uuid_io.hpp>
 

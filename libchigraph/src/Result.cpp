@@ -2,6 +2,8 @@
 
 #include "chi/Result.hpp"
 
+#include <gsl/gsl_assert>
+
 namespace {
 
 /// \internal
@@ -41,6 +43,14 @@ std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 
 namespace chi {
 
+void Result::addEntry(const char* ec, const char* overview, nlohmann::json data) {
+	Expects(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
+
+	result_json.push_back(
+		nlohmann::json({{"errorcode", ec}, {"overview", overview}, {"data", data}}));
+	if (ec[0] == 'E') success = false;
+}
+	
 std::string Result::dump() const {
 	std::string ret;
 	if (result_json.size() != 0) {

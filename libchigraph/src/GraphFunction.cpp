@@ -5,6 +5,10 @@
 #include "chi/GraphModule.hpp"
 #include "chi/NameMangler.hpp"
 #include "chi/NodeInstance.hpp"
+#include "chi/NodeType.hpp"
+#include "chi/Result.hpp"
+#include "chi/Context.hpp"
+#include "chi/DataType.hpp"
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/DIBuilder.h>
