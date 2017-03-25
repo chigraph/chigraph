@@ -4,7 +4,7 @@ var structchi_1_1LangModule =
     [ "~LangModule", "structchi_1_1LangModule.html#a3a4d292ffc95e6aecfde097e96811904", null ],
     [ "addDependency", "structchi_1_1LangModule.html#aab11d61e0c0138e5fc5ce176c20e3bec", null ],
     [ "context", "structchi_1_1LangModule.html#a5c28c9fe74ad3cb704b613843b267512", null ],
-    [ "dependencies", "structchi_1_1LangModule.html#a049b38139577f02a6c19d260010efeff", null ],
+    [ "dependencies", "structchi_1_1LangModule.html#a9c0d4b1b54bca0194ea4061ae4883779", null ],
     [ "fullName", "structchi_1_1LangModule.html#a92ab6d528ac41a91b6ac21ededfccc38", null ],
     [ "fullNamePath", "structchi_1_1LangModule.html#aa47d2903bf43aa7b80740ebf91570fcf", null ],
     [ "generateModule", "structchi_1_1LangModule.html#a34b200310ad5df72251bc40486e6eb8f", null ],

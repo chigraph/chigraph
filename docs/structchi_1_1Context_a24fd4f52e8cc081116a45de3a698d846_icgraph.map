@@ -1,15 +1,10 @@
 <map id="chi::Context::workspacePath" name="chi::Context::workspacePath">
-<area shape="rect" id="node2" href="$structchi_1_1Context.html#a79e291c879b4017b47ef9605e1e638ba" title="Check if this context has a workspace bound to it – same as !workspacePath().empty() ..." alt="" coords="243,5,429,32"/>
-<area shape="rect" id="node3" href="$structchi_1_1Context.html#a8a16da32d939654600ac50084381e054" title="Get the list of modules in the workspace. " alt="" coords="253,57,419,98"/>
-<area shape="rect" id="node4" href="$structchi_1_1Context.html#a844bdec56838399cb4d7a5f7ea223834" title="Load a module from disk. " alt="" coords="253,123,419,149"/>
-<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#a1c1a23b9aa7967948e97dc9650099188" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="251,186,421,227"/>
-<area shape="rect" id="node5" href="$structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="477,109,687,136"/>
-<area shape="rect" id="node6" href="$structchi_1_1ChiModule.html#a049b38139577f02a6c19d260010efeff" title="Get the dependencies. " alt="" coords="741,59,937,85"/>
-<area shape="rect" id="node10" href="$structchi_1_1GraphModule.html#a1f776646b9c9bdd615f7e35cebf7760a" title="Construct a GraphModule. " alt="" coords="735,109,944,136"/>
-<area shape="rect" id="node7" href="$structchi_1_1Context.html#ad535dc768a4386dbd06c8b769c5d549f" title="Compile a module to a llvm::Module. " alt="" coords="992,59,1179,85"/>
-<area shape="rect" id="node8" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1003,109,1167,136"/>
-<area shape="rect" id="node9" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="1227,135,1428,161"/>
-<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#a9b73bbbfa91d6a2f92bcca270bdb7b2f" title="Generate a llvm::Module from the module. " alt="" coords="491,211,673,253"/>
-<area shape="rect" id="node13" href="$classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" title="Set a breakpoint on a given node. " alt="" coords="487,277,677,304"/>
-<area shape="rect" id="node14" href="$classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" title="Check if the process is executing. " alt="" coords="763,277,915,304"/>
+<area shape="rect" id="node2" href="$structchi_1_1Context.html#adb50cef8d976f87057394192cb02b8ff" title="Downloads a module from a remote URL, currently supports. " alt="" coords="251,5,421,32"/>
+<area shape="rect" id="node3" href="$structchi_1_1Context.html#a79e291c879b4017b47ef9605e1e638ba" title="Check if this context has a workspace bound to it – same as !workspacePath().empty() ..." alt="" coords="243,56,429,83"/>
+<area shape="rect" id="node4" href="$structchi_1_1Context.html#a8a16da32d939654600ac50084381e054" title="Get the list of modules in the workspace. " alt="" coords="253,107,419,149"/>
+<area shape="rect" id="node5" href="$structchi_1_1GraphModule.html#a1c1a23b9aa7967948e97dc9650099188" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="251,173,421,214"/>
+<area shape="rect" id="node6" href="$structchi_1_1GraphModule.html#a9b73bbbfa91d6a2f92bcca270bdb7b2f" title="Generate a llvm::Module from the module. " alt="" coords="487,114,669,155"/>
+<area shape="rect" id="node7" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="477,180,679,207"/>
+<area shape="rect" id="node8" href="$classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" title="Set a breakpoint on a given node. " alt="" coords="483,231,673,257"/>
+<area shape="rect" id="node9" href="$classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" title="Check if the process is executing. " alt="" coords="727,231,879,257"/>
 </map>

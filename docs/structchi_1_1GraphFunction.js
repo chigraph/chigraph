@@ -26,6 +26,7 @@ var structchi_1_1GraphFunction =
     [ "localVariables", "structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d", null ],
     [ "module", "structchi_1_1GraphFunction.html#a0564412e260698bdb3872d3d12dfc3bc", null ],
     [ "name", "structchi_1_1GraphFunction.html#a89069f6e08f71cfbafb245ea16c8d69f", null ],
+    [ "nodeByID", "structchi_1_1GraphFunction.html#acb3281f6b313b7070efb0ee84b937523", null ],
     [ "nodes", "structchi_1_1GraphFunction.html#aa5985d96d7564d7ee7f240fdb02b41a6", null ],
     [ "nodes", "structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d", null ],
     [ "nodesWithType", "structchi_1_1GraphFunction.html#a56ba667341ecc6fce1e290cce6aedf53", null ],

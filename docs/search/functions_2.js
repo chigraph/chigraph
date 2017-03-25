@@ -5,7 +5,7 @@ var searchData=
   ['datatype',['dataType',['../structchi_1_1GraphStruct.html#a27c5062196f73eae3125c0baeb592d00',1,'chi::GraphStruct::dataType()'],['../structchi_1_1DataType.html#a58eb461d78248b61f130ec425aaef0c8',1,'chi::DataType::DataType()']]],
   ['debugger',['Debugger',['../classchi_1_1Debugger.html#aaf3ba6d73ee9ccc016c87a58a5e0ffbe',1,'chi::Debugger']]],
   ['debugtype',['debugType',['../structchi_1_1DataType.html#a0d2b86be8cd74291255e8491e548f4de',1,'chi::DataType']]],
-  ['dependencies',['dependencies',['../structchi_1_1ChiModule.html#a049b38139577f02a6c19d260010efeff',1,'chi::ChiModule']]],
+  ['dependencies',['dependencies',['../structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779',1,'chi::ChiModule']]],
   ['description',['description',['../structchi_1_1GraphFunction.html#ad261ccd66a6fcbf6492cf6565e365d0e',1,'chi::GraphFunction::description()'],['../structchi_1_1NodeType.html#ad95669e221be70492040bc125f8f6d45',1,'chi::NodeType::description()']]],
   ['disconnectdata',['disconnectData',['../namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e',1,'chi']]],
   ['disconnectexec',['disconnectExec',['../namespacechi.html#a103b99abd766aa4d303a5004fe783c03',1,'chi']]],

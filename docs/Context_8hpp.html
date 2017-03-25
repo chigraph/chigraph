@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('Context_8hpp.html','');});
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Context.hpp File Reference</div>  </div>
@@ -101,6 +102,7 @@ $(document).ready(function(){initNavTree('Context_8hpp.html','');});
 <code>#include &quot;<a class="el" href="Fwd_8hpp_source.html">chi/Fwd.hpp</a>&quot;</code><br />
 <code>#include &quot;chi/ToString.hpp&quot;</code><br />
 <code>#include &quot;chi/json.hpp&quot;</code><br />
+<code>#include &quot;chi/Flags.hpp&quot;</code><br />
 <code>#include &lt;llvm/ExecutionEngine/GenericValue.h&gt;</code><br />
 <code>#include &lt;llvm/IR/LLVMContext.h&gt;</code><br />
 <code>#include &lt;llvm/IR/Module.h&gt;</code><br />
@@ -114,14 +116,16 @@ $(document).ready(function(){initNavTree('Context_8hpp.html','');});
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8hpp__incl.svg" width="100%" height="462"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8hpp__incl.svg" width="100%" height="462"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> This graph shows which files directly or indirectly include this file:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8hpp__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8hpp__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="Context_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -138,6 +142,26 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacechi"><td class="mdescLeft">&#160;</td><td class="mdescRight">The namespace where chigraph lives. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:afebbb378de318c4fa51d00aa659872c9"><td class="memItemLeft" align="right" valign="top"><a id="afebbb378de318c4fa51d00aa659872c9"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>LoadSettings</b> { <br />
+&#160;&#160;<b>Default</b> = 0u, 
+<br />
+&#160;&#160;<b>Fetch</b> = 1u, 
+<br />
+&#160;&#160;<b>FetchRecursive</b> = Fetch | 1u &lt;&lt; 1
+<br />
+ }</td></tr>
+<tr class="separator:afebbb378de318c4fa51d00aa659872c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0019cbd6ec4fd8ff0206bac877add0c1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#a0019cbd6ec4fd8ff0206bac877add0c1">chi::VCSType</a> { <br />
+&#160;&#160;<a class="el" href="namespacechi.html#a0019cbd6ec4fd8ff0206bac877add0c1a0bcc70105ad279503e31fe7b3f47b665">chi::VCSType::Git</a>, 
+<br />
+&#160;&#160;<b>Unknown</b>
+<br />
+ }<tr class="memdesc:a0019cbd6ec4fd8ff0206bac877add0c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Version Control Types.  <a href="namespacechi.html#a0019cbd6ec4fd8ff0206bac877add0c1">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a0019cbd6ec4fd8ff0206bac877add0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a7e61e4cd27bcf0a9e891f1b2c676f5e9"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#a7e61e4cd27bcf0a9e891f1b2c676f5e9">chi::interpretLLVMIR</a> (std::unique_ptr&lt; llvm::Module &gt; mod, llvm::CodeGenOpt::Level optLevel=llvm::CodeGenOpt::Default, std::vector&lt; llvm::GenericValue &gt; args={}, llvm::Function *funcToRun=nullptr, llvm::GenericValue *ret=nullptr)</td></tr>
@@ -146,6 +170,9 @@ Functions</h2></td></tr>
 <tr class="memitem:adc5f3044ad1373c5c3034ff81add867d"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#adc5f3044ad1373c5c3034ff81add867d">chi::interpretLLVMIRAsMain</a> (std::unique_ptr&lt; llvm::Module &gt; mod, llvm::CodeGenOpt::Level optLevel=llvm::CodeGenOpt::Default, std::vector&lt; std::string &gt; args={}, llvm::Function *funcToRun=nullptr, int *ret=nullptr)</td></tr>
 <tr class="memdesc:adc5f3044ad1373c5c3034ff81add867d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpret LLVM IR as if it were the main function.  <a href="namespacechi.html#adc5f3044ad1373c5c3034ff81add867d">More...</a><br /></td></tr>
 <tr class="separator:adc5f3044ad1373c5c3034ff81add867d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad94beb8170e5325e9c41ae21be40f504"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; VCSType, std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#ad94beb8170e5325e9c41ae21be40f504">chi::resolveUrlFromModuleName</a> (const boost::filesystem::path &amp;path)</td></tr>
+<tr class="memdesc:ad94beb8170e5325e9c41ae21be40f504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the URL for a VCS repository from a module name.  <a href="namespacechi.html#ad94beb8170e5325e9c41ae21be40f504">More...</a><br /></td></tr>
+<tr class="separator:ad94beb8170e5325e9c41ae21be40f504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29ff9f3364b9ad0f25a990b8373971b4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#a29ff9f3364b9ad0f25a990b8373971b4">chi::stringifyLLVMType</a> (llvm::Type *ty)</td></tr>
 <tr class="memdesc:a29ff9f3364b9ad0f25a990b8373971b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns a type into a string.  <a href="namespacechi.html#a29ff9f3364b9ad0f25a990b8373971b4">More...</a><br /></td></tr>
 <tr class="separator:a29ff9f3364b9ad0f25a990b8373971b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,7 +190,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_34e10b5b492257989639aef8a1d83500.html">libchigraph</a></li><li class="navelem"><a class="el" href="dir_75c0988e4ae6b2079d4f109cef45c903.html">include</a></li><li class="navelem"><a class="el" href="dir_60466ddfe13da60bd53dc7b440efbf98.html">chi</a></li><li class="navelem"><a class="el" href="Context_8hpp.html">Context.hpp</a></li>
-    <li class="footer">Generated on Wed Mar 22 2017 09:06:06 for chigraph by
+    <li class="footer">Generated on Sat Mar 25 2017 15:53:13 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
