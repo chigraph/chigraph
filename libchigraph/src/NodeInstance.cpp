@@ -1,10 +1,10 @@
 /// \file NodeInstance.cpp
 
 #include "chi/NodeInstance.hpp"
+#include "chi/DataType.hpp"
 #include "chi/FunctionValidator.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/NodeType.hpp"
-#include "chi/DataType.hpp"
 #include "chi/Result.hpp"
 
 #include <gsl/gsl>

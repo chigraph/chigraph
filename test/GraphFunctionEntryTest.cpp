@@ -6,8 +6,8 @@
 #include <chi/GraphStruct.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/NodeInstance.hpp>
-#include <chi/Result.hpp>
 #include <chi/NodeType.hpp>
+#include <chi/Result.hpp>
 
 using namespace chi;
 using namespace nlohmann;

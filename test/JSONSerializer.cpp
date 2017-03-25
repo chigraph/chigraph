@@ -1,14 +1,14 @@
 #include "catch.hpp"
 
 #include <chi/Context.hpp>
+#include <chi/DataType.hpp>
 #include <chi/GraphFunction.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/JsonSerializer.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/NodeInstance.hpp>
-#include <chi/Result.hpp>
-#include <chi/DataType.hpp>
 #include <chi/NodeType.hpp>
+#include <chi/Result.hpp>
 
 #include <boost/uuid/uuid_io.hpp>
 

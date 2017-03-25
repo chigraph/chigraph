@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <chi/Fwd.hpp>
 #include <chi/ChiModule.hpp>
+#include <chi/Fwd.hpp>
 
 #include <boost/bimap.hpp>
 

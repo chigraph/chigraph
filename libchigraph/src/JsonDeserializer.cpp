@@ -4,8 +4,8 @@
 #include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
 #include "chi/NodeInstance.hpp"
-#include "chi/Result.hpp"
 #include "chi/NodeType.hpp"
+#include "chi/Result.hpp"
 
 namespace chi {
 
