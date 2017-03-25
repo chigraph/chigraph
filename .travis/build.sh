@@ -22,9 +22,10 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	fi
 
 	ninja
-	if [ "$LLVM_VERSION" == "3.9"]
-	CTEST_OUTPUT_ON_FAILURE=1 ninja test
-
+	if [ "$LLVM_VERSION" == "3.9"]; then
+		CTEST_OUTPUT_ON_FAILURE=1 ninja test
+	fi
+	
 	if [ -n "$TEST_COV" ]; then 
 		pip install --user cpp-coveralls 
 		coveralls --exclude /usr --exclude third_party --exclude gui --exclude test --exclude build --include libchig --include chig --exclude libchig/include/chig/json.hpp    
