@@ -501,7 +501,7 @@ struct CompareNodeType : NodeType {
 				case CmpOp::Lt: return builder.CreateICmpSLT(io[0], io[1]);
 				case CmpOp::Gt: return builder.CreateICmpSGT(io[0], io[1]);
 				case CmpOp::Let: return builder.CreateICmpSLE(io[0], io[1]);
-				case CmpOp::Get: return builder.CreateICmpSLE(io[0], io[1]);
+				case CmpOp::Get: return builder.CreateICmpSGE(io[0], io[1]);
 				case CmpOp::Eq: return builder.CreateICmpEQ(io[0], io[1]);
 				case CmpOp::Neq: return builder.CreateICmpNE(io[0], io[1]);
 				default: return nullptr;
@@ -515,7 +515,7 @@ struct CompareNodeType : NodeType {
 				case CmpOp::Lt: return builder.CreateFCmpULT(io[0], io[1]);
 				case CmpOp::Gt: return builder.CreateFCmpUGT(io[0], io[1]);
 				case CmpOp::Let: return builder.CreateFCmpULE(io[0], io[1]);
-				case CmpOp::Get: return builder.CreateFCmpULE(io[0], io[1]);
+				case CmpOp::Get: return builder.CreateFCmpUGE(io[0], io[1]);
 				case CmpOp::Eq: return builder.CreateFCmpUEQ(io[0], io[1]);
 				case CmpOp::Neq: return builder.CreateFCmpUNE(io[0], io[1]);
 				default: return nullptr;
