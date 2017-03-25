@@ -8,24 +8,15 @@
 
 #include <memory>
 #include <unordered_map>
-#include <unordered_set>
 
-#include "chi/Flags.hpp"
 #include "chi/Fwd.hpp"
-#include "chi/ToString.hpp"
+#include "chi/Flags.hpp"
 #include "chi/json.hpp"
 
-#include <llvm/ExecutionEngine/GenericValue.h>
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
-#include <llvm/IR/Type.h>
-
-#include <gsl/gsl>
+#include <llvm/Support/CodeGen.h> // for CodeGenOpt
 
 #include <boost/utility/string_view.hpp>
-
 #include <boost/filesystem.hpp>
-#include <boost/optional.hpp>
 
 namespace chi {
 
@@ -105,7 +96,6 @@ struct Context {
 	                         GraphModule** toFill = nullptr);
 
 	/// Adds a custom module to the Context
-	/// This usually doesn't get called, use the \c gsl::string_span<> overload instead
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
 	/// \return True if the module was added (it didn't exist before)
 	bool addModule(std::unique_ptr<ChiModule> modToAdd) noexcept;

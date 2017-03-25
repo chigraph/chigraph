@@ -7,7 +7,7 @@
 #pragma once
 
 #include "chi/ChiModule.hpp"
-#include "chi/Result.hpp"
+#include "chi/Fwd.hpp"
 
 #include <unordered_map>
 
@@ -39,7 +39,7 @@ struct LangModule : ChiModule {
 		return {"i32", "i1", "float", "i8*"};  // TODO: do i need more?
 	}
 
-	Result generateModule(llvm::Module& /*module*/) override { return {}; };
+	Result generateModule(llvm::Module& /*module*/) override;
 
 private:
 	std::unordered_map<std::string,

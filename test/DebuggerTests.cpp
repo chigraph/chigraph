@@ -5,6 +5,7 @@
 #include <chi/GraphModule.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/Result.hpp>
+#include <chi/NodeType.hpp>
 
 #include <llvm/Support/FileSystem.h>
 

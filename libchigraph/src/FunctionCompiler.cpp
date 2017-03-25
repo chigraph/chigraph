@@ -6,6 +6,10 @@
 #include "chi/GraphModule.hpp"
 #include "chi/NameMangler.hpp"
 #include "chi/NodeInstance.hpp"
+#include "chi/Context.hpp"
+#include "chi/NodeType.hpp"
+#include "chi/Result.hpp"
+#include "chi/DataType.hpp"
 
 #include <boost/bimap.hpp>
 #include <boost/dynamic_bitset.hpp>
@@ -15,6 +19,8 @@
 #include <unordered_map>
 
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/DIBuilder.h>
+#include <llvm/IR/Module.h>
 
 namespace chi {
 

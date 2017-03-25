@@ -4,6 +4,8 @@
 
 #include <vector>
 
+#include <gsl/gsl_assert>
+
 namespace chi {
 std::string mangleFunctionName(std::string modName, const std::string& name) {
 	// escape characters

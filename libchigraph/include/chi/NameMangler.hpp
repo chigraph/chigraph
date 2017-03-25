@@ -9,8 +9,6 @@
 #include <string>
 #include <utility>
 
-#include <gsl/gsl>
-
 namespace chi {
 
 /// \name Name Mangling
@@ -24,7 +22,7 @@ namespace chi {
 std::string mangleFunctionName(std::string fullModuleName, const std::string& name);
 
 /// Unmangle a function name
-/// \param mangledName The mangled name
+/// \param mangled The mangled name
 /// \return The unmangled name; {moduleName, functionName}
 std::pair<std::string, std::string> unmangleFunctionName(std::string mangled);
 

@@ -4,6 +4,7 @@
 #define CHI_HASH_FILESYSTEM_PATH_HPP
 
 #include <boost/filesystem.hpp>
+#include <functional>
 
 namespace std {
 template <>
