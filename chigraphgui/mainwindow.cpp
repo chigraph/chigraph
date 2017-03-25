@@ -288,7 +288,7 @@ void MainWindow::openWorkspace(const QUrl& url) {
 
 void MainWindow::openModule(const QString& fullName) {
 	chi::ChiModule* cmod;
-	chi::Result      res = context().loadModule(fullName.toStdString(), &cmod);
+	chi::Result      res = context().loadModule(fullName.toStdString(), chi::LoadSettings::Default, &cmod);
 
 	if (!res) {
 		KMessageBox::detailedError(this,

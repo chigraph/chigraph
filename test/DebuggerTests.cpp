@@ -31,7 +31,7 @@ TEST_CASE("Debugger", "") {
 	GraphModule* gMod;
 	{
 		ChiModule* cMod;
-		res += ctx.loadModule("intermodule/main", &cMod);
+		res += ctx.loadModule("intermodule/main", LoadSettings::Default, &cMod);
 		gMod = static_cast<GraphModule*>(cMod);
 	}
 	REQUIRE(res.dump() == "");

@@ -63,7 +63,7 @@ void FunctionTabView::refreshModule(chi::GraphModule& mod) {
 	mod.context().unloadModule(fullName);
 
 	chi::ChiModule* cMod;
-	mod.context().loadModule(fullName, &cMod);
+	mod.context().loadModule(fullName, chi::LoadSettings::Default, &cMod);
 	chi::GraphModule* gMod = dynamic_cast<chi::GraphModule*>(cMod);
 
 	
