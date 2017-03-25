@@ -9,7 +9,7 @@ __Build Status__
 Platform | Status
 ----- |  ---- 
 | Linux/macOS    | [![Travis branch](https://img.shields.io/travis/chigraph/chigraph/master.svg?style=flat-square)](https://travis-ci.org/chigraph/chigraph) |
-| Windows           |  [![AppVeyor](https://img.shields.io/appveyor/ci/guapotaco/chigraph-miekk.svg?style=flat-square)](https://ci.appveyor.com/project/GuapoTaco/chigraph-miekk) |
+| Windows        |  [![AppVeyor](https://img.shields.io/appveyor/ci/guapotaco/chigraph-miekk.svg?style=flat-square)](https://ci.appveyor.com/project/GuapoTaco/chigraph-miekk) |
 
 
 # What is chigraph?
@@ -28,10 +28,13 @@ libchigraph is the chigraph library that provides all functions for chigraph cli
 
 int main() {
     chi::Contxt myContext{"/path/to/workspace"};
-	myContxt.loadModule("github.com/russelltg/hellochigraph");
-	
-	llvm::Module* mod;
-	myContxt.compileModule("github.com/russelltg/hellochigraph", &mod);
+
+    // download and load the module
+    myContxt.loadModule("github.com/russelltg/hellochigraph/hello/main", chi::LoadOptions::FetchDependencies);
+
+    // compile it
+    llvm::Module* mod;
+    myContxt.compileModule("github.com/russelltg/hellochigraph", &mod);
 }
 ```
 
@@ -41,8 +44,10 @@ And tada, you have yourself a [`llvm::Module`](http://llvm.org/docs/doxygen/html
 chi is the command line interface to chigraph. It lets you compile and run chigraph modules:
 ```bash
 $ pwd
-~/chigrpah/src/github.com/russelltg/hellochigraph
-$ chi run hellochigraph.chigmod
+~/chigrpah/src/
+$ chi get github.com/russelltg/hellochigraph/hello/main # download it
+$ cd github.com/russelltg/hellochigraph/hello/main 
+$ chi run main.chimod # run it
 Hello World!
 ```
 
