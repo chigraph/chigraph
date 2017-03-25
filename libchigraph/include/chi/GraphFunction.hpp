@@ -14,8 +14,8 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/utility/string_view.hpp>
-#include <boost/uuid/uuid.hpp>
 #include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid.hpp>
 
 namespace chi {
 /// this is an AST-like representation of a function in a graph

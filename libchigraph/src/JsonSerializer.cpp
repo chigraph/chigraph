@@ -3,8 +3,8 @@
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
-#include "chi/NodeType.hpp"
 #include "chi/NodeInstance.hpp"
+#include "chi/NodeType.hpp"
 
 #include <boost/uuid/uuid_io.hpp>  // for boost::uuids::to_string
 

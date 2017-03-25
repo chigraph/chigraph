@@ -26,7 +26,7 @@ struct NodeInstance {
 	/// \param nodeID The unique ID for the node
 	NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX, float posY,
 	             boost::uuids::uuid nodeID = boost::uuids::random_generator()());
-	
+
 	/// Destructor
 	~NodeInstance();
 
