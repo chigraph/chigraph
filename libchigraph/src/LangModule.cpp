@@ -1,16 +1,16 @@
 /// \file LangModule.cpp
 
 #include "chi/LangModule.hpp"
-#include "chi/NodeType.hpp"
-#include "chi/DataType.hpp"
-#include "chi/Result.hpp"
 #include "chi/Context.hpp"
+#include "chi/DataType.hpp"
+#include "chi/NodeType.hpp"
+#include "chi/Result.hpp"
 
-#include <llvm/IR/Module.h>
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Module.h>
 #include <llvm/Support/SourceMgr.h>
 #include <gsl/gsl_assert>
 
@@ -887,6 +887,5 @@ DataType LangModule::typeFromName(boost::string_view name) {
 	return DataType{this, name.to_string(), ty, iter->second};
 }
 
-
-Result LangModule::generateModule(llvm::Module&){ return {}; }
+Result LangModule::generateModule(llvm::Module&) { return {}; }
 }  // namespace chi

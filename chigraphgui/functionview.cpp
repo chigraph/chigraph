@@ -5,11 +5,11 @@
 
 #include <KMessageBox>
 
+#include <chi/DataType.hpp>
 #include <chi/FunctionValidator.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/Result.hpp>
-#include <chi/DataType.hpp>
 
 #include <../src/Node.hpp>
 #include <nodes/ConnectionStyle>

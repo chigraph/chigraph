@@ -6,8 +6,8 @@
 #include <QListWidget>
 #include <QTableView>
 
-#include <chi/GraphModule.hpp>
 #include <chi/Context.hpp>
+#include <chi/GraphModule.hpp>
 
 class FunctionView;
 

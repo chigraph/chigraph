@@ -1,7 +1,7 @@
 #include "moduledependencies.hpp"
 
-#include <chi/Result.hpp>
 #include <chi/Context.hpp>
+#include <chi/Result.hpp>
 
 #include <QMenu>
 

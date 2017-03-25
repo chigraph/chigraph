@@ -7,8 +7,8 @@
 #include <QGridLayout>
 #include <QPushButton>
 
-#include <chi/LangModule.hpp>
 #include <chi/DataType.hpp>
+#include <chi/LangModule.hpp>
 
 LocalVariables::LocalVariables(QWidget* parent) : QWidget{parent} {
 	setSizePolicy({QSizePolicy::Preferred, QSizePolicy::Preferred});

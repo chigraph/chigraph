@@ -19,8 +19,8 @@
 
 #include <boost/filesystem.hpp>
 
-#include <chi/Result.hpp>
 #include <chi/Context.hpp>
+#include <chi/Result.hpp>
 
 SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(module) {
 	// compile!
