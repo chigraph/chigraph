@@ -4,7 +4,7 @@ var structchi_1_1ChiModule =
     [ "~ChiModule", "structchi_1_1ChiModule.html#accb2ff65140708ed943ce167f95694c3", null ],
     [ "addDependency", "structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec", null ],
     [ "context", "structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512", null ],
-    [ "dependencies", "structchi_1_1ChiModule.html#a049b38139577f02a6c19d260010efeff", null ],
+    [ "dependencies", "structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779", null ],
     [ "fullName", "structchi_1_1ChiModule.html#a92ab6d528ac41a91b6ac21ededfccc38", null ],
     [ "fullNamePath", "structchi_1_1ChiModule.html#aa47d2903bf43aa7b80740ebf91570fcf", null ],
     [ "generateModule", "structchi_1_1ChiModule.html#a987c71edb997c5f041f69622cb0c86fe", null ],

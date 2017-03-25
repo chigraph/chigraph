@@ -5,7 +5,7 @@ var structchi_1_1CModule =
     [ "addDependency", "structchi_1_1CModule.html#aab11d61e0c0138e5fc5ce176c20e3bec", null ],
     [ "context", "structchi_1_1CModule.html#a5c28c9fe74ad3cb704b613843b267512", null ],
     [ "createNodeTypeFromCCode", "structchi_1_1CModule.html#ac22ac64b94636802b4c696b5b07ba61d", null ],
-    [ "dependencies", "structchi_1_1CModule.html#a049b38139577f02a6c19d260010efeff", null ],
+    [ "dependencies", "structchi_1_1CModule.html#a9c0d4b1b54bca0194ea4061ae4883779", null ],
     [ "extraArguments", "structchi_1_1CModule.html#a75342012821d5ccd50fdc1408bd78dfb", null ],
     [ "fullName", "structchi_1_1CModule.html#a92ab6d528ac41a91b6ac21ededfccc38", null ],
     [ "fullNamePath", "structchi_1_1CModule.html#aa47d2903bf43aa7b80740ebf91570fcf", null ],
