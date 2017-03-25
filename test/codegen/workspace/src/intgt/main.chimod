@@ -1,0 +1,465 @@
+{
+  "dependencies": [
+    "c",
+    "intprinter",
+    "lang"
+  ],
+  "graphs": [
+    {
+      "connections": [
+        {
+          "input": [
+            "8f258318-e001-4fb9-a6e2-ab2621bc9892",
+            0
+          ],
+          "output": [
+            "39291bf5-bc90-4a1e-abce-e7aa3794a9ae",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "02db9172-4f6b-410e-b803-ad2e78f62c7c",
+            0
+          ],
+          "output": [
+            "8f258318-e001-4fb9-a6e2-ab2621bc9892",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "646fb49d-1a23-4f21-badb-9901e65f1602",
+            0
+          ],
+          "output": [
+            "8f258318-e001-4fb9-a6e2-ab2621bc9892",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "f7dc25b2-b38d-4dfa-83c9-8ebb8c130876",
+            0
+          ],
+          "output": [
+            "646fb49d-1a23-4f21-badb-9901e65f1602",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "93b79575-b781-4ad4-b132-fc36376983a8",
+            0
+          ],
+          "output": [
+            "02db9172-4f6b-410e-b803-ad2e78f62c7c",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "ed6785f7-0e25-4661-9ad0-b1b6e25e0ae2",
+            0
+          ],
+          "output": [
+            "02db9172-4f6b-410e-b803-ad2e78f62c7c",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "53f3af74-537b-4fcf-bd1b-caffb674b296",
+            0
+          ],
+          "output": [
+            "646fb49d-1a23-4f21-badb-9901e65f1602",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "a7a83975-41f0-4e48-9da6-a3cb8845a79b",
+            0
+          ],
+          "output": [
+            "53f3af74-537b-4fcf-bd1b-caffb674b296",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "b9ef6ccd-c86f-451a-932e-8cbd9bc8660d",
+            0
+          ],
+          "output": [
+            "53f3af74-537b-4fcf-bd1b-caffb674b296",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "476a1d04-7d7f-4856-899e-29bb9e1c3cbd",
+            0
+          ],
+          "output": [
+            "b9ef6ccd-c86f-451a-932e-8cbd9bc8660d",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "7304072f-a606-4e5e-91ad-87f69e5a27f8",
+            0
+          ],
+          "output": [
+            "9742e264-d852-4c93-ac5c-51ea83b192ea",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "7304072f-a606-4e5e-91ad-87f69e5a27f8",
+            0
+          ],
+          "output": [
+            "9742e264-d852-4c93-ac5c-51ea83b192ea",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "7304072f-a606-4e5e-91ad-87f69e5a27f8",
+            0
+          ],
+          "output": [
+            "f886f497-8c9e-454d-93d7-eb24aa6edb3e",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "7304072f-a606-4e5e-91ad-87f69e5a27f8",
+            0
+          ],
+          "output": [
+            "f886f497-8c9e-454d-93d7-eb24aa6edb3e",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "7f65f65c-a63f-4fda-a92e-2e52f1bcc219",
+            0
+          ],
+          "output": [
+            "70110899-d445-453f-902d-15006ee4a599",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "9742e264-d852-4c93-ac5c-51ea83b192ea",
+            0
+          ],
+          "output": [
+            "7f65f65c-a63f-4fda-a92e-2e52f1bcc219",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "93b79575-b781-4ad4-b132-fc36376983a8",
+            0
+          ],
+          "output": [
+            "f7dc25b2-b38d-4dfa-83c9-8ebb8c130876",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "ed6785f7-0e25-4661-9ad0-b1b6e25e0ae2",
+            0
+          ],
+          "output": [
+            "f7dc25b2-b38d-4dfa-83c9-8ebb8c130876",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "70110899-d445-453f-902d-15006ee4a599",
+            0
+          ],
+          "output": [
+            "b9ef6ccd-c86f-451a-932e-8cbd9bc8660d",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "f886f497-8c9e-454d-93d7-eb24aa6edb3e",
+            0
+          ],
+          "output": [
+            "70110899-d445-453f-902d-15006ee4a599",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "e051fdab-2697-401f-85db-7cc9bd4570ef",
+            0
+          ],
+          "output": [
+            "476a1d04-7d7f-4856-899e-29bb9e1c3cbd",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "f106d161-bb97-40a1-b745-cc1dcd4d56a6",
+            0
+          ],
+          "output": [
+            "476a1d04-7d7f-4856-899e-29bb9e1c3cbd",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "e051fdab-2697-401f-85db-7cc9bd4570ef",
+            0
+          ],
+          "output": [
+            "a7a83975-41f0-4e48-9da6-a3cb8845a79b",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "f106d161-bb97-40a1-b745-cc1dcd4d56a6",
+            0
+          ],
+          "output": [
+            "a7a83975-41f0-4e48-9da6-a3cb8845a79b",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "a0b184a6-27a9-452f-a743-2ee90afe1bdf",
+            0
+          ],
+          "output": [
+            "7f65f65c-a63f-4fda-a92e-2e52f1bcc219",
+            0
+          ],
+          "type": "exec"
+        }
+      ],
+      "data_inputs": [],
+      "data_outputs": [],
+      "description": "",
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "local_variables": {},
+      "name": "main",
+      "nodes": {
+        "02db9172-4f6b-410e-b803-ad2e78f62c7c": {
+          "data": null,
+          "location": [
+            2214.00463867188,
+            648.9287109375
+          ],
+          "type": "lang:i32>=i32"
+        },
+        "39291bf5-bc90-4a1e-abce-e7aa3794a9ae": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            3047,
+            165
+          ],
+          "type": "lang:exit"
+        },
+        "476a1d04-7d7f-4856-899e-29bb9e1c3cbd": {
+          "data": null,
+          "location": [
+            1259.35559082031,
+            433.772216796875
+          ],
+          "type": "lang:i32>i32"
+        },
+        "53f3af74-537b-4fcf-bd1b-caffb674b296": {
+          "data": null,
+          "location": [
+            1854.16418457031,
+            168.541793823242
+          ],
+          "type": "intprinter:printbool"
+        },
+        "646fb49d-1a23-4f21-badb-9901e65f1602": {
+          "data": null,
+          "location": [
+            2534,
+            166
+          ],
+          "type": "intprinter:printbool"
+        },
+        "70110899-d445-453f-902d-15006ee4a599": {
+          "data": null,
+          "location": [
+            1024.43994140625,
+            180
+          ],
+          "type": "intprinter:printbool"
+        },
+        "7304072f-a606-4e5e-91ad-87f69e5a27f8": {
+          "data": 123,
+          "location": [
+            106.879997253418,
+            426.920013427734
+          ],
+          "type": "lang:const-int"
+        },
+        "7f65f65c-a63f-4fda-a92e-2e52f1bcc219": {
+          "data": null,
+          "location": [
+            801.328918457031,
+            188.029998779297
+          ],
+          "type": "intprinter:printbool"
+        },
+        "8f258318-e001-4fb9-a6e2-ab2621bc9892": {
+          "data": null,
+          "location": [
+            2778,
+            168
+          ],
+          "type": "intprinter:printbool"
+        },
+        "93b79575-b781-4ad4-b132-fc36376983a8": {
+          "data": 456,
+          "location": [
+            1881.80004882812,
+            545.200012207031
+          ],
+          "type": "lang:const-int"
+        },
+        "9742e264-d852-4c93-ac5c-51ea83b192ea": {
+          "data": null,
+          "location": [
+            405.559997558594,
+            375.720001220703
+          ],
+          "type": "lang:i32<i32"
+        },
+        "a0b184a6-27a9-452f-a743-2ee90afe1bdf": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            -66.120002746582,
+            165.720001220703
+          ],
+          "type": "lang:entry"
+        },
+        "a7a83975-41f0-4e48-9da6-a3cb8845a79b": {
+          "data": null,
+          "location": [
+            1254.54553222656,
+            607.741088867188
+          ],
+          "type": "lang:i32>=i32"
+        },
+        "b9ef6ccd-c86f-451a-932e-8cbd9bc8660d": {
+          "data": null,
+          "location": [
+            1604.85729980469,
+            171.527770996094
+          ],
+          "type": "intprinter:printbool"
+        },
+        "e051fdab-2697-401f-85db-7cc9bd4570ef": {
+          "data": 123,
+          "location": [
+            891.790893554688,
+            476.507781982422
+          ],
+          "type": "lang:const-int"
+        },
+        "ed6785f7-0e25-4661-9ad0-b1b6e25e0ae2": {
+          "data": 123,
+          "location": [
+            1886.59997558594,
+            662.799987792969
+          ],
+          "type": "lang:const-int"
+        },
+        "f106d161-bb97-40a1-b745-cc1dcd4d56a6": {
+          "data": 456,
+          "location": [
+            913.194458007812,
+            604.861083984375
+          ],
+          "type": "lang:const-int"
+        },
+        "f7dc25b2-b38d-4dfa-83c9-8ebb8c130876": {
+          "data": null,
+          "location": [
+            2221.15991210938,
+            467.920013427734
+          ],
+          "type": "lang:i32>i32"
+        },
+        "f886f497-8c9e-454d-93d7-eb24aa6edb3e": {
+          "data": null,
+          "location": [
+            369.200012207031,
+            527.799987792969
+          ],
+          "type": "lang:i32>=i32"
+        }
+      },
+      "type": "function"
+    }
+  ],
+  "types": {}
+}
