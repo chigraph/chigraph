@@ -9,9 +9,9 @@
 #include <KComboBox>
 #include <KMessageBox>
 
-#include <chi/GraphFunction.hpp>
-#include <chi/DataType.hpp>
 #include <chi/Context.hpp>
+#include <chi/DataType.hpp>
+#include <chi/GraphFunction.hpp>
 
 #include "execparamlistwidget.hpp"
 #include "functionview.hpp"

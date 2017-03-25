@@ -34,12 +34,12 @@
 
 #include <chi/CModule.hpp>
 #include <chi/Context.hpp>
+#include <chi/DataType.hpp>
 #include <chi/GraphFunction.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/LangModule.hpp>
-#include <chi/json.hpp>
 #include <chi/Result.hpp>
-#include <chi/DataType.hpp>
+#include <chi/json.hpp>
 
 #include <llvm/Support/raw_ostream.h>
 

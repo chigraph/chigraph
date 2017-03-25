@@ -9,14 +9,14 @@
 #include <memory>
 #include <unordered_map>
 
-#include "chi/Fwd.hpp"
 #include "chi/Flags.hpp"
+#include "chi/Fwd.hpp"
 #include "chi/json.hpp"
 
-#include <llvm/Support/CodeGen.h> // for CodeGenOpt
+#include <llvm/Support/CodeGen.h>  // for CodeGenOpt
 
-#include <boost/utility/string_view.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/utility/string_view.hpp>
 
 namespace chi {
 

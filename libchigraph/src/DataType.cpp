@@ -3,6 +3,8 @@
 
 namespace chi {
 
-std::string DataType::qualifiedName() const { return module().fullName() + ":" + unqualifiedName(); }
-	
-} // namespace chi
+std::string DataType::qualifiedName() const {
+	return module().fullName() + ":" + unqualifiedName();
+}
+
+}  // namespace chi

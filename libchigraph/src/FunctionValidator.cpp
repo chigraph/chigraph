@@ -3,8 +3,8 @@
 #include "chi/FunctionValidator.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/NodeInstance.hpp"
-#include "chi/Result.hpp"
 #include "chi/NodeType.hpp"
+#include "chi/Result.hpp"
 
 #include <unordered_map>
 

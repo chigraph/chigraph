@@ -4,8 +4,8 @@
 
 #include <QDebug>
 
-#include <chi/GraphFunction.hpp>
 #include <chi/Context.hpp>
+#include <chi/GraphFunction.hpp>
 #include <chi/Result.hpp>
 
 #include "functionview.hpp"

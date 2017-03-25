@@ -12,8 +12,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "chi/Fwd.hpp"
 #include "chi/ChiModule.hpp"
+#include "chi/Fwd.hpp"
 #include "chi/json.hpp"
 
 namespace chi {
