@@ -9,16 +9,16 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 111.5)">
 <title>chi::GraphModule::removeFunction</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-111.5 636,-111.5 636,4 -4,4"/>
-<!-- Node204 -->
+<!-- Node368 -->
 <g id="node1" class="node">
-<title>Node204</title>
+<title>Node368</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-33 0,-63 131,-63 131,-33 0,-33"/>
 <text text-anchor="start" x="8" y="-51" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::remove</text>
 <text text-anchor="middle" x="65.5" y="-40" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Function</text>
 </g>
-<!-- Node205 -->
+<!-- Node369 -->
 <g id="node2" class="node">
-<title>Node205</title>
+<title>Node369</title>
 <g id="a_node2"><a xlink:href="structchi_1_1GraphModule.html#a1c1a23b9aa7967948e97dc9650099188" target="_top" xlink:title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved...">
 <polygon fill="#ffffff" stroke="#000000" points="167,-33 167,-63 295,-63 295,-33 167,-33"/>
 <text text-anchor="start" x="175" y="-51" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::source</text>
@@ -26,15 +26,15 @@
 </a>
 </g>
 </g>
-<!-- Node204&#45;&gt;Node205 -->
+<!-- Node368&#45;&gt;Node369 -->
 <g id="edge1" class="edge">
-<title>Node204&#45;&gt;Node205</title>
+<title>Node368&#45;&gt;Node369</title>
 <path fill="none" stroke="#191970" d="M141.6417,-48C150.1074,-48 158.6658,-48 166.9597,-48"/>
 <polygon fill="#191970" stroke="#191970" points="141.3856,-44.5001 131.3855,-48 141.3855,-51.5001 141.3856,-44.5001"/>
 </g>
-<!-- Node206 -->
+<!-- Node370 -->
 <g id="node3" class="node">
-<title>Node206</title>
+<title>Node370</title>
 <g id="a_node3"><a xlink:href="structchi_1_1GraphModule.html#a9b73bbbfa91d6a2f92bcca270bdb7b2f" target="_top" xlink:title="Generate a llvm::Module from the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="338,-77 338,-107 475,-107 475,-77 338,-77"/>
 <text text-anchor="start" x="346" y="-95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::generate</text>
@@ -42,54 +42,54 @@
 </a>
 </g>
 </g>
-<!-- Node205&#45;&gt;Node206 -->
+<!-- Node369&#45;&gt;Node370 -->
 <g id="edge2" class="edge">
-<title>Node205&#45;&gt;Node206</title>
+<title>Node369&#45;&gt;Node370</title>
 <path fill="none" stroke="#191970" d="M300.7431,-65.4855C315.9072,-69.2873 331.8209,-73.277 346.5659,-76.9738"/>
 <polygon fill="#191970" stroke="#191970" points="301.4573,-62.0562 290.9063,-63.0192 299.7549,-68.8461 301.4573,-62.0562"/>
 </g>
-<!-- Node207 -->
+<!-- Node371 -->
 <g id="node4" class="node">
-<title>Node207</title>
+<title>Node371</title>
 <g id="a_node4"><a xlink:href="structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" target="_top" xlink:title="Serialize to disk in the context. ">
 <polygon fill="#ffffff" stroke="#000000" points="331,-38.5 331,-57.5 482,-57.5 482,-38.5 331,-38.5"/>
 <text text-anchor="middle" x="406.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::saveToDisk</text>
 </a>
 </g>
 </g>
-<!-- Node205&#45;&gt;Node207 -->
+<!-- Node369&#45;&gt;Node371 -->
 <g id="edge3" class="edge">
-<title>Node205&#45;&gt;Node207</title>
+<title>Node369&#45;&gt;Node371</title>
 <path fill="none" stroke="#191970" d="M305.4885,-48C313.8824,-48 322.4421,-48 330.8506,-48"/>
 <polygon fill="#191970" stroke="#191970" points="305.3532,-44.5001 295.3532,-48 305.3531,-51.5001 305.3532,-44.5001"/>
 </g>
-<!-- Node208 -->
+<!-- Node372 -->
 <g id="node5" class="node">
-<title>Node208</title>
+<title>Node372</title>
 <g id="a_node5"><a xlink:href="classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" target="_top" xlink:title="Set a breakpoint on a given node. ">
 <polygon fill="#ffffff" stroke="#000000" points="335,-.5 335,-19.5 478,-19.5 478,-.5 335,-.5"/>
 <text text-anchor="middle" x="406.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Debugger::setBreakpoint</text>
 </a>
 </g>
 </g>
-<!-- Node205&#45;&gt;Node208 -->
+<!-- Node369&#45;&gt;Node372 -->
 <g id="edge4" class="edge">
-<title>Node205&#45;&gt;Node208</title>
+<title>Node369&#45;&gt;Node372</title>
 <path fill="none" stroke="#191970" d="M305.1415,-31.9466C324.6468,-27.7232 345.0715,-23.3008 362.4334,-19.5415"/>
 <polygon fill="#191970" stroke="#191970" points="304.386,-28.529 295.3532,-34.066 305.8674,-35.3704 304.386,-28.529"/>
 </g>
-<!-- Node209 -->
+<!-- Node373 -->
 <g id="node6" class="node">
-<title>Node209</title>
+<title>Node373</title>
 <g id="a_node6"><a xlink:href="classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" target="_top" xlink:title="Check if the process is executing. ">
 <polygon fill="#ffffff" stroke="#000000" points="518,-.5 518,-19.5 632,-19.5 632,-.5 518,-.5"/>
 <text text-anchor="middle" x="575" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Debugger::running</text>
 </a>
 </g>
 </g>
-<!-- Node208&#45;&gt;Node209 -->
+<!-- Node372&#45;&gt;Node373 -->
 <g id="edge5" class="edge">
-<title>Node208&#45;&gt;Node209</title>
+<title>Node372&#45;&gt;Node373</title>
 <path fill="none" stroke="#191970" d="M488.6767,-10C498.527,-10 508.4152,-10 517.8021,-10"/>
 <polygon fill="#191970" stroke="#191970" points="488.448,-6.5001 478.4479,-10 488.4479,-13.5001 488.448,-6.5001"/>
 </g>

@@ -7,7 +7,8 @@ var NAVTREE =
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
-        [ "Enumerations", "namespacemembers_enum.html", null ]
+        [ "Enumerations", "namespacemembers_enum.html", null ],
+        [ "Enumerator", "namespacemembers_eval.html", null ]
       ] ]
     ] ],
     [ "Classes", "annotated.html", [
@@ -29,7 +30,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b"
+"structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
