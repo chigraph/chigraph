@@ -55,46 +55,46 @@ var sectionId = 'dynsection-8';
 <g id="viewport">
 <title>chi::GraphModule::createLineNumberAssoc</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-100.5 643,-100.5 643,4 -4,4"/>
-<!-- Node143 -->
+<!-- Node50 -->
 <g id="node1" class="node">
-<title>Node143</title>
+<title>Node50</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-36 0,-66 126,-66 126,-36 0,-36"/>
 <text text-anchor="start" x="8" y="-54" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::create</text>
 <text text-anchor="middle" x="63" y="-43" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">LineNumberAssoc</text>
 </g>
-<!-- Node144 -->
+<!-- Node51 -->
 <g id="node2" class="node">
-<title>Node144</title>
+<title>Node51</title>
 <g id="a_node2"><a xlink:href="namespacechi.html#a8329038fce8125396cc9775460aa427b" target="_top" xlink:title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ...">
 <polygon fill="#ffffff" stroke="#000000" points="185.5,-65.5 185.5,-84.5 292.5,-84.5 292.5,-65.5 185.5,-65.5"/>
 <text text-anchor="middle" x="239" y="-72.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::compileFunction</text>
 </a>
 </g>
 </g>
-<!-- Node143&#45;&gt;Node144 -->
+<!-- Node50&#45;&gt;Node51 -->
 <g id="edge1" class="edge">
-<title>Node143&#45;&gt;Node144</title>
+<title>Node50&#45;&gt;Node51</title>
 <path fill="none" stroke="#191970" d="M136.1974,-60.9815C152.689,-63.2303 169.8947,-65.5765 185.4072,-67.6919"/>
 <polygon fill="#191970" stroke="#191970" points="136.4242,-57.4801 126.0429,-59.5968 135.4783,-64.4159 136.4242,-57.4801"/>
 </g>
-<!-- Node146 -->
+<!-- Node53 -->
 <g id="node4" class="node">
-<title>Node146</title>
+<title>Node53</title>
 <g id="a_node4"><a xlink:href="classchi_1_1Debugger.html#ae142902fa85248f40cbeea7199c86ad9" target="_top" xlink:title="Get a NodeInstance from a frame. ">
 <polygon fill="#ffffff" stroke="#000000" points="162,-22.5 162,-41.5 316,-41.5 316,-22.5 162,-22.5"/>
 <text text-anchor="middle" x="239" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Debugger::nodeFromFrame</text>
 </a>
 </g>
 </g>
-<!-- Node143&#45;&gt;Node146 -->
+<!-- Node50&#45;&gt;Node53 -->
 <g id="edge3" class="edge">
-<title>Node143&#45;&gt;Node146</title>
+<title>Node50&#45;&gt;Node53</title>
 <path fill="none" stroke="#191970" d="M135.9937,-43.12C144.5642,-42.1948 153.3303,-41.2484 161.9539,-40.3175"/>
 <polygon fill="#191970" stroke="#191970" points="135.6095,-39.641 126.0429,-44.1942 136.3608,-46.6006 135.6095,-39.641"/>
 </g>
-<!-- Node145 -->
+<!-- Node52 -->
 <g id="node3" class="node">
-<title>Node145</title>
+<title>Node52</title>
 <g id="a_node3"><a xlink:href="structchi_1_1GraphModule.html#a9b73bbbfa91d6a2f92bcca270bdb7b2f" target="_top" xlink:title="Generate a llvm::Module from the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="352,-66 352,-96 489,-96 489,-66 352,-66"/>
 <text text-anchor="start" x="360" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::generate</text>
@@ -102,15 +102,15 @@ var sectionId = 'dynsection-8';
 </a>
 </g>
 </g>
-<!-- Node144&#45;&gt;Node145 -->
+<!-- Node51&#45;&gt;Node52 -->
 <g id="edge2" class="edge">
-<title>Node144&#45;&gt;Node145</title>
+<title>Node51&#45;&gt;Node52</title>
 <path fill="none" stroke="#191970" d="M303.1499,-77.1207C318.9419,-77.6427 335.9128,-78.2037 351.9059,-78.7324"/>
 <polygon fill="#191970" stroke="#191970" points="303.0748,-73.6164 292.9646,-76.784 302.8434,-80.6125 303.0748,-73.6164"/>
 </g>
-<!-- Node147 -->
+<!-- Node54 -->
 <g id="node5" class="node">
-<title>Node147</title>
+<title>Node54</title>
 <g id="a_node5"><a xlink:href="classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681" target="_top" xlink:title="Get the output of a node. ">
 <polygon fill="#ffffff" stroke="#000000" points="352,-17 352,-47 489,-47 489,-17 352,-17"/>
 <text text-anchor="start" x="360" y="-35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Debugger::inspectNode</text>
@@ -118,30 +118,30 @@ var sectionId = 'dynsection-8';
 </a>
 </g>
 </g>
-<!-- Node146&#45;&gt;Node147 -->
+<!-- Node53&#45;&gt;Node54 -->
 <g id="edge4" class="edge">
-<title>Node146&#45;&gt;Node147</title>
+<title>Node53&#45;&gt;Node54</title>
 <path fill="none" stroke="#191970" d="M326.305,-32C334.9147,-32 343.5658,-32 351.9478,-32"/>
 <polygon fill="#191970" stroke="#191970" points="326.2356,-28.5001 316.2355,-32 326.2355,-35.5001 326.2356,-28.5001"/>
 </g>
-<!-- Node148 -->
+<!-- Node55 -->
 <g id="node6" class="node">
-<title>Node148</title>
+<title>Node55</title>
 <g id="a_node6"><a xlink:href="classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" target="_top" xlink:title="Check if the process is executing. ">
 <polygon fill="#ffffff" stroke="#000000" points="525,-.5 525,-19.5 639,-19.5 639,-.5 525,-.5"/>
 <text text-anchor="middle" x="582" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Debugger::running</text>
 </a>
 </g>
 </g>
-<!-- Node146&#45;&gt;Node148 -->
+<!-- Node53&#45;&gt;Node55 -->
 <g id="edge6" class="edge">
-<title>Node146&#45;&gt;Node148</title>
+<title>Node53&#45;&gt;Node55</title>
 <path fill="none" stroke="#191970" d="M282.6258,-20.0215C303.4504,-14.9043 328.8276,-9.5327 352,-7 412.5284,-.3844 428.119,-6.0183 489,-7 500.6295,-7.1875 513.0739,-7.5069 524.9548,-7.8691"/>
 <polygon fill="#191970" stroke="#191970" points="281.6388,-16.6607 272.7981,-22.4996 283.3504,-23.4482 281.6388,-16.6607"/>
 </g>
-<!-- Node147&#45;&gt;Node148 -->
+<!-- Node54&#45;&gt;Node55 -->
 <g id="edge5" class="edge">
-<title>Node147&#45;&gt;Node148</title>
+<title>Node54&#45;&gt;Node55</title>
 <path fill="none" stroke="#191970" d="M499.5001,-21.2384C508.0839,-20.0691 516.6939,-18.8962 524.9422,-17.7726"/>
 <polygon fill="#191970" stroke="#191970" points="498.895,-17.7884 489.459,-22.6062 499.8399,-24.7243 498.895,-17.7884"/>
 </g>

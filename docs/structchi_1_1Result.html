@@ -167,6 +167,8 @@ Related Functions</h2></td></tr>
 <tr>
 <td><code>Node ID</code> </td><td>The ID of the node that errored </td></tr>
 </table>
+<h1>What is EUKN?</h1>
+<p>Not every error in chigraph is documented and tested. Errors with numbers are tested and possibly documented. EUKN errors are just undocumented errors.</p>
 <h2>Implementation Details:</h2>
 <p><a class="el" href="structchi_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> objects store a json object that represents the error metadata. It's an array, each being an object containing three objects:</p><ul>
 <li><p class="startli"><code>errorcode</code>: The errorcode. This is an identifier representng the error: a character followed by a number. The value of the character changes the behaviour:</p><ul>
@@ -180,7 +182,7 @@ Related Functions</h2></td></tr>
 <li><code>data</code>: Extra metadata for the error, including context and how the error occured. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00067">67</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00070">70</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a59ef40f4a327cbdea263d6e4b5af2ad8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a59ef40f4a327cbdea263d6e4b5af2ad8">&#9670;&nbsp;</a></span>addEntry()</h2>
@@ -232,17 +234,18 @@ Related Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00077">77</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00080">80</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00086">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00089">success</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00089">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00092">success</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00279">chi::compileFunction()</a>, <a class="el" href="Context_8cpp_source.html#l00232">chi::Context::compileModule()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00098">chi::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00158">chi::connectExec()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00097">chi::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00203">chi::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00270">chi::disconnectExec()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00053">chi::GraphFunction::insertNode()</a>, <a class="el" href="Context_8cpp_source.html#l00368">chi::interpretLLVMIR()</a>, <a class="el" href="Context_8cpp_source.html#l00402">chi::interpretLLVMIRAsMain()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00208">chi::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00011">chi::jsonToGraphModule()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00426">chi::jsonToGraphStruct()</a>, <a class="el" href="Context_8cpp_source.html#l00083">chi::Context::loadModule()</a>, <a class="el" href="Context_8cpp_source.html#l00216">chi::Context::nodeTypeFromModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00841">chi::LangModule::nodeTypeFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00189">chi::CModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00389">chi::GraphModule::nodeTypeFromName()</a>, <a class="el" href="Debugger_8cpp_source.html#l00083">chi::Debugger::pause()</a>, <a class="el" href="Debugger_8cpp_source.html#l00067">chi::Debugger::processContinue()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00310">chi::GraphModule::saveToDisk()</a>, <a class="el" href="Debugger_8cpp_source.html#l00100">chi::Debugger::setBreakpoint()</a>, <a class="el" href="Debugger_8cpp_source.html#l00135">chi::Debugger::start()</a>, <a class="el" href="Debugger_8cpp_source.html#l00050">chi::Debugger::terminate()</a>, <a class="el" href="Context_8cpp_source.html#l00195">chi::Context::typeFromModule()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00019">chi::validateFunctionConnectionsAreTwoWay()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00279">chi::compileFunction()</a>, <a class="el" href="Context_8cpp_source.html#l00517">chi::Context::compileModule()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00098">chi::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00158">chi::connectExec()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00097">chi::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00203">chi::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00270">chi::disconnectExec()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00061">chi::GraphFunction::insertNode()</a>, <a class="el" href="Context_8cpp_source.html#l00640">chi::interpretLLVMIR()</a>, <a class="el" href="Context_8cpp_source.html#l00674">chi::interpretLLVMIRAsMain()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00208">chi::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00011">chi::jsonToGraphModule()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00426">chi::jsonToGraphStruct()</a>, <a class="el" href="Context_8cpp_source.html#l00488">chi::Context::nodeTypeFromModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00841">chi::LangModule::nodeTypeFromName()</a>, <a class="el" href="CModule_8cpp_source.html#l00189">chi::CModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00389">chi::GraphModule::nodeTypeFromName()</a>, <a class="el" href="Debugger_8cpp_source.html#l00081">chi::Debugger::pause()</a>, <a class="el" href="Debugger_8cpp_source.html#l00065">chi::Debugger::processContinue()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00310">chi::GraphModule::saveToDisk()</a>, <a class="el" href="Debugger_8cpp_source.html#l00098">chi::Debugger::setBreakpoint()</a>, <a class="el" href="Debugger_8cpp_source.html#l00133">chi::Debugger::start()</a>, <a class="el" href="Debugger_8cpp_source.html#l00048">chi::Debugger::terminate()</a>, <a class="el" href="Context_8cpp_source.html#l00467">chi::Context::typeFromModule()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00021">chi::validateFunctionConnectionsAreTwoWay()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00207">chi::validateFunctionExecOutputs()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a59ef40f4a327cbdea263d6e4b5af2ad8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a59ef40f4a327cbdea263d6e4b5af2ad8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 
 </div>
@@ -292,9 +295,9 @@ Related Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The concatinated errors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00108">108</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00111">111</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00086">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00089">success</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00089">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00092">success</a>.</p>
 
 </div>
 </div>
@@ -342,9 +345,9 @@ Related Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>*this </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00124">124</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00127">127</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00086">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00089">success</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00089">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00092">success</a>.</p>
 
 </div>
 </div>
@@ -392,7 +395,7 @@ Related Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>lhs after printing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00138">138</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00141">141</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Result_8cpp_source.html#l00044">dump()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -400,7 +403,8 @@ Related Functions</h2></td></tr>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a3a1caa60d79ed3cd997da1559bddd278_cgraph.svg" width="338" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a3a1caa60d79ed3cd997da1559bddd278_cgraph.svg" width="338" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -415,7 +419,7 @@ Related Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechi.html">chi</a></li><li class="navelem"><a class="el" href="structchi_1_1Result.html">Result</a></li>
-    <li class="footer">Generated on Wed Mar 22 2017 09:06:06 for chigraph by
+    <li class="footer">Generated on Sat Mar 25 2017 15:53:14 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -9,46 +9,46 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 35)">
 <title>chi::validateFunctionConnectionsAreTwoWay</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-35 624,-35 624,4 -4,4"/>
-<!-- Node594 -->
+<!-- Node524 -->
 <g id="node1" class="node">
-<title>Node594</title>
+<title>Node524</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-.5 0,-30.5 161,-30.5 161,-.5 0,-.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::validateFunctionConnections</text>
 <text text-anchor="middle" x="80.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">AreTwoWay</text>
 </g>
-<!-- Node595 -->
+<!-- Node525 -->
 <g id="node2" class="node">
-<title>Node595</title>
+<title>Node525</title>
 <g id="a_node2"><a xlink:href="namespacechi.html#acdc71d0d7f04f55316cc16af79b7f5b1" target="_top" xlink:title="Validate that a function is compilable. ">
 <polygon fill="#ffffff" stroke="#000000" points="197,-6 197,-25 304,-25 304,-6 197,-6"/>
 <text text-anchor="middle" x="250.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::validateFunction</text>
 </a>
 </g>
 </g>
-<!-- Node594&#45;&gt;Node595 -->
+<!-- Node524&#45;&gt;Node525 -->
 <g id="edge1" class="edge">
-<title>Node594&#45;&gt;Node595</title>
+<title>Node524&#45;&gt;Node525</title>
 <path fill="none" stroke="#191970" d="M171.0232,-15.5C179.8717,-15.5 188.64,-15.5 196.9425,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="171.0195,-12.0001 161.0194,-15.5 171.0194,-19.0001 171.0195,-12.0001"/>
 </g>
-<!-- Node596 -->
+<!-- Node526 -->
 <g id="node3" class="node">
-<title>Node596</title>
+<title>Node526</title>
 <g id="a_node3"><a xlink:href="namespacechi.html#a8329038fce8125396cc9775460aa427b" target="_top" xlink:title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ...">
 <polygon fill="#ffffff" stroke="#000000" points="340,-6 340,-25 447,-25 447,-6 340,-6"/>
 <text text-anchor="middle" x="393.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::compileFunction</text>
 </a>
 </g>
 </g>
-<!-- Node595&#45;&gt;Node596 -->
+<!-- Node525&#45;&gt;Node526 -->
 <g id="edge2" class="edge">
-<title>Node595&#45;&gt;Node596</title>
+<title>Node525&#45;&gt;Node526</title>
 <path fill="none" stroke="#191970" d="M314.3238,-15.5C322.7452,-15.5 331.3103,-15.5 339.5445,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="314.1548,-12.0001 304.1548,-15.5 314.1547,-19.0001 314.1548,-12.0001"/>
 </g>
-<!-- Node597 -->
+<!-- Node527 -->
 <g id="node4" class="node">
-<title>Node597</title>
+<title>Node527</title>
 <g id="a_node4"><a xlink:href="structchi_1_1GraphModule.html#a9b73bbbfa91d6a2f92bcca270bdb7b2f" target="_top" xlink:title="Generate a llvm::Module from the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="483,-.5 483,-30.5 620,-30.5 620,-.5 483,-.5"/>
 <text text-anchor="start" x="491" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::generate</text>
@@ -56,9 +56,9 @@
 </a>
 </g>
 </g>
-<!-- Node596&#45;&gt;Node597 -->
+<!-- Node526&#45;&gt;Node527 -->
 <g id="edge3" class="edge">
-<title>Node596&#45;&gt;Node597</title>
+<title>Node526&#45;&gt;Node527</title>
 <path fill="none" stroke="#191970" d="M457.4454,-15.5C465.7695,-15.5 474.3252,-15.5 482.724,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="457.4328,-12.0001 447.4327,-15.5 457.4327,-19.0001 457.4328,-12.0001"/>
 </g>

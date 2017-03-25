@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['hash_3c_20boost_3a_3afilesystem_3a_3apath_20_3e',['hash&lt; boost::filesystem::path &gt;',['../structstd_1_1hash_3_01boost_1_1filesystem_1_1path_01_4.html',1,'std']]],
-  ['hash_3c_20boost_3a_3auuids_3a_3auuid_20_3e',['hash&lt; boost::uuids::uuid &gt;',['../structstd_1_1hash_3_01boost_1_1uuids_1_1uuid_01_4.html',1,'std']]]
+  ['graphfunction',['GraphFunction',['../structchi_1_1GraphFunction.html',1,'chi']]],
+  ['graphmodule',['GraphModule',['../structchi_1_1GraphModule.html',1,'chi']]],
+  ['graphstruct',['GraphStruct',['../structchi_1_1GraphStruct.html',1,'chi']]]
 ];

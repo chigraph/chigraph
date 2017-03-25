@@ -8,6 +8,7 @@ var hierarchy =
     [ "chi::Context", "structchi_1_1Context.html", null ],
     [ "chi::DataType", "structchi_1_1DataType.html", null ],
     [ "chi::Debugger", "classchi_1_1Debugger.html", null ],
+    [ "chi::Flags< Enum >", "structchi_1_1Flags.html", null ],
     [ "chi::GraphFunction", "structchi_1_1GraphFunction.html", null ],
     [ "chi::GraphStruct", "structchi_1_1GraphStruct.html", null ],
     [ "std::hash< boost::filesystem::path >", "structstd_1_1hash_3_01boost_1_1filesystem_1_1path_01_4.html", null ],

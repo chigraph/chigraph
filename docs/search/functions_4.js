@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['fetchmodule',['fetchModule',['../structchi_1_1Context.html#adb50cef8d976f87057394192cb02b8ff',1,'chi::Context']]],
   ['findinstancesoftype',['findInstancesOfType',['../structchi_1_1Context.html#a9ded1e6de886af9e1fb7d42188bba4b3',1,'chi::Context']]],
   ['fullname',['fullName',['../structchi_1_1ChiModule.html#a92ab6d528ac41a91b6ac21ededfccc38',1,'chi::ChiModule']]],
   ['fullnamepath',['fullNamePath',['../structchi_1_1ChiModule.html#aa47d2903bf43aa7b80740ebf91570fcf',1,'chi::ChiModule']]],
