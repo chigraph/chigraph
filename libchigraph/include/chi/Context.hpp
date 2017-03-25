@@ -13,6 +13,7 @@
 #include "chi/Fwd.hpp"
 #include "chi/ToString.hpp"
 #include "chi/json.hpp"
+#include "chi/Flags.hpp"
 
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/IR/LLVMContext.h>
@@ -27,6 +28,12 @@
 #include <boost/optional.hpp>
 
 namespace chi {
+	
+enum LoadSettings {
+	Default = 0u,
+	Fetch = 1u,
+	FetchRecursive = Fetch | 1u << 1,
+};
 
 /// The class that handles the loading, creation, storing, and compilation of modules
 /// It also stores a \c LLVMContext object to be used everywhere.
@@ -73,7 +80,7 @@ struct Context {
 	/// \param[in] name The name of the moudle
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
-	Result loadModule(const boost::filesystem::path& name, ChiModule** toFill = nullptr);
+	Result loadModule(const boost::filesystem::path& name, Flags<LoadSettings> flags = LoadSettings::Default, ChiModule** toFill = nullptr);
 	
 	/// Downloads a module from a remote URL, currently supports
 	///  - github
