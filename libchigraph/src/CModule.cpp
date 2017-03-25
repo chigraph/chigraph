@@ -286,10 +286,9 @@ Result CModule::nodeTypeFromName(boost::string_view typeName, const nlohmann::js
 	return res;
 }
 
-Result CModule::createNodeTypeFromCCode(const std::string&              code,
-                                              const std::string&              functionName,
-                                              const std::vector<std::string>& clangArgs,
-                                              std::unique_ptr<NodeType>*      toFill) {
+Result CModule::createNodeTypeFromCCode(const std::string& code, const std::string& functionName,
+                                        const std::vector<std::string>& clangArgs,
+                                        std::unique_ptr<NodeType>*      toFill) {
 	Expects(toFill != nullptr);
 
 	Result res;

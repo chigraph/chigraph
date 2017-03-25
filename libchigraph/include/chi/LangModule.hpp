@@ -47,6 +47,6 @@ private:
 	    nodes;
 	std::unordered_map<std::string, llvm::DIType*> mDebugTypes;
 };
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_LANG_MODULE_HPP

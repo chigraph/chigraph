@@ -59,7 +59,7 @@ struct GraphFunction {
 	const std::unordered_map<boost::uuids::uuid, std::unique_ptr<NodeInstance>>& nodes() const {
 		return mNodes;
 	}
-	
+
 	/// Get a node with a given ID
 	/// \param id The ID of the node
 	/// \return The NodeInstance, or nullptr if the ID wasn't found

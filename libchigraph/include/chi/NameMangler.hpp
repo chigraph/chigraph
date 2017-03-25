@@ -29,6 +29,6 @@ std::string mangleFunctionName(std::string fullModuleName, const std::string& na
 std::pair<std::string, std::string> unmangleFunctionName(std::string mangled);
 
 /// \}
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_NAME_MANGLER_HPP

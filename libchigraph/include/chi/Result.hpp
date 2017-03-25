@@ -48,9 +48,10 @@ namespace chi {
 /// Name in JSON  | Description
 /// ------------- | -------------
 /// `Node ID`     | The ID of the node that errored
-/// 
+///
 /// # What is EUKN?
-/// Not every error in chigraph is documented and tested. Errors with numbers are tested and possibly documented.
+/// Not every error in chigraph is documented and tested. Errors with numbers are tested and
+/// possibly documented.
 /// EUKN errors are just undocumented errors.
 ///
 /// ## Implementation Details:

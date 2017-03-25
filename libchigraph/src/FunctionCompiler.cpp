@@ -379,9 +379,9 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	    f);
 #else
 	    );
-#	if !(LLVM_VERSION_MAJOR == 4 && LLVM_VERSION_MINOR == 0)
+#if !(LLVM_VERSION_MAJOR == 4 && LLVM_VERSION_MINOR == 0)
 	f->setSubprogram(debugFunc);
-#	endif
+#endif
 #endif
 
 	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);

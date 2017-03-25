@@ -34,13 +34,14 @@ public:
 
 	chi::GraphModule* currentModule() const { return mModule; }
 	chi::Context&     context() const { return *mChigContext; }
-	FunctionTabView& tabView() const { return *mFunctionTabs; }
-	
+	FunctionTabView&  tabView() const { return *mFunctionTabs; }
+
 private:
 	static MainWindow* mInstance;
+
 public:
-	static MainWindow* instance() {return mInstance; }
-	
+	static MainWindow* instance() { return mInstance; }
+
 public slots:
 	void openWorkspaceDialog();           // this one opens a dialog
 	void openWorkspace(const QUrl& url);  // and this one doesn't
@@ -70,7 +71,7 @@ private:
 	// context & module
 	std::unique_ptr<chi::Context> mChigContext   = nullptr;
 	chi::GraphModule*             mModule        = nullptr;
-	ModuleBrowser*                 mModuleBrowser = nullptr;
+	ModuleBrowser*                mModuleBrowser = nullptr;
 
 	std::unique_ptr<ThemeManager> mThemeManager;
 };
