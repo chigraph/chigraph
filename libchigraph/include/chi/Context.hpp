@@ -10,10 +10,10 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "chi/Flags.hpp"
 #include "chi/Fwd.hpp"
 #include "chi/ToString.hpp"
 #include "chi/json.hpp"
-#include "chi/Flags.hpp"
 
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/IR/LLVMContext.h>
@@ -57,7 +57,7 @@ struct Context {
 	/// Creates a context with just the lang module
 	/// \param workPath Path to the workspace, or a subdirectory of the workspace
 	Context(const boost::filesystem::path& workPath = {});
-	
+
 	/// Destructor
 	~Context();
 
@@ -84,8 +84,10 @@ struct Context {
 	/// \param[in] name The name of the moudle
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
-	Result loadModule(const boost::filesystem::path& name, Flags<LoadSettings> flags = LoadSettings::Default, ChiModule** toFill = nullptr);
-	
+	Result loadModule(const boost::filesystem::path& name,
+	                  Flags<LoadSettings>            flags  = LoadSettings::Default,
+	                  ChiModule**                    toFill = nullptr);
+
 	/// Downloads a module from a remote URL, currently supports
 	///  - github
 	/// \pre `hasWorkspace() == true`
@@ -246,7 +248,8 @@ enum class VCSType {
 /// Get the URL for a VCS repository from a module name.
 /// \param path The module name
 /// \return {The type of VCS that it is, the URL to clone, the relative path to clone to}
-std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(const boost::filesystem::path& path);
+std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
+    const boost::filesystem::path& path);
 
 }  // namespace chi
 

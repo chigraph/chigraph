@@ -63,7 +63,7 @@ chi::DataType TypeSelector::currentType() {
 	std::tie(mod, name) = chi::parseColonPair(currentText().toStdString());
 
 	chi::DataType ty;
-	auto           res = mModule->context().typeFromModule(mod, name, &ty);
+	auto          res = mModule->context().typeFromModule(mod, name, &ty);
 	if (!res) {
 		KMessageBox::detailedError(this, i18n("Failed to get type"),
 		                           QString::fromStdString(res.dump()));

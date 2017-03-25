@@ -7,7 +7,6 @@
 
 class BreakpointView : public QTreeView {
 public:
-	
 };
 
-#endif // CHIGRAPHGUI_DEBUGGER_BREAKPOINT_VIEW_HPP
+#endif  // CHIGRAPHGUI_DEBUGGER_BREAKPOINT_VIEW_HPP

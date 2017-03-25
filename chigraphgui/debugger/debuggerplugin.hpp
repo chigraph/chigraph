@@ -12,34 +12,25 @@
 class DebuggerPlugin : public QObject, public ChigraphPlugin {
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID ChigraphPlugin_iid FILE "debugger.json")
-    Q_INTERFACES(ChigraphPlugin)
-	
+	Q_INTERFACES(ChigraphPlugin)
+
 public:
-	
-	
 	DebuggerPlugin();
-	
-	
+
 private:
-	
 	// ChigraphPlugin interface
-	QVector<ToolView*> toolViews() override {
-		return {};
-	}
-	
+	QVector<ToolView*> toolViews() override { return {}; }
+
 	QAction* toggleBreakpointAction;
 	QAction* debugAction;
 	QAction* stepAction;
 	QAction* stepInAction;
 	QAction* stepOutAction;
 	QAction* continueAction;
-	
-	void debugStart();
-	
-	
-	std::unique_ptr<chi::Debugger> mDebugger;
 
+	void debugStart();
+
+	std::unique_ptr<chi::Debugger> mDebugger;
 };
 
-
-#endif // CHIGRAPHGUI_DEBUGGER_DEBUGGER_PLUGIN_HPP
+#endif  // CHIGRAPHGUI_DEBUGGER_DEBUGGER_PLUGIN_HPP

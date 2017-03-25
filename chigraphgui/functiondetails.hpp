@@ -19,23 +19,15 @@ class QLineEdit;
 
 class FunctionDetails : public QWidget, public ToolView {
 	Q_OBJECT
-	
+
 	// ToolView interface
 public:
-	
-	QWidget* toolView() override {
-		return this;
-	}
-	Qt::DockWidgetArea defaultArea() const override {
-		return Qt::RightDockWidgetArea;
-	}
-	QString label() override {
-		return i18n("Function Details");
-	}
-	
+	QWidget*           toolView() override { return this; }
+	Qt::DockWidgetArea defaultArea() const override { return Qt::RightDockWidgetArea; }
+	QString            label() override { return i18n("Function Details"); }
+
 	chi::GraphFunction* chiFunc() const;
-	
-	
+
 public:
 	explicit FunctionDetails(QWidget* parent = nullptr);
 

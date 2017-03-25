@@ -70,9 +70,7 @@ struct ChiModule {
 
 	/// Get the dependencies
 	/// \return The dependencies
-	const std::set<boost::filesystem::path>& dependencies() const {
-		return mDependencies;
-	}
+	const std::set<boost::filesystem::path>& dependencies() const { return mDependencies; }
 	/// Add a dependency to the module
 	/// Loads the module from context() if it isn't already loaded
 	/// \param newDepFullPath The dependency, full path
@@ -94,6 +92,6 @@ private:
 
 	std::set<boost::filesystem::path> mDependencies;
 };
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_CHI_MODULE_HPP

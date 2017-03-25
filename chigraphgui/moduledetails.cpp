@@ -1,7 +1,7 @@
 #include "moduledetails.hpp"
 
-#include <chi/GraphModule.hpp>
 #include <chi/GraphFunction.hpp>
+#include <chi/GraphModule.hpp>
 
 #include <QGroupBox>
 #include <QVBoxLayout>

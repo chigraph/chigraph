@@ -6,7 +6,7 @@
 namespace chi {
 
 /// A template class for type-safe flags
-/// 
+///
 /// Usage:
 /// ```
 /// enum class MyOpts {
@@ -14,60 +14,49 @@ namespace chi {
 ///     Second = 1u << 1,
 ///     FirstAndSecond = First | Second,
 /// };
-/// 
+///
 /// chi::Flags<MyOpts> fl{MyOpts::First | MyOpts::Second};
 /// assert(fl & MyOpts::First);
 /// ```
-template<typename Enum>
+template <typename Enum>
 struct Flags {
 	static_assert(std::is_enum<Enum>::value, "Template argument to flags must be an enum");
-	
+
 	Flags() = default;
 	Flags(Enum e) : mData{static_cast<decltype(mData)>(e)} {}
-	
+
 	Flags(const Flags& fl) = default;
-	Flags(Flags&& fl) = default;
-	
+	Flags(Flags&& fl)      = default;
+
 	Flags& operator=(const Flags&) = default;
 	Flags& operator=(Flags&&) = default;
-	
-	bool operator==(const Flags& rhs) const {
-		return mData == rhs.mData;
-	}
-	
-	bool operator!() const {
-		return mData == 0;
-	}
-	
-	explicit operator bool() const {
-		return mData != 0;
-	}
-	
-	Flags operator|(const Flags& rhs) const {
-		return Flags{mData | rhs.mData};
-	}
-	
-	Flags operator&(const Flags& rhs) const {
-		return Flags{mData & rhs.mData};
-	}
-	
+
+	bool operator==(const Flags& rhs) const { return mData == rhs.mData; }
+
+	bool operator!() const { return mData == 0; }
+
+	explicit operator bool() const { return mData != 0; }
+
+	Flags operator|(const Flags& rhs) const { return Flags{mData | rhs.mData}; }
+
+	Flags operator&(const Flags& rhs) const { return Flags{mData & rhs.mData}; }
+
 	Flags& operator|=(const Flags& rhs) {
 		mData |= rhs.mData;
 		return *this;
 	}
-	
+
 	Flags& operator&=(const Flags& rhs) {
 		mData &= rhs.mData;
 		return *this;
 	}
-	
+
 private:
 	Flags(std::underlying_type_t<Enum> data) : mData{data} {}
-	
+
 	std::underlying_type_t<Enum> mData = 0;
 };
 
+}  // namespace chi
 
-} // namespace chi
-
-#endif // CHI_FLAGS_HPP
+#endif  // CHI_FLAGS_HPP

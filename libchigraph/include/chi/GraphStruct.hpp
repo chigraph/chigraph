@@ -66,6 +66,6 @@ private:
 
 	DataType mDataType;
 };
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_STRUCT_TYPE_HPP

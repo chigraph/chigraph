@@ -5,8 +5,8 @@
 
 #include <KMessageBox>
 
-#include <chi/GraphModule.hpp>
 #include <chi/FunctionValidator.hpp>
+#include <chi/GraphModule.hpp>
 #include <chi/NodeInstance.hpp>
 
 #include <../src/Node.hpp>
@@ -93,8 +93,8 @@ FunctionView::FunctionView(chi::GraphFunction& func_, QWidget* parent)
 
 	connect(mScene, &FlowScene::nodeMoved, this, &FunctionView::nodeMoved);
 	connect(mScene, &FlowScene::nodeDoubleClicked, this, &FunctionView::nodeDoubleClicked);
-    
-    //validate the function
+
+	// validate the function
 	updateValidationStates();
 }
 
@@ -105,8 +105,7 @@ void FunctionView::nodeAdded(Node& n) {
 	// if it already exists then don't
 	if (mNodeMap.find(&ptr->instance()) != mNodeMap.end()) { return; }
 
-	mFunction->nodes()[ptr->instance().id()] =
-	    std::unique_ptr<chi::NodeInstance>(&ptr->instance());
+	mFunction->nodes()[ptr->instance().id()] = std::unique_ptr<chi::NodeInstance>(&ptr->instance());
 
 	mNodeMap[&ptr->instance()] = &n;
 
@@ -206,8 +205,8 @@ void FunctionView::connectionDeleted(Connection& c) {
 		res += chi::disconnectExec(*conn[0].first, conn[0].second);
 	} else {
 		res += chi::disconnectData(*conn[0].first,
-		                            conn[0].second - conn[0].first->outputExecConnections.size(),
-		                            *conn[1].first);
+		                           conn[0].second - conn[0].first->outputExecConnections.size(),
+		                           *conn[1].first);
 	}
 
 	if (!res) {
@@ -246,13 +245,13 @@ void FunctionView::nodeDoubleClicked(QtNodes::Node& n) {
 
 	auto func = graphMod->functionFromName(model->instance().type().name());
 	if (func == nullptr) { return; }
-	
+
 	// emit the signal
 	functionDoubleClicked(*func);
 }
 
 void FunctionView::addBreakpoint(QtNodes::Node& n) {
-  // TODO: implement
+	// TODO: implement
 }
 
 void FunctionView::refreshGuiForNode(Node* node) {
@@ -357,10 +356,13 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 			module->nodeTypeFromName(typeName, {}, &ty);
 
 			auto name = ty->qualifiedName();  // cache the name because ty is moved from
-			reg->registerModel(std::make_unique<ChigraphNodeModel>(
-			    new chi::NodeInstance(mFunction, std::move(ty), 0, 0,
-			                           boost::uuids::random_generator()()),
-			    this), QString::fromStdString(modName.generic_path().string()));  // TODO: this is a memory leak
+			reg->registerModel(
+			    std::make_unique<ChigraphNodeModel>(
+			        new chi::NodeInstance(mFunction, std::move(ty), 0, 0,
+			                              boost::uuids::random_generator()()),
+			        this),
+			    QString::fromStdString(
+			        modName.generic_path().string()));  // TODO: this is a memory leak
 		}
 	}
 	// register exit -- it has to be the speical kind of exit for this function
@@ -368,19 +370,22 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 	mFunction->createExitNodeType(&ty);
 
 	reg->registerModel(std::make_unique<ChigraphNodeModel>(
-	    new chi::NodeInstance(mFunction, std::move(ty), 0, 0), this), QString::fromStdString(mFunction->module().fullName()));
+	                       new chi::NodeInstance(mFunction, std::move(ty), 0, 0), this),
+	                   QString::fromStdString(mFunction->module().fullName()));
 
 	// register local variable setters and getters
 	for (const auto& local : mFunction->localVariables()) {
 		mFunction->module().nodeTypeFromName("_set_" + local.name, local.type.qualifiedName(), &ty);
 
 		reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		    new chi::NodeInstance(mFunction, std::move(ty), 0, 0), this), i18n("Local Variables"));
+		                       new chi::NodeInstance(mFunction, std::move(ty), 0, 0), this),
+		                   i18n("Local Variables"));
 
 		mFunction->module().nodeTypeFromName("_get_" + local.name, local.type.qualifiedName(), &ty);
 
 		reg->registerModel(std::make_unique<ChigraphNodeModel>(
-		    new chi::NodeInstance(mFunction, std::move(ty), 0, 0), this), i18n("Local Variables"));
+		                       new chi::NodeInstance(mFunction, std::move(ty), 0, 0), this),
+		                   i18n("Local Variables"));
 	}
 
 	return reg;
@@ -389,39 +394,39 @@ std::shared_ptr<DataModelRegistry> FunctionView::createRegistry() {
 void FunctionView::updateValidationStates() {
 	// validate the function
 	auto result = chi::validateFunction(*mFunction);
-	
+
 	// clear validation states of the other nodes
 	for (auto n : mInvalidNodes) {
 		auto castedModel = dynamic_cast<ChigraphNodeModel*>(n->nodeDataModel());
 		castedModel->setErrorState(QtNodes::NodeValidationState::Valid, {});
 	}
 	mInvalidNodes.clear();
-	
+
 	// reset those which which are invaid now
 	for (auto errJson : result.result_json) {
 		auto& data = errJson["data"];
-		
+
 		// parse out Node ID
 		if (data.find("Node ID") != data.end()) {
-			std::string s = data["Node ID"];
-			auto id =  boost::uuids::string_generator()(s);
-			
+			std::string s  = data["Node ID"];
+			auto        id = boost::uuids::string_generator()(s);
+
 			std::string errCode = errJson["errorcode"];
-			bool isError = errCode[0] == 'E';
-			
+			bool        isError = errCode[0] == 'E';
+
 			std::string overview = errJson["overview"];
-			
+
 			auto node = mFunction->nodeByID(id);
 			if (node != nullptr) {
 				auto guiNode = guiNodeFromChigNode(node);
 				if (guiNode != nullptr) {
 					auto castedModel = dynamic_cast<ChigraphNodeModel*>(guiNode->nodeDataModel());
-					castedModel->setErrorState(isError ? QtNodes::NodeValidationState::Error : 
-						QtNodes::NodeValidationState::Warning, QString::fromStdString(overview));
+					castedModel->setErrorState(isError ? QtNodes::NodeValidationState::Error
+					                                   : QtNodes::NodeValidationState::Warning,
+					                           QString::fromStdString(overview));
 				}
 				mInvalidNodes.push_back(guiNode);
 			}
 		}
 	}
-	
 }
