@@ -721,12 +721,12 @@ std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(const fs:
 					folderName += "/";
 					folderName += beginIter->string();
 				}
-				return {VCSType::Git, "https://" + folderName, folderName};
+				return std::make_tuple(VCSType::Git, "https://" + folderName, folderName);
 			}
 			
 		}
 	}
-	return {VCSType::Unknown, {}, {}};
+	return std::make_tuple(VCSType::Unknown, "", "");
 }
 
 }  // namespace chi
