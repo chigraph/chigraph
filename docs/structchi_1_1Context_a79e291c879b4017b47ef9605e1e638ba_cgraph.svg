@@ -48,37 +48,37 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 508;
 var viewHeight = 116;
-var sectionId = 'dynsection-6';
+var sectionId = 'dynsection-8';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chi::Context::hasWorkspace</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-112 504,-112 504,4 -4,4"/>
-<!-- Node93 -->
+<!-- Node164 -->
 <g id="node1" class="node">
-<title>Node93</title>
+<title>Node164</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-44.5 0,-63.5 140,-63.5 140,-44.5 0,-44.5"/>
 <text text-anchor="middle" x="70" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::hasWorkspace</text>
 </g>
-<!-- Node94 -->
+<!-- Node165 -->
 <g id="node2" class="node">
-<title>Node94</title>
+<title>Node165</title>
 <g id="a_node2"><a xlink:href="structchi_1_1Context.html#ad1bbd4d5eb33a8ce34292eb6a192d10d" target="_top" xlink:title="Compile a module to a llvm::Module. ">
 <polygon fill="#ffffff" stroke="#000000" points="177,-88.5 177,-107.5 317,-107.5 317,-88.5 177,-88.5"/>
 <text text-anchor="middle" x="247" y="-95.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::compileModule</text>
 </a>
 </g>
 </g>
-<!-- Node93&#45;&gt;Node94 -->
+<!-- Node164&#45;&gt;Node165 -->
 <g id="edge1" class="edge">
-<title>Node93&#45;&gt;Node94</title>
+<title>Node164&#45;&gt;Node165</title>
 <path fill="none" stroke="#191970" d="M108.4064,-63.5473C134.9639,-70.1492 170.4953,-78.9819 198.9323,-86.051"/>
 <polygon fill="#191970" stroke="#191970" points="198.1196,-89.4554 208.6686,-88.4713 199.8083,-82.6621 198.1196,-89.4554"/>
 </g>
-<!-- Node95 -->
+<!-- Node166 -->
 <g id="node3" class="node">
-<title>Node95</title>
+<title>Node166</title>
 <g id="a_node3"><a xlink:href="structchi_1_1Context.html#a9ded1e6de886af9e1fb7d42188bba4b3" target="_top" xlink:title="Find all uses of a node type in all the loaded modules. ">
 <polygon fill="#ffffff" stroke="#000000" points="180,-39 180,-69 314,-69 314,-39 180,-39"/>
 <text text-anchor="start" x="188" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::findInstances</text>
@@ -86,39 +86,39 @@ var sectionId = 'dynsection-6';
 </a>
 </g>
 </g>
-<!-- Node93&#45;&gt;Node95 -->
+<!-- Node164&#45;&gt;Node166 -->
 <g id="edge2" class="edge">
-<title>Node93&#45;&gt;Node95</title>
+<title>Node164&#45;&gt;Node166</title>
 <path fill="none" stroke="#191970" d="M140.2093,-54C149.88,-54 159.8553,-54 169.6458,-54"/>
 <polygon fill="#191970" stroke="#191970" points="169.761,-57.5001 179.761,-54 169.761,-50.5001 169.761,-57.5001"/>
 </g>
-<!-- Node97 -->
+<!-- Node168 -->
 <g id="node5" class="node">
-<title>Node97</title>
+<title>Node168</title>
 <g id="a_node5"><a xlink:href="structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846" target="_top" xlink:title="Get the workspace path of the Context. ">
 <polygon fill="#ffffff" stroke="#000000" points="176,-.5 176,-19.5 318,-19.5 318,-.5 176,-.5"/>
 <text text-anchor="middle" x="247" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::workspacePath</text>
 </a>
 </g>
 </g>
-<!-- Node93&#45;&gt;Node97 -->
+<!-- Node164&#45;&gt;Node168 -->
 <g id="edge4" class="edge">
-<title>Node93&#45;&gt;Node97</title>
+<title>Node164&#45;&gt;Node168</title>
 <path fill="none" stroke="#191970" d="M108.4064,-44.4527C134.9639,-37.8508 170.4953,-29.0181 198.9323,-21.949"/>
 <polygon fill="#191970" stroke="#191970" points="199.8083,-25.3379 208.6686,-19.5287 198.1196,-18.5446 199.8083,-25.3379"/>
 </g>
-<!-- Node96 -->
+<!-- Node167 -->
 <g id="node4" class="node">
-<title>Node96</title>
+<title>Node167</title>
 <g id="a_node4"><a xlink:href="namespacechi.html#a6f41c84de5ee1febedce5a5385f9c632" target="_top" xlink:title="Get the workspace directory from a child of the workspace directory Example: say you have a workspace...">
 <polygon fill="#ffffff" stroke="#000000" points="354,-44.5 354,-63.5 500,-63.5 500,-44.5 354,-44.5"/>
 <text text-anchor="middle" x="427" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::workspaceFromChildPath</text>
 </a>
 </g>
 </g>
-<!-- Node95&#45;&gt;Node96 -->
+<!-- Node166&#45;&gt;Node167 -->
 <g id="edge3" class="edge">
-<title>Node95&#45;&gt;Node96</title>
+<title>Node166&#45;&gt;Node167</title>
 <path fill="none" stroke="#191970" d="M314.0254,-54C323.6694,-54 333.6906,-54 343.6043,-54"/>
 <polygon fill="#191970" stroke="#191970" points="343.8764,-57.5001 353.8763,-54 343.8763,-50.5001 343.8764,-57.5001"/>
 </g>

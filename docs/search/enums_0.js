@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vcstype',['VCSType',['../namespacechi.html#a0019cbd6ec4fd8ff0206bac877add0c1',1,'chi']]]
+  ['loadsettings',['LoadSettings',['../namespacechi.html#afebbb378de318c4fa51d00aa659872c9',1,'chi']]]
 ];
