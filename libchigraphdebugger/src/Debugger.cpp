@@ -4,6 +4,8 @@
 
 #include <chi/NameMangler.hpp>
 #include <chi/NodeInstance.hpp>
+#include <chi/Result.hpp>
+#include <chi/Context.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/uuid/uuid_io.hpp>

@@ -5,6 +5,7 @@
 #include "chi/GraphStruct.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/Result.hpp"
+#include "chi/NodeType.hpp"
 
 namespace chi {
 

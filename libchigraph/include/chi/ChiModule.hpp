@@ -8,15 +8,12 @@
 
 #include "chi/Fwd.hpp"
 #include "chi/HashFilesystemPath.hpp"
-#include "chi/ToString.hpp"
 #include "chi/json.hpp"
 
 #include <boost/filesystem.hpp>
 #include <boost/utility/string_view.hpp>
 
 #include <set>
-
-#include <llvm/IR/Module.h>
 
 /// The namespace where chigraph lives
 namespace chi {

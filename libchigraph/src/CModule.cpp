@@ -3,6 +3,10 @@
 #include "chi/CModule.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/JsonDeserializer.hpp"
+#include "chi/Result.hpp"
+#include "chi/NodeType.hpp"
+#include "chi/DataType.hpp"
+#include "chi/Context.hpp"
 
 #include <libexecstream/exec-stream.h>
 
@@ -322,4 +326,6 @@ Result CModule::createNodeTypeFromCCode(const std::string& code, const std::stri
 
 	return res;
 }
+
+Result CModule::generateModule(llvm::Module&){ return {}; }
 }  // namespace chi

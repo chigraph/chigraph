@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "chi/NodeType.hpp"
+#include "chi/Fwd.hpp"
 
 #include <vector>
 
@@ -26,6 +26,9 @@ struct NodeInstance {
 	/// \param nodeID The unique ID for the node
 	NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX, float posY,
 	             boost::uuids::uuid nodeID = boost::uuids::random_generator()());
+	
+	/// Destructor
+	~NodeInstance();
 
 	/// Move constructor
 	NodeInstance(NodeInstance&&) = default;
@@ -89,7 +92,7 @@ struct NodeInstance {
 	GraphModule& module() const { return *mGraphModule; }
 
 private:
-	std::unique_ptr<NodeType> mType = nullptr;
+	std::unique_ptr<NodeType> mType;
 
 	float mX = 0.f;
 	float mY = 0.0;

@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "chi/DataType.hpp"
 #include "chi/Fwd.hpp"
+#include "chi/DataType.hpp"
 
 namespace chi {
 

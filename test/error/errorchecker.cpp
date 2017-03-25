@@ -8,6 +8,9 @@
 #include <chi/JsonDeserializer.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/json.hpp>
+#include <chi/Result.hpp>
+
+#include <llvm/IR/Module.h>
 
 using namespace chi;
 using namespace nlohmann;

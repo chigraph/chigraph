@@ -7,6 +7,7 @@
 #include <chi/LangModule.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/Result.hpp>
+#include <chi/NodeType.hpp>
 
 using namespace chi;
 using namespace nlohmann;

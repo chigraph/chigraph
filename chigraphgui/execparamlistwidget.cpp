@@ -8,6 +8,7 @@
 #include <KMessageBox>
 
 #include <chi/GraphFunction.hpp>
+#include <chi/Context.hpp>
 
 #include "functionview.hpp"
 

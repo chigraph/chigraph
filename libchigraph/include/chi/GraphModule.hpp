@@ -6,10 +6,12 @@
 
 #pragma once
 
-#include "chi/Context.hpp"
-#include "chi/DataType.hpp"
+#include <chi/Fwd.hpp>
+#include <chi/ChiModule.hpp>
 
 #include <boost/bimap.hpp>
+
+#include <gsl/gsl>
 
 namespace chi {
 /// Module that holds graph functions
@@ -52,9 +54,7 @@ struct GraphModule : public ChiModule {
 	/// Get the path to the source file
 	/// It's not garunteed to exist, because it could have not been saved
 	/// \return The path
-	boost::filesystem::path sourceFilePath() const {
-		return context().workspacePath() / "src" / (fullName() + ".chimod");
-	}
+	boost::filesystem::path sourceFilePath() const;
 
 	/// \name Function Creation and Manipulation
 	/// \{

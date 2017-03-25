@@ -7,11 +7,6 @@
 #define CHI_FUNCTION_COMPILER_HPP
 
 #include "chi/Fwd.hpp"
-#include "chi/Result.hpp"
-
-#include <llvm/IR/DIBuilder.h>
-#include <llvm/IR/DebugInfo.h>
-#include <llvm/IR/Module.h>
 
 namespace chi {
 

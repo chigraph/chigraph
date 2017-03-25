@@ -8,6 +8,8 @@
 #include "chi/NameMangler.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
+#include "chi/Result.hpp"
+#include "chi/Context.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
@@ -542,4 +544,8 @@ void GraphModule::removeStruct(GraphStruct* tyToDel) {
 	Expects(false);
 }
 
+
+boost::filesystem::path GraphModule::sourceFilePath() const{
+	return context().workspacePath() / "src" / (fullName() + ".chimod");
+}
 }  // namespace chi
