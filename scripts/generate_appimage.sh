@@ -5,9 +5,9 @@ set -e
 SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPTSDIR/appimage
 
-docker build -t chigraph/chigraph-appimage .
+docker pull russelltg/chigraph-appimage:latest
 
-DOCKER_PROCESS=$(docker run -d chigraph/chigraph-appimage bash -c 'while true; do sleep 1000; done')
+DOCKER_PROCESS=$(docker run -d russelltg/chigraph-appimage:latest bash -c 'while true; do sleep 1000; done')
 
 docker cp ./appimage_recipie.sh $DOCKER_PROCESS:/appimage_recipie.sh
 docker exec $DOCKER_PROCESS bash /appimage_recipie.sh
