@@ -81,6 +81,24 @@ void FunctionTabView::refreshModule(chi::GraphModule& mod) {
 	setCurrentIndex(currTabId);
 }
 
+
+FunctionView* FunctionTabView::viewFromName(const QString& fullName) {
+	auto iter = mOpenFunctions.find(fullName);
+	if (iter != mOpenFunctions.end()) {
+		return iter->second;
+	}
+	return nullptr;
+}
+
+FunctionView* FunctionTabView::viewFromName(const boost::filesystem::path& mod, const std::string& function) {
+	return viewFromName(QString::fromStdString(mod.string() + ":" + function));
+}
+
+void FunctionTabView::closeView(FunctionView* view)
+{
+	closeTab(indexOf(view));
+}
+
 void FunctionTabView::closeTab(int idx) {
 	mOpenFunctions.erase(
 	    std::find_if(mOpenFunctions.begin(), mOpenFunctions.end(),

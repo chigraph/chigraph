@@ -12,6 +12,8 @@
 
 #include <unordered_map>
 
+#include <boost/filesystem.hpp>
+
 class FunctionView;
 
 class FunctionTabView : public QTabWidget, public KXMLGUIClient {
@@ -26,6 +28,11 @@ public:
 
 	// refresh all the functions in the module
 	void refreshModule(chi::GraphModule& mod);
+	
+	FunctionView* viewFromName(const QString& fullName);
+	FunctionView* viewFromName(const boost::filesystem::path& mod, const std::string& function);
+	
+	void closeView(FunctionView* view);
 
 signals:
 	void dirtied(chi::GraphModule& mod);

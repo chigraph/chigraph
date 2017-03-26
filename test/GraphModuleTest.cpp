@@ -103,7 +103,7 @@ TEST_CASE("GraphModuleTest", "[module]") {
 			assertFuncRemoved();
 		}
 		WHEN("We remove that function using the other method") {
-			gMod->removeFunction(func);
+			gMod->removeFunction(*func);
 
 			assertFuncRemoved();
 		}

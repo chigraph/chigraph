@@ -75,12 +75,14 @@ struct GraphModule : public ChiModule {
 
 	/// Remove a function from the module
 	/// \param name The name of the function to remove
+	/// \param deleteReferences should all the references in the context be deleted?
 	/// \return True if there was a function matching name that was removed
-	bool removeFunction(boost::string_view name);
+	bool removeFunction(boost::string_view name, bool deleteReferences = true);
 
 	/// Remove a function from the module
 	/// \param func The function to remove
-	void removeFunction(GraphFunction* func);
+	/// \param deleteReferences should all the references in the context be deleted?
+	void removeFunction(GraphFunction& func, bool deleteReferences = true);
 
 	/// Get a function from the name
 	/// \param name The name to get
