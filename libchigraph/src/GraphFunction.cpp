@@ -105,41 +105,41 @@ Result GraphFunction::insertNode(const boost::filesystem::path& moduleName,
 	return res;
 }
 
-Result GraphFunction::removeNode(NodeInstance* nodeToRemove) {
+Result GraphFunction::removeNode(NodeInstance& nodeToRemove) {
 	Result res;
 
 	// disconnect it's connections
 
 	// disconnect input exec
-	for (const auto& execSlot : nodeToRemove->inputExecConnections) {
+	for (const auto& execSlot : nodeToRemove.inputExecConnections) {
 		for (const auto& pair : execSlot) {
 			if (pair.first != nullptr) { res += disconnectExec(*pair.first, pair.second); }
 		}
 	}
 	// disconnect output exec
 	auto ID = 0ull;
-	for (const auto& pair : nodeToRemove->outputExecConnections) {
-		if (pair.first != nullptr) { res += disconnectExec(*nodeToRemove, ID); }
+	for (const auto& pair : nodeToRemove.outputExecConnections) {
+		if (pair.first != nullptr) { res += disconnectExec(nodeToRemove, ID); }
 		++ID;
 	}
 
 	// disconnect input data
-	for (const auto& pair : nodeToRemove->inputDataConnections) {
+	for (const auto& pair : nodeToRemove.inputDataConnections) {
 		if (pair.first != nullptr) {
-			res += disconnectData(*pair.first, pair.second, *nodeToRemove);
+			res += disconnectData(*pair.first, pair.second, nodeToRemove);
 		}
 	}
 
 	// disconnect output data
 	ID = 0ull;
-	for (const auto& dataSlot : nodeToRemove->outputDataConnections) {
+	for (const auto& dataSlot : nodeToRemove.outputDataConnections) {
 		for (const auto& pair : dataSlot) {
-			if (pair.first != nullptr) { disconnectData(*nodeToRemove, ID, *pair.first); }
+			if (pair.first != nullptr) { disconnectData(nodeToRemove, ID, *pair.first); }
 		}
 		++ID;
 	}
 	// then delete the node
-	nodes().erase(nodeToRemove->id());
+	nodes().erase(nodeToRemove.id());
 
 	return res;
 }
@@ -363,9 +363,9 @@ bool GraphFunction::removeLocalVariable(boost::string_view name) {
 
 	// remove set and get nodes
 	auto setNodes = nodesWithType(module().fullName(), "_set_" + name.to_string());
-	for (const auto& node : setNodes) { removeNode(node); }
+	for (const auto& node : setNodes) { removeNode(*node); }
 	auto             getNodes = nodesWithType(module().fullName(), "_get_" + name.to_string());
-	for (const auto& node : getNodes) { removeNode(node); }
+	for (const auto& node : getNodes) { removeNode(*node); }
 
 	return true;
 }
@@ -440,6 +440,30 @@ void GraphFunction::retypeLocalVariable(boost::string_view name, DataType newTyp
 
 		node->setType(std::move(ty));
 	}
+}
+
+
+std::vector<NodeInstance*> GraphFunction::setName(boost::string_view newName, bool updateReferences) {
+	
+	auto oldName = mName;
+	mName = newName.to_string();
+	
+	if (updateReferences) {
+		auto toUpdate = context().findInstancesOfType(module().fullName(), oldName);
+		
+		for (auto node : toUpdate) {
+			std::unique_ptr<NodeType> ty;
+			auto res = context().nodeTypeFromModule(module().fullName(), name(), {}, &ty);
+			if (!res) {
+				return {};
+			}
+			
+			node->setType(std::move(ty));
+		}
+		
+		return toUpdate;
+	}
+	return {};
 }
 
 }  // namespace chi

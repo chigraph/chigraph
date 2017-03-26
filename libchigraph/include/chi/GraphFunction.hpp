@@ -102,7 +102,7 @@ struct GraphFunction {
 	/// Remove a node from the function. Also disconnect it's connections.
 	/// \param nodeToRemove The node to remove
 	/// \return The result
-	Result removeNode(NodeInstance* nodeToRemove);
+	Result removeNode(NodeInstance& nodeToRemove);
 
 	/// Creates an entry node if it doesn't already exist, else just return it
 	/// \param x The x coordinate of the new entry, or changes the existing entry node to be at this
@@ -311,6 +311,14 @@ struct GraphFunction {
 	/// Get the name of the function
 	/// \return The name of the function
 	std::string name() const { return mName; }
+	
+	/// Set the name of the function
+	/// \param newName the new name for the function
+	/// \param updateReferences should the references be updated? 
+	/// If true, all modules in the context will be scanned and updated
+	/// \return All the updated nodes
+	std::vector<NodeInstance*> setName(boost::string_view newName, bool updateReferences = true);
+	
 	/// Get the GraphModule that contains this GraphFunction
 	/// \return The GraphModule.
 	GraphModule& module() const { return *mModule; }
