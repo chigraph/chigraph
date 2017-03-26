@@ -33,7 +33,6 @@ namespace fs = boost::filesystem;
 
 namespace chi {
 Context::Context(const fs::path& workPath) {
-
 	mWorkspacePath = workspaceFromChildPath(workPath);
 
 	git_libgit2_init();
