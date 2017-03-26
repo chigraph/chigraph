@@ -467,22 +467,7 @@ struct CompareNodeType : NodeType {
 		}(mCompOp);
 
 		setName(ty.unqualifiedName() + opStr + ty.unqualifiedName());
-
-		std::string opVerb = [](CmpOp b) {
-			switch (b) {
-			case CmpOp::Lt: return "less than";
-			case CmpOp::Gt: return "greater than";
-			case CmpOp::Let: return "less than or equal to";
-			case CmpOp::Get: return "greater than or equal to";
-			case CmpOp::Eq: return "equal to";
-			case CmpOp::Neq: return "not equal to";
-			default: return "";
-			}
-			return "";
-		}(mCompOp);
-
-		setDescription("Check if one " + ty.unqualifiedName() + " is " + opVerb + " than another " +
-		               ty.unqualifiedName());
+		setDescription(ty.unqualifiedName() + opStr + ty.unqualifiedName());
 
 		setDataInputs({{"a", ty}, {"b", ty}});
 		setDataOutputs({{"", mod.typeFromName("i1")}});
