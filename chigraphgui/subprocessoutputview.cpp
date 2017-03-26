@@ -16,8 +16,8 @@
 #include <llvm/Bitcode/BitcodeWriter.h>
 #endif
 
-#include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/FileSystem.h>
+#include <llvm/Support/raw_ostream.h>
 
 #include <boost/filesystem.hpp>
 
@@ -39,9 +39,10 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 	}
 
 	// write it to a temporary file
-	fs::path tempBitcodeFile = boost::filesystem::temp_directory_path() / fs::unique_path().replace_extension(".bc");
+	fs::path tempBitcodeFile =
+	    boost::filesystem::temp_directory_path() / fs::unique_path().replace_extension(".bc");
 	{
-		std::error_code err;
+		std::error_code      err;
 		llvm::raw_fd_ostream os(tempBitcodeFile.string(), err, llvm::sys::fs::F_RW);
 
 		llvm::WriteBitcodeToFile(llmod.get(), os);
@@ -61,9 +62,10 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 	// run in lli
 	mProcess = new QProcess(this);
 	mProcess->setProgram(QString::fromStdString(chiPath.string()));
-	
-	auto args = QStringList() << QStringLiteral("interpret") << QStringLiteral("-i") << 
-		QString::fromStdString(tempBitcodeFile.string()) << QStringLiteral("-O2");
+
+	auto args = QStringList() << QStringLiteral("interpret") << QStringLiteral("-i")
+	                          << QString::fromStdString(tempBitcodeFile.string())
+	                          << QStringLiteral("-O2");
 	mProcess->setArguments(args);
 
 	connect(mProcess, &QProcess::readyReadStandardOutput, this,

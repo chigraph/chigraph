@@ -371,21 +371,17 @@ bool GraphModule::removeFunction(boost::string_view name, bool deleteReferences)
 }
 
 void GraphModule::removeFunction(GraphFunction& func, bool deleteReferences) {
-	
 	if (deleteReferences) {
 		auto references = context().findInstancesOfType(fullName(), func.name());
-		
-		for (auto node : references) {
-			node->function().removeNode(*node);
-		}
+
+		for (auto node : references) { node->function().removeNode(*node); }
 	}
-	
+
 	auto iter = std::find_if(mFunctions.begin(), mFunctions.end(),
 	                         [&func](auto& uPtr) { return uPtr.get() == &func; });
 	if (iter == mFunctions.end()) { return; }
 
 	mFunctions.erase(iter);
-	
 }
 
 GraphFunction* GraphModule::functionFromName(boost::string_view name) const {
