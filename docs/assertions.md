@@ -34,6 +34,15 @@ Example:
 REQUIRE_FALSE( thisReturnsFalse() );
 ```
 
+Do note that "overly complex" expressions cannot be decomposed and thus will not compile. This is done partly for practical reasons (to keep the underlying expression template machinery to minimum) and partly for philosophical reasons (assertions should be simple and deterministic).
+
+Examples:
+* `CHECK(a == 1 && b == 2);`
+This expression is too complex because of the `&&` operator. If you want to check that 2 or more properties hold, you can either put the expression into parenthesis, which stops decomposition from working, or you need to decompose the expression into two assertions: `CHECK( a == 1 ); CHECK( b == 2);`
+* `CHECK( a == 2 || b == 1 );`
+This expression is too complex because of the `||` operator. If you want to check that one of several properties hold, you can put the expression into parenthesis (unlike with `&&`, expression decomposition into several `CHECK`s is not possible).
+
+
 ### Floating point comparisons
 
 When comparing floating point numbers - especially if at least one of them has been computed - great care must be taken to allow for rounding errors and inexact representations.
@@ -44,15 +53,39 @@ Catch provides a way to perform tolerant comparisons of floating point values th
 REQUIRE( performComputation() == Approx( 2.1 ) );
 ```
 
-By default a small epsilon value is used that covers many simple cases of rounding errors. When this is insufficent the epsilon value (the amount within which a difference either way is ignored) can be specified by calling the ```epsilon()``` method on the ```Approx``` instance. e.g.:
+This way `Approx` is constructed with reasonable defaults, covering most simple cases of rounding errors. If these are insufficient, each `Approx` instance has 3 tuning knobs, that can be used to customize it for your computation.
 
-```
-REQUIRE( 22/7 == Approx( 3.141 ).epsilon( 0.01 ) );
+* __epsilon__ - epsilon serves to set the percentage by which a result can be erroneous, before it is rejected. By default set to `std::numeric_limits<float>::epsilon()*100`.
+* __margin__ - margin serves to set the the absolute value by which a result can be erroneous before it is rejected. By default set to `0.0`.
+* __scale__ - scale serves to adjust the base for comparison used by epsilon, can be used when  By default set to `1.0`.
+
+#### epsilon example
+```cpp
+Approx target = Approx(100).epsilon(0.01);
+100.0 == target; // Obviously true
+200.0 == target; // Obviously still false
+100.5 == target; // True, because we set target to allow up to 1% error
 ```
 
-When dealing with very large or very small numbers it can be useful to specify a scale, which can be achieved by calling the ```scale()``` method on the ```Approx``` instance.
+#### margin example
+_Margin check is used only if the relative (epsilon and scale based) check fails._
+```cpp
+Approx target = Approx(100).margin(5);
+100.0 == target; // Obviously true
+200.0 == target; // Obviously still false
+104.0 == target; // True, because we set target to allow absolute error up to 5
+```
+
+#### scale
+Scale can be useful if the computation leading to the result worked on different scale, than is used by the results (and thus expected errors are on a different scale than would be expected based on the results alone).
+
 
 ## Exceptions
+
+* **REQUIRE_NOTHROW(** _expression_ **)** and  
+* **CHECK_NOTHROW(** _expression_ **)**
+
+Expects that no exception is thrown during evaluation of the expression.
 
 * **REQUIRE_THROWS(** _expression_ **)** and  
 * **CHECK_THROWS(** _expression_ **)**
@@ -64,18 +97,39 @@ Expects that an exception (of any type) is be thrown during evaluation of the ex
 
 Expects that an exception of the _specified type_ is thrown during evaluation of the expression.
 
-* **REQUIRE_NOTHROW(** _expression_ **)** and  
-* **CHECK_NOTHROW(** _expression_ **)**
+* **REQUIRE_THROWS_WITH(** _expression_, _string or string matcher_ **)** and  
+* **CHECK_THROWS_WITH(** _expression_, _string or string matcher_ **)**
 
-Expects that no exception is thrown during evaluation of the expression.
+Expects that an exception is thrown that, when converted to a string, matches the _string_ or _string matcher_ provided (see next section for Matchers).
+
+e.g.
+```cpp
+REQUIRE_THROWS_WITH( openThePodBayDoors(), Contains( "afraid" ) && Contains( "can't do that" ) );
+REQUIRE_THROWS_WITH( dismantleHal(), "My mind is going" );
+```
+
+
+Please note that the `THROW` family of assertions expects to be passed a single expression, not a statement or series of statements. If you want to check a more complicated sequence of operations, you can use a C++11 lambda function.
+
+```cpp
+REQUIRE_NOTHROW([&](){
+    int i = 1;
+    int j = 2;
+    auto k = i + j;
+    if (k == 3) {
+        throw 1;
+    }
+}());
+```
 
 ## Matcher expressions
 
-To support Matchers a slightly different form is used. Matchers will be more fully documented elsewhere. *Note that Matchers are still at early stage development and are subject to change.*
+To support Matchers a slightly different form is used. Matchers have [their own documentation](matchers.md).
 
-* **REQUIRE_THAT(** _lhs_, _matcher call_ **)** and  
-* **CHECK_THAT(** _lhs_, _matcher call_ **)**  
+* **REQUIRE_THAT(** _lhs_, _matcher expression_ **)** and  
+* **CHECK_THAT(** _lhs_, _matcher expression_ **)**  
 
+Matchers can be composed using `&&`, `||` and `!` operators.
 
 ---
 
