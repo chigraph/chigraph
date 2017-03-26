@@ -13,8 +13,8 @@
 #include "chi/Fwd.hpp"
 #include "chi/json.hpp"
 
-#include <llvm/Support/CodeGen.h>  // for CodeGenOpt
 #include <llvm/IR/LLVMContext.h>
+#include <llvm/Support/CodeGen.h>  // for CodeGenOpt
 
 #include <boost/filesystem.hpp>
 #include <boost/utility/string_view.hpp>

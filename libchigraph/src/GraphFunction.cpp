@@ -12,9 +12,9 @@
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/DIBuilder.h>
+#include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Support/SourceMgr.h>
-#include <llvm/IR/DerivedTypes.h>
 
 #include <boost/dynamic_bitset.hpp>
 #include <boost/range/counting_range.hpp>
@@ -442,25 +442,22 @@ void GraphFunction::retypeLocalVariable(boost::string_view name, DataType newTyp
 	}
 }
 
-
-std::vector<NodeInstance*> GraphFunction::setName(boost::string_view newName, bool updateReferences) {
-	
+std::vector<NodeInstance*> GraphFunction::setName(boost::string_view newName,
+                                                  bool               updateReferences) {
 	auto oldName = mName;
-	mName = newName.to_string();
-	
+	mName        = newName.to_string();
+
 	if (updateReferences) {
 		auto toUpdate = context().findInstancesOfType(module().fullName(), oldName);
-		
+
 		for (auto node : toUpdate) {
 			std::unique_ptr<NodeType> ty;
 			auto res = context().nodeTypeFromModule(module().fullName(), name(), {}, &ty);
-			if (!res) {
-				return {};
-			}
-			
+			if (!res) { return {}; }
+
 			node->setType(std::move(ty));
 		}
-		
+
 		return toUpdate;
 	}
 	return {};

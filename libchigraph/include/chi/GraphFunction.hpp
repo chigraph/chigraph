@@ -311,14 +311,14 @@ struct GraphFunction {
 	/// Get the name of the function
 	/// \return The name of the function
 	std::string name() const { return mName; }
-	
+
 	/// Set the name of the function
 	/// \param newName the new name for the function
-	/// \param updateReferences should the references be updated? 
+	/// \param updateReferences should the references be updated?
 	/// If true, all modules in the context will be scanned and updated
 	/// \return All the updated nodes
 	std::vector<NodeInstance*> setName(boost::string_view newName, bool updateReferences = true);
-	
+
 	/// Get the GraphModule that contains this GraphFunction
 	/// \return The GraphModule.
 	GraphModule& module() const { return *mModule; }

@@ -61,23 +61,21 @@ public:
 
 	// We don't need saving...chigraph has its own serialization
 	QJsonObject save() const override { return {}; }
-	
-	NodeConnectionPolicy nodeConnectionPolicy(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override {
+
+	NodeConnectionPolicy nodeConnectionPolicy(QtNodes::PortType  portType,
+	                                          QtNodes::PortIndex portIndex) const override {
 		// good defaults
-		if(portType == QtNodes::PortType::In) {
+		if (portType == QtNodes::PortType::In) {
 			if (portIndex < instance().inputExecConnections.size()) {
 				return NodeConnectionPolicy::Many;
 			}
 			return NodeConnectionPolicy::One;
-			
 		}
 		if (portIndex < instance().outputExecConnections.size()) {
 			return NodeConnectionPolicy::One;
 		}
 		return NodeConnectionPolicy::Many;
-		
 	}
-
 
 private:
 	QtNodes::NodeValidationState mValidationState = QtNodes::NodeValidationState::Valid;
