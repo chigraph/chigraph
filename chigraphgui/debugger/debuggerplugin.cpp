@@ -45,6 +45,8 @@ DebuggerPlugin::DebuggerPlugin() {
 	    QStringLiteral("debug-continue"),
 	    new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")), i18n("Continue")));
 	actionCollection()->setDefaultShortcut(continueAction, Qt::Key_F5);
+	
+	mBreakpointView = new BreakpointView();
 
 	setXMLFile("chigraphguidebuggerui.rc");
 }

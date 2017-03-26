@@ -31,6 +31,9 @@ public:
 	chi::GraphFunction* function() const { return mFunction; }
 
 	QtNodes::FlowScene& scene() const { return *mScene; }
+	
+	std::vector<chi::NodeInstance*> selectedNodes();
+	
 private slots:
 	void nodeAdded(QtNodes::Node& n);
 	void nodeDeleted(QtNodes::Node& n);
