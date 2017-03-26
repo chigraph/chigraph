@@ -34,11 +34,10 @@ namespace Catch {
         }
 
         virtual void noMatchingTestCases( std::string const& spec ) {
-            stream << "No test cases matched '" << spec << "'" << std::endl;
+            stream << "No test cases matched '" << spec << '\'' << std::endl;
         }
 
-        virtual void assertionStarting( AssertionInfo const& ) {
-        }
+        virtual void assertionStarting( AssertionInfo const& ) {}
 
         virtual bool assertionEnded( AssertionStats const& _assertionStats ) {
             AssertionResult const& result = _assertionStats.assertionResult;
@@ -59,9 +58,15 @@ namespace Catch {
             return true;
         }
 
+        virtual void sectionEnded(SectionStats const& _sectionStats) CATCH_OVERRIDE {
+            if (m_config->showDurations() == ShowDurations::Always) {
+                stream << getFormattedDuration(_sectionStats.durationInSeconds) << " s: " << _sectionStats.sectionInfo.name << std::endl;
+            }
+        }
+
         virtual void testRunEnded( TestRunStats const& _testRunStats ) {
             printTotals( _testRunStats.totals );
-            stream << "\n" << std::endl;
+            stream << '\n' << std::endl;
             StreamingReporterBase::testRunEnded( _testRunStats );
         }
 
@@ -161,26 +166,26 @@ namespace Catch {
 
             void printSourceInfo() const {
                 Colour colourGuard( Colour::FileName );
-                stream << result.getSourceInfo() << ":";
+                stream << result.getSourceInfo() << ':';
             }
 
-            void printResultType( Colour::Code colour, std::string passOrFail ) const {
+            void printResultType( Colour::Code colour, std::string const& passOrFail ) const {
                 if( !passOrFail.empty() ) {
                     {
                         Colour colourGuard( colour );
-                        stream << " " << passOrFail;
+                        stream << ' ' << passOrFail;
                     }
-                    stream << ":";
+                    stream << ':';
                 }
             }
 
-            void printIssue( std::string issue ) const {
-                stream << " " << issue;
+            void printIssue( std::string const& issue ) const {
+                stream << ' ' << issue;
             }
 
             void printExpressionWas() {
                 if( result.hasExpression() ) {
-                    stream << ";";
+                    stream << ';';
                     {
                         Colour colour( dimColour() );
                         stream << " expression was:";
@@ -191,7 +196,7 @@ namespace Catch {
 
             void printOriginalExpression() const {
                 if( result.hasExpression() ) {
-                    stream << " " << result.getExpression();
+                    stream << ' ' << result.getExpression();
                 }
             }
 
@@ -207,7 +212,7 @@ namespace Catch {
 
             void printMessage() {
                 if ( itMessage != messages.end() ) {
-                    stream << " '" << itMessage->message << "'";
+                    stream << " '" << itMessage->message << '\'';
                     ++itMessage;
                 }
             }
@@ -222,13 +227,13 @@ namespace Catch {
 
                 {
                     Colour colourGuard( colour );
-                    stream << " with " << pluralise( N, "message" ) << ":";
+                    stream << " with " << pluralise( N, "message" ) << ':';
                 }
 
                 for(; itMessage != itEnd; ) {
                     // If this assertion is a warning ignore any INFO messages
                     if( printInfoMessages || itMessage->type != ResultWas::Info ) {
-                        stream << " '" << itMessage->message << "'";
+                        stream << " '" << itMessage->message << '\'';
                         if ( ++itMessage != itEnd ) {
                             Colour colourGuard( dimColour() );
                             stream << " and";
@@ -254,7 +259,7 @@ namespace Catch {
         // - green: Passed [both/all] N tests cases with M assertions.
 
         std::string bothOrAll( std::size_t count ) const {
-            return count == 1 ? "" : count == 2 ? "both " : "all " ;
+            return count == 1 ? std::string() : count == 2 ? "both " : "all " ;
         }
 
         void printTotals( const Totals& totals ) const {
@@ -265,12 +270,12 @@ namespace Catch {
                 Colour colour( Colour::ResultError );
                 const std::string qualify_assertions_failed =
                     totals.assertions.failed == totals.assertions.total() ?
-                        bothOrAll( totals.assertions.failed ) : "";
+                        bothOrAll( totals.assertions.failed ) : std::string();
                 stream <<
                     "Failed " << bothOrAll( totals.testCases.failed )
                               << pluralise( totals.testCases.failed, "test case"  ) << ", "
                     "failed " << qualify_assertions_failed <<
-                                 pluralise( totals.assertions.failed, "assertion" ) << ".";
+                                 pluralise( totals.assertions.failed, "assertion" ) << '.';
             }
             else if( totals.assertions.total() == 0 ) {
                 stream <<
@@ -282,14 +287,14 @@ namespace Catch {
                 Colour colour( Colour::ResultError );
                 stream <<
                     "Failed " << pluralise( totals.testCases.failed, "test case"  ) << ", "
-                    "failed " << pluralise( totals.assertions.failed, "assertion" ) << ".";
+                    "failed " << pluralise( totals.assertions.failed, "assertion" ) << '.';
             }
             else {
                 Colour colour( Colour::ResultSuccess );
                 stream <<
                     "Passed " << bothOrAll( totals.testCases.passed )
                               << pluralise( totals.testCases.passed, "test case"  ) <<
-                    " with "  << pluralise( totals.assertions.passed, "assertion" ) << ".";
+                    " with "  << pluralise( totals.assertions.passed, "assertion" ) << '.';
             }
         }
     };

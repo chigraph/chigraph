@@ -9,10 +9,37 @@
 #define TWOBLUECUBES_CATCH_REPORTER_BASES_HPP_INCLUDED
 
 #include "../internal/catch_interfaces_reporter.h"
+#include "../internal/catch_errno_guard.hpp"
 
 #include <cstring>
+#include <cfloat>
+#include <cstdio>
+#include <assert.h>
 
 namespace Catch {
+
+    namespace {
+        // Because formatting using c++ streams is stateful, drop down to C is required
+        // Alternatively we could use stringstream, but its performance is... not good.
+        std::string getFormattedDuration( double duration ) {
+            // Max exponent + 1 is required to represent the whole part
+            // + 1 for decimal point
+            // + 3 for the 3 decimal places
+            // + 1 for null terminator
+            const size_t maxDoubleSize = DBL_MAX_10_EXP + 1 + 1 + 3 + 1;
+            char buffer[maxDoubleSize];
+            
+            // Save previous errno, to prevent sprintf from overwriting it
+            ErrnoGuard guard;
+#ifdef _MSC_VER
+            sprintf_s(buffer, "%.3f", duration);
+#else
+            sprintf(buffer, "%.3f", duration);
+#endif
+            return std::string(buffer);
+        }
+    }
+
 
     struct StreamingReporterBase : SharedImpl<IStreamingReporter> {
 
@@ -108,12 +135,12 @@ namespace Catch {
 
         struct BySectionInfo {
             BySectionInfo( SectionInfo const& other ) : m_other( other ) {}
-			BySectionInfo( BySectionInfo const& other ) : m_other( other.m_other ) {}
+            BySectionInfo( BySectionInfo const& other ) : m_other( other.m_other ) {}
             bool operator() ( Ptr<SectionNode> const& node ) const {
                 return node->stats.sectionInfo.lineInfo == m_other.lineInfo;
             }
         private:
-			void operator=( BySectionInfo const& );
+            void operator=( BySectionInfo const& );
             SectionInfo const& m_other;
         };
 
@@ -170,6 +197,12 @@ namespace Catch {
             assert( !m_sectionStack.empty() );
             SectionNode& sectionNode = *m_sectionStack.back();
             sectionNode.assertions.push_back( assertionStats );
+            // AssertionResult holds a pointer to a temporary DecomposedExpression,
+            // which getExpandedExpression() calls to build the expression string.
+            // Our section stack copy of the assertionResult will likely outlive the
+            // temporary, so it must be expanded or discarded now to avoid calling
+            // a destroyed object later.
+            prepareExpandedExpression( sectionNode.assertions.back().assertionResult );
             return true;
         }
         virtual void sectionEnded( SectionStats const& sectionStats ) CATCH_OVERRIDE {
@@ -204,6 +237,13 @@ namespace Catch {
 
         virtual void skipTest( TestCaseInfo const& ) CATCH_OVERRIDE {}
 
+        virtual void prepareExpandedExpression( AssertionResult& result ) const {
+            if( result.isOk() )
+                result.discardDecomposedExpression();
+            else
+                result.expandDecomposedExpression();
+        }
+
         Ptr<IConfig const> m_config;
         std::ostream& stream;
         std::vector<AssertionStats> m_assertions;
@@ -224,7 +264,7 @@ namespace Catch {
     char const* getLineOfChars() {
         static char line[CATCH_CONFIG_CONSOLE_WIDTH] = {0};
         if( !*line ) {
-            memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
+            std::memset( line, C, CATCH_CONFIG_CONSOLE_WIDTH-1 );
             line[CATCH_CONFIG_CONSOLE_WIDTH-1] = 0;
         }
         return line;
