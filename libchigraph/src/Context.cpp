@@ -33,7 +33,6 @@ namespace fs = boost::filesystem;
 
 namespace chi {
 Context::Context(const fs::path& workPath) {
-	mLLVMContext = std::make_unique<llvm::LLVMContext>();
 
 	mWorkspacePath = workspaceFromChildPath(workPath);
 
