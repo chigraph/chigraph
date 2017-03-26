@@ -1,12 +1,23 @@
 {
   "dependencies": [
+    "c",
     "intprinter",
-    "lang",
-    "c"
+    "lang"
   ],
   "graphs": [
     {
       "connections": [
+        {
+          "input": [
+            "e0e2e6e4-5c4d-452b-8072-9f7a5182041e",
+            0
+          ],
+          "output": [
+            "50bdb6dc-a414-40da-9432-b2939392b38e",
+            0
+          ],
+          "type": "exec"
+        },
         {
           "input": [
             "50bdb6dc-a414-40da-9432-b2939392b38e",
@@ -28,17 +39,6 @@
             0
           ],
           "type": "data"
-        },
-        {
-          "input": [
-            "e0e2e6e4-5c4d-452b-8072-9f7a5182041e",
-            0
-          ],
-          "output": [
-            "50bdb6dc-a414-40da-9432-b2939392b38e",
-            0
-          ],
-          "type": "exec"
         }
       ],
       "data_inputs": [],
@@ -82,7 +82,7 @@
             ]
           },
           "location": [
-            186,
+            186.0,
             1.83333337306976
           ],
           "type": "lang:exit"

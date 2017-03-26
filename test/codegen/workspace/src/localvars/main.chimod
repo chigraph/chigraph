@@ -1,7 +1,7 @@
 {
   "dependencies": [
-    "intprinter",
     "c",
+    "intprinter",
     "lang"
   ],
   "graphs": [
@@ -80,7 +80,7 @@
         "2e364630-0fb1-4ab3-8597-55dd983516f8": {
           "data": null,
           "location": [
-            962,
+            962.0,
             129.800003051758
           ],
           "type": "intprinter:printint"
@@ -88,8 +88,8 @@
         "36d10bf4-e114-448b-a6dc-20d4057733e2": {
           "data": "lang:i32",
           "location": [
-            593,
-            356
+            593.0,
+            356.0
           ],
           "type": "localvars/main:_get_hello"
         },
@@ -101,8 +101,8 @@
             ]
           },
           "location": [
-            142,
-            108
+            142.0,
+            108.0
           ],
           "type": "lang:entry"
         },
@@ -122,16 +122,16 @@
             ]
           },
           "location": [
-            1195,
-            123
+            1195.0,
+            123.0
           ],
           "type": "lang:exit"
         },
         "bd5c5ae5-91b7-4596-a640-65779f31bd50": {
           "data": 12123,
           "location": [
-            150,
-            326
+            150.0,
+            326.0
           ],
           "type": "lang:const-int"
         }

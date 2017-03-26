@@ -1,25 +1,33 @@
 {
   "dependencies": [
+    "c",
     "intprinter",
-    "lang",
-    "c"
+    "lang"
   ],
-  "types": {},
   "graphs": [
     {
-	"description": "main",
-      "local_variables": {},
       "connections": [
         {
           "input": [
-            "9dd374e7-d0d1-4367-9bc6-35680b8ba8b3",
+            "8cf4d701-6aba-44b9-9b60-1e7877ff1343",
             0
           ],
           "output": [
-            "9f0bfa5e-3a81-4a7f-bcc6-c3a0e7e3e8c7",
+            "97066280-4950-4e82-a86f-b47c3426ac22",
             0
           ],
-          "type": "exec"
+          "type": "data"
+        },
+        {
+          "input": [
+            "aacafb6e-93c7-4461-9bd6-2728f8079d44",
+            0
+          ],
+          "output": [
+            "97066280-4950-4e82-a86f-b47c3426ac22",
+            1
+          ],
+          "type": "data"
         },
         {
           "input": [
@@ -45,37 +53,44 @@
         },
         {
           "input": [
-            "8cf4d701-6aba-44b9-9b60-1e7877ff1343",
+            "9dd374e7-d0d1-4367-9bc6-35680b8ba8b3",
             0
           ],
           "output": [
-            "97066280-4950-4e82-a86f-b47c3426ac22",
+            "9f0bfa5e-3a81-4a7f-bcc6-c3a0e7e3e8c7",
             0
           ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "aacafb6e-93c7-4461-9bd6-2728f8079d44",
-            0
-          ],
-          "output": [
-            "97066280-4950-4e82-a86f-b47c3426ac22",
-            1
-          ],
-          "type": "data"
+          "type": "exec"
         }
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
       "exec_outputs": [
         ""
       ],
+      "local_variables": {},
       "name": "main",
       "nodes": {
+        "8cf4d701-6aba-44b9-9b60-1e7877ff1343": {
+          "data": 1024,
+          "location": [
+            59.0,
+            219.0
+          ],
+          "type": "lang:const-int"
+        },
+        "97066280-4950-4e82-a86f-b47c3426ac22": {
+          "data": null,
+          "location": [
+            352.0,
+            242.0
+          ],
+          "type": "lang:i32/i32"
+        },
         "9dd374e7-d0d1-4367-9bc6-35680b8ba8b3": {
           "data": {
             "data": [],
@@ -84,40 +99,24 @@
             ]
           },
           "location": [
-            213,
-            109
+            213.0,
+            109.0
           ],
           "type": "lang:entry"
-        },
-        "8cf4d701-6aba-44b9-9b60-1e7877ff1343": {
-          "data": 1024,
-          "location": [
-            59,
-            219
-          ],
-          "type": "lang:const-int"
-        },
-        "97066280-4950-4e82-a86f-b47c3426ac22": {
-          "data": null,
-          "location": [
-            352,
-            242
-          ],
-          "type": "lang:i32/i32"
         },
         "9f0bfa5e-3a81-4a7f-bcc6-c3a0e7e3e8c7": {
           "data": null,
           "location": [
-            516,
-            115
+            516.0,
+            115.0
           ],
           "type": "intprinter:printint"
         },
         "aacafb6e-93c7-4461-9bd6-2728f8079d44": {
           "data": 16,
           "location": [
-            61,
-            354
+            61.0,
+            354.0
           ],
           "type": "lang:const-int"
         },
@@ -129,8 +128,8 @@
             ]
           },
           "location": [
-            753,
-            112
+            753.0,
+            112.0
           ],
           "type": "lang:exit"
         }
@@ -138,5 +137,5 @@
       "type": "function"
     }
   ],
-  "name": "main"
+  "types": {}
 }

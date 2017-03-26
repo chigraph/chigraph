@@ -1,34 +1,12 @@
 {
   "dependencies": [
-    "intprinter",
     "c",
+    "intprinter",
     "lang"
   ],
   "graphs": [
     {
       "connections": [
-        {
-          "input": [
-            "38815b10-d0ca-44e8-971f-938eb954c966",
-            0
-          ],
-          "output": [
-            "0d383619-cbf9-45d1-b48c-42f3d2a9c4ed",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "ddc2f8f6-5c48-4b49-8d40-d68ad3abfe44",
-            0
-          ],
-          "output": [
-            "38815b10-d0ca-44e8-971f-938eb954c966",
-            0
-          ],
-          "type": "data"
-        },
         {
           "input": [
             "d74771c0-a287-4c64-a831-d9cb6cf42a9f",
@@ -94,6 +72,28 @@
             0
           ],
           "type": "exec"
+        },
+        {
+          "input": [
+            "38815b10-d0ca-44e8-971f-938eb954c966",
+            0
+          ],
+          "output": [
+            "0d383619-cbf9-45d1-b48c-42f3d2a9c4ed",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "ddc2f8f6-5c48-4b49-8d40-d68ad3abfe44",
+            0
+          ],
+          "output": [
+            "38815b10-d0ca-44e8-971f-938eb954c966",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
@@ -124,8 +124,8 @@
         "38815b10-d0ca-44e8-971f-938eb954c966": {
           "data": null,
           "location": [
-            1735,
-            -135
+            1735.0,
+            -135.0
           ],
           "type": "intprinter:printstr"
         },

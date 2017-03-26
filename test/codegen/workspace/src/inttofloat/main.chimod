@@ -1,31 +1,20 @@
 {
   "dependencies": [
-    "lang",
     "c",
-    "intprinter"
+    "intprinter",
+    "lang"
   ],
   "graphs": [
     {
       "connections": [
         {
           "input": [
+            "795b7296-2148-405a-adb7-015c4f81223c",
+            0
+          ],
+          "output": [
             "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0",
             0
-          ],
-          "output": [
-            "c8f8c65e-61db-4948-90fa-03bffd4154d4",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "517a7cc0-f061-46be-a5cf-e43d18b57ab1",
-            0
-          ],
-          "output": [
-            "c8f8c65e-61db-4948-90fa-03bffd4154d4",
-            1
           ],
           "type": "data"
         },
@@ -48,39 +37,6 @@
           "output": [
             "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
             0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "795b7296-2148-405a-adb7-015c4f81223c",
-            0
-          ],
-          "output": [
-            "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "3871d8e8-3e74-4dc4-af28-ae69f4fe7d60",
-            0
-          ],
-          "output": [
-            "43a26065-df96-4800-aeab-d42817471307",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0",
-            0
-          ],
-          "output": [
-            "43a26065-df96-4800-aeab-d42817471307",
-            1
           ],
           "type": "data"
         },
@@ -116,6 +72,50 @@
             0
           ],
           "type": "exec"
+        },
+        {
+          "input": [
+            "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0",
+            0
+          ],
+          "output": [
+            "c8f8c65e-61db-4948-90fa-03bffd4154d4",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "517a7cc0-f061-46be-a5cf-e43d18b57ab1",
+            0
+          ],
+          "output": [
+            "c8f8c65e-61db-4948-90fa-03bffd4154d4",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "3871d8e8-3e74-4dc4-af28-ae69f4fe7d60",
+            0
+          ],
+          "output": [
+            "43a26065-df96-4800-aeab-d42817471307",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0",
+            0
+          ],
+          "output": [
+            "43a26065-df96-4800-aeab-d42817471307",
+            1
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
@@ -146,24 +146,24 @@
         "3871d8e8-3e74-4dc4-af28-ae69f4fe7d60": {
           "data": 0.0,
           "location": [
-            389,
-            213
+            389.0,
+            213.0
           ],
           "type": "lang:const-float"
         },
         "43a26065-df96-4800-aeab-d42817471307": {
           "data": null,
           "location": [
-            681,
-            268
+            681.0,
+            268.0
           ],
           "type": "lang:float==float"
         },
         "517a7cc0-f061-46be-a5cf-e43d18b57ab1": {
-          "data": 32,
+          "data": 32.0,
           "location": [
-            514,
-            525
+            514.0,
+            525.0
           ],
           "type": "lang:const-float"
         },
@@ -175,48 +175,48 @@
             ]
           },
           "location": [
-            141,
-            135
+            141.0,
+            135.0
           ],
           "type": "lang:entry"
         },
         "6a776d45-3b04-4571-96df-8d39cc00e13f": {
           "data": null,
           "location": [
-            1212,
-            171
+            1212.0,
+            171.0
           ],
           "type": "intprinter:printbool"
         },
         "769c363e-9ac0-4f7b-b3e5-20323172dbe9": {
           "data": null,
           "location": [
-            1041,
-            166
+            1041.0,
+            166.0
           ],
           "type": "intprinter:printbool"
         },
         "795b7296-2148-405a-adb7-015c4f81223c": {
           "data": 32,
           "location": [
-            170,
-            379
+            170.0,
+            379.0
           ],
           "type": "lang:const-int"
         },
         "c8f8c65e-61db-4948-90fa-03bffd4154d4": {
           "data": null,
           "location": [
-            744,
-            482
+            744.0,
+            482.0
           ],
           "type": "lang:float==float"
         },
         "cd4f8bbf-4b8f-4c02-8a95-4dd432862db0": {
           "data": null,
           "location": [
-            433,
-            364
+            433.0,
+            364.0
           ],
           "type": "lang:inttofloat"
         }

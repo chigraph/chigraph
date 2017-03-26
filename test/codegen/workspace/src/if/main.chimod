@@ -1,56 +1,12 @@
 {
   "dependencies": [
-    "intprinter",
     "c",
+    "intprinter",
     "lang"
   ],
   "graphs": [
     {
       "connections": [
-        {
-          "input": [
-            "5723b5fd-e9b1-494a-9642-bdc78a96b20c",
-            0
-          ],
-          "output": [
-            "4a38557a-2555-4f76-bda7-aa0395d1f6a3",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "7bd619d5-0bf6-419f-9182-39c8a463c9fa",
-            0
-          ],
-          "output": [
-            "5723b5fd-e9b1-494a-9642-bdc78a96b20c",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "b41b38eb-1499-4a60-8d79-8d030b7ae880",
-            0
-          ],
-          "output": [
-            "63abadf1-e165-43b8-9db7-1509039ce99d",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "ddc2f8f6-5c48-4b49-8d40-d68ad3abfe44",
-            0
-          ],
-          "output": [
-            "b41b38eb-1499-4a60-8d79-8d030b7ae880",
-            0
-          ],
-          "type": "data"
-        },
         {
           "input": [
             "d74771c0-a287-4c64-a831-d9cb6cf42a9f",
@@ -86,6 +42,28 @@
         },
         {
           "input": [
+            "b41b38eb-1499-4a60-8d79-8d030b7ae880",
+            0
+          ],
+          "output": [
+            "63abadf1-e165-43b8-9db7-1509039ce99d",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "ddc2f8f6-5c48-4b49-8d40-d68ad3abfe44",
+            0
+          ],
+          "output": [
+            "b41b38eb-1499-4a60-8d79-8d030b7ae880",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
             "a8bf0c2e-04b7-45e0-b674-d17e221d8052",
             0
           ],
@@ -94,6 +72,28 @@
             0
           ],
           "type": "exec"
+        },
+        {
+          "input": [
+            "5723b5fd-e9b1-494a-9642-bdc78a96b20c",
+            0
+          ],
+          "output": [
+            "4a38557a-2555-4f76-bda7-aa0395d1f6a3",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "7bd619d5-0bf6-419f-9182-39c8a463c9fa",
+            0
+          ],
+          "output": [
+            "5723b5fd-e9b1-494a-9642-bdc78a96b20c",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
