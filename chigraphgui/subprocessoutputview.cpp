@@ -8,7 +8,7 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 9
+#if LLVM_VERSION_MAJOR <= 3
 #include <llvm/Bitcode/ReaderWriter.h>
 #else
 #include <llvm/Bitcode/BitcodeReader.h>
