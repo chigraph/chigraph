@@ -34,7 +34,9 @@ Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
 				res.addEntry("E40", "dependency isn't a string", {{"Actual Data", dep}});
 				continue;
 			}
-			res += createdModule->addDependency(dep);
+			
+			std::string depName = dep;
+			res += createdModule->addDependency(depName);
 
 			if (!res) { return res; }
 		}
