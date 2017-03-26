@@ -21,6 +21,7 @@ public slots:
 private slots:
 
 	void selectItem(QListWidgetItem* newitem);
+	void deleteFunction(chi::GraphFunction& func);
 
 signals:
 
