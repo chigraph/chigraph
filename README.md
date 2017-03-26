@@ -88,6 +88,7 @@ If you have any questions, you're more than welcome to email me: [russellgreene8
 # Technology used
 - [LLVM/Clang](http://llvm.org) for compilation
 - [Qt](https://qt.io) for GUI
+- [Qt Node Editor](https://github.com/paceholder/nodeeditor) for Node Editor
 - [KF5](https://api.kde.org/frameworks/index.html) for super easy gui making
 - [libexecstream](http://libexecstream.sourceforge.net/) for spawning processes
 - [gsl](https://github.com/Microsoft/GSL) for modernness
