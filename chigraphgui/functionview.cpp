@@ -140,7 +140,7 @@ void FunctionView::nodeDeleted(Node& n) {
 		}
 	}
 
-	mFunction->removeNode(&ptr->instance());
+	mFunction->removeNode(ptr->instance());
 
 	mNodeMap.erase(&ptr->instance());
 	dirtied();

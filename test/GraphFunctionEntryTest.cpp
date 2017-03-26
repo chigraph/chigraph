@@ -113,7 +113,7 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 		REQUIRE(func->entryNode() == inst);
 
 		WHEN("We delete that node the count should go back down") {
-			res = func->removeNode(inst);
+			res = func->removeNode(*inst);
 			REQUIRE(!!res);
 
 			REQUIRE(func->nodes().size() == 0);
