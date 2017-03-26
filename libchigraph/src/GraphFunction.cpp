@@ -14,6 +14,7 @@
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Support/SourceMgr.h>
+#include <llvm/IR/DerivedTypes.h>
 
 #include <boost/dynamic_bitset.hpp>
 #include <boost/range/counting_range.hpp>
