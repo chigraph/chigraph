@@ -1,8 +1,8 @@
 {
   "dependencies": [
-    "lang",
     "c",
-    "intprinter"
+    "intprinter",
+    "lang"
   ],
   "graphs": [
     {
@@ -130,8 +130,8 @@
         "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e": {
           "data": null,
           "location": [
-            782,
-            57
+            782.0,
+            57.0
           ],
           "type": "call/main:docall"
         },
@@ -278,8 +278,8 @@
         "1fd94862-f52a-4589-b6d1-330d176b7cae": {
           "data": 11,
           "location": [
-            269,
-            149
+            269.0,
+            149.0
           ],
           "type": "lang:const-int"
         },
@@ -295,16 +295,16 @@
             ]
           },
           "location": [
-            583,
-            4
+            583.0,
+            4.0
           ],
           "type": "lang:exit"
         },
         "daa151f3-2ebc-4521-90fb-c1c043a95a75": {
           "data": null,
           "location": [
-            142,
-            13
+            142.0,
+            13.0
           ],
           "type": "intprinter:printstr"
         },

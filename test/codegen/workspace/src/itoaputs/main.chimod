@@ -1,11 +1,10 @@
 {
   "dependencies": [
-    "lang",
-    "c"
+    "c",
+    "lang"
   ],
   "graphs": [
     {
-	"description": "main",
       "connections": [
         {
           "input": [
@@ -43,6 +42,7 @@
       ],
       "data_inputs": [],
       "data_outputs": [],
+      "description": "main",
       "exec_inputs": [
         ""
       ],
@@ -52,32 +52,6 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
-        "658a61aa-6008-4aec-82bd-9a12a7984b94": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            174,
-            101
-          ],
-          "type": "lang:entry"
-        },
-        "89554903-d262-48c8-922c-84d1be2406a0": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            979,
-            103
-          ],
-          "type": "lang:exit"
-        },
         "03cc1f46-6de5-4945-b874-c7cb4f43c65c": {
           "data": {
             "code": "#include <stdio.h>\nint doputs(const char* arg) {\n\treturn puts(arg);\n}",
@@ -91,16 +65,42 @@
             "output": "lang:i32"
           },
           "location": [
-            486,
-            104
+            486.0,
+            104.0
           ],
           "type": "c:func"
+        },
+        "658a61aa-6008-4aec-82bd-9a12a7984b94": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            174.0,
+            101.0
+          ],
+          "type": "lang:entry"
+        },
+        "89554903-d262-48c8-922c-84d1be2406a0": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            979.0,
+            103.0
+          ],
+          "type": "lang:exit"
         },
         "9821d88d-2cfc-40b9-aab6-e16e470728f5": {
           "data": "hello",
           "location": [
-            223,
-            235
+            223.0,
+            235.0
           ],
           "type": "lang:strliteral"
         }
@@ -108,6 +108,5 @@
       "type": "function"
     }
   ],
-  "name": "main",
   "types": {}
 }
