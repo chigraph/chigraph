@@ -1,7 +1,7 @@
 {
   "dependencies": [
-    "lang",
-    "c"
+    "c",
+    "lang"
   ],
   "graphs": [
     {
@@ -111,33 +111,33 @@
       "connections": [
         {
           "input": [
-            "b83b78df-d5c7-44a4-bfb3-3e624d636863",
-            0
-          ],
-          "output": [
-            "cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "b83b78df-d5c7-44a4-bfb3-3e624d636863",
-            1
-          ],
-          "output": [
-            "c99bebb3-7a41-4d42-9b5d-f7e2f82871c1",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
             "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
             "b83b78df-d5c7-44a4-bfb3-3e624d636863",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe",
+            0
+          ],
+          "output": [
+            "5fd2c326-2d94-411b-b262-b1a79e5b2c9a",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "7249bd0c-dd3c-452f-b122-8154cbed7a49",
+            0
+          ],
+          "output": [
+            "cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe",
             0
           ],
           "type": "data"
@@ -166,33 +166,33 @@
         },
         {
           "input": [
+            "b83b78df-d5c7-44a4-bfb3-3e624d636863",
+            0
+          ],
+          "output": [
+            "cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "b83b78df-d5c7-44a4-bfb3-3e624d636863",
+            1
+          ],
+          "output": [
+            "c99bebb3-7a41-4d42-9b5d-f7e2f82871c1",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
             "cdf55106-abcf-4290-bfcd-0bea399c468b",
             0
           ],
           "output": [
             "b83b78df-d5c7-44a4-bfb3-3e624d636863",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe",
-            0
-          ],
-          "output": [
-            "5fd2c326-2d94-411b-b262-b1a79e5b2c9a",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "7249bd0c-dd3c-452f-b122-8154cbed7a49",
-            0
-          ],
-          "output": [
-            "cdb0815e-7aa2-4122-83a6-0ff0bdcc22fe",
             0
           ],
           "type": "data"
@@ -502,6 +502,86 @@
             213
           ],
           "type": "c:func"
+        }
+      },
+      "type": "function"
+    },
+    {
+      "connections": [
+        {
+          "input": [
+            "44638085-fc37-452a-981f-6c34f71cb499",
+            0
+          ],
+          "output": [
+            "a9d03113-8fcd-4e1a-86af-e001b959951e",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "700c449e-730c-4111-88df-cb18405bbf39",
+            0
+          ],
+          "output": [
+            "44638085-fc37-452a-981f-6c34f71cb499",
+            0
+          ],
+          "type": "exec"
+        }
+      ],
+      "data_inputs": [],
+      "data_outputs": [],
+      "description": "",
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "local_variables": {},
+      "name": "printnewln",
+      "nodes": {
+        "44638085-fc37-452a-981f-6c34f71cb499": {
+          "data": {
+            "code": "#include <stdio.h>\n\nvoid chig_intprinter_println() {\n\tputs(\"\");\n}",
+            "extraflags": [],
+            "function": "chig_intprinter_println",
+            "inputs": [],
+            "output": null
+          },
+          "location": [
+            351,
+            251
+          ],
+          "type": "c:func"
+        },
+        "700c449e-730c-4111-88df-cb18405bbf39": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            107,
+            254
+          ],
+          "type": "lang:entry"
+        },
+        "a9d03113-8fcd-4e1a-86af-e001b959951e": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            618,
+            253
+          ],
+          "type": "lang:exit"
         }
       },
       "type": "function"
