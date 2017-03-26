@@ -17,11 +17,14 @@
 #endif
 
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/FileSystem.h>
 
 #include <boost/filesystem.hpp>
 
 #include <chi/Context.hpp>
 #include <chi/Result.hpp>
+
+namespace fs = boost::filesystem;
 
 SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(module) {
 	// compile!
@@ -35,9 +38,11 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 		return;
 	}
 
-	std::string str;
+	// write it to a temporary file
+	fs::path tempBitcodeFile = boost::filesystem::temp_directory_path() / fs::unique_path().replace_extension(".bc");
 	{
-		llvm::raw_string_ostream os(str);
+		std::error_code err;
+		llvm::raw_fd_ostream os(tempBitcodeFile.string(), err, llvm::sys::fs::F_RW);
 
 		llvm::WriteBitcodeToFile(llmod.get(), os);
 	}
@@ -51,12 +56,15 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 	chiPath.replace_extension(".exe");
 #endif
 
-	assert(boost::filesystem::is_regular_file(chiPath));
+	Q_ASSERT(boost::filesystem::is_regular_file(chiPath));
 
 	// run in lli
 	mProcess = new QProcess(this);
 	mProcess->setProgram(QString::fromStdString(chiPath.string()));
-	mProcess->setArguments(QStringList(QStringLiteral("interpret")));
+	
+	auto args = QStringList() << QStringLiteral("interpret") << QStringLiteral("-i") << 
+		QString::fromStdString(tempBitcodeFile.string()) << QStringLiteral("-O2");
+	mProcess->setArguments(args);
 
 	connect(mProcess, &QProcess::readyReadStandardOutput, this,
 	        [this] { appendPlainText(mProcess->readAllStandardOutput().constData()); });
@@ -72,8 +80,6 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 	        &SubprocessOutputView::processFinished);
 
 	mProcess->start();
-	mProcess->write(str.c_str(), str.length());
-	mProcess->closeWriteChannel();
 }
 
 void SubprocessOutputView::cancelProcess() {

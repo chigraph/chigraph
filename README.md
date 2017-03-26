@@ -13,7 +13,7 @@ Platform | Status
 
 
 # What is chigraph?
-Chigraph (pronunced chai-graph) is a new systems programming language. It's fast. It's scalable. And, more importantly, it's easy to learn because it's visual.
+Chigraph,  pronunced chai-graph, is a new systems programming language. It's fast. It's scalable. And, more importantly, it's easy to learn. How does it achieve such goals? By scrapping the age-old standard of text (not entirely though).
 
 ![Screenshot](doc/screenshots/HelloWorld.png)
 
@@ -23,7 +23,7 @@ Chigraph is made up of three components:
 ## chigraphgui
 Chigraphgui is the graphical user interface for writing chigraph modules, written in [Qt5](https://qt.io) and [KDE Frameworks 5](https://api.kde.org/frameworks/index.html). It's cross-platform, easy to use, and simple. 
 
-![screenshot](doc/screenshots/if.png)
+![screenshot](doc/screenshots/looping.png)
 
 ## chi
 chi is the command line interface to chigraph. It lets you compile and run chigraph modules:
