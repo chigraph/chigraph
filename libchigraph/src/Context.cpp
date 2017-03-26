@@ -419,7 +419,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		if (j.find("dependencies") != j.end() || !j["dependencies"].is_array()) { return res; }
 
 		// fetch the dependencies
-		for (const auto& dep : j["dependencies"]) { fetchModule(dep, true); }
+		for (const auto& dep : j["dependencies"]) { std::string depName = dep; fetchModule(depName, true); }
 	}
 
 	return res;
