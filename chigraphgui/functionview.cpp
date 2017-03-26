@@ -100,6 +100,25 @@ FunctionView::FunctionView(chi::GraphFunction& func_, QWidget* parent)
 	updateValidationStates();
 }
 
+std::vector<chi::NodeInstance*> FunctionView::selectedNodes()
+{
+	std::vector<chi::NodeInstance*> ret;
+	
+	auto guiNodes = mScene->selectedNodes();
+	ret.reserve(guiNodes.size());
+	
+	for (auto n : guiNodes) {
+		auto toAdd = chigNodeFromGuiNode(n);
+		
+		if (toAdd) {
+			ret.push_back(toAdd);
+		}
+	}
+	
+	return ret;
+}
+
+
 void FunctionView::nodeAdded(Node& n) {
 	auto ptr = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
 

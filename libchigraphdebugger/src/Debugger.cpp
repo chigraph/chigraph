@@ -38,7 +38,7 @@ Debugger::Debugger(const char* pathToChig, GraphModule& mod) : mModule{&mod} {
 		},
 	    this);
 
-	const char* val[] = {"api", "all", nullptr};
+	const char* val[] = {"api", nullptr};
 	mDebugger.EnableLog("lldb", val);
 
 	// create target

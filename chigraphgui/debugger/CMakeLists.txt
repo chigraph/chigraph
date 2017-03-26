@@ -4,6 +4,7 @@ set(CMAKE_AUTORCC ON)
 
 set(DEBUGGER_PRIVATE_SRCS
 	debuggerplugin.cpp
+	breakpoint_view.cpp
 )
 
 set(DEBUGGER_RESOURCE_FILES 

@@ -5,6 +5,8 @@
 
 #include "../chigraphplugin.hpp"
 
+#include "breakpoint_view.hpp"
+
 #include <QAction>
 
 #include <chi/Debugger.hpp>
@@ -19,7 +21,9 @@ public:
 
 private:
 	// ChigraphPlugin interface
-	QVector<ToolView*> toolViews() override { return {}; }
+	QVector<ToolView*> toolViews() override { return QVector<ToolView*>({mBreakpointView}); }
+	
+	BreakpointView* mBreakpointView;
 
 	QAction* toggleBreakpointAction;
 	QAction* debugAction;
