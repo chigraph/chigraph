@@ -20,8 +20,24 @@ Chigraph,  pronunced chai-graph, is a new systems programming language. It's fas
 # Components
 Chigraph is made up of three components:
 
+## chigraphgui
+Chigraphgui is the graphical user interface for writing chigraph modules, written in [Qt5](https://qt.io) and [KDE Frameworks 5](https://api.kde.org/frameworks/index.html). It's cross-platform, easy to use, and simple. 
+
+![screenshot](doc/screenshots/if.png)
+
+## chi
+chi is the command line interface to chigraph. It lets you compile and run chigraph modules:
+```bash
+$ pwd
+~/chigrpah/src/
+$ chi get github.com/russelltg/hellochigraph/hello/main # download it
+$ cd github.com/russelltg/hellochigraph/hello/main 
+$ chi run main.chimod # run it
+Hello World!
+```
+
 ## libchigraph
-libchigraph is the chigraph library that provides all functions for chigraph clients, like code generation, graph representation, etc. Want to compile a chigraph module using libchigraph?
+libchigraph is the chigraph library that provides all functions for chigraph clients, like code generation, graph representation, etc. Want to compile a chigraph module using libchigraph? ([documentation](https://chigraph.github.io/chigraph/))
 
 ```C++
 #include <chi/Context.hpp>
@@ -40,21 +56,8 @@ int main() {
 
 And tada, you have yourself a [`llvm::Module`](http://llvm.org/docs/doxygen/html/classllvm_1_1Module.html) to do whatever you wish to. It'll have all it's dependencies linked in and a main function waiting to run.
 
-## chi
-chi is the command line interface to chigraph. It lets you compile and run chigraph modules:
-```bash
-$ pwd
-~/chigrpah/src/
-$ chi get github.com/russelltg/hellochigraph/hello/main # download it
-$ cd github.com/russelltg/hellochigraph/hello/main 
-$ chi run main.chimod # run it
-Hello World!
-```
-
-## chigraphgui
-Chigraphgui is the graphical user interface for writing chigraph modules, written in [Qt5](https://qt.io) and [KDE Frameworks 5](https://api.kde.org/frameworks/index.html). It's cross-platform, easy to use, and simple. 
-
-![screenshot](doc/screenshots/if.png)
+## libchigraphdebugger
+libchigraphdebugger is a library that makes it easy to implement chigraph debuggers. See [the `Debugger` documentation](https://chigraph.github.io/chigraph/classchi_1_1Debugger.html) for more details.
 
 # Licensing
 It's free!
@@ -81,5 +84,15 @@ If you have any questions, you're more than welcome to email me: [russellgreene8
 
 - Russell Greene (@russelltg) - Main contributor
 - Aun-Ali Zaidi (@aunali1) - Helped with some platform stuff
+
+# Technology used
+- [LLVM/Clang](llvm.org) for compilation
+- [Qt](qt.io) for GUI
+- [KF5](https://api.kde.org/frameworks/index.html) for super easy gui making
+- [libexecstream](http://libexecstream.sourceforge.net/) for spawning processes
+- [gsl](https://github.com/Microsoft/GSL) for modernness
+- [libgit2](https://libgit2.github.com/) for downloading remote modules
+- [Catch](https://github.com/philsquared/Catch/) for unit tests
+- [boost](boost.org) for [filesystem](http://www.boost.org/doc/libs/1_63_0/libs/filesystem/doc/index.htm), [parsing program arguments](http://www.boost.org/doc/libs/1_63_0/doc/html/program_options.html), [uuid](http://www.boost.org/doc/libs/1_63_0/libs/uuid/uuid.html), [bimap](http://www.boost.org/doc/libs/1_63_0/libs/bimap/doc/html/index.html), [range](http://www.boost.org/doc/libs/1_63_0/libs/range/doc/html/index.html), [string_view](http://www.boost.org/doc/libs/1_63_0/boost/utility/string_view.hpp), [dynamic_bitset](http://www.boost.org/doc/libs/1_63_0/libs/dynamic_bitset/dynamic_bitset.html)
 
 > Written with [StackEdit](https://stackedit.io/).
