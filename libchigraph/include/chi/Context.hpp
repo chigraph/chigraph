@@ -14,6 +14,7 @@
 #include "chi/json.hpp"
 
 #include <llvm/Support/CodeGen.h>  // for CodeGenOpt
+#include <llvm/IR/LLVMContext.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/utility/string_view.hpp>
@@ -157,7 +158,7 @@ struct Context {
 
 	/// Get the `LLVMContext`
 	/// \return The `LLVMContext`
-	llvm::LLVMContext& llvmContext() const { return *mLLVMContext; }
+	llvm::LLVMContext& llvmContext() { return mLLVMContext; }
 
 	/// Get the `LangModule`, if it has been loaded
 	/// \return The `LangModule`
@@ -180,7 +181,7 @@ struct Context {
 private:
 	boost::filesystem::path mWorkspacePath;
 
-	std::unique_ptr<llvm::LLVMContext> mLLVMContext;
+	llvm::LLVMContext mLLVMContext;
 
 	std::vector<std::unique_ptr<ChiModule>> mModules;
 
