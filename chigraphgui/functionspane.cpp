@@ -1,7 +1,7 @@
 #include "functionspane.hpp"
 
-#include "mainwindow.hpp"
 #include "functiontabview.hpp"
+#include "mainwindow.hpp"
 
 #include <chi/GraphFunction.hpp>
 
@@ -44,9 +44,8 @@ FunctionsPane::FunctionsPane(QWidget* parent) : QListWidget(parent) {
 			                      if (casted == nullptr) { return; }
 
 			                      chi::GraphModule& mod = casted->mFunc->module();
-								  
-								  deleteFunction(*casted->mFunc);
 
+			                      deleteFunction(*casted->mFunc);
 
 			                  });  // TODO: shortcut
 		contextMenu.exec(global);
@@ -69,38 +68,32 @@ void FunctionsPane::selectItem(QListWidgetItem* newitem) {
 	functionSelected(*casted->mFunc);
 }
 
-void FunctionsPane::deleteFunction(chi::GraphFunction& func)
-{
+void FunctionsPane::deleteFunction(chi::GraphFunction& func) {
 	// close the tab if it's open
 	auto& tabView = MainWindow::instance()->tabView();
-	
+
 	auto openView = tabView.viewFromName(func.module().fullName(), func.name());
-	if (openView != nullptr) {
-		tabView.closeView(openView);
-	}
-	
+	if (openView != nullptr) { tabView.closeView(openView); }
+
 	// find references
 	auto references = func.context().findInstancesOfType(func.module().fullName(), func.name());
 	for (auto node : references) {
 		auto view = tabView.viewFromName(node->module().fullName(), node->function().name());
-		
+
 		// if the function is loaded
 		if (view != nullptr) {
 			// delete it
-			
+
 			// get the guinode
 			auto guiNode = view->guiNodeFromChigNode(node);
-			if (guiNode != nullptr) {
-				view->scene().removeNode(*guiNode);
-			}
+			if (guiNode != nullptr) { view->scene().removeNode(*guiNode); }
 		}
 	}
-	
+
 	auto& module = func.module();
-	
+
 	// delete the function
 	module.removeFunction(func);
-	
+
 	updateModule(module);
 }
-
