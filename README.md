@@ -86,13 +86,13 @@ If you have any questions, you're more than welcome to email me: [russellgreene8
 - Aun-Ali Zaidi (@aunali1) - Helped with some platform stuff
 
 # Technology used
-- [LLVM/Clang](llvm.org) for compilation
-- [Qt](qt.io) for GUI
+- [LLVM/Clang](http://llvm.org) for compilation
+- [Qt](https://qt.io) for GUI
 - [KF5](https://api.kde.org/frameworks/index.html) for super easy gui making
 - [libexecstream](http://libexecstream.sourceforge.net/) for spawning processes
 - [gsl](https://github.com/Microsoft/GSL) for modernness
 - [libgit2](https://libgit2.github.com/) for downloading remote modules
 - [Catch](https://github.com/philsquared/Catch/) for unit tests
-- [boost](boost.org) for [filesystem](http://www.boost.org/doc/libs/1_63_0/libs/filesystem/doc/index.htm), [parsing program arguments](http://www.boost.org/doc/libs/1_63_0/doc/html/program_options.html), [uuid](http://www.boost.org/doc/libs/1_63_0/libs/uuid/uuid.html), [bimap](http://www.boost.org/doc/libs/1_63_0/libs/bimap/doc/html/index.html), [range](http://www.boost.org/doc/libs/1_63_0/libs/range/doc/html/index.html), [string_view](http://www.boost.org/doc/libs/1_63_0/boost/utility/string_view.hpp), [dynamic_bitset](http://www.boost.org/doc/libs/1_63_0/libs/dynamic_bitset/dynamic_bitset.html)
+- [boost](https://boost.org) for [filesystem](http://www.boost.org/doc/libs/1_63_0/libs/filesystem/doc/index.htm), [parsing program arguments](http://www.boost.org/doc/libs/1_63_0/doc/html/program_options.html), [uuid](http://www.boost.org/doc/libs/1_63_0/libs/uuid/uuid.html), [bimap](http://www.boost.org/doc/libs/1_63_0/libs/bimap/doc/html/index.html), [range](http://www.boost.org/doc/libs/1_63_0/libs/range/doc/html/index.html), [string_view](http://www.boost.org/doc/libs/1_63_0/boost/utility/string_view.hpp), [dynamic_bitset](http://www.boost.org/doc/libs/1_63_0/libs/dynamic_bitset/dynamic_bitset.html)
 
 > Written with [StackEdit](https://stackedit.io/).
