@@ -150,6 +150,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 
 			for (auto view : chiPlugin->toolViews()) {
 				docker = new QDockWidget(view->label(), this);
+				docker->setWidget(view->toolView());
 
 				insertChildClient(view);
 

@@ -33,6 +33,8 @@ public:
 	FunctionView* viewFromName(const boost::filesystem::path& mod, const std::string& function);
 
 	void closeView(FunctionView* view);
+	
+	FunctionView* currentView();
 
 signals:
 	void dirtied(chi::GraphModule& mod);

@@ -463,4 +463,9 @@ std::vector<NodeInstance*> GraphFunction::setName(boost::string_view newName,
 	return {};
 }
 
+
+std::string GraphFunction::qualifiedName() const {
+    return module().fullName() + ":" + name();
+}
+
 }  // namespace chi

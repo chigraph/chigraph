@@ -4,7 +4,9 @@ set(CMAKE_AUTORCC ON)
 
 set(DEBUGGER_PRIVATE_SRCS
 	debuggerplugin.cpp
-	breakpoint_view.cpp
+	debuggerworkerthread.cpp
+	breakpointview.cpp
+	variableview.cpp
 )
 
 set(DEBUGGER_RESOURCE_FILES 
@@ -13,7 +15,9 @@ set(DEBUGGER_RESOURCE_FILES
 
 set(DEBUGGER_PUBLIC_SRCS
 	debuggerplugin.hpp
-	breakpoint_view.hpp
+	debuggerworkerthread.hpp
+	breakpointview.hpp
+	variableview.hpp
 )
 
 add_library(chigraphguidebugger STATIC ${DEBUGGER_PRIVATE_SRCS} ${DEBUGGER_PUBLIC_SRCS} ${DEBUGGER_RESOURCE_FILES})
