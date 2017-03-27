@@ -15,66 +15,124 @@
 
 namespace fs = boost::filesystem;
 
-constexpr static int ModuleTreeItemType = 1001;
-
-class ModuleTreeItem : public QTreeWidgetItem {
-public:
-	ModuleTreeItem(QTreeWidgetItem* parent, fs::path path)
-	    : QTreeWidgetItem(parent, ModuleTreeItemType), mName{std::move(path)} {
-		setText(0, QString::fromStdString(mName.filename().string()));
-		setIcon(0, QIcon::fromTheme(QStringLiteral("package-available")));
-	}
-
-	fs::path mName;
-	bool     dirty = false;
+struct WorkspaceTree {
+	WorkspaceTree* parent = nullptr;
+	std::vector<std::unique_ptr<WorkspaceTree>> children;
+	bool isModule = false;
+	chi::GraphModule* module = nullptr;
+	chi::GraphFunction* func = nullptr;
+	QString name;
+	bool dirty = false;
+	int row = 0;
 };
 
-ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
+class ModuleTreeModel : public QAbstractItemModel {
+public:
+	ModuleTreeModel(std::unique_ptr<WorkspaceTree> t) : tree{std::move(t)} {}
+	
+	int columnCount(const QModelIndex& parent) const override {
+		return 1;
+	}
+	QModelIndex index(int row, int column, const QModelIndex& parent) const override {
+		if (!hasIndex(row, column, parent)) {
+			return {};
+		}
+		
+		WorkspaceTree* parentItem;
+		if (parent.isValid()) {
+			parentItem = static_cast<WorkspaceTree*>(parent.internalPointer());
+		} else {
+			parentItem = tree.get();
+		}
+		
+		if (row < parentItem->children.size()) {
+			return createIndex(row, column, parentItem->children[row].get());
+		}
+		return {};
+	}
+	QModelIndex parent(const QModelIndex &index) const override {
+		if (!index.isValid()) {
+			return {};
+		}
+		
+		auto childItem = static_cast<WorkspaceTree*>(index.internalPointer());
+		auto parentItem = childItem->parent;
+
+		if (parentItem == nullptr)
+			return {};
+
+		return createIndex(parentItem->row, 0, parentItem);
+
+	}
+	int rowCount(const QModelIndex &index) const override {
+		if (!index.isValid()) {
+			return 0;
+		}
+		auto item = static_cast<WorkspaceTree*>(index.internalPointer());
+		return item->children.size();
+	}
+	QVariant data(const QModelIndex &index, int role) const override {
+		if (!index.isValid()) {
+			return {};
+		}
+		
+		auto item = static_cast<WorkspaceTree*>(index.internalPointer());
+		
+		switch (role) {
+		case Qt::DisplayRole:
+			return item->name;
+		default:
+			return {};
+		}
+	}
+	std::unique_ptr<WorkspaceTree> tree;
+	
+};
+
+ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeView(parent) {
 	setXMLFile("chigraphmodulebrowserui.rc");
 
-	setColumnCount(1);
 	setAnimated(true);
 	setSortingEnabled(true);
 	header()->close();
-	connect(this, &QTreeWidget::itemDoubleClicked, this,
-	        [this](QTreeWidgetItem* item, int /*column*/) {
-		        if (item->type() != ModuleTreeItemType) {  // don't do module folders or modules
+	connect(this, &QTreeView::doubleClicked, this,
+	        [this](const QModelIndex &index) {
+				auto item = static_cast<WorkspaceTree*>(index.internalPointer());
+				
+		        if (item->func == nullptr) {  // don't do module folders or modules
 			        return;
 		        }
-		        ModuleTreeItem* casted = dynamic_cast<ModuleTreeItem*>(item);
-		        Expects(casted != nullptr);
-
-		        moduleSelected(QString::fromStdString(casted->mName.string()));
+		        emit functionSelected(*item->func);
 		    });
 	setContextMenuPolicy(Qt::CustomContextMenu);
 
 	mDiscardChangesAction = new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")),
 	                                    i18n("Discard Changes"), this);
 	connect(mDiscardChangesAction, &QAction::triggered, this, [this] {
-		auto item = currentItem();
-
-		auto castedItem = dynamic_cast<ModuleTreeItem*>(item);
-		if (!castedItem || !castedItem->dirty) { return; }
-
+		auto idx = currentIndex();
+		if (!idx.isValid()) {
+			return;
+		}
+		auto item = static_cast<WorkspaceTree*>(idx.internalPointer());
+		
+		
 		// get the module
-		auto mod = mContext->moduleByFullName(castedItem->mName.string());
+		auto mod = item->module;
 		if (!mod) { return; }
-		auto casted = dynamic_cast<chi::GraphModule*>(mod);
-		if (!casted) { return; }
 
-		discardChanges(*casted);
+		discardChanges(*mod);
 	});
 	actionCollection()->addAction(QStringLiteral("discard-changes"), mDiscardChangesAction);
 
 	connect(this, &QWidget::customContextMenuRequested, this, [this](QPoint p) {
-		QTreeWidgetItem* itemRaw = itemAt(p);
-		if (!itemRaw) { return; }
+		auto idx = indexAt(p);
+		if (!idx.isValid()) { return; }
 
-		auto item = dynamic_cast<ModuleTreeItem*>(itemRaw);
+		auto item = static_cast<WorkspaceTree*>(idx.internalPointer());
 
 		if (!item || !item->dirty) { return; }
 
-		setCurrentItem(item);
+		setCurrentIndex(idx);
 
 		QMenu contextMenu;
 		contextMenu.addAction(mDiscardChangesAction);
@@ -82,127 +140,83 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeWidget(parent) {
 	});
 }
 
+std::unordered_set<chi::GraphModule*> ModuleBrowser::dirtyModules() {
+	return mDirtyModules;
+}
+
 void ModuleBrowser::loadWorkspace(chi::Context& context) {
 	mContext = &context;
 
-	// clear existing entries
-	clear();
-	mDirtyModules.clear();
-	mItems.clear();
-
 	auto modules = context.listModulesInWorkspace();
 
-	std::unordered_map<std::string, QTreeWidgetItem*> topLevels;
-	std::unordered_map<QTreeWidgetItem*, std::unordered_map<std::string, QTreeWidgetItem*>>
-	    children;
-
-	for (auto moduleName : modules) {
-		fs::path module = moduleName;
-
-		auto iter = module.begin();
-
-		// consume the first
-		std::string      topLevelName = module.begin()->string();
-		QTreeWidgetItem* topLevel     = nullptr;
-		if (topLevels.find(topLevelName) != topLevels.end()) {
-			topLevel = topLevels[topLevelName];
-		} else {
-			// check if this is a module - ie no children
-			auto iterCpy = module.begin();
-			if (iterCpy == module.end()) { continue; }
-			++iterCpy;
-			if (iterCpy == module.end()) {
-				auto newItem       = new ModuleTreeItem(nullptr, module);
-				topLevel           = newItem;
-				mItems[moduleName] = newItem;
-			} else {
-				topLevel =
-				    new QTreeWidgetItem(QStringList() << QString::fromStdString(topLevelName));
-			}
-			addTopLevelItem(topLevel);
-			topLevels[topLevelName] = topLevel;
-		}
-
-		// in each path, make sure it exists
-		++iter;
-		for (; iter != module.end(); ++iter) {
-			if (children[topLevel].find(iter->string()) == children[topLevel].end()) {
-				// see if it's a module
-				bool isChigraphModule;
-				{
-					auto iterCpy = iter;
-					std::advance(iterCpy, 1);
-					isChigraphModule = iterCpy == module.end();
+	auto tree = std::make_unique<WorkspaceTree>();
+	
+	// create the tree
+	for (const fs::path& mod : modules) {
+		fs::path buildingPath;
+		WorkspaceTree* parent = tree.get();
+		
+		// for each component of mod
+		for (fs::path component : mod) {
+			bool isModule = component.extension() == ".chimod";
+			component.replace_extension("");
+			
+			// make sure it exists
+			bool found = false;
+			for (const auto& child : parent->children) {
+				if (child->name.toStdString() == component.string() && child->isModule == isModule) {
+					found = true;
+					parent = child.get();
+					break;
 				}
-
-				// convert to string
-				std::string name = fs::path(*iter).string();
-
-				QTreeWidgetItem* newTopLevel;
-				if (isChigraphModule) {
-					newTopLevel = mItems[moduleName] = new ModuleTreeItem(topLevel, module);
-				} else {
-					newTopLevel = new QTreeWidgetItem(
-					    topLevel, QStringList() << QString::fromStdString(name));
-				}
-				// store in cache
-				children[topLevel][name] = newTopLevel;
-
-				topLevel = newTopLevel;
-			} else {
-				topLevel = children[topLevel][iter->string()];
 			}
+			if (!found) {
+				// insert it
+				auto newChild = std::make_unique<WorkspaceTree>();
+				newChild->parent = parent;
+				newChild->isModule = isModule;
+				newChild->row = parent->children.size();
+				newChild->name = QString::fromStdString(component.string());
+				parent->children.push_back(std::move(newChild));
+				
+				parent = parent->children[parent->children.size() - 1].get();
+			}
+			
 		}
 	}
+	mTree = tree.get();
+	
+	setModel(new ModuleTreeModel(std::move(tree)));
 }
 
 void ModuleBrowser::moduleDirtied(chi::GraphModule& dirtied) {
+	
 	mDirtyModules.insert(&dirtied);
-
 	updateDirtyStatus(dirtied, true);
 }
 
 void ModuleBrowser::moduleSaved(chi::GraphModule& saved) {
-	mDirtyModules.erase(&saved);
-
 	updateDirtyStatus(saved, false);
+	mDirtyModules.erase(&saved);
 }
 
 void ModuleBrowser::updateDirtyStatus(chi::GraphModule& updated, bool dirty) {
-	auto iter = mItems.find(updated.fullName());
-
-	if (iter == mItems.end()) { return; }
-
-	auto modItem = iter->second;
-
-	if (dirty) {
-		modItem->dirty = true;
-		modItem->setText(0, QString::fromStdString(modItem->mName.filename().string()) + " *");
-
-		QTreeWidgetItem* item = modItem;
-		// propagate through the parents
-		while (item != nullptr) {
-			auto font = item->font(0);
-			font.setWeight(QFont::Bold);
-
-			item->setFont(0, font);
-
-			item = item->parent();
-		}
-
-	} else {
-		modItem->dirty = false;
-		modItem->setText(0, QString::fromStdString(modItem->mName.filename().string()));
-
-		QTreeWidgetItem* item = modItem;
-		// propagate through the parents
-		while (item != nullptr) {
-			auto font = item->font(0);
-			font.setWeight(QFont::Normal);
-
-			item->setFont(0, font);
-
-			item = item->parent();
+	
+	// find the item
+	WorkspaceTree* item = mTree;
+	for (fs::path component : fs::path(updated.fullName())) {
+		for (const auto& ch : item->children) {
+			if (ch->name.toStdString() == component.string() && ch->isModule) {
+				item = ch.get();
+				break;
+			}
 		}
 	}
+	
+	if (item->name.toStdString() != fs::path(updated.fullName()).filename().replace_extension("").string()) {
+		return;
+	}
+	
+	item->dirty = dirty;
+
 }

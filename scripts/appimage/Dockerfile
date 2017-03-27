@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -yy clang-3.9 llvm-3.9-dev libclang-3.9-de
 	qt58base qt58speech qt58script qt58declarative qt58tools qt58x11extras qt58svg \
 	ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils libudev-dev build-essential git mesa-common-dev \
 	gettext libz-dev libxrender-dev libxfixes-dev libxcb1-dev libxcb-xfixes0-dev bison flex libstdc++-6-dev \
-	libfuse-dev libglib2.0-dev libarchive-dev libcairo-dev zsync gnupg2 dh-autoreconf
+	libfuse-dev libglib2.0-dev libarchive-dev libcairo-dev zsync gnupg2 dh-autoreconf gcc-6 g++-6 gawk
 
 # build cmake
 RUN cd / && wget https://cmake.org/files/v3.7/cmake-3.7.2.tar.gz && tar xf cmake-3.7.2.tar.gz

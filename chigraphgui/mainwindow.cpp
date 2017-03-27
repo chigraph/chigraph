@@ -86,6 +86,15 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	});
 	connect(modDetails, &ModuleDetails::dirtied, this, [this] { moduleDirtied(*currentModule()); });
 
+	mFunctionTabs = new FunctionTabView;
+	mFunctionTabs->setMovable(true);
+	mFunctionTabs->setTabsClosable(true);
+	connect(mFunctionTabs, &FunctionTabView::dirtied, this, &MainWindow::moduleDirtied);
+	insertChildClient(mFunctionTabs);
+
+	setCentralWidget(mFunctionTabs);
+
+	
 	// setup module browser
 	mModuleBrowser = new ModuleBrowser(this);
 	docker         = new QDockWidget(mModuleBrowser->label(), this);
@@ -94,7 +103,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	docker->setWidget(mModuleBrowser);
 	addDockWidget(mModuleBrowser->defaultArea(), docker);
 	connect(this, &MainWindow::workspaceOpened, mModuleBrowser, &ModuleBrowser::loadWorkspace);
-	connect(mModuleBrowser, &ModuleBrowser::moduleSelected, this, &MainWindow::openModule);
+	connect(mModuleBrowser, &ModuleBrowser::functionSelected, &tabView(), &FunctionTabView::selectNewFunction);
 	connect(this, &MainWindow::newModuleCreated, mModuleBrowser,
 	        [this](chi::GraphModule& mod) { mModuleBrowser->loadWorkspace(mod.context()); });
 	connect(this, &MainWindow::workspaceOpened, docker, [docker](chi::Context& ctx) {
@@ -104,14 +113,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	connect(mModuleBrowser, &ModuleBrowser::discardChanges, this,
 	        &MainWindow::discardChangesInModule);
 
-	mFunctionTabs = new FunctionTabView;
-	mFunctionTabs->setMovable(true);
-	mFunctionTabs->setTabsClosable(true);
-	connect(mFunctionTabs, &FunctionTabView::dirtied, this, &MainWindow::moduleDirtied);
-	insertChildClient(mFunctionTabs);
-
-	setCentralWidget(mFunctionTabs);
-
+	
 	docker = new QDockWidget(i18n("Output"), this);
 	docker->setObjectName("Output");
 	auto outputView = new QTabWidget();

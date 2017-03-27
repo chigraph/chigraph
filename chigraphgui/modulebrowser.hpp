@@ -3,7 +3,7 @@
 #ifndef CHIGRAPHGUI_MODULE_BROWSER_HPP
 #define CHIGRAPHGUI_MODULE_BROWSER_HPP
 
-#include <QTreeWidget>
+#include <QTreeView>
 
 #include <KLocalizedString>
 
@@ -16,9 +16,9 @@ class MainWindow;
 
 #include "toolview.hpp"
 
-class ModuleTreeItem;
+class WorkspaceTree;
 
-class ModuleBrowser : public QTreeWidget, public ToolView {
+class ModuleBrowser : public QTreeView, public ToolView {
 	Q_OBJECT
 
 	// ToolView interface
@@ -29,9 +29,11 @@ public:
 
 public:
 	ModuleBrowser(QWidget* parent = nullptr);
+	
+	std::unordered_set<chi::GraphModule*> dirtyModules();
 
 signals:
-	void moduleSelected(const QString& name);
+	void functionSelected(chi::GraphFunction& name);
 	void discardChanges(chi::GraphModule& moduleName);
 
 public slots:
@@ -39,16 +41,16 @@ public slots:
 	void moduleDirtied(chi::GraphModule& dirtied);
 	void moduleSaved(chi::GraphModule& saved);
 
-	const std::unordered_set<chi::GraphModule*> dirtyModules() const { return mDirtyModules; }
-
 private:
 	void updateDirtyStatus(chi::GraphModule& updated, bool dirty);
 
 	chi::Context*                         mContext = nullptr;
-	std::unordered_set<chi::GraphModule*> mDirtyModules;
-	std::unordered_map<std::string, ModuleTreeItem*> mItems;
 
 	QAction* mDiscardChangesAction = nullptr;
+	
+	std::unordered_set<chi::GraphModule*> mDirtyModules;
+	
+	WorkspaceTree* mTree = nullptr;
 };
 
 #endif  // CHIGRAPHGUI_MODULE_BROWSER_HPP
