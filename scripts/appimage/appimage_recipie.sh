@@ -38,7 +38,7 @@ cd /chigraph
 rm -rf build
 mkdir -p build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr" -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config' -DCMAKE_CXX_COMPILER=clang++-3.9 -DCMAKE_C_COMPILER=clang-3.9 -DCMAKE_CXX_FLAGS='-std=c++14' -DCG_BUILD_DEBUGGER=OFF # TODO: build debugger
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr" -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config' -DCMAKE_CXX_COMPILER=clang++-3.9 -DCMAKE_C_COMPILER=clang-3.9 -DCMAKE_CXX_FLAGS='-std=c++14'
 make -j8 DESTDIR=/chigraph.appdir install
 
 # remove pointless stuff

@@ -36,6 +36,6 @@ target_link_libraries(chigraphdebugger
 PUBLIC 
 	chigraph
 	${LLVM_LD_FLAGS_LIST}
-	${LLDB_LIBRARY}
+	"${LLDB_LIBRARY}"
 )
 
