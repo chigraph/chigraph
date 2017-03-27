@@ -6,22 +6,12 @@
 #include <QGroupBox>
 #include <QVBoxLayout>
 
-#include "functionspane.hpp"
 #include "moduledependencies.hpp"
 
 ModuleDetails::ModuleDetails(QWidget* parent) {
 	auto layout = new QVBoxLayout;
 	setLayout(layout);
 
-	auto functionsbox = new QGroupBox(i18n("Functions"));
-	layout->addWidget(functionsbox);
-
-	auto funclayout = new QVBoxLayout;
-	functionsbox->setLayout(funclayout);
-
-	mFuncBrowser = new FunctionsPane;
-	connect(mFuncBrowser, &FunctionsPane::functionSelected, this, &ModuleDetails::functionSelected);
-	funclayout->addWidget(mFuncBrowser);
 
 	auto depsbox = new QGroupBox(i18n("Dependencies"));
 	layout->addWidget(depsbox);
@@ -42,5 +32,4 @@ ModuleDetails::ModuleDetails(QWidget* parent) {
 
 void ModuleDetails::loadModule(chi::GraphModule& module) {
 	mModDeps->setModule(module);
-	mFuncBrowser->updateModule(module);
 }

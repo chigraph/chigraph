@@ -1,7 +1,6 @@
 #include "mainwindow.hpp"
 #include "chigraphplugin.hpp"
 #include "functiondetails.hpp"
-#include "functionspane.hpp"
 #include "functiontabview.hpp"
 #include "functionview.hpp"
 #include "localvariables.hpp"

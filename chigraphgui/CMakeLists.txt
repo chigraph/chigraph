@@ -50,7 +50,6 @@ set(GUI_SRCS
 	main.cpp
 	mainwindow.cpp
 	chigraphnodemodel.cpp
-	functionspane.cpp
 	functionview.cpp
 	functiondetails.cpp
 	paramlistwidget.cpp
@@ -73,7 +72,6 @@ set(GUI_RESOURCES
 set(GUI_HEADERS
 	mainwindow.hpp
 	chigraphnodemodel.hpp
-	functionspane.hpp
 	functionview.hpp
 	subprocessoutputview.hpp
 	paramlistwidget.hpp
