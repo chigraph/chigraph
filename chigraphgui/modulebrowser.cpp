@@ -1,5 +1,7 @@
 #include "modulebrowser.hpp"
 
+#include <chi/Result.hpp>
+
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
@@ -28,7 +30,7 @@ struct WorkspaceTree {
 
 class ModuleTreeModel : public QAbstractItemModel {
 public:
-	ModuleTreeModel(std::unique_ptr<WorkspaceTree> t) : tree{std::move(t)} {}
+	ModuleTreeModel(std::unique_ptr<WorkspaceTree> t, chi::Context& ctx) : tree{std::move(t)}, mCtx{&ctx} {}
 	
 	int columnCount(const QModelIndex& parent) const override {
 		return 1;
@@ -64,12 +66,80 @@ public:
 		return createIndex(parentItem->row, 0, parentItem);
 
 	}
-	int rowCount(const QModelIndex &index) const override {
+	bool hasChildren(const QModelIndex &index) const override {
 		if (!index.isValid()) {
-			return 0;
+			return true;
 		}
+		
 		auto item = static_cast<WorkspaceTree*>(index.internalPointer());
-		return item->children.size();
+		return item->func == nullptr;
+	}
+	bool canFetchMore(const QModelIndex& index) const override {
+		if (!index.isValid()) {
+			return false;
+		}
+		
+		auto item = static_cast<WorkspaceTree*>(index.internalPointer());
+		
+		return item->isModule;
+	}
+	void fetchMore(const QModelIndex& index) override {
+		if (!index.isValid()) {
+			return;
+		}
+		
+		auto item = static_cast<WorkspaceTree*>(index.internalPointer());
+		
+		if (item->module != nullptr) {
+			// it's already been fetched
+			return;
+		}
+		
+		// get the name
+		fs::path p;
+		{
+			auto parent = item;
+			while(parent != nullptr) {
+				p = parent->name.toStdString() / p;
+				parent = parent->parent;
+			}
+		}
+		
+		// load it
+		chi::ChiModule* mod;
+		chi::Result res = mCtx->loadModule(p, chi::LoadSettings::Default, &mod);
+		if (!res) {
+			KMessageBox::detailedError(MainWindow::instance(),
+									R"(Failed to load JsonModule from file ")" + QString::fromStdString(p.string()) + R"(")",
+									QString::fromStdString(res.dump()), "Error Loading");
+
+			return;
+		}
+		
+		item->module = static_cast<chi::GraphModule*>(mod);
+		
+		for (const auto& func : item->module->functions()) {
+			auto child = std::make_unique<WorkspaceTree>();
+			child->func = func.get();
+			child->parent = item;
+			child->name = QString::fromStdString(func->name());
+			child->row = item->children.size();
+			
+			item->children.push_back(std::move(child));
+			
+		}
+		
+	}
+	int rowCount(const QModelIndex &index) const override {
+		
+		WorkspaceTree* parentItem;
+		if (index.isValid()) {
+			parentItem = static_cast<WorkspaceTree*>(index.internalPointer());
+		} else {
+			parentItem = tree.get();
+		}
+		
+		return parentItem->children.size();
 	}
 	QVariant data(const QModelIndex &index, int role) const override {
 		if (!index.isValid()) {
@@ -81,11 +151,19 @@ public:
 		switch (role) {
 		case Qt::DisplayRole:
 			return item->name;
+		case Qt::DecorationRole:
+			if (item->func != nullptr) {
+				return QIcon::fromTheme(QStringLiteral("code-class"));
+			}
+			if (item->isModule) {
+				return QIcon::fromTheme(QStringLiteral("package-available"));
+			}
 		default:
 			return {};
 		}
 	}
 	std::unique_ptr<WorkspaceTree> tree;
+	chi::Context* mCtx;
 	
 };
 
@@ -153,13 +231,12 @@ void ModuleBrowser::loadWorkspace(chi::Context& context) {
 	
 	// create the tree
 	for (const fs::path& mod : modules) {
-		fs::path buildingPath;
 		WorkspaceTree* parent = tree.get();
 		
 		// for each component of mod
-		for (fs::path component : mod) {
-			bool isModule = component.extension() == ".chimod";
-			component.replace_extension("");
+		for (auto componentIter = mod.begin(); componentIter != mod.end(); ++componentIter) {
+			fs::path component = *componentIter;
+			bool isModule = componentIter == --mod.end();
 			
 			// make sure it exists
 			bool found = false;
@@ -186,7 +263,7 @@ void ModuleBrowser::loadWorkspace(chi::Context& context) {
 	}
 	mTree = tree.get();
 	
-	setModel(new ModuleTreeModel(std::move(tree)));
+	setModel(new ModuleTreeModel(std::move(tree), *mContext));
 }
 
 void ModuleBrowser::moduleDirtied(chi::GraphModule& dirtied) {
