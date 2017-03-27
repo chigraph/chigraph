@@ -49,6 +49,8 @@ find . -name '*.a' -exec rm {} \;
 cp /chigraph/scripts/appimage/chigraphgui.desktop /chigraph.appdir/
 cp /chigraph/scripts/appimage/chigraph.png /chigraph.appdir/
 
+cp /usr/lib/llvm-3.9/bin/lldb-server /chigraph.appdir/usr/bin/
+
 QT_BASE_DIR=/opt/qt58
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH

@@ -36,6 +36,8 @@ bool BreakpointView::removeBreakpoint(chi::NodeInstance& inst)
 	
 	removeItemWidget(iter->second, 0);
 	mBreakpoints.erase(iter);
+	
+	return true;
 }
 
 
