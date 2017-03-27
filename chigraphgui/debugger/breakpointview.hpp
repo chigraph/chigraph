@@ -7,16 +7,21 @@
 
 #include "../toolview.hpp"
 
-#include <QTreeView>
+#include <QTreeWidget>
 
-class BreakpointView : public QTreeView, public ToolView {
+class BreakpointView : public QTreeWidget, public ToolView {
+	class BreakpointItem;
 public:
 	
-	void addBreakpoints(chi::NodeInstance* inst);
+	BreakpointView();
 	
-	void setBreakpoints(chi::Debugger& dbg);
+	void addBreakpoint(chi::NodeInstance& inst);
 	
-	const std::vector<chi::NodeInstance*>& breakpoints() { return mBreakpoints; }
+	/// Remove a breakpoint
+	/// \return true if one was removed, false if it wasn't found
+	bool removeBreakpoint(chi::NodeInstance& inst);
+	
+	const std::unordered_map<chi::NodeInstance*, BreakpointItem*>& breakpoints() { return mBreakpoints; }
 	
 private:
 	
@@ -26,7 +31,7 @@ private:
 	QString            label() override { return i18n("Breakpoints"); }
 
 	
-	std::vector<chi::NodeInstance*> mBreakpoints;
+	std::unordered_map<chi::NodeInstance*, BreakpointItem*> mBreakpoints;
 	
 };
 

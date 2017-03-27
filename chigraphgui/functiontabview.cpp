@@ -94,6 +94,18 @@ FunctionView* FunctionTabView::viewFromName(const boost::filesystem::path& mod,
 
 void FunctionTabView::closeView(FunctionView* view) { closeTab(indexOf(view)); }
 
+FunctionView* FunctionTabView::currentView() {
+	auto widget = currentWidget();
+	
+	auto casted = qobject_cast<FunctionView*>(widget);
+	
+	if (casted == nullptr) {
+		return nullptr;
+	}
+	
+	return casted;
+}
+
 void FunctionTabView::closeTab(int idx) {
 	mOpenFunctions.erase(
 	    std::find_if(mOpenFunctions.begin(), mOpenFunctions.end(),

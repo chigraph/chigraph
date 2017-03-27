@@ -311,7 +311,10 @@ struct GraphFunction {
 	/// Get the name of the function
 	/// \return The name of the function
 	std::string name() const { return mName; }
-
+	/// Get the qualified name of the function
+	/// Same as module().fullName() + ":" + name();
+	std::string qualifiedName() const;
+	
 	/// Set the name of the function
 	/// \param newName the new name for the function
 	/// \param updateReferences should the references be updated?
