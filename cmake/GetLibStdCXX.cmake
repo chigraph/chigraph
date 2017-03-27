@@ -18,10 +18,25 @@ if(UNIX AND NOT APPLE AND NOT WIN32)
 	if (NOT EXISTS ${CMAKE_BINARY_DIR}/glibc-2.19/build)
 		message(STATUS "Building glibc")
 		file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
-		execute_process(COMMAND ../configure --prefix=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
+		execute_process(
+		COMMAND ../configure --prefix=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib 
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build 
+		RESULT_VARIABLE err
+		)
+		if (NOT err MATCHES "0")
+			message(FATAL_ERROR "Failed to configure glibc")
+		endif()
 		
-		execute_process(COMMAND make -j${N} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
+		execute_process(COMMAND make -j${N} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build RESULT_VARIABLE err)
+		if (NOT err MATCHES "0")
+			message(FATAL_ERROR "Failed to compile glibc")
+		endif()
+		
 		execute_process(COMMAND make install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
+		if (NOT err MATCHES "0")
+			message(FATAL_ERROR "Failed to install glibc")
+		endif()
+		
 	endif()
 	
 # 
