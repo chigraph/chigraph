@@ -44,7 +44,7 @@ private:
 	QAction* continueAction;
 
 
-	std::unique_ptr<chi::Debugger> mDebugger;
+	std::shared_ptr<chi::Debugger> mDebugger;
 	std::unique_ptr<DebuggerWorkerThread> mEventListener;
 	QThread* mThread = nullptr;
 };

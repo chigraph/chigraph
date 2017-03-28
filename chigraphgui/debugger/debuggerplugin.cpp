@@ -83,24 +83,44 @@ void DebuggerPlugin::debugStart() {
 
 	MainWindow* window = MainWindow::instance();
 
+	mDebugger = nullptr;
+	
 	// delete it
 	if (mThread) {
-		mThread->quit();
-		mThread->deleteLater();
+		mThread->wait();
 	}
 	mEventListener = nullptr;
 	
+	auto currentConfig = window->launchManager().currentConfiguration();
+	if (!currentConfig.valid()) {
+		return;
+	}
+	
+	auto pair = window->loadModule(currentConfig.module());
+	
+	
+	if (!pair.first || !pair.second) {
+		KMessageBox::detailedError(window, i18n("Failed to load module"), QString::fromStdString(pair.first.dump()), i18n("run: error"));
+		return;
+	}
+	
 	// TODO: this really really needs a fix
-	//mDebugger = std::make_unique<chi::Debugger>(chiPath.c_str(), *window->currentModule());
+	mDebugger = std::make_shared<chi::Debugger>(chiPath.c_str(), *pair.second);
 	
 	mThread = new QThread;
-	mEventListener = std::make_unique<DebuggerWorkerThread>(*mDebugger);
+	mEventListener = std::make_unique<DebuggerWorkerThread>(mDebugger);
 	mEventListener->moveToThread(mThread);
 	
 	connect(mThread, &QThread::started, mEventListener.get(), &DebuggerWorkerThread::process);
-	connect(mEventListener.get(), &DebuggerWorkerThread::eventOccured, this, [this](lldb::SBEvent ev) {
+	connect(mEventListener.get(), &DebuggerWorkerThread::eventOccured, this, [this, window](lldb::SBEvent ev) {
 		if (lldb::SBProcess::GetStateFromEvent(ev) == lldb::eStateStopped) {
 			variableView().setFrame(mDebugger->lldbProcess().GetSelectedThread().GetSelectedFrame());
+			
+			// get the node
+			auto node = mDebugger->nodeFromFrame(mDebugger->lldbProcess().GetSelectedThread().GetSelectedFrame());
+			if (node != nullptr) {
+				window->tabView().centerOnNode(*node);
+			}
 		}
 	});
 	

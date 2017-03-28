@@ -3,6 +3,9 @@
 #include <chi/NodeInstance.hpp>
 #include <chi/GraphModule.hpp>
 
+#include "../mainwindow.hpp"
+#include "../functiontabview.hpp"
+
 class BreakpointView::BreakpointItem : public QTreeWidgetItem {
 public:
 	BreakpointItem(chi::NodeInstance& inst) : mInst{&inst} {
@@ -18,6 +21,15 @@ private:
 
 BreakpointView::BreakpointView() {
 	setHeaderLabels(QStringList() << i18n("Function") << i18n("ID"));
+	
+	connect(this, &QTreeWidget::itemDoubleClicked, this, [](QTreeWidgetItem* item) {
+		auto casted = dynamic_cast<BreakpointItem*>(item);
+		
+		if (casted != nullptr) {
+			MainWindow::instance()->tabView().centerOnNode(casted->instance());
+			MainWindow::instance()->tabView().selectNode(casted->instance());
+		}
+	});
 }
 
 void BreakpointView::addBreakpoint(chi::NodeInstance& inst)

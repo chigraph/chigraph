@@ -12,6 +12,7 @@
 #include <chi/Result.hpp>
 
 #include <../src/Node.hpp>
+#include <../src/NodeGraphicsObject.hpp>
 #include <nodes/ConnectionStyle>
 
 #include "chigraphnodemodel.hpp"
@@ -37,6 +38,9 @@ FunctionView::FunctionView(chi::GraphFunction& func_, QWidget* parent)
 	mScene = new FlowScene(createRegistry());
 
 	mView = new FlowView(mScene);
+	mView->setSceneRect(-320000, -320000, 640000, 640000);
+	mView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	mView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	hlayout->addWidget(mView);
 
@@ -116,6 +120,18 @@ std::vector<chi::NodeInstance*> FunctionView::selectedNodes()
 	}
 	
 	return ret;
+}
+
+void FunctionView::selectNode(chi::NodeInstance& node) {
+	// clear the selection
+	scene().clearSelection();
+	auto guiNode = guiNodeFromChigNode(&node);
+	if (guiNode == nullptr) {
+		return;
+	}
+	
+	// then select it
+	guiNode->nodeGraphicsObject().setSelected(true);
 }
 
 
@@ -269,10 +285,6 @@ void FunctionView::nodeDoubleClicked(QtNodes::Node& n) {
 
 	// emit the signal
 	functionDoubleClicked(*func);
-}
-
-void FunctionView::addBreakpoint(QtNodes::Node& n) {
-	// TODO: implement
 }
 
 void FunctionView::refreshGuiForNode(Node* node) {
@@ -451,3 +463,12 @@ void FunctionView::updateValidationStates() {
 		}
 	}
 }
+
+void FunctionView::centerOnNode(chi::NodeInstance& inst) {
+	auto guiInst = guiNodeFromChigNode(&inst);
+	
+	if (guiInst) {
+		mView->centerOn(&guiInst->nodeGraphicsObject());
+	}
+}
+
