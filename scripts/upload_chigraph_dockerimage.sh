@@ -7,3 +7,4 @@ cd $SCRIPTSDIR/appimage
 
 docker build . -t russelltg/chigraph-appimage:latest
 docker push russelltg/chigraph-appimage:latest
+
