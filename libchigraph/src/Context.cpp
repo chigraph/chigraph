@@ -95,12 +95,20 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 
 	// check for built-in modules
 	if (name == "lang") {
+		if (langModule() != nullptr) {
+			if (toFill != nullptr) { *toFill = langModule(); }
+			return {};
+		}
 		auto mod = std::make_unique<LangModule>(*this);
 		if (toFill != nullptr) { *toFill = mod.get(); }
 		addModule(std::move(mod));
 		return {};
 	}
 	if (name == "c") {
+		if (cModule() != nullptr) {
+			if (toFill != nullptr) { *toFill = cModule(); }
+			return {};
+		}
 		auto mod = std::make_unique<CModule>(*this);
 		if (toFill != nullptr) { *toFill = mod.get(); }
 		addModule(std::move(mod));  // we don't care if it's actually added

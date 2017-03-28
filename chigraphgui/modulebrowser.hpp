@@ -13,10 +13,14 @@ class MainWindow;
 
 #include <unordered_map>
 #include <unordered_set>
+#include <memory>
 
 #include "toolview.hpp"
 
-class WorkspaceTree;
+#include <boost/filesystem.hpp>
+
+struct WorkspaceTree;
+class ModuleTreeModel;
 
 class ModuleBrowser : public QTreeView, public ToolView {
 	Q_OBJECT
@@ -29,12 +33,12 @@ public:
 
 public:
 	ModuleBrowser(QWidget* parent = nullptr);
+	~ModuleBrowser();
 	
 	std::unordered_set<chi::GraphModule*> dirtyModules();
 
 signals:
 	void functionSelected(chi::GraphFunction& name);
-	void discardChanges(chi::GraphModule& moduleName);
 
 public slots:
 	void loadWorkspace(chi::Context& context);
@@ -43,14 +47,14 @@ public slots:
 
 private:
 	void updateDirtyStatus(chi::GraphModule& updated, bool dirty);
+	std::pair<WorkspaceTree*, QModelIndex> idxFromModuleName(const boost::filesystem::path& name);
 
 	chi::Context*                         mContext = nullptr;
-
-	QAction* mDiscardChangesAction = nullptr;
 	
 	std::unordered_set<chi::GraphModule*> mDirtyModules;
 	
 	WorkspaceTree* mTree = nullptr;
+	std::unique_ptr<ModuleTreeModel> mModel;
 };
 
 #endif  // CHIGRAPHGUI_MODULE_BROWSER_HPP

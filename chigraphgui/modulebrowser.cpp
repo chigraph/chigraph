@@ -126,7 +126,6 @@ public:
 			child->row = item->children.size();
 			
 			item->children.push_back(std::move(child));
-			
 		}
 		
 	}
@@ -150,13 +149,23 @@ public:
 		
 		switch (role) {
 		case Qt::DisplayRole:
-			return item->name;
+			if (item->dirty) {
+				return "* " + item->name;
+			} else {
+				return item->name;
+			}
 		case Qt::DecorationRole:
 			if (item->func != nullptr) {
 				return QIcon::fromTheme(QStringLiteral("code-class"));
 			}
 			if (item->isModule) {
 				return QIcon::fromTheme(QStringLiteral("package-available"));
+			}
+		case Qt::FontRole:
+			if (item->dirty || (item->parent != nullptr && item->parent->dirty)) {
+				QFont bold;
+				bold.setBold(true);
+				return bold;
 			}
 		default:
 			return {};
@@ -184,24 +193,6 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeView(parent) {
 		    });
 	setContextMenuPolicy(Qt::CustomContextMenu);
 
-	mDiscardChangesAction = new QAction(QIcon::fromTheme(QStringLiteral("view-refresh")),
-	                                    i18n("Discard Changes"), this);
-	connect(mDiscardChangesAction, &QAction::triggered, this, [this] {
-		auto idx = currentIndex();
-		if (!idx.isValid()) {
-			return;
-		}
-		auto item = static_cast<WorkspaceTree*>(idx.internalPointer());
-		
-		
-		// get the module
-		auto mod = item->module;
-		if (!mod) { return; }
-
-		discardChanges(*mod);
-	});
-	actionCollection()->addAction(QStringLiteral("discard-changes"), mDiscardChangesAction);
-
 	connect(this, &QWidget::customContextMenuRequested, this, [this](QPoint p) {
 		auto idx = indexAt(p);
 		if (!idx.isValid()) { return; }
@@ -213,10 +204,12 @@ ModuleBrowser::ModuleBrowser(QWidget* parent) : QTreeView(parent) {
 		setCurrentIndex(idx);
 
 		QMenu contextMenu;
-		contextMenu.addAction(mDiscardChangesAction);
+		// TODO: actions
 		contextMenu.exec(mapToGlobal(p));
 	});
 }
+
+ModuleBrowser::~ModuleBrowser() = default;
 
 std::unordered_set<chi::GraphModule*> ModuleBrowser::dirtyModules() {
 	return mDirtyModules;
@@ -263,7 +256,8 @@ void ModuleBrowser::loadWorkspace(chi::Context& context) {
 	}
 	mTree = tree.get();
 	
-	setModel(new ModuleTreeModel(std::move(tree), *mContext));
+	mModel = std::make_unique<ModuleTreeModel>(std::move(tree), *mContext);
+	setModel(mModel.get());
 }
 
 void ModuleBrowser::moduleDirtied(chi::GraphModule& dirtied) {
@@ -280,15 +274,18 @@ void ModuleBrowser::moduleSaved(chi::GraphModule& saved) {
 void ModuleBrowser::updateDirtyStatus(chi::GraphModule& updated, bool dirty) {
 	
 	// find the item
-	WorkspaceTree* item = mTree;
-	for (fs::path component : fs::path(updated.fullName())) {
-		for (const auto& ch : item->children) {
-			if (ch->name.toStdString() == component.string() && ch->isModule) {
-				item = ch.get();
-				break;
-			}
-		}
+	WorkspaceTree* item;
+	QModelIndex idx; // get the idx of it so we can emit dataChanged
+	std::tie(item, idx) = idxFromModuleName(updated.fullName());
+	
+	// when we save, it reloads the module, invalidating these pointers
+	if (!dirty) {
+		item->module = nullptr;
+		item->children.clear();
+		setExpanded(idx, false);
 	}
+	
+	mModel->dataChanged(idx, idx);
 	
 	if (item->name.toStdString() != fs::path(updated.fullName()).filename().replace_extension("").string()) {
 		return;
@@ -296,4 +293,25 @@ void ModuleBrowser::updateDirtyStatus(chi::GraphModule& updated, bool dirty) {
 	
 	item->dirty = dirty;
 
+}
+
+std::pair<WorkspaceTree*, QModelIndex> ModuleBrowser::idxFromModuleName(const fs::path& name) {
+	WorkspaceTree* item = mTree;
+	QModelIndex idx; // get the idx of it so we can emit dataChanged
+	for (auto componentIter = name.begin(); componentIter != name.end(); ++componentIter) {
+		auto component = *componentIter;
+		
+		auto id = 0ull;
+		for (const auto& ch : item->children) {
+			if (ch->name.toStdString() == component.string() && ch->isModule == (componentIter == --name.end())) {
+				item = ch.get();
+				idx = mModel->index(id, 0, idx);
+				break;
+			}
+			
+			++id;
+		}
+	}
+	
+	return {item, idx};
 }

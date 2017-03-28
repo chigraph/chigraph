@@ -82,7 +82,6 @@ void DebuggerPlugin::debugStart() {
 #endif
 
 	MainWindow* window = MainWindow::instance();
-	if (window->currentModule() == nullptr) { return; }
 
 	// delete it
 	if (mThread) {
@@ -91,7 +90,8 @@ void DebuggerPlugin::debugStart() {
 	}
 	mEventListener = nullptr;
 	
-	mDebugger = std::make_unique<chi::Debugger>(chiPath.c_str(), *window->currentModule());
+	// TODO: this really really needs a fix
+	//mDebugger = std::make_unique<chi::Debugger>(chiPath.c_str(), *window->currentModule());
 	
 	mThread = new QThread;
 	mEventListener = std::make_unique<DebuggerWorkerThread>(*mDebugger);

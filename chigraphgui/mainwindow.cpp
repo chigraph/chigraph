@@ -5,9 +5,8 @@
 #include "functionview.hpp"
 #include "localvariables.hpp"
 #include "modulebrowser.hpp"
-#include "moduledependencies.hpp"
-#include "moduledetails.hpp"
 #include "subprocessoutputview.hpp"
+#include "launchconfigurationdialog.hpp"
 
 #include <KActionCollection>
 #include <KActionMenu>
@@ -48,6 +47,7 @@
 #include "chigraphnodemodel.hpp"
 #include "thememanager.hpp"
 
+
 MainWindow* MainWindow::mInstance = nullptr;
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
@@ -60,31 +60,6 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 
 	mChigContext = std::make_unique<chi::Context>(qApp->arguments()[0].toStdString().c_str());
 
-	// setup module details
-	auto docker = new QDockWidget(i18n("Module Details"));
-	docker->setObjectName("Module Details");
-	auto modDetails = new ModuleDetails;
-	docker->setWidget(modDetails);
-	addDockWidget(Qt::LeftDockWidgetArea, docker);
-	connect(modDetails, &ModuleDetails::functionSelected, this,
-	        [this](chi::GraphFunction& func) { tabView().selectNewFunction(func); });
-	connect(this, &MainWindow::moduleOpened, modDetails, &ModuleDetails::loadModule);
-	auto dependencyUpdatedSlot = [this] {
-		auto count = mFunctionTabs->count();
-		for (auto idx = 0; idx < count; ++idx) {
-			auto view = dynamic_cast<FunctionView*>(mFunctionTabs->widget(idx));
-
-			if (view) { view->refreshRegistry(); }
-		}
-	};
-	connect(modDetails, &ModuleDetails::dependencyAdded, this, dependencyUpdatedSlot);
-	connect(modDetails, &ModuleDetails::dependencyRemoved, this, dependencyUpdatedSlot);
-	connect(this, &MainWindow::moduleOpened, docker, [docker](chi::GraphModule& mod) {
-		docker->setWindowTitle(i18n("Module Details") + " - " +
-		                       QString::fromStdString(mod.fullName()));
-	});
-	connect(modDetails, &ModuleDetails::dirtied, this, [this] { moduleDirtied(*currentModule()); });
-
 	mFunctionTabs = new FunctionTabView;
 	mFunctionTabs->setMovable(true);
 	mFunctionTabs->setTabsClosable(true);
@@ -96,7 +71,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	
 	// setup module browser
 	mModuleBrowser = new ModuleBrowser(this);
-	docker         = new QDockWidget(mModuleBrowser->label(), this);
+	auto docker         = new QDockWidget(mModuleBrowser->label(), this);
 	docker->setObjectName("Modules");
 	insertChildClient(mModuleBrowser);
 	docker->setWidget(mModuleBrowser);
@@ -109,8 +84,6 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		docker->setWindowTitle(i18n("Modules") + " - " +
 		                       QString::fromStdString(ctx.workspacePath().string()));
 	});
-	connect(mModuleBrowser, &ModuleBrowser::discardChanges, this,
-	        &MainWindow::discardChangesInModule);
 
 	
 	docker = new QDockWidget(i18n("Output"), this);
@@ -212,13 +185,24 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	runAction->setIcon(QIcon::fromTheme(QStringLiteral("system-run")));
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
 	actColl->addAction(QStringLiteral("run"), runAction);
+	
 	connect(runAction, &QAction::triggered, this, [this, outputView, cancelAction] {
-		if (currentModule() == nullptr) {
-			KMessageBox::error(this, i18n("Load a module first!"), i18n("run: error"));
+		if (!launchManager().currentConfiguration().valid()) {
+			KMessageBox::error(this, i18n("Select a launch configuration"), i18n("run: error"));
 			return;
 		}
 
-		auto view = new SubprocessOutputView(currentModule());
+		// get the module
+		chi::Result res;
+		chi::GraphModule* mod;
+		std::tie(res, mod) = loadModule(launchManager().currentConfiguration().module());
+		
+		if (!res || !mod) {
+			KMessageBox::detailedError(this, i18n("Failed to load module"), QString::fromStdString(res.dump()), i18n("run: error"));
+			return;
+		}
+		
+		auto view = new SubprocessOutputView(mod);
 		connect(view, &SubprocessOutputView::processFinished, this,
 		        [outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
 			        QString statusStr =
@@ -234,7 +218,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 			    });
 		// add the tab to the beginning
 		int newTabID = outputView->insertTab(
-		    0, view, QString::fromStdString(currentModule()->fullName()) + i18n(" (running)"));
+		    0, view, QString::fromStdString(mod->fullName()) + i18n(" (running)"));
 		outputView->setCurrentIndex(newTabID);
 		cancelAction->setEnabled(true);
 	});
@@ -251,6 +235,27 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	actColl->addAction(QStringLiteral("new-module"), newModuleAction);
 	connect(newModuleAction, &QAction::triggered, this, &MainWindow::newModule);
 
+	auto runConfigDialogAction = new QAction(this);
+	runConfigDialogAction->setText(i18n("Configure Launches"));
+	actColl->addAction(QStringLiteral("configure-launches"), runConfigDialogAction);
+	connect(runConfigDialogAction, &QAction::triggered, this, [this]{
+		LaunchConfigurationDialog d(mLaunchManager);
+		
+		d.exec();
+		
+		updateUsableConfigs();
+	});
+	
+	mConfigSelectAction = new KSelectAction(QIcon::fromTheme(QStringLiteral("run-build-configure")), i18n("Launch Configuration"), this);
+	actColl->addAction(QStringLiteral("select-launch-configuration"), mConfigSelectAction);
+	connect(mConfigSelectAction, static_cast<void (KSelectAction::*)(const QString&)>(&KSelectAction::triggered), this, [this](const QString& str) {
+		mLaunchManager.setCurrentConfiguration(mLaunchManager.configByName(str));
+	});
+	updateUsableConfigs();
+	if (mLaunchManager.currentConfiguration().valid()) {
+		mConfigSelectAction->setCurrentAction(mLaunchManager.currentConfiguration().name(), Qt::CaseSensitive);
+	}
+	
 	// theme selector
 	auto themeAction = new KActionMenu(i18n("Theme"), this);
 	mThemeManager    = std::make_unique<ThemeManager>(themeAction);
@@ -263,14 +268,31 @@ MainWindow::~MainWindow() {
 	mOpenRecentAction->saveEntries(KSharedConfig::openConfig()->group("Recent Files"));
 }
 
+
+std::pair<chi::Result, chi::GraphModule*> MainWindow::loadModule(const QString& name) {
+	chi::ChiModule* mod;
+	auto res = context().loadModule(name.toStdString(), chi::LoadSettings::Default, &mod);
+	if (!res) {
+		return {res, nullptr};
+	}
+	return {res, dynamic_cast<chi::GraphModule*>(mod)};
+	
+}
+
+
 void MainWindow::save() {
-	if (mModule != nullptr) {
-		chi::Result res = mModule->saveToDisk();
+	auto currentFunc = tabView().currentView();
+	if (!currentFunc) {
+		return;
+	}
+	auto module = &currentFunc->function()->module();
+	if (module != nullptr) {
+		chi::Result res = module->saveToDisk();
 		if (!res) {
 			KMessageBox::detailedError(this, i18n("Failed to save module!"),
 			                           QString::fromStdString(res.dump()));
 		}
-		mModuleBrowser->moduleSaved(*mModule);
+		mModuleBrowser->moduleSaved(*module);
 	}
 }
 
@@ -293,45 +315,24 @@ void MainWindow::openWorkspace(const QUrl& url) {
 	workspaceOpened(*mChigContext);
 }
 
-void MainWindow::openModule(const QString& fullName) {
-	chi::ChiModule* cmod;
-	chi::Result     res =
-	    context().loadModule(fullName.toStdString(), chi::LoadSettings::Default, &cmod);
-
-	if (!res) {
-		KMessageBox::detailedError(this,
-		                           R"(Failed to load JsonModule from file ")" + fullName + R"(")",
-		                           QString::fromStdString(res.dump()), "Error Loading");
-
-		return;
-	}
-
-	mModule = dynamic_cast<chi::GraphModule*>(cmod);
-	Expects(mModule != nullptr);
-
-	setWindowTitle(QString::fromStdString(mModule->fullName()));
-
-	// call signal
-	moduleOpened(*mModule);
-}
-
 void MainWindow::newFunction() {
-	if (currentModule() == nullptr) {
-		KMessageBox::error(this, "Load a module before creating a new function");
-		return;
-	}
-
-	QString newName = QInputDialog::getText(this, i18n("New Function Name"), i18n("Function Name"));
-
-	if (newName == "") { return; }
-
-	chi::GraphFunction* func =
-	    currentModule()->getOrCreateFunction(newName.toStdString(), {}, {}, {""}, {""});
-	func->getOrInsertEntryNode(0, 0, boost::uuids::random_generator()());
-
-	newFunctionCreated(*func);
-
-	tabView().selectNewFunction(*func);  // open the newly created function
+	// TODO: reenable
+// 	if (currentModule() == nullptr) {
+// 		KMessageBox::error(this, "Load a module before creating a new function");
+// 		return;
+// 	}
+// 
+// 	QString newName = QInputDialog::getText(this, i18n("New Function Name"), i18n("Function Name"));
+// 
+// 	if (newName == "") { return; }
+// 
+// 	chi::GraphFunction* func =
+// 	    currentModule()->getOrCreateFunction(newName.toStdString(), {}, {}, {""}, {""});
+// 	func->getOrInsertEntryNode(0, 0, boost::uuids::random_generator()());
+// 
+// 	newFunctionCreated(*func);
+// 
+// 	tabView().selectNewFunction(*func);  // open the newly created function
 }
 
 void MainWindow::newModule() {
@@ -360,10 +361,26 @@ void MainWindow::newModule() {
 
 	newModuleCreated(*mod);
 	// then load the module
-	openModule(QString::fromStdString(mod->fullName()));
 }
 
 void MainWindow::moduleDirtied(chi::GraphModule& mod) { mModuleBrowser->moduleDirtied(mod); }
+
+void MainWindow::updateUsableConfigs()
+{
+	// save the current so we can set it back later
+	QString selectedText = mConfigSelectAction->currentText();
+	
+	// repopulate
+	mConfigSelectAction->clear();
+	
+	for(const auto& config : mLaunchManager.configurations()) {
+		mConfigSelectAction->addAction(config.name());
+	}
+	
+	// set it back
+	mConfigSelectAction->setCurrentAction(selectedText, Qt::CaseSensitive);
+}
+
 
 void MainWindow::closeEvent(QCloseEvent* event) {
 	// check through dirty modules
@@ -387,7 +404,7 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 			break;
 		case KMessageBox::No:
 			// this means discard
-			discardChangesInModule(*mod);
+			// TODO: implement discard
 			break;
 		case KMessageBox::Cancel: event->ignore(); return;
 		default: Expects(false);
@@ -395,15 +412,4 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 	}
 
 	KXmlGuiWindow::closeEvent(event);
-}
-
-void MainWindow::discardChangesInModule(chi::GraphModule& mod) {
-	// mark it as clean
-	mModuleBrowser->moduleSaved(mod);
-
-	bool isCurrentModule = &mod == currentModule();
-
-	tabView().refreshModule(mod);
-
-	if (isCurrentModule) { openModule(QString::fromStdString(mod.fullName())); }
 }
