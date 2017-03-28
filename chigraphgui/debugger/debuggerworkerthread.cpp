@@ -2,17 +2,23 @@
 
 Q_DECLARE_METATYPE(lldb::SBEvent)
 
-DebuggerWorkerThread::DebuggerWorkerThread(chi::Debugger& dbg) : mDebugger(&dbg)
+DebuggerWorkerThread::DebuggerWorkerThread(std::shared_ptr<chi::Debugger> dbg) : mDebugger(std::move(dbg))
 {
 }
 
 void DebuggerWorkerThread::process()
 {
-	auto listener = mDebugger->lldbDebugger().GetListener();
-	
 	lldb::SBEvent ev;
 	while (true) {
-		listener.WaitForEvent(3, ev);
+		
+		// lock the listener
+		auto strongPtr = mDebugger.lock();
+		if (strongPtr == nullptr) {
+			return;
+		}
+		auto listener = strongPtr->lldbDebugger().GetListener();
+		
+		listener.WaitForEvent(1, ev);
 		if (ev.IsValid()) {
 			eventOccured(ev);
 		}

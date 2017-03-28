@@ -25,6 +25,8 @@ public:
 
 	// refresh I/O for the node
 	void refreshGuiForNode(QtNodes::Node* node);
+	
+	void centerOnNode(chi::NodeInstance& inst);
 
 	void refreshRegistry();
 
@@ -33,6 +35,8 @@ public:
 	QtNodes::FlowScene& scene() const { return *mScene; }
 	
 	std::vector<chi::NodeInstance*> selectedNodes();
+	
+	void selectNode(chi::NodeInstance& node);
 	
 private slots:
 	void nodeAdded(QtNodes::Node& n);
@@ -46,8 +50,6 @@ private slots:
 	void nodeMoved(QtNodes::Node& n, QPointF newLoc);
 
 	void nodeDoubleClicked(QtNodes::Node& n);
-
-	void addBreakpoint(QtNodes::Node& n);
 
 signals:
 	void dirtied();

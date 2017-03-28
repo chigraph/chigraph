@@ -22,13 +22,14 @@ public:
 	FunctionTabView(QWidget* parent = nullptr);
 
 	void selectNewFunction(chi::GraphFunction& func);
+	void centerOnNode(chi::NodeInstance& inst);
+	void selectNode(chi::NodeInstance& inst);
 
-	// delete and recreate the view, it has been reloaded
-	void refreshFunction(chi::GraphFunction& func);
 
 	// refresh all the functions in the module
 	void refreshModule(chi::GraphModule& mod);
 
+	FunctionView* viewFromFunction(chi::GraphFunction& func);
 	FunctionView* viewFromName(const QString& fullName);
 	FunctionView* viewFromName(const boost::filesystem::path& mod, const std::string& function);
 
