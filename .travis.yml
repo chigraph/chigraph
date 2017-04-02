@@ -26,7 +26,8 @@ matrix:
     - os: linux
       services: 
         - docker
-      script: 
+      install:
+      script:
         - ./scripts/generate_appimage.sh
       after_success:
         - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
