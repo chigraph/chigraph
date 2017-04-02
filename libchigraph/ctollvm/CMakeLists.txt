@@ -3,26 +3,11 @@ add_library(ctollvm SHARED ctollvm.cpp)
 # require c++11
 target_compile_features(ctollvm PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
 
+message(STATUS "Configuring ctollvm...")
+
 execute_process(COMMAND ${LLVM_CONFIG} --includedir OUTPUT_VARIABLE LLVM_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 
-
-set(LLVM_COMPONENTS
-	irreader
-	support 
-	core 
-	bitwriter 
-	bitreader 
-	transformutils 
-	ipo 
-	objcarcopts 
-	target 
-	option
-)
-# get link libraries
-execute_process(COMMAND ${LLVM_CONFIG} --libs  OUTPUT_VARIABLE LLVM_LIBRARIES OUTPUT_STRIP_TRAILING_WHITESPACE)
-string(REPLACE " " ";" LLVM_LINK_LIST "${LLVM_LIBRARIES}")
-message(STATUS "LLVM link libraries: ${LLVM_LINK_LIST}")
 
 execute_process(COMMAND ${LLVM_CONFIG} --system-libs OUTPUT_VARIABLE LLVM_SYSTEM_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
 string(REPLACE " " ";" LLVM_SYSTEM_LINK_LIST "${LLVM_SYSTEM_LIBS}")
@@ -87,7 +72,6 @@ endforeach()
 target_link_libraries(ctollvm
 PRIVATE
 	${LLVM_LD_FLAGS_LIST}
-	${LLVM_LINK_LIST}
 	${LLVM_SYSTEM_LINK_LIST}
 )
 

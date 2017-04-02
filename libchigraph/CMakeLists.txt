@@ -1,6 +1,6 @@
 # compile + install a c++/c standard library
 
-#include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/GetLibStdCXX.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/GetLibStdCXX.cmake)
 
 execute_process(COMMAND ${LLVM_CONFIG} --prefix OUTPUT_VARIABLE CLANG_INSTALL_PREFIX  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "clang install prefix: ${CLANG_INSTALL_PREFIX}")
@@ -57,11 +57,18 @@ message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 # get llvm libraries
 set(LLVM_COMPONENTS
 	executionengine
+	passes
+	irreader
+	option
+	bitwriter
 	native
 	interpreter
+	objcarcopts
 	nativecodegen
 	linker
 	mcjit
+	scalaropts
+	transformutils
 	codegen
 	selectiondag
 )
@@ -93,10 +100,11 @@ target_link_libraries(chigraph
 PUBLIC
 	boost_filesystem
 	git2
-	${LLVM_LD_FLAGS_LIST}
-	${LLVM_LINK_LIST}
 PRIVATE
 	ctollvm
+PUBLIC
+	${LLVM_LD_FLAGS_LIST}
+	${LLVM_LINK_LIST}
 PUBLIC
 	${LLVM_SYSTEM_LINK_LIST}
 	ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
