@@ -12,7 +12,7 @@
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
 
-#include "../ctollvm/ctollvm.hpp"
+#include "ctollvm.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
