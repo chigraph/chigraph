@@ -63,6 +63,7 @@ set(LLVM_COMPONENTS
 	bitwriter
 	native
 	interpreter
+	lto
 	objcarcopts
 	nativecodegen
 	linker
