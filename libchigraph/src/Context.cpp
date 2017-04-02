@@ -388,6 +388,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		Expects(type == VCSType::Git);
 
 		auto absCloneInto = workspacePath() / "src" / cloneInto;
+		// make sure the directory exists
+		fs::create_directories(absCloneInto.parent_path());
 
 		// clone it
 		git_repository* repo;

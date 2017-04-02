@@ -28,15 +28,17 @@ set(DEBUGGER_HEADERS
 
 add_library(chigraphdebugger STATIC ${DEBUGGER_SRCS} ${DEBUGGER_HEADERS})
 
-# copy lldb-server
-add_custom_command(
-TARGET chigraphdebugger POST_BUILD
-COMMAND ${CMAKE_COMMAND} -E copy_if_different
-	${LLVM_BIN_DIR}/lldb-server
-	${CMAKE_BINARY_DIR}/bin/lldb-server
-BYPRODUCTS ${CMAKE_BINARY_DIR}/bin/lldb-server
-COMMENT "Copying lldb-server from ${LLVM_BIN_DIR}/lldb-server to ${CMAKE_BINARY_DIR}/bin/lldb-server"
-)
+if (NOT WIN32)
+	# copy lldb-server
+	add_custom_command(
+	TARGET chigraphdebugger POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different
+		${LLVM_BIN_DIR}/lldb-server
+		${CMAKE_BINARY_DIR}/bin/lldb-server
+	BYPRODUCTS ${CMAKE_BINARY_DIR}/bin/lldb-server
+	COMMENT "Copying lldb-server from ${LLVM_BIN_DIR}/lldb-server to ${CMAKE_BINARY_DIR}/bin/lldb-server"
+	)
+endif()
 
 target_compile_options(chigraphdebugger 
 PUBLIC

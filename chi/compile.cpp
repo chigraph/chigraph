@@ -22,6 +22,7 @@
 
 #include <llvm/IR/Module.h>
 #include <llvm/Support/FileSystem.h>
+#include <llvm/Support/ToolOutputFile.h>
 #include <llvm/Support/raw_os_ostream.h>
 
 using namespace chi;
@@ -112,14 +113,6 @@ int compile(const std::vector<std::string>& opts) {
 
 	// create output
 	{
-		std::error_code ec;
-		auto            lloutstream =
-		    outpath.string() == "-"
-		        ? std::unique_ptr<llvm::raw_ostream>(
-		              std::make_unique<llvm::raw_os_ostream>(std::cout))
-		        : std::unique_ptr<llvm::raw_ostream>(std::make_unique<llvm::raw_fd_ostream>(
-		              outpath.string(), ec, llvm::sys::fs::F_None));
-
 		std::string outtype;
 		if (vm.count("output-type") != 0) {
 			outtype = vm["output-type"].as<std::string>();
@@ -129,10 +122,17 @@ int compile(const std::vector<std::string>& opts) {
 			outtype = outpath.string() == "-" ? "ll" : outpath.extension().string().substr(1);
 		}
 
+		std::error_code ec;
+		llvm::sys::fs::OpenFlags OpenFlags = llvm::sys::fs::F_None;
+		if (outtype == "ll") {
+			OpenFlags |= llvm::sys::fs::F_Text;
+		}
+		auto outFile = std::make_unique<llvm::tool_output_file>(outpath.string(), ec, OpenFlags);
+
 		if (outtype == "bc") {
-			llvm::WriteBitcodeToFile(llmod.get(), *lloutstream);
+			llvm::WriteBitcodeToFile(llmod.get(), outFile->os());
 		} else if (outtype == "ll") {
-			llmod->print(*lloutstream, nullptr);
+			llmod->print(outFile->os(), nullptr);
 		} else {
 			std::cerr << "Unrecognized output-type: " << outtype << std::endl;
 			return 1;
