@@ -1,7 +1,6 @@
 var namespacechi =
 [
     [ "ChiModule", "structchi_1_1ChiModule.html", "structchi_1_1ChiModule" ],
-    [ "CModule", "structchi_1_1CModule.html", "structchi_1_1CModule" ],
     [ "Context", "structchi_1_1Context.html", "structchi_1_1Context" ],
     [ "DataType", "structchi_1_1DataType.html", "structchi_1_1DataType" ],
     [ "Debugger", "classchi_1_1Debugger.html", "classchi_1_1Debugger" ],

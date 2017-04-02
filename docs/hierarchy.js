@@ -1,7 +1,6 @@
 var hierarchy =
 [
     [ "chi::ChiModule", "structchi_1_1ChiModule.html", [
-      [ "chi::CModule", "structchi_1_1CModule.html", null ],
       [ "chi::GraphModule", "structchi_1_1GraphModule.html", null ],
       [ "chi::LangModule", "structchi_1_1LangModule.html", null ]
     ] ],
