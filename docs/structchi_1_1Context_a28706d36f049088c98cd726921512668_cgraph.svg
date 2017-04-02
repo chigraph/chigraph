@@ -9,55 +9,55 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 100)">
 <title>chi::Context::nodeTypeFromModule</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-100 340,-100 340,4 -4,4"/>
-<!-- Node295 -->
+<!-- Node344 -->
 <g id="node1" class="node">
-<title>Node295</title>
+<title>Node344</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-33 0,-63 140,-63 140,-33 0,-33"/>
 <text text-anchor="start" x="8" y="-51" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::nodeTypeFrom</text>
 <text text-anchor="middle" x="70" y="-40" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">Module</text>
 </g>
-<!-- Node296 -->
+<!-- Node345 -->
 <g id="node2" class="node">
-<title>Node296</title>
+<title>Node345</title>
 <g id="a_node2"><a xlink:href="structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" target="_top" xlink:title="Add a entry to the result, either a warning or an error. ">
 <polygon fill="#ffffff" stroke="#000000" points="202,-76.5 202,-95.5 310,-95.5 310,-76.5 202,-76.5"/>
 <text text-anchor="middle" x="256" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::addEntry</text>
 </a>
 </g>
 </g>
-<!-- Node295&#45;&gt;Node296 -->
+<!-- Node344&#45;&gt;Node345 -->
 <g id="edge1" class="edge">
-<title>Node295&#45;&gt;Node296</title>
+<title>Node344&#45;&gt;Node345</title>
 <path fill="none" stroke="#191970" d="M140.0536,-62.312C159.6941,-66.3246 180.7909,-70.6347 199.5338,-74.4639"/>
 <polygon fill="#191970" stroke="#191970" points="198.891,-77.9048 209.3892,-76.4774 200.2922,-71.0465 198.891,-77.9048"/>
 </g>
-<!-- Node297 -->
+<!-- Node346 -->
 <g id="node3" class="node">
-<title>Node297</title>
+<title>Node346</title>
 <g id="a_node3"><a xlink:href="structchi_1_1Context.html#ad1bbd4d5eb33a8ce34292eb6a192d10d" target="_top" xlink:title="Compile a module to a llvm::Module. ">
 <polygon fill="#ffffff" stroke="#000000" points="186,-38.5 186,-57.5 326,-57.5 326,-38.5 186,-38.5"/>
 <text text-anchor="middle" x="256" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::compileModule</text>
 </a>
 </g>
 </g>
-<!-- Node295&#45;&gt;Node297 -->
+<!-- Node344&#45;&gt;Node346 -->
 <g id="edge2" class="edge">
-<title>Node295&#45;&gt;Node297</title>
+<title>Node344&#45;&gt;Node346</title>
 <path fill="none" stroke="#191970" d="M140.0536,-48C151.6025,-48 163.6551,-48 175.4365,-48"/>
 <polygon fill="#191970" stroke="#191970" points="175.7006,-51.5001 185.7005,-48 175.7005,-44.5001 175.7006,-51.5001"/>
 </g>
-<!-- Node298 -->
+<!-- Node347 -->
 <g id="node4" class="node">
-<title>Node298</title>
+<title>Node347</title>
 <g id="a_node4"><a xlink:href="structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5" target="_top" xlink:title="Gets the module by the full name. ">
 <polygon fill="#ffffff" stroke="#000000" points="176,-.5 176,-19.5 336,-19.5 336,-.5 176,-.5"/>
 <text text-anchor="middle" x="256" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::moduleByFullName</text>
 </a>
 </g>
 </g>
-<!-- Node295&#45;&gt;Node298 -->
+<!-- Node344&#45;&gt;Node347 -->
 <g id="edge3" class="edge">
-<title>Node295&#45;&gt;Node298</title>
+<title>Node344&#45;&gt;Node347</title>
 <path fill="none" stroke="#191970" d="M140.0536,-33.688C159.6941,-29.6754 180.7909,-25.3653 199.5338,-21.5361"/>
 <polygon fill="#191970" stroke="#191970" points="200.2922,-24.9535 209.3892,-19.5226 198.891,-18.0952 200.2922,-24.9535"/>
 </g>

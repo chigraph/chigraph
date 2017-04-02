@@ -3,7 +3,6 @@ var dir_60466ddfe13da60bd53dc7b440efbf98 =
     [ "ChiModule.hpp", "ChiModule_8hpp.html", [
       [ "ChiModule", "structchi_1_1ChiModule.html", "structchi_1_1ChiModule" ]
     ] ],
-    [ "CModule.hpp", "CModule_8hpp.html", "CModule_8hpp" ],
     [ "Context.hpp", "Context_8hpp.html", "Context_8hpp" ],
     [ "DataType.hpp", "DataType_8hpp.html", "DataType_8hpp" ],
     [ "Flags.hpp", "Flags_8hpp_source.html", null ],
@@ -29,6 +28,5 @@ var dir_60466ddfe13da60bd53dc7b440efbf98 =
     ] ],
     [ "Result.hpp", "Result_8hpp.html", [
       [ "Result", "structchi_1_1Result.html", "structchi_1_1Result" ]
-    ] ],
-    [ "ToString.hpp", "ToString_8hpp_source.html", null ]
+    ] ]
 ];

@@ -1,6 +1,7 @@
 var structchi_1_1NodeInstance =
 [
     [ "NodeInstance", "structchi_1_1NodeInstance.html#ac662b0ce416745792a336e9735c8b09d", null ],
+    [ "~NodeInstance", "structchi_1_1NodeInstance.html#ac45c7fd7d21b6120deff63d92a05e24c", null ],
     [ "NodeInstance", "structchi_1_1NodeInstance.html#a2217cb2480f31aea604b2a61d4098eea", null ],
     [ "NodeInstance", "structchi_1_1NodeInstance.html#addf825d934542d46f8721e2516928776", null ],
     [ "context", "structchi_1_1NodeInstance.html#ac2ada83d65425a80a4af74da5414fd75", null ],

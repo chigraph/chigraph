@@ -32,12 +32,13 @@ var structchi_1_1GraphFunction =
     [ "nodesWithType", "structchi_1_1GraphFunction.html#a56ba667341ecc6fce1e290cce6aedf53", null ],
     [ "operator=", "structchi_1_1GraphFunction.html#aeb27b10bbc9bcb1f7e33d7e1b4380a92", null ],
     [ "operator=", "structchi_1_1GraphFunction.html#a52984a701c067f8ef391cff882a53600", null ],
+    [ "qualifiedName", "structchi_1_1GraphFunction.html#ad739c826ed87035857193995c23cabe2", null ],
     [ "removeDataInput", "structchi_1_1GraphFunction.html#abac77d34a4bf04d7c409655b0b3e89d0", null ],
     [ "removeDataOutput", "structchi_1_1GraphFunction.html#a65db0e7550128544600ebb1fff4bd69c", null ],
     [ "removeExecInput", "structchi_1_1GraphFunction.html#a90ff1195a338ddbf8e8654b6efc9b0b7", null ],
     [ "removeExecOutput", "structchi_1_1GraphFunction.html#af452babcc5f350cf185b3b5f98151e14", null ],
     [ "removeLocalVariable", "structchi_1_1GraphFunction.html#a81f2a4203abba46ff8494a6a7e192094", null ],
-    [ "removeNode", "structchi_1_1GraphFunction.html#ad4c3e2b91ad53ad79513e3dfdc07a36c", null ],
+    [ "removeNode", "structchi_1_1GraphFunction.html#a2248f5089ddc01a46b9ba4129925a44c", null ],
     [ "renameDataInput", "structchi_1_1GraphFunction.html#a4bb426c921d46bbd8cbf237d716bc1c5", null ],
     [ "renameDataOutput", "structchi_1_1GraphFunction.html#a8b31017553adfc52ad6140868c328fbd", null ],
     [ "renameExecInput", "structchi_1_1GraphFunction.html#a26a88fe7adb30077c54732af11136685", null ],
@@ -46,5 +47,6 @@ var structchi_1_1GraphFunction =
     [ "retypeDataInput", "structchi_1_1GraphFunction.html#aa69ea8953b3c1b9da14a5364c747e49b", null ],
     [ "retypeDataOutput", "structchi_1_1GraphFunction.html#a7772a0180716a2c29436d086d757743e", null ],
     [ "retypeLocalVariable", "structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a", null ],
-    [ "setDescription", "structchi_1_1GraphFunction.html#afdcae25278b1de714d77cf8051172cdf", null ]
+    [ "setDescription", "structchi_1_1GraphFunction.html#afdcae25278b1de714d77cf8051172cdf", null ],
+    [ "setName", "structchi_1_1GraphFunction.html#a27c87614be4357e97c1ececd2228f865", null ]
 ];

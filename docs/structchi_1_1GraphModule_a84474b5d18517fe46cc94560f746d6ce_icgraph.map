@@ -1,25 +1,22 @@
 <map id="chi::GraphModule::functionFromName" name="chi::GraphModule::functionFromName">
-<area shape="rect" id="node2" href="$structchi_1_1GraphModule.html#af61aef2776a0e219ffca2d22e109909f" title="Create a new function if it does&#39;t already exist. " alt="" coords="232,136,435,177"/>
-<area shape="rect" id="node3" href="$structchi_1_1GraphModule.html#a1c1a23b9aa7967948e97dc9650099188" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="500,201,671,243"/>
-<area shape="rect" id="node17" href="$classchi_1_1Debugger.html#ae142902fa85248f40cbeea7199c86ad9" title="Get a NodeInstance from a frame. " alt="" coords="483,318,688,345"/>
-<area shape="rect" id="node19" href="$structchi_1_1GraphModule.html#a133c0595e0bb888f958e9769838f6c0c" title="Create a node type that is in the module from the name and json. " alt="" coords="239,71,428,112"/>
-<area shape="rect" id="node24" href="$structchi_1_1GraphModule.html#afbd997edc2cb58feccdc29d499da24d0" title="Remove a function from the module. " alt="" coords="246,201,421,243"/>
-<area shape="rect" id="node8" href="$namespacechi.html#af483dab3c6b3b1ee261f223bd83d5670" title="Create a forward declaration of a function in a module with an empty graph. " alt="" coords="501,136,669,177"/>
-<area shape="rect" id="node4" href="$structchi_1_1GraphModule.html#a9b73bbbfa91d6a2f92bcca270bdb7b2f" title="Generate a llvm::Module from the module. " alt="" coords="740,143,923,184"/>
-<area shape="rect" id="node5" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="2213,150,2415,177"/>
-<area shape="rect" id="node6" href="$classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" title="Set a breakpoint on a given node. " alt="" coords="736,259,927,286"/>
-<area shape="rect" id="node7" href="$classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" title="Check if the process is executing. " alt="" coords="1009,318,1161,345"/>
-<area shape="rect" id="node9" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="750,91,913,118"/>
-<area shape="rect" id="node10" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="975,91,1196,118"/>
-<area shape="rect" id="node11" href="$structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b" title="Load a module from disk, also loads dependencies. " alt="" coords="1247,91,1413,118"/>
-<area shape="rect" id="node12" href="$structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="1464,91,1673,118"/>
-<area shape="rect" id="node13" href="$structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779" title="Get the dependencies. " alt="" coords="1728,90,1924,117"/>
-<area shape="rect" id="node16" href="$structchi_1_1GraphModule.html#a1f776646b9c9bdd615f7e35cebf7760a" title="Construct a GraphModule. " alt="" coords="1721,141,1931,167"/>
-<area shape="rect" id="node14" href="$structchi_1_1Context.html#ad535dc768a4386dbd06c8b769c5d549f" title="Compile a module to a llvm::Module. " alt="" coords="1979,115,2165,142"/>
-<area shape="rect" id="node15" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1990,65,2154,91"/>
-<area shape="rect" id="node18" href="$classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681" title="Get the output of a node. " alt="" coords="740,311,923,352"/>
-<area shape="rect" id="node20" href="$structchi_1_1GraphFunction.html#a60bc423cb4fed3605a446da112949483" title="Rename a local variable. " alt="" coords="510,5,661,47"/>
-<area shape="rect" id="node23" href="$structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a" title="Set a new type to a local variable. " alt="" coords="513,71,657,112"/>
-<area shape="rect" id="node21" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="765,25,897,67"/>
-<area shape="rect" id="node22" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="1244,35,1416,62"/>
+<area shape="rect" id="node2" href="$structchi_1_1GraphModule.html#af61aef2776a0e219ffca2d22e109909f" title="Create a new function if it does&#39;t already exist. " alt="" coords="233,39,436,80"/>
+<area shape="rect" id="node13" href="$classchi_1_1Debugger.html#ae142902fa85248f40cbeea7199c86ad9" title="Get a NodeInstance from a frame. " alt="" coords="232,137,437,163"/>
+<area shape="rect" id="node16" href="$structchi_1_1GraphModule.html#a133c0595e0bb888f958e9769838f6c0c" title="Create a node type that is in the module from the name and json. " alt="" coords="240,188,429,229"/>
+<area shape="rect" id="node21" href="$structchi_1_1GraphModule.html#a75f7c9ac46d89574ef2a2290ccea4fe8" title="Remove a function from the module. " alt="" coords="247,253,422,295"/>
+<area shape="rect" id="node3" href="$namespacechi.html#af483dab3c6b3b1ee261f223bd83d5670" title="Create a forward declaration of a function in a module with an empty graph. " alt="" coords="493,5,661,47"/>
+<area shape="rect" id="node4" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="716,31,879,58"/>
+<area shape="rect" id="node5" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="927,46,1148,73"/>
+<area shape="rect" id="node6" href="$structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b" title="Load a module from disk, also loads dependencies. " alt="" coords="1199,74,1365,101"/>
+<area shape="rect" id="node7" href="$structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="1416,87,1625,114"/>
+<area shape="rect" id="node8" href="$structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779" title="Get the dependencies. " alt="" coords="1680,87,1876,114"/>
+<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#a1f776646b9c9bdd615f7e35cebf7760a" title="Construct a GraphModule. " alt="" coords="1673,138,1883,165"/>
+<area shape="rect" id="node9" href="$structchi_1_1Context.html#ad535dc768a4386dbd06c8b769c5d549f" title="Compile a module to a llvm::Module. " alt="" coords="1931,87,2117,114"/>
+<area shape="rect" id="node10" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1942,163,2106,190"/>
+<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="2165,163,2367,190"/>
+<area shape="rect" id="node14" href="$classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681" title="Get the output of a node. " alt="" coords="485,71,668,112"/>
+<area shape="rect" id="node15" href="$classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" title="Check if the process is executing. " alt="" coords="721,118,873,145"/>
+<area shape="rect" id="node17" href="$structchi_1_1GraphFunction.html#a60bc423cb4fed3605a446da112949483" title="Rename a local variable. " alt="" coords="501,188,652,229"/>
+<area shape="rect" id="node20" href="$structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a" title="Set a new type to a local variable. " alt="" coords="505,253,649,295"/>
+<area shape="rect" id="node18" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="731,188,863,229"/>
+<area shape="rect" id="node19" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="1196,190,1368,217"/>
 </map>
