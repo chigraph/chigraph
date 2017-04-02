@@ -4,6 +4,10 @@ ProcessorCount(N)
 
 message(STATUS "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}")
 
+# clear LD_LIBRARY_PATH, but restore it after
+set(BEFORE_LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
+set(ENV{LD_LIBRARY_PATH})
+
 if(UNIX AND NOT APPLE AND NOT WIN32)
 
 	if (NOT EXISTS ${CMAKE_BINARY_DIR}/glibc.tar.xz)
@@ -54,7 +58,9 @@ if(UNIX AND NOT APPLE AND NOT WIN32)
 # 	execute_process(COMMAND make WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcc/build)
 # 	execute_process(COMMAND make install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gcc/build)
 # 	
-	
+
+# restore LD_LIBRARY_PATH
+set(ENV{LD_LIBRARY_PATH} ${BEFORE_LD_LIBRARY_PATH})
 
 elseif(APPLE)
 	
