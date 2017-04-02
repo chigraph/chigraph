@@ -8,8 +8,6 @@ message(STATUS "clang install prefix: ${CLANG_INSTALL_PREFIX}")
 execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE CLANG_LIB_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "clang libdir: ${CLANG_LIB_DIR}")
 
-add_subdirectory(ctollvm)
-
 set(CHI_PUBLIC_FILES
 	include/chi/ChiModule.hpp
 	include/chi/Context.hpp
@@ -43,6 +41,8 @@ set(CHI_PRIVATE_FILES
 	src/GraphStruct.cpp
 	src/NodeType.cpp
 	src/DataType.cpp
+	src/ctollvm.cpp
+	src/ctollvm.hpp
 )
 
 
@@ -96,12 +96,46 @@ message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 
 link_directories(${CLANG_LIB_DIR})
 
+
+set(CLANG_LIBS 
+	clangRewrite
+	clangFrontendTool
+	clangCodeGen
+	clangFrontend
+	clangParse
+	clangSerialization
+	clangSema
+	clangEdit
+	clangAnalysis
+	clangAST
+	clangLex
+	clangDriver
+	clangBasic
+)
+
+# get clang libraries
+message(STATUS "Looking for clang libs in ${CLANG_LIB_DIR}")
+foreach(CLANG_LIB ${CLANG_LIBS})
+	find_library(${CLANG_LIB}_LIBRARY ${CLANG_LIB} PATHS ${CLANG_LIB_DIR})
+	
+	if (NOT ${CLANG_LIB}_LIBRARY)
+		message(FATAL_ERROR "Could not locate ${CLANG_LIB}: ${${CLANG_LIB}_LIBRARY}")
+	endif()
+	
+	message(STATUS "${CLANG_LIB} found at ${${CLANG_LIB}_LIBRARY}")
+	
+	target_link_libraries(chigraph 
+	PRIVATE
+		${${CLANG_LIB}_LIBRARY}
+	)
+	
+endforeach()
+
+
 target_link_libraries(chigraph
 PUBLIC
 	boost_filesystem
 	git2
-PRIVATE
-	ctollvm
 PUBLIC
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
