@@ -476,7 +476,7 @@ Result GraphModule::generateModule(llvm::Module& module) {
 // link it
 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-				llvm::Linker::LinkModules(&module, generatedModule);
+				llvm::Linker::LinkModules(&module, generatedModule.get());
 #else
 				llvm::Linker::linkModules(module, std::move(generatedModule));
 #endif
