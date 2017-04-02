@@ -104,21 +104,18 @@ FunctionView::FunctionView(chi::GraphFunction& func_, QWidget* parent)
 	updateValidationStates();
 }
 
-std::vector<chi::NodeInstance*> FunctionView::selectedNodes()
-{
+std::vector<chi::NodeInstance*> FunctionView::selectedNodes() {
 	std::vector<chi::NodeInstance*> ret;
-	
+
 	auto guiNodes = mScene->selectedNodes();
 	ret.reserve(guiNodes.size());
-	
+
 	for (auto n : guiNodes) {
 		auto toAdd = chigNodeFromGuiNode(n);
-		
-		if (toAdd) {
-			ret.push_back(toAdd);
-		}
+
+		if (toAdd) { ret.push_back(toAdd); }
 	}
-	
+
 	return ret;
 }
 
@@ -126,14 +123,11 @@ void FunctionView::selectNode(chi::NodeInstance& node) {
 	// clear the selection
 	scene().clearSelection();
 	auto guiNode = guiNodeFromChigNode(&node);
-	if (guiNode == nullptr) {
-		return;
-	}
-	
+	if (guiNode == nullptr) { return; }
+
 	// then select it
 	guiNode->nodeGraphicsObject().setSelected(true);
 }
-
 
 void FunctionView::nodeAdded(Node& n) {
 	auto ptr = dynamic_cast<ChigraphNodeModel*>(n.nodeDataModel());
@@ -466,9 +460,6 @@ void FunctionView::updateValidationStates() {
 
 void FunctionView::centerOnNode(chi::NodeInstance& inst) {
 	auto guiInst = guiNodeFromChigNode(&inst);
-	
-	if (guiInst) {
-		mView->centerOn(&guiInst->nodeGraphicsObject());
-	}
-}
 
+	if (guiInst) { mView->centerOn(&guiInst->nodeGraphicsObject()); }
+}

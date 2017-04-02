@@ -1,7 +1,6 @@
 /// \file Context.cpp
 
 #include "chi/Context.hpp"
-#include "chi/CModule.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
@@ -104,16 +103,6 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 		addModule(std::move(mod));
 		return {};
 	}
-	if (name == "c") {
-		if (cModule() != nullptr) {
-			if (toFill != nullptr) { *toFill = cModule(); }
-			return {};
-		}
-		auto mod = std::make_unique<CModule>(*this);
-		if (toFill != nullptr) { *toFill = mod.get(); }
-		addModule(std::move(mod));  // we don't care if it's actually added
-		return {};
-	}
 
 	if (workspacePath().empty()) {
 		res.addEntry("E52", "Cannot load module without a workspace path",
@@ -153,7 +142,7 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 Result Context::fetchModule(const fs::path& name, bool recursive) {
 	Result res;
 
-	if (name == "c" || name == "lang") { return res; }
+	if (name == "lang") { return res; }
 
 	// get the url
 	std::string url;
@@ -427,7 +416,10 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		if (j.find("dependencies") != j.end() || !j["dependencies"].is_array()) { return res; }
 
 		// fetch the dependencies
-		for (const auto& dep : j["dependencies"]) { std::string depName = dep; fetchModule(depName, true); }
+		for (const auto& dep : j["dependencies"]) {
+			std::string depName = dep;
+			fetchModule(depName, true);
+		}
 	}
 
 	return res;
@@ -467,11 +459,7 @@ bool Context::addModule(std::unique_ptr<ChiModule> modToAdd) noexcept {
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) { return false; }
 
-	if (modToAdd->fullName() == "c") {
-		mCModule = dynamic_cast<CModule*>(modToAdd.get());
-	} else if (modToAdd->fullName() == "lang") {
-		mLangModule = dynamic_cast<LangModule*>(modToAdd.get());
-	}
+	if (modToAdd->fullName() == "lang") { mLangModule = dynamic_cast<LangModule*>(modToAdd.get()); }
 
 	mModules.push_back(std::move(modToAdd));
 

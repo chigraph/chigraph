@@ -7,7 +7,6 @@
 #include "chi/Result.hpp"
 
 #include <llvm/AsmParser/Parser.h>
-#include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>

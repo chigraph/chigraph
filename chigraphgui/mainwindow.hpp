@@ -33,11 +33,11 @@ public:
 	explicit MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
 
-	chi::Context&     context() const { return *mChigContext; }
-	FunctionTabView&  tabView() const { return *mFunctionTabs; }
-	
+	chi::Context&    context() const { return *mChigContext; }
+	FunctionTabView& tabView() const { return *mFunctionTabs; }
+
 	LaunchConfigurationManager& launchManager() { return mLaunchManager; }
-	
+
 	std::pair<chi::Result, chi::GraphModule*> loadModule(const QString& name);
 
 private:
@@ -52,9 +52,9 @@ public slots:
 	void save();
 	void newFunction();
 	void newModule();
-	
+
 	void moduleDirtied(chi::GraphModule& mod);
-	
+
 signals:
 	void workspaceOpened(chi::Context& workspace);
 	void functionOpened(FunctionView* func);
@@ -64,13 +64,13 @@ signals:
 
 private:
 	void closeEvent(QCloseEvent* event) override;
-	
+
 	void updateUsableConfigs();
 
 	LaunchConfigurationManager mLaunchManager;
-	
+
 	KRecentFilesAction* mOpenRecentAction;  // keep this so we can save the entries
-	
+
 	KSelectAction* mConfigSelectAction;
 
 	// the tabs for open functions

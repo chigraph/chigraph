@@ -1,4 +1,3 @@
-#include <chi/CModule.hpp>
 #include <chi/Context.hpp>
 #include <chi/GraphFunction.hpp>
 #include <chi/GraphModule.hpp>
@@ -85,13 +84,14 @@ std::string areJsonEqual(json lhs, json rhs) {
 			return "connections not equal in graph #" + std::to_string(iter) + " " + errstring;
 
 		if (lgraph["name"] != rgraph["name"]) {
-			return "graph name in graph #" + std::to_string(iter) + " not equal; serialized: " +
-			       lgraph["name"].dump(-1) + "  original: " + rgraph["name"].dump(-1);
+			return "graph name in graph #" + std::to_string(iter) +
+			       " not equal; serialized: " + lgraph["name"].dump(-1) +
+			       "  original: " + rgraph["name"].dump(-1);
 		}
 		if (lgraph["description"] != rgraph["description"]) {
 			return "graph description in graph #" + std::to_string(iter) +
-			       " not equal; serialized: " + lgraph["description"].dump(-1) + "  original: " +
-			       rgraph["description"].dump(-1);
+			       " not equal; serialized: " + lgraph["description"].dump(-1) +
+			       "  original: " + rgraph["description"].dump(-1);
 		}
 		if (lgraph["nodes"].dump(-1) != rgraph["nodes"].dump(-1)) {
 			return "graph nodes in graph #" + std::to_string(iter) +
@@ -99,33 +99,34 @@ std::string areJsonEqual(json lhs, json rhs) {
 			       rgraph["nodes"].dump(-1);
 		}
 		if (lgraph["type"] != rgraph["type"]) {
-			return "graph name in graph #" + std::to_string(iter) + "not equal; serialized: " +
-			       lgraph["type"].dump(-1) + "  original: " + rgraph["type"].dump(-1);
+			return "graph name in graph #" + std::to_string(iter) +
+			       "not equal; serialized: " + lgraph["type"].dump(-1) +
+			       "  original: " + rgraph["type"].dump(-1);
 		}
 		if (lgraph["data_inputs"] != rgraph["data_inputs"]) {
 			return "graph data inputs in graph #" + std::to_string(iter) +
-			       "not equal; serialized: " + lgraph["inputs"].dump(-1) + "  original: " +
-			       rgraph["inputs"].dump(-1);
+			       "not equal; serialized: " + lgraph["inputs"].dump(-1) +
+			       "  original: " + rgraph["inputs"].dump(-1);
 		}
 		if (lgraph["data_outputs"] != rgraph["data_outputs"]) {
 			return "graph data outputs in graph #" + std::to_string(iter) +
-			       "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " +
-			       rgraph["outputs"].dump(-1);
+			       "not equal; serialized: " + lgraph["outputs"].dump(-1) +
+			       "  original: " + rgraph["outputs"].dump(-1);
 		}
 		if (lgraph["exec_inputs"] != rgraph["exec_inputs"]) {
 			return "graph exec inputs in graph #" + std::to_string(iter) +
-			       "not equal; serialized: " + lgraph["inputs"].dump(-1) + "  original: " +
-			       rgraph["inputs"].dump(-1);
+			       "not equal; serialized: " + lgraph["inputs"].dump(-1) +
+			       "  original: " + rgraph["inputs"].dump(-1);
 		}
 		if (lgraph["exec_outputs"] != rgraph["exec_outputs"]) {
 			return "graph exec outputs in graph #" + std::to_string(iter) +
-			       "not equal; serialized: " + lgraph["outputs"].dump(-1) + "  original: " +
-			       rgraph["outputs"].dump(-1);
+			       "not equal; serialized: " + lgraph["outputs"].dump(-1) +
+			       "  original: " + rgraph["outputs"].dump(-1);
 		}
 		if (lgraph["local_variables"] != rgraph["local_variables"]) {
 			return "graph local_variables in graph #" + std::to_string(iter) +
-			       "not equal; serialized: " + lgraph["local_variables"].dump(-1) + " original: " +
-			       rgraph["local_variables"].dump(-1);
+			       "not equal; serialized: " + lgraph["local_variables"].dump(-1) +
+			       " original: " + rgraph["local_variables"].dump(-1);
 		}
 	}
 

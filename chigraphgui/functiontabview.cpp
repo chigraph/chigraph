@@ -44,25 +44,20 @@ void FunctionTabView::selectNewFunction(chi::GraphFunction& func) {
 	functionOpened(view);
 }
 
-
 void FunctionTabView::centerOnNode(chi::NodeInstance& inst) {
 	// load the function
 	selectNewFunction(inst.function());
-	
+
 	// center on the node
 	currentView()->centerOnNode(inst);
 }
 
 void FunctionTabView::selectNode(chi::NodeInstance& inst) {
 	auto view = viewFromFunction(inst.function());
-	
-	if (!view) {
-		return;
-	}
-	view->selectNode(inst);
-	
-}
 
+	if (!view) { return; }
+	view->selectNode(inst);
+}
 
 void FunctionTabView::refreshModule(chi::GraphModule& mod) {
 	int currTabId = currentIndex();
@@ -101,7 +96,6 @@ void FunctionTabView::refreshModule(chi::GraphModule& mod) {
 	setCurrentIndex(currTabId);
 }
 
-
 FunctionView* FunctionTabView::viewFromFunction(chi::GraphFunction& func) {
 	return viewFromName(func.module().fullName(), func.name());
 }
@@ -121,13 +115,11 @@ void FunctionTabView::closeView(FunctionView* view) { closeTab(indexOf(view)); }
 
 FunctionView* FunctionTabView::currentView() {
 	auto widget = currentWidget();
-	
+
 	auto casted = qobject_cast<FunctionView*>(widget);
-	
-	if (casted == nullptr) {
-		return nullptr;
-	}
-	
+
+	if (casted == nullptr) { return nullptr; }
+
 	return casted;
 }
 

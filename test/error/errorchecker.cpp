@@ -65,10 +65,8 @@ int main(int argc, char** argv) {
 		return 1;
 
 	} else if (strcmp(mode, "func") == 0) {
-		auto deps = std::vector<std::string>{"lang", "c"};
-
 		auto mod = c.newGraphModule("main");
-		for (const auto& dep : deps) { mod->addDependency(dep); }
+		mod->addDependency("lang");
 
 		GraphFunction* func;
 		res += createGraphFunctionDeclarationFromJson(*mod, newData, &func);

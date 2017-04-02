@@ -11,9 +11,9 @@ class MainWindow;
 
 #include <chi/Fwd.hpp>
 
+#include <memory>
 #include <unordered_map>
 #include <unordered_set>
-#include <memory>
 
 #include "toolview.hpp"
 
@@ -34,7 +34,7 @@ public:
 public:
 	ModuleBrowser(QWidget* parent = nullptr);
 	~ModuleBrowser();
-	
+
 	std::unordered_set<chi::GraphModule*> dirtyModules();
 
 signals:
@@ -49,11 +49,11 @@ private:
 	void updateDirtyStatus(chi::GraphModule& updated, bool dirty);
 	std::pair<WorkspaceTree*, QModelIndex> idxFromModuleName(const boost::filesystem::path& name);
 
-	chi::Context*                         mContext = nullptr;
-	
+	chi::Context* mContext = nullptr;
+
 	std::unordered_set<chi::GraphModule*> mDirtyModules;
-	
-	WorkspaceTree* mTree = nullptr;
+
+	WorkspaceTree*                   mTree = nullptr;
 	std::unique_ptr<ModuleTreeModel> mModel;
 };
 

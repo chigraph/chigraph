@@ -8,7 +8,6 @@ namespace chi {
 struct ChiModule;
 struct Context;
 struct DataType;
-struct CModule;
 struct NamedDataType;
 struct GraphFunction;
 struct GraphStruct;

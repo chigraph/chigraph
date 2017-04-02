@@ -6,19 +6,19 @@
 #include <KLocalizedString>
 
 #include <QApplication>
-#include <QThread>
 #include <QDebug>
+#include <QThread>
 
 #include <thread>
 
-#include <../mainwindow.hpp>
 #include <../functiontabview.hpp>
+#include <../mainwindow.hpp>
 
 #include <lldb/API/SBThread.h>
 
 DebuggerPlugin::DebuggerPlugin() {
 	Q_INIT_RESOURCE(chigraphdebugger);
-	
+
 	qRegisterMetaType<lldb::SBEvent>("lldb::SBEvent");
 
 	debugAction = actionCollection()->addAction(
@@ -53,24 +53,19 @@ DebuggerPlugin::DebuggerPlugin() {
 	    new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")), i18n("Continue")));
 	actionCollection()->setDefaultShortcut(continueAction, Qt::Key_F5);
 	connect(continueAction, &QAction::triggered, this, &DebuggerPlugin::continueDebugging);
-	
+
 	mBreakpointView = new BreakpointView();
-	mVariableView = new VariableView();
+	mVariableView   = new VariableView();
 
 	setXMLFile("chigraphguidebuggerui.rc");
 }
 
-void DebuggerPlugin::toggleBreakpoint()
-{
+void DebuggerPlugin::toggleBreakpoint() {
 	auto currentView = MainWindow::instance()->tabView().currentView();
-	
-	if (currentView == nullptr) {
-		return;
-	}
-	
-	for(auto node : currentView->selectedNodes()) {
-		mBreakpointView->addBreakpoint(*node);
-	}
+
+	if (currentView == nullptr) { return; }
+
+	for (auto node : currentView->selectedNodes()) { mBreakpointView->addBreakpoint(*node); }
 }
 
 void DebuggerPlugin::debugStart() {
@@ -84,53 +79,48 @@ void DebuggerPlugin::debugStart() {
 	MainWindow* window = MainWindow::instance();
 
 	mDebugger = nullptr;
-	
+
 	// delete it
-	if (mThread) {
-		mThread->wait();
-	}
+	if (mThread) { mThread->wait(); }
 	mEventListener = nullptr;
-	
+
 	auto currentConfig = window->launchManager().currentConfiguration();
-	if (!currentConfig.valid()) {
-		return;
-	}
-	
+	if (!currentConfig.valid()) { return; }
+
 	auto pair = window->loadModule(currentConfig.module());
-	
-	
+
 	if (!pair.first || !pair.second) {
-		KMessageBox::detailedError(window, i18n("Failed to load module"), QString::fromStdString(pair.first.dump()), i18n("run: error"));
+		KMessageBox::detailedError(window, i18n("Failed to load module"),
+		                           QString::fromStdString(pair.first.dump()), i18n("run: error"));
 		return;
 	}
-	
+
 	// TODO: this really really needs a fix
 	mDebugger = std::make_shared<chi::Debugger>(chiPath.c_str(), *pair.second);
-	
-	mThread = new QThread;
+
+	mThread        = new QThread;
 	mEventListener = std::make_unique<DebuggerWorkerThread>(mDebugger);
 	mEventListener->moveToThread(mThread);
-	
+
 	connect(mThread, &QThread::started, mEventListener.get(), &DebuggerWorkerThread::process);
-	connect(mEventListener.get(), &DebuggerWorkerThread::eventOccured, this, [this, window](lldb::SBEvent ev) {
-		if (lldb::SBProcess::GetStateFromEvent(ev) == lldb::eStateStopped) {
-			variableView().setFrame(mDebugger->lldbProcess().GetSelectedThread().GetSelectedFrame());
-			
-			// get the node
-			auto node = mDebugger->nodeFromFrame(mDebugger->lldbProcess().GetSelectedThread().GetSelectedFrame());
-			if (node != nullptr) {
-				window->tabView().centerOnNode(*node);
-			}
-		}
-	});
-	
+	connect(mEventListener.get(), &DebuggerWorkerThread::eventOccured, this,
+	        [this, window](lldb::SBEvent ev) {
+		        if (lldb::SBProcess::GetStateFromEvent(ev) == lldb::eStateStopped) {
+			        variableView().setFrame(
+			            mDebugger->lldbProcess().GetSelectedThread().GetSelectedFrame());
+
+			        // get the node
+			        auto node = mDebugger->nodeFromFrame(
+			            mDebugger->lldbProcess().GetSelectedThread().GetSelectedFrame());
+			        if (node != nullptr) { window->tabView().centerOnNode(*node); }
+		        }
+		    });
+
 	mThread->start();
-	
+
 	// set breakpoints
-	for (const auto& bp : breakpointView().breakpoints()) {
-		mDebugger->setBreakpoint(*bp.first);
-	}
-	
+	for (const auto& bp : breakpointView().breakpoints()) { mDebugger->setBreakpoint(*bp.first); }
+
 	auto res = mDebugger->start();
 	if (!res) {
 		qDebug() << QString::fromStdString(res.dump());
@@ -138,9 +128,6 @@ void DebuggerPlugin::debugStart() {
 	}
 }
 
-
 void DebuggerPlugin::continueDebugging() {
-	if (mDebugger != nullptr) {
-		mDebugger->processContinue();
-	}
+	if (mDebugger != nullptr) { mDebugger->processContinue(); }
 }
