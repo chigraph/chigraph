@@ -1,6 +1,6 @@
 {
+  "has_c_support": true,
   "dependencies": [
-    "c",
     "intprinter",
     "lang"
   ],
@@ -151,7 +151,7 @@
             1484.35205078125,
             84.6719970703125
           ],
-          "type": "c:func"
+          "type": "call/main:c-call"
         },
         "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc": {
           "data": null,
@@ -190,7 +190,7 @@
             967.840026855469,
             77.879997253418
           ],
-          "type": "c:func"
+          "type": "call/main:c-call"
         },
         "f4ec53cb-41db-4e88-a247-cc495d78fd3f": {
           "data": {

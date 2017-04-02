@@ -122,9 +122,35 @@ struct GraphModule : public ChiModule {
 
 	/// \}
 
+	/// \{
+	/// \name C Support
+
+	/// Set if C support is enabled
+	/// \param newValue true to enable C support, false to disable it
+	void setCEnabled(bool newValue) { mCEnabled = true; }
+
+	/// Gets if C support is enabled
+	/// \return true if C support is enabled
+	bool cEnabled() const { return mCEnabled; }
+
+	/// From C code, create a NodeType
+	/// \param code The code
+	/// \param functionName the function to call
+	/// \param clangArgs Extra arguments to pass to clang
+	/// \param toFill The unique_ptr to fill
+	/// \pre toFill must not be nullptr (the unique_ptr it points to can be though)
+	/// \return The Result
+	Result createNodeTypeFromCCode(boost::string_view code, boost::string_view functionName,
+	                               const std::vector<std::string>& clangArgs,
+	                               std::unique_ptr<NodeType>*      toFill);
+
+	/// \}
+
 private:
 	std::vector<std::unique_ptr<GraphFunction>> mFunctions;
 	std::vector<std::unique_ptr<GraphStruct>>   mStructs;
+
+	bool mCEnabled = false;
 };
 }  // namespace chi
 

@@ -25,7 +25,6 @@ public:
 	void centerOnNode(chi::NodeInstance& inst);
 	void selectNode(chi::NodeInstance& inst);
 
-
 	// refresh all the functions in the module
 	void refreshModule(chi::GraphModule& mod);
 
@@ -34,7 +33,7 @@ public:
 	FunctionView* viewFromName(const boost::filesystem::path& mod, const std::string& function);
 
 	void closeView(FunctionView* view);
-	
+
 	FunctionView* currentView();
 
 signals:

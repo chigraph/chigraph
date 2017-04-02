@@ -1,6 +1,6 @@
 # compile + install a c++/c standard library
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/GetLibStdCXX.cmake)
+#include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/GetLibStdCXX.cmake)
 
 execute_process(COMMAND ${LLVM_CONFIG} --prefix OUTPUT_VARIABLE CLANG_INSTALL_PREFIX  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "clang install prefix: ${CLANG_INSTALL_PREFIX}")
@@ -20,7 +20,6 @@ set(CHI_PUBLIC_FILES
 	include/chi/NodeType.hpp
 	include/chi/Result.hpp
 	include/chi/NameMangler.hpp
-	include/chi/CModule.hpp
 	include/chi/FunctionValidator.hpp
 	include/chi/FunctionCompiler.hpp
 	include/chi/JsonDeserializer.hpp
@@ -35,7 +34,6 @@ set(CHI_PRIVATE_FILES
 	src/LangModule.cpp
 	src/GraphModule.cpp
 	src/ChiModule.cpp
-	src/CModule.cpp
 	src/Result.cpp
 	src/NameMangler.cpp
 	src/FunctionValidator.cpp

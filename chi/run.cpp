@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 
-#include <chi/CModule.hpp>
 #include <chi/Context.hpp>
 #include <chi/GraphFunction.hpp>
 #include <chi/GraphModule.hpp>

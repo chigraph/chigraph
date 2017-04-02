@@ -17,6 +17,22 @@ Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
 	auto createdModule = createInside.newGraphModule(fullName);
 	if (toFill != nullptr) { *toFill = createdModule; }
 
+	// load if it has C enabled
+	{
+		auto iter = input.find("has_c_support");
+		if (iter == input.end()) {
+			res.addEntry("EUKN", "No has_c_support section in module JSON, assuming none", {});
+			return res;
+		}
+		if (!iter->is_boolean()) {
+			res.addEntry("EUKN", "has_c_support section in module JSON isn't a bool",
+			             {{"Actual Data", *iter}});
+			return res;
+		}
+
+		createdModule->setCEnabled(*iter);
+	}
+
 	// load dependencies
 	{
 		auto iter = input.find("dependencies");
@@ -34,7 +50,7 @@ Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
 				res.addEntry("E40", "dependency isn't a string", {{"Actual Data", dep}});
 				continue;
 			}
-			
+
 			std::string depName = dep;
 			res += createdModule->addDependency(depName);
 

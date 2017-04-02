@@ -3,10 +3,10 @@
 #include "functiondetails.hpp"
 #include "functiontabview.hpp"
 #include "functionview.hpp"
+#include "launchconfigurationdialog.hpp"
 #include "localvariables.hpp"
 #include "modulebrowser.hpp"
 #include "subprocessoutputview.hpp"
-#include "launchconfigurationdialog.hpp"
 
 #include <KActionCollection>
 #include <KActionMenu>
@@ -47,7 +47,6 @@
 #include "chigraphnodemodel.hpp"
 #include "thememanager.hpp"
 
-
 MainWindow* MainWindow::mInstance = nullptr;
 
 MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
@@ -68,16 +67,16 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 
 	setCentralWidget(mFunctionTabs);
 
-	
 	// setup module browser
 	mModuleBrowser = new ModuleBrowser(this);
-	auto docker         = new QDockWidget(mModuleBrowser->label(), this);
+	auto docker    = new QDockWidget(mModuleBrowser->label(), this);
 	docker->setObjectName("Modules");
 	insertChildClient(mModuleBrowser);
 	docker->setWidget(mModuleBrowser);
 	addDockWidget(mModuleBrowser->defaultArea(), docker);
 	connect(this, &MainWindow::workspaceOpened, mModuleBrowser, &ModuleBrowser::loadWorkspace);
-	connect(mModuleBrowser, &ModuleBrowser::functionSelected, &tabView(), &FunctionTabView::selectNewFunction);
+	connect(mModuleBrowser, &ModuleBrowser::functionSelected, &tabView(),
+	        &FunctionTabView::selectNewFunction);
 	connect(this, &MainWindow::newModuleCreated, mModuleBrowser,
 	        [this](chi::GraphModule& mod) { mModuleBrowser->loadWorkspace(mod.context()); });
 	connect(this, &MainWindow::workspaceOpened, docker, [docker](chi::Context& ctx) {
@@ -85,7 +84,6 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		                       QString::fromStdString(ctx.workspacePath().string()));
 	});
 
-	
 	docker = new QDockWidget(i18n("Output"), this);
 	docker->setObjectName("Output");
 	auto outputView = new QTabWidget();
@@ -185,7 +183,7 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	runAction->setIcon(QIcon::fromTheme(QStringLiteral("system-run")));
 	actColl->setDefaultShortcut(runAction, Qt::CTRL + Qt::Key_R);
 	actColl->addAction(QStringLiteral("run"), runAction);
-	
+
 	connect(runAction, &QAction::triggered, this, [this, outputView, cancelAction] {
 		if (!launchManager().currentConfiguration().valid()) {
 			KMessageBox::error(this, i18n("Select a launch configuration"), i18n("run: error"));
@@ -193,15 +191,16 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 		}
 
 		// get the module
-		chi::Result res;
+		chi::Result       res;
 		chi::GraphModule* mod;
 		std::tie(res, mod) = loadModule(launchManager().currentConfiguration().module());
-		
+
 		if (!res || !mod) {
-			KMessageBox::detailedError(this, i18n("Failed to load module"), QString::fromStdString(res.dump()), i18n("run: error"));
+			KMessageBox::detailedError(this, i18n("Failed to load module"),
+			                           QString::fromStdString(res.dump()), i18n("run: error"));
 			return;
 		}
-		
+
 		auto view = new SubprocessOutputView(mod);
 		connect(view, &SubprocessOutputView::processFinished, this,
 		        [outputView, view, cancelAction](int exitCode, QProcess::ExitStatus exitStatus) {
@@ -238,24 +237,28 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	auto runConfigDialogAction = new QAction(this);
 	runConfigDialogAction->setText(i18n("Configure Launches"));
 	actColl->addAction(QStringLiteral("configure-launches"), runConfigDialogAction);
-	connect(runConfigDialogAction, &QAction::triggered, this, [this]{
+	connect(runConfigDialogAction, &QAction::triggered, this, [this] {
 		LaunchConfigurationDialog d(mLaunchManager);
-		
+
 		d.exec();
-		
+
 		updateUsableConfigs();
 	});
-	
-	mConfigSelectAction = new KSelectAction(QIcon::fromTheme(QStringLiteral("run-build-configure")), i18n("Launch Configuration"), this);
+
+	mConfigSelectAction = new KSelectAction(QIcon::fromTheme(QStringLiteral("run-build-configure")),
+	                                        i18n("Launch Configuration"), this);
 	actColl->addAction(QStringLiteral("select-launch-configuration"), mConfigSelectAction);
-	connect(mConfigSelectAction, static_cast<void (KSelectAction::*)(const QString&)>(&KSelectAction::triggered), this, [this](const QString& str) {
-		mLaunchManager.setCurrentConfiguration(mLaunchManager.configByName(str));
-	});
+	connect(mConfigSelectAction,
+	        static_cast<void (KSelectAction::*)(const QString&)>(&KSelectAction::triggered), this,
+	        [this](const QString& str) {
+		        mLaunchManager.setCurrentConfiguration(mLaunchManager.configByName(str));
+		    });
 	updateUsableConfigs();
 	if (mLaunchManager.currentConfiguration().valid()) {
-		mConfigSelectAction->setCurrentAction(mLaunchManager.currentConfiguration().name(), Qt::CaseSensitive);
+		mConfigSelectAction->setCurrentAction(mLaunchManager.currentConfiguration().name(),
+		                                      Qt::CaseSensitive);
 	}
-	
+
 	// theme selector
 	auto themeAction = new KActionMenu(i18n("Theme"), this);
 	mThemeManager    = std::make_unique<ThemeManager>(themeAction);
@@ -268,23 +271,16 @@ MainWindow::~MainWindow() {
 	mOpenRecentAction->saveEntries(KSharedConfig::openConfig()->group("Recent Files"));
 }
 
-
 std::pair<chi::Result, chi::GraphModule*> MainWindow::loadModule(const QString& name) {
 	chi::ChiModule* mod;
 	auto res = context().loadModule(name.toStdString(), chi::LoadSettings::Default, &mod);
-	if (!res) {
-		return {res, nullptr};
-	}
+	if (!res) { return {res, nullptr}; }
 	return {res, dynamic_cast<chi::GraphModule*>(mod)};
-	
 }
-
 
 void MainWindow::save() {
 	auto currentFunc = tabView().currentView();
-	if (!currentFunc) {
-		return;
-	}
+	if (!currentFunc) { return; }
 	auto module = &currentFunc->function()->module();
 	if (module != nullptr) {
 		chi::Result res = module->saveToDisk();
@@ -317,22 +313,23 @@ void MainWindow::openWorkspace(const QUrl& url) {
 
 void MainWindow::newFunction() {
 	// TODO: reenable
-// 	if (currentModule() == nullptr) {
-// 		KMessageBox::error(this, "Load a module before creating a new function");
-// 		return;
-// 	}
-// 
-// 	QString newName = QInputDialog::getText(this, i18n("New Function Name"), i18n("Function Name"));
-// 
-// 	if (newName == "") { return; }
-// 
-// 	chi::GraphFunction* func =
-// 	    currentModule()->getOrCreateFunction(newName.toStdString(), {}, {}, {""}, {""});
-// 	func->getOrInsertEntryNode(0, 0, boost::uuids::random_generator()());
-// 
-// 	newFunctionCreated(*func);
-// 
-// 	tabView().selectNewFunction(*func);  // open the newly created function
+	// 	if (currentModule() == nullptr) {
+	// 		KMessageBox::error(this, "Load a module before creating a new function");
+	// 		return;
+	// 	}
+	//
+	// 	QString newName = QInputDialog::getText(this, i18n("New Function Name"), i18n("Function
+	// Name"));
+	//
+	// 	if (newName == "") { return; }
+	//
+	// 	chi::GraphFunction* func =
+	// 	    currentModule()->getOrCreateFunction(newName.toStdString(), {}, {}, {""}, {""});
+	// 	func->getOrInsertEntryNode(0, 0, boost::uuids::random_generator()());
+	//
+	// 	newFunctionCreated(*func);
+	//
+	// 	tabView().selectNewFunction(*func);  // open the newly created function
 }
 
 void MainWindow::newModule() {
@@ -365,22 +362,20 @@ void MainWindow::newModule() {
 
 void MainWindow::moduleDirtied(chi::GraphModule& mod) { mModuleBrowser->moduleDirtied(mod); }
 
-void MainWindow::updateUsableConfigs()
-{
+void MainWindow::updateUsableConfigs() {
 	// save the current so we can set it back later
 	QString selectedText = mConfigSelectAction->currentText();
-	
+
 	// repopulate
 	mConfigSelectAction->clear();
-	
-	for(const auto& config : mLaunchManager.configurations()) {
+
+	for (const auto& config : mLaunchManager.configurations()) {
 		mConfigSelectAction->addAction(config.name());
 	}
-	
+
 	// set it back
 	mConfigSelectAction->setCurrentAction(selectedText, Qt::CaseSensitive);
 }
-
 
 void MainWindow::closeEvent(QCloseEvent* event) {
 	// check through dirty modules

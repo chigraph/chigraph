@@ -6,8 +6,8 @@
 #include "../chigraphplugin.hpp"
 
 #include "breakpointview.hpp"
-#include "variableview.hpp"
 #include "debuggerworkerthread.hpp"
+#include "variableview.hpp"
 
 #include <QAction>
 
@@ -22,19 +22,21 @@ public:
 	DebuggerPlugin();
 
 	BreakpointView& breakpointView() { return *mBreakpointView; }
-	VariableView& variableView() { return *mVariableView; }
-	
+	VariableView&   variableView() { return *mVariableView; }
+
 private slots:
 	void toggleBreakpoint();
 	void debugStart();
 	void continueDebugging();
-	
+
 private:
 	// ChigraphPlugin interface
-	QVector<ToolView*> toolViews() override { return QVector<ToolView*>({mBreakpointView, mVariableView}); }
-	
+	QVector<ToolView*> toolViews() override {
+		return QVector<ToolView*>({mBreakpointView, mVariableView});
+	}
+
 	BreakpointView* mBreakpointView;
-	VariableView* mVariableView;
+	VariableView*   mVariableView;
 
 	QAction* toggleBreakpointAction;
 	QAction* debugAction;
@@ -43,10 +45,9 @@ private:
 	QAction* stepOutAction;
 	QAction* continueAction;
 
-
-	std::shared_ptr<chi::Debugger> mDebugger;
+	std::shared_ptr<chi::Debugger>        mDebugger;
 	std::unique_ptr<DebuggerWorkerThread> mEventListener;
-	QThread* mThread = nullptr;
+	QThread*                              mThread = nullptr;
 };
 
 #endif  // CHIGRAPHGUI_DEBUGGER_DEBUGGER_PLUGIN_HPP

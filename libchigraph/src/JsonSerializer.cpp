@@ -107,6 +107,8 @@ nlohmann::json graphModuleToJson(const GraphModule& mod) {
 	structsJson       = nlohmann::json::object();
 	for (const auto& str : mod.structs()) { structsJson[str->name()] = graphStructToJson(*str); }
 
+	data["has_c_support"] = mod.cEnabled();
+
 	return data;
 }
 

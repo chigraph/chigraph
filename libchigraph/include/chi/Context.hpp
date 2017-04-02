@@ -164,10 +164,6 @@ struct Context {
 	/// \return The `LangModule`
 	LangModule* langModule() const { return mLangModule; }
 
-	/// Get the `CModule`, if it has been loaded
-	/// \return The `CModule`
-	CModule* cModule() const { return mCModule; }
-
 	/// Get the modules in the Context
 	/// \return The modules
 	std::vector<ChiModule*> modules() const {
@@ -189,7 +185,6 @@ private:
 	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/>
 	    mCompileCache;
 
-	CModule*    mCModule    = nullptr;
 	LangModule* mLangModule = nullptr;
 };
 

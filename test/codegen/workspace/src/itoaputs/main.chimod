@@ -1,6 +1,6 @@
 {
+  "has_c_support": true,
   "dependencies": [
-    "c",
     "lang"
   ],
   "graphs": [
@@ -68,7 +68,7 @@
             486.0,
             104.0
           ],
-          "type": "c:func"
+          "type": "itoaputs/main:c-call"
         },
         "658a61aa-6008-4aec-82bd-9a12a7984b94": {
           "data": {

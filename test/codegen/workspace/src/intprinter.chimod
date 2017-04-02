@@ -1,6 +1,6 @@
 {
+  "has_c_support": true,
   "dependencies": [
-    "c",
     "lang"
   ],
   "graphs": [
@@ -102,7 +102,7 @@
             467.0,
             193.0
           ],
-          "type": "c:func"
+          "type": "intprinter:c-call"
         }
       },
       "type": "function"
@@ -368,7 +368,7 @@
             612.0,
             246.0
           ],
-          "type": "c:func"
+          "type": "intprinter:c-call"
         },
         "a6427f85-d271-4631-81d5-692b10d3c872": {
           "data": {
@@ -501,7 +501,7 @@
             353.0,
             213.0
           ],
-          "type": "c:func"
+          "type": "intprinter:c-call"
         }
       },
       "type": "function"
@@ -555,7 +555,7 @@
             351.0,
             251.0
           ],
-          "type": "c:func"
+          "type": "intprinter:c-call"
         },
         "700c449e-730c-4111-88df-cb18405bbf39": {
           "data": {

@@ -14,15 +14,14 @@
 class VariableView : public QTreeWidget, public ToolView {
 public:
 	VariableView();
-	
+
 	void setFrame(lldb::SBFrame frame);
-	
+
 private:
-	
 	// ToolView interface
-	QWidget*           toolView()          { return this; }
+	QWidget*           toolView() { return this; }
 	Qt::DockWidgetArea defaultArea() const { return Qt::LeftDockWidgetArea; }
-	QString            label()             { return i18n("Variables"); }
+	QString            label() { return i18n("Variables"); }
 };
 
-#endif // CHIGRAPHGUI_DEBUGGER_VARIABLE_VIEW_HPP
+#endif  // CHIGRAPHGUI_DEBUGGER_VARIABLE_VIEW_HPP
