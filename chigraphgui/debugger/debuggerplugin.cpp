@@ -23,34 +23,34 @@ DebuggerPlugin::DebuggerPlugin() {
 
 	debugAction = actionCollection()->addAction(
 	    QStringLiteral("start-debug"),
-	    new QAction(QIcon::fromTheme(QStringLiteral("debug-run")), i18n("Debug")));
+	    new QAction(QIcon::fromTheme(QStringLiteral("debug-run")), i18n("Debug"), nullptr));
 	actionCollection()->setDefaultShortcut(debugAction, Qt::Key_F8);
 	connect(debugAction, &QAction::triggered, this, &DebuggerPlugin::debugStart);
 
 	toggleBreakpointAction = actionCollection()->addAction(
 	    QStringLiteral("toggle-breakpoint"),
-	    new QAction(QIcon::fromTheme(QStringLiteral("draw-donut")), i18n("Toggle Breakpoint")));
+	    new QAction(QIcon::fromTheme(QStringLiteral("draw-donut")), i18n("Toggle Breakpoint"), nullptr));
 	actionCollection()->setDefaultShortcut(toggleBreakpointAction, Qt::Key_F9);
 	connect(toggleBreakpointAction, &QAction::triggered, this, &DebuggerPlugin::toggleBreakpoint);
 
 	stepAction = actionCollection()->addAction(
 	    QStringLiteral("debug-step"),
-	    new QAction(QIcon::fromTheme(QStringLiteral("debug-step-over")), i18n("Step Over")));
+	    new QAction(QIcon::fromTheme(QStringLiteral("debug-step-over")), i18n("Step Over"), nullptr));
 	actionCollection()->setDefaultShortcut(stepAction, Qt::Key_F10);
 
 	stepOutAction = actionCollection()->addAction(
 	    QStringLiteral("debug-step-out"),
-	    new QAction(QIcon::fromTheme(QStringLiteral("debug-step-out")), i18n("Step Out")));
+	    new QAction(QIcon::fromTheme(QStringLiteral("debug-step-out")), i18n("Step Out"), nullptr));
 	actionCollection()->setDefaultShortcut(stepOutAction, Qt::Key_F12);
 
 	stepInAction = actionCollection()->addAction(
 	    QStringLiteral("debug-step-into"),
-	    new QAction(QIcon::fromTheme(QStringLiteral("debug-step-into")), i18n("Step Into")));
+	    new QAction(QIcon::fromTheme(QStringLiteral("debug-step-into")), i18n("Step Into"), nullptr));
 	actionCollection()->setDefaultShortcut(stepInAction, Qt::Key_F11);
 
 	continueAction = actionCollection()->addAction(
 	    QStringLiteral("debug-continue"),
-	    new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")), i18n("Continue")));
+	    new QAction(QIcon::fromTheme(QStringLiteral("media-playback-start")), i18n("Continue"), nullptr));
 	actionCollection()->setDefaultShortcut(continueAction, Qt::Key_F5);
 	connect(continueAction, &QAction::triggered, this, &DebuggerPlugin::continueDebugging);
 
