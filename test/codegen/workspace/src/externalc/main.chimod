@@ -1,0 +1,168 @@
+{
+  "dependencies": [
+    "intprinter",
+    "lang"
+  ],
+  "graphs": [
+    {
+      "connections": [
+        {
+          "input": [
+            "8b7d3d1f-9ea2-4836-aea5-8e5ae0e1cac6",
+            0
+          ],
+          "output": [
+            "ca65c719-a80b-4772-8cca-5e0b4e56716c",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "775eac71-eb8f-4158-a0c2-ecc4dae88958",
+            0
+          ],
+          "output": [
+            "8b7d3d1f-9ea2-4836-aea5-8e5ae0e1cac6",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "f3c00873-3edf-47bd-ab42-689b24261ee6",
+            0
+          ],
+          "output": [
+            "775eac71-eb8f-4158-a0c2-ecc4dae88958",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "775eac71-eb8f-4158-a0c2-ecc4dae88958",
+            0
+          ],
+          "output": [
+            "8b7d3d1f-9ea2-4836-aea5-8e5ae0e1cac6",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "96b137da-5567-4069-9d94-8f5c93f18a9b",
+            0
+          ],
+          "output": [
+            "775eac71-eb8f-4158-a0c2-ecc4dae88958",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "4eeda0cf-49c6-4984-bf99-761686e94ed8",
+            0
+          ],
+          "output": [
+            "775eac71-eb8f-4158-a0c2-ecc4dae88958",
+            1
+          ],
+          "type": "data"
+        }
+      ],
+      "data_inputs": [],
+      "data_outputs": [],
+      "description": "main",
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "local_variables": {},
+      "name": "main",
+      "nodes": {
+        "4eeda0cf-49c6-4984-bf99-761686e94ed8": {
+          "data": 123,
+          "location": [
+            -513.0,
+            111.0
+          ],
+          "type": "lang:const-int"
+        },
+        "775eac71-eb8f-4158-a0c2-ecc4dae88958": {
+          "data": {
+            "code": "#include \"library.h\"\n\nint do_library_call(int a, int b) {\n\treturn addNumbers(a, b);\n}\n",
+            "extraflags": [
+              "-I",
+              "/home/russellg/projects/chigraph/test/codegen/workspace/src/externalc/main.c"
+            ],
+            "function": "do_library_call",
+            "inputs": [
+              {
+                "": "lang:i32"
+              },
+              {
+                "": "lang:i32"
+              }
+            ],
+            "output": "lang:i32"
+          },
+          "location": [
+            -302.0,
+            -55.0
+          ],
+          "type": "externalc/main:c-call"
+        },
+        "8b7d3d1f-9ea2-4836-aea5-8e5ae0e1cac6": {
+          "data": null,
+          "location": [
+            -34.0,
+            -40.0
+          ],
+          "type": "intprinter:printint"
+        },
+        "96b137da-5567-4069-9d94-8f5c93f18a9b": {
+          "data": 321,
+          "location": [
+            -523.0,
+            -1.0
+          ],
+          "type": "lang:const-int"
+        },
+        "ca65c719-a80b-4772-8cca-5e0b4e56716c": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            232.0,
+            -45.0
+          ],
+          "type": "lang:exit"
+        },
+        "f3c00873-3edf-47bd-ab42-689b24261ee6": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            -520.0,
+            -105.0
+          ],
+          "type": "lang:entry"
+        }
+      },
+      "type": "function"
+    }
+  ],
+  "has_c_support": true,
+  "types": {}
+}

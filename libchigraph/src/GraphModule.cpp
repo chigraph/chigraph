@@ -61,7 +61,7 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 
 /// The NodeType for calling C functions
 struct CFuncNode : NodeType {
-	CFuncNode(ChiModule& mod, std::string cCode, std::string functionName,
+	CFuncNode(GraphModule& mod, std::string cCode, std::string functionName,
 	          std::vector<std::string> extraArgs, std::vector<NamedDataType> inputs,
 	          DataType output)
 	    : NodeType{mod, "c-call", "call C code"},
@@ -69,7 +69,8 @@ struct CFuncNode : NodeType {
 	      mCCode(std::move(cCode)),
 	      mExtraArguments{std::move(extraArgs)},
 	      mInputs{std::move(inputs)},
-	      mOutput{std::move(output)} {
+	      mOutput{std::move(output)},
+	      mGraphModule{&mod} {
 		setExecInputs({""});
 		setExecOutputs({""});
 
@@ -87,10 +88,17 @@ struct CFuncNode : NodeType {
 		Result res;
 
 		// compile the c code if it hasn't already been compiled
-
 		if (llcompiledmod == nullptr) {
+			
+			auto args = mExtraArguments;
+			
+			// add -I for the .c dir
+			args.push_back("-I");
+			args.push_back(mGraphModule->pathToCSources().string());
+
+			
 			llcompiledmod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(),
-			                             mCCode, mExtraArguments, context().llvmContext(), res);
+			                             mCCode, args, context().llvmContext(), res);
 
 			if (!res) { return res; }
 		}
@@ -168,7 +176,7 @@ struct CFuncNode : NodeType {
 	std::unique_ptr<NodeType> clone() const override {
 		Result res;
 
-		return std::make_unique<CFuncNode>(module(), mCCode, mFunctionName, mExtraArguments,
+		return std::make_unique<CFuncNode>(*mGraphModule, mCCode, mFunctionName, mExtraArguments,
 		                                   mInputs, mOutput);
 	}
 
@@ -177,6 +185,7 @@ struct CFuncNode : NodeType {
 	std::vector<std::string>   mExtraArguments;
 	std::vector<NamedDataType> mInputs;
 	DataType                   mOutput;
+	GraphModule* mGraphModule;
 
 	std::unique_ptr<llvm::Module> llcompiledmod;
 };
@@ -439,12 +448,23 @@ Result GraphModule::generateModule(llvm::Module& module) {
 
 	// if C support was enabled, compile the C files
 	if (cEnabled()) {
-		fs::path cPath = sourceFilePath().parent_path() / (shortName() + ".c");
+		fs::path cPath = pathToCSources();
 		if (fs::is_directory(cPath)) {
 			// compile the files
 			for (auto direntry : boost::make_iterator_range(
 			         fs::recursive_directory_iterator{cPath, fs::symlink_option::recurse}, {})) {
 				const fs::path& CFile = direntry;
+			
+				if (!fs::is_regular_file(CFile) || !(
+					CFile.extension() == ".c" ||
+					CFile.extension() == ".C" ||
+					CFile.extension() == ".cpp" ||
+					CFile.extension() == ".cxx" ||
+					CFile.extension() == ".c++" ||
+					CFile.extension() == ".cc"
+				)) {
+					continue;
+				}
 
 				// compile it
 				auto generatedModule =
@@ -758,6 +778,10 @@ std::vector<std::string> GraphModule::nodeTypeNames() const {
 		ret.push_back("_make_" + str->name());
 		ret.push_back("_break_" + str->name());
 	}
+	
+	if (cEnabled()) {
+		ret.push_back("c-call");
+	}
 
 	return ret;
 }
@@ -836,11 +860,15 @@ boost::filesystem::path GraphModule::sourceFilePath() const {
 
 Result GraphModule::createNodeTypeFromCCode(boost::string_view              code,
                                             boost::string_view              functionName,
-                                            const std::vector<std::string>& clangArgs,
+                                            std::vector<std::string> clangArgs,
                                             std::unique_ptr<NodeType>*      toFill) {
 	Expects(toFill != nullptr);
 
 	Result res;
+	
+	// add -I for the .c dir
+	clangArgs.push_back("-I");
+	clangArgs.push_back(pathToCSources().string());
 
 	auto mod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), code,
 	                        clangArgs, context().llvmContext(), res);

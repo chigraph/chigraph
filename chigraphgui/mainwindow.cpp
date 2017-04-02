@@ -349,9 +349,8 @@ void MainWindow::newModule() {
 
 	auto mod = context().newGraphModule(fullName.toStdString());
 
-	// add lang and c
+	// add lang
 	mod->addDependency("lang");
-	mod->addDependency("c");
 
 	mod->saveToDisk();
 
