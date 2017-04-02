@@ -4,7 +4,6 @@
 
 #include "../src/NodeGraphicsObject.hpp"
 
-#include <chi/CModule.hpp>
 #include <chi/Context.hpp>
 #include <chi/DataType.hpp>
 #include <chi/Result.hpp>
@@ -60,7 +59,7 @@ public:
 			std::string code     = doc->text().toStdString();
 
 			std::unique_ptr<chi::NodeType> ty;
-			auto res = inst->context().cModule()->createNodeTypeFromCCode(code, function, {}, &ty);
+			auto res = inst->module().createNodeTypeFromCCode(code, function, {}, &ty);
 			if (!res) {
 				KMessageBox::detailedError(this, "Failed to compile C node",
 				                           QString::fromStdString(res.dump()));
@@ -132,7 +131,7 @@ ChigraphNodeModel::ChigraphNodeModel(chi::NodeInstance* inst_, FunctionView* fvi
 		});
 
 		mEmbedded = edit;
-	} else if (mInst->type().name() == "func") {
+	} else if (mInst->type().name() == "c-call") {
 		QPushButton* butt = new QPushButton(i18n("Edit code"));
 		connect(butt, &QPushButton::clicked, this, [this] {
 			auto dialog = new EditCodeDialog(mInst, mFunctionView);
