@@ -18,18 +18,14 @@ TEST_CASE("GraphModuleTest", "[module]") {
 	REQUIRE(gMod->shortName() == "main");
 	REQUIRE(gMod->typeNames().size() == 0);
 
-	auto res = gMod->addDependency("c");
+	auto res = gMod->addDependency("lang");
 	REQUIRE(!!res);
 	REQUIRE(c.modules().size() == 2);
-	REQUIRE(c.moduleByFullName("c") != nullptr);
+	REQUIRE(c.moduleByFullName("lang") != nullptr);
 	REQUIRE(gMod->dependencies().size() == 1);
-	REQUIRE(gMod->dependencies().find("c") != gMod->dependencies().end());
+	REQUIRE(gMod->dependencies().find("lang") != gMod->dependencies().end());
 
-	REQUIRE(gMod->removeDependency("c"));
-	REQUIRE(c.modules().size() == 2);  // it didn't unload it
-	REQUIRE(gMod->dependencies().size() == 0);
-
-	REQUIRE(!gMod->removeDependency("lang"));
+	REQUIRE(gMod->removeDependency("lang"));
 	REQUIRE(c.modules().size() == 2);  // it didn't unload it
 	REQUIRE(gMod->dependencies().size() == 0);
 

@@ -30,7 +30,6 @@
 #include <QSplitter>
 #include <QTextStream>
 
-#include <chi/CModule.hpp>
 #include <chi/Context.hpp>
 #include <chi/DataType.hpp>
 #include <chi/GraphFunction.hpp>
