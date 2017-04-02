@@ -17,7 +17,7 @@ if(UNIX AND NOT APPLE AND NOT WIN32)
 	endif()
 	if(NOT EXISTS ${CMAKE_BINARY_DIR}/glibc-2.19)
 		message(STATUS "Extracting glibc...")
-		execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf glibc.tar.xz WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+		execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf glibc.tar.xz WORKING_DIRECTORY ${CMAKE_BINARY_DIR} OUTPUT_QUIET)
 			
 	endif()
 	
@@ -28,17 +28,18 @@ if(UNIX AND NOT APPLE AND NOT WIN32)
 		COMMAND ../configure --prefix=${CMAKE_BINARY_DIR}/lib/chigraph/stdlib 
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build 
 		RESULT_VARIABLE err
+		OUTPUT_QUIET
 		)
 		if (NOT err MATCHES "0")
 			message(FATAL_ERROR "Failed to configure glibc")
 		endif()
 		
-		execute_process(COMMAND make -j${N} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build RESULT_VARIABLE err)
+		execute_process(COMMAND make -j${N} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build RESULT_VARIABLE err OUTPUT_QUIET)
 		if (NOT err MATCHES "0")
 			message(FATAL_ERROR "Failed to compile glibc")
 		endif()
 		
-		execute_process(COMMAND make install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build)
+		execute_process(COMMAND make install WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/glibc-2.19/build OUTPUT_QUIET)
 		if (NOT err MATCHES "0")
 			message(FATAL_ERROR "Failed to install glibc")
 		endif()
