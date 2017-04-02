@@ -2,6 +2,8 @@
 include(ProcessorCount)
 ProcessorCount(N)
 
+message(STATUS "LD_LIBRARY_PATH=$ENV{LD_LIBRARY_PATH}")
+
 if(UNIX AND NOT APPLE AND NOT WIN32)
 
 	if (NOT EXISTS ${CMAKE_BINARY_DIR}/glibc.tar.xz)
