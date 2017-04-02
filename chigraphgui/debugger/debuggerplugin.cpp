@@ -73,7 +73,7 @@ void DebuggerPlugin::debugStart() {
 	    boost::filesystem::path(QApplication::applicationFilePath().toStdString()).parent_path() /
 	    "chi";
 #ifdef _WIN32
-	chigPath.replace_extension(".exe");
+	chiPath.replace_extension(".exe");
 #endif
 
 	MainWindow* window = MainWindow::instance();
@@ -96,7 +96,7 @@ void DebuggerPlugin::debugStart() {
 	}
 
 	// TODO: this really really needs a fix
-	mDebugger = std::make_shared<chi::Debugger>(chiPath.c_str(), *pair.second);
+	mDebugger = std::make_shared<chi::Debugger>(chiPath.string().c_str(), *pair.second);
 
 	mThread        = new QThread;
 	mEventListener = std::make_unique<DebuggerWorkerThread>(mDebugger);

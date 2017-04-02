@@ -338,6 +338,8 @@ int main(int argc, char** argv) {
 		}
 	}
 
+// libexecstream does something weird here on windows to make it fail--it works in a terminal
+#ifndef WIN32
 	// chig compile -tbc + lli
 	{
 		std::string generatedir, chigstderr;
@@ -404,4 +406,5 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 	}
+#endif
 }

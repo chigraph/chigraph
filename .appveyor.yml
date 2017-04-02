@@ -17,3 +17,4 @@ build_script:
   - cd build
   - cmake "-GNinja" -DCMAKE_BUILD_TYPE="%configuration%" -DCMAKE_PREFIX_PATH="%QTDIR%" -DCG_BUILD_DEBUGGER=OFF ..
   - ninja
+  - ninja test
