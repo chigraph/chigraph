@@ -75,6 +75,11 @@ set(LLVM_COMPONENTS
 if (LLVM_VERSION VERSION_GREATER 3.9.0 OR LLVM_VERSION VERSION_EQUAL 3.9.0)
 	list(APPEND LLVM_COMPONENTS coverage)
 endif()
+if (LLVM_VERSION VERSION_GREATER 4.0.0 OR LLVM_VERSION VERSION_EQUAL 4.0.0)
+	list(APPEND LLVM_COMPONENTS coroutines)
+endif()
+
+
 execute_process(COMMAND ${LLVM_CONFIG} --libs ${LLVM_COMPONENTS} OUTPUT_VARIABLE LLVM_LIBRARIES OUTPUT_STRIP_TRAILING_WHITESPACE)
 string(REPLACE " " ";" LLVM_LINK_LIST "${LLVM_LIBRARIES}")
 message(STATUS "LLVM link libraries: ${LLVM_LINK_LIST}")
@@ -112,6 +117,8 @@ set(CLANG_LIBS
 	clangDriver
 	clangBasic
 )
+
+
 
 # get clang libraries
 message(STATUS "Looking for clang libs in ${CLANG_LIB_DIR}")
