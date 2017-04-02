@@ -8,6 +8,8 @@ string(REPLACE " " ";" LLVM_LD_FLAGS_LIST "${LLVM_LD_FLAGS}")
 
 execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE LLVM_LIB_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 
+execute_process(COMMAND ${LLVM_CONFIG} --bindir OUTPUT_VARIABLE LLVM_BIN_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 execute_process(COMMAND ${LLVM_CONFIG} --version OUTPUT_VARIABLE LLVM_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 string(SUBSTRING ${LLVM_VERSION} 0 3 LLVM_VERSION_SHORT)
@@ -25,6 +27,16 @@ set(DEBUGGER_HEADERS
 )
 
 add_library(chigraphdebugger STATIC ${DEBUGGER_SRCS} ${DEBUGGER_HEADERS})
+
+# copy lldb-server
+add_custom_command(
+TARGET chigraphdebugger POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy_if_different
+	${LLVM_BIN_DIR}/lldb-server
+	${CMAKE_BINARY_DIR}/bin/lldb-server
+BYPRODUCTS ${CMAKE_BINARY_DIR}/bin/lldb-server
+COMMENT "Copying lldb-server from ${LLVM_BIN_DIR}/lldb-server to ${CMAKE_BINARY_DIR}/bin/lldb-server"
+)
 
 target_compile_options(chigraphdebugger 
 PUBLIC
