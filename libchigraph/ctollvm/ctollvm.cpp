@@ -24,7 +24,10 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, co
                                       std::string& err) {
 	// Prepare compilation arguments
 	compileArgs.insert(compileArgs.begin(), execPath);
-	compileArgs.push_back(fileName);
+	
+	if (strcmp(code, "") != 0) {
+		compileArgs.push_back(fileName);
+	}
 
 	// Prepare DiagnosticEngine
 	auto* DiagOpts = new DiagnosticOptions;
@@ -48,17 +51,20 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, co
 	Clang->setInvocation(invoc);
 
 	// Map code filename to a memoryBuffer
-	StringRef                testCodeData(code);
-	unique_ptr<MemoryBuffer> buffer = MemoryBuffer::getMemBufferCopy(testCodeData);
-	Clang->getInvocation().getPreprocessorOpts().addRemappedFile(fileName, buffer.get());
-
+	unique_ptr<MemoryBuffer> buffer;
+	if (strcmp(code, "") != 0) {
+		StringRef                testCodeData(code);
+		buffer = MemoryBuffer::getMemBufferCopy(testCodeData);
+		Clang->getInvocation().getPreprocessorOpts().addRemappedFile(fileName, buffer.get());
+	}
+	
 	// Create and initialize CompilerInstance
 	Clang->createDiagnostics();
 
 	// Create and execute action
 	auto compilerAction = std::make_unique<EmitLLVMOnlyAction>(&ctx);
 	Clang->ExecuteAction(*compilerAction);
-
+	
 	buffer.release();
 
 	return compilerAction->takeModule();

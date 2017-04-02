@@ -59,7 +59,7 @@ public:
 			std::string code     = doc->text().toStdString();
 
 			std::unique_ptr<chi::NodeType> ty;
-			auto res = inst->module().createNodeTypeFromCCode(code, function, {}, &ty);
+			auto res = static_cast<chi::GraphModule&>(inst->type().module()).createNodeTypeFromCCode(code, function, {}, &ty);
 			if (!res) {
 				KMessageBox::detailedError(this, "Failed to compile C node",
 				                           QString::fromStdString(res.dump()));
