@@ -26,8 +26,7 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	
 	if [ -n "$TEST_COV" ]; then 
 		pip install --user cpp-coveralls 
-		coveralls --exclude /usr --exclude third_party --exclude chigraphgui --exclude test --exclude build --include libchigraph --include chi --exclude libchigraph/include/chi/json.hpp
-
+		coveralls --exclude /usr --exclude third_party --exclude chigraphgui --exclude test --exclude build --include libchigraph --include libchigraphdebugger --include chi --exclude libchigraph/include/chi/json.hpp
 	fi
 
 else 
