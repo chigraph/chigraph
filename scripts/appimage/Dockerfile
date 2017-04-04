@@ -23,5 +23,5 @@ RUN cd / && wget https://github.com/NixOS/patchelf/archive/0.9.tar.gz -O patchel
 RUN cd /patchelf-0.9 && ./bootstrap.sh && ./configure --prefix=/usr && make -j`nproc` && make install
 
 # build appimagetool
-RUN cd / && git clone https://github.com/probonopd/AppImageKit --branch=8 --depth=1
+RUN cd / && git clone https://github.com/probonopd/AppImageKit --depth=1
 RUN cd /AppImageKit/ && ./build.sh && cp ./build/* /usr/bin

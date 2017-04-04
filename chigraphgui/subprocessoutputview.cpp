@@ -24,6 +24,8 @@
 #include <chi/Context.hpp>
 #include <chi/Result.hpp>
 
+#include <iostream>
+
 namespace fs = boost::filesystem;
 
 SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(module) {
@@ -58,6 +60,7 @@ SubprocessOutputView::SubprocessOutputView(chi::GraphModule* module) : mModule(m
 #endif
 
 	Q_ASSERT(boost::filesystem::is_regular_file(chiPath));
+	std::cout << chiPath.string() << std::endl;
 
 	// run in lli
 	mProcess = new QProcess(this);
