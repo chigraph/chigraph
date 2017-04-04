@@ -31,7 +31,8 @@ ln -s lib lib64
 
 # build KF5
 /chigraph/setup.sh
-rsync -raPq /chigraph/third_party/kf5-release/* /chigraph.appdir/usr/
+rsync -raPq /chigraph/third_party/kf5-release/etc/* /chigraph.appdir/usr/etc
+rsync -raPq /chigraph/third_party/kf5-release/share/* /chigraph.appdir/usr/share
 
 # build chigraph
 cd /chigraph
@@ -54,6 +55,8 @@ cp /usr/lib/llvm-3.9/bin/lldb-server /chigraph.appdir/usr/bin/
 QT_BASE_DIR=/opt/qt58
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/chigraph/third_party/kf5-release/lib64
 
 /linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/usr/bin/chigraphgui -bundle-non-qt-libs
 /linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/usr/bin/chigraphgui -appimage
