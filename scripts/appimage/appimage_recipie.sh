@@ -5,9 +5,6 @@ set -xe
 sudo apt-get update
 sudo apt-get install g++-6 llvm-3.9-dev libclang-3.9-dev liblldb-3.9-dev libclang-common-3.9-dev libgit2 qt58base qt58script qt58declarative qt58tools qt58x11extras qt58svg ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils libudev-dev texinfo build-essential 
 
-source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh
-
-
 QT_BASE_DIR=/opt/qt58
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
