@@ -2,55 +2,49 @@
 
 set -xe
 
+sudo apt-get update
+sudo apt-get install g++-6 llvm-3.9-dev libclang-3.9-dev liblldb-3.9-dev libclang-common-3.9-dev libgit2 qt58base qt58script qt58declarative qt58tools qt58x11extras qt58svg ninja-build libedit-dev libxcb-keysyms1-dev libxml2-utils libudev-dev texinfo build-essential 
+
+source /opt/qt${QT_VERSION:0:2}/bin/qt${QT_VERSION:0:2}-env.sh
+
+
 QT_BASE_DIR=/opt/qt58
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
 
-# clone chigraph
-rm -rf /chigraph
-cd /
-git clone https://github.com/chigraph/chigraph --recursive --depth 1
+# acquire appimagetool
+sudo wget https://github.com/probonopd/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/bin/appimagetool
 
 # acquire linuxdeployqt
-cd /
-rm -Rf /linuxdeployqt
-git clone  --depth 1 https://github.com/probonopd/linuxdeployqt.git /linuxdeployqt
-cd /linuxdeployqt/
-qmake linuxdeployqt.pro
-make -j8
-cd /
-
+sudo wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage -O /usr/bin/linuxdeployqt
 
 # prepare the appdir
-mkdir -p /chigraph.appdir/usr
-mkdir -p /chigraph.appdir/usr/lib
-cd  /chigraph.appdir/usr
-rm -rf lib64 || true
-ln -s lib lib64
+mkdir -p ~/chigraph.appdir/usr
+mkdir -p ~/chigraph.appdir/usr/lib
+rm -rf ~/chigraph.appdir/usr/lib64 || true
+ln -s ~/chigraph.appdir/usr/lib ~/chigraph.appdir/usr/lib64
 
 
-# build KF5
-/chigraph/setup.sh
-rsync -raPq /chigraph/third_party/kf5-release/etc/* /chigraph.appdir/usr/etc
-rsync -raPq /chigraph/third_party/kf5-release/share/* /chigraph.appdir/usr/share
+# setup KF5
+setup.sh
+rsync -raPq third_party/kf5-release/* ~/chigraph.appdir/usr/
 
 # build chigraph
 cd /chigraph
 rm -rf build
 mkdir -p build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="/chigraph.appdir/usr" -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config' -DCMAKE_CXX_COMPILER=g++-6 -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_FLAGS='-std=c++14'
-make -j8 DESTDIR=/chigraph.appdir install
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config' -DCMAKE_CXX_COMPILER=g++-6 -DCMAKE_C_COMPILER=gcc-6
+make -j8 DESTDIR=~/chigraph.appdir install
 
 # remove pointless stuff
-cd /chigraph.appdir/
-rm -rf ./usr/include
-find . -name '*.a' -exec rm {} \;
+rm -rf ~/chigraph.appdir/usr/include
+find ~/chigraph.appdir/ -name '*.a' -exec rm {} \;
 
-cp /chigraph/scripts/appimage/chigraphgui.desktop /chigraph.appdir/
-cp /chigraph/scripts/appimage/chigraph.png /chigraph.appdir/
+cp scripts/appimage/chigraphgui.desktop ~/chigraph.appdir/
+cp scripts/appimage/chigraph.png ~/chigraph.appdir/
 
-cp /usr/lib/llvm-3.9/bin/lldb-server /chigraph.appdir/usr/bin/
+cp /usr/lib/llvm-3.9/bin/lldb-server ~/chigraph.appdir/usr/bin/
 
 QT_BASE_DIR=/opt/qt58
 export QTDIR=$QT_BASE_DIR
@@ -58,6 +52,7 @@ export PATH=$QT_BASE_DIR/bin:$PATH
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/chigraph/third_party/kf5-release/lib64
 
-/linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/usr/bin/chigraphgui -bundle-non-qt-libs
-/linuxdeployqt/linuxdeployqt/linuxdeployqt /chigraph.appdir/usr/bin/chigraphgui -appimage
+linuxdeployqt ~/chigraph.appdir/usr/bin/chigraphgui -bundle-non-qt-libs
+strip -s ~/chigraph.appdir/usr/bin/chigraphgui ~/chigraph.appdir/usr/bin/chi
+linuxdeployqt ~/chigraph.appdir/usr/bin/chigraphgui -appimage
 
