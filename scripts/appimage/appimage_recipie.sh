@@ -27,12 +27,13 @@ setup.sh
 rsync -raPq third_party/kf5-release/* ~/chigraph.appdir/usr/
 
 # build chigraph
-cd /chigraph
 rm -rf build
 mkdir -p build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config' -DCMAKE_CXX_COMPILER=g++-6 -DCMAKE_C_COMPILER=gcc-6
 make -j8 DESTDIR=~/chigraph.appdir install
+
+cd ..
 
 # remove pointless stuff
 rm -rf ~/chigraph.appdir/usr/include
