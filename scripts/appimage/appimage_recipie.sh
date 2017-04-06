@@ -11,9 +11,11 @@ export PATH=$QT_BASE_DIR/bin:$PATH
 
 # acquire appimagetool
 sudo wget https://github.com/probonopd/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/bin/appimagetool
+sudo chmod a+x /usr/bin/appimagetool
 
 # acquire linuxdeployqt
 sudo wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage -O /usr/bin/linuxdeployqt
+sudo chmod a+x /usr/bin/linuxdeployqt
 
 # prepare the appdir
 mkdir -p ~/chigraph.appdir/usr
