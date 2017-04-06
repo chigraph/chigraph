@@ -23,7 +23,7 @@ ln -s ~/chigraph.appdir/usr/lib ~/chigraph.appdir/usr/lib64
 
 
 # setup KF5
-setup.sh
+./setup.sh
 rsync -raPq third_party/kf5-release/* ~/chigraph.appdir/usr/
 
 # build chigraph
