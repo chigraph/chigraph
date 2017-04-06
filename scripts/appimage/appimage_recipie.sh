@@ -32,7 +32,7 @@ rsync -raPq third_party/kf5-release/* ~/chigraph.appdir/usr/
 rm -rf build
 mkdir -p build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config' -DCMAKE_CXX_COMPILER=g++-6 -DCMAKE_C_COMPILER=gcc-6
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH='~/chigraph.appdir/usr' -DCMAKE_INSTALL_PREFIX='/usr' -DLLVM_CONFIG='/usr/lib/llvm-3.9/bin/llvm-config' -DCMAKE_CXX_COMPILER=g++-6 -DCMAKE_C_COMPILER=gcc-6
 make -j8 DESTDIR=~/chigraph.appdir install
 
 cd ..
@@ -50,7 +50,7 @@ QT_BASE_DIR=/opt/qt58
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/chigraph/third_party/kf5-release/lib64
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/third_party/kf5-release/lib64:$LD_LIBRARY_PATH:`pwd`/third_party/kf5-release/lib
 
 linuxdeployqt ~/chigraph.appdir/usr/bin/chigraphgui -bundle-non-qt-libs
 strip -s ~/chigraph.appdir/usr/bin/chigraphgui ~/chigraph.appdir/usr/bin/chi
