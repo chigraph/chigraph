@@ -38,7 +38,7 @@ public:
 
 signals:
 	void dirtied(chi::GraphModule& mod);
-	void functionOpened(FunctionView* func);
+	void functionViewChanged(FunctionView* func, bool newlyOpened);
 
 private:
 	void closeTab(int idx);

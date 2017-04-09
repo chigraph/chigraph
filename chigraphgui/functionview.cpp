@@ -111,7 +111,7 @@ std::vector<chi::NodeInstance*> FunctionView::selectedNodes() {
 	ret.reserve(guiNodes.size());
 
 	for (auto n : guiNodes) {
-		auto toAdd = chigNodeFromGuiNode(n);
+		auto toAdd = chiNodeFromGuiNode(n);
 
 		if (toAdd) { ret.push_back(toAdd); }
 	}
@@ -357,7 +357,7 @@ Node* FunctionView::guiNodeFromChigNode(chi::NodeInstance* inst) {
 	return nullptr;
 }
 
-chi::NodeInstance* FunctionView::chigNodeFromGuiNode(Node* node) {
+chi::NodeInstance* FunctionView::chiNodeFromGuiNode(Node* node) {
 	auto nodeGui = dynamic_cast<ChigraphNodeModel*>(node->nodeDataModel());
 	if (nodeGui == nullptr) { return nullptr; }
 	return &nodeGui->instance();
