@@ -5,6 +5,8 @@
 VariableView::VariableView() {
 	setHeaderLabels(QStringList() << i18n("Name") << i18n("Type") << i18n("Summary")
 	                              << i18n("Value") << i18n("Obj Desc"));
+	
+	setDisabled(true);
 }
 
 void VariableView::setFrame(lldb::SBFrame frame) {

@@ -56,6 +56,14 @@ DebuggerPlugin::DebuggerPlugin() {
 
 	mBreakpointView = new BreakpointView();
 	mVariableView   = new VariableView();
+	
+	connect(&MainWindow::instance()->tabView(), &FunctionTabView::functionOpened, this, [this](FunctionView* view) {
+		
+		connect(&view->scene(), &QtNodes::FlowScene::connectionHovered, this, [this](QtNodes::Connection& conn) {
+			
+		});
+		
+	});
 
 	setXMLFile("chigraphguidebuggerui.rc");
 }
@@ -106,6 +114,8 @@ void DebuggerPlugin::debugStart() {
 	connect(mEventListener.get(), &DebuggerWorkerThread::eventOccured, this,
 	        [this, window](lldb::SBEvent ev) {
 		        if (lldb::SBProcess::GetStateFromEvent(ev) == lldb::eStateStopped) {
+					variableView().setDisabled(false);
+					mStopped = true;
 			        variableView().setFrame(
 			            mDebugger->lldbProcess().GetSelectedThread().GetSelectedFrame());
 
@@ -113,7 +123,10 @@ void DebuggerPlugin::debugStart() {
 			        auto node = mDebugger->nodeFromFrame(
 			            mDebugger->lldbProcess().GetSelectedThread().GetSelectedFrame());
 			        if (node != nullptr) { window->tabView().centerOnNode(*node); }
-		        }
+		        } else {
+					variableView().setDisabled(true);
+					mStopped = false;
+				}
 		    });
 
 	mThread->start();

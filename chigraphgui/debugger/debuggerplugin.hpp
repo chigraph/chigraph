@@ -24,6 +24,8 @@ public:
 	BreakpointView& breakpointView() { return *mBreakpointView; }
 	VariableView&   variableView() { return *mVariableView; }
 
+	bool stopped() const { return mStopped; }
+	
 private slots:
 	void toggleBreakpoint();
 	void debugStart();
@@ -34,7 +36,12 @@ private:
 	QVector<ToolView*> toolViews() override {
 		return QVector<ToolView*>({mBreakpointView, mVariableView});
 	}
+	
+	
+	void hoverOverConnection(chi::NodeInstance& inst, int connID);
 
+	bool mStopped = false;
+	
 	BreakpointView* mBreakpointView;
 	VariableView*   mVariableView;
 
