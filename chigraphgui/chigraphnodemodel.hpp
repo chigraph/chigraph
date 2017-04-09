@@ -25,6 +25,44 @@
 
 class FunctionView;
 
+class ChigraphNodeModelPaintDelegate : public QtNodes::NodePainterDelegate {
+	
+	
+	void paint(QPainter* painter,
+		QtNodes::NodeGeometry const& geom,
+		QtNodes::NodeDataModel* const model) override {
+		
+		for (auto& decorator : mDecorators) {
+			decorator->paint(painter, geom, model);
+		} 
+	}
+	
+public:
+	
+	QtNodes::NodePainterDelegate* addDecorator(std::unique_ptr<QtNodes::NodePainterDelegate>&& decorator) {
+		mDecorators.push_back(std::move(decorator));
+		return mDecorators[mDecorators.size() - 1].get();
+	}
+	
+	void removeDecorator(QtNodes::NodePainterDelegate* decorator) {
+		auto iter = std::find_if(mDecorators.begin(), mDecorators.end(), [decorator](auto& uptr) { return uptr.get() == decorator; });
+		
+		if (iter == mDecorators.end()) {
+			return;
+		}
+		
+		mDecorators.erase(iter);
+	}
+	
+	void clearDecorators() {
+		mDecorators.clear();
+	}
+	
+private:
+	std::vector<std::unique_ptr<QtNodes::NodePainterDelegate>> mDecorators;
+	
+};
+
 class ChigraphNodeModel : public QtNodes::NodeDataModel {
 public:
 	ChigraphNodeModel(chi::NodeInstance* inst_, FunctionView* fview_);
@@ -32,6 +70,13 @@ public:
 	chi::NodeInstance& instance() const { return *mInst; }
 
 	void setErrorState(QtNodes::NodeValidationState state, QString message);
+	
+	ChigraphNodeModelPaintDelegate& paintDelegate() { return *mPainterDelegate; }
+	
+	// convenieence function for decorators
+	QtNodes::NodePainterDelegate* addDecorator(std::unique_ptr<QtNodes::NodePainterDelegate>&& decorator);
+	void removeDecorator(QtNodes::NodePainterDelegate* decorator);
+	void clearDecorators();
 
 	// NodeDataModel interface
 	QString caption() const override {
@@ -76,6 +121,9 @@ public:
 		}
 		return NodeConnectionPolicy::Many;
 	}
+	
+	QtNodes::NodePainterDelegate* painterDelegate() const override { return mPainterDelegate; }
+
 
 private:
 	QtNodes::NodeValidationState mValidationState = QtNodes::NodeValidationState::Valid;
@@ -83,6 +131,7 @@ private:
 	chi::NodeInstance*           mInst;
 	FunctionView*                mFunctionView;
 	QWidget*                     mEmbedded = nullptr;
+	ChigraphNodeModelPaintDelegate* mPainterDelegate;
 };
 
 #endif  // CHIG_GUI_CHIGNODEGUI_HPP

@@ -20,11 +20,19 @@ class FunctionView : public QWidget {
 public:
 	FunctionView(chi::GraphFunction& func_, QWidget* parent = nullptr);
 
-	QtNodes::Node* guiNodeFromChigNode(chi::NodeInstance* inst);
+	QtNodes::Node* guiNodeFromChiNode(chi::NodeInstance* inst);
 	chi::NodeInstance* chiNodeFromGuiNode(QtNodes::Node* node);
 
 	// refresh I/O for the node
-	void refreshGuiForNode(QtNodes::Node* node);
+	void refreshGuiForNode(QtNodes::Node& node);
+	void refreshGuiForNode(chi::NodeInstance& node) {
+		auto guiNode = guiNodeFromChiNode(&node);
+		if (guiNode == nullptr) {
+			return;
+		}
+		
+		refreshGuiForNode(*guiNode);
+	};
 
 	void centerOnNode(chi::NodeInstance& inst);
 

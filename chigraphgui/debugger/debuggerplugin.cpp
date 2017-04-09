@@ -1,3 +1,4 @@
+#include "currentnodedecorator.hpp"
 #include "debuggerplugin.hpp"
 
 #include <chi/Result.hpp>
@@ -14,6 +15,9 @@
 
 #include <../functiontabview.hpp>
 #include <../mainwindow.hpp>
+#include <../chigraphnodemodel.hpp>
+
+#include <../src/Node.hpp>
 
 #include <lldb/API/SBThread.h>
 
@@ -164,7 +168,27 @@ void DebuggerPlugin::debugStart() {
 			        // get the node
 			        auto node = mDebugger->nodeFromFrame(
 			            mDebugger->lldbProcess().GetSelectedThread().GetSelectedFrame());
-			        if (node != nullptr) { window->tabView().centerOnNode(*node); }
+			        if (node == nullptr) {  return; }
+			        
+			        window->tabView().centerOnNode(*node); 
+			        
+					// clear the last triangle
+					if (mCurrentNodeDecorator != nullptr && mCurrentNode != nullptr) {
+						static_cast<ChigraphNodeModel&>(*mCurrentNode->nodeDataModel()).removeDecorator(mCurrentNodeDecorator);
+					}
+					
+			        // draw a triangle above it
+			        auto guiNode = window->tabView().currentView()->guiNodeFromChiNode(node);
+					if (guiNode == nullptr) {
+						return;
+					}
+					mCurrentNode = guiNode;
+					
+					
+					auto& nodeModel = static_cast<ChigraphNodeModel&>(*guiNode->nodeDataModel());
+					
+			        mCurrentNodeDecorator = nodeModel.addDecorator(std::make_unique<CurrentNodeDecorator>());
+					
 		        } else {
 					variableView().setDisabled(true);
 					mStopped = false;

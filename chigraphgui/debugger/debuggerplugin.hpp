@@ -11,6 +11,8 @@
 
 #include <QAction>
 
+#include <nodes/FlowScene>
+
 #include <chi/Debugger.hpp>
 
 class DebuggerPlugin : public QObject, public ChigraphPlugin {
@@ -55,6 +57,9 @@ private:
 	std::shared_ptr<chi::Debugger>        mDebugger;
 	std::unique_ptr<DebuggerWorkerThread> mEventListener;
 	QThread*                              mThread = nullptr;
+	
+	QtNodes::NodePainterDelegate* mCurrentNodeDecorator = nullptr;
+	QtNodes::Node* mCurrentNode = nullptr;
 };
 
 #endif  // CHIGRAPHGUI_DEBUGGER_DEBUGGER_PLUGIN_HPP

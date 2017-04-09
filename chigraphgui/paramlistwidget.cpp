@@ -111,11 +111,11 @@ void ParamListWidget::setFunction(FunctionView* func, Type ty) {
 void ParamListWidget::refreshEntry() {
 	auto entry = mFunc->function()->entryNode();
 	if (entry == nullptr) { return; }
-	mFunc->refreshGuiForNode(mFunc->guiNodeFromChigNode(entry));
+	mFunc->refreshGuiForNode(*entry);
 }
 void ParamListWidget::refreshExits() {
 	for (const auto& exit : mFunc->function()->nodesWithType("lang", "exit")) {
-		mFunc->refreshGuiForNode(mFunc->guiNodeFromChigNode(exit));
+		mFunc->refreshGuiForNode(*exit);
 	}
 
 	mFunc->refreshRegistry();
