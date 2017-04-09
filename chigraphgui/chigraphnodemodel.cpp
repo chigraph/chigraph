@@ -73,7 +73,7 @@ public:
 		});
 
 		connect(this, &QDialog::accepted, this,
-		        [fview, inst] { fview->refreshGuiForNode(fview->guiNodeFromChigNode(inst)); });
+		        [fview, inst] { fview->refreshGuiForNode(*inst); });
 	}
 };
 
@@ -161,6 +161,8 @@ ChigraphNodeModel::ChigraphNodeModel(chi::NodeInstance* inst_, FunctionView* fvi
 
 		mEmbedded = edit;
 	}
+	
+	mPainterDelegate = new ChigraphNodeModelPaintDelegate;
 }
 
 void ChigraphNodeModel::setErrorState(QtNodes::NodeValidationState state, QString message) {
@@ -219,3 +221,23 @@ QtNodes::NodeValidationState ChigraphNodeModel::validationState() const { return
 QString ChigraphNodeModel::validationMessage() const { return mValidationMessage; }
 
 QWidget* ChigraphNodeModel::embeddedWidget() { return mEmbedded; }
+
+void ChigraphNodeModel::removeDecorator(QtNodes::NodePainterDelegate* decorator) {
+    paintDelegate().removeDecorator(decorator);
+    mFunctionView->refreshGuiForNode(instance());
+}
+
+
+void ChigraphNodeModel::clearDecorators() {
+    paintDelegate().clearDecorators();
+    mFunctionView->refreshGuiForNode(instance());
+}
+
+
+QtNodes::NodePainterDelegate* ChigraphNodeModel::addDecorator(std::unique_ptr<QtNodes::NodePainterDelegate>&& decorator) {
+    auto ret = paintDelegate().addDecorator(std::move(decorator));
+    mFunctionView->refreshGuiForNode(instance());
+	
+	return ret;
+}
+

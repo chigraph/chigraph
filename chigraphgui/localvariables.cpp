@@ -91,12 +91,12 @@ void LocalVariables::refreshReferencingNodes(const std::string& name) {
 	auto setNodes = mFunctionView->function()->nodesWithType(
 	    mFunctionView->function()->module().fullName(), "_set_" + name);
 	for (const auto& node : setNodes) {
-		mFunctionView->refreshGuiForNode(mFunctionView->guiNodeFromChigNode(node));
+		mFunctionView->refreshGuiForNode(*node);
 	}
 	auto getNodes = mFunctionView->function()->nodesWithType(
 	    mFunctionView->function()->module().fullName(), "_get_" + name);
 	for (const auto& node : getNodes) {
-		mFunctionView->refreshGuiForNode(mFunctionView->guiNodeFromChigNode(node));
+		mFunctionView->refreshGuiForNode(*node);
 	}
 }
 
@@ -104,11 +104,11 @@ void LocalVariables::deleteReferencingNodes(const std::string& name) {
 	auto setNodes = mFunctionView->function()->nodesWithType(
 	    mFunctionView->function()->module().fullName(), "_set_" + name);
 	for (const auto& node : setNodes) {
-		mFunctionView->scene().removeNode(*mFunctionView->guiNodeFromChigNode(node));
+		mFunctionView->scene().removeNode(*mFunctionView->guiNodeFromChiNode(node));
 	}
 	auto getNodes = mFunctionView->function()->nodesWithType(
 	    mFunctionView->function()->module().fullName(), "_get_" + name);
 	for (const auto& node : getNodes) {
-		mFunctionView->scene().removeNode(*mFunctionView->guiNodeFromChigNode(node));
+		mFunctionView->scene().removeNode(*mFunctionView->guiNodeFromChiNode(node));
 	}
 }

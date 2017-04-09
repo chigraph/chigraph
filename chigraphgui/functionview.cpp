@@ -122,7 +122,7 @@ std::vector<chi::NodeInstance*> FunctionView::selectedNodes() {
 void FunctionView::selectNode(chi::NodeInstance& node) {
 	// clear the selection
 	scene().clearSelection();
-	auto guiNode = guiNodeFromChigNode(&node);
+	auto guiNode = guiNodeFromChiNode(&node);
 	if (guiNode == nullptr) { return; }
 
 	// then select it
@@ -281,10 +281,12 @@ void FunctionView::nodeDoubleClicked(QtNodes::Node& n) {
 	functionDoubleClicked(*func);
 }
 
-void FunctionView::refreshGuiForNode(Node* node) {
-	auto model = dynamic_cast<ChigraphNodeModel*>(node->nodeDataModel());
+void FunctionView::refreshGuiForNode(Node& node) {
+	auto model = dynamic_cast<ChigraphNodeModel*>(node.nodeDataModel());
 
 	auto inst = &model->instance();
+	
+	auto paintDelegate = ChigraphNodeModelPaintDelegate{std::move(model->paintDelegate())};
 
 	// find connections with this node
 	for (auto iter = conns.begin(); iter != conns.end();) {
@@ -297,14 +299,17 @@ void FunctionView::refreshGuiForNode(Node* node) {
 		}
 	}
 
-	QPointF pos = mScene->getNodePosition(*node);
+	QPointF pos = mScene->getNodePosition(node);
 
 	mNodeMap.erase(inst);  // so the signal doesn't do stuff
-	mScene->removeNode(*node);
+	mScene->removeNode(node);
 
 	mNodeMap.emplace(inst, nullptr);  // just so the signal doesn't do stuff
 
-	auto& thisNode = mScene->createNode(std::make_unique<ChigraphNodeModel>(inst, this));
+	
+	auto newModel = std::make_unique<ChigraphNodeModel>(inst, this);
+	newModel->paintDelegate() = std::move(paintDelegate);
+	auto& thisNode = mScene->createNode(std::move(newModel));
 	mNodeMap[inst] = &thisNode;
 	mScene->setNodePosition(thisNode, pos);
 
@@ -346,12 +351,12 @@ void FunctionView::refreshGuiForNode(Node* node) {
 			          .get()] = {{{inst, localID}, {conn.first, remoteID}}};
 		}
 	}
-	dirtied();
+
 }
 
 void FunctionView::refreshRegistry() { mScene->setRegistry(createRegistry()); }
 
-Node* FunctionView::guiNodeFromChigNode(chi::NodeInstance* inst) {
+Node* FunctionView::guiNodeFromChiNode(chi::NodeInstance* inst) {
 	auto iter = mNodeMap.find(inst);
 	if (iter != mNodeMap.end()) { return iter->second; }
 	return nullptr;
@@ -445,7 +450,7 @@ void FunctionView::updateValidationStates() {
 
 			auto node = mFunction->nodeByID(id);
 			if (node != nullptr) {
-				auto guiNode = guiNodeFromChigNode(node);
+				auto guiNode = guiNodeFromChiNode(node);
 				if (guiNode != nullptr) {
 					auto castedModel = dynamic_cast<ChigraphNodeModel*>(guiNode->nodeDataModel());
 					castedModel->setErrorState(isError ? QtNodes::NodeValidationState::Error
@@ -459,7 +464,7 @@ void FunctionView::updateValidationStates() {
 }
 
 void FunctionView::centerOnNode(chi::NodeInstance& inst) {
-	auto guiInst = guiNodeFromChigNode(&inst);
+	auto guiInst = guiNodeFromChiNode(&inst);
 
 	if (guiInst) { mView->centerOn(&guiInst->nodeGraphicsObject()); }
 }
