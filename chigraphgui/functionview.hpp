@@ -21,7 +21,7 @@ public:
 	FunctionView(chi::GraphFunction& func_, QWidget* parent = nullptr);
 
 	QtNodes::Node* guiNodeFromChigNode(chi::NodeInstance* inst);
-	chi::NodeInstance* chigNodeFromGuiNode(QtNodes::Node* node);
+	chi::NodeInstance* chiNodeFromGuiNode(QtNodes::Node* node);
 
 	// refresh I/O for the node
 	void refreshGuiForNode(QtNodes::Node* node);

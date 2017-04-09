@@ -100,16 +100,13 @@ MainWindow::MainWindow(QWidget* parent) : KXmlGuiWindow(parent) {
 	scroll->setWidgetResizable(true);
 	docker->setWidget(scroll);
 	addDockWidget(Qt::RightDockWidgetArea, docker);
-	connect(mFunctionTabs, &QTabWidget::currentChanged, functionDetails,
-	        [this, docker, functionDetails](int newLoc) {
+	connect(mFunctionTabs, &FunctionTabView::functionViewChanged, functionDetails,
+	        [this, docker, functionDetails](FunctionView* view, bool) {
 
-		        auto funcView = dynamic_cast<FunctionView*>(mFunctionTabs->widget(newLoc));
-
-		        if (funcView != nullptr) {
-			        functionDetails->loadFunction(funcView);
-			        docker->setWindowTitle(i18n("Function Details") + " - " +
-			                               QString::fromStdString(funcView->function()->name()));
-		        }
+				functionDetails->loadFunction(view);
+				docker->setWindowTitle(i18n("Function Details") + " - " +
+										QString::fromStdString(view->function()->name()));
+			
 		    });
 	connect(functionDetails, &FunctionDetails::dirtied, this,
 	        [this, functionDetails] { moduleDirtied(functionDetails->chiFunc()->module()); });

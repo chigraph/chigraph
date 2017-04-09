@@ -28,6 +28,7 @@ void FunctionTabView::selectNewFunction(chi::GraphFunction& func) {
 	auto funcViewIter = mOpenFunctions.find(qualifiedFunctionName);
 	if (funcViewIter != mOpenFunctions.end()) {
 		setCurrentWidget(funcViewIter->second);
+		functionViewChanged(funcViewIter->second, false);
 		return;
 	}
 	// if it's not already open, we'll have to create our own
@@ -41,7 +42,7 @@ void FunctionTabView::selectNewFunction(chi::GraphFunction& func) {
 	connect(view, &FunctionView::dirtied, this, [ this, mod = &func.module() ] { dirtied(*mod); });
 	connect(view, &FunctionView::functionDoubleClicked, this, &FunctionTabView::selectNewFunction);
 
-	functionOpened(view);
+	functionViewChanged(view, true);
 }
 
 void FunctionTabView::centerOnNode(chi::NodeInstance& inst) {

@@ -7,6 +7,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QToolTip>
 #include <QThread>
 
 #include <thread>
@@ -57,11 +58,52 @@ DebuggerPlugin::DebuggerPlugin() {
 	mBreakpointView = new BreakpointView();
 	mVariableView   = new VariableView();
 	
-	connect(&MainWindow::instance()->tabView(), &FunctionTabView::functionOpened, this, [this](FunctionView* view) {
+	connect(&MainWindow::instance()->tabView(), &FunctionTabView::functionViewChanged, this, [this](FunctionView* view, bool isNew) {
 		
-		connect(&view->scene(), &QtNodes::FlowScene::connectionHovered, this, [this](QtNodes::Connection& conn) {
+		// only connect to it if it was just opened
+		if (!isNew)  {
+			return;
+		}
+		
+		connect(&view->scene(), &QtNodes::FlowScene::connectionHovered, this, [this, view](QtNodes::Connection& conn, const QPoint& point) {
 			
+			// only print value when it's stopped
+			if (!stopped()) {
+				return;
+			}
+			
+			// get the node and data output ID from connection
+			
+			auto leftGuiNode = conn.getNode(QtNodes::PortType::Out);
+			if (leftGuiNode == nullptr) {
+				return;
+			}
+			
+			auto leftChiNode = view->chiNodeFromGuiNode(leftGuiNode);
+			if (leftChiNode == nullptr) {
+				return;
+			}
+			
+			// this is the abosolute ID, as used in nodeeditor. Execs first, then datas
+			auto absConnID = conn.getPortIndex(QtNodes::PortType::Out);
+			
+			// if it's an exec output, then return
+			if (!leftChiNode->type().pure() && absConnID <= leftChiNode->outputExecConnections.size()) {
+				return;
+			}
+			
+			auto dataConnID = leftChiNode->type().pure() ? absConnID : absConnID - leftChiNode->outputExecConnections.size();
+			
+			// get the LLDB value
+			auto value = mDebugger->inspectNodeOutput(*leftChiNode, dataConnID);
+			if (!value.IsValid()) {
+				return;
+			}
+			
+			// display it
+			QToolTip::showText(point, QString::fromLatin1(value.GetValue()) + " : " + QString::fromLatin1(value.GetSummary()));
 		});
+		
 		
 	});
 
