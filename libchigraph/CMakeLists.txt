@@ -1,6 +1,6 @@
 # compile + install a c++/c standard library
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/GetLibStdCXX.cmake)
+#include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/GetLibStdCXX.cmake)
 
 execute_process(COMMAND ${LLVM_CONFIG} --prefix OUTPUT_VARIABLE CLANG_INSTALL_PREFIX  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "clang install prefix: ${CLANG_INSTALL_PREFIX}")
@@ -143,7 +143,7 @@ endforeach()
 target_link_libraries(chigraph
 PUBLIC
 	boost_filesystem
-	git2
+	${LIBGIT2_LIBRARIES}
 PUBLIC
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
@@ -171,13 +171,14 @@ PUBLIC
 	${CMAKE_BINARY_DIR}/ # for config.h
 	../third_party/GSL/include
 	../third_party/libexecstream/include
-	../third_party/libgit2/include
+	${LIBGIT2_INCLUDE_DIR}
 	${LLVM_INCLUDE_DIR}
 )
 
 target_compile_options(chigraph
 PUBLIC 
 	${LLVM_CXX_FLAGS_LIST}
+	${LIBGIT2_DEFINITIONS}
 )
 
 

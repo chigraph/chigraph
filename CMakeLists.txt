@@ -7,7 +7,6 @@ cmake_policy(SET CMP0053 NEW)
 set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
-option(CG_BUILD_GUI "Should the GUI be built" ON)
 option(CG_BUILD_DEBUGGER "Should the debugger be built" ON)
 option(CG_USE_SYSTEM_LIBGIT2 "Should the system try to find libgit2 from the system instead of the packaged version" OFF)
 
@@ -54,12 +53,6 @@ if (CG_BUILD_DEBUGGER)
 endif()
 
 add_subdirectory(chi)
-
-if(CG_BUILD_GUI)
-	set(BUILD_EXAMPLES OFF CACHE BOOL "")
-	add_subdirectory(third_party/nodeeditor)
-	add_subdirectory(chigraphgui)
-endif()
 
 # Unit tests...
 if(CG_BUILD_TESTS)
