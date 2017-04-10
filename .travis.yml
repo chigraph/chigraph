@@ -22,15 +22,6 @@ addons:
 matrix: 
   include: 
 
-    # appimage
-    - os: linux
-      install:
-      script:
-        - ./scripts/appimage/appimage_recipie.sh
-      after_success:
-        - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-        - bash ./upload.sh ./Chigraph-x86_64.AppImage
-
     # sneak in 1 osx one so we can see it early
     - os: osx
       osx_image: xcode8.2
