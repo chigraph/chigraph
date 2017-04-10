@@ -9,6 +9,7 @@ set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 option(CG_BUILD_GUI "Should the GUI be built" ON)
 option(CG_BUILD_DEBUGGER "Should the debugger be built" ON)
+option(CG_USE_SYSTEM_LIBGIT2 "Should the system try to find libgit2 from the system instead of the packaged version" OFF)
 
 # this is really important to keep install-like paths
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -17,6 +18,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # make sure the rpath is good to go
 list(APPEND CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 # disable tests
 set(BUILD_CLAR OFF CACHE BOOL "")
@@ -27,7 +29,13 @@ add_definitions("-DBOOST_ALL_NO_LIB")
 add_subdirectory(third_party/boost)
 
 # compile libgit2
-add_subdirectory(third_party/libgit2)
+if (NOT CG_USE_SYSTEM_LIBGIT2)
+	add_subdirectory(third_party/libgit2)
+	set(LIBGIT2_LIBRARIES git2)
+	set(LIBGIT2_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/libgit2/include)
+else()
+	find_package(libgit2 REQUIRED)
+endif()
 
 # find llvm-config. This dictates which clang etc is uses. 
 # Clang MUST be installed in the same directory.
