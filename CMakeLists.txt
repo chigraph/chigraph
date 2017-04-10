@@ -29,7 +29,7 @@ add_subdirectory(third_party/boost)
 # compile libgit2
 add_subdirectory(third_party/libgit2)
 
-# find llvm-config. This dictates which clang etc is uses. 
+# find llvm-config. This dictates which clang etc is uses.
 # Clang MUST be installed in the same directory.
 find_program(LLVM_CONFIG llvm-config REQUIRED)
 message(STATUS "llvm-config found at ${LLVM_CONFIG}")

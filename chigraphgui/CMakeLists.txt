@@ -1,3 +1,8 @@
+# Fix for CXX11 feature detection of pre-3.1 CMake
+if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} LESS 3.1)
+        include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/CheckCXX11Features.cmake)
+endif()
+
 set(KDE_SKIP_TEST_SETTINGS ON)
 
 # Check that the dependencies dirs exist
@@ -114,10 +119,11 @@ if (CG_BUILD_DEBUGGER)
 	target_link_libraries(chigraphgui chigraphguidebugger)
 endif()
 
-target_compile_features(chigraphgui 
-PRIVATE 
-	cxx_variable_templates
-)
+if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} LESS 3.1)
+	CXX11_CHECK_FEATURE("variadic_templates" 2555 HAS_CXX11_VARIADIC_TEMPLATES)
+else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} GREATER 3.1 OR ${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} EQUAL 3.1)
+	target_compile_features(chigraphgui PRIVATE cxx_variable_templates)
+endif()
 
 if(UNIX)
 	target_compile_options(chigraphgui PRIVATE "-fexceptions")
