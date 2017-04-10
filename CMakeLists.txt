@@ -36,7 +36,7 @@ else()
 	find_package(libgit2 REQUIRED)
 endif()
 
-# find llvm-config. This dictates which clang etc is uses. 
+# find llvm-config. This dictates which clang etc is uses.
 # Clang MUST be installed in the same directory.
 find_program(LLVM_CONFIG llvm-config REQUIRED)
 message(STATUS "llvm-config found at ${LLVM_CONFIG}")
