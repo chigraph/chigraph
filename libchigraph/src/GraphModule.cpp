@@ -108,15 +108,23 @@ struct CFuncNode : NodeType {
 
 // link it in
 
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-		llvm::Linker::LinkModules(codegenInto->getModule(), copymod);
+	auto parentModule = codegenInto->
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+			getParent()->getParent()
 #else
-		llvm::Linker::linkModules(*codegenInto->getModule(), std::move(copymod));
+			getModule()
+#endif
+	;
+		
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+		llvm::Linker::LinkModules(parentModule, copymod);
+#else
+		llvm::Linker::linkModules(*parentModule, std::move(copymod));
 #endif
 
-		codegenInto->getModule()->setDataLayout("");
+		parentModule->setDataLayout("");
 
-		auto llfunc = codegenInto->getModule()->getFunction(mFunctionName);
+		auto llfunc = parentModule->getFunction(mFunctionName);
 		Expects(llfunc != nullptr);
 
 		llvm::IRBuilder<> builder(codegenInto);
@@ -222,7 +230,13 @@ struct GraphFuncCallType : public NodeType {
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		auto func =
-		    codegenInto->getModule()->getFunction(mangleFunctionName(module().fullName(), name()));
+		    codegenInto->
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+				getParent()->getParent()
+#else
+				getModule()
+#endif
+				->getFunction(mangleFunctionName(module().fullName(), name()));
 
 		if (func == nullptr) {
 			res.addEntry("EINT", "Could not find function in llvm module",
