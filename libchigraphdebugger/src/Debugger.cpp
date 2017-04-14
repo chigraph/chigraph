@@ -22,11 +22,20 @@
 #include <lldb/API/SBListener.h>
 #include <lldb/API/SBThread.h>
 
+#include <stdlib.h> // for setenv
+
 namespace fs = boost::filesystem;
 
 namespace chi {
 
 Debugger::Debugger(const char* pathToChig, GraphModule& mod) : mModule{&mod} {
+	
+	// point it to lldb-server
+#if __linux__
+	auto lldbServerPath = fs::path(pathToChig).parent_path() / "lldb-server";
+	setenv("LLDB_DEBUGSERVER_PATH", lldbServerPath.c_str(), 1);
+#endif
+	
 	lldb::SBDebugger::Initialize();
 	mDebugger = lldb::SBDebugger::Create();
 
