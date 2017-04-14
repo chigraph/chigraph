@@ -275,7 +275,14 @@ struct StringLiteralNodeType : NodeType {
 		auto global = builder.CreateGlobalString(literalString);
 
 		auto const0ID = llvm::ConstantInt::get(context().llvmContext(), llvm::APInt(32, 0, false));
-		auto gep      = builder.CreateGEP(global, {const0ID, const0ID});
+		auto gep      = builder.CreateGEP(global, 
+// LLVM 3.6- doesn't have std::initializer_list constructor to llvm::ArrayRef
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+										  std::vector<llvm::Value*>{{const0ID, const0ID}}
+#else
+										  {const0ID, const0ID}
+#endif
+		);
 		builder.CreateStore(gep, io[0], false);
 
 		builder.CreateBr(outputBlocks[0]);
