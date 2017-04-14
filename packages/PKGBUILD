@@ -1,0 +1,34 @@
+
+pkgname=chigraph
+pkgver=02decd6f2bf7286bfd95ff779aa97b1535ccf016
+pkgrel=1
+arch=('i686' 'x86_64')
+
+pkgdesc="A visual programming language"
+url='https://github.com/chigraph/chigraph'
+
+depends=('libgit2' 'llvm' 'clang' 'lldb')
+makedepends=('cmake' 'git')
+
+source=("chigraph::git+https://github.com/chigraph/chigraph")
+md5sums=('SKIP')
+
+pkgver() {
+	cd chigraph
+	git rev-parse HEAD
+}
+
+prepare() {
+	mkdir -p build
+}
+
+build() {
+	cd build
+	cmake ../chigraph -DCMAKE_BUILD_TYPE=Release -DCG_USE_SYSTEM_LIBGIT2=ON -DCG_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
+	make -j`nproc`
+}
+
+package() {
+	make -C build DESTDIR="${pkgdir}" install
+	rm -r "${pkgdir}/usr/lib/clang"
+}

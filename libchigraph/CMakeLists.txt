@@ -1,7 +1,3 @@
-# compile + install a c++/c standard library
-
-#include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/GetLibStdCXX.cmake)
-
 # Fix for CXX11 feature detection of pre-3.1 CMake
 if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} LESS 3.1)
 	include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/CheckCXX11Features.cmake)
@@ -153,7 +149,8 @@ endforeach()
 
 target_link_libraries(chigraph
 PUBLIC
-	boost_filesystem
+	${Boost_SYSTEM_LIBRARY}
+	${Boost_FILESYSTEM_LIBRARY}
 	${LIBGIT2_LIBRARIES}
 PUBLIC
 	${LLVM_LD_FLAGS_LIST}
@@ -181,7 +178,6 @@ PUBLIC
 	include/
 	${CMAKE_BINARY_DIR}/ # for config.h
 	../third_party/GSL/include
-	../third_party/libexecstream/include
 	${LIBGIT2_INCLUDE_DIR}
 	${LLVM_INCLUDE_DIR}
 )
@@ -208,6 +204,7 @@ install(TARGETS chigraph
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
 )
+
 install(DIRECTORY include/chi DESTINATION include)
 install(DIRECTORY ${CMAKE_BINARY_DIR}/lib DESTINATION .)
 

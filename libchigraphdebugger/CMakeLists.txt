@@ -57,3 +57,12 @@ PUBLIC
 	"${LLDB_LIBRARY}"
 )
 
+
+
+install(TARGETS chigraphdebugger
+	RUNTIME DESTINATION bin
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+)
+install(DIRECTORY include/chi DESTINATION include)
+

@@ -9,6 +9,7 @@ set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 option(CG_BUILD_DEBUGGER "Should the debugger be built" ON)
 option(CG_USE_SYSTEM_LIBGIT2 "Should the system try to find libgit2 from the system instead of the packaged version" OFF)
+option(CG_USE_SYSTEM_BOOST "Should the system try to find boost from the system instead of the packaged version" OFF)
 
 # this is really important to keep install-like paths
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -19,13 +20,23 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 list(APPEND CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-# disable tests
-set(BUILD_CLAR OFF CACHE BOOL "")
-add_subdirectory(third_party/libexecstream)
+if (CG_BUILD_TESTS)
+	# disable tests
+	set(BUILD_CLAR OFF CACHE BOOL "")
+	add_subdirectory(third_party/libexecstream)
+endif()
 
 # we're building them ourselves, so don't auto-link in on windows
 add_definitions("-DBOOST_ALL_NO_LIB")
-add_subdirectory(third_party/boost)
+
+if (CG_USE_SYSTEM_BOOST)
+	find_package(Boost REQUIRED COMPONENTS filesystem system program_options)
+else()
+	add_subdirectory(third_party/boost)
+	set(Boost_FILESYSTEM_LIBRARY boost_filesystem)
+	set(Boost_SYSTEM_LIBRARY boost_system)
+	set(Boost_PROGRAM_OPTIONS_LIBRARY boost_program_options)
+endif()
 
 # compile libgit2
 if (NOT CG_USE_SYSTEM_LIBGIT2)
