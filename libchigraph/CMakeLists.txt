@@ -1,6 +1,11 @@
 # compile + install a c++/c standard library
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/GetLibStdCXX.cmake)
+#include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/GetLibStdCXX.cmake)
+
+# Fix for CXX11 feature detection of pre-3.1 CMake
+if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} LESS 3.1)
+	include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/CheckCXX11Features.cmake)
+endif()
 
 execute_process(COMMAND ${LLVM_CONFIG} --prefix OUTPUT_VARIABLE CLANG_INSTALL_PREFIX  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "clang install prefix: ${CLANG_INSTALL_PREFIX}")
@@ -48,7 +53,13 @@ set(CHI_PRIVATE_FILES
 
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
-target_compile_features(chigraph PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
+if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} LESS 3.1)
+	CXX11_CHECK_FEATURE("rvalue_references"  2118 HAS_CXX11_RVALUE_REFERENCES)
+	CXX11_CHECK_FEATURE("variadic_templates" 2555 HAS_CXX11_VARIADIC_TEMPLATES)
+	CXX11_CHECK_FEATURE("constexpr"          2235 HAS_CXX11_CONSTEXPR)
+else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} GREATER 3.1 OR ${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} EQUAL 3.1)
+	target_compile_features(chigraph PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
+endif()
 
 # get include directories
 execute_process(COMMAND ${LLVM_CONFIG} --includedir OUTPUT_VARIABLE LLVM_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -143,7 +154,7 @@ endforeach()
 target_link_libraries(chigraph
 PUBLIC
 	boost_filesystem
-	git2
+	${LIBGIT2_LIBRARIES}
 PUBLIC
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
@@ -171,13 +182,14 @@ PUBLIC
 	${CMAKE_BINARY_DIR}/ # for config.h
 	../third_party/GSL/include
 	../third_party/libexecstream/include
-	../third_party/libgit2/include
+	${LIBGIT2_INCLUDE_DIR}
 	${LLVM_INCLUDE_DIR}
 )
 
 target_compile_options(chigraph
 PUBLIC 
 	${LLVM_CXX_FLAGS_LIST}
+	${LIBGIT2_DEFINITIONS}
 )
 
 

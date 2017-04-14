@@ -7,11 +7,10 @@
 #include "chi/Result.hpp"
 
 #include <llvm/AsmParser/Parser.h>
-#include <llvm/IR/DebugInfoMetadata.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
 #include <llvm/Support/SourceMgr.h>
-#include <gsl/gsl_assert>
+#include <llvm/IR/DebugInfo.h>
 
 namespace chi {
 
