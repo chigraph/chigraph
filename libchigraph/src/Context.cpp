@@ -140,6 +140,8 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 
 Result Context::fetchModule(const fs::path& name, bool recursive) {
 	Result res;
+	
+	auto modCtx = res.addScopedContext({{"Module Name", name.string()}});
 
 	if (name == "lang") { return res; }
 
@@ -163,10 +165,11 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 
 			return res;
 		}
+		
+		auto repoPathCtx = res.addScopedContext({{"Repo Path", repoPath}});
 
 		if (type == VCSType::Unknown) {
-			res.addEntry("EUKN", "Could not resolve URL for module",
-			             {{"Module Name", name.string()}});
+			res.addEntry("EUKN", "Could not resolve URL for module", {});
 			return res;
 		}
 		Expects(type == VCSType::Git);
@@ -176,7 +179,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		int             err = git_repository_open(&repo, repoPath.string().c_str());
 		if (err != 0) {
 			res.addEntry("EUKN", "Failed to open git repository",
-			             {{"Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			             {{"Error Message", giterr_last()->message}});
 			return res;
 		}
 
@@ -186,7 +189,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		if (err != 0) {
 			res.addEntry(
 			    "EUKN", "Failed to get remote origin",
-			    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			    {{"Error Message", giterr_last()->message}});
 			return res;
 		}
 
@@ -196,7 +199,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		if (err != 0) {
 			res.addEntry(
 			    "EUKN", "Failed to fetch repo",
-			    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			    {{"Error Message", giterr_last()->message}});
 			return res;
 		}
 
@@ -221,7 +224,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		if (err != 0) {
 			res.addEntry(
 			    "EUKN", "Failed to get new head from repo",
-			    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+			    {{"Error Message", giterr_last()->message}});
 			return res;
 		}
 
@@ -247,7 +250,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to get reference to master",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -257,7 +260,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to fast forward",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -267,7 +270,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to get HEAD",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -277,7 +280,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to write index to tree",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -297,7 +300,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to get HEAD",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -317,7 +320,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to create git signature",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -327,7 +330,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to get commit for origin/master",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -337,7 +340,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to get reference to HEAD",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -346,7 +349,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to get commit from oid",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -356,7 +359,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to git tree from commit",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 			}
 
 			const git_commit* parents[] = {head_parent, origin_master_commit};
@@ -369,7 +372,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			if (err != 0) {
 				res.addEntry(
 				    "EUKN", "Failed to create commit",
-				    {{"Repo Path", repoPath.string()}, {"Error Message", giterr_last()->message}});
+				    {{"Error Message", giterr_last()->message}});
 			}
 		}
 
@@ -380,8 +383,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		// doesn't exist, clone
 
 		if (type == VCSType::Unknown) {
-			res.addEntry("EUKN", "Could not resolve URL for module",
-			             {{"Module Name", name.string()}});
+			res.addEntry("EUKN", "Could not resolve URL for module", {});
 			return res;
 		}
 		Expects(type == VCSType::Git);
@@ -489,6 +491,8 @@ Result Context::typeFromModule(const fs::path& module, boost::string_view name,
 	Expects(toFill != nullptr);
 
 	Result res;
+	
+	
 
 	ChiModule* mod = moduleByFullName(module);
 	if (mod == nullptr) {
@@ -537,6 +541,8 @@ Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toF
 	Expects(toFill != nullptr);
 
 	Result res;
+	
+	auto modNameCtx = res.addScopedContext({{"Module Name", mod.fullName()}});
 
 	auto llmod = std::make_unique<llvm::Module>(mod.fullName(), llvmContext());
 
