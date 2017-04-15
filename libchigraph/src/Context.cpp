@@ -430,7 +430,7 @@ Result Context::addModuleFromJson(const fs::path& fullName, const nlohmann::json
                                   GraphModule** toFill) {
 	Result res;
 	
-	auto scopedCtx = res.addScopedContext({{"Requested Module Name", fullName}});
+	auto scopedCtx = res.addScopedContext({{"Requested Module Name", fullName.string()}});
 
 	// make sure it's not already added
 	{
