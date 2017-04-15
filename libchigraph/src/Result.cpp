@@ -6,7 +6,15 @@
 
 namespace {
 
-/// \internal
+/// merges `from` into `into`. If an entry is in both, it keeps into. 
+void mergeJsonIntoConservative(nlohmann::json& into, const nlohmann::json& from) {
+	for (const auto &j : nlohmann::json::iterator_wrapper(from)) {
+		if (into.find(j.key()) == into.end()) {
+			into[j.key()] = j.value();
+		}
+	}
+}
+
 std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 	std::string indentString(indentLevel * 2, ' ');
 
@@ -48,7 +56,7 @@ void Result::addEntry(const char* ec, const char* overview, nlohmann::json data)
 
 	result_json.push_back(
 	    nlohmann::json({{"errorcode", ec}, {"overview", overview}, {"data", data}}));
-	if (ec[0] == 'E') success = false;
+	if (ec[0] == 'E') mSuccess = false;
 }
 
 std::string Result::dump() const {
@@ -68,6 +76,64 @@ std::string Result::dump() const {
 		}
 	}
 	return ret;
+}
+
+int Result::addContext(const nlohmann::json& data) {
+	static int ctxId = 0;
+	
+	mContexts.emplace(ctxId, data);
+	return ctxId++;
+}
+
+void chi::Result::removeContext(int id) {
+	mContexts.erase(id);
+}
+
+nlohmann::json Result::contextJson() const {
+	// merge all the contexts
+	auto merged = nlohmann::json::object();
+	
+	for (const auto& ctx : mContexts) {
+		      mergeJsonIntoConservative(merged, ctx.second);
+	}
+	
+	return merged;
+}
+
+Result operator+(const Result& lhs, const Result& rhs) {
+	Result ret;
+	ret.mSuccess = lhs.success() && rhs.success();  // if either of them are false, then result is
+
+	// copy each of the results in
+	std::transform(lhs.result_json.begin(), lhs.result_json.end(), std::back_inserter(ret.result_json), [&] (nlohmann::json j) {
+		// apply the context
+		mergeJsonIntoConservative(j["data"], rhs.contextJson());
+		return j;
+	});
+	std::transform(rhs.result_json.begin(), rhs.result_json.end(), std::back_inserter(ret.result_json), [&] (nlohmann::json j) {
+		// apply context
+		mergeJsonIntoConservative(j["data"], lhs.contextJson());
+		return j;
+	});
+
+	return ret;
+}
+
+Result& operator+=(Result& lhs, const Result& rhs) {
+	lhs.mSuccess = lhs.success() && rhs.success(); // if either of them are false, then result is
+	
+	// change the existing entires in lhs to have rhs's context
+	for (auto& entry : lhs.result_json) {
+		mergeJsonIntoConservative(entry["data"], rhs.contextJson());
+	}
+
+	// copy each of the results in and fix context
+	std::transform(rhs.result_json.begin(), rhs.result_json.end(), std::back_inserter(lhs.result_json), [&] (nlohmann::json j) {
+		mergeJsonIntoConservative(j["data"], lhs.contextJson());
+		return j;
+	});
+
+	return lhs;
 }
 
 }  // namespace chi

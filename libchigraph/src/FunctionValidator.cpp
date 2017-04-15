@@ -5,6 +5,7 @@
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
+#include "chi/GraphModule.hpp"
 
 #include <unordered_map>
 
@@ -12,6 +13,7 @@ namespace chi {
 
 Result validateFunction(const GraphFunction& func) {
 	Result res;
+		
 	res += validateFunctionConnectionsAreTwoWay(func);
 	res += validateFunctionNodeInputs(func);
 	res += validateFunctionExecOutputs(func);
@@ -20,9 +22,13 @@ Result validateFunction(const GraphFunction& func) {
 }
 
 Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
+	
 	Result res;
+	
+	// make sure they all get the context
+	auto funcCtx = res.addScopedContext({{"function", func.name()}, {"module", func.module().fullName()}});
+	
 	// make sure all connections connect back
-
 	for (const auto& node : func.nodes()) {
 		// go through input data
 		auto id = 0ull;
@@ -185,6 +191,9 @@ Result validatePath(
 Result validateFunctionNodeInputs(const GraphFunction& func) {
 	Result res;
 
+	// make sure they all get the context
+	auto funcCtx = res.addScopedContext({{"function", func.name()}, {"module", func.module().fullName()}});
+	
 	auto entry = func.entryNode();
 
 	if (entry == nullptr) {
@@ -210,6 +219,9 @@ Result validateFunctionExecOutputs(const GraphFunction& func) {
 	// TODO (#70): quickfix to add return
 
 	Result res;
+	
+	// make sure they all get the context
+	auto funcCtx = res.addScopedContext({{"function", func.name()}, {"module", func.module().fullName()}});
 
 	for (const auto& nodepair : func.nodes()) {
 		auto node = nodepair.second.get();

@@ -8,6 +8,8 @@
 
 #include "chi/json.hpp"
 
+#include <boost/container/flat_map.hpp>
+
 namespace chi {
 /// The result object, used for identifiying errors with good diagnostics
 ///
@@ -66,8 +68,22 @@ namespace chi {
 ///   error to error, if you need to include specifics use the `data` element
 /// - `data`: Extra metadata for the error, including context and how the error occured.
 struct Result {
+
+	
+	/// A helper object for contexts that should be removed at the end of a scope
+	struct ScopedContext {
+		ScopedContext(Result& res, int ctxId) : result{res}, contextId{ctxId} {}
+		
+		~ScopedContext() {
+			result.removeContext(contextId);
+		}
+		
+		Result& result;
+		const int contextId;
+	};
+	
 	/// Default constructor; defaults to success
-	Result() : result_json(nlohmann::json::array()), success{true} {}
+	Result() : result_json(nlohmann::json::array())  {}
 	/// Add a entry to the result, either a warning or an error
 	/// \param ec The error/warning code. If it starts with E, then it is an error and success is
 	/// set to false, if it starts with a W it's a warning and success can stay true if it is still
@@ -77,53 +93,74 @@ struct Result {
 	/// \param data The detailed description this instance of the error
 	void addEntry(const char* ec, const char* overview, nlohmann::json data);
 
+	/// Add some json that will ALWAYS be merged with entries that are added and when results are added to this Result
+	/// \param data The json to merge with every entry
+	/// \return The ID for this context, use this value with removeContext to remove it
+	int addContext(const nlohmann::json& data);
+	
+	/// Add a context with a scope
+	/// Example usage:
+	/// ```
+	/// chi::Result res;
+	/// res.contextJson(); // returns {}
+	/// {
+	///     auto scopedCtx = res.addScopedContext({{"Module", "lang"}});
+	///     res.contextJson(); // returns {"module": "lang"}
+	/// }
+	/// res.contextJson(); // returns {}
+	/// ```
+	ScopedContext addScopedContext(const nlohmann::json& data) {
+		return ScopedContext{*this, addContext(data)};
+	}
+	
+	/// Removes a previously added context
+	/// \param id The ID for the context added with addContext
+	void removeContext(int id);
+	
+	/// Get the JSON associated with the context that's been added
+	nlohmann::json contextJson() const;
+	
+	/// Success test
+	operator bool() const { return success(); }
+	
+	/// Success test
+	bool success() const { return mSuccess; }
+
+	/// !Success test
+	bool operator!() const { return !success(); }
+	/// Dump to a pretty-printed error message
+	std::string dump() const;
+	
+	/// if it is successful
+	bool mSuccess = true;
+		
 	/// The result JSON
 	nlohmann::json result_json;
 
-	/// if it is successful
-	bool success;
-
-	/// Success test
-	operator bool() const { return success; }
-
-	/// !Success test
-	bool operator!() const { return !success; }
-	/// Dump to a pretty-printed error message
-	std::string dump() const;
+private:
+	
+	boost::container::flat_map<int, nlohmann::json> mContexts;
 };
+
 
 /// \name Result operators
 /// \{
 
-/// Append two Result objects
-/// \param lhs The left error
-/// \param rhs The right error
-/// \return The concatinated errors
+/// Append two Result objects. Both of the contexts are merged.
+/// The entires in lhs have the rhs context applied to them, and viceversa as well
+/// \param lhs The left Result
+/// \param rhs The right Result
+/// \return The concatinated Result
 /// \relates Result
-inline Result operator+(const Result& lhs, const Result& rhs) {
-	Result ret;
-	ret.success = !(!lhs.success || !rhs.success);  // if either of them are false, then result is
+Result operator+(const Result& lhs, const Result& rhs);
 
-	// copy each of the results in
-	std::copy(lhs.result_json.begin(), lhs.result_json.end(), std::back_inserter(ret.result_json));
-	std::copy(rhs.result_json.begin(), rhs.result_json.end(), std::back_inserter(ret.result_json));
-
-	return ret;
-}
-
-/// Append one result to an existing one
+/// Append one result to an existing one. Both of the contexts are merged.
+/// The entires in lhs have the rhs context applied to them, and viceversa as well
 /// \param lhs The existing Result to add to
-/// \param rhs The (usually temporary) result to be added into lhs
+/// \param rhs The (usually temporary) result to be added into lhs. 
 /// \return *this
 /// \relates Result
-inline Result& operator+=(Result& lhs, const Result& rhs) {
-	lhs.success = !(!lhs.success || !rhs.success);  // if either of them are false, then result is
-
-	// copy each of the results in
-	std::copy(rhs.result_json.begin(), rhs.result_json.end(), std::back_inserter(lhs.result_json));
-
-	return lhs;
-}
+Result& operator+=(Result& lhs, const Result& rhs);
 
 /// Stream operator
 /// \param lhs The stream

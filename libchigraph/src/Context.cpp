@@ -40,7 +40,6 @@ Context::Context(const fs::path& workPath) {
 Context::~Context() = default;
 
 ChiModule* Context::moduleByFullName(const fs::path& fullModuleName) const noexcept {
-	Result res;
 
 	for (auto& module : mModules) {
 		if (module->fullName() == fullModuleName) { return module.get(); }
@@ -86,6 +85,8 @@ std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
 
 Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, ChiModule** toFill) {
 	Result res;
+	
+	auto requestedModCtx = res.addScopedContext({{"Requested Module Name", name.generic_string()}});
 
 	if (settings & LoadSettings::Fetch) {
 		res += fetchModule(name, bool(settings & LoadSettings::FetchRecursive));
@@ -105,8 +106,7 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 	}
 
 	if (workspacePath().empty()) {
-		res.addEntry("E52", "Cannot load module without a workspace path",
-		             {{"Requested Module", name.generic_string()}});
+		res.addEntry("E52", "Cannot load module without a workspace path");
 		return res;
 	}
 
@@ -116,8 +116,7 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 
 	if (!fs::is_regular_file(fullPath)) {
 		res.addEntry(
-		    "EUKN", "Failed to find module",
-		    {{"Module Name", name.generic_string()}, {"Workspace Path", workspacePath().string()}});
+		    "EUKN", "Failed to find module", {{"Workspace Path", workspacePath().string()}});
 		return res;
 	}
 
@@ -430,6 +429,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 Result Context::addModuleFromJson(const fs::path& fullName, const nlohmann::json& json,
                                   GraphModule** toFill) {
 	Result res;
+	
+	auto scopedCtx = res.addScopedContext({{"Requested Module Name", fullName}});
 
 	// make sure it's not already added
 	{

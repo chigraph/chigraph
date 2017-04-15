@@ -12,6 +12,8 @@ namespace chi {
 Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
                          const boost::filesystem::path& fullName, GraphModule** toFill) {
 	Result res;
+	
+	auto 
 
 	// create the module
 	auto createdModule = createInside.newGraphModule(fullName);
