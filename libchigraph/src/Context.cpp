@@ -106,7 +106,7 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 	}
 
 	if (workspacePath().empty()) {
-		res.addEntry("E52", "Cannot load module without a workspace path");
+		res.addEntry("E52", "Cannot load module without a workspace path", {});
 		return res;
 	}
 

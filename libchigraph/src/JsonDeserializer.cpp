@@ -13,7 +13,7 @@ Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
                          const boost::filesystem::path& fullName, GraphModule** toFill) {
 	Result res;
 	
-	auto 
+	auto resCtx = res.addScopedContext({{"Loading Module Name", fullName.string()}, {"Workspace Path", createInside.workspacePath().string()}});
 
 	// create the module
 	auto createdModule = createInside.newGraphModule(fullName);
