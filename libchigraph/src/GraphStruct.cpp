@@ -48,23 +48,33 @@ DataType GraphStruct::dataType() {
 	std::vector<llvm::Type*> llTypes;
 	llTypes.reserve(types().size());
 
-	std::vector<llvm::Metadata*> diTypes;
+	std::vector<
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MAJOR <= 6
+		llvm::DIDescriptor
+#else
+		llvm::Metadata*
+#endif
+		> diTypes;
 	diTypes.reserve(types().size());
 
 	size_t currentOffset = 0;
+	
+	
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+	// make a temp module so we can make a DIBuilder
+	auto tmpMod = std::make_unique<llvm::Module>("tmp", context().llvmContext());
+	auto diBuilder = std::make_unique<llvm::DIBuilder>(*tmpMod);
+#endif
+	
 	for (const auto& type : types()) {
 		auto debugType = type.type.debugType();
 
 		llTypes.push_back(type.type.llvmType());
-
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-		// make a temp module so we can make a DIBuilder
-		auto tmpMod = std::make_unique<llvm::Module>("tmp", context().llvmContext());
-		auto diBuilder = std::make_unique<llvm::DIBuilder>(*tmpMod);
 		
-		auto member = diBuilder->createMemberType(llvm::DIDescriptor(), type.name, llvm::DIFile(), 0, debugType->getSizeInBits(), 8, currentOffset, 0, *debugType);
+	auto member = 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+		diBuilder->createMemberType(llvm::DIDescriptor(), type.name, llvm::DIFile(), 0, debugType->getSizeInBits(), 8, currentOffset, 0, *debugType)
 #else
-		auto member =
 		    llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member,
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 8
 		                             llvm::MDString::get(context().llvmContext(), type.name),
@@ -72,18 +82,25 @@ DataType GraphStruct::dataType() {
 		                             type.name,
 #endif
 		                             nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8,
-		                             currentOffset, llvm::DINode::DIFlags{}, nullptr);
+		                             currentOffset, llvm::DINode::DIFlags{}, nullptr)
 #endif
+			;
 		diTypes.push_back(member);
 
 		currentOffset += debugType->getSizeInBits();
 	}
 	auto llType = llvm::StructType::create(llTypes, name());
 
-	auto diStructType = llvm::DICompositeType::get(
-	    context().llvmContext(), llvm::dwarf::DW_TAG_structure_type, name(), nullptr, 0, nullptr,
-	    nullptr, currentOffset, 8, 0, llvm::DINode::DIFlags{},
-	    llvm::MDTuple::get(context().llvmContext(), diTypes), 0, nullptr, {}, "");
+	auto diStructType = 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+		new DICompositeType(builder->createStructType(llvm::DIDescriptor(), name(), llvm::DIFile(), 0, currentOffset, 8, 0, llvm::DIType(), diTypes)); // TODO (#77): yeah this is a memory leak. Fix it.
+#else
+		llvm::DICompositeType::get(
+			context().llvmContext(), llvm::dwarf::DW_TAG_structure_type, name(), nullptr, 0, nullptr,
+			nullptr, currentOffset, 8, 0, llvm::DINode::DIFlags{},
+			llvm::MDTuple::get(context().llvmContext(), diTypes), 0, nullptr, {}, "")
+#endif
+	;
 
 	mDataType = DataType(&module(), name(), llType, diStructType);
 
