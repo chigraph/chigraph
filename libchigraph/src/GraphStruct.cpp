@@ -62,7 +62,7 @@ DataType GraphStruct::dataType() {
 		auto tmpMod = std::make_unique<llvm::Module>("tmp", context().llvmContext());
 		auto diBuilder = std::make_unique<llvm::DIBuilder>(*tmpMod);
 		
-		auto member = diBuilder->createMemberType(nullptr, type.name, nullptr, 0, debugType->getSizeInBits(), 8, currentOffset, 0, nullptr);
+		auto member = diBuilder->createMemberType(llvm::DIDescriptor(), type.name, llvm::DIFile(), 0, debugType->getSizeInBits(), 8, currentOffset, 0, *debugType);
 #else
 		auto member =
 		    llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member,
