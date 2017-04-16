@@ -6,6 +6,10 @@
 #include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/DerivedTypes.h>
 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MAJOR <= 6
+#include <llvm/IR/Module.h>
+#endif
+
 namespace chi {
 
 GraphStruct::GraphStruct(GraphModule& mod, std::string name)
@@ -93,7 +97,7 @@ DataType GraphStruct::dataType() {
 
 	auto diStructType = 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-		new DICompositeType(builder->createStructType(llvm::DIDescriptor(), name(), llvm::DIFile(), 0, currentOffset, 8, 0, llvm::DIType(), diTypes)); // TODO (#77): yeah this is a memory leak. Fix it.
+		new llvm::DICompositeType(builder->createStructType(llvm::DIDescriptor(), name(), llvm::DIFile(), 0, currentOffset, 8, 0, llvm::DIType(), diTypes)); // TODO (#77): yeah this is a memory leak. Fix it.
 #else
 		llvm::DICompositeType::get(
 			context().llvmContext(), llvm::dwarf::DW_TAG_structure_type, name(), nullptr, 0, nullptr,
