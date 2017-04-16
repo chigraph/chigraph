@@ -57,6 +57,13 @@ DataType GraphStruct::dataType() {
 
 		llTypes.push_back(type.type.llvmType());
 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+		// make a temp module so we can make a DIBuilder
+		auto tmpMod = std::make_unique<llvm::Module>("tmp", context().llvmContext());
+		auto diBuilder = std::make_unique<llvm::DIBuilder>(*tmpMod);
+		
+		auto member = diBuilder->createMemberType(nullptr, type.name, nullptr, 0, debugType->getSizeInBits(), 8, currentOffset, 0, nullptr);
+#else
 		auto member =
 		    llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member,
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 8
@@ -66,6 +73,7 @@ DataType GraphStruct::dataType() {
 #endif
 		                             nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8,
 		                             currentOffset, llvm::DINode::DIFlags{}, nullptr);
+#endif
 		diTypes.push_back(member);
 
 		currentOffset += debugType->getSizeInBits();
