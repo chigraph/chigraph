@@ -204,10 +204,13 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 #endif
 									dType
 									);
-
-				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
+		
+				data.dbuilder->insertDeclare(alloc, debugVar, 
+#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5)
+											 data.dbuilder->createExpression(),
 #if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6)
 				                             llvm::DebugLoc::get(1, 1, data.diFunc),
+#endif
 #endif
 				                             data.allocBlock)
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
@@ -271,11 +274,11 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 
 	// codegen
 	res += node->type().codegen(
-	    execInputID, llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc
+	    execInputID, llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-			->get()
+			*
 #endif
-		), io,
+		data.diFunc), io,
 	    codeBlock, outputBlocks, data.compileCache);
 	if (!res) { return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}}; }
 
