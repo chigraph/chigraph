@@ -472,7 +472,11 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			    debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 			    createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc, "inputexec_id",
-			                        debugFile, entryLN, intDataType.debugType());
+			                        debugFile, entryLN, 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+									*
+#endif
+									intDataType.debugType());
 #else
 
 			    createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, entryLN,
@@ -509,7 +513,11 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		auto          debugParam = debugBuilder.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
-		                                      tyAndName.name, debugFile, entryLN, dType);
+		                                      tyAndName.name, debugFile, entryLN, 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+												*
+#endif
+												dType);
 #else
 		                  createParameterVariable(debugFunc, tyAndName.name,
 		                                          idx + 1,  // + 1 because it starts at 1
