@@ -119,7 +119,7 @@ struct CFuncNode : NodeType {
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 		llvm::Linker::LinkModules(parentModule, copymod
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
-			llvm::Linker::DestroySource, nullptr
+			, llvm::Linker::DestroySource, nullptr
 #endif
 		);
 #else
@@ -496,7 +496,7 @@ Result GraphModule::generateModule(llvm::Module& module) {
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 				llvm::Linker::LinkModules(&module, generatedModule.get()
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
-					llvm::Linker::DestroySource, nullptr
+					, llvm::Linker::DestroySource, nullptr
 #endif
 				);
 #else

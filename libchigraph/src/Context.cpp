@@ -559,7 +559,7 @@ Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toF
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 		llvm::Linker::LinkModules(llmod.get(), compiledDep.get()
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
-			llvm::Linker::DestroySource, nullptr
+			, llvm::Linker::DestroySource, nullptr
 #endif
 		);
 #else
