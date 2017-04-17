@@ -54,7 +54,11 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, co
 	unique_ptr<MemoryBuffer> buffer;
 	if (strcmp(code, "") != 0) {
 		StringRef                testCodeData(code);
-		buffer = MemoryBuffer::getMemBufferCopy(testCodeData);
+		buffer = 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+			std::unique_ptr<MemoryBuffer>
+#endif
+			(MemoryBuffer::getMemBufferCopy(testCodeData));
 		Clang->getInvocation().getPreprocessorOpts().addRemappedFile(fileName, buffer.get());
 	}
 	
@@ -67,5 +71,9 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, co
 	
 	buffer.release();
 
-	return compilerAction->takeModule();
+	return 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+		std::unique_ptr<llvm::Module>
+#endif
+		(compilerAction->takeModule());
 }
