@@ -53,7 +53,7 @@ DataType GraphStruct::dataType() {
 	llTypes.reserve(types().size());
 
 	std::vector<
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MAJOR <= 6
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
 		llvm::DIDescriptor
 #else
 		llvm::Metadata*
