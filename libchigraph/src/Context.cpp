@@ -19,6 +19,8 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Type.h>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
@@ -645,7 +647,14 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	llvm::InitializeNativeTargetAsmPrinter();
 	llvm::InitializeNativeTargetAsmParser();
 
-	llvm::EngineBuilder EEBuilder(std::move(mod));
+	llvm::EngineBuilder EEBuilder(
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+		mod->get()
+#else
+		std::move(mod)
+#endif
+		
+	);
 
 	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
 	// EEBuilder.setVerifyModules(true);
@@ -654,7 +663,11 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 
 	EEBuilder.setErrorStr(&errMsg);
 
-	EEBuilder.setMCJITMemoryManager(std::make_unique<llvm::SectionMemoryManager>());
+	EEBuilder.setMCJITMemoryManager(
+#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5)
+		std::unique_ptr<llvm::SectionMemoryManager>
+#endif
+		(new llvm::SectionMemoryManager()));
 
 	return std::unique_ptr<llvm::ExecutionEngine>(EEBuilder.create());
 }
