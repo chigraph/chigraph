@@ -492,7 +492,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 #endif
 			                           allocBlock)
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-				->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc)
+				->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc))
 #endif
 			;  // TODO(#65): "line" numbers
 
