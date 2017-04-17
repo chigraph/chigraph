@@ -211,7 +211,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 #endif
 				                             data.allocBlock)
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-				->setDebugLoc(llvm::DebugLoc::get(1, 1, data.diFunc->get()))
+				->setDebugLoc(llvm::DebugLoc::get(1, 1, *data.diFunc))
 #endif
 				;
 			}
@@ -491,7 +491,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 #endif
 			                           allocBlock)
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-				->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc->get())
+				->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, *debugFunc)
 #endif
 			;  // TODO(#65): "line" numbers
 
@@ -532,7 +532,11 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		                           llvm::DebugLoc::get(entryLN, 1, debugFunc),
 #endif
 #endif
-		                           allocBlock);  // TODO(#65): line numbers
+		                           allocBlock)
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+									->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, *debugFunc))
+#endif
+		;  // TODO(#65): line numbers
 
 		++idx;
 	}
