@@ -886,7 +886,18 @@ DataType LangModule::typeFromName(boost::string_view name) {
 	// just parse the type
 	auto IR = "@G = external global "s + name.to_string();
 
-	auto tmpModule = llvm::parseAssemblyString(IR, err, context().llvmContext());
+	auto tmpModule = llvm::
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+		ParseAssemblyString
+#else
+		parseAssemblyString
+#endif
+			(IR
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+			.c_str()
+#endif
+			, err, context().llvmContext());
+	
 	if (!tmpModule) { return nullptr; }
 
 	ty = tmpModule->getNamedValue("G")->getType()->getContainedType(0);
