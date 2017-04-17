@@ -274,7 +274,11 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 
 	// codegen
 	res += node->type().codegen(
-	    execInputID, llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc), io,
+	    execInputID, llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1, data.diFunc
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+			->get()
+#endif
+		), io,
 	    codeBlock, outputBlocks, data.compileCache);
 	if (!res) { return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}}; }
 
@@ -381,10 +385,18 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			res += func.context().typeFromModule("lang", "i32", &intType);
 			if (!res) { return res; }
 			Expects(intType.valid());
-			params.push_back(intType.debugType());
+			params.push_back(intType.debugType()
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MAJOR <= 6
+				->get()
+#endif
+			);
 
 			// then first in inputexec id
-			params.push_back(intType.debugType());
+			params.push_back(intType.debugType()
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MAJOR <= 6
+				->get()
+#endif
+			);
 
 			// add paramters
 			for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
@@ -393,11 +405,15 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		}
 
 		// create type
-		subroutineType = debugBuilder.createSubroutineType(
+		subroutineType = 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+			new llvm::DISubroutineType // TODO: yay, another memory leak
+#endif
+		(debugBuilder.createSubroutineType(
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 		    debugFile,
 #endif
-		    debugBuilder.getOrCreateTypeArray(params));
+		    debugBuilder.getOrCreateTypeArray(params)));
 	}
 
 	auto            mangledName = mangleFunctionName(func.module().fullName(), func.name());
