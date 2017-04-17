@@ -485,10 +485,12 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			debugBuilder.insertDeclare(&arg, debugParam, 
 #if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5)
 									   debugBuilder.createExpression(),
+#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6)
 			                           llvm::DebugLoc::get(entryLN, 1, debugFunc),
 #endif
+#endif
 			                           allocBlock)
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
 				->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc->get())
 #endif
 			;  // TODO(#65): "line" numbers
@@ -523,15 +525,23 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		                                          idx + 1,  // + 1 because it starts at 1
 		                                          debugFile, entryLN, dType);
 #endif
-		debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
+		debugBuilder.insertDeclare(&arg, debugParam, 
+#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5)
+								   debugBuilder.createExpression(),
+#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6)
 		                           llvm::DebugLoc::get(entryLN, 1, debugFunc),
+#endif
+#endif
 		                           allocBlock);  // TODO(#65): line numbers
 
 		++idx;
 	}
 
-	codegenMetadata codeMetadata{allocBlock, &debugBuilder, debugFunc,
-	                             std::unordered_map<NodeInstance*, Cache>{}, nodeLocations};
+	codegenMetadata codeMetadata{allocBlock, &debugBuilder, 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+								&
+#endif
+								debugFunc, std::unordered_map<NodeInstance*, Cache>{}, nodeLocations};
 
 	codegenHelper(entry, 0, block, codeMetadata, res);
 
