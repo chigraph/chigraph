@@ -65,7 +65,6 @@ message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 set(LLVM_COMPONENTS
 	executionengine
 	profiledata
-	passes
 	irreader
 	option
 	bitwriter
@@ -81,6 +80,9 @@ set(LLVM_COMPONENTS
 	codegen
 	selectiondag
 )
+if (LLVM_VERSION VERSION_GREATER 3.7.0 OR LLVM_VERSION VERSION_EQUAL 3.7.0)
+	list(APPEND LLVM_COMPONENTS passes)
+endif()
 if (LLVM_VERSION VERSION_GREATER 3.9.0 OR LLVM_VERSION VERSION_EQUAL 3.9.0)
 	list(APPEND LLVM_COMPONENTS coverage)
 endif()
