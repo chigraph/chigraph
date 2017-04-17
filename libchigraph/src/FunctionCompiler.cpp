@@ -429,7 +429,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, entryLN,
 	    subroutineType, false, true, 0, 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-			0
+			0,
 #else
 			llvm::DINode::DIFlags{},
 #endif		
@@ -440,7 +440,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			f);
 #else
 	    );
-#if !(LLVM_VERSION_MAJOR == 4 && LLVM_VERSION_MINOR == 0)
+#if !(LLVM_VERSION_MAJOR >= 4)
 	f->setSubprogram(debugFunc);
 #endif
 #endif

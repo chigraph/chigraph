@@ -649,7 +649,7 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 
 	llvm::EngineBuilder EEBuilder(
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
-		mod->get()
+		mod.get()
 #else
 		std::move(mod)
 #endif
