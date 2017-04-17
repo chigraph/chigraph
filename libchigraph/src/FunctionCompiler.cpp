@@ -200,12 +200,9 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 #endif
 									1,
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-									llvm::DITypeRef(
+									*
 #endif
-										dType
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-									->get())
-#endif
+									dType
 									);
 
 				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
@@ -386,21 +383,25 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			if (!res) { return res; }
 			Expects(intType.valid());
 			params.push_back(intType.debugType()
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MAJOR <= 6
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
 				->get()
 #endif
 			);
 
 			// then first in inputexec id
 			params.push_back(intType.debugType()
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MAJOR <= 6
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
 				->get()
 #endif
 			);
 
 			// add paramters
 			for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
-				params.push_back(dType.type.debugType());
+				params.push_back(dType.type.debugType()
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+					->get()
+#endif
+				);
 			}
 		}
 
@@ -426,11 +427,17 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	// TODO(#65): line numbers?
 	auto debugFunc = debugBuilder.createFunction(
 	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, entryLN,
-	    subroutineType, false, true, 0, llvm::DINode::DIFlags{}, false
+	    subroutineType, false, true, 0, 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+			0
+#else
+			llvm::DINode::DIFlags{},
+#endif		
+			false
 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-	    ,
-	    f);
+			,
+			f);
 #else
 	    );
 #if !(LLVM_VERSION_MAJOR == 4 && LLVM_VERSION_MINOR == 0)
