@@ -391,26 +391,26 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		res += func.context().typeFromModule("lang", "i32", &intType);
 		if (!res) { return res; }
 		Expects(intType.valid());
-		params.push_back(intType.debugType()
+		params.push_back(
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-			->get()
+			*
 #endif
-		);
+		intType.debugType());
 
 		// then first in inputexec id
-		params.push_back(intType.debugType()
+		params.push_back(
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-			->get()
+			*
 #endif
-		);
+		intType.debugType());
 
 		// add paramters
 		for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
-			params.push_back(dType.type.debugType()
+			params.push_back(
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-				->get()
+				*
 #endif
-			);
+			dType.type.debugType());
 		}
 	}
 
