@@ -48,7 +48,13 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
     unsigned execInputID, llvm::BasicBlock* block, codegenMetadata& data, Result& res) {
 	llvm::IRBuilder<> pureBuilder(block);
 	auto              f   = data.allocBlock->getParent();
-	auto              mod = data.allocBlock->getModule();
+	auto              mod = data.allocBlock->
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+		getParent()->getParent()
+#else
+		getModule()
+#endif
+		;
 
 	auto codeBlock = llvm::BasicBlock::Create(node->context().llvmContext(),
 	                                          boost::uuids::to_string(node->id()) + "_code", f);
