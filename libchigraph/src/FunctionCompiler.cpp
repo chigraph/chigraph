@@ -419,7 +419,13 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 		debugFile,
 #endif
-		debugBuilder.getOrCreateTypeArray(params));
+		debugBuilder.
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+			getOrCreateArray
+#else
+			getOrCreateTypeArray
+#endif
+				(params));
 
 
 	auto            mangledName = mangleFunctionName(func.module().fullName(), func.name());
