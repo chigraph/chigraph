@@ -52,13 +52,7 @@ DataType GraphStruct::dataType() {
 	std::vector<llvm::Type*> llTypes;
 	llTypes.reserve(types().size());
 
-	std::vector<
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-		llvm::DIDescriptor
-#else
-		llvm::Metadata*
-#endif
-		> diTypes;
+	std::vector<llvm::Metadata*> diTypes;
 	diTypes.reserve(types().size());
 
 	size_t currentOffset = 0;
@@ -97,7 +91,7 @@ DataType GraphStruct::dataType() {
 
 	auto diStructType = 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-		new llvm::DICompositeType(diBuilder->createStructType(llvm::DIDescriptor(), name(), llvm::DIFile(), 0, currentOffset, 8, 0, llvm::DIType(), diTypes)); // TODO (#77): yeah this is a memory leak. Fix it.
+		new llvm::DICompositeType(diBuilder->createStructType(llvm::DIDescriptor(), name(), llvm::DIFile(), 0, currentOffset, 8, 0, llvm::DIType(), diBuilder->getOrCreateArray(diTypes))); // TODO (#77): yeah this is a memory leak. Fix it.
 #else
 		llvm::DICompositeType::get(
 			context().llvmContext(), llvm::dwarf::DW_TAG_structure_type, name(), nullptr, 0, nullptr,
