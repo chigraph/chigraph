@@ -65,6 +65,7 @@ message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 set(LLVM_COMPONENTS
 	executionengine
 	profiledata
+	instrumentation
 	irreader
 	option
 	bitwriter
