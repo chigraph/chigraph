@@ -372,56 +372,52 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	auto debugFile = debugBuilder.createFile(debugCU->getFilename(), debugCU->getDirectory());
 
 	// create function type
-	llvm::DISubroutineType* subroutineType;
-	{
-		// create param list
-		std::vector<
+	///////////////////////
+
+	// create param list
+	std::vector<
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
-			llvm::Value*
+		llvm::Value*
 #else
-			llvm::Metadata*
+		llvm::Metadata*
 #endif
-		> params;
-		{
-			// ret first
-			DataType intType;
-			res += func.context().typeFromModule("lang", "i32", &intType);
-			if (!res) { return res; }
-			Expects(intType.valid());
-			params.push_back(intType.debugType()
+	> params;
+	{
+		// ret first
+		DataType intType;
+		res += func.context().typeFromModule("lang", "i32", &intType);
+		if (!res) { return res; }
+		Expects(intType.valid());
+		params.push_back(intType.debugType()
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+			->get()
+#endif
+		);
+
+		// then first in inputexec id
+		params.push_back(intType.debugType()
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+			->get()
+#endif
+		);
+
+		// add paramters
+		for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
+			params.push_back(dType.type.debugType()
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
 				->get()
 #endif
 			);
-
-			// then first in inputexec id
-			params.push_back(intType.debugType()
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-				->get()
-#endif
-			);
-
-			// add paramters
-			for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
-				params.push_back(dType.type.debugType()
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-					->get()
-#endif
-				);
-			}
 		}
-
-		// create type
-		subroutineType = 
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-			new llvm::DISubroutineType // TODO: yay, another memory leak
-#endif
-		(debugBuilder.createSubroutineType(
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-		    debugFile,
-#endif
-		    debugBuilder.getOrCreateTypeArray(params)));
 	}
+
+	// create type
+	auto subroutineType = debugBuilder.createSubroutineType(
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+		debugFile,
+#endif
+		debugBuilder.getOrCreateTypeArray(params));
+
 
 	auto            mangledName = mangleFunctionName(func.module().fullName(), func.name());
 	llvm::Function* f =
@@ -432,11 +428,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 	// TODO(#65): line numbers?
 	auto debugFunc = debugBuilder.createFunction(
-	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, entryLN,
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-			*
-#endif
-			subroutineType, false, true, 0, 
+	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, entryLN, subroutineType, false, true, 0, 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
 			0,
 #else
@@ -491,7 +483,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 #endif
 			                           allocBlock)
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-				->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, *debugFunc)
+				->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc)
 #endif
 			;  // TODO(#65): "line" numbers
 
@@ -534,7 +526,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 #endif
 		                           allocBlock)
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-									->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, *debugFunc))
+									->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc))
 #endif
 		;  // TODO(#65): line numbers
 
