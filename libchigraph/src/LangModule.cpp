@@ -890,7 +890,7 @@ DataType LangModule::typeFromName(boost::string_view name) {
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
 		ParseAssemblyString(IR.c_str(), new llvm::Module("tmp", context().llvmContext()), err, context().llvmContext());
 #else
-		parseAssemblyString(IR, err, context.llvmContext());
+		parseAssemblyString(IR, err, context().llvmContext());
 #endif
 	
 	if (!tmpModule) { return nullptr; }
