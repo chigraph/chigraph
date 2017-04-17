@@ -188,9 +188,8 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 #endif
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
 									*
-#else
-				                    data.diFunc,
 #endif
+				                    data.diFunc,
 				                    boost::uuids::to_string(node->id()) + "__" + std::to_string(id),
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
 									data.dbuilder->createFile(
