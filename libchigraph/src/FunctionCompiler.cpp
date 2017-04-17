@@ -478,9 +478,16 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			    createParameterVariable(debugFunc, "inputexec_id", 1, debugFile, entryLN,
 			                            intDataType.debugType());
 #endif
-			debugBuilder.insertDeclare(&arg, debugParam, debugBuilder.createExpression(),
+			debugBuilder.insertDeclare(&arg, debugParam, 
+#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5)
+									   debugBuilder.createExpression(),
 			                           llvm::DebugLoc::get(entryLN, 1, debugFunc),
-			                           allocBlock);  // TODO(#65): "line" numbers
+#endif
+			                           allocBlock)
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+				->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc->get())
+#endif
+			;  // TODO(#65): "line" numbers
 
 			++idx;
 			continue;
