@@ -52,7 +52,13 @@ DataType GraphStruct::dataType() {
 	std::vector<llvm::Type*> llTypes;
 	llTypes.reserve(types().size());
 
-	std::vector<llvm::Metadata*> diTypes;
+	std::vector<
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+		llvm::Value*
+#else
+		llvm::Metadata*
+#endif
+		> diTypes;
 	diTypes.reserve(types().size());
 
 	size_t currentOffset = 0;

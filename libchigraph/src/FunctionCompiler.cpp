@@ -375,7 +375,13 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	llvm::DISubroutineType* subroutineType;
 	{
 		// create param list
-		std::vector<llvm::Metadata*> params;
+		std::vector<
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+			llvm::Value*
+#else
+			llvm::Metadata*
+#endif
+		> params;
 		{
 			// ret first
 			DataType intType;
@@ -427,14 +433,16 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	// TODO(#65): line numbers?
 	auto debugFunc = debugBuilder.createFunction(
 	    debugFile, func.module().fullName() + ":" + func.name(), mangledName, debugFile, entryLN,
-	    subroutineType, false, true, 0, 
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+			*
+#endif
+			subroutineType, false, true, 0, 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
 			0,
 #else
 			llvm::DINode::DIFlags{},
 #endif		
 			false
-
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 			,
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
