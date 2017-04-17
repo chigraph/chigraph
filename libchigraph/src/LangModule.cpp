@@ -822,13 +822,13 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 	auto mod = std::make_unique<llvm::Module>("tmp", context().llvmContext());
 	
 	auto builder = std::make_unique<llvm::DIBuilder>(*mod);
-	mDebugTypes["i32"] = builder->createBasicType("lang:i32", 32, 32, llvm::dwarf::DW_ATE_signed);
-	mDebugTypes["i1"] = builder->createBasicType("lang:i1", 8, 7, llvm::dwarf::DW_ATE_boolean);
-	mDebugTypes["float"] = builder->createBasicType("lang:float", 64, 64, llvm::dwarf::DW_ATE_float);
+	mDebugTypes["i32"] = new DIBasicType(builder->createBasicType("lang:i32", 32, 32, llvm::dwarf::DW_ATE_signed));
+	mDebugTypes["i1"] = new DIBasicType(builder->createBasicType("lang:i1", 8, 7, llvm::dwarf::DW_ATE_boolean));
+	mDebugTypes["float"] = new DIBasicType(builder->createBasicType("lang:float", 64, 64, llvm::dwarf::DW_ATE_float));
 	
 	auto charType = builder->createBasicType("lang:i8", 8, 8, llvm::dwarf::DW_ATE_unsigned_char);
 	
-	mDebugTypes["i8*"] = builder->createPointerType(charType, 64, 64, "lang:i8*");
+	mDebugTypes["i8*"] = new DIBasicType(builder->createPointerType(charType, 64, 64, "lang:i8*"));
 	
 #else
 	// create debug types
@@ -864,6 +864,15 @@ Result LangModule::nodeTypeFromName(boost::string_view name, const nlohmann::jso
 	             {{"Module", "lang"}, {"Requested Node Type", name.to_string()}});
 
 	return res;
+}
+
+LangModule::~LangModule() {
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+	// free those newed pointers
+	for (const auto& ptr : mDebugTypes) {
+		delete ptr.second;
+	}
+#endif
 }
 
 // the lang module just has the basic llvm types.

@@ -299,7 +299,11 @@ struct MakeStructNodeType : public NodeType {
 
 		llvm::Value* out = io[io.size() - 1];  // output goes last
 		for (auto id = 0; id < io.size() - 1; ++id) {
-			auto ptr = builder.CreateStructGEP(mStruct->dataType().llvmType(), out, id);
+			auto ptr = builder.CreateStructGEP(
+#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6)
+				mStruct->dataType().llvmType(), 
+#endif
+											   out, id);
 			builder.CreateStore(io[id], ptr);
 		}
 
@@ -341,7 +345,11 @@ struct BreakStructNodeType : public NodeType {
 		builder.CreateStore(io[0], tempStruct);
 
 		for (auto id = 1; id < io.size(); ++id) {
-			auto        ptr = builder.CreateStructGEP(nullptr, tempStruct, id - 1);
+			auto        ptr = builder.CreateStructGEP(
+#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6)
+				nullptr, 
+#endif
+				tempStruct, id - 1);
 			std::string s   = stringifyLLVMType(ptr->getType());
 
 			auto val = builder.CreateLoad(ptr);
@@ -527,7 +535,11 @@ Result GraphModule::generateModule(llvm::Module& module) {
 	}
 
 	for (auto& graph : mFunctions) {
-		res += compileFunction(*graph, &module, compileUnit, debugBuilder);
+		res += compileFunction(*graph, &module,
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+							   &
+#endif
+							   compileUnit, debugBuilder);
 	}
 
 	debugBuilder.finalize();

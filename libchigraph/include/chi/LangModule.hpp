@@ -18,7 +18,7 @@ struct LangModule : ChiModule {
 	LangModule(Context& ctx);
 
 	/// Destructor
-	~LangModule() = default;
+	~LangModule();
 
 	Result nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
 	                        std::unique_ptr<NodeType>* toFill) override;
