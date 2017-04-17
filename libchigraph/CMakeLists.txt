@@ -64,6 +64,7 @@ message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 # get llvm libraries
 set(LLVM_COMPONENTS
 	executionengine
+	profiledata
 	passes
 	irreader
 	option
