@@ -437,6 +437,9 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 			,
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+			*
+#endif
 			f);
 #else
 	    );

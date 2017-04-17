@@ -557,7 +557,11 @@ Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toF
 
 // link it in
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
-		llvm::Linker::LinkModules(llmod.get(), compiledDep.get());
+		llvm::Linker::LinkModules(llmod.get(), compiledDep.get()
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+			llvm::Linker::DestroySource, nullptr
+#endif
+		);
 #else
 		llvm::Linker::linkModules(*llmod, std::move(compiledDep));
 #endif
@@ -684,7 +688,7 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 
 		if (funcToRun == nullptr) {
 			res.addEntry("EUKN", "Failed to find main function in module",
-			             {{"Module Name", mod->getName()}});
+			             {{"Module Name", mod->getModuleIdentifier()}});
 			return res;
 		}
 	}
@@ -717,7 +721,7 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt
 
 		if (funcToRun == nullptr) {
 			res.addEntry("EUKN", "Failed to find main function in module",
-			             {{"Module Name", mod->getName()}});
+			             {{"Module Name", mod->getModuleIdentifier()}});
 			return res;
 		}
 	}
