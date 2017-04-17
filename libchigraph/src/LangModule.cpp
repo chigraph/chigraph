@@ -888,15 +888,10 @@ DataType LangModule::typeFromName(boost::string_view name) {
 
 	auto tmpModule = llvm::
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
-		ParseAssemblyString
+		ParseAssemblyString(IR.c_str(), new llvm::Module("tmp", context().llvmContext()), err, context().llvmContext());
 #else
-		parseAssemblyString
+		parseAssemblyString(IR, err, context.llvmContext());
 #endif
-			(IR
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
-			.c_str()
-#endif
-			, err, context().llvmContext());
 	
 	if (!tmpModule) { return nullptr; }
 
@@ -911,6 +906,10 @@ DataType LangModule::typeFromName(boost::string_view name) {
 	// get debug type
 	auto iter = mDebugTypes.find(name.to_string());
 	if (iter == mDebugTypes.end()) { return {}; }
+	
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+	delete tmpModule;
+#endif
 
 	return DataType{this, name.to_string(), ty, iter->second};
 }
