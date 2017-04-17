@@ -22,6 +22,8 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
 
+namespace fs = boost::filesystem;
+
 namespace chi {
 
 namespace {
@@ -186,7 +188,14 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 #endif
 				                    data.diFunc,
 				                    boost::uuids::to_string(node->id()) + "__" + std::to_string(id),
-				                    data.diFunc->getFile(), 1, dType);
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+									data.dbuilder->createFile(
+	                                                      fs::path(data.diFunc->getFilename()).filename().string(),
+	                                                      fs::path(data.diFunc->getFilename()).parent_path().string()),
+#else
+									data.diFunc->getFile(), 
+#endif
+									1, dType);
 
 				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
 				                             llvm::DebugLoc::get(1, 1, data.diFunc),
