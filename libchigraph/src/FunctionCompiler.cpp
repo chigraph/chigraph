@@ -204,7 +204,7 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 #endif
 										dType
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
-									)
+									->get())
 #endif
 									);
 
