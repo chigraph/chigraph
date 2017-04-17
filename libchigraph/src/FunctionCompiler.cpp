@@ -209,8 +209,14 @@ std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
 									);
 
 				data.dbuilder->insertDeclare(alloc, debugVar, data.dbuilder->createExpression(),
+#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6)
 				                             llvm::DebugLoc::get(1, 1, data.diFunc),
-				                             data.allocBlock);
+#endif
+				                             data.allocBlock)
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+				->setDebugLoc(llvm::DebugLoc::get(1, 1, data.diFunc->get()))
+#endif
+				;
 			}
 
 			// make sure the type is right
