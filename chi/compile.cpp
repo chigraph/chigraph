@@ -127,8 +127,13 @@ int compile(const std::vector<std::string>& opts) {
 		if (outtype == "ll") {
 			OpenFlags |= llvm::sys::fs::F_Text;
 		}
-		auto outFile = std::make_unique<llvm::tool_output_file>(outpath.string(), ec, OpenFlags);
-
+		std::string errorString; // only for LLVM 3.5-
+		auto outFile = std::make_unique<llvm::tool_output_file>
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+			(output.string().c_str(), errorString, OpenFlags);
+#else
+			(outpath.string(), ec, OpenFlags);
+#endif
 		if (outtype == "bc") {
 			llvm::WriteBitcodeToFile(llmod.get(), outFile->os());
 		} else if (outtype == "ll") {
