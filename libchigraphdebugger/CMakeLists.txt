@@ -29,14 +29,24 @@ set(DEBUGGER_HEADERS
 add_library(chigraphdebugger STATIC ${DEBUGGER_SRCS} ${DEBUGGER_HEADERS})
 
 if (NOT WIN32)
+	
+	# get server name
+	set(lldb_server_name lldb-server)
+	if (LLVM_VERSION VERSION_LESS "3.7.0")
+		set(lldb_server_name lldb-gdbserver)
+	endif()
+	if (APPLE)
+		set(lldb_server_name debugserver)
+	endif()
+
 	# copy lldb-server
 	add_custom_command(
 	TARGET chigraphdebugger POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different
-		${LLVM_BIN_DIR}/lldb-server
-		${CMAKE_BINARY_DIR}/bin/lldb-server
-	BYPRODUCTS ${CMAKE_BINARY_DIR}/bin/lldb-server
-	COMMENT "Copying lldb-server from ${LLVM_BIN_DIR}/lldb-server to ${CMAKE_BINARY_DIR}/bin/lldb-server"
+		${LLVM_BIN_DIR}/${lldb_server_name}
+		${CMAKE_BINARY_DIR}/bin/${lldb_server_name}
+	BYPRODUCTS ${CMAKE_BINARY_DIR}/bin/${lldb_server_name}
+	COMMENT "Copying lldb-server from ${LLVM_BIN_DIR}/${lldb_server_name} to ${CMAKE_BINARY_DIR}/bin/${lldb_server_name}"
 	)
 endif()
 
