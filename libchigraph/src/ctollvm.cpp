@@ -34,7 +34,8 @@ using namespace llvm;
 using namespace clang;
 using namespace std;
 
-// clang 3.7- don't do this right at all.
+// clang 3.7- don't do this right at all. We need it to pass our arg0, and not just "clang" like 3.7 does. 
+// This is copy-pasted from LLVM 4.0 with some minor modifications.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
 using namespace llvm::opt;
 
@@ -78,8 +79,8 @@ std::unique_ptr<CompilerInvocation> createInvocationFromCommandLineBackport (
     for (auto &A : C->getActions()){
       // On MacOSX real actions may end up being wrapped in BindArchAction
       if (isa<driver::BindArchAction>(A))
-        A = *A->input_begin();
-      if (isa<driver::OffloadAction>(A)) {
+        A = *A->begin();
+      if (isa<driver::CudaDeviceAction>(A)) {
         OffloadCompilation = true;
         break;
       }
@@ -148,7 +149,11 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, co
 			(compileArgs, diagnosticsEngine)
 		);
 
-	Clang->setInvocation(invoc);
+	Clang->setInvocation(invoc
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+		.get()
+#endif 
+	);
 
 	// Map code filename to a memoryBuffer
 	unique_ptr<MemoryBuffer> buffer;
