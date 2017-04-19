@@ -15,12 +15,29 @@
 #include <llvm/IR/Module.h>
 #include <llvm/Support/raw_os_ostream.h>
 
+
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+#include "clang/Frontend/Utils.h"
+#include "clang/Basic/DiagnosticOptions.h"
+#include "clang/Driver/Compilation.h"
+#include "clang/Driver/Driver.h"
+#include "clang/Driver/Action.h"
+#include "clang/Driver/Options.h"
+#include "clang/Driver/Tool.h"
+#include "clang/Frontend/CompilerInstance.h"
+#include "clang/Frontend/FrontendDiagnostic.h"
+#include "llvm/Option/ArgList.h"
+#include "llvm/Support/Host.h"
+#endif
+
 using namespace llvm;
 using namespace clang;
 using namespace std;
 
 // clang 3.7- don't do this right at all.
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+using namespace llvm::opt;
+
 std::unique_ptr<CompilerInvocation> createInvocationFromCommandLineBackport (
     ArrayRef<const char *> ArgList,
     IntrusiveRefCntPtr<DiagnosticsEngine> Diags) {
