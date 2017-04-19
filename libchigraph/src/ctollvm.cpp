@@ -69,25 +69,17 @@ std::unique_ptr<CompilerInvocation> createInvocationFromCommandLineBackport (
   }
 
   // We expect to get back exactly one command job, if we didn't something
-  // failed. Offload compilation is an exception as it creates multiple jobs. If
-  // that's the case, we proceed with the first job. If caller needs a
-  // particular job, it should be controlled via options (e.g.
-  // --cuda-{host|device}-only for CUDA) passed to the driver.
+  // failed.
   const driver::JobList &Jobs = C->getJobs();
-  bool OffloadCompilation = false;
   if (Jobs.size() > 1) {
     for (auto &A : C->getActions()){
       // On MacOSX real actions may end up being wrapped in BindArchAction
       if (isa<driver::BindArchAction>(A))
         A = *A->begin();
-      if (isa<driver::CudaDeviceAction>(A)) {
-        OffloadCompilation = true;
-        break;
-      }
     }
   }
   if (Jobs.size() == 0 || !isa<driver::Command>(*Jobs.begin()) ||
-      (Jobs.size() > 1 && !OffloadCompilation)) {
+      (Jobs.size() > 1)) {
     SmallString<256> Msg;
     llvm::raw_svector_ostream OS(Msg);
     Jobs.Print(OS, "; ", true);
