@@ -43,6 +43,8 @@ target_include_directories(chi-ctollvm PRIVATE ${LLVM_INCLUDE_DIR})
 
 target_link_libraries(chi-ctollvm ${LLVM_LINK_LIST} ${LLVM_SYSTEM_LINK_LIST} ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
+link_directories(${CLANG_LIB_DIR})
+
 set(CLANG_LIBS 
 	clangRewrite
 	clangFrontendTool
