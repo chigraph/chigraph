@@ -18,7 +18,12 @@
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Transforms/Utils/Cloning.h>
+
+#if LLVM_VERSION_MAJOR <= 3
+#include <llvm/Bitcode/ReaderWriter.h>
+#else
 #include <llvm/Bitcode/BitcodeReader.h>
+#endif
 
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
