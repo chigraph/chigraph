@@ -78,6 +78,8 @@ foreach(CLANG_LIB ${CLANG_LIBS})
 	
 endforeach()
 
+target_compile_features(chi-ctollvm cxx_strong_enums)
+
 
 # move the clang lib folder, this is basic includes
 add_custom_command(
