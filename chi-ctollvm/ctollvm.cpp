@@ -12,6 +12,8 @@
 #include <clang/Frontend/TextDiagnosticPrinter.h>
 #include <clang/Lex/PreprocessorOptions.h>
 
+#include <llvm/Bitcode/BitcodeWriter.h>
+
 #include <llvm/IR/Module.h>
 #include <llvm/Support/raw_os_ostream.h>
 
@@ -29,6 +31,8 @@
 #include "llvm/Option/ArgList.h"
 #include "llvm/Support/Host.h"
 #endif
+
+#include <boost/program_options.hpp>
 
 using namespace llvm;
 using namespace clang;
@@ -106,8 +110,7 @@ std::unique_ptr<CompilerInvocation> createInvocationFromCommandLineBackport (
 #endif
 
 std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, const char* code,
-                                      const char* fileName, std::vector<const char*> compileArgs,
-                                      std::string& err) {
+                                      const char* fileName, std::vector<const char*> compileArgs) {
 	// Prepare compilation arguments
 	compileArgs.insert(compileArgs.begin(), execPath);
 	
@@ -118,8 +121,7 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, co
 	// Prepare DiagnosticEngine
 	auto* DiagOpts = new DiagnosticOptions;
 
-	raw_string_ostream errStream{err};
-	auto*              textDiagPrinter = new clang::TextDiagnosticPrinter(errStream, DiagOpts);
+	auto*              textDiagPrinter = new clang::TextDiagnosticPrinter(llvm::errs(), DiagOpts);
 	IntrusiveRefCntPtr<DiagnosticIDs> DiagID(new DiagnosticIDs());
 
 	IntrusiveRefCntPtr<DiagnosticsEngine> diagnosticsEngine(
@@ -173,4 +175,40 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, co
 		std::unique_ptr<llvm::Module>
 #endif
 		(compilerAction->takeModule());
+}
+
+namespace po = boost::program_options;
+
+int main(int argc, char** argv) {
+	
+	po::options_description general(
+	    "chi-ctollvm: Compile C/C++ code from stdin and spit out LLVM bitcode", 50);
+
+	general.add_options()("help,h", "Produce Help Message")
+		("clangargs,c", po::value<std::vector<std::string>>()->default_value({}, ""), "Extra arguments to pass to clang")
+		("fakename,f", po::value<std::string>()->default_value("internal.c"));
+	
+	po::variables_map vm;
+	po::store(po::command_line_parser(argc, argv).options(general).run(), vm);
+	po::notify(vm);
+		
+	// read code from stdin
+	std::string code;
+	{
+		std::string line;
+		while(std::getline(std::cin, line)) {
+			code += line;
+			code += '\n';
+		}
+	}
+	
+	std::vector<const char*> strArgs;
+	for (const auto& str : vm["clangargs"].as<std::vector<std::string>>()) {
+		strArgs.push_back(str.c_str());
+	}
+	
+	llvm::LLVMContext ctx;
+	auto mod = cToLLVM(ctx, argv[0], code.c_str(), vm["fakename"].as<std::string>().c_str(), strArgs);
+	
+	llvm::WriteBitcodeToFile(mod.get(), llvm::outs());
 }

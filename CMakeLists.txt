@@ -56,6 +56,7 @@ execute_process(COMMAND ${LLVM_CONFIG} --version OUTPUT_VARIABLE LLVM_VERSION OU
 message(STATUS "LLVM version: ${LLVM_VERSION}")
 
 # add libchig
+add_subdirectory(chi-ctollvm)
 add_subdirectory(libchigraph)
 
 # add the debugger module

@@ -42,8 +42,6 @@ set(CHI_PRIVATE_FILES
 	src/GraphStruct.cpp
 	src/NodeType.cpp
 	src/DataType.cpp
-	src/ctollvm.cpp
-	src/ctollvm.hpp
 )
 
 
@@ -113,44 +111,6 @@ message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 
 link_directories(${CLANG_LIB_DIR})
 
-
-set(CLANG_LIBS 
-	clangRewrite
-	clangFrontendTool
-	clangCodeGen
-	clangFrontend
-	clangParse
-	clangSerialization
-	clangSema
-	clangEdit
-	clangAnalysis
-	clangAST
-	clangLex
-	clangDriver
-	clangBasic
-)
-
-
-
-# get clang libraries
-message(STATUS "Looking for clang libs in ${CLANG_LIB_DIR}")
-foreach(CLANG_LIB ${CLANG_LIBS})
-	find_library(${CLANG_LIB}_LIBRARY ${CLANG_LIB} PATHS ${CLANG_LIB_DIR})
-	
-	if (NOT ${CLANG_LIB}_LIBRARY)
-		message(FATAL_ERROR "Could not locate ${CLANG_LIB}: ${${CLANG_LIB}_LIBRARY}")
-	endif()
-	
-	message(STATUS "${CLANG_LIB} found at ${${CLANG_LIB}_LIBRARY}")
-	
-	target_link_libraries(chigraph 
-	PRIVATE
-		${${CLANG_LIB}_LIBRARY}
-	)
-	
-endforeach()
-
-
 target_link_libraries(chigraph
 PUBLIC
 	${Boost_SYSTEM_LIBRARY}
@@ -162,6 +122,8 @@ PUBLIC
 PUBLIC
 	${LLVM_SYSTEM_LINK_LIST}
 	ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
+PRIVATE
+	libexecstream
 )
 
 if(WIN32)
@@ -193,21 +155,14 @@ PUBLIC
 )
 
 
-# move the clang lib folder, this is basic includes
-add_custom_command(
-TARGET chigraph POST_BUILD
-COMMAND ${CMAKE_COMMAND} -E copy_directory
-	${CLANG_LIB_DIR}/clang
-	${CMAKE_BINARY_DIR}/lib/clang
-BYPRODUCTS ${CMAKE_BINARY_DIR}/lib/clang
-COMMENT "Copying standard clang includes from ${CLANG_LIB_DIR}/clang to ${CMAKE_BINARY_DIR}/lib/clang"
-)
-
 install(TARGETS chigraph 
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
 )
+
+# make sure chi-ctollvm is built first
+add_dependencies(chigraph chi-ctollvm)
 
 install(DIRECTORY include/chi DESTINATION include)
 install(DIRECTORY ${CMAKE_BINARY_DIR}/lib DESTINATION .)

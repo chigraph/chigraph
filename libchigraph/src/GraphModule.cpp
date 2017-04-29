@@ -12,19 +12,20 @@
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
 
-#include "ctollvm.hpp"
-
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Transforms/Utils/Cloning.h>
+#include <llvm/Bitcode/BitcodeReader.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
 
 #include <boost/uuid/uuid_io.hpp>
+
+#include <libexecstream/exec-stream.h>
 
 namespace fs = boost::filesystem;
 
@@ -39,16 +40,56 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 	std::vector<const char*> cArgs;
 	for (const auto& arg : args) { cArgs.push_back(arg.c_str()); }
 	cArgs.push_back("-nostdlib");
-	cArgs.push_back("-I");
-
-	auto stdlibPath =
-	    fs::path(execPath).parent_path().parent_path() / "lib" / "chigraph" / "stdlib" / "include";
-	cArgs.push_back(stdlibPath.string().c_str());
 
 	std::string errors;
 
-	auto mod = cToLLVM(ctx, execPath, code.to_string().c_str(), "internal.c", cArgs, errors);
-
+	// call chi-ctollvm
+	std::unique_ptr<llvm::Module> mod;
+	{
+		std::vector<const char*> argsToChiCtoLLVM;
+		for (auto arg : cArgs) {
+			argsToChiCtoLLVM.push_back("-c");
+			argsToChiCtoLLVM.push_back(arg);
+		}
+		
+		exec_stream_t ctollvmExe;
+		ctollvmExe.set_wait_timeout(exec_stream_t::s_out, 100000);
+		auto exeLoc = fs::path(execPath).parent_path() / "chi-ctollvm"
+#if WIN32
+			".exe"
+#endif
+			;
+		assert(fs::is_regular_file(exeLoc));
+		ctollvmExe.start(exeLoc.string().c_str(), argsToChiCtoLLVM.begin(), argsToChiCtoLLVM.end());
+		
+		ctollvmExe.in() << code;
+		ctollvmExe.close_in();
+		
+		auto generatedbc = std::string{std::istreambuf_iterator<char>(ctollvmExe.out()),
+								std::istreambuf_iterator<char>()};
+		auto errs = std::string{std::istreambuf_iterator<char>(ctollvmExe.err()),
+		                         std::istreambuf_iterator<char>()};
+								 
+		ctollvmExe.close();
+		auto errCode = ctollvmExe.exit_code();
+		
+		if (errCode != 0) {
+			res.addEntry("EUKN", "Failed to Generate IR with clang", {{"Error", errs}});
+			return nullptr;
+		}
+		if (!errs.empty()) {
+			res.addEntry("WUKN", "Failed to generate IR with clang", {{"Warning", errs}});
+		}
+		
+		
+		auto errorOrMod = llvm::parseBitcodeFile(llvm::MemoryBufferRef(generatedbc, "generated.bc"), ctx);
+		if (!errorOrMod) {
+			res.addEntry("EUKN", "Failed to parse generated bitcode.", {});
+			return nullptr;
+		}
+		mod = std::move(errorOrMod.get());
+	}
+	
 	if (mod == nullptr) {
 		res.addEntry("EUKN", "Failed to generate IR with clang", {{"Error", errors}});
 	} else if (!errors.empty()) {
