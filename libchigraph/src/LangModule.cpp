@@ -5,6 +5,7 @@
 #include "chi/DataType.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
+#include "chi/LLVMVersion.hpp"
 
 #include <llvm/AsmParser/Parser.h>
 #include <llvm/IR/IRBuilder.h>

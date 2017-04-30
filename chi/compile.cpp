@@ -12,6 +12,7 @@
 #include <chi/NodeType.hpp>
 #include <chi/Result.hpp>
 #include <chi/json.hpp>
+#include <chi/LLVMVersion.hpp>
 
 #if LLVM_VERSION_LESS_EQUAL(3, 9)
 #include <llvm/Bitcode/ReaderWriter.h>
