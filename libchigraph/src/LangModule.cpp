@@ -12,7 +12,7 @@
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/IR/DebugInfo.h>
 
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 #include <llvm/IR/DIBuilder.h>
 #endif
 
@@ -281,7 +281,7 @@ struct StringLiteralNodeType : NodeType {
 		auto const0ID = llvm::ConstantInt::get(context().llvmContext(), llvm::APInt(32, 0, false));
 		auto gep      = builder.CreateGEP(global, 
 // LLVM 3.6- doesn't have std::initializer_list constructor to llvm::ArrayRef
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 										  std::vector<llvm::Value*>{{const0ID, const0ID}}
 #else
 										  {const0ID, const0ID}
@@ -817,7 +817,7 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 
 		     return std::make_unique<StringLiteralNodeType>(*this, str);
 		 }}};
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 	// create a temp module so we can make a DIBuilder
 	auto mod = std::make_unique<llvm::Module>("tmp", context().llvmContext());
 	
@@ -867,7 +867,7 @@ Result LangModule::nodeTypeFromName(boost::string_view name, const nlohmann::jso
 }
 
 LangModule::~LangModule() {
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 	// free those newed pointers
 	for (const auto& ptr : mDebugTypes) {
 		delete ptr.second;
@@ -882,12 +882,12 @@ DataType LangModule::typeFromName(boost::string_view name) {
 	llvm::Type* ty;
 
 	auto err = llvm::SMDiagnostic();
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 8
+#if LLVM_VERSION_LESS_EQUAL(3, 8)
 	// just parse the type
 	auto IR = "@G = external global "s + name.to_string();
 
 	auto tmpModule = llvm::
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
 		ParseAssemblyString(IR.c_str(), new llvm::Module("tmp", context().llvmContext()), err, context().llvmContext());
 #else
 		parseAssemblyString(IR, err, context().llvmContext());
@@ -907,7 +907,7 @@ DataType LangModule::typeFromName(boost::string_view name) {
 	auto iter = mDebugTypes.find(name.to_string());
 	if (iter == mDebugTypes.end()) { return {}; }
 	
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
 	delete tmpModule;
 #endif
 

@@ -1,12 +1,13 @@
 #include "chi/GraphStruct.hpp"
 #include "chi/Context.hpp"
 #include "chi/GraphModule.hpp"
+#include "chi/LLVMVersion.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/DerivedTypes.h>
 
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MAJOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 #include <llvm/IR/Module.h>
 #endif
 
@@ -53,7 +54,7 @@ DataType GraphStruct::dataType() {
 	llTypes.reserve(types().size());
 
 	std::vector<
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
 		llvm::Value*
 #else
 		llvm::Metadata*
@@ -64,7 +65,7 @@ DataType GraphStruct::dataType() {
 	size_t currentOffset = 0;
 	
 	
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 	// make a temp module so we can make a DIBuilder
 	auto tmpMod = std::make_unique<llvm::Module>("tmp", context().llvmContext());
 	auto diBuilder = std::make_unique<llvm::DIBuilder>(*tmpMod);
@@ -76,11 +77,11 @@ DataType GraphStruct::dataType() {
 		llTypes.push_back(type.type.llvmType());
 		
 	auto member = 
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 		diBuilder->createMemberType(llvm::DIDescriptor(), type.name, llvm::DIFile(), 0, debugType->getSizeInBits(), 8, currentOffset, 0, *debugType)
 #else
 		    llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member,
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 8
+#if LLVM_VERSION_LESS_EQUAL(3, 8)
 		                             llvm::MDString::get(context().llvmContext(), type.name),
 #else
 		                             type.name,
@@ -96,7 +97,7 @@ DataType GraphStruct::dataType() {
 	auto llType = llvm::StructType::create(llTypes, name());
 
 	auto diStructType = 
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 		new llvm::DICompositeType(diBuilder->createStructType(llvm::DIDescriptor(), name(), llvm::DIFile(), 0, currentOffset, 8, 0, llvm::DIType(), diBuilder->getOrCreateArray(diTypes))); // TODO (#77): yeah this is a memory leak. Fix it.
 #else
 		llvm::DICompositeType::get(

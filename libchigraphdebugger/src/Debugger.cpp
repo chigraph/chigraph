@@ -6,11 +6,12 @@
 #include <chi/NameMangler.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/Result.hpp>
+#include <chi/LLVMVersion.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-#if LLVM_VERSION_MAJOR <= 3
+#if LLVM_VERSION_LESS_EQUAL(3, 9)
 #include <llvm/Bitcode/ReaderWriter.h>
 #else
 #include <llvm/Bitcode/BitcodeWriter.h>

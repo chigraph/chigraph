@@ -1,5 +1,6 @@
 #include <chi/Context.hpp>
 #include <chi/Result.hpp>
+#include <chi/LLVMVersion.hpp>
 
 #include <llvm/IR/Module.h>
 #include <llvm/IRReader/IRReader.h>
@@ -90,7 +91,7 @@ int interpret(const std::vector<std::string>& opts, const char* argv0) {
 	mods.pop_front();
 
 	while (!mods.empty()) {
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+#if LLVM_VERSION_LESS_EQUAL(3, 7)
 		llvm::Linker::LinkModules(realMod.get(), mods[0].get());
 #else
 		llvm::Linker::linkModules(*realMod, std::move(mods[0]));

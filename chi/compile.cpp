@@ -13,7 +13,7 @@
 #include <chi/Result.hpp>
 #include <chi/json.hpp>
 
-#if LLVM_VERSION_MAJOR <= 3
+#if LLVM_VERSION_LESS_EQUAL(3, 9)
 #include <llvm/Bitcode/ReaderWriter.h>
 #else
 #include <llvm/Bitcode/BitcodeReader.h>
@@ -129,7 +129,7 @@ int compile(const std::vector<std::string>& opts) {
 		}
 		std::string errorString; // only for LLVM 3.5-
 		auto outFile = std::make_unique<llvm::tool_output_file>
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
 			(outpath.string().c_str(), errorString, OpenFlags);
 #else
 			(outpath.string(), ec, OpenFlags);

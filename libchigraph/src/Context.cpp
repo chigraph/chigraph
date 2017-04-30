@@ -8,6 +8,7 @@
 #include "chi/LangModule.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/Result.hpp"
+#include "chi/LLVMVersion.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
@@ -556,9 +557,9 @@ Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toF
 		if (!res) { return res; }
 
 // link it in
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+#if LLVM_VERSION_LESS(3, 7)
 		llvm::Linker::LinkModules(llmod.get(), compiledDep.get()
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+#if LLVM_VERSION_LESS(3, 5)
 			, llvm::Linker::DestroySource, nullptr
 #endif
 		);
@@ -652,7 +653,7 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	llvm::InitializeNativeTargetAsmParser();
 
 	llvm::EngineBuilder EEBuilder(
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+#if LLVM_VERSION_LESS(3, 5)
 		mod.get()
 #else
 		std::move(mod)
@@ -668,7 +669,7 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	EEBuilder.setErrorStr(&errMsg);
 
 	EEBuilder.setMCJITMemoryManager(
-#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5)
+#if LLVM_VERSION_AT_LEAST(3, 6)
 		std::unique_ptr<llvm::SectionMemoryManager>
 #endif
 		(new llvm::SectionMemoryManager()));

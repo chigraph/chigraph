@@ -11,6 +11,7 @@
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
+#include "chi/LLVMVersion.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
@@ -19,7 +20,7 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Transforms/Utils/Cloning.h>
 
-#if LLVM_VERSION_MAJOR <= 3
+#if LLVM_VERSION_LESS_EQUAL(3, 9)
 #include <llvm/Bitcode/ReaderWriter.h>
 #else
 #include <llvm/Bitcode/BitcodeReader.h>
@@ -155,16 +156,16 @@ struct CFuncNode : NodeType {
 // link it in
 
 	auto parentModule = codegenInto->
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 			getParent()->getParent()
 #else
 			getModule()
 #endif
 	;
 		
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+#if LLVM_VERSION_LESS_EQUAL(3, 7)
 		llvm::Linker::LinkModules(parentModule, copymod
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
 			, llvm::Linker::DestroySource, nullptr
 #endif
 		);
@@ -281,7 +282,7 @@ struct GraphFuncCallType : public NodeType {
 
 		auto func =
 		    codegenInto->
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 				getParent()->getParent()
 #else
 				getModule()
@@ -346,7 +347,7 @@ struct MakeStructNodeType : public NodeType {
 		llvm::Value* out = io[io.size() - 1];  // output goes last
 		for (auto id = 0; id < io.size() - 1; ++id) {
 			auto ptr = builder.CreateStructGEP(
-#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6)
+#if LLVM_VERSION_AT_LEAST(3, 7)
 				mStruct->dataType().llvmType(), 
 #endif
 											   out, id);
@@ -392,7 +393,7 @@ struct BreakStructNodeType : public NodeType {
 
 		for (auto id = 1; id < io.size(); ++id) {
 			auto        ptr = builder.CreateStructGEP(
-#if !(LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6)
+#if LLVM_VERSION_AT_LEAST(3, 7)
 				nullptr, 
 #endif
 				tempStruct, id - 1);
@@ -547,9 +548,9 @@ Result GraphModule::generateModule(llvm::Module& module) {
 
 // link it
 
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7
+#if LLVM_VERSION_LESS_EQUAL(3, 7)
 				llvm::Linker::LinkModules(&module, generatedModule.get()
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
 					, llvm::Linker::DestroySource, nullptr
 #endif
 				);
@@ -564,7 +565,7 @@ Result GraphModule::generateModule(llvm::Module& module) {
 	llvm::DIBuilder debugBuilder(module);
 
 	auto compileUnit = debugBuilder.createCompileUnit(llvm::dwarf::DW_LANG_C,
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 9
+#if LLVM_VERSION_LESS_EQUAL(3, 9)
 	                                                  sourceFilePath().filename().string(),
 	                                                  sourceFilePath().parent_path().string(),
 #else
@@ -582,7 +583,7 @@ Result GraphModule::generateModule(llvm::Module& module) {
 
 	for (auto& graph : mFunctions) {
 		res += compileFunction(*graph, &module,
-#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 6
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 							   &
 #endif
 							   compileUnit, debugBuilder);
