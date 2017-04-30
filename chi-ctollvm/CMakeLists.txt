@@ -39,11 +39,9 @@ execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE CLANG_LIB_DIR  O
 
 add_executable(chi-ctollvm ctollvm.cpp)
 
-target_include_directories(chi-ctollvm PRIVATE ${LLVM_INCLUDE_DIR})
+target_include_directories(chi-ctollvm PRIVATE ${LLVM_INCLUDE_DIR} ${LLVM_CXX_FLAGS_LIST})
 
-target_link_libraries(chi-ctollvm ${LLVM_LINK_LIST} ${LLVM_SYSTEM_LINK_LIST} ${Boost_PROGRAM_OPTIONS_LIBRARY})
-
-link_directories(${CLANG_LIB_DIR})
+target_link_libraries(chi-ctollvm ${LLVM_LINK_LIST} ${LLVM_SYSTEM_LINK_LIST} ${LLVM_LD_FLAGS_LIST} ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 set(CLANG_LIBS 
 	clangRewrite
@@ -60,8 +58,6 @@ set(CLANG_LIBS
 	clangDriver
 	clangBasic
 )
-
-
 
 # get clang libraries
 message(STATUS "Looking for clang libs in ${CLANG_LIB_DIR}")
