@@ -97,7 +97,7 @@ std::unique_ptr<CompilerInvocation> createInvocationFromCommandLineBackport (
   }
 
   const driver::Command &Cmd = 
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
+#if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 5
 	*
 #endif
   cast<driver::Command>(*Jobs.begin());
