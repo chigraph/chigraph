@@ -76,7 +76,7 @@ foreach(CLANG_LIB ${CLANG_LIBS})
 	
 endforeach()
 
-target_link_libraries(chi-ctollvm ${LLVM_LINK_LIST} ${LLVM_SYSTEM_LINK_LIST}${Boost_PROGRAM_OPTIONS_LIBRARY})
+target_link_libraries(chi-ctollvm ${LLVM_LINK_LIST} ${LLVM_SYSTEM_LINK_LIST} ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 target_compile_features(chi-ctollvm PRIVATE cxx_variable_templates cxx_strong_enums)
 
