@@ -41,7 +41,7 @@ add_executable(chi-ctollvm ctollvm.cpp)
 
 target_include_directories(chi-ctollvm PRIVATE ${LLVM_INCLUDE_DIR} ${LLVM_CXX_FLAGS_LIST})
 
-target_link_libraries(chi-ctollvm ${LLVM_LINK_LIST} ${LLVM_SYSTEM_LINK_LIST} ${LLVM_LD_FLAGS_LIST} ${Boost_PROGRAM_OPTIONS_LIBRARY})
+target_link_libraries(chi-ctollvm ${LLVM_LD_FLAGS_LIST})
 
 set(CLANG_LIBS 
 	clangRewrite
@@ -75,6 +75,8 @@ foreach(CLANG_LIB ${CLANG_LIBS})
 	)
 	
 endforeach()
+
+target_link_libraries(chi-ctollvm ${LLVM_LINK_LIST} ${LLVM_SYSTEM_LINK_LIST}${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 target_compile_features(chi-ctollvm PRIVATE cxx_variable_templates cxx_strong_enums)
 

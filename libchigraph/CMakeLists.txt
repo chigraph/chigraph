@@ -114,12 +114,9 @@ PUBLIC
 	${Boost_SYSTEM_LIBRARY}
 	${Boost_FILESYSTEM_LIBRARY}
 	${LIBGIT2_LIBRARIES}
-PUBLIC
+	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
-	${LLVM_LD_FLAGS_LIST}
-PUBLIC
 	${LLVM_SYSTEM_LINK_LIST}
-	${LLVM_LD_FLAGS_LIST}
 	ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
 PRIVATE
 	libexecstream
