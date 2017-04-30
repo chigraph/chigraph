@@ -96,7 +96,11 @@ std::unique_ptr<CompilerInvocation> createInvocationFromCommandLineBackport (
     return nullptr;
   }
 
-  const driver::Command &Cmd = cast<driver::Command>(*Jobs.begin());
+  const driver::Command &Cmd = 
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+	*
+#endif
+  cast<driver::Command>(*Jobs.begin());
   if (StringRef(Cmd.getCreator().getName()) != "clang") {
     Diags->Report(diag::err_fe_expected_clang_command);
     return nullptr;

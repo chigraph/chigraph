@@ -93,7 +93,13 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 			res.addEntry("EUKN", "Failed to parse generated bitcode.", {});
 			return nullptr;
 		}
-		mod = std::move(errorOrMod.get());
+		mod = 
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+			std::unique_ptr<llvm::Module>
+#else
+			std::move
+#endif
+				(errorOrMod.get());
 	}
 	
 	if (mod == nullptr) {
