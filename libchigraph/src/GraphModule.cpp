@@ -88,7 +88,13 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 		}
 		
 		
-		auto errorOrMod = llvm::parseBitcodeFile(llvm::MemoryBufferRef(generatedbc, "generated.bc"), ctx);
+		auto errorOrMod = llvm::parseBitcodeFile(
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+			llvm::MemoryBuffer::getMemBufferCopy
+#else
+			llvm::MemoryBufferRef
+#endif
+				(generatedbc, "generated.bc"), ctx);
 		if (!errorOrMod) {
 			res.addEntry("EUKN", "Failed to parse generated bitcode.", {});
 			return nullptr;
