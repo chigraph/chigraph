@@ -5,14 +5,16 @@
 #include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
 #include "chi/JsonDeserializer.hpp"
+#include "chi/LLVMVersion.hpp"
 #include "chi/LangModule.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/Result.hpp"
-#include "chi/LLVMVersion.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/ExecutionEngine/SectionMemoryManager.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Type.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/TargetRegistry.h>
@@ -20,8 +22,6 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
-#include <llvm/IR/Module.h>
-#include <llvm/IR/Type.h>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
@@ -43,7 +43,6 @@ Context::Context(const fs::path& workPath) {
 Context::~Context() = default;
 
 ChiModule* Context::moduleByFullName(const fs::path& fullModuleName) const noexcept {
-
 	for (auto& module : mModules) {
 		if (module->fullName() == fullModuleName) { return module.get(); }
 	}
@@ -88,7 +87,7 @@ std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
 
 Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, ChiModule** toFill) {
 	Result res;
-	
+
 	auto requestedModCtx = res.addScopedContext({{"Requested Module Name", name.generic_string()}});
 
 	if (settings & LoadSettings::Fetch) {
@@ -118,8 +117,8 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 	fullPath.replace_extension(".chimod");
 
 	if (!fs::is_regular_file(fullPath)) {
-		res.addEntry(
-		    "EUKN", "Failed to find module", {{"Workspace Path", workspacePath().string()}});
+		res.addEntry("EUKN", "Failed to find module",
+		             {{"Workspace Path", workspacePath().string()}});
 		return res;
 	}
 
@@ -143,7 +142,7 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 
 Result Context::fetchModule(const fs::path& name, bool recursive) {
 	Result res;
-	
+
 	auto modCtx = res.addScopedContext({{"Module Name", name.string()}});
 
 	if (name == "lang") { return res; }
@@ -168,7 +167,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 
 			return res;
 		}
-		
+
 		auto repoPathCtx = res.addScopedContext({{"Repo Path", repoPath}});
 
 		if (type == VCSType::Unknown) {
@@ -190,9 +189,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		git_remote* origin;
 		err = git_remote_lookup(&origin, repo, "origin");
 		if (err != 0) {
-			res.addEntry(
-			    "EUKN", "Failed to get remote origin",
-			    {{"Error Message", giterr_last()->message}});
+			res.addEntry("EUKN", "Failed to get remote origin",
+			             {{"Error Message", giterr_last()->message}});
 			return res;
 		}
 
@@ -200,9 +198,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 		err                    = git_remote_fetch(origin, nullptr, &opts, nullptr);
 		if (err != 0) {
-			res.addEntry(
-			    "EUKN", "Failed to fetch repo",
-			    {{"Error Message", giterr_last()->message}});
+			res.addEntry("EUKN", "Failed to fetch repo",
+			             {{"Error Message", giterr_last()->message}});
 			return res;
 		}
 
@@ -225,9 +222,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		git_annotated_commit* originmaster;
 		err = git_annotated_commit_lookup(&originmaster, repo, &oid_to_merge.second);
 		if (err != 0) {
-			res.addEntry(
-			    "EUKN", "Failed to get new head from repo",
-			    {{"Error Message", giterr_last()->message}});
+			res.addEntry("EUKN", "Failed to get new head from repo",
+			             {{"Error Message", giterr_last()->message}});
 			return res;
 		}
 
@@ -251,9 +247,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			err = git_repository_head(&master, repo);
 
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to get reference to master",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to get reference to master",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -261,9 +256,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			git_reference* createdRef;
 			err = git_reference_set_target(&createdRef, master, &oid_to_merge.second, "pull");
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to fast forward",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to fast forward",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -271,9 +265,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			git_index* head;
 			err = git_repository_index(&head, repo);
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to get HEAD",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to get HEAD",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -281,9 +274,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			git_oid oid;
 			err = git_index_write_tree_to(&oid, head, repo);
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to write index to tree",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to write index to tree",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -301,9 +293,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			git_index* head;
 			err = git_repository_index(&head, repo);
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to get HEAD",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to get HEAD",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -321,9 +312,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			err = git_signature_now(&committerSignature, "Chigraph Fetch",
 			                        "russellgreene8@gmail.com");
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to create git signature",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to create git signature",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -331,9 +321,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			git_commit* origin_master_commit;
 			err = git_commit_lookup(&origin_master_commit, repo, &oid_to_merge.second);
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to get commit for origin/master",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to get commit for origin/master",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -341,18 +330,16 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			git_oid parent_headoid;
 			err = git_reference_name_to_id(&parent_headoid, repo, "HEAD");
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to get reference to HEAD",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to get reference to HEAD",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
 			git_commit* head_parent;
 			err = git_commit_lookup(&head_parent, repo, &parent_headoid);
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to get commit from oid",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to get commit from oid",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -360,9 +347,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			git_tree* tree;
 			err = git_commit_tree(&tree, head_parent);
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to git tree from commit",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to git tree from commit",
+				             {{"Error Message", giterr_last()->message}});
 			}
 
 			const git_commit* parents[] = {head_parent, origin_master_commit};
@@ -373,9 +359,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			    git_commit_create(&newCommit, repo, "HEAD", committerSignature, committerSignature,
 			                      "UTF-8", commitMsg.c_str(), tree, 2, parents);
 			if (err != 0) {
-				res.addEntry(
-				    "EUKN", "Failed to create commit",
-				    {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to create commit",
+				             {{"Error Message", giterr_last()->message}});
 			}
 		}
 
@@ -434,7 +419,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 Result Context::addModuleFromJson(const fs::path& fullName, const nlohmann::json& json,
                                   GraphModule** toFill) {
 	Result res;
-	
+
 	auto scopedCtx = res.addScopedContext({{"Requested Module Name", fullName.string()}});
 
 	// make sure it's not already added
@@ -494,8 +479,6 @@ Result Context::typeFromModule(const fs::path& module, boost::string_view name,
 	Expects(toFill != nullptr);
 
 	Result res;
-	
-	
 
 	ChiModule* mod = moduleByFullName(module);
 	if (mod == nullptr) {
@@ -544,7 +527,7 @@ Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toF
 	Expects(toFill != nullptr);
 
 	Result res;
-	
+
 	auto modNameCtx = res.addScopedContext({{"Module Name", mod.fullName()}});
 
 	auto llmod = std::make_unique<llvm::Module>(mod.fullName(), llvmContext());
@@ -560,9 +543,10 @@ Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toF
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 		llvm::Linker::LinkModules(llmod.get(), compiledDep.get()
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			, llvm::Linker::DestroySource, nullptr
+		                                           ,
+		                          llvm::Linker::DestroySource, nullptr
 #endif
-		);
+		                          );
 #else
 		llvm::Linker::linkModules(*llmod, std::move(compiledDep));
 #endif
@@ -654,12 +638,12 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 
 	llvm::EngineBuilder EEBuilder(
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-		mod.get()
+	    mod.get()
 #else
-		std::move(mod)
+	    std::move(mod)
 #endif
-		
-	);
+
+	        );
 
 	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
 	// EEBuilder.setVerifyModules(true);
@@ -670,9 +654,9 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 
 	EEBuilder.setMCJITMemoryManager(
 #if LLVM_VERSION_AT_LEAST(3, 6)
-		std::unique_ptr<llvm::SectionMemoryManager>
+	    std::unique_ptr<llvm::SectionMemoryManager>
 #endif
-		(new llvm::SectionMemoryManager()));
+	    (new llvm::SectionMemoryManager()));
 
 	return std::unique_ptr<llvm::ExecutionEngine>(EEBuilder.create());
 }

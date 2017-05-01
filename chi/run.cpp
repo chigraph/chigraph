@@ -13,13 +13,13 @@
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 
-#include <llvm/IR/Module.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
 #include <llvm/ExecutionEngine/Interpreter.h>
 #include <llvm/ExecutionEngine/JITEventListener.h>
 #include <llvm/ExecutionEngine/MCJIT.h>
 #include <llvm/ExecutionEngine/ObjectCache.h>
 #include <llvm/ExecutionEngine/SectionMemoryManager.h>
+#include <llvm/IR/Module.h>
 
 #include <llvm/CodeGen/LinkAllCodegenComponents.h>
 

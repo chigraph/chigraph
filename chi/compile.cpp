@@ -8,11 +8,11 @@
 #include <chi/Context.hpp>
 #include <chi/GraphFunction.hpp>
 #include <chi/GraphModule.hpp>
+#include <chi/LLVMVersion.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/NodeType.hpp>
 #include <chi/Result.hpp>
 #include <chi/json.hpp>
-#include <chi/LLVMVersion.hpp>
 
 #if LLVM_VERSION_LESS_EQUAL(3, 9)
 #include <llvm/Bitcode/ReaderWriter.h>
@@ -123,17 +123,15 @@ int compile(const std::vector<std::string>& opts) {
 			outtype = outpath.string() == "-" ? "ll" : outpath.extension().string().substr(1);
 		}
 
-		std::error_code ec;
+		std::error_code          ec;
 		llvm::sys::fs::OpenFlags OpenFlags = llvm::sys::fs::F_None;
-		if (outtype == "ll") {
-			OpenFlags |= llvm::sys::fs::F_Text;
-		}
-		std::string errorString; // only for LLVM 3.5-
-		auto outFile = std::make_unique<llvm::tool_output_file>
+		if (outtype == "ll") { OpenFlags |= llvm::sys::fs::F_Text; }
+		std::string errorString;  // only for LLVM 3.5-
+		auto        outFile = std::make_unique<llvm::tool_output_file>
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			(outpath.string().c_str(), errorString, OpenFlags);
+		    (outpath.string().c_str(), errorString, OpenFlags);
 #else
-			(outpath.string(), ec, OpenFlags);
+		    (outpath.string(), ec, OpenFlags);
 #endif
 		if (outtype == "bc") {
 			llvm::WriteBitcodeToFile(llmod.get(), outFile->os());

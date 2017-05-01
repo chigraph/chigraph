@@ -7,11 +7,11 @@
 #include "chi/GraphStruct.hpp"
 #include "chi/JsonDeserializer.hpp"
 #include "chi/JsonSerializer.hpp"
+#include "chi/LLVMVersion.hpp"
 #include "chi/NameMangler.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
-#include "chi/LLVMVersion.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
@@ -57,28 +57,29 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 			argsToChiCtoLLVM.push_back("-c");
 			argsToChiCtoLLVM.push_back(arg);
 		}
-		
+
 		exec_stream_t ctollvmExe;
 		ctollvmExe.set_wait_timeout(exec_stream_t::s_out, 100000);
-		auto exeLoc = fs::path(execPath).parent_path() / "chi-ctollvm"
+		auto exeLoc = fs::path(execPath).parent_path() /
+		              "chi-ctollvm"
 #if WIN32
-			".exe"
+		              ".exe"
 #endif
-			;
+		    ;
 		assert(fs::is_regular_file(exeLoc));
 		ctollvmExe.start(exeLoc.string().c_str(), argsToChiCtoLLVM.begin(), argsToChiCtoLLVM.end());
-		
+
 		ctollvmExe.in() << code;
 		ctollvmExe.close_in();
-		
+
 		auto generatedbc = std::string{std::istreambuf_iterator<char>(ctollvmExe.out()),
-								std::istreambuf_iterator<char>()};
+		                               std::istreambuf_iterator<char>()};
 		auto errs = std::string{std::istreambuf_iterator<char>(ctollvmExe.err()),
-		                         std::istreambuf_iterator<char>()};
-								 
+		                        std::istreambuf_iterator<char>()};
+
 		ctollvmExe.close();
 		auto errCode = ctollvmExe.exit_code();
-		
+
 		if (errCode != 0) {
 			res.addEntry("EUKN", "Failed to Generate IR with clang", {{"Error", errs}});
 			return nullptr;
@@ -86,28 +87,28 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 		if (!errs.empty()) {
 			res.addEntry("WUKN", "Failed to generate IR with clang", {{"Warning", errs}});
 		}
-		
-		
+
 		auto errorOrMod = llvm::parseBitcodeFile(
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			llvm::MemoryBuffer::getMemBufferCopy
+		    llvm::MemoryBuffer::getMemBufferCopy
 #else
-			llvm::MemoryBufferRef
+		    llvm::MemoryBufferRef
 #endif
-				(generatedbc, "generated.bc"), ctx);
+		    (generatedbc, "generated.bc"),
+		    ctx);
 		if (!errorOrMod) {
 			res.addEntry("EUKN", "Failed to parse generated bitcode.", {});
 			return nullptr;
 		}
-		mod = 
+		mod =
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-			std::unique_ptr<llvm::Module>
+		    std::unique_ptr<llvm::Module>
 #else
-			std::move
+		    std::move
 #endif
-				(errorOrMod.get());
+		    (errorOrMod.get());
 	}
-	
+
 	if (mod == nullptr) {
 		res.addEntry("EUKN", "Failed to generate IR with clang", {{"Error", errors}});
 	} else if (!errors.empty()) {
@@ -148,14 +149,12 @@ struct CFuncNode : NodeType {
 
 		// compile the c code if it hasn't already been compiled
 		if (llcompiledmod == nullptr) {
-			
 			auto args = mExtraArguments;
-			
+
 			// add -I for the .c dir
 			args.push_back("-I");
 			args.push_back(mGraphModule->pathToCSources().string());
 
-			
 			llcompiledmod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(),
 			                             mCCode, args, context().llvmContext(), res);
 
@@ -165,22 +164,25 @@ struct CFuncNode : NodeType {
 		// create a copy of the module
 		auto copymod = llvm::CloneModule(llcompiledmod.get());
 
-// link it in
+		// link it in
 
-	auto parentModule = codegenInto->
+		auto parentModule = codegenInto
+		                        ->
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-			getParent()->getParent()
+		                    getParent()
+		                        ->getParent()
 #else
-			getModule()
+		                    getModule()
 #endif
-	;
-		
+		    ;
+
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 		llvm::Linker::LinkModules(parentModule, copymod
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			, llvm::Linker::DestroySource, nullptr
+		                          ,
+		                          llvm::Linker::DestroySource, nullptr
 #endif
-		);
+		                          );
 #else
 		llvm::Linker::linkModules(*parentModule, std::move(copymod));
 #endif
@@ -256,7 +258,7 @@ struct CFuncNode : NodeType {
 	std::vector<std::string>   mExtraArguments;
 	std::vector<NamedDataType> mInputs;
 	DataType                   mOutput;
-	GraphModule* mGraphModule;
+	GraphModule*               mGraphModule;
 
 	std::unique_ptr<llvm::Module> llcompiledmod;
 };
@@ -292,14 +294,15 @@ struct GraphFuncCallType : public NodeType {
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		auto func =
-		    codegenInto->
+		auto func = codegenInto
+		                ->
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-				getParent()->getParent()
+		            getParent()
+		                ->getParent()
 #else
-				getModule()
+		            getModule()
 #endif
-				->getFunction(mangleFunctionName(module().fullName(), name()));
+		                ->getFunction(mangleFunctionName(module().fullName(), name()));
 
 		if (func == nullptr) {
 			res.addEntry("EINT", "Could not find function in llvm module",
@@ -360,9 +363,9 @@ struct MakeStructNodeType : public NodeType {
 		for (auto id = 0; id < io.size() - 1; ++id) {
 			auto ptr = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
-				mStruct->dataType().llvmType(), 
+			    mStruct->dataType().llvmType(),
 #endif
-											   out, id);
+			    out, id);
 			builder.CreateStore(io[id], ptr);
 		}
 
@@ -404,12 +407,12 @@ struct BreakStructNodeType : public NodeType {
 		builder.CreateStore(io[0], tempStruct);
 
 		for (auto id = 1; id < io.size(); ++id) {
-			auto        ptr = builder.CreateStructGEP(
+			auto ptr = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
-				nullptr, 
+			    nullptr,
 #endif
-				tempStruct, id - 1);
-			std::string s   = stringifyLLVMType(ptr->getType());
+			    tempStruct, id - 1);
+			std::string s = stringifyLLVMType(ptr->getType());
 
 			auto val = builder.CreateLoad(ptr);
 			builder.CreateStore(val, io[id]);
@@ -539,15 +542,11 @@ Result GraphModule::generateModule(llvm::Module& module) {
 			for (auto direntry : boost::make_iterator_range(
 			         fs::recursive_directory_iterator{cPath, fs::symlink_option::recurse}, {})) {
 				const fs::path& CFile = direntry;
-			
-				if (!fs::is_regular_file(CFile) || !(
-					CFile.extension() == ".c" ||
-					CFile.extension() == ".C" ||
-					CFile.extension() == ".cpp" ||
-					CFile.extension() == ".cxx" ||
-					CFile.extension() == ".c++" ||
-					CFile.extension() == ".cc"
-				)) {
+
+				if (!fs::is_regular_file(CFile) ||
+				    !(CFile.extension() == ".c" || CFile.extension() == ".C" ||
+				      CFile.extension() == ".cpp" || CFile.extension() == ".cxx" ||
+				      CFile.extension() == ".c++" || CFile.extension() == ".cc")) {
 					continue;
 				}
 
@@ -563,9 +562,10 @@ Result GraphModule::generateModule(llvm::Module& module) {
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 				llvm::Linker::LinkModules(&module, generatedModule.get()
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-					, llvm::Linker::DestroySource, nullptr
+				                                       ,
+				                          llvm::Linker::DestroySource, nullptr
 #endif
-				);
+				                          );
 #else
 				llvm::Linker::linkModules(module, std::move(generatedModule));
 #endif
@@ -596,9 +596,10 @@ Result GraphModule::generateModule(llvm::Module& module) {
 	for (auto& graph : mFunctions) {
 		res += compileFunction(*graph, &module,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-							   &
+		                       &
 #endif
-							   compileUnit, debugBuilder);
+		                       compileUnit,
+		                       debugBuilder);
 	}
 
 	debugBuilder.finalize();
@@ -871,10 +872,8 @@ std::vector<std::string> GraphModule::nodeTypeNames() const {
 		ret.push_back("_make_" + str->name());
 		ret.push_back("_break_" + str->name());
 	}
-	
-	if (cEnabled()) {
-		ret.push_back("c-call");
-	}
+
+	if (cEnabled()) { ret.push_back("c-call"); }
 
 	return ret;
 }
@@ -951,14 +950,14 @@ boost::filesystem::path GraphModule::sourceFilePath() const {
 	return context().workspacePath() / "src" / (fullName() + ".chimod");
 }
 
-Result GraphModule::createNodeTypeFromCCode(boost::string_view              code,
-                                            boost::string_view              functionName,
-                                            std::vector<std::string> clangArgs,
-                                            std::unique_ptr<NodeType>*      toFill) {
+Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
+                                            boost::string_view         functionName,
+                                            std::vector<std::string>   clangArgs,
+                                            std::unique_ptr<NodeType>* toFill) {
 	Expects(toFill != nullptr);
 
 	Result res;
-	
+
 	// add -I for the .c dir
 	clangArgs.push_back("-I");
 	clangArgs.push_back(pathToCSources().string());

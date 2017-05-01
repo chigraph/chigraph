@@ -141,9 +141,9 @@ struct GraphModule : public ChiModule {
 	/// \pre toFill must not be nullptr (the unique_ptr it points to can be though)
 	/// \return The Result
 	Result createNodeTypeFromCCode(boost::string_view code, boost::string_view functionName,
-	                               std::vector<std::string> clangArgs,
-	                               std::unique_ptr<NodeType>*      toFill);
-	
+	                               std::vector<std::string>   clangArgs,
+	                               std::unique_ptr<NodeType>* toFill);
+
 	/// Get the path to the .c directory. It is not garunteed to exist, even if cEnabled() is true
 	boost::filesystem::path pathToCSources() const {
 		return sourceFilePath().parent_path() / (shortName() + ".c");

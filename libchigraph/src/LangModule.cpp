@@ -3,15 +3,15 @@
 #include "chi/LangModule.hpp"
 #include "chi/Context.hpp"
 #include "chi/DataType.hpp"
+#include "chi/LLVMVersion.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
-#include "chi/LLVMVersion.hpp"
 
 #include <llvm/AsmParser/Parser.h>
+#include <llvm/IR/DebugInfo.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
 #include <llvm/Support/SourceMgr.h>
-#include <llvm/IR/DebugInfo.h>
 
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 #include <llvm/IR/DIBuilder.h>
@@ -280,14 +280,16 @@ struct StringLiteralNodeType : NodeType {
 		auto global = builder.CreateGlobalString(literalString);
 
 		auto const0ID = llvm::ConstantInt::get(context().llvmContext(), llvm::APInt(32, 0, false));
-		auto gep      = builder.CreateGEP(global, 
+		auto gep      = builder.CreateGEP(global,
 // LLVM 3.6- doesn't have std::initializer_list constructor to llvm::ArrayRef
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-										  std::vector<llvm::Value*>{{const0ID, const0ID}}
+		                             std::vector<llvm::Value*> {
+			                             { const0ID, const0ID }
+			                         }
 #else
-										  {const0ID, const0ID}
+		                             { const0ID, const0ID }
 #endif
-		);
+		                             );
 		builder.CreateStore(gep, io[0], false);
 
 		builder.CreateBr(outputBlocks[0]);
@@ -821,16 +823,19 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 	// create a temp module so we can make a DIBuilder
 	auto mod = std::make_unique<llvm::Module>("tmp", context().llvmContext());
-	
+
 	auto builder = std::make_unique<llvm::DIBuilder>(*mod);
-	mDebugTypes["i32"] = new llvm::DIType(builder->createBasicType("lang:i32", 32, 32, llvm::dwarf::DW_ATE_signed));
-	mDebugTypes["i1"] = new llvm::DIType(builder->createBasicType("lang:i1", 8, 7, llvm::dwarf::DW_ATE_boolean));
-	mDebugTypes["float"] = new llvm::DIType(builder->createBasicType("lang:float", 64, 64, llvm::dwarf::DW_ATE_float));
-	
+	mDebugTypes["i32"] =
+	    new llvm::DIType(builder->createBasicType("lang:i32", 32, 32, llvm::dwarf::DW_ATE_signed));
+	mDebugTypes["i1"] =
+	    new llvm::DIType(builder->createBasicType("lang:i1", 8, 7, llvm::dwarf::DW_ATE_boolean));
+	mDebugTypes["float"] =
+	    new llvm::DIType(builder->createBasicType("lang:float", 64, 64, llvm::dwarf::DW_ATE_float));
+
 	auto charType = builder->createBasicType("lang:i8", 8, 8, llvm::dwarf::DW_ATE_unsigned_char);
-	
+
 	mDebugTypes["i8*"] = new llvm::DIType(builder->createPointerType(charType, 64, 64, "lang:i8*"));
-	
+
 #else
 	// create debug types
 	mDebugTypes["i32"] =
@@ -870,9 +875,7 @@ Result LangModule::nodeTypeFromName(boost::string_view name, const nlohmann::jso
 LangModule::~LangModule() {
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 	// free those newed pointers
-	for (const auto& ptr : mDebugTypes) {
-		delete ptr.second;
-	}
+	for (const auto& ptr : mDebugTypes) { delete ptr.second; }
 #endif
 }
 
@@ -889,11 +892,12 @@ DataType LangModule::typeFromName(boost::string_view name) {
 
 	auto tmpModule = llvm::
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-		ParseAssemblyString(IR.c_str(), new llvm::Module("tmp", context().llvmContext()), err, context().llvmContext());
+	    ParseAssemblyString(IR.c_str(), new llvm::Module("tmp", context().llvmContext()), err,
+	                        context().llvmContext());
 #else
-		parseAssemblyString(IR, err, context().llvmContext());
+	    parseAssemblyString(IR, err, context().llvmContext());
 #endif
-	
+
 	if (!tmpModule) { return nullptr; }
 
 	ty = tmpModule->getNamedValue("G")->getType()->getContainedType(0);
@@ -907,7 +911,7 @@ DataType LangModule::typeFromName(boost::string_view name) {
 	// get debug type
 	auto iter = mDebugTypes.find(name.to_string());
 	if (iter == mDebugTypes.end()) { return {}; }
-	
+
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
 	delete tmpModule;
 #endif

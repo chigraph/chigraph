@@ -3,10 +3,10 @@
 #include "chi/Debugger.hpp"
 
 #include <chi/Context.hpp>
+#include <chi/LLVMVersion.hpp>
 #include <chi/NameMangler.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/Result.hpp>
-#include <chi/LLVMVersion.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -23,20 +23,19 @@
 #include <lldb/API/SBListener.h>
 #include <lldb/API/SBThread.h>
 
-#include <stdlib.h> // for setenv
+#include <stdlib.h>  // for setenv
 
 namespace fs = boost::filesystem;
 
 namespace chi {
 
 Debugger::Debugger(const char* pathToChig, GraphModule& mod) : mModule{&mod} {
-	
-	// point it to lldb-server
+// point it to lldb-server
 #if __linux__
 	auto lldbServerPath = fs::path(pathToChig).parent_path() / "lldb-server";
 	setenv("LLDB_DEBUGSERVER_PATH", lldbServerPath.c_str(), 1);
 #endif
-	
+
 	lldb::SBDebugger::Initialize();
 	mDebugger = lldb::SBDebugger::Create();
 
