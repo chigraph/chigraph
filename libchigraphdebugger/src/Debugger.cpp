@@ -168,7 +168,7 @@ Result Debugger::start(const char** argv, const char** envp,
 		std::string errorString; // only for LLVM 3.5
 		llvm::raw_fd_ostream file{tmpIRPath.string().c_str(),
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			errorString
+			errorString,
 #else
 			ec, 
 #endif
