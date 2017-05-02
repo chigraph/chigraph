@@ -75,11 +75,11 @@ int interpret(const std::vector<std::string>& opts, const char* argv0) {
 		// this recognizes stdin correctly
 		auto mod = llvm::
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			ParseIRFile
+			std::unique_ptr<llvm::Module>(ParseIRFile
 #else
-			parseIRFile
+			(parseIRFile
 #endif
-				(file, err, ctx.llvmContext());
+				(file, err, ctx.llvmContext()));
 
 		if (mod == nullptr) {
 			llvm::raw_os_ostream errstream(std::cerr);
