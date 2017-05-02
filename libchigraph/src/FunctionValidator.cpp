@@ -64,7 +64,7 @@ Result validateFunctionConnectionsAreTwoWay(const GraphFunction& func) {
 		for (const auto& outputDataSlot : node.second->outputDataConnections) {
 			// this connection type can make multiple connections, so two for loops are needed
 			for (const auto& connection : outputDataSlot) {
-				Expects(connection.first != nullptr);
+				assert(connection.first != nullptr);
 
 				if (connection.first->inputDataConnections.size() <= connection.second) {
 					res.addEntry("EUKN", "Input data port not found in node",

@@ -29,8 +29,6 @@
 
 #include <git2.h>
 
-#include <gsl/gsl>
-
 namespace fs = boost::filesystem;
 
 namespace chi {
@@ -53,7 +51,7 @@ GraphModule* Context::newGraphModule(const fs::path& fullName) {
 	// create the module
 	GraphModule* mod = nullptr;
 	{
-		auto uMod = std::make_unique<GraphModule>(*this, fullName, gsl::span<fs::path>());
+		auto uMod = std::make_unique<GraphModule>(*this, fullName);
 
 		mod = uMod.get();
 		addModule(std::move(uMod));
@@ -174,7 +172,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			res.addEntry("EUKN", "Could not resolve URL for module", {});
 			return res;
 		}
-		Expects(type == VCSType::Git);
+		assert(type == VCSType::Git);
 
 		// open the repository
 		git_repository* repo;
@@ -374,7 +372,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			res.addEntry("EUKN", "Could not resolve URL for module", {});
 			return res;
 		}
-		Expects(type == VCSType::Git);
+		assert(type == VCSType::Git);
 
 		auto absCloneInto = workspacePath() / "src" / cloneInto;
 		// make sure the directory exists
@@ -446,7 +444,7 @@ Result Context::addModuleFromJson(const fs::path& fullName, const nlohmann::json
 }
 
 bool Context::addModule(std::unique_ptr<ChiModule> modToAdd) noexcept {
-	Expects(modToAdd != nullptr);
+	assert(modToAdd != nullptr);
 
 	// make sure it's unique
 	auto ptr = moduleByFullName(modToAdd->fullName());
@@ -456,7 +454,7 @@ bool Context::addModule(std::unique_ptr<ChiModule> modToAdd) noexcept {
 
 	mModules.push_back(std::move(modToAdd));
 
-	Expects(modToAdd == nullptr);
+	assert(modToAdd == nullptr);
 
 	return true;
 }
@@ -476,7 +474,7 @@ bool Context::unloadModule(const fs::path& fullName) {
 
 Result Context::typeFromModule(const fs::path& module, boost::string_view name,
                                DataType* toFill) noexcept {
-	Expects(toFill != nullptr);
+	assert(toFill != nullptr);
 
 	Result res;
 
@@ -524,7 +522,7 @@ Result Context::compileModule(const fs::path& fullName, std::unique_ptr<llvm::Mo
 }
 
 Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toFill) {
-	Expects(toFill != nullptr);
+	assert(toFill != nullptr);
 
 	Result res;
 
@@ -617,7 +615,7 @@ fs::path workspaceFromChildPath(const fs::path& path) {
 }
 
 std::string stringifyLLVMType(llvm::Type* ty) {
-	Expects(ty != nullptr);
+	assert(ty != nullptr);
 
 	std::string data;
 	{

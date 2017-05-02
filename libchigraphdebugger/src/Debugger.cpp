@@ -144,7 +144,7 @@ bool Debugger::removeBreakpoint(NodeInstance& node) {
 
 Result Debugger::start(const char** argv, const char** envp,
                        const boost::filesystem::path& workingDirectory) {
-	Expects(boost::filesystem::is_directory(workingDirectory));
+	assert(boost::filesystem::is_directory(workingDirectory));
 
 	Result res;
 
@@ -217,7 +217,7 @@ std::vector<const NodeInstance*> Debugger::listBreakpoints() const {
 
 lldb::SBValue Debugger::inspectNodeOutput(const NodeInstance& inst, size_t id,
                                           lldb::SBFrame frame) {
-	Expects(id < inst.outputDataConnections.size());
+	assert(id < inst.outputDataConnections.size());
 
 	// if frame isn't valid, use the default
 	if (!frame.IsValid()) {

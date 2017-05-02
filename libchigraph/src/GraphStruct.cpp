@@ -17,7 +17,7 @@ GraphStruct::GraphStruct(GraphModule& mod, std::string name)
     : mModule{&mod}, mContext{&mod.context()}, mName{std::move(name)} {}
 
 void GraphStruct::addType(DataType ty, std::string name, size_t addBefore) {
-	Expects(addBefore <= types().size() && ty.valid() && !name.empty());
+	assert(addBefore <= types().size() && ty.valid() && !name.empty());
 
 	mTypes.emplace_back(name, ty);
 
@@ -26,7 +26,7 @@ void GraphStruct::addType(DataType ty, std::string name, size_t addBefore) {
 }
 
 void GraphStruct::modifyType(size_t id, DataType newTy, std::string newName) {
-	Expects(id < types().size() && newTy.valid() && !newName.empty());
+	assert(id < types().size() && newTy.valid() && !newName.empty());
 
 	mTypes[id] = {std::move(newName), std::move(newTy)};
 
@@ -35,7 +35,7 @@ void GraphStruct::modifyType(size_t id, DataType newTy, std::string newName) {
 }
 
 void GraphStruct::removeType(size_t id) {
-	Expects(id < types().size());
+	assert(id < types().size());
 
 	mTypes.erase(mTypes.begin() + id);
 

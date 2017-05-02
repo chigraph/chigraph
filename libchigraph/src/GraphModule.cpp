@@ -140,10 +140,10 @@ struct CFuncNode : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*inID*/, const llvm::DebugLoc& nodeLocation, const gsl::span<llvm::Value*> io,
-	    llvm::BasicBlock* codegenInto, const gsl::span<llvm::BasicBlock*> outputBlocks,
+	    size_t /*inID*/, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	    llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks,
 	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		Expects(io.size() == dataInputs().size() + dataOutputs().size() && codegenInto != nullptr &&
+		assert(io.size() == dataInputs().size() + dataOutputs().size() && codegenInto != nullptr &&
 		        outputBlocks.size() == 1);
 
 		Result res;
@@ -191,22 +191,22 @@ struct CFuncNode : NodeType {
 		parentModule->setDataLayout("");
 
 		auto llfunc = parentModule->getFunction(mFunctionName);
-		Expects(llfunc != nullptr);
+		assert(llfunc != nullptr);
 
 		llvm::IRBuilder<> builder(codegenInto);
 
-		gsl::span<llvm::Value*> inputs = io;
+		size_t ioSize = io.size();
 
 		std::string outputName;
 
 		// remove the return type if there is one
 		if (!dataOutputs().empty()) {
-			inputs     = inputs.subspan(0, inputs.size() - 1);
+			--ioSize;
 			outputName = dataOutputs()[0].name;
 		}
 
 		auto callinst = builder.CreateCall(
-		    llfunc, {inputs.data(), static_cast<size_t>(inputs.size())}, outputName);
+		    llfunc, {io.data(), ioSize}, outputName);
 		callinst->setDebugLoc(nodeLocation);
 
 		// store theoutput if there are any
@@ -287,8 +287,8 @@ struct GraphFuncCallType : public NodeType {
 	}
 
 	Result codegen(size_t execInputID, const llvm::DebugLoc& nodeLocation,
-	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks,
 	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		Result res = {};
 
@@ -354,8 +354,8 @@ struct MakeStructNodeType : public NodeType {
 	}
 
 	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks,
 	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -397,8 +397,8 @@ struct BreakStructNodeType : public NodeType {
 	}
 
 	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks,
 	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -444,8 +444,8 @@ struct SetLocalNodeType : public NodeType {
 	}
 
 	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks,
 	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -484,8 +484,8 @@ struct GetLocalNodeType : public NodeType {
 	}
 
 	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const gsl::span<llvm::Value*> io, llvm::BasicBlock* codegenInto,
-	               const gsl::span<llvm::BasicBlock*> outputBlocks,
+	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks,
 	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
 		llvm::IRBuilder<> builder{codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -517,7 +517,7 @@ struct GetLocalNodeType : public NodeType {
 }  // anon namespace
 
 GraphModule::GraphModule(Context& cont, boost::filesystem::path fullName,
-                         gsl::span<boost::filesystem::path> dependencies)
+                         const std::vector<fs::path>& dependencies)
     : ChiModule(cont, fullName) {
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) { addDependency(dep); }
@@ -884,7 +884,7 @@ boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() c
 	std::vector<NodeInstance*> nodes;
 	for (const auto& f : functions()) {
 		for (const auto& node : f->nodes()) {
-			Expects(node.second != nullptr);
+			assert(node.second != nullptr);
 			nodes.push_back(node.second.get());
 		}
 	}
@@ -936,7 +936,7 @@ bool GraphModule::removeStruct(boost::string_view name) {
 }
 
 void GraphModule::removeStruct(GraphStruct* tyToDel) {
-	Expects(&tyToDel->module() == this);
+	assert(&tyToDel->module() == this);
 
 	for (auto iter = structs().begin(); iter != structs().end(); ++iter) {
 		if (iter->get() == tyToDel) {
@@ -944,7 +944,7 @@ void GraphModule::removeStruct(GraphStruct* tyToDel) {
 			return;
 		}
 	}
-	Expects(false);
+	assert(false);
 }
 
 boost::filesystem::path GraphModule::sourceFilePath() const {
@@ -955,7 +955,7 @@ Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
                                             boost::string_view         functionName,
                                             std::vector<std::string>   clangArgs,
                                             std::unique_ptr<NodeType>* toFill) {
-	Expects(toFill != nullptr);
+	assert(toFill != nullptr);
 
 	Result res;
 

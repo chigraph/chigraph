@@ -11,8 +11,6 @@
 
 #include <boost/bimap.hpp>
 
-#include <gsl/gsl>
-
 namespace chi {
 /// Module that holds graph functions
 struct GraphModule : public ChiModule {
@@ -21,7 +19,7 @@ struct GraphModule : public ChiModule {
 	/// \param fullName The full name of the module
 	/// \param dependencies The dependencies
 	GraphModule(Context& cont, boost::filesystem::path fullName,
-	            gsl::span<boost::filesystem::path> dependencies);
+	            const std::vector<boost::filesystem::path>& dependencies = {});
 
 	// No copy or move -- pointer only
 	GraphModule(const GraphModule&) = delete;

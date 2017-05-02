@@ -324,7 +324,7 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
                        llvm::DIBuilder& debugBuilder) {
-	Expects(mod != nullptr);
+	assert(mod != nullptr);
 
 	Result res;
 
@@ -395,7 +395,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 		DataType intType;
 		res += func.context().typeFromModule("lang", "i32", &intType);
 		if (!res) { return res; }
-		Expects(intType.valid());
+		assert(intType.valid());
 		params.push_back(
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 		    *
@@ -474,7 +474,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 			// create debug info
 			DataType intDataType;
 			res += func.context().typeFromModule("lang", "i32", &intDataType);
-			Expects(intDataType.valid());
+			assert(intDataType.valid());
 			auto debugParam = debugBuilder.
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,

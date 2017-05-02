@@ -222,7 +222,7 @@ void GraphFunction::retypeDataInput(size_t idx, DataType newType) {
 }
 
 void GraphFunction::addDataOutput(const DataType& type, std::string name, size_t addBefore) {
-	Expects(addBefore >= 0);
+	assert(addBefore >= 0);
 
 	if (addBefore < mDataOutputs.size()) {
 		mDataOutputs.emplace(mDataOutputs.cbegin() + addBefore, std::move(name), type);
@@ -391,7 +391,7 @@ void GraphFunction::renameLocalVariable(std::string oldName, std::string newName
 		std::unique_ptr<NodeType> ty;
 
 		auto res = module().nodeTypeFromName("_set_" + newName, node->type().toJSON(), &ty);
-		Expects(!!res);
+		assert(!!res);
 
 		node->setType(std::move(ty));
 	}
@@ -402,7 +402,7 @@ void GraphFunction::renameLocalVariable(std::string oldName, std::string newName
 		std::unique_ptr<NodeType> ty;
 
 		auto res = module().nodeTypeFromName("_get_" + newName, node->type().toJSON(), &ty);
-		Expects(!!res);
+		assert(!!res);
 
 		node->setType(std::move(ty));
 	}
@@ -425,7 +425,7 @@ void GraphFunction::retypeLocalVariable(boost::string_view name, DataType newTyp
 		std::unique_ptr<NodeType> ty;
 
 		auto res = module().nodeTypeFromName("_set_" + name.to_string(), qualifiedName, &ty);
-		Expects(!!res);
+		assert(!!res);
 
 		node->setType(std::move(ty));
 	}
@@ -436,7 +436,7 @@ void GraphFunction::retypeLocalVariable(boost::string_view name, DataType newTyp
 		std::unique_ptr<NodeType> ty;
 
 		auto res = module().nodeTypeFromName("_get_" + name.to_string(), qualifiedName, &ty);
-		Expects(!!res);
+		assert(!!res);
 
 		node->setType(std::move(ty));
 	}

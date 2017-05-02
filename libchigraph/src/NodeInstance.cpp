@@ -7,7 +7,7 @@
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
 
-#include <gsl/gsl>
+#include <cassert>
 
 namespace chi {
 NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX,
@@ -19,7 +19,7 @@ NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeTy
       mContext{&mType->context()},
       mFunction{func},
       mGraphModule{&func->module()} {
-	Expects(mType != nullptr && mFunction != nullptr);
+	assert(mType != nullptr && mFunction != nullptr);
 
 	mType->mNodeInstance = this;
 
@@ -39,7 +39,7 @@ NodeInstance::NodeInstance(const NodeInstance& other, boost::uuids::uuid id)
       mId{id},
       mContext{&other.context()},
       mFunction{&other.function()} {
-	Expects(mType != nullptr && mFunction != nullptr);
+	assert(mType != nullptr && mFunction != nullptr);
 
 	mType->mNodeInstance = this;
 
@@ -57,7 +57,7 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 	// start at one past the end
 	for (size_t id = newType->execInputs().size(); id < inputExecConnections.size(); ++id) {
 		while (!inputExecConnections[id].empty()) {
-			Expects(inputExecConnections[id][0].first);  // should never fail...
+			assert(inputExecConnections[id][0].first);  // should never fail...
 			disconnectExec(*inputExecConnections[id][0].first, inputExecConnections[id][0].second);
 		}
 	}
@@ -88,7 +88,7 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 		}
 
 		while (!connSlot.empty()) {
-			Expects(connSlot[0].first);
+			assert(connSlot[0].first);
 
 			disconnectData(*this, id, *connSlot[0].first);
 		}

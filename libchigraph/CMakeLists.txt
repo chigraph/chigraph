@@ -140,7 +140,6 @@ target_include_directories(chigraph
 PUBLIC
 	include/
 	${CMAKE_BINARY_DIR}/ # for config.h
-	../third_party/GSL/include
 	${LIBGIT2_INCLUDE_DIR}
 	${LLVM_INCLUDE_DIR}
 )

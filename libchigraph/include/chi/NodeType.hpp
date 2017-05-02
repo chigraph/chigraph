@@ -13,8 +13,6 @@
 #include "chi/Fwd.hpp"
 #include "chi/json.hpp"
 
-#include <gsl/span>
-
 namespace chi {
 /// A generic node type. All user made types are of JsonNo  deType type, which is defined in
 /// JsonModule.cpp. This allows for easy extension of the language.
@@ -47,8 +45,8 @@ public:
 	/// numOutputExecs.
 	/// \return The Result
 	virtual Result codegen(
-	    size_t execInputID, const llvm::DebugLoc& nodeLocation, const gsl::span<llvm::Value*> io,
-	    llvm::BasicBlock* codegenInto, const gsl::span<llvm::BasicBlock*> outputBlocks,
+	    size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	    llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks,
 	    std::unordered_map<std::string, std::shared_ptr<void>>&           compileCache) = 0;
 
 	/// Create the JSON necessary to store the object.
@@ -78,10 +76,10 @@ public:
 	const std::vector<NamedDataType>& dataOutputs() const { return mDataOutputs; }
 	/// Get the execution inputs for the node
 	/// \return The names of the inputs. The size of this vector is the size of inputs.
-	gsl::span<const std::string> execInputs() const { return mExecInputs; }
+	const std::vector<std::string>& execInputs() const { return mExecInputs; }
 	/// Get the execution outputs for the node
 	/// \return The names of the outputs. The size is the input count.
-	gsl::span<const std::string> execOutputs() const { return mExecOutputs; }
+	const std::vector<std::string>& execOutputs() const { return mExecOutputs; }
 
 	/// Get if this node is pure
 	/// \return If it's pure

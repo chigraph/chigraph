@@ -3,8 +3,7 @@
 #include "chi/NameMangler.hpp"
 
 #include <vector>
-
-#include <gsl/gsl_assert>
+#include <cassert>
 
 namespace chi {
 std::string mangleFunctionName(std::string modName, const std::string& name) {
@@ -59,7 +58,7 @@ std::pair<std::string, std::string> unmangleFunctionName(std::string mangled) {
 		case 's': modName.replace(id, 2, "/"); break;
 		case 'd': modName.replace(id, 2, "."); break;
 		default:
-			Expects(false);  // TODO: error handling
+			assert(false);  // TODO: error handling
 		}
 
 		++id;
