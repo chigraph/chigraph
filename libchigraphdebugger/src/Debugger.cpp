@@ -19,6 +19,7 @@
 
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/IR/Module.h>
 
 #include <lldb/API/SBListener.h>
 #include <lldb/API/SBThread.h>
