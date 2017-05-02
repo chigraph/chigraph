@@ -18,6 +18,7 @@
 #include <llvm/IR/Module.h>
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/FileSystem.h>
+#include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Transforms/Utils/Cloning.h>
 
 #if LLVM_VERSION_LESS_EQUAL(3, 9)
