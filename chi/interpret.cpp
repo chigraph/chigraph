@@ -73,7 +73,13 @@ int interpret(const std::vector<std::string>& opts, const char* argv0) {
 		llvm::SMDiagnostic err;
 
 		// this recognizes stdin correctly
-		auto mod = llvm::parseIRFile(file, err, ctx.llvmContext());
+		auto mod = llvm::
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+			ParseIRFile
+#else
+			parseIRFile
+#endif
+				(file, err, ctx.llvmContext());
 
 		if (mod == nullptr) {
 			llvm::raw_os_ostream errstream(std::cerr);
@@ -92,7 +98,11 @@ int interpret(const std::vector<std::string>& opts, const char* argv0) {
 
 	while (!mods.empty()) {
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-		llvm::Linker::LinkModules(realMod.get(), mods[0].get());
+		llvm::Linker::LinkModules(realMod.get(), mods[0].get()
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+		, llvm::Linker::DestroySource, nullptr
+#endif
+		);
 #else
 		llvm::Linker::linkModules(*realMod, std::move(mods[0]));
 #endif
