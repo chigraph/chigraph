@@ -1,7 +1,3 @@
-# Fix for CXX11 feature detection of pre-3.1 CMake
-if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} LESS 3.1)
-	include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/CheckCXX11Features.cmake)
-endif()
 
 execute_process(COMMAND ${LLVM_CONFIG} --prefix OUTPUT_VARIABLE CLANG_INSTALL_PREFIX  OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "clang install prefix: ${CLANG_INSTALL_PREFIX}")
