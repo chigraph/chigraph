@@ -35,7 +35,7 @@ execute_process(COMMAND ${LLVM_CONFIG} --system-libs OUTPUT_VARIABLE LLVM_SYSTEM
 string(REPLACE " " ";" LLVM_SYSTEM_LINK_LIST "${LLVM_SYSTEM_LIBS}")
 
 # get preprocessor flags
-execute_process(COMMAND ${LLVM_CONFIG} --cppflags OUTPUT_VARIABLE LLVM_CXX_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND ${LLVM_CONFIG} --cxxflags OUTPUT_VARIABLE LLVM_CXX_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
 string(REPLACE " " ";" LLVM_CXX_FLAGS_LIST "${LLVM_CXX_FLAGS}")
 
 # get ld flags
@@ -47,7 +47,8 @@ execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE CLANG_LIB_DIR  O
 
 add_executable(chi-ctollvm ctollvm.cpp)
 
-target_include_directories(chi-ctollvm PRIVATE ${LLVM_INCLUDE_DIR} ${LLVM_CXX_FLAGS_LIST})
+target_include_directories(chi-ctollvm PRIVATE ${LLVM_INCLUDE_DIR})
+target_compile_options(chi-ctollvm PRIVATE ${LLVM_CXX_FLAGS_LIST})
 
 target_link_libraries(chi-ctollvm ${LLVM_LD_FLAGS_LIST})
 
