@@ -35,7 +35,7 @@ execute_process(COMMAND ${LLVM_CONFIG} --system-libs OUTPUT_VARIABLE LLVM_SYSTEM
 string(REPLACE " " ";" LLVM_SYSTEM_LINK_LIST "${LLVM_SYSTEM_LIBS}")
 
 # get preprocessor flags
-execute_process(COMMAND ${LLVM_CONFIG} --cxxflags OUTPUT_VARIABLE LLVM_CXX_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND ${LLVM_CONFIG} --cppflags OUTPUT_VARIABLE LLVM_CXX_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
 string(REPLACE " " ";" LLVM_CXX_FLAGS_LIST "${LLVM_CXX_FLAGS}")
 
 # get ld flags
@@ -51,6 +51,10 @@ target_include_directories(chi-ctollvm PRIVATE ${LLVM_INCLUDE_DIR})
 target_compile_options(chi-ctollvm PRIVATE ${LLVM_CXX_FLAGS_LIST})
 
 target_link_libraries(chi-ctollvm ${LLVM_LD_FLAGS_LIST})
+
+if (CMAKE_COMPILER_IS_GNUCC)
+	target_compile_options(chi-ctollvm PRIVATE -std=c++14)
+endif()
 
 set(CLANG_LIBS 
 	clangRewrite
@@ -98,7 +102,7 @@ endif()
 # move the clang lib folder, this is basic includes
 add_custom_command(
 TARGET chi-ctollvm POST_BUILD
-COMMAND ${CMAKE_COMMAND} -E copy_directory
+COMMAND ${CMAKE_COMMAND} -E copy
 	${CLANG_LIB_DIR}/clang
 	${CMAKE_BINARY_DIR}/lib/clang
 BYPRODUCTS ${CMAKE_BINARY_DIR}/lib/clang
