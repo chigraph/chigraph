@@ -87,10 +87,10 @@ endforeach()
 
 target_link_libraries(chi-ctollvm ${LLVM_LINK_LIST} ${LLVM_SYSTEM_LINK_LIST} ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
-target_compile_features(chi-ctollvm PRIVATE cxx_variable_templates cxx_strong_enums)
-if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} LESS 3.1)
+if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
 	CXX11_CHECK_FEATURE("constexpr"          2235 HAS_CXX11_CONSTEXPR)
-else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} GREATER 3.1 OR ${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} EQUAL 3.1)
+	set_property(TARGET chi-ctollvm PROPERTY CXX_STANDARD 14)
+else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_GREATER 3.1 OR ${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_EQUAL 3.1)
 	target_compile_features(chi-ctollvm PRIVATE cxx_variable_templates cxx_strong_enums)
 endif()
 
