@@ -73,11 +73,11 @@ int interpret(const std::vector<std::string>& opts, const char* argv0) {
 		llvm::SMDiagnostic err;
 
 		// this recognizes stdin correctly
-		auto mod = llvm::
+		auto mod = 
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			std::unique_ptr<llvm::Module>(ParseIRFile
+			std::unique_ptr<llvm::Module>(llvm::ParseIRFile
 #else
-			(parseIRFile
+			(llvm::parseIRFile
 #endif
 				(file, err, ctx.llvmContext()));
 
