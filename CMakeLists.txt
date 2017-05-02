@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.0)
 
 project(chigraph)
 
-cmake_policy(SET CMP0053 NEW)
+# Make sure Qt escapes it's things right
+if (${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} GREATER 3.1 OR ${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} EQUAL 3.1)
+	cmake_policy(SET CMP0053 NEW)
+endif()
 
 set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 
