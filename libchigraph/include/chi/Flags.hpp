@@ -54,9 +54,9 @@ struct Flags {
 	}
 
 private:
-	Flags(std::underlying_type_t<Enum> data) : mData{data} {}
+	Flags(typename std::underlying_type<Enum>::type data) : mData{data} {}
 
-	std::underlying_type_t<Enum> mData = 0;
+	typename std::underlying_type<Enum>::type mData = 0;
 };
 
 }  // namespace chi

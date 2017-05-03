@@ -1,10 +1,6 @@
+# chigraph CMakeLists.txt
 
-execute_process(COMMAND ${LLVM_CONFIG} --prefix OUTPUT_VARIABLE CLANG_INSTALL_PREFIX  OUTPUT_STRIP_TRAILING_WHITESPACE)
-message(STATUS "clang install prefix: ${CLANG_INSTALL_PREFIX}")
-
-execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE CLANG_LIB_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
-message(STATUS "clang libdir: ${CLANG_LIB_DIR}")
-
+# Create the library
 set(CHI_PUBLIC_FILES
 	include/chi/ChiModule.hpp
 	include/chi/Context.hpp
@@ -21,7 +17,6 @@ set(CHI_PUBLIC_FILES
 	include/chi/JsonSerializer.hpp
 	include/chi/GraphStruct.hpp
 )
-
 set(CHI_PRIVATE_FILES
 	src/Context.cpp
 	src/NodeInstance.cpp
@@ -39,26 +34,53 @@ set(CHI_PRIVATE_FILES
 	src/NodeType.cpp
 	src/DataType.cpp
 )
-
-
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
-if (CMAKE_COMPILER_IS_GNUCC)
-	target_compile_options(chigraph PRIVATE -std=c++14)
+# Make sure we have a good enough compiler
+
+# check that if we're using MSVC it's 2015+
+if (MSVC AND MSVC_VERSION LESS 1900)
+	message(FATAL_ERROR "Cannot use chigraph with MSVC older than 2015, please upgrade to 2015 or newer")
 endif()
 
+# Make sure our compiler supports the things I (and dependencies) use
 if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
 	CXX11_CHECK_FEATURE("rvalue_references"  2118 HAS_CXX11_RVALUE_REFERENCES)
 	CXX11_CHECK_FEATURE("variadic_templates" 2555 HAS_CXX11_VARIADIC_TEMPLATES)
 	CXX11_CHECK_FEATURE("constexpr"          2235 HAS_CXX11_CONSTEXPR)
-	set_property(TARGET chigraph PROPERTY CXX_STANDARD 14)
-else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_GREATER 3.1 OR ${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_EQUAL 3.1)
-	target_compile_features(chigraph PUBLIC cxx_constexpr cxx_rvalue_references cxx_variable_templates)
+	
+	# and make sure we get the compile option to enable it if the compiler needs it
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
+		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
+		CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		target_compile_options(chigraph PUBLIC -std=c++14)
+	endif()
+else()
+	# if we have an new enough cmake, then we can just use this call that does all that for us
+	target_compile_features(chigraph 
+	PUBLIC 
+		cxx_aggregate_default_initializers
+		cxx_alias_templates
+		cxx_auto_type
+		cxx_defaulted_functions
+		cxx_deleted_functions
+		cxx_generic_lambdas
+		cxx_inline_namespaces
+		cxx_lambdas
+		cxx_lambda_init_captures
+		cxx_noexcept
+		cxx_nullptr
+		cxx_override
+		cxx_range_for
+		cxx_raw_string_literals
+		cxx_right_angle_brackets
+		cxx_rvalue_references
+		cxx_strong_enums
+		cxx_variadic_templates
+		cxx_variable_templates
+	)
 endif()
 
-# get include directories
-execute_process(COMMAND ${LLVM_CONFIG} --includedir OUTPUT_VARIABLE LLVM_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
-message(STATUS "LLVM include directory: ${LLVM_INCLUDE_DIR}")
 
 # get llvm libraries
 set(LLVM_COMPONENTS
@@ -136,10 +158,12 @@ if(WIN32)
 	)
 endif()
 
+# get include directories
+execute_process(COMMAND ${LLVM_CONFIG} --includedir OUTPUT_VARIABLE LLVM_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 target_include_directories(chigraph
 PUBLIC
 	include/
-	${CMAKE_BINARY_DIR}/ # for config.h
 	${LIBGIT2_INCLUDE_DIR}
 	${LLVM_INCLUDE_DIR}
 )
@@ -151,7 +175,7 @@ PUBLIC
 )
 
 
-install(TARGETS chigraph 
+install(TARGETS chigraph
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
