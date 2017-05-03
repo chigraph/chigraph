@@ -30,7 +30,7 @@ if (CG_BUILD_TESTS)
 endif()
 
 if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
-	include(${CMAKE_CURRENT_SOURCE_DIR}/../chigraph/cmake/CheckCXX11Features.cmake)
+	include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CheckCXX11Features.cmake)
 	CXX11_CHECK_FEATURE("variadic_templates" 2555 HAS_CXX11_VARIADIC_TEMPLATES)
 else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_GREATER 3.1 OR ${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_EQUAL 3.1)
 	target_compile_features(chigraphgui PRIVATE cxx_variable_templates)
