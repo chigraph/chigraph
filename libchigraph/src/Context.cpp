@@ -118,7 +118,7 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 
 	if (!fs::is_regular_file(fullPath)) {
 		res.addEntry(
-		    "EUKN", "Failed to find module", {{"Workspace Path", workspacePath().string()}});
+		    "EUKN", "Failed to find module", {{"Workspace Path", workspacePath().string()}, {"Tested path", fullPath.string()}});
 		return res;
 	}
 
