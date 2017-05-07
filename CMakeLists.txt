@@ -13,6 +13,7 @@ option(CG_BUILD_TESTS "Should unit tests be built?" ON)
 option(CG_BUILD_DEBUGGER "Should the debugger be built" ON)
 option(CG_USE_SYSTEM_LIBGIT2 "Should the system try to find libgit2 from the system instead of the packaged version" OFF)
 option(CG_USE_SYSTEM_BOOST "Should the system try to find boost from the system instead of the packaged version" OFF)
+option(CG_INSTALL_STANDARD_CLANG_HEADERS "Should the system install the lib/clang folder? Set this to on if you are installing to somewhere other than the clang install prerix." OFF)
 
 # this is really important to keep install-like paths
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -26,7 +27,6 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 if (CG_BUILD_TESTS)
 	# disable tests
 	set(BUILD_CLAR OFF CACHE BOOL "")
-	add_subdirectory(third_party/libexecstream)
 endif()
 
 if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
@@ -47,6 +47,9 @@ else()
 	set(Boost_SYSTEM_LIBRARY boost_system)
 	set(Boost_PROGRAM_OPTIONS_LIBRARY boost_program_options)
 endif()
+
+# compile libexecstream
+add_subdirectory(third_party/libexecstream)
 
 # compile libgit2
 if (NOT CG_USE_SYSTEM_LIBGIT2)

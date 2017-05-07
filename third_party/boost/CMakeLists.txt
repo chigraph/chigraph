@@ -30,3 +30,5 @@ add_library(boost_program_options STATIC
     program_options/cmdline.cpp
 )
 target_include_directories(boost_program_options PUBLIC include)
+
+install(TARGETS boost_system boost_filesystem DESTINATION lib)

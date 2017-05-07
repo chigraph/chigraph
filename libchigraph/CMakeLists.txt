@@ -174,6 +174,13 @@ PUBLIC
 	${LIBGIT2_DEFINITIONS}
 )
 
+# configure the config file
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/ChigraphConfig.cmake.in ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake @ONLY)
+
+# make sure chi-ctollvm is built first
+add_dependencies(chigraph chi-ctollvm)
+
+install(FILES ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake DESTINATION lib/cmake/chigraph)
 
 install(TARGETS chigraph
 	RUNTIME DESTINATION bin
@@ -181,9 +188,5 @@ install(TARGETS chigraph
 	ARCHIVE DESTINATION lib
 )
 
-# make sure chi-ctollvm is built first
-add_dependencies(chigraph chi-ctollvm)
-
 install(DIRECTORY include/chi DESTINATION include)
-install(DIRECTORY ${CMAKE_BINARY_DIR}/lib DESTINATION .)
 

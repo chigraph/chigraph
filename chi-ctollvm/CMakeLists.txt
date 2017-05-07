@@ -109,5 +109,10 @@ BYPRODUCTS ${CMAKE_BINARY_DIR}/lib/clang
 COMMENT "Copying standard clang includes from ${CLANG_LIB_DIR}/clang to ${CMAKE_BINARY_DIR}/lib/clang"
 )
 
+# install it
+install(TARGETS chi-ctollvm DESTINATION bin)
 
-
+# install the clang headers if they asked for it
+if (CG_INSTALL_STANDARD_CLANG_HEADERS) 
+	install(DIRECTORY ${CMAKE_BINARY_DIR}/lib/clang DESTINATION lib)
+endif()
