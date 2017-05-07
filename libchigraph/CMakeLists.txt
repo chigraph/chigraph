@@ -142,7 +142,7 @@ PUBLIC
 	${LLVM_SYSTEM_LINK_LIST}
 	ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
 PRIVATE
-	libexecstream
+	libchigraphexecstream
 )
 
 if(WIN32)

@@ -1,7 +1,7 @@
 
 find_package(Threads REQUIRED)
 
-add_library(libexecstream STATIC exec-stream.cpp)
+add_library(libchigraphexecstream STATIC exec-stream.cpp)
 target_include_directories(libexecstream PUBLIC "../include")
 target_link_libraries(libexecstream PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 

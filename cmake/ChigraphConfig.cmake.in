@@ -59,10 +59,10 @@ set_property(TARGET libgit2 PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${LIBGIT2_INC
 find_package(Threads REQUIRED)
 
 # setup libexecstream
-find_library(LIBEXECSTREAM_LIBRARY NAMES libexecstream HINTS ${CG_INSTALL_DIRECTORY}/lib NO_DEFAULT_PATH)
-add_library(libexecstream STATIC IMPORTED)
-set_property(TARGET libexecstream PROPERTY IMPORTED_LOCATION ${LIBEXECSTREAM_LIBRARY})
-set_property(TARGET libexecstream PROPERTY INTERFACE_LINK_LIBRARIES Threads::Threads)
+find_library(LIBEXECSTREAM_LIBRARY NAMES libchigraphexecstream HINTS ${CG_INSTALL_DIRECTORY}/lib NO_DEFAULT_PATH)
+add_library(libchigraphexecstream STATIC IMPORTED)
+set_property(TARGET libchigraphexecstream PROPERTY IMPORTED_LOCATION ${LIBEXECSTREAM_LIBRARY})
+set_property(TARGET libchigraphexecstream PROPERTY INTERFACE_LINK_LIBRARIES Threads::Threads)
 
 # setup LLVM
 if (NOT LLVM_CONFIG)
@@ -98,7 +98,7 @@ message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 add_library(chigraph STATIC IMPORTED)
 set_property(TARGET chigraph PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}chigraph${CMAKE_STATIC_LIBRARY_SUFFIX})
 set_property(TARGET chigraph PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
-set_property(TARGET chigraph PROPERTY INTERFACE_LINK_LIBRARIES libgit2 Boost::filesystem libexecstream ${LLVM_LD_FLAGS_LIST} ${LLVM_SYSTEM_LINK_LIST} ${LLVM_LINK_LIST})
+set_property(TARGET chigraph PROPERTY INTERFACE_LINK_LIBRARIES libgit2 Boost::filesystem libchigraphexecstream ${LLVM_LD_FLAGS_LIST} ${LLVM_SYSTEM_LINK_LIST} ${LLVM_LINK_LIST})
 set_property(TARGET chigraph PROPERTY INTERFACE_COMPILE_OPTIONS ${LLVM_CXX_FLAGS_LIST})
 
 if (CG_BUILD_DEBUGGER)

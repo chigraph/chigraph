@@ -1,6 +1,6 @@
 
 pkgname=chigraph
-pkgver=02decd6f2bf7286bfd95ff779aa97b1535ccf016
+pkgver=244c0d0a512158d6f126713fc0ca0e2a3b532989
 pkgrel=1
 arch=('i686' 'x86_64')
 
@@ -24,11 +24,10 @@ prepare() {
 
 build() {
 	cd build
-	cmake ../chigraph -DCMAKE_BUILD_TYPE=Release -DCG_USE_SYSTEM_LIBGIT2=ON -DCG_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
+	cmake ../chigraph -DCMAKE_BUILD_TYPE=Release -DCG_USE_SYSTEM_LIBGIT2=ON -DCG_USE_SYSTEM_BOOST=ON -DCG_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
 	make -j`nproc`
 }
 
 package() {
 	make -C build DESTDIR="${pkgdir}" install
-	rm -r "${pkgdir}/usr/lib/clang"
 }
