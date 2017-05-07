@@ -2,11 +2,11 @@
 find_package(Threads REQUIRED)
 
 add_library(libchigraphexecstream STATIC exec-stream.cpp)
-target_include_directories(libexecstream PUBLIC "../include")
-target_link_libraries(libexecstream PUBLIC ${CMAKE_THREAD_LIBS_INIT})
+target_include_directories(libchigraphexecstream PUBLIC "../include")
+target_link_libraries(libchigraphexecstream PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 
 
-install(TARGETS libexecstream 
+install(TARGETS libchigraphexecstream 
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
@@ -14,5 +14,5 @@ install(TARGETS libexecstream
 
 
 if(NOT MSVC)
-    target_compile_options(libexecstream PRIVATE -fPIC)
+    target_compile_options(libchigraphexecstream PRIVATE -fPIC)
 endif()
