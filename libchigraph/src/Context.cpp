@@ -23,6 +23,10 @@
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
 
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+#include <llvm/Transforms/Instrumentation/DebugIR.h>
+#endif
+
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
@@ -655,6 +659,9 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
 	EEBuilder.setUseMCJIT(true);
+	
+	auto DebugIRPass = createDebugIRPass();
+    DebugIRPass->runOnModule(*mod);
 #endif
 
 	EEBuilder.setMCJITMemoryManager(
