@@ -98,6 +98,18 @@ else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_GREATER 3.1 OR ${CMAK
 	target_compile_features(chi-ctollvm PRIVATE cxx_variable_templates cxx_strong_enums)
 endif()
 
+# link version
+if(WIN32)
+
+	find_library(VERSION_LIBRARY Version)
+	if (NOT VERSION_LIBRARY)
+		message(FATAL_ERROR "Could not find version library")
+	endif()
+	message(STATUS "Linking to version library: ${VERSION_LIBRARY}")
+	target_link_libraries(chi-ctollvm
+		${VERSION_LIBRARY}
+	)
+endif()
 
 # move the clang lib folder, this is basic includes
 add_custom_command(

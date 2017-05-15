@@ -664,6 +664,8 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
                        std::vector<llvm::GenericValue> args, llvm::Function* funcToRun,
                        llvm::GenericValue* ret) {
+	assert(mod);
+
 	Result res;
 
 	if (funcToRun == nullptr) {
@@ -697,6 +699,8 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 
 Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
                              std::vector<std::string> args, llvm::Function* funcToRun, int* ret) {
+	assert(mod);
+	
 	Result res;
 
 	if (funcToRun == nullptr) {

@@ -36,6 +36,8 @@ int main(int argc, char** argv) {
 	const char* file        = argv[2];
 	const char* expectedErr = argv[3];
 
+	assert(boost::filesystem::is_regular_file(file) && "Pass a real file");
+
 	std::ifstream ifile(file);
 	std::string   str((std::istreambuf_iterator<char>(ifile)), std::istreambuf_iterator<char>());
 
