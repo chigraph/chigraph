@@ -136,18 +136,26 @@ target_link_libraries(chigraph
 PUBLIC
 	${Boost_SYSTEM_LIBRARY}
 	${Boost_FILESYSTEM_LIBRARY}
-	${LIBGIT2_LIBRARIES}
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
 	${LLVM_SYSTEM_LINK_LIST}
-	ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
 PRIVATE
 	libchigraphexecstream
+	${LIBGIT2_LIBRARIES}
 )
 
+# link ffi on unix
+if (NOT WIN32)
+	target_link_libraries(chigraph 
+	PUBLIC	
+		ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
+	)
+endif()
+
+# link to version
 if(WIN32)
 
-	find_library(VERSION_LIBRARY version)
+	find_library(VERSION_LIBRARY Version)
 	if (NOT VERSION_LIBRARY)
 		message(FATAL_ERROR "Could not find version library")
 	endif()

@@ -7,8 +7,12 @@
 execute_process(COMMAND ${LLVM_CONFIG} --libdir OUTPUT_VARIABLE LLVM_LIB_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 # search for it--for some reason it has a problem with symlinks so first look for liblldb.so.1
-find_library(LLDB_LIBRARY liblldb.so.1 lldb HINTS ${LLVM_LIB_DIR} NO_DEFAULT_PATH)
+find_library(LLDB_LIBRARY liblldb.so.1 lldb liblldb.lib HINTS ${LLVM_LIB_DIR} NO_DEFAULT_PATH)
 message(STATUS "LLDB library: ${LLDB_LIBRARY}")
+
+if (NOT LLDB_LIBRARY)
+    message(FATAL_ERROR "Failed to find the lldb library in ${LLVM_LIB_DIR}")
+endif()
 
 
 # Create the chigraphdebugger library
@@ -74,3 +78,22 @@ if (NOT WIN32)
 	COMMENT "Copying lldb-server from ${LLVM_BIN_DIR}/${lldb_server_name} to ${CMAKE_BINARY_DIR}/bin/${lldb_server_name}"
 	)
 endif()
+
+# copy lldb.dll to the bin dir
+if (WIN32)
+	
+	# get LLVM bindir
+	execute_process(COMMAND ${LLVM_CONFIG} --bindir OUTPUT_VARIABLE LLVM_BINDIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+	
+	find_file(LLDB_DLL liblldb.dll HINTS ${LLVM_BINDIR} NO_DEFAULT_PATH)
+
+	if (NOT LLDB_DLL)
+		message(FATAL_ERROR "Failed to find liblldb.dll in ${LLVM_BINDIR}")
+	endif()
+
+	add_custom_command(TARGET chigraphdebugger POST_BUILD 
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LLDB_DLL} $<TARGET_FILE_DIR:chi-ctollvm> 
+	COMMENT "Copying LLDB dll from ${LLDB_DLL} to $<TARGET_FILE_DIR:chi-ctollvm>....")
+
+endif()
+

@@ -219,5 +219,9 @@ int main(int argc, char** argv) {
 	llvm::LLVMContext ctx;
 	auto mod = cToLLVM(ctx, argv[0], code.c_str(), vm["fakename"].as<std::string>().c_str(), strArgs);
 	
+	if (!mod) {
+		return 1;
+	}
+
 	llvm::WriteBitcodeToFile(mod.get(), llvm::outs());
 }

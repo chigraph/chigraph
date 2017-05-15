@@ -40,6 +40,25 @@ namespace chi {
 
 namespace {
 
+// read a whole stream to a string
+std::string read_all(std::istream & i, Result& res)
+{
+	std::string one;
+	std::string ret;
+	try {
+		while (std::getline(i, one).good()) {
+			ret += one;
+			ret += "\n";
+		}
+	}
+	catch (std::exception& e) {
+		res.addEntry("EUKN", "Failed to read from output stream", { {"Error Message", e.what()} });
+		return "";
+	}
+	ret += one;
+	return ret;
+}
+
 // Compile C code to a llvm::Module
 std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_view code,
                                            const std::vector<std::string>& args,
@@ -59,46 +78,84 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 			argsToChiCtoLLVM.push_back(arg);
 		}
 
-		exec_stream_t ctollvmExe;
-		ctollvmExe.set_wait_timeout(exec_stream_t::s_out, 100000);
-		auto exeLoc = fs::path(execPath).parent_path() /
-		              "chi-ctollvm"
-#if WIN32
-		              ".exe"
-#endif
-		    ;
-		assert(fs::is_regular_file(exeLoc));
-		ctollvmExe.start(exeLoc.string().c_str(), argsToChiCtoLLVM.begin(), argsToChiCtoLLVM.end());
+		std::string generatedBitcode;
+		try {
 
-		ctollvmExe.in() << code;
-		ctollvmExe.close_in();
+			exec_stream_t ctollvmExe;
+			ctollvmExe.set_wait_timeout(exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 100'000);
+			ctollvmExe.set_buffer_limit(exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 10'000'000);
 
-		auto generatedbc = std::string{std::istreambuf_iterator<char>(ctollvmExe.out()),
-		                               std::istreambuf_iterator<char>()};
-		auto errs = std::string{std::istreambuf_iterator<char>(ctollvmExe.err()),
-		                        std::istreambuf_iterator<char>()};
 
-		ctollvmExe.close();
-		auto errCode = ctollvmExe.exit_code();
+			auto exeLoc = fs::path(execPath).parent_path() / "chi-ctollvm"
+	#if WIN32
+						  ".exe"
+	#endif
+				;
+			assert(fs::is_regular_file(exeLoc) && "chi-ctollvm isn't installed in the same directory as chi");
 
-		if (errCode != 0) {
-			res.addEntry("EUKN", "Failed to Generate IR with clang", {{"Error", errs}});
-			return nullptr;
+			ctollvmExe.set_text_mode(exec_stream_t::s_in);
+			ctollvmExe.set_binary_mode(exec_stream_t::s_out);
+
+			ctollvmExe.start(exeLoc.string().c_str(), argsToChiCtoLLVM.begin(), argsToChiCtoLLVM.end());
+
+			// push it the code and close the stream
+			ctollvmExe.in() << code;
+			if (!ctollvmExe.close_in()) {
+				res.addEntry("EUKN", "Failed to close input stream to chi-ctollvm", {});
+				return nullptr;
+			}
+
+			// get stderr and stdout
+			generatedBitcode = read_all(ctollvmExe.out(), res);
+			auto errs = read_all(ctollvmExe.err(), res);
+
+			if (!ctollvmExe.close()) {
+				res.addEntry("EUKN", "Failed to close chi-ctollvm process", {});
+				return nullptr;
+			}
+
+			auto errCode = ctollvmExe.exit_code();
+
+			if (errCode != 0) {
+				res.addEntry("EUKN", "Failed to Generate IR with clang", { {"Error", errs} });
+				return nullptr;
+			}
+			if (!errs.empty()) {
+				res.addEntry("WUKN", "Failed to generate IR with clang", { {"Warning", errs} });
+			}
+
 		}
-		if (!errs.empty()) {
-			res.addEntry("WUKN", "Failed to generate IR with clang", {{"Warning", errs}});
+		catch (std::exception& e) {
+			res.addEntry("EUKN", "Failed to run chi-ctollvm", { {"Error Message", e.what()} });
+			return nullptr;
 		}
 
 		auto errorOrMod = llvm::parseBitcodeFile(
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-		    llvm::MemoryBuffer::getMemBufferCopy
+			llvm::MemoryBuffer::getMemBufferCopy
 #else
-		    llvm::MemoryBufferRef
+			llvm::MemoryBufferRef
 #endif
-		    (generatedbc, "generated.bc"),
-		    ctx);
+			(generatedBitcode, "generated.bc"),
+			ctx); ;
 		if (!errorOrMod) {
-			res.addEntry("EUKN", "Failed to parse generated bitcode.", {});
+
+			std::string errorMsg;
+
+#if LLVM_VERSION_AT_LEAST(4, 0)
+			auto E = errorOrMod.takeError();
+
+			llvm::handleAllErrors(std::move(E), [&errorMsg](llvm::ErrorInfoBase& err) {
+				errorMsg = err.message();
+			});
+#endif
+
+			res.addEntry("EUKN", "Failed to parse generated bitcode.", { {"Error Message", errorMsg} });
+
+#if LLVM_VERSION_AT_LEAST(4, 0)
+			llvm::handleAllErrors(errorOrMod.takeError());
+#endif
+
 			return nullptr;
 		}
 		mod =

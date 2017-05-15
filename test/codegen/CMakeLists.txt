@@ -1,5 +1,5 @@
 add_executable(codegen_tester codegentester.cpp)
-target_link_libraries(codegen_tester PUBLIC chigraph libchigraphexecstream)
+target_link_libraries(codegen_tester PUBLIC libchigraphexecstream chigraph)
 
 set(srcdir ${CMAKE_CURRENT_SOURCE_DIR}/workspace/src)
 file(GLOB children RELATIVE  ${srcdir} ./workspace/src/*)
@@ -20,7 +20,7 @@ foreach(MODULEPATH ${CODEGEN_TESTS})
 	
 	add_test(NAME ${MODULEPATH}_test
 		COMMAND codegen_tester ${FULLMODULEPATH}
-		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../../bin
+		WORKING_DIRECTORY $<TARGET_FILE_DIR:codegen_tester>
 	)
 	
 endforeach()
