@@ -8,5 +8,6 @@ var structchi_1_1GraphStruct =
     [ "module", "structchi_1_1GraphStruct.html#a82a1da52a4bf23e1e7fef4d7228603b1", null ],
     [ "name", "structchi_1_1GraphStruct.html#ad25ddcbdf75436b9a0f76720d34257d4", null ],
     [ "removeType", "structchi_1_1GraphStruct.html#a02b93bf782565092d7ef58e2320f7589", null ],
+    [ "setName", "structchi_1_1GraphStruct.html#a73e91ad7054526af6c5022dbbbb80196", null ],
     [ "types", "structchi_1_1GraphStruct.html#ae1895cfaebac03e21d35ec2a155b3c10", null ]
 ];

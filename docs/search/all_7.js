@@ -8,5 +8,6 @@ var searchData=
   ['inspectnodeoutput',['inspectNodeOutput',['../classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681',1,'chi::Debugger']]],
   ['interpretllvmir',['interpretLLVMIR',['../namespacechi.html#a7e61e4cd27bcf0a9e891f1b2c676f5e9',1,'chi']]],
   ['interpretllvmirasmain',['interpretLLVMIRAsMain',['../namespacechi.html#adc5f3044ad1373c5c3034ff81add867d',1,'chi']]],
+  ['invalidatecache',['invalidateCache',['../structchi_1_1ModuleCache.html#a28ab26c3bd85a4795d9c04809f9a687b',1,'chi::ModuleCache']]],
   ['isattached',['isAttached',['../classchi_1_1Debugger.html#a17c4ded82e7df22e6d513568d590d58a',1,'chi::Debugger']]]
 ];

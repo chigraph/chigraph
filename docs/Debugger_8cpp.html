@@ -93,23 +93,25 @@ $(document).ready(function(){initNavTree('Debugger_8cpp.html','');});
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="Debugger_8hpp_source.html">chi/Debugger.hpp</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="Context_8hpp_source.html">chi/Context.hpp</a>&gt;</code><br />
+<code>#include &lt;chi/LLVMVersion.hpp&gt;</code><br />
 <code>#include &lt;<a class="el" href="NameMangler_8hpp_source.html">chi/NameMangler.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="NodeInstance_8hpp_source.html">chi/NodeInstance.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Result_8hpp_source.html">chi/Result.hpp</a>&gt;</code><br />
 <code>#include &lt;boost/filesystem.hpp&gt;</code><br />
 <code>#include &lt;boost/uuid/uuid_io.hpp&gt;</code><br />
-<code>#include &lt;llvm/Bitcode/ReaderWriter.h&gt;</code><br />
+<code>#include &lt;llvm/Bitcode/BitcodeWriter.h&gt;</code><br />
 <code>#include &lt;llvm/Support/FileSystem.h&gt;</code><br />
 <code>#include &lt;llvm/Support/raw_ostream.h&gt;</code><br />
+<code>#include &lt;llvm/IR/Module.h&gt;</code><br />
 <code>#include &lt;lldb/API/SBListener.h&gt;</code><br />
 <code>#include &lt;lldb/API/SBThread.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for Debugger.cpp:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Debugger_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Debugger_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="Debugger_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -132,7 +134,7 @@ unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>chi::lineNumberFr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_37e99ae68a3b4401707eb2eb8e0e8b3c.html">libchigraphdebugger</a></li><li class="navelem"><a class="el" href="dir_6fd1f93a613454a3980683a1fa3964b5.html">src</a></li><li class="navelem"><a class="el" href="Debugger_8cpp.html">Debugger.cpp</a></li>
-    <li class="footer">Generated on Sat Apr 1 2017 21:17:37 for chigraph by
+    <li class="footer">Generated on Fri May 19 2017 09:15:35 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

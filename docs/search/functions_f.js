@@ -1,6 +1,7 @@
 var searchData=
 [
   ['removebreakpoint',['removeBreakpoint',['../classchi_1_1Debugger.html#a7c314ed471ec401827778ad0d59b4570',1,'chi::Debugger']]],
+  ['removecontext',['removeContext',['../structchi_1_1Result.html#ab801a9230e3e46dc771f260992e4e84d',1,'chi::Result']]],
   ['removedatainput',['removeDataInput',['../structchi_1_1GraphFunction.html#abac77d34a4bf04d7c409655b0b3e89d0',1,'chi::GraphFunction']]],
   ['removedataoutput',['removeDataOutput',['../structchi_1_1GraphFunction.html#a65db0e7550128544600ebb1fff4bd69c',1,'chi::GraphFunction']]],
   ['removedependency',['removeDependency',['../structchi_1_1ChiModule.html#a5d5d9b53f2c2a8f0df69da48e0cf4aab',1,'chi::ChiModule']]],
@@ -18,6 +19,7 @@ var searchData=
   ['renamelocalvariable',['renameLocalVariable',['../structchi_1_1GraphFunction.html#a60bc423cb4fed3605a446da112949483',1,'chi::GraphFunction']]],
   ['resolveurlfrommodulename',['resolveUrlFromModuleName',['../namespacechi.html#ad94beb8170e5325e9c41ae21be40f504',1,'chi']]],
   ['result',['Result',['../structchi_1_1Result.html#aad77832631e03436010ecff5bb7ff597',1,'chi::Result']]],
+  ['retrievefromcache',['retrieveFromCache',['../structchi_1_1ModuleCache.html#a9822fcf51ebd701cb2dc59a858080bf0',1,'chi::ModuleCache']]],
   ['retypedatainput',['retypeDataInput',['../structchi_1_1GraphFunction.html#aa69ea8953b3c1b9da14a5364c747e49b',1,'chi::GraphFunction']]],
   ['retypedataoutput',['retypeDataOutput',['../structchi_1_1GraphFunction.html#a7772a0180716a2c29436d086d757743e',1,'chi::GraphFunction']]],
   ['retypelocalvariable',['retypeLocalVariable',['../structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a',1,'chi::GraphFunction']]],

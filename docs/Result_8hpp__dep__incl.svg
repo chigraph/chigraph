@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 1756;
+var viewWidth = 1935;
 var viewHeight = 106;
 var sectionId = 'dynsection-1';
 </script>
@@ -54,47 +54,47 @@ var sectionId = 'dynsection-1';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>libchigraph/include/chi/Result.hpp</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-102 1752,-102 1752,4 -4,4"/>
-<!-- Node2 -->
-<g id="node1" class="node">
-<title>Node2</title>
-<polygon fill="#bfbfbf" stroke="#000000" points="809,-67.5 809,-97.5 906,-97.5 906,-67.5 809,-67.5"/>
-<text text-anchor="start" x="817" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/include</text>
-<text text-anchor="middle" x="857.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">/chi/Result.hpp</text>
-</g>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-102 1931,-102 1931,4 -4,4"/>
 <!-- Node3 -->
-<g id="node2" class="node">
+<g id="node1" class="node">
 <title>Node3</title>
+<polygon fill="#bfbfbf" stroke="#000000" points="901,-67.5 901,-97.5 998,-97.5 998,-67.5 901,-67.5"/>
+<text text-anchor="start" x="909" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/include</text>
+<text text-anchor="middle" x="949.5" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">/chi/Result.hpp</text>
+</g>
+<!-- Node4 -->
+<g id="node2" class="node">
+<title>Node4</title>
 <g id="a_node2"><a xlink:href="ChiModule_8cpp.html" target="_top" xlink:title="libchigraph/src/ChiModule.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="0,-6 0,-25 147,-25 147,-6 0,-6"/>
 <text text-anchor="middle" x="73.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/ChiModule.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node3 -->
+<!-- Node3&#45;&gt;Node4 -->
 <g id="edge1" class="edge">
-<title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="#191970" d="M798.6458,-80.442C677.724,-75.7168 392.7448,-62.0229 155.5,-31 143.5763,-29.4408 130.7647,-27.2633 118.8944,-25.0324"/>
-<polygon fill="#191970" stroke="#191970" points="798.6683,-83.9454 808.7955,-80.8325 798.9375,-76.9506 798.6683,-83.9454"/>
+<title>Node3&#45;&gt;Node4</title>
+<path fill="none" stroke="#191970" d="M890.6855,-81.1393C758.6949,-77.5494 429.0353,-65.5922 155.5,-31 143.4261,-29.4731 130.447,-27.2794 118.4568,-25.0209"/>
+<polygon fill="#191970" stroke="#191970" points="890.8794,-84.6456 900.9689,-81.4128 891.0655,-77.6481 890.8794,-84.6456"/>
 </g>
-<!-- Node4 -->
+<!-- Node5 -->
 <g id="node3" class="node">
-<title>Node4</title>
+<title>Node5</title>
 <g id="a_node3"><a xlink:href="Context_8cpp.html" target="_top" xlink:title="libchigraph/src/Context.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="165,-6 165,-25 300,-25 300,-6 165,-6"/>
 <text text-anchor="middle" x="232.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/Context.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node4 -->
+<!-- Node3&#45;&gt;Node5 -->
 <g id="edge2" class="edge">
-<title>Node2&#45;&gt;Node4</title>
-<path fill="none" stroke="#191970" d="M798.654,-79.0034C698.037,-72.5711 486.637,-57.0787 309.5,-31 298.5725,-29.3912 286.8513,-27.2487 275.9327,-25.0714"/>
-<polygon fill="#191970" stroke="#191970" points="798.7126,-82.514 808.9136,-79.6523 799.1545,-75.528 798.7126,-82.514"/>
+<title>Node3&#45;&gt;Node5</title>
+<path fill="none" stroke="#191970" d="M890.5368,-80.0909C777.413,-74.9527 522.254,-60.8667 309.5,-31 298.2918,-29.4266 286.2574,-27.2441 275.1107,-25.0129"/>
+<polygon fill="#191970" stroke="#191970" points="890.564,-83.5955 900.7105,-80.5461 890.877,-76.6025 890.564,-83.5955"/>
 </g>
-<!-- Node5 -->
+<!-- Node6 -->
 <g id="node4" class="node">
-<title>Node5</title>
+<title>Node6</title>
 <g id="a_node4"><a xlink:href="FunctionCompiler_8cpp.html" target="_top" xlink:title="libchigraph/src/Function\lCompiler.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="318.5,-.5 318.5,-30.5 438.5,-30.5 438.5,-.5 318.5,-.5"/>
 <text text-anchor="start" x="326.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/Function</text>
@@ -102,15 +102,15 @@ var sectionId = 'dynsection-1';
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node5 -->
+<!-- Node3&#45;&gt;Node6 -->
 <g id="edge3" class="edge">
-<title>Node2&#45;&gt;Node5</title>
-<path fill="none" stroke="#191970" d="M798.6481,-76.9017C718.7822,-68.8962 571.7755,-52.7119 447.5,-31 444.5973,-30.4929 441.6324,-29.9446 438.6426,-29.3674"/>
-<polygon fill="#191970" stroke="#191970" points="798.694,-80.4235 808.9913,-77.9303 799.3868,-73.4579 798.694,-80.4235"/>
+<title>Node3&#45;&gt;Node6</title>
+<path fill="none" stroke="#191970" d="M890.6164,-78.7358C796.5325,-72.211 606.6877,-56.9512 447.5,-31 444.5917,-30.5259 441.6223,-30.0044 438.6288,-29.4487"/>
+<polygon fill="#191970" stroke="#191970" points="890.5709,-82.2408 900.7869,-79.4329 891.0497,-75.2572 890.5709,-82.2408"/>
 </g>
-<!-- Node6 -->
+<!-- Node7 -->
 <g id="node5" class="node">
-<title>Node6</title>
+<title>Node7</title>
 <g id="a_node5"><a xlink:href="FunctionValidator_8cpp.html" target="_top" xlink:title="libchigraph/src/Function\lValidator.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="456.5,-.5 456.5,-30.5 576.5,-30.5 576.5,-.5 456.5,-.5"/>
 <text text-anchor="start" x="464.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/Function</text>
@@ -118,117 +118,132 @@ var sectionId = 'dynsection-1';
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node6 -->
+<!-- Node3&#45;&gt;Node7 -->
 <g id="edge4" class="edge">
-<title>Node2&#45;&gt;Node6</title>
-<path fill="none" stroke="#191970" d="M798.8129,-71.981C743.6485,-61.9531 658.8272,-46.1733 585.5,-31 582.6145,-30.4029 579.6636,-29.7815 576.6848,-29.1457"/>
-<polygon fill="#191970" stroke="#191970" points="798.2945,-75.444 808.7587,-73.785 799.5439,-68.5564 798.2945,-75.444"/>
+<title>Node3&#45;&gt;Node7</title>
+<path fill="none" stroke="#191970" d="M890.4715,-75.6302C818.2754,-66.8872 692.4657,-50.5485 585.5,-31 582.6014,-30.4703 579.6398,-29.9036 576.6525,-29.3116"/>
+<polygon fill="#191970" stroke="#191970" points="890.379,-79.1442 900.7257,-76.8645 891.2157,-72.1944 890.379,-79.1442"/>
 </g>
-<!-- Node7 -->
+<!-- Node8 -->
 <g id="node6" class="node">
-<title>Node7</title>
+<title>Node8</title>
 <g id="a_node6"><a xlink:href="GraphFunction_8cpp.html" target="_top" xlink:title="libchigraph/src/GraphFunction.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="595,-6 595,-25 760,-25 760,-6 595,-6"/>
 <text text-anchor="middle" x="677.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/GraphFunction.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node7 -->
+<!-- Node3&#45;&gt;Node8 -->
 <g id="edge5" class="edge">
-<title>Node2&#45;&gt;Node7</title>
-<path fill="none" stroke="#191970" d="M807.3633,-63.838C773.4511,-51.2151 730.0758,-35.0699 703.0366,-25.0053"/>
-<polygon fill="#191970" stroke="#191970" points="806.5117,-67.2556 817.1045,-67.4639 808.9536,-60.6953 806.5117,-67.2556"/>
+<title>Node3&#45;&gt;Node8</title>
+<path fill="none" stroke="#191970" d="M890.9764,-68.0843C838.2181,-55.0886 762.1184,-36.3435 716.4642,-25.0978"/>
+<polygon fill="#191970" stroke="#191970" points="890.3249,-71.5283 900.8719,-70.5217 891.9992,-64.7315 890.3249,-71.5283"/>
 </g>
-<!-- Node8 -->
+<!-- Node9 -->
 <g id="node7" class="node">
-<title>Node8</title>
+<title>Node9</title>
 <g id="a_node7"><a xlink:href="GraphModule_8cpp.html" target="_top" xlink:title="libchigraph/src/GraphModule.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="778,-6 778,-25 937,-25 937,-6 778,-6"/>
 <text text-anchor="middle" x="857.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/GraphModule.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node8 -->
+<!-- Node3&#45;&gt;Node9 -->
 <g id="edge6" class="edge">
-<title>Node2&#45;&gt;Node8</title>
-<path fill="none" stroke="#191970" d="M857.5,-57.1199C857.5,-45.9072 857.5,-33.4031 857.5,-25.055"/>
-<polygon fill="#191970" stroke="#191970" points="854.0001,-57.2966 857.5,-67.2967 861.0001,-57.2967 854.0001,-57.2966"/>
+<title>Node3&#45;&gt;Node9</title>
+<path fill="none" stroke="#191970" d="M920.2683,-61.2117C903.5887,-49.0646 883.5014,-34.4358 870.6203,-25.055"/>
+<polygon fill="#191970" stroke="#191970" points="918.4798,-64.2389 928.6238,-67.2967 922.6006,-58.5804 918.4798,-64.2389"/>
 </g>
-<!-- Node9 -->
+<!-- Node10 -->
 <g id="node8" class="node">
-<title>Node9</title>
+<title>Node10</title>
 <g id="a_node8"><a xlink:href="JsonDeserializer_8cpp_source.html" target="_top" xlink:title="libchigraph/src/JsonDeserializer.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="955,-6 955,-25 1128,-25 1128,-6 955,-6"/>
 <text text-anchor="middle" x="1041.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/JsonDeserializer.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node9 -->
+<!-- Node3&#45;&gt;Node10 -->
 <g id="edge7" class="edge">
-<title>Node2&#45;&gt;Node9</title>
-<path fill="none" stroke="#191970" d="M908.3051,-64.0003C943.0357,-51.3538 987.6372,-35.1131 1015.3959,-25.0053"/>
-<polygon fill="#191970" stroke="#191970" points="906.9921,-60.7535 898.7932,-67.4639 909.3872,-67.3311 906.9921,-60.7535"/>
+<title>Node3&#45;&gt;Node10</title>
+<path fill="none" stroke="#191970" d="M978.7317,-61.2117C995.4113,-49.0646 1015.4986,-34.4358 1028.3797,-25.055"/>
+<polygon fill="#191970" stroke="#191970" points="976.3994,-58.5804 970.3762,-67.2967 980.5202,-64.2389 976.3994,-58.5804"/>
 </g>
-<!-- Node10 -->
+<!-- Node11 -->
 <g id="node9" class="node">
-<title>Node10</title>
+<title>Node11</title>
 <g id="a_node9"><a xlink:href="LangModule_8cpp.html" target="_top" xlink:title="libchigraph/src/LangModule.cpp">
 <polygon fill="#ffffff" stroke="#000000" points="1146.5,-6 1146.5,-25 1300.5,-25 1300.5,-6 1146.5,-6"/>
 <text text-anchor="middle" x="1223.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/LangModule.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node10 -->
+<!-- Node3&#45;&gt;Node11 -->
 <g id="edge8" class="edge">
-<title>Node2&#45;&gt;Node10</title>
-<path fill="none" stroke="#191970" d="M916.158,-71.7621C986.6928,-58.8499 1103.9881,-37.3779 1171.443,-25.0296"/>
-<polygon fill="#191970" stroke="#191970" points="915.3083,-68.3594 906.102,-73.6029 916.5688,-75.2449 915.3083,-68.3594"/>
-</g>
-<!-- Node11 -->
-<g id="node10" class="node">
-<title>Node11</title>
-<g id="a_node10"><a xlink:href="NodeInstance_8cpp.html" target="_top" xlink:title="libchigraph/src/NodeInstance.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="1319,-6 1319,-25 1480,-25 1480,-6 1319,-6"/>
-<text text-anchor="middle" x="1399.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/NodeInstance.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node11 -->
-<g id="edge9" class="edge">
-<title>Node2&#45;&gt;Node11</title>
-<path fill="none" stroke="#191970" d="M916.2399,-76.8887C1002.5969,-68.3943 1168.8174,-51.1122 1309.5,-31 1321.7425,-29.2498 1334.8798,-27.1272 1347.2301,-25.0216"/>
-<polygon fill="#191970" stroke="#191970" points="915.7228,-73.4225 906.1116,-77.8806 916.4051,-80.3892 915.7228,-73.4225"/>
+<title>Node3&#45;&gt;Node11</title>
+<path fill="none" stroke="#191970" d="M1008.161,-68.1559C1061.4455,-55.1265 1138.5433,-36.2741 1184.58,-25.0169"/>
+<polygon fill="#191970" stroke="#191970" points="1007.0524,-64.8238 998.17,-70.5989 1008.7152,-71.6234 1007.0524,-64.8238"/>
 </g>
 <!-- Node12 -->
-<g id="node11" class="node">
+<g id="node10" class="node">
 <title>Node12</title>
-<g id="a_node11"><a xlink:href="Result_8cpp.html" target="_top" xlink:title="libchigraph/src/Result.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="1498,-6 1498,-25 1627,-25 1627,-6 1498,-6"/>
-<text text-anchor="middle" x="1562.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/Result.cpp</text>
+<g id="a_node10"><a xlink:href="ModuleCache_8cpp_source.html" target="_top" xlink:title="libchigraph/src/ModuleCache.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="1319,-6 1319,-25 1480,-25 1480,-6 1319,-6"/>
+<text text-anchor="middle" x="1399.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/ModuleCache.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node12 -->
-<g id="edge10" class="edge">
-<title>Node2&#45;&gt;Node12</title>
-<path fill="none" stroke="#191970" d="M916.1774,-80.2274C1028.1477,-75.3365 1279.8267,-61.6742 1489.5,-31 1500.1403,-29.4434 1511.5547,-27.2668 1522.1227,-25.0359"/>
-<polygon fill="#191970" stroke="#191970" points="915.9453,-76.7341 906.1048,-80.6601 916.2458,-83.7276 915.9453,-76.7341"/>
+<!-- Node3&#45;&gt;Node12 -->
+<g id="edge9" class="edge">
+<title>Node3&#45;&gt;Node12</title>
+<path fill="none" stroke="#191970" d="M1008.3232,-74.6083C1079.6672,-64.916 1203.5428,-47.6995 1309.5,-31 1321.2463,-29.1487 1333.8347,-27.0518 1345.7637,-25.0121"/>
+<polygon fill="#191970" stroke="#191970" points="1007.6256,-71.1707 998.1866,-75.9827 1008.5662,-78.1073 1007.6256,-71.1707"/>
 </g>
 <!-- Node13 -->
-<g id="node12" class="node">
+<g id="node11" class="node">
 <title>Node13</title>
-<g id="a_node12"><a xlink:href="Debugger_8cpp.html" target="_top" xlink:title="libchigraphdebugger\l/src/Debugger.cpp">
-<polygon fill="#ffffff" stroke="#000000" points="1645,-.5 1645,-30.5 1748,-30.5 1748,-.5 1645,-.5"/>
-<text text-anchor="start" x="1653" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraphdebugger</text>
-<text text-anchor="middle" x="1696.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">/src/Debugger.cpp</text>
+<g id="a_node11"><a xlink:href="NodeInstance_8cpp.html" target="_top" xlink:title="libchigraph/src/NodeInstance.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="1498,-6 1498,-25 1659,-25 1659,-6 1498,-6"/>
+<text text-anchor="middle" x="1578.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/NodeInstance.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node13 -->
+<!-- Node3&#45;&gt;Node13 -->
+<g id="edge10" class="edge">
+<title>Node3&#45;&gt;Node13</title>
+<path fill="none" stroke="#191970" d="M1008.1841,-78.3979C1107.5317,-71.1193 1315.0712,-54.4709 1489.5,-31 1501.9351,-29.3267 1515.2897,-27.1856 1527.7747,-25.0324"/>
+<polygon fill="#191970" stroke="#191970" points="1007.769,-74.9188 998.0494,-79.1354 1008.277,-81.9004 1007.769,-74.9188"/>
+</g>
+<!-- Node14 -->
+<g id="node12" class="node">
+<title>Node14</title>
+<g id="a_node12"><a xlink:href="Result_8cpp.html" target="_top" xlink:title="libchigraph/src/Result.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="1677,-6 1677,-25 1806,-25 1806,-6 1677,-6"/>
+<text text-anchor="middle" x="1741.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraph/src/Result.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node14 -->
 <g id="edge11" class="edge">
-<title>Node2&#45;&gt;Node13</title>
-<path fill="none" stroke="#191970" d="M916.4293,-80.0329C1073.1742,-73.2422 1497.8371,-53.2935 1636.5,-31 1639.2618,-30.556 1642.0815,-30.0423 1644.9188,-29.4776"/>
-<polygon fill="#191970" stroke="#191970" points="915.8957,-76.5525 906.0557,-80.48 916.1972,-83.546 915.8957,-76.5525"/>
+<title>Node3&#45;&gt;Node14</title>
+<path fill="none" stroke="#191970" d="M1008.464,-81.0239C1131.6294,-77.3377 1424.9787,-65.4077 1668.5,-31 1679.2761,-29.4774 1690.84,-27.2852 1701.5145,-25.0267"/>
+<polygon fill="#191970" stroke="#191970" points="1008.0274,-77.535 998.1339,-81.3255 1008.2318,-84.532 1008.0274,-77.535"/>
+</g>
+<!-- Node15 -->
+<g id="node13" class="node">
+<title>Node15</title>
+<g id="a_node13"><a xlink:href="Debugger_8cpp.html" target="_top" xlink:title="libchigraphdebugger\l/src/Debugger.cpp">
+<polygon fill="#ffffff" stroke="#000000" points="1824,-.5 1824,-30.5 1927,-30.5 1927,-.5 1824,-.5"/>
+<text text-anchor="start" x="1832" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">libchigraphdebugger</text>
+<text text-anchor="middle" x="1875.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">/src/Debugger.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node15 -->
+<g id="edge12" class="edge">
+<title>Node3&#45;&gt;Node15</title>
+<path fill="none" stroke="#191970" d="M1008.2541,-80.4888C1176.7141,-74.4869 1659.2953,-55.584 1815.5,-31 1818.2632,-30.5651 1821.0841,-30.0587 1823.9223,-29.4997"/>
+<polygon fill="#191970" stroke="#191970" points="1007.9617,-76.9969 998.0919,-80.8488 1008.2095,-83.9925 1007.9617,-76.9969"/>
 </g>
 </g>
 </svg>

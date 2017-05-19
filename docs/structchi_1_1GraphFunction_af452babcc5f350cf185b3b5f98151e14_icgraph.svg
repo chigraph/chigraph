@@ -48,23 +48,23 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 761;
 var viewHeight = 127;
-var sectionId = 'dynsection-45';
+var sectionId = 'dynsection-53';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chi::GraphFunction::removeExecOutput</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-122.5 757,-122.5 757,4 -4,4"/>
-<!-- Node718 -->
+<!-- Node768 -->
 <g id="node1" class="node">
-<title>Node718</title>
+<title>Node768</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-37 0,-67 107,-67 107,-37 0,-37"/>
 <text text-anchor="start" x="8" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
 <text text-anchor="middle" x="53.5" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::removeExecOutput</text>
 </g>
-<!-- Node719 -->
+<!-- Node769 -->
 <g id="node2" class="node">
-<title>Node719</title>
+<title>Node769</title>
 <g id="a_node2"><a xlink:href="structchi_1_1GraphFunction.html#ab47bbbd84f14240b824c1a780b125207" target="_top" xlink:title="Get the function exec outputs. ">
 <polygon fill="#ffffff" stroke="#000000" points="143,-37 143,-67 242,-67 242,-37 143,-37"/>
 <text text-anchor="start" x="151" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -72,15 +72,15 @@ var sectionId = 'dynsection-45';
 </a>
 </g>
 </g>
-<!-- Node718&#45;&gt;Node719 -->
+<!-- Node768&#45;&gt;Node769 -->
 <g id="edge1" class="edge">
-<title>Node718&#45;&gt;Node719</title>
+<title>Node768&#45;&gt;Node769</title>
 <path fill="none" stroke="#191970" d="M117.2864,-52C125.9173,-52 134.6665,-52 142.9968,-52"/>
 <polygon fill="#191970" stroke="#191970" points="117.2411,-48.5001 107.241,-52 117.241,-55.5001 117.2411,-48.5001"/>
 </g>
-<!-- Node720 -->
+<!-- Node770 -->
 <g id="node3" class="node">
-<title>Node720</title>
+<title>Node770</title>
 <g id="a_node3"><a xlink:href="structchi_1_1GraphFunction.html#af14ad950cfff4ad3091827f9b6ad1cd2" target="_top" xlink:title="Create a fresh NodeType for an exit. ">
 <polygon fill="#ffffff" stroke="#000000" points="287,-81 287,-111 398,-111 398,-81 287,-81"/>
 <text text-anchor="start" x="295" y="-99" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -88,30 +88,30 @@ var sectionId = 'dynsection-45';
 </a>
 </g>
 </g>
-<!-- Node719&#45;&gt;Node720 -->
+<!-- Node769&#45;&gt;Node770 -->
 <g id="edge2" class="edge">
-<title>Node719&#45;&gt;Node720</title>
+<title>Node769&#45;&gt;Node770</title>
 <path fill="none" stroke="#191970" d="M251.8354,-69.405C264.8604,-73.2257 278.5451,-77.2399 291.2219,-80.9584"/>
 <polygon fill="#191970" stroke="#191970" points="252.6122,-65.9855 242.0313,-66.5292 250.6418,-72.7025 252.6122,-65.9855"/>
 </g>
-<!-- Node723 -->
+<!-- Node773 -->
 <g id="node6" class="node">
-<title>Node723</title>
+<title>Node773</title>
 <g id="a_node6"><a xlink:href="namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" target="_top" xlink:title="Serialize a GraphFunction to json. ">
 <polygon fill="#ffffff" stroke="#000000" points="278,-3.5 278,-22.5 407,-22.5 407,-3.5 278,-3.5"/>
 <text text-anchor="middle" x="342.5" y="-10.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::graphFunctionToJson</text>
 </a>
 </g>
 </g>
-<!-- Node719&#45;&gt;Node723 -->
+<!-- Node769&#45;&gt;Node773 -->
 <g id="edge6" class="edge">
-<title>Node719&#45;&gt;Node723</title>
+<title>Node769&#45;&gt;Node773</title>
 <path fill="none" stroke="#191970" d="M251.7277,-36.6008C269.9962,-31.851 289.5724,-26.7612 305.8509,-22.5288"/>
 <polygon fill="#191970" stroke="#191970" points="250.8288,-33.2181 242.0313,-39.1219 252.5903,-39.9928 250.8288,-33.2181"/>
 </g>
-<!-- Node721 -->
+<!-- Node771 -->
 <g id="node4" class="node">
-<title>Node721</title>
+<title>Node771</title>
 <g id="a_node4"><a xlink:href="structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d" target="_top" xlink:title="chi::GraphFunction\l::nodes">
 <polygon fill="#ffffff" stroke="#000000" points="455,-88 455,-118 554,-118 554,-88 455,-88"/>
 <text text-anchor="start" x="463" y="-106" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -119,15 +119,15 @@ var sectionId = 'dynsection-45';
 </a>
 </g>
 </g>
-<!-- Node720&#45;&gt;Node721 -->
+<!-- Node770&#45;&gt;Node771 -->
 <g id="edge3" class="edge">
-<title>Node720&#45;&gt;Node721</title>
+<title>Node770&#45;&gt;Node771</title>
 <path fill="none" stroke="#191970" d="M408.3299,-98.8445C423.8747,-99.5162 440.1925,-100.2213 454.8817,-100.856"/>
 <polygon fill="#191970" stroke="#191970" points="408.393,-95.3441 398.2512,-98.409 408.0908,-102.3375 408.393,-95.3441"/>
 </g>
-<!-- Node722 -->
+<!-- Node772 -->
 <g id="node5" class="node">
-<title>Node722</title>
+<title>Node772</title>
 <g id="a_node5"><a xlink:href="structchi_1_1GraphFunction.html#a3c10d56dd68371400993b4a3c120f585" target="_top" xlink:title="Rename an exec output If idx is out of range, this function does nothing. ">
 <polygon fill="#ffffff" stroke="#000000" points="451,-39 451,-69 558,-69 558,-39 451,-39"/>
 <text text-anchor="start" x="459" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -135,45 +135,45 @@ var sectionId = 'dynsection-45';
 </a>
 </g>
 </g>
-<!-- Node720&#45;&gt;Node722 -->
+<!-- Node770&#45;&gt;Node772 -->
 <g id="edge4" class="edge">
-<title>Node720&#45;&gt;Node722</title>
+<title>Node770&#45;&gt;Node772</title>
 <path fill="none" stroke="#191970" d="M407.9787,-79.0241C422.2156,-75.333 437.1172,-71.4696 450.8341,-67.9134"/>
 <polygon fill="#191970" stroke="#191970" points="407.0528,-75.6483 398.2512,-81.546 408.8096,-82.4243 407.0528,-75.6483"/>
 </g>
-<!-- Node722&#45;&gt;Node719 -->
+<!-- Node772&#45;&gt;Node769 -->
 <g id="edge5" class="edge">
-<title>Node722&#45;&gt;Node719</title>
+<title>Node772&#45;&gt;Node769</title>
 <path fill="none" stroke="#191970" d="M440.7047,-53.5911C381.9866,-53.2147 296.0843,-52.664 242.2823,-52.3191"/>
 <polygon fill="#191970" stroke="#191970" points="440.9522,-57.0926 450.9744,-53.6569 440.9971,-50.0928 440.9522,-57.0926"/>
 </g>
-<!-- Node724 -->
+<!-- Node774 -->
 <g id="node7" class="node">
-<title>Node724</title>
+<title>Node774</title>
 <g id="a_node7"><a xlink:href="namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" target="_top" xlink:title="Serialize a JsonModule to json. ">
 <polygon fill="#ffffff" stroke="#000000" points="443,-.5 443,-19.5 566,-19.5 566,-.5 443,-.5"/>
 <text text-anchor="middle" x="504.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::graphModuleToJson</text>
 </a>
 </g>
 </g>
-<!-- Node723&#45;&gt;Node724 -->
+<!-- Node773&#45;&gt;Node774 -->
 <g id="edge7" class="edge">
-<title>Node723&#45;&gt;Node724</title>
+<title>Node773&#45;&gt;Node774</title>
 <path fill="none" stroke="#191970" d="M417.7026,-11.6074C426.1561,-11.4508 434.6942,-11.2927 442.9461,-11.1399"/>
 <polygon fill="#191970" stroke="#191970" points="417.3916,-8.1124 407.4582,-11.7971 417.5213,-15.1112 417.3916,-8.1124"/>
 </g>
-<!-- Node725 -->
+<!-- Node775 -->
 <g id="node8" class="node">
-<title>Node725</title>
+<title>Node775</title>
 <g id="a_node8"><a xlink:href="structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" target="_top" xlink:title="Serialize to disk in the context. ">
 <polygon fill="#ffffff" stroke="#000000" points="602,-.5 602,-19.5 753,-19.5 753,-.5 602,-.5"/>
 <text text-anchor="middle" x="677.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::saveToDisk</text>
 </a>
 </g>
 </g>
-<!-- Node724&#45;&gt;Node725 -->
+<!-- Node774&#45;&gt;Node775 -->
 <g id="edge8" class="edge">
-<title>Node724&#45;&gt;Node725</title>
+<title>Node774&#45;&gt;Node775</title>
 <path fill="none" stroke="#191970" d="M576.5243,-10C584.8612,-10 593.3827,-10 601.7672,-10"/>
 <polygon fill="#191970" stroke="#191970" points="576.4684,-6.5001 566.4683,-10 576.4683,-13.5001 576.4684,-6.5001"/>
 </g>

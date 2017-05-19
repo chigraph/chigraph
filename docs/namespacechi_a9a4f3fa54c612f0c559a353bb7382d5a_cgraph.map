@@ -1,51 +1,51 @@
 <map id="chi::graphModuleToJson" name="chi::graphModuleToJson">
-<area shape="rect" id="node2" href="$structchi_1_1GraphModule.html#ac251cc6b4242642f6601c8c3607f5747" title="Gets if C support is enabled. " alt="" coords="222,192,409,219"/>
-<area shape="rect" id="node9" href="$structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779" title="Get the dependencies. " alt="" coords="217,287,413,313"/>
-<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#a45255dbf09b56ac93b35ebc4d77bba5c" title="Get functions. " alt="" coords="223,373,408,400"/>
-<area shape="rect" id="node16" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="229,784,401,811"/>
-<area shape="rect" id="node46" href="$namespacechi.html#af74872167b12e4ad8a387faab1f03fbb" title="Serialize a GraphStruct to json. " alt="" coords="237,1272,394,1299"/>
-<area shape="rect" id="node3" href="$structchi_1_1GraphModule.html#a24162d01532244d8945128b71af5fc48" title="From C code, create a NodeType. " alt="" coords="482,137,650,178"/>
-<area shape="rect" id="node4" href="$structchi_1_1GraphModule.html#a10cfac308c6e0f1fa38be5513b2380cc" title="Get the path to the .c directory. It is not garunteed to exist, even if cEnabled() is true..." alt="" coords="731,107,903,149"/>
-<area shape="rect" id="node5" href="$structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512" title="Get the Context that this module belongs to. " alt="" coords="738,224,897,251"/>
-<area shape="rect" id="node6" href="$structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" title="Add a entry to the result, either a warning or an error. " alt="" coords="976,173,1120,200"/>
-<area shape="rect" id="node7" href="$structchi_1_1Context.html#a9e0b185a1871ebfda5d7bd410bf085f2" title="Gets a DataType from a module. " alt="" coords="719,5,916,32"/>
-<area shape="rect" id="node8" href="$namespacechi.html#a29ff9f3364b9ad0f25a990b8373971b4" title="Turns a type into a string. " alt="" coords="739,56,895,83"/>
-<area shape="rect" id="node10" href="$structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="461,249,671,276"/>
-<area shape="rect" id="node11" href="$structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b" title="Load a module from disk, also loads dependencies. " alt="" coords="734,275,901,301"/>
-<area shape="rect" id="node13" href="$structchi_1_1GraphModule.html#aad5b2fd794606b66cec221408cf07af4" title="Get a struct by name. " alt="" coords="735,326,900,367"/>
-<area shape="rect" id="node14" href="$structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55" title="Create a new struct in the module. " alt="" coords="465,301,667,342"/>
-<area shape="rect" id="node15" href="$structchi_1_1GraphModule.html#a779d5c125ca7b556b114bb448f83dc3b" title="Remove a struct from the module by name. " alt="" coords="479,366,653,407"/>
-<area shape="rect" id="node17" href="$structchi_1_1GraphFunction.html#ab457f58fbb96c8089340b4ebd43cb633" title="Get the function data inputs in the format {type, docstring}. " alt="" coords="500,1201,632,1242"/>
-<area shape="rect" id="node22" href="$structchi_1_1GraphFunction.html#ab0bf0d819ff062c01220614f617d5965" title="Get the function data outputs in the format {type, docstring}. " alt="" coords="500,1462,632,1503"/>
-<area shape="rect" id="node27" href="$structchi_1_1GraphFunction.html#ad261ccd66a6fcbf6492cf6565e365d0e" title="Get the description of the function. " alt="" coords="500,483,632,525"/>
-<area shape="rect" id="node28" href="$structchi_1_1GraphFunction.html#a64fa4eceaf024d3ebf628fe15e7ca9be" title="Get the function exec inputs. " alt="" coords="500,549,632,590"/>
-<area shape="rect" id="node32" href="$structchi_1_1GraphFunction.html#ab47bbbd84f14240b824c1a780b125207" title="Get the function exec outputs. " alt="" coords="500,685,632,726"/>
-<area shape="rect" id="node36" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="500,901,632,942"/>
-<area shape="rect" id="node40" href="$structchi_1_1GraphFunction.html#a89069f6e08f71cfbafb245ea16c8d69f" title="Get the name of the function. " alt="" coords="982,835,1114,877"/>
-<area shape="rect" id="node45" href="$structchi_1_1GraphFunction.html#aa5985d96d7564d7ee7f240fdb02b41a6" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="500,966,632,1007"/>
-<area shape="rect" id="node18" href="$structchi_1_1GraphFunction.html#ab2b04efa795ef12d628f13ff55e55043" title="Add an input to the end of the argument list. " alt="" coords="751,1266,883,1307"/>
-<area shape="rect" id="node19" href="$structchi_1_1GraphFunction.html#abac77d34a4bf04d7c409655b0b3e89d0" title="Remove an input from the argument list Also removes invalid connections If idx is out of range..." alt="" coords="751,1331,883,1373"/>
-<area shape="rect" id="node20" href="$structchi_1_1GraphFunction.html#a4bb426c921d46bbd8cbf237d716bc1c5" title="Rename a data input This also updates the entry node If idx is out of range, this function does nothi..." alt="" coords="751,1135,883,1177"/>
-<area shape="rect" id="node21" href="$structchi_1_1GraphFunction.html#aa69ea8953b3c1b9da14a5364c747e49b" title="Change the type of a data input This also updates the entry node and disconnects invalid connections..." alt="" coords="751,1201,883,1242"/>
-<area shape="rect" id="node23" href="$structchi_1_1GraphFunction.html#aef07b609586e0961cc16d0000362470d" title="Add an data output to the end of the argument list. " alt="" coords="751,1527,883,1569"/>
-<area shape="rect" id="node24" href="$structchi_1_1GraphFunction.html#a65db0e7550128544600ebb1fff4bd69c" title="Remove an data output from the argument list Also removes invalid connections If idx is out of range..." alt="" coords="748,1593,887,1634"/>
-<area shape="rect" id="node25" href="$structchi_1_1GraphFunction.html#a8b31017553adfc52ad6140868c328fbd" title="Modify an data output (change it&#39;s type and docstring) " alt="" coords="748,1397,887,1438"/>
-<area shape="rect" id="node26" href="$structchi_1_1GraphFunction.html#a7772a0180716a2c29436d086d757743e" title="Change the type of a data output This also updates all exit nodes and disconnects invalid connections..." alt="" coords="751,1462,883,1503"/>
-<area shape="rect" id="node29" href="$structchi_1_1GraphFunction.html#aa19f446296aa429b583cad3c044d780c" title="Add an exec input to the end of the argument list. " alt="" coords="751,391,883,433"/>
-<area shape="rect" id="node30" href="$structchi_1_1GraphFunction.html#a90ff1195a338ddbf8e8654b6efc9b0b7" title="Remove an exec input from the argument list If idx is out of range, this function does nothing..." alt="" coords="751,457,883,498"/>
-<area shape="rect" id="node31" href="$structchi_1_1GraphFunction.html#a26a88fe7adb30077c54732af11136685" title="Change the name for an exec input If idx is out of range, this function does nothing. " alt="" coords="751,522,883,563"/>
-<area shape="rect" id="node33" href="$structchi_1_1GraphFunction.html#a0ae483cab804b1128d14ff2560818f82" title="Add an exec output to the end of the argument list. " alt="" coords="751,587,883,629"/>
-<area shape="rect" id="node34" href="$structchi_1_1GraphFunction.html#af452babcc5f350cf185b3b5f98151e14" title="Remove an exec output from the argument list If idx is out of range, this function does nothing..." alt="" coords="746,653,889,694"/>
-<area shape="rect" id="node35" href="$structchi_1_1GraphFunction.html#a3c10d56dd68371400993b4a3c120f585" title="Rename an exec output If idx is out of range, this function does nothing. " alt="" coords="746,718,889,759"/>
-<area shape="rect" id="node37" href="$structchi_1_1GraphFunction.html#a0123fb77fb0a19ea18163afb88f7687b" title="Get a local varaible by name. " alt="" coords="964,985,1132,1026"/>
-<area shape="rect" id="node38" href="$structchi_1_1GraphFunction.html#a9a3b003e74692f5d0aa474d28c0dd23d" title="Create a new local varaible in the module. " alt="" coords="728,1018,907,1059"/>
-<area shape="rect" id="node39" href="$structchi_1_1GraphFunction.html#a81f2a4203abba46ff8494a6a7e192094" title="Remove a local variable from the function by name. " alt="" coords="742,835,893,877"/>
-<area shape="rect" id="node43" href="$structchi_1_1GraphFunction.html#a60bc423cb4fed3605a446da112949483" title="Rename a local variable. " alt="" coords="742,901,893,942"/>
-<area shape="rect" id="node44" href="$structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a" title="Set a new type to a local variable. " alt="" coords="976,1063,1120,1105"/>
-<area shape="rect" id="node41" href="$structchi_1_1GraphFunction.html#ad739c826ed87035857193995c23cabe2" title="Get the qualified name of the function Same as module().fullName() + &quot;:&quot; + name();. " alt="" coords="1180,901,1312,942"/>
-<area shape="rect" id="node42" href="$structchi_1_1GraphFunction.html#a27c87614be4357e97c1ececd2228f865" title="Set the name of the function. " alt="" coords="1180,835,1312,877"/>
-<area shape="rect" id="node47" href="$structchi_1_1GraphStruct.html#ae1895cfaebac03e21d35ec2a155b3c10" title="Get the types the struct contains. " alt="" coords="487,1709,645,1736"/>
-<area shape="rect" id="node48" href="$structchi_1_1GraphStruct.html#ad2857a2f5fec097866d903468e4e4b85" title="Add a new type to the struct. " alt="" coords="730,1659,905,1685"/>
-<area shape="rect" id="node49" href="$structchi_1_1GraphStruct.html#a14ceb731adea8daa0edd34c22d9fab6a" title="Change the type and name of a type. " alt="" coords="721,1709,914,1736"/>
-<area shape="rect" id="node50" href="$structchi_1_1GraphStruct.html#a02b93bf782565092d7ef58e2320f7589" title="Remove a type from a struct. " alt="" coords="719,1760,916,1787"/>
+<area shape="rect" id="node2" href="$structchi_1_1GraphModule.html#ac251cc6b4242642f6601c8c3607f5747" title="Gets if C support is enabled. " alt="" coords="222,140,409,167"/>
+<area shape="rect" id="node8" href="$structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779" title="Get the dependencies. " alt="" coords="217,260,413,287"/>
+<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#a45255dbf09b56ac93b35ebc4d77bba5c" title="Get functions. " alt="" coords="473,347,659,373"/>
+<area shape="rect" id="node19" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="229,1004,401,1031"/>
+<area shape="rect" id="node46" href="$namespacechi.html#af74872167b12e4ad8a387faab1f03fbb" title="Serialize a GraphStruct to json. " alt="" coords="237,1396,394,1423"/>
+<area shape="rect" id="node3" href="$structchi_1_1GraphModule.html#a24162d01532244d8945128b71af5fc48" title="From C code, create a NodeType. " alt="" coords="482,63,650,105"/>
+<area shape="rect" id="node4" href="$structchi_1_1GraphFunction.html#aca401237496ae311e43c7a43519e4720" title="Get the context. " alt="" coords="1365,181,1497,222"/>
+<area shape="rect" id="node5" href="$structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" title="Add a entry to the result, either a warning or an error. " alt="" coords="981,45,1125,72"/>
+<area shape="rect" id="node6" href="$structchi_1_1Context.html#a9e0b185a1871ebfda5d7bd410bf085f2" title="Gets a DataType from a module. " alt="" coords="721,71,919,97"/>
+<area shape="rect" id="node7" href="$namespacechi.html#a29ff9f3364b9ad0f25a990b8373971b4" title="Turns a type into a string. " alt="" coords="742,121,898,148"/>
+<area shape="rect" id="node9" href="$structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="461,223,671,249"/>
+<area shape="rect" id="node10" href="$structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512" title="Get the Context that this module belongs to. " alt="" coords="741,172,899,199"/>
+<area shape="rect" id="node11" href="$structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b" title="Load a module from disk, also loads dependencies &#160;!name.empty() " alt="" coords="737,223,903,249"/>
+<area shape="rect" id="node13" href="$structchi_1_1GraphModule.html#aad5b2fd794606b66cec221408cf07af4" title="Get a struct by name. " alt="" coords="737,274,903,315"/>
+<area shape="rect" id="node17" href="$structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55" title="Create a new struct in the module. " alt="" coords="719,339,921,381"/>
+<area shape="rect" id="node18" href="$structchi_1_1GraphModule.html#a779d5c125ca7b556b114bb448f83dc3b" title="Remove a struct from the module by name. " alt="" coords="733,405,907,446"/>
+<area shape="rect" id="node14" href="$structchi_1_1GraphFunction.html#a89069f6e08f71cfbafb245ea16c8d69f" title="Get the name of the function. " alt="" coords="987,434,1119,475"/>
+<area shape="rect" id="node15" href="$structchi_1_1GraphFunction.html#ad739c826ed87035857193995c23cabe2" title="Get the qualified name of the function Same as module().fullName() + &quot;:&quot; + name();. " alt="" coords="1185,467,1317,509"/>
+<area shape="rect" id="node16" href="$structchi_1_1GraphFunction.html#a27c87614be4357e97c1ececd2228f865" title="Set the name of the function. " alt="" coords="1185,402,1317,443"/>
+<area shape="rect" id="node20" href="$structchi_1_1GraphFunction.html#ab457f58fbb96c8089340b4ebd43cb633" title="Get the function data inputs in the format {type, docstring}. " alt="" coords="500,653,632,694"/>
+<area shape="rect" id="node25" href="$structchi_1_1GraphFunction.html#ab0bf0d819ff062c01220614f617d5965" title="Get the function data outputs in the format {type, docstring}. " alt="" coords="500,914,632,955"/>
+<area shape="rect" id="node30" href="$structchi_1_1GraphFunction.html#ad261ccd66a6fcbf6492cf6565e365d0e" title="Get the description of the function. " alt="" coords="500,997,632,1038"/>
+<area shape="rect" id="node31" href="$structchi_1_1GraphFunction.html#a64fa4eceaf024d3ebf628fe15e7ca9be" title="Get the function exec inputs. " alt="" coords="500,1094,632,1135"/>
+<area shape="rect" id="node35" href="$structchi_1_1GraphFunction.html#ab47bbbd84f14240b824c1a780b125207" title="Get the function exec outputs. " alt="" coords="500,1274,632,1315"/>
+<area shape="rect" id="node39" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="500,1495,632,1537"/>
+<area shape="rect" id="node45" href="$structchi_1_1GraphFunction.html#aa5985d96d7564d7ee7f240fdb02b41a6" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="500,1561,632,1602"/>
+<area shape="rect" id="node21" href="$structchi_1_1GraphFunction.html#ab2b04efa795ef12d628f13ff55e55043" title="Add an input to the end of the argument list. " alt="" coords="754,522,886,563"/>
+<area shape="rect" id="node22" href="$structchi_1_1GraphFunction.html#abac77d34a4bf04d7c409655b0b3e89d0" title="Remove an input from the argument list Also removes invalid connections If idx is out of range..." alt="" coords="754,587,886,629"/>
+<area shape="rect" id="node23" href="$structchi_1_1GraphFunction.html#a4bb426c921d46bbd8cbf237d716bc1c5" title="Rename a data input This also updates the entry node If idx is out of range, this function does nothi..." alt="" coords="754,653,886,694"/>
+<area shape="rect" id="node24" href="$structchi_1_1GraphFunction.html#aa69ea8953b3c1b9da14a5364c747e49b" title="Change the type of a data input This also updates the entry node and disconnects invalid connections..." alt="" coords="754,718,886,759"/>
+<area shape="rect" id="node26" href="$structchi_1_1GraphFunction.html#aef07b609586e0961cc16d0000362470d" title="Add an data output to the end of the argument list. " alt="" coords="754,783,886,825"/>
+<area shape="rect" id="node27" href="$structchi_1_1GraphFunction.html#a65db0e7550128544600ebb1fff4bd69c" title="Remove an data output from the argument list Also removes invalid connections If idx is out of range..." alt="" coords="751,849,889,890"/>
+<area shape="rect" id="node28" href="$structchi_1_1GraphFunction.html#a8b31017553adfc52ad6140868c328fbd" title="Modify an data output (change it&#39;s type and docstring) " alt="" coords="751,914,889,955"/>
+<area shape="rect" id="node29" href="$structchi_1_1GraphFunction.html#a7772a0180716a2c29436d086d757743e" title="Change the type of a data output This also updates all exit nodes and disconnects invalid connections..." alt="" coords="754,979,886,1021"/>
+<area shape="rect" id="node32" href="$structchi_1_1GraphFunction.html#aa19f446296aa429b583cad3c044d780c" title="Add an exec input to the end of the argument list. " alt="" coords="754,1045,886,1086"/>
+<area shape="rect" id="node33" href="$structchi_1_1GraphFunction.html#a90ff1195a338ddbf8e8654b6efc9b0b7" title="Remove an exec input from the argument list If idx is out of range, this function does nothing..." alt="" coords="754,1110,886,1151"/>
+<area shape="rect" id="node34" href="$structchi_1_1GraphFunction.html#a26a88fe7adb30077c54732af11136685" title="Change the name for an exec input If idx is out of range, this function does nothing. " alt="" coords="754,1175,886,1217"/>
+<area shape="rect" id="node36" href="$structchi_1_1GraphFunction.html#a0ae483cab804b1128d14ff2560818f82" title="Add an exec output to the end of the argument list. " alt="" coords="754,1241,886,1282"/>
+<area shape="rect" id="node37" href="$structchi_1_1GraphFunction.html#af452babcc5f350cf185b3b5f98151e14" title="Remove an exec output from the argument list If idx is out of range, this function does nothing..." alt="" coords="749,1306,891,1347"/>
+<area shape="rect" id="node38" href="$structchi_1_1GraphFunction.html#a3c10d56dd68371400993b4a3c120f585" title="Rename an exec output If idx is out of range, this function does nothing. " alt="" coords="749,1371,891,1413"/>
+<area shape="rect" id="node40" href="$structchi_1_1GraphFunction.html#a0123fb77fb0a19ea18163afb88f7687b" title="Get a local varaible by name. " alt="" coords="969,1525,1137,1566"/>
+<area shape="rect" id="node41" href="$structchi_1_1GraphFunction.html#a9a3b003e74692f5d0aa474d28c0dd23d" title="Create a new local varaible in the module. " alt="" coords="731,1554,909,1595"/>
+<area shape="rect" id="node42" href="$structchi_1_1GraphFunction.html#a81f2a4203abba46ff8494a6a7e192094" title="Remove a local variable from the function by name. " alt="" coords="745,1437,895,1478"/>
+<area shape="rect" id="node43" href="$structchi_1_1GraphFunction.html#a60bc423cb4fed3605a446da112949483" title="Rename a local variable. " alt="" coords="745,1619,895,1661"/>
+<area shape="rect" id="node44" href="$structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a" title="Set a new type to a local variable. " alt="" coords="981,1649,1125,1690"/>
+<area shape="rect" id="node47" href="$structchi_1_1GraphStruct.html#ae1895cfaebac03e21d35ec2a155b3c10" title="Get the types the struct contains. " alt="" coords="487,1787,645,1813"/>
+<area shape="rect" id="node48" href="$structchi_1_1GraphStruct.html#ad2857a2f5fec097866d903468e4e4b85" title="Add a new type to the struct. " alt="" coords="733,1736,907,1763"/>
+<area shape="rect" id="node49" href="$structchi_1_1GraphStruct.html#a14ceb731adea8daa0edd34c22d9fab6a" title="Change the type and name of a type. " alt="" coords="723,1787,917,1813"/>
+<area shape="rect" id="node50" href="$structchi_1_1GraphStruct.html#a02b93bf782565092d7ef58e2320f7589" title="Remove a type from a struct. " alt="" coords="721,1837,919,1864"/>
 </map>

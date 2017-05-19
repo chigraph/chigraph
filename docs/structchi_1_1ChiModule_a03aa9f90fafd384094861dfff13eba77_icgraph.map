@@ -1,26 +1,20 @@
 <map id="chi::ChiModule::typeFromName" name="chi::ChiModule::typeFromName">
-<area shape="rect" id="node2" href="$structchi_1_1Context.html#a9e0b185a1871ebfda5d7bd410bf085f2" title="Gets a DataType from a module. " alt="" coords="259,254,456,281"/>
-<area shape="rect" id="node3" href="$namespacechi.html#a8329038fce8125396cc9775460aa427b" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="769,30,911,57"/>
-<area shape="rect" id="node5" href="$structchi_1_1GraphModule.html#a133c0595e0bb888f958e9769838f6c0c" title="Create a node type that is in the module from the name and json. " alt="" coords="997,188,1187,229"/>
-<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#a24162d01532244d8945128b71af5fc48" title="From C code, create a NodeType. " alt="" coords="517,129,685,171"/>
-<area shape="rect" id="node15" href="$namespacechi.html#af483dab3c6b3b1ee261f223bd83d5670" title="Create a forward declaration of a function in a module with an empty graph. " alt="" coords="517,247,685,288"/>
-<area shape="rect" id="node23" href="$namespacechi.html#a6a3fedb48e6702c016f996d8a7f445fc" title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ..." alt="" coords="516,313,687,339"/>
-<area shape="rect" id="node24" href="$namespacechi.html#a629f77832b6e7a6e0eaab123c4be1cda" title="Load a GraphStruct from json. " alt="" coords="523,363,679,390"/>
-<area shape="rect" id="node25" href="$structchi_1_1LangModule.html#a0d623aa2342eec20ab11150e793f6b9e" title="Default constructor, usually called from Context::loadModule(&quot;lang&quot;) " alt="" coords="504,414,699,441"/>
-<area shape="rect" id="node4" href="$structchi_1_1GraphModule.html#a9b73bbbfa91d6a2f92bcca270bdb7b2f" title="Generate a llvm::Module from the module. " alt="" coords="1001,5,1183,47"/>
-<area shape="rect" id="node6" href="$structchi_1_1GraphFunction.html#a60bc423cb4fed3605a446da112949483" title="Rename a local variable. " alt="" coords="1259,253,1409,295"/>
-<area shape="rect" id="node11" href="$structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a" title="Set a new type to a local variable. " alt="" coords="1262,188,1406,229"/>
-<area shape="rect" id="node7" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="1504,193,1636,235"/>
-<area shape="rect" id="node8" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="1741,201,1913,227"/>
-<area shape="rect" id="node9" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1991,201,2155,227"/>
-<area shape="rect" id="node10" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="2215,201,2416,227"/>
-<area shape="rect" id="node13" href="$structchi_1_1GraphModule.html#ac251cc6b4242642f6601c8c3607f5747" title="Gets if C support is enabled. " alt="" coords="747,137,933,163"/>
-<area shape="rect" id="node14" href="$structchi_1_1GraphModule.html#a53a1a284ab878783e74a957bb3b711b3" title="Get the possible node type names. " alt="" coords="997,71,1187,112"/>
-<area shape="rect" id="node16" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="759,315,921,342"/>
-<area shape="rect" id="node17" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="981,318,1203,345"/>
-<area shape="rect" id="node18" href="$structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b" title="Load a module from disk, also loads dependencies. " alt="" coords="1251,319,1417,346"/>
-<area shape="rect" id="node19" href="$structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="1465,315,1675,342"/>
-<area shape="rect" id="node20" href="$structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779" title="Get the dependencies. " alt="" coords="1729,254,1925,281"/>
-<area shape="rect" id="node22" href="$structchi_1_1GraphModule.html#a1f776646b9c9bdd615f7e35cebf7760a" title="Construct a GraphModule. " alt="" coords="1723,315,1932,342"/>
-<area shape="rect" id="node21" href="$structchi_1_1Context.html#ad535dc768a4386dbd06c8b769c5d549f" title="Compile a module to a llvm::Module. " alt="" coords="1980,254,2167,281"/>
+<area shape="rect" id="node2" href="$structchi_1_1Context.html#a9e0b185a1871ebfda5d7bd410bf085f2" title="Gets a DataType from a module. " alt="" coords="259,261,456,287"/>
+<area shape="rect" id="node3" href="$namespacechi.html#a8329038fce8125396cc9775460aa427b" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="530,49,673,75"/>
+<area shape="rect" id="node5" href="$structchi_1_1GraphModule.html#a133c0595e0bb888f958e9769838f6c0c" title="Create a node type that is in the module from the name and json. " alt="" coords="507,136,696,177"/>
+<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#a24162d01532244d8945128b71af5fc48" title="From C code, create a NodeType. " alt="" coords="1004,195,1172,236"/>
+<area shape="rect" id="node14" href="$namespacechi.html#af483dab3c6b3b1ee261f223bd83d5670" title="Create a forward declaration of a function in a module with an empty graph. " alt="" coords="517,253,685,295"/>
+<area shape="rect" id="node17" href="$namespacechi.html#a6a3fedb48e6702c016f996d8a7f445fc" title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ..." alt="" coords="516,319,687,346"/>
+<area shape="rect" id="node18" href="$namespacechi.html#a629f77832b6e7a6e0eaab123c4be1cda" title="Load a GraphStruct from json. " alt="" coords="523,370,679,397"/>
+<area shape="rect" id="node19" href="$structchi_1_1LangModule.html#a0d623aa2342eec20ab11150e793f6b9e" title="Default constructor, usually called from Context::loadModule(&quot;lang&quot;) " alt="" coords="504,421,699,447"/>
+<area shape="rect" id="node4" href="$structchi_1_1GraphModule.html#a9b73bbbfa91d6a2f92bcca270bdb7b2f" title="Generate a llvm::Module from the module. " alt="" coords="747,5,929,47"/>
+<area shape="rect" id="node6" href="$structchi_1_1GraphFunction.html#a60bc423cb4fed3605a446da112949483" title="Rename a local variable. " alt="" coords="763,71,913,112"/>
+<area shape="rect" id="node11" href="$structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a" title="Set a new type to a local variable. " alt="" coords="766,136,910,177"/>
+<area shape="rect" id="node7" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="1022,129,1154,171"/>
+<area shape="rect" id="node8" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="1254,141,1426,167"/>
+<area shape="rect" id="node9" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1481,170,1645,197"/>
+<area shape="rect" id="node10" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="1693,170,1895,197"/>
+<area shape="rect" id="node13" href="$structchi_1_1GraphModule.html#ac251cc6b4242642f6601c8c3607f5747" title="Gets if C support is enabled. " alt="" coords="1247,195,1433,222"/>
+<area shape="rect" id="node15" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="757,319,919,346"/>
+<area shape="rect" id="node16" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="977,319,1199,346"/>
 </map>

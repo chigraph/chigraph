@@ -21,12 +21,15 @@ var dir_60466ddfe13da60bd53dc7b440efbf98 =
     [ "LangModule.hpp", "LangModule_8hpp.html", [
       [ "LangModule", "structchi_1_1LangModule.html", "structchi_1_1LangModule" ]
     ] ],
+    [ "LLVMVersion.hpp", "LLVMVersion_8hpp_source.html", null ],
+    [ "ModuleCache.hpp", "ModuleCache_8hpp_source.html", null ],
     [ "NameMangler.hpp", "NameMangler_8hpp.html", "NameMangler_8hpp" ],
     [ "NodeInstance.hpp", "NodeInstance_8hpp.html", "NodeInstance_8hpp" ],
     [ "NodeType.hpp", "NodeType_8hpp.html", [
       [ "NodeType", "structchi_1_1NodeType.html", "structchi_1_1NodeType" ]
     ] ],
     [ "Result.hpp", "Result_8hpp.html", [
-      [ "Result", "structchi_1_1Result.html", "structchi_1_1Result" ]
+      [ "Result", "structchi_1_1Result.html", "structchi_1_1Result" ],
+      [ "ScopedContext", "structchi_1_1Result_1_1ScopedContext.html", "structchi_1_1Result_1_1ScopedContext" ]
     ] ]
 ];
