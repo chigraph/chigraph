@@ -11,5 +11,5 @@ var searchData=
   ['addmodule',['addModule',['../structchi_1_1Context.html#af4a8f3fb758bbd0d1e0fdca431bdab2f',1,'chi::Context']]],
   ['addmodulefromjson',['addModuleFromJson',['../structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f',1,'chi::Context']]],
   ['addscopedcontext',['addScopedContext',['../structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6',1,'chi::Result']]],
-  ['addtype',['addType',['../structchi_1_1GraphStruct.html#ad2857a2f5fec097866d903468e4e4b85',1,'chi::GraphStruct']]]
+  ['addtype',['addType',['../structchi_1_1GraphStruct.html#aba05cdce9627a23da0449801e068d85d',1,'chi::GraphStruct']]]
 ];

@@ -29,7 +29,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="chigraphsmall64.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="chigraphDoxygenIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">master</span>
@@ -124,39 +124,31 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a59ef40f4a327cbdea263d6e4b5af2ad8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8">addEntry</a> (const char *ec, const char *overview, nlohmann::json data)</td></tr>
 <tr class="memdesc:a59ef40f4a327cbdea263d6e4b5af2ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a entry to the result, either a warning or an error.  <a href="#a59ef40f4a327cbdea263d6e4b5af2ad8">More...</a><br /></td></tr>
 <tr class="separator:a59ef40f4a327cbdea263d6e4b5af2ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cd21feaa68ac0d813b3eec7d3ea34c6"><td class="memItemLeft" align="right" valign="top"><a id="a5cd21feaa68ac0d813b3eec7d3ea34c6"></a>
-<a class="el" href="structchi_1_1Result_1_1ScopedContext.html">ScopedContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6">addScopedContext</a> (const nlohmann::json &amp;data)</td></tr>
-<tr class="memdesc:a5cd21feaa68ac0d813b3eec7d3ea34c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a context with a scope Example usage: </p><div class="fragment"><div class="line"><a class="code" href="structchi_1_1Result.html">chi::Result</a> res;</div><div class="line">res.<a class="code" href="structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0">contextJson</a>(); <span class="comment">// returns {}</span></div><div class="line">{</div><div class="line">    <span class="keyword">auto</span> scopedCtx = res.<a class="code" href="structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6">addScopedContext</a>({{<span class="stringliteral">&quot;Module&quot;</span>, <span class="stringliteral">&quot;lang&quot;</span>}});</div><div class="line">    res.<a class="code" href="structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0">contextJson</a>(); <span class="comment">// returns {&quot;module&quot;: &quot;lang&quot;}</span></div><div class="line">}</div><div class="line">res.<a class="code" href="structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0">contextJson</a>(); <span class="comment">// returns {}</span></div></div><!-- fragment --><p>. <br /></td></tr>
+<tr class="memitem:a5cd21feaa68ac0d813b3eec7d3ea34c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchi_1_1Result_1_1ScopedContext.html">ScopedContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6">addScopedContext</a> (const nlohmann::json &amp;data)</td></tr>
+<tr class="memdesc:a5cd21feaa68ac0d813b3eec7d3ea34c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a context with a scope Example usage: </p><div class="fragment"><div class="line"><a class="code" href="structchi_1_1Result.html">chi::Result</a> res;</div><div class="line">res.contextJson(); <span class="comment">// returns {}</span></div><div class="line">{</div><div class="line">    <span class="keyword">auto</span> scopedCtx = res.<a class="code" href="structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6">addScopedContext</a>({{<span class="stringliteral">&quot;Module&quot;</span>, <span class="stringliteral">&quot;lang&quot;</span>}});</div><div class="line">    res.contextJson(); <span class="comment">// returns {&quot;module&quot;: &quot;lang&quot;}</span></div><div class="line">}</div><div class="line">res.contextJson(); <span class="comment">// returns {}</span></div></div><!-- fragment --><p>.  <a href="#a5cd21feaa68ac0d813b3eec7d3ea34c6">More...</a><br /></td></tr>
 <tr class="separator:a5cd21feaa68ac0d813b3eec7d3ea34c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa078d3cb3dfb2fb63e81b71acea036e0"><td class="memItemLeft" align="right" valign="top"><a id="aa078d3cb3dfb2fb63e81b71acea036e0"></a>
-nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0">contextJson</a> () const</td></tr>
-<tr class="memdesc:aa078d3cb3dfb2fb63e81b71acea036e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the JSON associated with the context that's been added. <br /></td></tr>
-<tr class="separator:aa078d3cb3dfb2fb63e81b71acea036e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e208b26f30dc292c5ab72354757b6dd"><td class="memItemLeft" align="right" valign="top"><a id="a2e208b26f30dc292c5ab72354757b6dd"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#a2e208b26f30dc292c5ab72354757b6dd">dump</a> () const</td></tr>
-<tr class="memdesc:a2e208b26f30dc292c5ab72354757b6dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump to a pretty-printed error message. <br /></td></tr>
+<tr class="memitem:a2e208b26f30dc292c5ab72354757b6dd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#a2e208b26f30dc292c5ab72354757b6dd">dump</a> () const</td></tr>
+<tr class="memdesc:a2e208b26f30dc292c5ab72354757b6dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump to a pretty-printed error message.  <a href="#a2e208b26f30dc292c5ab72354757b6dd">More...</a><br /></td></tr>
 <tr class="separator:a2e208b26f30dc292c5ab72354757b6dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26406ce67145a4e7893018ccbf50dc89"><td class="memItemLeft" align="right" valign="top"><a id="a26406ce67145a4e7893018ccbf50dc89"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#a26406ce67145a4e7893018ccbf50dc89">operator bool</a> () const</td></tr>
-<tr class="memdesc:a26406ce67145a4e7893018ccbf50dc89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Success test. <br /></td></tr>
+<tr class="memdesc:a26406ce67145a4e7893018ccbf50dc89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the JSON associated with the context that's been added. <br /></td></tr>
 <tr class="separator:a26406ce67145a4e7893018ccbf50dc89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4c9a2e6f79dbd1f49116370cfc96513"><td class="memItemLeft" align="right" valign="top"><a id="ac4c9a2e6f79dbd1f49116370cfc96513"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#ac4c9a2e6f79dbd1f49116370cfc96513">operator!</a> () const</td></tr>
-<tr class="memdesc:ac4c9a2e6f79dbd1f49116370cfc96513"><td class="mdescLeft">&#160;</td><td class="mdescRight">!Success test <br /></td></tr>
+<tr class="memitem:ac4c9a2e6f79dbd1f49116370cfc96513"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#ac4c9a2e6f79dbd1f49116370cfc96513">operator!</a> () const</td></tr>
+<tr class="memdesc:ac4c9a2e6f79dbd1f49116370cfc96513"><td class="mdescLeft">&#160;</td><td class="mdescRight">!Success test  <a href="#ac4c9a2e6f79dbd1f49116370cfc96513">More...</a><br /></td></tr>
 <tr class="separator:ac4c9a2e6f79dbd1f49116370cfc96513"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab801a9230e3e46dc771f260992e4e84d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#ab801a9230e3e46dc771f260992e4e84d">removeContext</a> (int id)</td></tr>
 <tr class="memdesc:ab801a9230e3e46dc771f260992e4e84d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a previously added context.  <a href="#ab801a9230e3e46dc771f260992e4e84d">More...</a><br /></td></tr>
 <tr class="separator:ab801a9230e3e46dc771f260992e4e84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98065cddbdc75d3130b5d8c3d567f507"><td class="memItemLeft" align="right" valign="top"><a id="a98065cddbdc75d3130b5d8c3d567f507"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#a98065cddbdc75d3130b5d8c3d567f507">success</a> () const</td></tr>
-<tr class="memdesc:a98065cddbdc75d3130b5d8c3d567f507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Success test. <br /></td></tr>
+<tr class="memitem:a98065cddbdc75d3130b5d8c3d567f507"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#a98065cddbdc75d3130b5d8c3d567f507">success</a> () const</td></tr>
+<tr class="memdesc:a98065cddbdc75d3130b5d8c3d567f507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Success test.  <a href="#a98065cddbdc75d3130b5d8c3d567f507">More...</a><br /></td></tr>
 <tr class="separator:a98065cddbdc75d3130b5d8c3d567f507"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:af020ebd48f50571295922b6235cf26bf"><td class="memItemLeft" align="right" valign="top"><a id="af020ebd48f50571295922b6235cf26bf"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#af020ebd48f50571295922b6235cf26bf">mSuccess</a> = true</td></tr>
-<tr class="memdesc:af020ebd48f50571295922b6235cf26bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">if it is successful <br /></td></tr>
+<tr class="memdesc:af020ebd48f50571295922b6235cf26bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">If it's successful. <br /></td></tr>
 <tr class="separator:af020ebd48f50571295922b6235cf26bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22548cdff3037498a9cd978383458812"><td class="memItemLeft" align="right" valign="top"><a id="a22548cdff3037498a9cd978383458812"></a>
 nlohmann::json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1Result.html#a22548cdff3037498a9cd978383458812">result_json</a></td></tr>
@@ -236,7 +228,7 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00079">79</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00109">addScopedContext()</a>, and <a class="el" href="Result_8hpp_source.html#l00082">Result()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00119">addScopedContext()</a>, and <a class="el" href="Result_8hpp_source.html#l00090">Result()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -291,22 +283,144 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00050">50</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00088">contextJson()</a>, <a class="el" href="Result_8hpp_source.html#l00132">mSuccess</a>, and <a class="el" href="Result_8hpp_source.html#l00135">result_json</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00147">mSuccess</a>, and <a class="el" href="Result_8hpp_source.html#l00144">result_json</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00325">chi::compileFunction()</a>, <a class="el" href="Context_8cpp_source.html#l00536">chi::Context::compileModule()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00103">chi::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00163">chi::connectExec()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00119">chi::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="GraphModule_8cpp_source.html#l01034">chi::GraphModule::createNodeTypeFromCCode()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00208">chi::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00275">chi::disconnectExec()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00064">chi::GraphFunction::insertNode()</a>, <a class="el" href="Context_8cpp_source.html#l00739">chi::interpretLLVMIR()</a>, <a class="el" href="Context_8cpp_source.html#l00775">chi::interpretLLVMIRAsMain()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00230">chi::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00012">chi::jsonToGraphModule()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00448">chi::jsonToGraphStruct()</a>, <a class="el" href="Context_8cpp_source.html#l00508">chi::Context::nodeTypeFromModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00859">chi::LangModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00764">chi::GraphModule::nodeTypeFromName()</a>, <a class="el" href="Debugger_8cpp_source.html#l00093">chi::Debugger::pause()</a>, <a class="el" href="Debugger_8cpp_source.html#l00077">chi::Debugger::processContinue()</a>, <a class="el" href="Result_8hpp_source.html#l00082">Result()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00671">chi::GraphModule::saveToDisk()</a>, <a class="el" href="Debugger_8cpp_source.html#l00110">chi::Debugger::setBreakpoint()</a>, <a class="el" href="Debugger_8cpp_source.html#l00145">chi::Debugger::start()</a>, <a class="el" href="Debugger_8cpp_source.html#l00060">chi::Debugger::terminate()</a>, <a class="el" href="Context_8cpp_source.html#l00487">chi::Context::typeFromModule()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00024">chi::validateFunctionConnectionsAreTwoWay()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00218">chi::validateFunctionExecOutputs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00325">chi::compileFunction()</a>, <a class="el" href="Context_8cpp_source.html#l00534">chi::Context::compileModule()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00128">chi::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00186">chi::connectExec()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00119">chi::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="GraphModule_8cpp_source.html#l01029">chi::GraphModule::createNodeTypeFromCCode()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00229">chi::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00294">chi::disconnectExec()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00064">chi::GraphFunction::insertNode()</a>, <a class="el" href="Context_8cpp_source.html#l00746">chi::interpretLLVMIR()</a>, <a class="el" href="Context_8cpp_source.html#l00782">chi::interpretLLVMIRAsMain()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00230">chi::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00012">chi::jsonToGraphModule()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00448">chi::jsonToGraphStruct()</a>, <a class="el" href="Context_8cpp_source.html#l00518">chi::Context::nodeTypeFromModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00859">chi::LangModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00761">chi::GraphModule::nodeTypeFromName()</a>, <a class="el" href="Debugger_8cpp_source.html#l00093">chi::Debugger::pause()</a>, <a class="el" href="Debugger_8cpp_source.html#l00077">chi::Debugger::processContinue()</a>, <a class="el" href="Result_8hpp_source.html#l00090">Result()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00669">chi::GraphModule::saveToDisk()</a>, <a class="el" href="Debugger_8cpp_source.html#l00110">chi::Debugger::setBreakpoint()</a>, <a class="el" href="Debugger_8cpp_source.html#l00145">chi::Debugger::start()</a>, <a class="el" href="Debugger_8cpp_source.html#l00060">chi::Debugger::terminate()</a>, <a class="el" href="Context_8cpp_source.html#l00497">chi::Context::typeFromModule()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00024">chi::validateFunctionConnectionsAreTwoWay()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00218">chi::validateFunctionExecOutputs()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a59ef40f4a327cbdea263d6e4b5af2ad8_cgraph.svg" width="366" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a59ef40f4a327cbdea263d6e4b5af2ad8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="a5cd21feaa68ac0d813b3eec7d3ea34c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cd21feaa68ac0d813b3eec7d3ea34c6">&#9670;&nbsp;</a></span>addScopedContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structchi_1_1Result_1_1ScopedContext.html">ScopedContext</a> chi::Result::addScopedContext </td>
+          <td>(</td>
+          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a context with a scope Example usage: </p><div class="fragment"><div class="line"><a class="code" href="structchi_1_1Result.html">chi::Result</a> res;</div><div class="line">res.contextJson(); <span class="comment">// returns {}</span></div><div class="line">{</div><div class="line">    <span class="keyword">auto</span> scopedCtx = res.<a class="code" href="structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6">addScopedContext</a>({{<span class="stringliteral">&quot;Module&quot;</span>, <span class="stringliteral">&quot;lang&quot;</span>}});</div><div class="line">    res.contextJson(); <span class="comment">// returns {&quot;module&quot;: &quot;lang&quot;}</span></div><div class="line">}</div><div class="line">res.contextJson(); <span class="comment">// returns {}</span></div></div><!-- fragment --><p>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>The data to add to each entry </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchi_1_1Result_1_1ScopedContext.html" title="A helper object for contexts that should be removed at the end of a scope. ">ScopedContext</a> object. Shouldn't be discarded. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00119">119</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00079">addContext()</a>, and <a class="el" href="Result_8cpp_source.html#l00086">removeContext()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00439">chi::Context::addModuleFromJson()</a>, <a class="el" href="Context_8cpp_source.html#l00547">chi::Context::compileModule()</a>, <a class="el" href="Context_8cpp_source.html#l00163">chi::Context::fetchModule()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00012">chi::jsonToGraphModule()</a>, <a class="el" href="Context_8cpp_source.html#l00093">chi::Context::loadModule()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00024">chi::validateFunctionConnectionsAreTwoWay()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00218">chi::validateFunctionExecOutputs()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00191">chi::validateFunctionNodeInputs()</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a59ef40f4a327cbdea263d6e4b5af2ad8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a5cd21feaa68ac0d813b3eec7d3ea34c6_cgraph.svg" width="442" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a5cd21feaa68ac0d813b3eec7d3ea34c6_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a2e208b26f30dc292c5ab72354757b6dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e208b26f30dc292c5ab72354757b6dd">&#9670;&nbsp;</a></span>dump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string chi::Result::dump </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Dump to a pretty-printed error message. </p>
+<dl class="section return"><dt>Returns</dt><dd>The human-readable error message </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00060">60</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00144">result_json</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00136">operator!()</a>, and <a class="el" href="Result_8hpp_source.html#l00178">operator&lt;&lt;()</a>.</p>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a2e208b26f30dc292c5ab72354757b6dd_icgraph.svg" width="338" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="ac4c9a2e6f79dbd1f49116370cfc96513"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4c9a2e6f79dbd1f49116370cfc96513">&#9670;&nbsp;</a></span>operator!()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool chi::Result::operator! </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>!Success test </p>
+<dl class="section return"><dt>Returns</dt><dd>If it's not successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00136">136</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00060">dump()</a>, and <a class="el" href="Result_8hpp_source.html#l00132">success()</a>.</p>
+<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_ac4c9a2e6f79dbd1f49116370cfc96513_cgraph.svg" width="343" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -337,13 +451,56 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00086">86</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00109">addScopedContext()</a>.</p>
-<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00119">addScopedContext()</a>, and <a class="el" href="Result_8hpp_source.html#l00080">chi::Result::ScopedContext::~ScopedContext()</a>.</p>
+<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_ab801a9230e3e46dc771f260992e4e84d_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_ab801a9230e3e46dc771f260992e4e84d_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a98065cddbdc75d3130b5d8c3d567f507"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98065cddbdc75d3130b5d8c3d567f507">&#9670;&nbsp;</a></span>success()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool chi::Result::success </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Success test. </p>
+<dl class="section return"><dt>Returns</dt><dd>If it's successful </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00132">132</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00147">mSuccess</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00128">operator bool()</a>, <a class="el" href="Result_8hpp_source.html#l00136">operator!()</a>, <a class="el" href="Result_8cpp_source.html#l00097">operator+()</a>, and <a class="el" href="Result_8cpp_source.html#l00118">operator+=()</a>.</p>
+<div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a98065cddbdc75d3130b5d8c3d567f507_icgraph.svg" width="367" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -395,13 +552,14 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00097">97</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00088">contextJson()</a>, <a class="el" href="Result_8hpp_source.html#l00132">mSuccess</a>, <a class="el" href="Result_8hpp_source.html#l00135">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00124">success()</a>.</p>
-<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00147">mSuccess</a>, <a class="el" href="Result_8hpp_source.html#l00144">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00132">success()</a>.</p>
+<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a8fb4cc68d78f0a0068c0ddd282875eee_cgraph.svg" width="368" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a8fb4cc68d78f0a0068c0ddd282875eee_cgraph.svg" width="347" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -452,13 +610,14 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00118">118</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00088">contextJson()</a>, <a class="el" href="Result_8hpp_source.html#l00132">mSuccess</a>, <a class="el" href="Result_8hpp_source.html#l00135">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00124">success()</a>.</p>
-<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00147">mSuccess</a>, <a class="el" href="Result_8hpp_source.html#l00144">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00132">success()</a>.</p>
+<div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_aa3dbb473ec8607456c13be950e739827_cgraph.svg" width="376" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-10-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_aa3dbb473ec8607456c13be950e739827_cgraph.svg" width="355" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -507,15 +666,16 @@ Related Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>lhs after printing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00165">165</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00178">178</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Result_8cpp_source.html#l00060">dump()</a>.</p>
-<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+<div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-11-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a3a1caa60d79ed3cd997da1559bddd278_cgraph.svg" width="338" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-11-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a3a1caa60d79ed3cd997da1559bddd278_cgraph.svg" width="338" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 
 </div>
@@ -530,7 +690,7 @@ Related Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechi.html">chi</a></li><li class="navelem"><a class="el" href="structchi_1_1Result.html">Result</a></li>
-    <li class="footer">Generated on Fri May 19 2017 09:15:35 for chigraph by
+    <li class="footer">Generated on Fri May 19 2017 22:00:59 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

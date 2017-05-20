@@ -48,23 +48,23 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 717;
 var viewHeight = 121;
-var sectionId = 'dynsection-7';
+var sectionId = 'dynsection-8';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chi::ModuleCache::retrieveFromCache</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-116.7189 713,-116.7189 713,4 -4,4"/>
-<!-- Node31 -->
+<!-- Node35 -->
 <g id="node1" class="node">
-<title>Node31</title>
+<title>Node35</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-52 0,-82 133,-82 133,-52 0,-52"/>
 <text text-anchor="start" x="8" y="-70" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ModuleCache::retrieve</text>
 <text text-anchor="middle" x="66.5" y="-59" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">FromCache</text>
 </g>
-<!-- Node32 -->
+<!-- Node36 -->
 <g id="node2" class="node">
-<title>Node32</title>
+<title>Node36</title>
 <g id="a_node2"><a xlink:href="structchi_1_1ModuleCache.html#a7533652808cf359ed6ea975dbe11dd43" target="_top" xlink:title="Get the cache name for a module. ">
 <polygon fill="#ffffff" stroke="#000000" points="384,-77 384,-107 531,-107 531,-77 384,-77"/>
 <text text-anchor="start" x="392" y="-95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ModuleCache::cachePath</text>
@@ -72,81 +72,81 @@ var sectionId = 'dynsection-7';
 </a>
 </g>
 </g>
-<!-- Node31&#45;&gt;Node32 -->
+<!-- Node35&#45;&gt;Node36 -->
 <g id="edge1" class="edge">
-<title>Node31&#45;&gt;Node32</title>
+<title>Node35&#45;&gt;Node36</title>
 <path fill="none" stroke="#191970" d="M98.4453,-82.1921C118.2619,-90.7622 144.5286,-100.6098 169,-105 237.2024,-117.2355 315.847,-112.4716 373.7822,-105.4966"/>
 <polygon fill="#191970" stroke="#191970" points="374.4991,-108.9343 383.9871,-104.2196 373.6298,-101.9885 374.4991,-108.9343"/>
 </g>
-<!-- Node33 -->
+<!-- Node37 -->
 <g id="node3" class="node">
-<title>Node33</title>
+<title>Node37</title>
 <g id="a_node3"><a xlink:href="structchi_1_1ModuleCache.html#a00529c4dd7aa04ffdf43689abd24f183" target="_top" xlink:title="Get the context this cache is bound to. ">
 <polygon fill="#ffffff" stroke="#000000" points="571.5,-41.5 571.5,-60.5 704.5,-60.5 704.5,-41.5 571.5,-41.5"/>
 <text text-anchor="middle" x="638" y="-48.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ModuleCache::context</text>
 </a>
 </g>
 </g>
-<!-- Node31&#45;&gt;Node33 -->
+<!-- Node35&#45;&gt;Node37 -->
 <g id="edge6" class="edge">
-<title>Node31&#45;&gt;Node33</title>
+<title>Node35&#45;&gt;Node37</title>
 <path fill="none" stroke="#191970" d="M133.1768,-65.1333C239.8224,-62.1476 448.2108,-56.3134 561.0264,-53.155"/>
 <polygon fill="#191970" stroke="#191970" points="561.4087,-56.6458 571.3068,-52.8672 561.2127,-49.6485 561.4087,-56.6458"/>
 </g>
-<!-- Node35 -->
+<!-- Node39 -->
 <g id="node5" class="node">
-<title>Node35</title>
+<title>Node39</title>
 <g id="a_node5"><a xlink:href="structchi_1_1ModuleCache.html#a84d4740ea3a35529be3797456995cf3f" target="_top" xlink:title="Get the time that a cache was updated. ">
 <polygon fill="#ffffff" stroke="#000000" points="169,-76.5 169,-95.5 348,-95.5 348,-76.5 169,-76.5"/>
 <text text-anchor="middle" x="258.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ModuleCache::cacheUpdateTime</text>
 </a>
 </g>
 </g>
-<!-- Node31&#45;&gt;Node35 -->
+<!-- Node35&#45;&gt;Node39 -->
 <g id="edge4" class="edge">
-<title>Node31&#45;&gt;Node35</title>
+<title>Node35&#45;&gt;Node39</title>
 <path fill="none" stroke="#191970" d="M133.1134,-73.592C141.3652,-74.4085 149.9376,-75.2568 158.5524,-76.1094"/>
 <polygon fill="#191970" stroke="#191970" points="158.3722,-79.6085 168.6683,-77.1104 159.0616,-72.6426 158.3722,-79.6085"/>
 </g>
-<!-- Node36 -->
+<!-- Node40 -->
 <g id="node6" class="node">
-<title>Node36</title>
+<title>Node40</title>
 <g id="a_node6"><a xlink:href="structchi_1_1Context.html#a8b0dca76be969f24e02a1d286aea377c" target="_top" xlink:title="Get the LLVMContext ">
 <polygon fill="#ffffff" stroke="#000000" points="195,-.5 195,-19.5 322,-19.5 322,-.5 195,-.5"/>
 <text text-anchor="middle" x="258.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::llvmContext</text>
 </a>
 </g>
 </g>
-<!-- Node31&#45;&gt;Node36 -->
+<!-- Node35&#45;&gt;Node40 -->
 <g id="edge7" class="edge">
-<title>Node31&#45;&gt;Node36</title>
+<title>Node35&#45;&gt;Node40</title>
 <path fill="none" stroke="#191970" d="M111.5093,-51.9778C129.349,-46.163 150.0824,-39.578 169,-34 182.7825,-29.9361 197.8427,-25.7864 211.6113,-22.1055"/>
 <polygon fill="#191970" stroke="#191970" points="212.6038,-25.4633 221.3719,-19.516 210.8087,-18.6974 212.6038,-25.4633"/>
 </g>
-<!-- Node32&#45;&gt;Node33 -->
+<!-- Node36&#45;&gt;Node37 -->
 <g id="edge2" class="edge">
-<title>Node32&#45;&gt;Node33</title>
+<title>Node36&#45;&gt;Node37</title>
 <path fill="none" stroke="#191970" d="M523.6866,-76.9659C544.2497,-72.2951 566.6108,-67.2158 586.058,-62.7985"/>
 <polygon fill="#191970" stroke="#191970" points="586.9607,-66.1827 595.937,-60.5545 585.4101,-59.3565 586.9607,-66.1827"/>
 </g>
-<!-- Node34 -->
+<!-- Node38 -->
 <g id="node4" class="node">
-<title>Node34</title>
+<title>Node38</title>
 <g id="a_node4"><a xlink:href="structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846" target="_top" xlink:title="Get the workspace path of the Context. ">
 <polygon fill="#ffffff" stroke="#000000" points="567,-82.5 567,-101.5 709,-101.5 709,-82.5 567,-82.5"/>
 <text text-anchor="middle" x="638" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::workspacePath</text>
 </a>
 </g>
 </g>
-<!-- Node32&#45;&gt;Node34 -->
+<!-- Node36&#45;&gt;Node38 -->
 <g id="edge3" class="edge">
-<title>Node32&#45;&gt;Node34</title>
+<title>Node36&#45;&gt;Node38</title>
 <path fill="none" stroke="#191970" d="M531.1766,-92C539.5622,-92 548.1456,-92 556.6234,-92"/>
 <polygon fill="#191970" stroke="#191970" points="556.8919,-95.5001 566.8919,-92 556.8919,-88.5001 556.8919,-95.5001"/>
 </g>
-<!-- Node35&#45;&gt;Node32 -->
+<!-- Node39&#45;&gt;Node36 -->
 <g id="edge5" class="edge">
-<title>Node35&#45;&gt;Node32</title>
+<title>Node39&#45;&gt;Node36</title>
 <path fill="none" stroke="#191970" d="M348.1034,-88.7016C356.6112,-88.9581 365.2165,-89.2176 373.667,-89.4724"/>
 <polygon fill="#191970" stroke="#191970" points="373.7803,-92.9773 383.8813,-89.7803 373.9913,-85.9805 373.7803,-92.9773"/>
 </g>

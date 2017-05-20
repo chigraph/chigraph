@@ -6,5 +6,6 @@ var searchData=
   ['_7egraphfunction',['~GraphFunction',['../structchi_1_1GraphFunction.html#a89c896ae804c853b4c291897f5f8634c',1,'chi::GraphFunction']]],
   ['_7elangmodule',['~LangModule',['../structchi_1_1LangModule.html#adf246308e91faa5f0db890331ab573ce',1,'chi::LangModule']]],
   ['_7enodeinstance',['~NodeInstance',['../structchi_1_1NodeInstance.html#ac45c7fd7d21b6120deff63d92a05e24c',1,'chi::NodeInstance']]],
-  ['_7enodetype',['~NodeType',['../structchi_1_1NodeType.html#af39c95eff6c77ff04c049cbad9c787aa',1,'chi::NodeType']]]
+  ['_7enodetype',['~NodeType',['../structchi_1_1NodeType.html#af39c95eff6c77ff04c049cbad9c787aa',1,'chi::NodeType']]],
+  ['_7escopedcontext',['~ScopedContext',['../structchi_1_1Result_1_1ScopedContext.html#a376eac6f57c30e55b9f9d7eb308232ba',1,'chi::Result::ScopedContext']]]
 ];

@@ -22,7 +22,7 @@ var dir_60466ddfe13da60bd53dc7b440efbf98 =
       [ "LangModule", "structchi_1_1LangModule.html", "structchi_1_1LangModule" ]
     ] ],
     [ "LLVMVersion.hpp", "LLVMVersion_8hpp_source.html", null ],
-    [ "ModuleCache.hpp", "ModuleCache_8hpp_source.html", null ],
+    [ "ModuleCache.hpp", "ModuleCache_8hpp.html", "ModuleCache_8hpp" ],
     [ "NameMangler.hpp", "NameMangler_8hpp.html", "NameMangler_8hpp" ],
     [ "NodeInstance.hpp", "NodeInstance_8hpp.html", "NodeInstance_8hpp" ],
     [ "NodeType.hpp", "NodeType_8hpp.html", [

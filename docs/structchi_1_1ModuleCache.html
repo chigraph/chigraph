@@ -29,7 +29,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="chigraphsmall64.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="chigraphDoxygenIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">master</span>
@@ -174,22 +174,38 @@ Public Member Functions</h2></td></tr>
 <p>Cache a module. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">moduleName</td><td>The name of the module to cache  <code>!moduleName.empty()</code> </td></tr>
+    <tr><td class="paramname">moduleName</td><td>The name of the module to cache </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd><code>!moduleName.empty()</code> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
     <tr><td class="paramname">compiledModule</td><td>The IR that's been compiled from this module </td></tr>
     <tr><td class="paramname">timeAtFileRead</td><td>The time to store as the cache time. Should be the time the module was read from disk </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchi_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00024">24</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00026">26</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00055">cachePathForModule()</a>.</p>
+<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00547">chi::Context::compileModule()</a>.</p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_ae3f34f212105d721e10e9b24f005b977_cgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_ae3f34f212105d721e10e9b24f005b977_icgraph.svg" width="456" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -219,23 +235,23 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The path </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00055">55</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00058">58</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ModuleCache_8hpp_source.html#l00058">context()</a>, and <a class="el" href="Context_8hpp_source.html#l00134">chi::Context::workspacePath()</a>.</p>
+<p class="reference">References <a class="el" href="ModuleCache_8hpp_source.html#l00061">context()</a>, and <a class="el" href="Context_8hpp_source.html#l00136">chi::Context::workspacePath()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ModuleCache_8cpp_source.html#l00024">cacheModule()</a>, <a class="el" href="ModuleCache_8cpp_source.html#l00067">cacheUpdateTime()</a>, <a class="el" href="ModuleCache_8cpp_source.html#l00059">invalidateCache()</a>, and <a class="el" href="ModuleCache_8cpp_source.html#l00072">retrieveFromCache()</a>.</p>
-<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a7533652808cf359ed6ea975dbe11dd43_cgraph.svg" width="444" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<p class="reference">Referenced by <a class="el" href="ModuleCache_8cpp_source.html#l00026">cacheModule()</a>, <a class="el" href="ModuleCache_8cpp_source.html#l00071">cacheUpdateTime()</a>, <a class="el" href="ModuleCache_8cpp_source.html#l00063">invalidateCache()</a>, and <a class="el" href="ModuleCache_8cpp_source.html#l00075">retrieveFromCache()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a7533652808cf359ed6ea975dbe11dd43_cgraph.svg" width="444" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a7533652808cf359ed6ea975dbe11dd43_icgraph.svg" width="100%" height="454"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -266,24 +282,24 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The time it was updated, or 0 if there is no cache </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00067">67</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00071">71</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00055">cachePathForModule()</a>.</p>
+<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ModuleCache_8cpp_source.html#l00072">retrieveFromCache()</a>.</p>
-<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a84d4740ea3a35529be3797456995cf3f_cgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
+<p class="reference">Referenced by <a class="el" href="ModuleCache_8cpp_source.html#l00075">retrieveFromCache()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a84d4740ea3a35529be3797456995cf3f_icgraph.svg" width="475" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a84d4740ea3a35529be3797456995cf3f_cgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a84d4740ea3a35529be3797456995cf3f_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -314,15 +330,15 @@ Public Member Functions</h2></td></tr>
 <p>Get the context this cache is bound to. </p>
 <dl class="section return"><dt>Returns</dt><dd>the <code><a class="el" href="structchi_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a></code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8hpp_source.html#l00058">58</a> of file <a class="el" href="ModuleCache_8hpp_source.html">ModuleCache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ModuleCache_8hpp_source.html#l00061">61</a> of file <a class="el" href="ModuleCache_8hpp_source.html">ModuleCache.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ModuleCache_8cpp_source.html#l00055">cachePathForModule()</a>, and <a class="el" href="ModuleCache_8cpp_source.html#l00072">retrieveFromCache()</a>.</p>
-<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>, and <a class="el" href="ModuleCache_8cpp_source.html#l00075">retrieveFromCache()</a>.</p>
+<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a00529c4dd7aa04ffdf43689abd24f183_icgraph.svg" width="100%" height="485"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a00529c4dd7aa04ffdf43689abd24f183_icgraph.svg" width="100%" height="479"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -346,19 +362,20 @@ Public Member Functions</h2></td></tr>
 <p>Inavlidate the cache, as it delete the cache file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">moduleName</td><td>The name of the module to invalidate  <code>!moduleName.empty()</code> </td></tr>
+    <tr><td class="paramname">moduleName</td><td>The name of the module to invalidate </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section pre"><dt>Precondition</dt><dd><code>!moduleName.empty()</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00059">59</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00063">63</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00055">cachePathForModule()</a>.</p>
-<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>.</p>
+<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
+<div id="dynsection-7-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a28ab26c3bd85a4795d9c04809f9a687b_cgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
@@ -393,22 +410,37 @@ Public Member Functions</h2></td></tr>
 <p>Retrieve a module from the cache. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">moduleName</td><td>The name of the module to retrieve  <code>!moduleName.empty()</code> </td></tr>
+    <tr><td class="paramname">moduleName</td><td>The name of the module to retrieve </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd><code>!moduleName.empty()</code> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
     <tr><td class="paramname">atLeastThisNew</td><td>Make sure the cache is at least as new as this </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A llvm::Module, or nullptr if no suitable cache was found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00072">72</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00075">75</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00055">cachePathForModule()</a>, <a class="el" href="ModuleCache_8cpp_source.html#l00067">cacheUpdateTime()</a>, <a class="el" href="ModuleCache_8hpp_source.html#l00058">context()</a>, and <a class="el" href="Context_8hpp_source.html#l00167">chi::Context::llvmContext()</a>.</p>
-<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>, <a class="el" href="ModuleCache_8cpp_source.html#l00071">cacheUpdateTime()</a>, <a class="el" href="ModuleCache_8hpp_source.html#l00061">context()</a>, and <a class="el" href="Context_8hpp_source.html#l00172">chi::Context::llvmContext()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00547">chi::Context::compileModule()</a>.</p>
+<div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
+<div id="dynsection-8-content" class="dyncontent" style="display:none;">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a9822fcf51ebd701cb2dc59a858080bf0_cgraph.svg" width="100%" height="421"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-9-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a9822fcf51ebd701cb2dc59a858080bf0_icgraph.svg" width="423" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -423,7 +455,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechi.html">chi</a></li><li class="navelem"><a class="el" href="structchi_1_1ModuleCache.html">ModuleCache</a></li>
-    <li class="footer">Generated on Fri May 19 2017 09:15:35 for chigraph by
+    <li class="footer">Generated on Fri May 19 2017 22:00:59 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

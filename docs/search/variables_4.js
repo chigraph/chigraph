@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['result_5fjson',['result_json',['../structchi_1_1Result.html#a22548cdff3037498a9cd978383458812',1,'chi::Result']]]
+  ['outputdataconnections',['outputDataConnections',['../structchi_1_1NodeInstance.html#a7c07a36d22409a950ce18ab7eeae00f6',1,'chi::NodeInstance']]],
+  ['outputexecconnections',['outputExecConnections',['../structchi_1_1NodeInstance.html#ae15567fb9911109701a9d221b58494db',1,'chi::NodeInstance']]]
 ];
