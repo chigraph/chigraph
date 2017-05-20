@@ -125,6 +125,11 @@ struct Result {
 	void removeContext(int id);
 
 	/// Get the JSON associated with the context that's been added
+	/// \return The context JSON
+	nlohmann::json contextJson() const;
+	
+	/// Success test
+	/// \return True if successful
 	explicit operator bool() const { return success(); }
 
 	/// Success test
