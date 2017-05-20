@@ -63,6 +63,10 @@ NodeInstance* GraphFunction::entryNode() const noexcept {
 
 Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y,
                                  boost::uuids::uuid id, NodeInstance** toFill) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	Result res;
 
 	// make sure the ID doesn't exist
@@ -97,6 +101,10 @@ std::vector<NodeInstance*> GraphFunction::nodesWithType(const boost::filesystem:
 Result GraphFunction::insertNode(const boost::filesystem::path& moduleName,
                                  boost::string_view typeName, const nlohmann::json& typeJSON,
                                  float x, float y, boost::uuids::uuid id, NodeInstance** toFill) {
+	// invalidate the cache
+	module().updateLastEditTime();
+
+	
 	std::unique_ptr<NodeType> nodeType;
 	Result res = context().nodeTypeFromModule(moduleName, typeName, typeJSON, &nodeType);
 
@@ -106,6 +114,11 @@ Result GraphFunction::insertNode(const boost::filesystem::path& moduleName,
 }
 
 Result GraphFunction::removeNode(NodeInstance& nodeToRemove) {
+
+	// invalidate the cache
+	module().updateLastEditTime();
+
+	
 	Result res;
 
 	// disconnect it's connections
@@ -186,8 +199,11 @@ Result GraphFunction::getOrInsertEntryNode(float x, float y, boost::uuids::uuid 
 
 	if (auto ent = entryNode()) {
 		if (toFill != nullptr) { *toFill = ent; }
-		return {};
+		return res;
 	}
+	
+	// invalidate the cache
+	module().updateLastEditTime();
 
 	std::unique_ptr<NodeType> entryNodeType;
 	res += createEntryNodeType(&entryNodeType);
@@ -198,6 +214,10 @@ Result GraphFunction::getOrInsertEntryNode(float x, float y, boost::uuids::uuid 
 }
 
 void GraphFunction::addDataInput(const DataType& type, std::string name, size_t addBefore) {
+
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	if (addBefore < mDataInputs.size()) {
 		mDataInputs.emplace(mDataInputs.cbegin() + addBefore, std::move(name), type);
 	} else {
@@ -207,21 +227,41 @@ void GraphFunction::addDataInput(const DataType& type, std::string name, size_t 
 }
 
 void GraphFunction::removeDataInput(size_t idx) {
+
+	// invalidate the cache
+	module().updateLastEditTime();
+
+	
 	if (idx < mDataInputs.size()) { mDataInputs.erase(mDataInputs.begin() + idx); }
 	updateEntries();
 }
 
 void GraphFunction::renameDataInput(size_t idx, std::string newName) {
+
+	// invalidate the cache
+	module().updateLastEditTime();
+
+	
 	if (idx < mDataInputs.size()) { mDataInputs[idx].name = std::move(newName); }
 	updateEntries();
 }
 
 void GraphFunction::retypeDataInput(size_t idx, DataType newType) {
+
+	// invalidate the cache
+	module().updateLastEditTime();
+
+	
 	if (idx < mDataInputs.size()) { mDataInputs[idx].type = std::move(newType); }
 	updateEntries();
 }
 
 void GraphFunction::addDataOutput(const DataType& type, std::string name, size_t addBefore) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
+	
 	assert(addBefore >= 0);
 
 	if (addBefore < mDataOutputs.size()) {
@@ -233,11 +273,20 @@ void GraphFunction::addDataOutput(const DataType& type, std::string name, size_t
 }
 
 void GraphFunction::removeDataOutput(size_t idx) {
+
+	// invalidate the cache
+	module().updateLastEditTime();
+
+	
 	if (idx < mDataOutputs.size()) { mDataOutputs.erase(mDataOutputs.begin() + idx); }
 	updateExits();
 }
 
 void GraphFunction::renameDataOutput(size_t idx, std::string newName) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+	
 	if (idx < mDataOutputs.size()) { mDataOutputs[idx].name = std::move(newName); }
 	updateExits();
 }
@@ -266,6 +315,11 @@ llvm::FunctionType* GraphFunction::functionType() const {
 }
 
 void GraphFunction::addExecInput(std::string name, size_t addBefore) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
+	
 	if (addBefore < mExecInputs.size()) {
 		// +1 because emplace adds before
 		mExecInputs.emplace(mExecInputs.cbegin() + addBefore, std::move(name));
@@ -276,16 +330,28 @@ void GraphFunction::addExecInput(std::string name, size_t addBefore) {
 }
 
 void GraphFunction::removeExecInput(size_t idx) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	if (idx < mExecInputs.size()) { mExecInputs.erase(mExecInputs.begin() + idx); }
 	updateEntries();
 }
 
 void GraphFunction::renameExecInput(size_t idx, std::string name) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	if (idx < mExecInputs.size()) { mExecInputs[idx] = std::move(name); }
 	updateEntries();
 }
 
 void GraphFunction::addExecOutput(std::string name, size_t addBefore) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	if (addBefore < mExecOutputs.size()) {
 		// +1 because emplace adds before
 		mExecOutputs.emplace(mExecOutputs.cbegin() + addBefore, std::move(name));
@@ -296,11 +362,19 @@ void GraphFunction::addExecOutput(std::string name, size_t addBefore) {
 }
 
 void GraphFunction::removeExecOutput(size_t idx) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	if (idx < mExecOutputs.size()) { mExecOutputs.erase(mExecOutputs.begin() + idx); }
 	updateExits();
 }
 
 void GraphFunction::renameExecOutput(size_t idx, std::string name) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	if (idx < mExecOutputs.size()) { mExecOutputs[idx] = std::move(name); }
 	updateExits();
 }
@@ -344,6 +418,10 @@ NamedDataType GraphFunction::getOrCreateLocalVariable(std::string name, DataType
 		return local;
 	}
 
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	mLocalVariables.emplace_back(name, type);
 	if (inserted != nullptr) { *inserted = true; }
 
@@ -361,6 +439,10 @@ bool GraphFunction::removeLocalVariable(boost::string_view name) {
 	}
 	if (!erased) { return false; }
 
+	// invalidate the cache
+	module().updateLastEditTime();
+
+	
 	// remove set and get nodes
 	auto setNodes = nodesWithType(module().fullName(), "_set_" + name.to_string());
 	for (const auto& node : setNodes) { removeNode(*node); }
@@ -371,6 +453,10 @@ bool GraphFunction::removeLocalVariable(boost::string_view name) {
 }
 
 void GraphFunction::renameLocalVariable(std::string oldName, std::string newName) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	bool setanything = false;
 	for (auto& var : mLocalVariables) {
 		if (var.name == oldName) {
@@ -409,6 +495,10 @@ void GraphFunction::renameLocalVariable(std::string oldName, std::string newName
 }
 
 void GraphFunction::retypeLocalVariable(boost::string_view name, DataType newType) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	std::string qualifiedName = newType.qualifiedName();
 
 	for (auto& var : mLocalVariables) {
@@ -444,6 +534,10 @@ void GraphFunction::retypeLocalVariable(boost::string_view name, DataType newTyp
 
 std::vector<NodeInstance*> GraphFunction::setName(boost::string_view newName,
                                                   bool               updateReferences) {
+	
+	// invalidate the cache
+	module().updateLastEditTime();
+
 	auto oldName = mName;
 	mName        = newName.to_string();
 

@@ -33,12 +33,13 @@ namespace po = boost::program_options;
 
 int compile(const std::vector<std::string>& opts) {
 	po::options_description compile_opts("compile options");
-	compile_opts.add_options()("input-file", po::value<std::string>(), "Input file, - for stdin")(
+	compile_opts.add_options()("input-file", po::value<std::string>(), "Input file")(
 	    "output,o", po::value<std::string>(), "Output file, - for stdout")(
 	    "output-type,t", po::value<std::string>(),
 	    "The output type, either bc or ll. If an output file is defined, then this can be "
-	    "inferred")("workspace,w", po::value<std::string>(),
-	                "The workspace path. Leave blank to inferr from the working directory");
+	    "inferred")("directory,C", po::value<std::string>(),
+	                "Directory to cd to before doing anything")
+		("no-dependencies,D", "Don't link the dependencies into the module");
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1);
@@ -47,50 +48,45 @@ int compile(const std::vector<std::string>& opts) {
 	po::store(po::command_line_parser(opts).options(compile_opts).positional(pos).run(), vm);
 
 	if (vm.count("input-file") == 0) {
-		std::cerr << "chig compile: error: no input files" << std::endl;
+		std::cerr << "chi compile: error: no input files" << std::endl;
 		return 1;
 	}
-
-	std::string infile = vm["input-file"].as<std::string>();
-
-	fs::path workspacePath;
-	if (vm.count("workspace") != 0) {
-		workspacePath = vm["workspace"].as<std::string>();
-	} else {
-		workspacePath = fs::current_path();
+	
+	// cd first if it was specified
+	if (vm.count("directory")) {
+		fs::current_path(vm["directory"].as<std::string>());
 	}
 
-	Context        c{workspacePath};
-	nlohmann::json read_json = {};
+	fs::path infile = vm["input-file"].as<std::string>();
 
-	std::string moduleName;
-	if (infile == "-") {
-		std::cin >> read_json;
-		moduleName = "main";
-	} else {
-		// make sure it's an actual file
-		fs::path inpath = infile;
-		if (!fs::is_regular_file(inpath)) {
-			std::cerr << "error: Cannot open input file " << inpath;
-			return 1;
-		}
-		moduleName = fs::relative(inpath, c.workspacePath() / "src").replace_extension("").string();
-
-		fs::ifstream stream(inpath);
-
-		try {
-			stream >> read_json;
-		} catch (std::exception& e) {
-			std::cerr << "Error reading JSON: " << e.what() << std::endl;
+	Context        c{fs::current_path()};
+	
+	// add .chimod suffix if it doesn't have it
+	if (infile.extension().empty()) {
+		infile.replace_extension(".chimod");
+	}
+	
+	// resolve the path---first see if it's relative to the current directory. if it's not, then
+	// try to get it relative to 'src'
+	infile = fs::absolute(infile, fs::current_path());
+	if (!fs::is_regular_file(infile)) {
+		infile = fs::absolute(infile, c.workspacePath() / "src");
+		
+		// if we still didn't find it, then error
+		if (!fs::is_regular_file(infile)) {
+			std::cerr << "chi compile: failed to find module: " << infile << std::endl;
 			return 1;
 		}
 	}
+	
+	// get module name
+	auto moduleName = fs::relative(infile, c.workspacePath() / "src").replace_extension("");
 
 	Result res;
 
 	// load it as a module
-	GraphModule* cmodule;
-	res += c.addModuleFromJson(moduleName, read_json, &cmodule);
+	ChiModule* chiModule;
+	res += c.loadModule(moduleName, chi::LoadSettings::Default, &chiModule);
 
 	if (!res) {
 		std::cerr << res << std::endl;
@@ -98,10 +94,10 @@ int compile(const std::vector<std::string>& opts) {
 	}
 
 	std::unique_ptr<llvm::Module> llmod;
-	res += c.compileModule(cmodule->fullName(), &llmod);
+	res += c.compileModule(*chiModule, vm.count("no-dependencies") == 0, &llmod);
 
 	if (!res) {
-		std::cerr << res << std::endl;
+		std::cerr << "chi compile: Failed to compile module: " << std::endl << res << std::endl;
 		return 1;
 	}
 
@@ -138,7 +134,7 @@ int compile(const std::vector<std::string>& opts) {
 		} else if (outtype == "ll") {
 			llmod->print(outFile->os(), nullptr);
 		} else {
-			std::cerr << "Unrecognized output-type: " << outtype << std::endl;
+			std::cerr << "chi compile: Unrecognized output-type: " << outtype << std::endl;
 			return 1;
 		}
 	}

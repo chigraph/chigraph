@@ -156,7 +156,7 @@ Result Debugger::start(const char** argv, const char** envp,
 	// generate IR
 	std::unique_ptr<llvm::Module> mod;
 	{
-		res = module().context().compileModule(module(), &mod);
+		res = module().context().compileModule(module(), true, &mod);
 		if (!res) { return res; }
 	}
 

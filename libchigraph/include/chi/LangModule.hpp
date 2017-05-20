@@ -38,6 +38,9 @@ struct LangModule : ChiModule {
 	std::vector<std::string> typeNames() const override {
 		return {"i32", "i1", "float", "i8*"};  // TODO: do i need more?
 	}
+	
+	Result addForwardDeclarations(llvm::Module& module) const override;
+	
 
 	Result generateModule(llvm::Module& /*module*/) override;
 

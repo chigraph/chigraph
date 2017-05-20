@@ -56,8 +56,7 @@ private:
 /// \return If they are equal
 /// \relates DataType
 inline bool operator==(const DataType& lhs, const DataType& rhs) {
-	return &lhs.module() == &rhs.module() && lhs.unqualifiedName() == rhs.unqualifiedName() &&
-	       lhs.llvmType() == rhs.llvmType() && lhs.debugType() == rhs.debugType();
+	return &lhs.module() == &rhs.module() && lhs.unqualifiedName() == rhs.unqualifiedName();
 }
 
 /// Inequality check

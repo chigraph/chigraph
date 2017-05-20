@@ -1,5 +1,4 @@
 {
-  "has_c_support": true,
   "dependencies": [
     "lang"
   ],
@@ -148,7 +147,7 @@
             0
           ],
           "output": [
-            "b72b5072-02b0-47e7-8787-6150abe39336",
+            "5fd2c326-2d94-411b-b262-b1a79e5b2c9a",
             0
           ],
           "type": "exec"
@@ -222,8 +221,8 @@
             ]
           },
           "location": [
-            1228.96350097656,
-            29.4957332611084
+            1223.96350097656,
+            111.495735168457
           ],
           "type": "lang:exit"
         },
@@ -234,19 +233,6 @@
             172.0
           ],
           "type": "lang:const-int"
-        },
-        "b72b5072-02b0-47e7-8787-6150abe39336": {
-          "data": {
-            "data": [],
-            "exec": [
-              ""
-            ]
-          },
-          "location": [
-            1244.16662597656,
-            241.66667175293
-          ],
-          "type": "lang:exit"
         },
         "b83b78df-d5c7-44a4-bfb3-3e624d636863": {
           "data": null,
@@ -259,8 +245,8 @@
         "c99bebb3-7a41-4d42-9b5d-f7e2f82871c1": {
           "data": null,
           "location": [
-            978.0,
-            240.0
+            991.0,
+            241.0
           ],
           "type": "intprinter:printint"
         },
@@ -587,5 +573,6 @@
       "type": "function"
     }
   ],
+  "has_c_support": true,
   "types": {}
 }

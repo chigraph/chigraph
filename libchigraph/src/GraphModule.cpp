@@ -137,7 +137,7 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 			llvm::MemoryBufferRef
 #endif
 			(generatedBitcode, "generated.bc"),
-			ctx); ;
+			ctx);
 		if (!errorOrMod) {
 
 			std::string errorMsg;
@@ -151,10 +151,6 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 #endif
 
 			res.addEntry("EUKN", "Failed to parse generated bitcode.", { {"Error Message", errorMsg} });
-
-#if LLVM_VERSION_AT_LEAST(4, 0)
-			llvm::handleAllErrors(errorOrMod.takeError());
-#endif
 
 			return nullptr;
 		}
@@ -589,6 +585,16 @@ std::vector<std::string> GraphModule::typeNames() const {
 	return ret;
 }
 
+Result GraphModule::addForwardDeclarations(llvm::Module& module) const {
+	// create prototypes
+	for (auto& graph : mFunctions) {
+		module.getOrInsertFunction(mangleFunctionName(fullName(), graph->name()),
+		                           graph->functionType());
+	}
+	
+	return {};
+}
+
 Result GraphModule::generateModule(llvm::Module& module) {
 	Result res = {};
 
@@ -646,10 +652,7 @@ Result GraphModule::generateModule(llvm::Module& module) {
 	                                                  "Chigraph Compiler", false, "", 0);
 
 	// create prototypes
-	for (auto& graph : mFunctions) {
-		module.getOrInsertFunction(mangleFunctionName(fullName(), graph->name()),
-		                           graph->functionType());
-	}
+	addForwardDeclarations(module);
 
 	for (auto& graph : mFunctions) {
 		res += compileFunction(*graph, &module,
@@ -707,6 +710,9 @@ GraphFunction* GraphModule::getOrCreateFunction(std::string                name,
 		if (inserted != nullptr) { *inserted = false; }
 		return foundFunc;
 	}
+	
+	// invalidate the cache
+	updateLastEditTime();
 
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, std::move(name), std::move(dataIns),
 	                                                     std::move(dataOuts), std::move(execIns),
@@ -717,6 +723,9 @@ GraphFunction* GraphModule::getOrCreateFunction(std::string                name,
 }
 
 bool GraphModule::removeFunction(boost::string_view name, bool deleteReferences) {
+	// invalidate the cache
+	updateLastEditTime();
+
 	auto funcPtr = functionFromName(name);
 
 	if (funcPtr == nullptr) { return false; }
@@ -727,6 +736,10 @@ bool GraphModule::removeFunction(boost::string_view name, bool deleteReferences)
 }
 
 void GraphModule::removeFunction(GraphFunction& func, bool deleteReferences) {
+	// invalidate the cache
+	updateLastEditTime();
+
+	
 	if (deleteReferences) {
 		auto references = context().findInstancesOfType(fullName(), func.name());
 
@@ -973,6 +986,9 @@ GraphStruct* GraphModule::getOrCreateStruct(std::string name, bool* inserted) {
 		if (inserted != nullptr) { *inserted = false; }
 		return str;
 	}
+	// invalidate the cache
+	updateLastEditTime();
+
 
 	mStructs.push_back(std::make_unique<GraphStruct>(*this, std::move(name)));
 
@@ -981,6 +997,9 @@ GraphStruct* GraphModule::getOrCreateStruct(std::string name, bool* inserted) {
 }
 
 bool GraphModule::removeStruct(boost::string_view name) {
+	// invalidate the cache
+	updateLastEditTime();
+
 	for (auto iter = structs().begin(); iter != structs().end(); ++iter) {
 		if ((*iter)->name() == name) {
 			mStructs.erase(iter);
@@ -994,6 +1013,10 @@ bool GraphModule::removeStruct(boost::string_view name) {
 
 void GraphModule::removeStruct(GraphStruct* tyToDel) {
 	assert(&tyToDel->module() == this);
+	
+	// invalidate the cache
+	updateLastEditTime();
+
 
 	for (auto iter = structs().begin(); iter != structs().end(); ++iter) {
 		if (iter->get() == tyToDel) {

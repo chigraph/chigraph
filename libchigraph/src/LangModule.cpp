@@ -919,5 +919,7 @@ DataType LangModule::typeFromName(boost::string_view name) {
 	return DataType{this, name.to_string(), ty, iter->second};
 }
 
+Result LangModule::addForwardDeclarations(llvm::Module&) const { return {}; }
+
 Result LangModule::generateModule(llvm::Module&) { return {}; }
 }  // namespace chi
