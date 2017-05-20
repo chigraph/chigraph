@@ -168,7 +168,7 @@ void exec_stream_t::start( std::string const & program, std::string const & argu
     si.cb=sizeof( si );
     PROCESS_INFORMATION pi;
     ZeroMemory( &pi, sizeof( pi ) );
-    if( !CreateProcess( 0, const_cast< char * >( command.c_str() ), 0, 0, TRUE, 0, 0, 0, &si, &pi ) ) {
+    if( !CreateProcess( 0, const_cast< char * >( command.c_str() ), 0, 0, TRUE, CREATE_NO_WINDOW, 0, 0, &si, &pi ) ) {
         throw os_error_t( "exec_stream_t::start: CreateProcess failed.\n command line was: "+command );
     }
 

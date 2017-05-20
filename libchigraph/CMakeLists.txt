@@ -155,15 +155,10 @@ endif()
 # link to version
 if(WIN32)
 
-	find_library(VERSION_LIBRARY Version)
-	if (NOT VERSION_LIBRARY)
-		message(FATAL_ERROR "Could not find version library")
-	endif()
-	message(STATUS "Linking to version library: ${VERSION_LIBRARY}")
 	target_link_libraries(chigraph
-	PUBLIC
-		${VERSION_LIBRARY}
-	)
+    PUBLIC
+        version.lib
+    )
 endif()
 
 # get include directories

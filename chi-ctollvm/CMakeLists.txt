@@ -100,14 +100,8 @@ endif()
 
 # link version
 if(WIN32)
-
-	find_library(VERSION_LIBRARY Version)
-	if (NOT VERSION_LIBRARY)
-		message(FATAL_ERROR "Could not find version library")
-	endif()
-	message(STATUS "Linking to version library: ${VERSION_LIBRARY}")
 	target_link_libraries(chi-ctollvm
-		${VERSION_LIBRARY}
+		version.lib
 	)
 endif()
 
