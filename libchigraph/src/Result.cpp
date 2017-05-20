@@ -50,6 +50,8 @@ namespace chi {
 void Result::addEntry(const char* ec, const char* overview, nlohmann::json data) {
 	assert(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
 
+	mergeJsonIntoConservative(data, contextJson());
+
 	result_json.push_back(
 	    nlohmann::json({{"errorcode", ec}, {"overview", overview}, {"data", data}}));
 	if (ec[0] == 'E') mSuccess = false;

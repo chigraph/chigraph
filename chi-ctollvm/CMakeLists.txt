@@ -108,7 +108,7 @@ endif()
 # move the clang lib folder, this is basic includes
 add_custom_command(
 TARGET chi-ctollvm POST_BUILD
-COMMAND ${CMAKE_COMMAND} -E copy
+COMMAND ${CMAKE_COMMAND} -E copy_directory
 	${CLANG_LIB_DIR}/clang
 	${CMAKE_BINARY_DIR}/lib/clang
 BYPRODUCTS ${CMAKE_BINARY_DIR}/lib/clang

@@ -15,6 +15,8 @@
 
 #include <set>
 
+#include <ctime>
+
 /// The namespace where chigraph lives
 namespace chi {
 /// An abstract class that represents a module of code in Chigraph
@@ -48,26 +50,38 @@ struct ChiModule {
 	virtual std::vector<std::string> nodeTypeNames() const = 0;
 
 	/// Get the possible DataType names
+	/// \return A `std::vector` of all the names of types this module has
 	virtual std::vector<std::string> typeNames() const = 0;
 
 	/// Get the short name of the module (the last bit)
 	/// \return The name
 	std::string shortName() const { return mName; }
 	/// Get the full name of the module
+	/// \return The full name
 	std::string fullName() const { return mFullName.generic_string(); }
 	/// Get the full name of the module in a path
+	/// \return The full name, as a boost::filesystem::path
 	boost::filesystem::path fullNamePath() const { return mFullName; }
 	/// Get the Context that this module belongs to
 	/// \return The context
+
 	Context& context() const { return *mContext; }
+
+	/// Adds forward declartions for the functions in this module
+	/// \param module The module to add forward declartions to
+	/// \return The Result
+	virtual Result addForwardDeclarations(llvm::Module& module) const = 0;
+
 	/// Generate a llvm::Module from the module. Usually called by Context::compileModule
-	/// \param module The llvm::Module to fill into -- must be already filled with dependencies
-	/// \return The result
+	/// \param module The llvm::Module to fill into -- must be already filled with forward
+	/// declarations of dependencies
+	/// \return The Result
 	virtual Result generateModule(llvm::Module& module) = 0;
 
 	/// Get the dependencies
 	/// \return The dependencies
 	const std::set<boost::filesystem::path>& dependencies() const { return mDependencies; }
+
 	/// Add a dependency to the module
 	/// Loads the module from context() if it isn't already loaded
 	/// \param newDepFullPath The dependency, full path
@@ -82,12 +96,24 @@ struct ChiModule {
 		return mDependencies.erase(std::move(depName)) == 1;
 	}
 
+	/// Get the time that this module was last edited
+	/// \return The `std::time_t` at which it was last edited
+	std::time_t lastEditTime() const { return mLastEditTime; }
+
+	/// Update the last edit time, signifying that it's been edited
+	/// \param newLastEditTime The new time, or current time for default
+	void updateLastEditTime(std::time_t newLastEditTime = std::time(nullptr)) {
+		mLastEditTime = newLastEditTime;
+	}
+
 private:
 	boost::filesystem::path mFullName;
 	std::string             mName;
 	Context*                mContext;
 
 	std::set<boost::filesystem::path> mDependencies;
+
+	std::time_t mLastEditTime = 0;
 };
 }  // namespace chi
 

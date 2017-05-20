@@ -16,6 +16,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/JsonDeserializer.hpp
 	include/chi/JsonSerializer.hpp
 	include/chi/GraphStruct.hpp
+	include/chi/ModuleCache.hpp
 )
 set(CHI_PRIVATE_FILES
 	src/Context.cpp
@@ -33,6 +34,7 @@ set(CHI_PRIVATE_FILES
 	src/GraphStruct.cpp
 	src/NodeType.cpp
 	src/DataType.cpp
+	src/ModuleCache.cpp
 )
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 

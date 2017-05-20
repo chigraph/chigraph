@@ -1,51 +1,51 @@
 <map id="chi::Context::loadModule" name="chi::Context::loadModule">
-<area shape="rect" id="node2" href="$structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" title="Add a entry to the result, either a warning or an error. " alt="" coords="2013,803,2157,829"/>
-<area shape="rect" id="node3" href="$structchi_1_1Context.html#af4a8f3fb758bbd0d1e0fdca431bdab2f" title="Adds a custom module to the Context. " alt="" coords="1016,1860,1179,1887"/>
-<area shape="rect" id="node5" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="220,1835,441,1861"/>
-<area shape="rect" id="node47" href="$structchi_1_1Context.html#adb50cef8d976f87057394192cb02b8ff" title="Downloads a module from a remote URL, currently supports. " alt="" coords="245,1987,416,2013"/>
-<area shape="rect" id="node49" href="$structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846" title="Get the workspace path of the Context. " alt="" coords="500,2037,689,2064"/>
-<area shape="rect" id="node50" href="$structchi_1_1Context.html#ab109ef2d751346da8db6d7c44fb0cd90" title="Get the LangModule, if it has been loaded. " alt="" coords="247,2088,414,2115"/>
-<area shape="rect" id="node4" href="$structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5" title="Gets the module by the full name. " alt="" coords="1979,1831,2192,1857"/>
-<area shape="rect" id="node6" href="$structchi_1_1ChiModule.html#a92ab6d528ac41a91b6ac21ededfccc38" title="Get the full name of the module. " alt="" coords="1754,1307,1921,1333"/>
-<area shape="rect" id="node7" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="513,1471,676,1497"/>
-<area shape="rect" id="node46" href="$structchi_1_1Context.html#a17e4d810afed483542eafea5b36792c5" title="Unloads a module. " alt="" coords="505,1885,685,1912"/>
-<area shape="rect" id="node8" href="$namespacechi.html#af483dab3c6b3b1ee261f223bd83d5670" title="Create a forward declaration of a function in a module with an empty graph. " alt="" coords="764,1518,932,1559"/>
-<area shape="rect" id="node25" href="$namespacechi.html#a6a3fedb48e6702c016f996d8a7f445fc" title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ..." alt="" coords="763,1029,933,1056"/>
-<area shape="rect" id="node42" href="$namespacechi.html#a629f77832b6e7a6e0eaab123c4be1cda" title="Load a GraphStruct from json. " alt="" coords="770,1416,926,1443"/>
-<area shape="rect" id="node45" href="$structchi_1_1Context.html#a906c9187e13e2194a3f68d48973529f6" title="Create a new GraphModule with the given full name. " alt="" coords="748,1835,948,1861"/>
-<area shape="rect" id="node9" href="$structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512" title="Get the Context that this module belongs to. " alt="" coords="1018,1475,1177,1501"/>
-<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#af61aef2776a0e219ffca2d22e109909f" title="Create a new function if it does&#39;t already exist. " alt="" coords="996,1743,1199,1785"/>
-<area shape="rect" id="node13" href="$namespacechi.html#aa47212ba13fb1a1d26774dc208c15255" title="Parse a colonated pair Example: lang:i32 would turn into {lang, i32}. " alt="" coords="1030,1307,1165,1333"/>
-<area shape="rect" id="node21" href="$namespacechi.html#a2b3839fa03d8bfb6ef3238543d44d865" title="Parse something that looks like: {&quot;hello&quot;: &quot;there&quot;} into {&quot;hello&quot;, &quot;there&quot;}. " alt="" coords="1027,1525,1167,1552"/>
-<area shape="rect" id="node22" href="$structchi_1_1GraphFunction.html#afdcae25278b1de714d77cf8051172cdf" title="Set the description of the function. " alt="" coords="1031,1678,1163,1719"/>
-<area shape="rect" id="node23" href="$structchi_1_1Context.html#a9e0b185a1871ebfda5d7bd410bf085f2" title="Gets a DataType from a module. " alt="" coords="999,1357,1196,1384"/>
-<area shape="rect" id="node10" href="$structchi_1_1ChiModule.html#a987c71edb997c5f041f69622cb0c86fe" title="Generate a llvm::Module from the module. " alt="" coords="1266,1575,1433,1617"/>
-<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#a84474b5d18517fe46cc94560f746d6ce" title="Get a function from the name. " alt="" coords="1260,1743,1439,1785"/>
-<area shape="rect" id="node14" href="$structchi_1_1GraphFunction.html#a0564412e260698bdb3872d3d12dfc3bc" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="1771,1241,1903,1282"/>
-<area shape="rect" id="node15" href="$structchi_1_1GraphFunction.html#a89069f6e08f71cfbafb245ea16c8d69f" title="Get the name of the function. " alt="" coords="1283,1241,1415,1282"/>
-<area shape="rect" id="node16" href="$structchi_1_1GraphFunction.html#ad739c826ed87035857193995c23cabe2" title="Get the qualified name of the function Same as module().fullName() + &quot;:&quot; + name();. " alt="" coords="1532,1241,1664,1282"/>
-<area shape="rect" id="node17" href="$structchi_1_1GraphFunction.html#a27c87614be4357e97c1ececd2228f865" title="Set the name of the function. " alt="" coords="1532,1175,1664,1217"/>
-<area shape="rect" id="node18" href="$structchi_1_1GraphFunction.html#aca401237496ae311e43c7a43519e4720" title="Get the context. " alt="" coords="1771,1110,1903,1151"/>
-<area shape="rect" id="node19" href="$structchi_1_1Context.html#a28706d36f049088c98cd726921512668" title="Gets a NodeType from the JSON and name. " alt="" coords="1744,1175,1931,1217"/>
-<area shape="rect" id="node20" href="$structchi_1_1Context.html#ad1bbd4d5eb33a8ce34292eb6a192d10d" title="Compile a module to a llvm::Module. " alt="" coords="1992,1183,2179,1209"/>
-<area shape="rect" id="node24" href="$structchi_1_1ChiModule.html#a03aa9f90fafd384094861dfff13eba77" title="Get a DataType from the name. " alt="" coords="1247,1408,1452,1435"/>
-<area shape="rect" id="node26" href="$namespacechi.html#ab69b013712d615bf9901d7bf2b0b11fb" title="Connects two nodes&#39; data connections. " alt="" coords="1037,296,1157,323"/>
-<area shape="rect" id="node34" href="$namespacechi.html#a79423caa23a58e57b775c5137a03ee31" title="Connects two nodes&#39; exec connections. " alt="" coords="1036,676,1159,703"/>
-<area shape="rect" id="node38" href="$structchi_1_1GraphFunction.html#a9a3b003e74692f5d0aa474d28c0dd23d" title="Create a new local varaible in the module. " alt="" coords="1008,1022,1187,1063"/>
-<area shape="rect" id="node40" href="$structchi_1_1GraphFunction.html#ac75470b92fcf30495c7daab64d999ed8" title="Add a node to the graph. " alt="" coords="1031,854,1163,895"/>
-<area shape="rect" id="node41" href="$structchi_1_1GraphFunction.html#aa5985d96d7564d7ee7f240fdb02b41a6" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="1283,905,1415,946"/>
-<area shape="rect" id="node27" href="$structchi_1_1NodeType.html#a7d2edfc21ff54a1ff8ad98fffb969268" title="Get the data inputs for the node. " alt="" coords="1511,93,1685,120"/>
-<area shape="rect" id="node28" href="$structchi_1_1NodeType.html#aade37588d98e93b19a9a47e16c850684" title="Get the data outputs for the node. " alt="" coords="1505,144,1691,171"/>
-<area shape="rect" id="node29" href="$namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e" title="Disconnect a data connection. " alt="" coords="1281,245,1418,272"/>
-<area shape="rect" id="node30" href="$structchi_1_1NodeInstance.html#a8f64930fd9578431a11cad0702b4100c" title="Get the containing GraphFunction. " alt="" coords="1531,297,1665,338"/>
-<area shape="rect" id="node31" href="$structchi_1_1NodeType.html#a7031e3c04e9a0227b09f8f854ce8b7f9" title="Get the qualified name of the node type, like module.name():name() " alt="" coords="1500,701,1696,728"/>
-<area shape="rect" id="node32" href="$structchi_1_1NodeType.html#ac99bef32e3e5e564119dbb8de69d2273" title="Create the JSON necessary to store the object. " alt="" coords="1518,195,1678,221"/>
-<area shape="rect" id="node33" href="$structchi_1_1NodeInstance.html#a5d6678d5a90e6b1adb7dafb868b974b1" title="Get the type of the instance. " alt="" coords="1518,499,1678,525"/>
-<area shape="rect" id="node35" href="$namespacechi.html#a103b99abd766aa4d303a5004fe783c03" title="Disconnect a exec connection. " alt="" coords="1279,752,1419,779"/>
-<area shape="rect" id="node36" href="$structchi_1_1NodeType.html#aa93f41674ea15d335db358d8aa4745a1" title="Get the execution outputs for the node. " alt="" coords="1504,803,1692,829"/>
-<area shape="rect" id="node37" href="$structchi_1_1NodeType.html#abacc3220df0b18bfbe9ee86b6dc427cd" title="Get the execution inputs for the node. " alt="" coords="1260,651,1439,677"/>
-<area shape="rect" id="node39" href="$structchi_1_1GraphFunction.html#a0123fb77fb0a19ea18163afb88f7687b" title="Get a local varaible by name. " alt="" coords="1265,1022,1433,1063"/>
-<area shape="rect" id="node43" href="$structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55" title="Create a new struct in the module. " alt="" coords="996,1409,1199,1450"/>
-<area shape="rect" id="node44" href="$structchi_1_1GraphModule.html#aad5b2fd794606b66cec221408cf07af4" title="Get a struct by name. " alt="" coords="1267,1510,1432,1551"/>
-<area shape="rect" id="node48" href="$namespacechi.html#ad94beb8170e5325e9c41ae21be40f504" title="Get the URL for a VCS repository from a module name. " alt="" coords="489,1987,700,2013"/>
+<area shape="rect" id="node2" href="$structchi_1_1Context.html#af4a8f3fb758bbd0d1e0fdca431bdab2f" title="Adds a custom module to the Context. " alt="" coords="996,93,1159,120"/>
+<area shape="rect" id="node3" href="$structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5" title="Gets the module by the full name. " alt="" coords="1227,116,1440,143"/>
+<area shape="rect" id="node4" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="220,745,441,772"/>
+<area shape="rect" id="node5" href="$structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6" title="Add a context with a scope Example usage: chi::Result res; res.contextJson(); // returns {} { &#160;&#160;&#160;&#160;aut..." alt="" coords="721,1288,924,1315"/>
+<area shape="rect" id="node17" href="$structchi_1_1ChiModule.html#af3cdb7e3d333fedc74ad862dcc5bca9f" title="Update the last edit time, signifying that it&#39;s been edited. " alt="" coords="2207,1217,2387,1258"/>
+<area shape="rect" id="node46" href="$structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846" title="Get the workspace path of the Context. " alt="" coords="728,1339,917,1365"/>
+<area shape="rect" id="node48" href="$structchi_1_1Context.html#adb50cef8d976f87057394192cb02b8ff" title="Downloads a module from a remote URL, currently supports. " alt="" coords="494,1389,665,1416"/>
+<area shape="rect" id="node50" href="$structchi_1_1Context.html#ab109ef2d751346da8db6d7c44fb0cd90" title="Get the LangModule, if it has been loaded. " alt="" coords="247,1440,414,1467"/>
+<area shape="rect" id="node8" href="$structchi_1_1ChiModule.html#a92ab6d528ac41a91b6ac21ededfccc38" title="Get the full name of the module. " alt="" coords="2443,167,2609,193"/>
+<area shape="rect" id="node9" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="498,720,661,747"/>
+<area shape="rect" id="node47" href="$structchi_1_1Context.html#a17e4d810afed483542eafea5b36792c5" title="Unloads a module. " alt="" coords="489,771,669,797"/>
+<area shape="rect" id="node6" href="$structchi_1_1Result.html#a5cbde12f0c21347635469c7acf8d4112" title="Add some json that will ALWAYS be merged with entries that are added and when results are added to th..." alt="" coords="998,1639,1157,1665"/>
+<area shape="rect" id="node7" href="$structchi_1_1Result.html#ab801a9230e3e46dc771f260992e4e84d" title="Removes a previously added context. " alt="" coords="987,1588,1167,1615"/>
+<area shape="rect" id="node10" href="$structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" title="Add a entry to the result, either a warning or an error. " alt="" coords="2225,869,2369,896"/>
+<area shape="rect" id="node11" href="$namespacechi.html#af483dab3c6b3b1ee261f223bd83d5670" title="Create a forward declaration of a function in a module with an empty graph. " alt="" coords="739,479,907,521"/>
+<area shape="rect" id="node25" href="$namespacechi.html#a6a3fedb48e6702c016f996d8a7f445fc" title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ..." alt="" coords="737,947,908,973"/>
+<area shape="rect" id="node43" href="$namespacechi.html#a629f77832b6e7a6e0eaab123c4be1cda" title="Load a GraphStruct from json. " alt="" coords="745,669,901,696"/>
+<area shape="rect" id="node45" href="$structchi_1_1Context.html#a906c9187e13e2194a3f68d48973529f6" title="Create a new GraphModule with the given full name. " alt="" coords="723,144,923,171"/>
+<area shape="rect" id="node12" href="$structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512" title="Get the Context that this module belongs to. " alt="" coords="998,607,1157,633"/>
+<area shape="rect" id="node15" href="$structchi_1_1GraphModule.html#af61aef2776a0e219ffca2d22e109909f" title="Create a new function if it does&#39;t already exist. " alt="" coords="976,479,1179,521"/>
+<area shape="rect" id="node18" href="$namespacechi.html#aa47212ba13fb1a1d26774dc208c15255" title="Parse a colonated pair Example: lang:i32 would turn into {lang, i32}. " alt="" coords="1010,829,1145,856"/>
+<area shape="rect" id="node21" href="$namespacechi.html#a2b3839fa03d8bfb6ef3238543d44d865" title="Parse something that looks like: {&quot;hello&quot;: &quot;there&quot;} into {&quot;hello&quot;, &quot;there&quot;}. " alt="" coords="1007,552,1147,579"/>
+<area shape="rect" id="node22" href="$structchi_1_1GraphFunction.html#afdcae25278b1de714d77cf8051172cdf" title="Set the description of the function. " alt="" coords="1011,297,1143,338"/>
+<area shape="rect" id="node23" href="$structchi_1_1Context.html#a9e0b185a1871ebfda5d7bd410bf085f2" title="Gets a DataType from a module. " alt="" coords="979,363,1176,389"/>
+<area shape="rect" id="node13" href="$structchi_1_1ChiModule.html#a653e3aed05912857334655e06937b28d" title="Adds forward declartions for the functions in this module. " alt="" coords="1242,538,1425,579"/>
+<area shape="rect" id="node14" href="$structchi_1_1ChiModule.html#a987c71edb997c5f041f69622cb0c86fe" title="Generate a llvm::Module from the module. " alt="" coords="1250,603,1417,645"/>
+<area shape="rect" id="node16" href="$structchi_1_1GraphModule.html#a84474b5d18517fe46cc94560f746d6ce" title="Get a function from the name. " alt="" coords="1244,421,1423,462"/>
+<area shape="rect" id="node19" href="$structchi_1_1GraphFunction.html#a0564412e260698bdb3872d3d12dfc3bc" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="1267,990,1399,1031"/>
+<area shape="rect" id="node20" href="$structchi_1_1GraphFunction.html#a89069f6e08f71cfbafb245ea16c8d69f" title="Get the name of the function. " alt="" coords="1267,822,1399,863"/>
+<area shape="rect" id="node24" href="$structchi_1_1ChiModule.html#a03aa9f90fafd384094861dfff13eba77" title="Get a DataType from the name. " alt="" coords="1231,319,1436,345"/>
+<area shape="rect" id="node26" href="$namespacechi.html#ab69b013712d615bf9901d7bf2b0b11fb" title="Connects two nodes&#39; data connections. " alt="" coords="1017,1487,1137,1513"/>
+<area shape="rect" id="node32" href="$namespacechi.html#a79423caa23a58e57b775c5137a03ee31" title="Connects two nodes&#39; exec connections. " alt="" coords="1761,1571,1884,1597"/>
+<area shape="rect" id="node38" href="$structchi_1_1GraphFunction.html#aca401237496ae311e43c7a43519e4720" title="Get the context. " alt="" coords="1011,1005,1143,1046"/>
+<area shape="rect" id="node39" href="$structchi_1_1GraphFunction.html#a9a3b003e74692f5d0aa474d28c0dd23d" title="Create a new local varaible in the module. " alt="" coords="988,1070,1167,1111"/>
+<area shape="rect" id="node40" href="$structchi_1_1GraphFunction.html#ac75470b92fcf30495c7daab64d999ed8" title="Add a node to the graph. " alt="" coords="1011,939,1143,981"/>
+<area shape="rect" id="node41" href="$structchi_1_1GraphFunction.html#aa5985d96d7564d7ee7f240fdb02b41a6" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="1267,1107,1399,1149"/>
+<area shape="rect" id="node42" href="$structchi_1_1Context.html#a28706d36f049088c98cd726921512668" title="Gets a NodeType from the JSON and name. " alt="" coords="984,414,1171,455"/>
+<area shape="rect" id="node27" href="$structchi_1_1NodeType.html#a7d2edfc21ff54a1ff8ad98fffb969268" title="Get the data inputs for the node. " alt="" coords="1493,1747,1668,1773"/>
+<area shape="rect" id="node28" href="$structchi_1_1NodeType.html#aade37588d98e93b19a9a47e16c850684" title="Get the data outputs for the node. " alt="" coords="1488,1797,1673,1824"/>
+<area shape="rect" id="node29" href="$namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e" title="Disconnect a data connection. " alt="" coords="1265,1524,1402,1551"/>
+<area shape="rect" id="node30" href="$structchi_1_1NodeInstance.html#a8f64930fd9578431a11cad0702b4100c" title="Get the containing GraphFunction. " alt="" coords="1994,1326,2129,1367"/>
+<area shape="rect" id="node31" href="$structchi_1_1NodeInstance.html#a72d113cfee45f4017adf28b034c6f215" title="Get the containing GraphModule. " alt="" coords="1513,1579,1648,1621"/>
+<area shape="rect" id="node34" href="$structchi_1_1NodeType.html#a7031e3c04e9a0227b09f8f854ce8b7f9" title="Get the qualified name of the node type, like module.name():name() " alt="" coords="2199,1645,2395,1672"/>
+<area shape="rect" id="node35" href="$structchi_1_1NodeInstance.html#a5d6678d5a90e6b1adb7dafb868b974b1" title="Get the type of the instance. " alt="" coords="2217,1823,2377,1849"/>
+<area shape="rect" id="node37" href="$structchi_1_1NodeType.html#ac99bef32e3e5e564119dbb8de69d2273" title="Create the JSON necessary to store the object. " alt="" coords="1501,1376,1661,1403"/>
+<area shape="rect" id="node33" href="$namespacechi.html#a103b99abd766aa4d303a5004fe783c03" title="Disconnect a exec connection. " alt="" coords="1991,1645,2131,1672"/>
+<area shape="rect" id="node36" href="$structchi_1_1NodeType.html#a436716b15e57346da8e824c157f926a5" title="Get the execution inputs for the node. " alt="" coords="1972,1493,2151,1520"/>
+<area shape="rect" id="node44" href="$structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55" title="Create a new struct in the module. " alt="" coords="1721,978,1924,1019"/>
+<area shape="rect" id="node49" href="$namespacechi.html#aa39dc32f0a553366a3e039b3f26402be" title="Get the URL for a VCS repository from a module name. " alt="" coords="717,1389,928,1416"/>
 </map>

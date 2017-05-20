@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
 		if (ret != 1) return ret;
 
 		std::unique_ptr<llvm::Module> llmod = nullptr;
-		res += c.compileModule(mod->fullName(), &llmod);
+		res += c.compileModule(mod->fullName(), true, &llmod);
 
 		ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 		// create module for the functions
 		std::unique_ptr<llvm::Module> llmod;
 
-		res += c.compileModule("main", &llmod);
+		res += c.compileModule("main", true, &llmod);
 
 		ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;

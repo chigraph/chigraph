@@ -1,9 +1,10 @@
 var structchi_1_1GraphModule =
 [
-    [ "GraphModule", "structchi_1_1GraphModule.html#a1f776646b9c9bdd615f7e35cebf7760a", null ],
+    [ "GraphModule", "structchi_1_1GraphModule.html#adeeeec5c69812ddeb43a64d3009a4eda", null ],
     [ "GraphModule", "structchi_1_1GraphModule.html#a59114e88ab9a0fe04dfe492ea245a536", null ],
     [ "GraphModule", "structchi_1_1GraphModule.html#a2d83c5d76d6fec455a0b8401a925890e", null ],
     [ "addDependency", "structchi_1_1GraphModule.html#aab11d61e0c0138e5fc5ce176c20e3bec", null ],
+    [ "addForwardDeclarations", "structchi_1_1GraphModule.html#ab745d8ac6ffb5b4385c24379dd4a60d2", null ],
     [ "cEnabled", "structchi_1_1GraphModule.html#ac251cc6b4242642f6601c8c3607f5747", null ],
     [ "context", "structchi_1_1GraphModule.html#a5c28c9fe74ad3cb704b613843b267512", null ],
     [ "createLineNumberAssoc", "structchi_1_1GraphModule.html#a0f4f97f458bbbacd6ff3c1be55441b98", null ],
@@ -16,6 +17,7 @@ var structchi_1_1GraphModule =
     [ "generateModule", "structchi_1_1GraphModule.html#a9b73bbbfa91d6a2f92bcca270bdb7b2f", null ],
     [ "getOrCreateFunction", "structchi_1_1GraphModule.html#af61aef2776a0e219ffca2d22e109909f", null ],
     [ "getOrCreateStruct", "structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55", null ],
+    [ "lastEditTime", "structchi_1_1GraphModule.html#adc6b4278af40c9f50890ff773decaf8f", null ],
     [ "nodeTypeFromName", "structchi_1_1GraphModule.html#a133c0595e0bb888f958e9769838f6c0c", null ],
     [ "nodeTypeNames", "structchi_1_1GraphModule.html#a53a1a284ab878783e74a957bb3b711b3", null ],
     [ "operator=", "structchi_1_1GraphModule.html#a5353ff60e9b2a9e4b1817889bd5ebca5", null ],
@@ -33,5 +35,6 @@ var structchi_1_1GraphModule =
     [ "structFromName", "structchi_1_1GraphModule.html#aad5b2fd794606b66cec221408cf07af4", null ],
     [ "structs", "structchi_1_1GraphModule.html#a6c2f9d2eb7edb29a09eec9e653cc269b", null ],
     [ "typeFromName", "structchi_1_1GraphModule.html#af24296727c4121733d9995c122b6e7bc", null ],
-    [ "typeNames", "structchi_1_1GraphModule.html#aba3074c1ff4bd8afb816faec1372ce15", null ]
+    [ "typeNames", "structchi_1_1GraphModule.html#aba3074c1ff4bd8afb816faec1372ce15", null ],
+    [ "updateLastEditTime", "structchi_1_1GraphModule.html#af3cdb7e3d333fedc74ad862dcc5bca9f", null ]
 ];

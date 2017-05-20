@@ -70,11 +70,19 @@ namespace chi {
 struct Result {
 	/// A helper object for contexts that should be removed at the end of a scope
 	struct ScopedContext {
+		
+		/// Create a scoped context object
+		/// \param res The Result to add it to
+		/// \param ctxId The ID of this context object
 		ScopedContext(Result& res, int ctxId) : result{res}, contextId{ctxId} {}
 
+		/// Destructor--does the magic of remving itsself from the result
 		~ScopedContext() { result.removeContext(contextId); }
 
+		/// The result object
 		Result&   result;
+		
+		/// The ID for this context
 		const int contextId;
 	};
 
@@ -106,6 +114,8 @@ struct Result {
 	/// }
 	/// res.contextJson(); // returns {}
 	/// ```
+	/// \param data The data to add to each entry
+	/// \return The ScopedContext object. Shouldn't be discarded.
 	ScopedContext addScopedContext(const nlohmann::json& data) {
 		return ScopedContext{*this, addContext(data)};
 	}
@@ -115,26 +125,34 @@ struct Result {
 	void removeContext(int id);
 
 	/// Get the JSON associated with the context that's been added
+	/// \return The context JSON
 	nlohmann::json contextJson() const;
+	
+	/// Success test
+	/// \return True if successful
+	explicit operator bool() const { return success(); }
 
 	/// Success test
-	operator bool() const { return success(); }
-
-	/// Success test
+	/// \return If it's successful
 	bool success() const { return mSuccess; }
 
 	/// !Success test
+	/// \return If it's not successful
 	bool operator!() const { return !success(); }
+	
 	/// Dump to a pretty-printed error message
+	/// \return The human-readable error message
 	std::string dump() const;
 
-	/// if it is successful
-	bool mSuccess = true;
 
 	/// The result JSON
 	nlohmann::json result_json;
 
+	/// If it's successful
+	bool mSuccess = true;
+	
 private:
+	
 	boost::container::flat_map<int, nlohmann::json> mContexts;
 };
 

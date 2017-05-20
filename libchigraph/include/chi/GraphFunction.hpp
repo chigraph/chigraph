@@ -51,7 +51,7 @@ struct GraphFunction {
 	std::unordered_map<boost::uuids::uuid, std::unique_ptr<NodeInstance>>& nodes() {
 		return mNodes;
 	}
-	/// \copydoc Graph::nodes
+	/// \copydoc GraphFunction::nodes
 	const std::unordered_map<boost::uuids::uuid, std::unique_ptr<NodeInstance>>& nodes() const {
 		return mNodes;
 	}
@@ -68,11 +68,11 @@ struct GraphFunction {
 	NodeInstance* entryNode() const noexcept;
 
 	/// Add a node to the graph
-	/// \param type The type of the node
-	/// \param x The x location of the node
-	/// \param y The y location of the node
-	/// \param id The node ID
-	/// \retval toFill The nodeInstance to fill to, optional.
+	/// \param[in] type The type of the node
+	/// \param[in] x The x location of the node
+	/// \param[in] y The y location of the node
+	/// \param[in] id The node ID
+	/// \param[out] toFill The nodeInstance to fill to, optional.
 	/// \return The result
 	Result insertNode(std::unique_ptr<NodeType> type, float x, float y,
 	                  boost::uuids::uuid id     = boost::uuids::random_generator()(),
@@ -119,14 +119,14 @@ struct GraphFunction {
 	/// \}
 
 	/// Create a fresh NodeType for an entry
-	/// \retval toFill The NodeType pointer to fill
+	/// \param[out] toFill The NodeType pointer to fill
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \return The result
 	Result createEntryNodeType(std::unique_ptr<NodeType>* toFill) const;
 
 	/// Create a fresh NodeType for an exit
-	/// \retval toFill The NodeType pointer to fill
+	/// \param[out] toFill The NodeType pointer to fill
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \return The result
@@ -313,6 +313,7 @@ struct GraphFunction {
 	std::string name() const { return mName; }
 	/// Get the qualified name of the function
 	/// Same as module().fullName() + ":" + name();
+	/// \return The qualified name
 	std::string qualifiedName() const;
 
 	/// Set the name of the function

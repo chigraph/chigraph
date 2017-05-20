@@ -29,6 +29,15 @@ struct GraphStruct {
 	/// \return The GraphModule
 	GraphModule& module() const { return *mModule; }
 
+	/// Set the name of the struct, and optionally update all references in the context
+	/// \warning If updateReferences is false or not all the modules that use this struct are
+	/// loaded, then there WILL be broken references.
+	/// \param newName The new name
+	/// \pre `!newName.empty()`
+	/// \param updateReferences Should all the references in the module be updated?
+	/// \return The nodes that were updated, garunteed to be empty of `updateReferences` is false
+	std::vector<NodeInstance*> setName(std::string newName, bool updateReferences = true);
+
 	/// Get the name of the type
 	/// \return the name
 	const std::string& name() const { return mName; }
@@ -39,24 +48,32 @@ struct GraphStruct {
 
 	/// Add a new type to the struct
 	/// \param ty The type
+	/// \pre `ty.vaid()`
 	/// \param name The name of the type
 	/// \param addBefore The type to add the new type before. Use types().size() to add to the end
-	void addType(DataType ty, std::string name, size_t addBefore);
+	/// \pre `addBefore <= types().size()`
+	/// \param updateReferences Should the references to make and break nodes be updated?
+	void addType(DataType ty, std::string name, size_t addBefore, bool updateReferences = true);
 
 	/// Change the type and name of a type
 	/// \param id The ID to change
 	/// \param newTy The new type
 	/// \param newName The new name
-	void modifyType(size_t id, DataType newTy, std::string newName);
+	/// \param updateReferences Should the references to make and break nodes be updated?
+	void modifyType(size_t id, DataType newTy, std::string newName, bool updateReferences = true);
 
 	/// Remove a type from a struct
 	/// \param id The ID to remove
-	void removeType(size_t id);
+	/// \param updateReferences Should the references to make and break nodes be updated?
+	void removeType(size_t id, bool updateReferences = true);
 
 	/// Get the DataType of the struct
+	/// \return The DataType
 	DataType dataType();
 
 private:
+	void updateNodeReferences();
+
 	GraphModule* mModule;
 	Context*     mContext;
 

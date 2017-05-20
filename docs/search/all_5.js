@@ -10,7 +10,7 @@ var searchData=
   ['graphfunction_2ecpp',['GraphFunction.cpp',['../GraphFunction_8cpp.html',1,'']]],
   ['graphfunction_2ehpp',['GraphFunction.hpp',['../GraphFunction_8hpp.html',1,'']]],
   ['graphfunctiontojson',['graphFunctionToJson',['../namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1',1,'chi']]],
-  ['graphmodule',['GraphModule',['../structchi_1_1GraphModule.html',1,'chi::GraphModule'],['../structchi_1_1GraphModule.html#a1f776646b9c9bdd615f7e35cebf7760a',1,'chi::GraphModule::GraphModule()']]],
+  ['graphmodule',['GraphModule',['../structchi_1_1GraphModule.html',1,'chi::GraphModule'],['../structchi_1_1GraphModule.html#adeeeec5c69812ddeb43a64d3009a4eda',1,'chi::GraphModule::GraphModule()']]],
   ['graphmodule_2ecpp',['GraphModule.cpp',['../GraphModule_8cpp.html',1,'']]],
   ['graphmodule_2ehpp',['GraphModule.hpp',['../GraphModule_8hpp.html',1,'']]],
   ['graphmoduletojson',['graphModuleToJson',['../namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a',1,'chi']]],

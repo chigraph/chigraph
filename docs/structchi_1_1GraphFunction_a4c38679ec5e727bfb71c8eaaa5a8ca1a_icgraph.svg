@@ -48,23 +48,23 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 762;
 var viewHeight = 39;
-var sectionId = 'dynsection-60';
+var sectionId = 'dynsection-74';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chi::GraphFunction::retypeLocalVariable</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-35 758,-35 758,4 -4,4"/>
-<!-- Node973 -->
+<!-- Node1130 -->
 <g id="node1" class="node">
-<title>Node973</title>
+<title>Node1130</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-.5 0,-30.5 108,-30.5 108,-.5 0,-.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
 <text text-anchor="middle" x="54" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::retypeLocalVariable</text>
 </g>
-<!-- Node974 -->
+<!-- Node1131 -->
 <g id="node2" class="node">
-<title>Node974</title>
+<title>Node1131</title>
 <g id="a_node2"><a xlink:href="structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" target="_top" xlink:title="Get the local variables. ">
 <polygon fill="#ffffff" stroke="#000000" points="144,-.5 144,-30.5 243,-30.5 243,-.5 144,-.5"/>
 <text text-anchor="start" x="152" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -72,54 +72,54 @@ var sectionId = 'dynsection-60';
 </a>
 </g>
 </g>
-<!-- Node973&#45;&gt;Node974 -->
+<!-- Node1130&#45;&gt;Node1131 -->
 <g id="edge1" class="edge">
-<title>Node973&#45;&gt;Node974</title>
+<title>Node1130&#45;&gt;Node1131</title>
 <path fill="none" stroke="#191970" d="M118.5352,-15.5C126.9675,-15.5 135.502,-15.5 143.642,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="118.3338,-12.0001 108.3338,-15.5 118.3338,-19.0001 118.3338,-12.0001"/>
 </g>
-<!-- Node975 -->
+<!-- Node1132 -->
 <g id="node3" class="node">
-<title>Node975</title>
+<title>Node1132</title>
 <g id="a_node3"><a xlink:href="namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" target="_top" xlink:title="Serialize a GraphFunction to json. ">
 <polygon fill="#ffffff" stroke="#000000" points="279,-6 279,-25 408,-25 408,-6 279,-6"/>
 <text text-anchor="middle" x="343.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::graphFunctionToJson</text>
 </a>
 </g>
 </g>
-<!-- Node974&#45;&gt;Node975 -->
+<!-- Node1131&#45;&gt;Node1132 -->
 <g id="edge2" class="edge">
-<title>Node974&#45;&gt;Node975</title>
+<title>Node1131&#45;&gt;Node1132</title>
 <path fill="none" stroke="#191970" d="M253.142,-15.5C261.5655,-15.5 270.259,-15.5 278.7726,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="253.0314,-12.0001 243.0313,-15.5 253.0313,-19.0001 253.0314,-12.0001"/>
 </g>
-<!-- Node976 -->
+<!-- Node1133 -->
 <g id="node4" class="node">
-<title>Node976</title>
+<title>Node1133</title>
 <g id="a_node4"><a xlink:href="namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" target="_top" xlink:title="Serialize a JsonModule to json. ">
 <polygon fill="#ffffff" stroke="#000000" points="444,-6 444,-25 567,-25 567,-6 444,-6"/>
 <text text-anchor="middle" x="505.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::graphModuleToJson</text>
 </a>
 </g>
 </g>
-<!-- Node975&#45;&gt;Node976 -->
+<!-- Node1132&#45;&gt;Node1133 -->
 <g id="edge3" class="edge">
-<title>Node975&#45;&gt;Node976</title>
+<title>Node1132&#45;&gt;Node1133</title>
 <path fill="none" stroke="#191970" d="M418.7026,-15.5C427.1561,-15.5 435.6942,-15.5 443.9461,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="418.4582,-12.0001 408.4582,-15.5 418.4581,-19.0001 418.4582,-12.0001"/>
 </g>
-<!-- Node977 -->
+<!-- Node1134 -->
 <g id="node5" class="node">
-<title>Node977</title>
+<title>Node1134</title>
 <g id="a_node5"><a xlink:href="structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" target="_top" xlink:title="Serialize to disk in the context. ">
 <polygon fill="#ffffff" stroke="#000000" points="603,-6 603,-25 754,-25 754,-6 603,-6"/>
 <text text-anchor="middle" x="678.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::saveToDisk</text>
 </a>
 </g>
 </g>
-<!-- Node976&#45;&gt;Node977 -->
+<!-- Node1133&#45;&gt;Node1134 -->
 <g id="edge4" class="edge">
-<title>Node976&#45;&gt;Node977</title>
+<title>Node1133&#45;&gt;Node1134</title>
 <path fill="none" stroke="#191970" d="M577.5243,-15.5C585.8612,-15.5 594.3827,-15.5 602.7672,-15.5"/>
 <polygon fill="#191970" stroke="#191970" points="577.4684,-12.0001 567.4683,-15.5 577.4683,-19.0001 577.4684,-12.0001"/>
 </g>

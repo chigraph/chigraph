@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['result_5fjson',['result_json',['../structchi_1_1Result.html#a22548cdff3037498a9cd978383458812',1,'chi::Result']]]
+  ['name',['name',['../structchi_1_1NamedDataType.html#adf236ddb65e4e492f8141bdd6bc14cab',1,'chi::NamedDataType']]]
 ];

@@ -9,6 +9,7 @@ var namespacechi =
     [ "GraphModule", "structchi_1_1GraphModule.html", "structchi_1_1GraphModule" ],
     [ "GraphStruct", "structchi_1_1GraphStruct.html", "structchi_1_1GraphStruct" ],
     [ "LangModule", "structchi_1_1LangModule.html", "structchi_1_1LangModule" ],
+    [ "ModuleCache", "structchi_1_1ModuleCache.html", "structchi_1_1ModuleCache" ],
     [ "NamedDataType", "structchi_1_1NamedDataType.html", "structchi_1_1NamedDataType" ],
     [ "NodeInstance", "structchi_1_1NodeInstance.html", "structchi_1_1NodeInstance" ],
     [ "NodeType", "structchi_1_1NodeType.html", "structchi_1_1NodeType" ],

@@ -4,6 +4,7 @@
 #include "chi/DataType.hpp"
 #include "chi/FunctionValidator.hpp"
 #include "chi/GraphFunction.hpp"
+#include "chi/GraphModule.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
 
@@ -53,12 +54,17 @@ NodeInstance::NodeInstance(const NodeInstance& other, boost::uuids::uuid id)
 NodeInstance::~NodeInstance() = default;
 
 void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
+	module().updateLastEditTime();
+
 	// delete exec connections that are out of range
 	// start at one past the end
 	for (size_t id = newType->execInputs().size(); id < inputExecConnections.size(); ++id) {
 		while (!inputExecConnections[id].empty()) {
 			assert(inputExecConnections[id][0].first);  // should never fail...
-			disconnectExec(*inputExecConnections[id][0].first, inputExecConnections[id][0].second);
+			auto res = disconnectExec(*inputExecConnections[id][0].first,
+			                          inputExecConnections[id][0].second);
+
+			assert(res.mSuccess);
 		}
 	}
 	inputExecConnections.resize(newType->execInputs().size());
@@ -71,10 +77,26 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 
 	auto id = 0ull;
 	for (const auto& conn : inputDataConnections) {
-		if (conn.first != nullptr && newType->dataInputs().size() > id &&
-		    !(type().dataInputs()[id].type == newType->dataInputs()[id].type)) {
-			disconnectData(*conn.first, conn.second, *this);
+		// if there is no connection, then skip
+		if (conn.first == nullptr) {
+			++id;
+			continue;
 		}
+
+		// if we get here, then we have to deal with the connection.
+
+		// see if we can keep it
+		if (newType->dataInputs().size() > id &&
+		    type().dataInputs()[id].type == newType->dataInputs()[id].type) {
+			++id;
+			continue;
+		}
+
+		// disconnect if there's a connection and we can't keep it
+		auto res = disconnectData(*conn.first, conn.second, *this);
+
+		assert(res.mSuccess);
+
 		++id;
 	}
 	inputDataConnections.resize(newType->dataInputs().size(), std::make_pair(nullptr, ~0ull));
@@ -84,13 +106,16 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 		// keep the connections if they're still good
 		if (newType->dataOutputs().size() > id &&
 		    type().dataOutputs()[id].type == newType->dataOutputs()[id].type) {
+			++id;
 			continue;
 		}
 
 		while (!connSlot.empty()) {
 			assert(connSlot[0].first);
 
-			disconnectData(*this, id, *connSlot[0].first);
+			auto res = disconnectData(*this, id, *connSlot[0].first);
+
+			assert(res.mSuccess);
 		}
 		++id;
 	}
@@ -103,11 +128,9 @@ void NodeInstance::setType(std::unique_ptr<NodeType> newType) {
 Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID) {
 	Result res = {};
 
-	if (&lhs.function() != &rhs.function()) {
-		res.addEntry("EUKN", "Cannot connect two nodes of different graphs",
-		             {});  // TODO: better errors
-		return res;
-	}
+	assert(&lhs.function() == &rhs.function());
+
+	rhs.module().updateLastEditTime();
 
 	// make sure the connection exists
 	// the input to the connection is the output to the node
@@ -163,11 +186,9 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_
 Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID) {
 	Result res = {};
 
-	if (&lhs.function() != &rhs.function()) {
-		res.addEntry("EUKN", "Cannot connect two nodes of different graphs",
-		             {});  // TODO: better errors
-		return res;
-	}
+	assert(&lhs.function() == &rhs.function());
+
+	lhs.module().updateLastEditTime();
 
 	// make sure the connection exists
 	if (lhsConnID >= lhs.outputExecConnections.size()) {
@@ -206,13 +227,11 @@ Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_
 }
 
 Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
-	Result res = {};
+	assert(&lhs.function() == &rhs.function());
 
-	if (&lhs.function() != &rhs.function()) {
-		res.addEntry("EUKN", "Cannot disconect two nodes of different graphs",
-		             {});  // TODO: better errors
-		return res;
-	}
+	lhs.module().updateLastEditTime();
+
+	Result res = {};
 
 	if (lhsConnID >= lhs.outputDataConnections.size()) {
 		auto dataOutputs = nlohmann::json::array();
@@ -274,6 +293,8 @@ Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs) {
 
 Result disconnectExec(NodeInstance& lhs, size_t lhsConnID) {
 	Result res = {};
+
+	lhs.module().updateLastEditTime();
 
 	if (lhsConnID >= lhs.outputExecConnections.size()) {
 		auto execOutputs = nlohmann::json::array();

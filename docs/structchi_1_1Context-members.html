@@ -29,7 +29,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
-  <td id="projectlogo"><img alt="Logo" src="chigraphsmall64.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="chigraphDoxygenIcon.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">chigraph
    &#160;<span id="projectnumber">master</span>
@@ -93,8 +93,8 @@ $(document).ready(function(){initNavTree('structchi_1_1Context.html','');});
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="structchi_1_1Context.html#af4a8f3fb758bbd0d1e0fdca431bdab2f">addModule</a>(std::unique_ptr&lt; ChiModule &gt; modToAdd) noexcept</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f">addModuleFromJson</a>(const boost::filesystem::path &amp;fullName, const nlohmann::json &amp;json, GraphModule **toFill=nullptr)</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structchi_1_1Context.html#ad1bbd4d5eb33a8ce34292eb6a192d10d">compileModule</a>(const boost::filesystem::path &amp;fullName, std::unique_ptr&lt; llvm::Module &gt; *toFill)</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="structchi_1_1Context.html#ad535dc768a4386dbd06c8b769c5d549f">compileModule</a>(ChiModule &amp;mod, std::unique_ptr&lt; llvm::Module &gt; *toFill)</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchi_1_1Context.html#a5fe3b2cbd2805912a9a894494a5c5a13">compileModule</a>(const boost::filesystem::path &amp;fullName, bool linkDependencies, std::unique_ptr&lt; llvm::Module &gt; *toFill)</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchi_1_1Context.html#a1a0ed6a11af4c2625955bc5df77e135c">compileModule</a>(ChiModule &amp;mod, bool linkDepdnencies, std::unique_ptr&lt; llvm::Module &gt; *toFill)</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchi_1_1Context.html#a9f68814e8a4fd38082c94be896347cc4">Context</a>(const boost::filesystem::path &amp;workPath={})</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>Context</b>(const Context &amp;context)=delete (defined in <a class="el" href="structchi_1_1Context.html">chi::Context</a>)</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Context</b>(Context &amp;&amp;)=delete (defined in <a class="el" href="structchi_1_1Context.html">chi::Context</a>)</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
@@ -106,6 +106,8 @@ $(document).ready(function(){initNavTree('structchi_1_1Context.html','');});
   <tr class="even"><td class="entry"><a class="el" href="structchi_1_1Context.html#a8b0dca76be969f24e02a1d286aea377c">llvmContext</a>()</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b">loadModule</a>(const boost::filesystem::path &amp;name, Flags&lt; LoadSettings &gt; flags=LoadSettings::Default, ChiModule **toFill=nullptr)</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5">moduleByFullName</a>(const boost::filesystem::path &amp;fullModuleName) const noexcept</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="structchi_1_1Context.html#afdf2d810191484be60d79abb03c5f7a7">moduleCache</a>() const</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structchi_1_1Context.html#a36c12b871ae11ae59a5ec1f2f2842ec7">moduleCache</a>()</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="structchi_1_1Context.html#acd60f2fe31d69d0c37652fb47fcf7b60">modules</a>() const</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structchi_1_1Context.html#a906c9187e13e2194a3f68d48973529f6">newGraphModule</a>(const boost::filesystem::path &amp;fullName)</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="structchi_1_1Context.html#a28706d36f049088c98cd726921512668">nodeTypeFromModule</a>(const boost::filesystem::path &amp;moduleName, boost::string_view typeName, const nlohmann::json &amp;data, std::unique_ptr&lt; NodeType &gt; *toFill) noexcept</td><td class="entry"><a class="el" href="structchi_1_1Context.html">chi::Context</a></td><td class="entry"></td></tr>
@@ -118,7 +120,7 @@ $(document).ready(function(){initNavTree('structchi_1_1Context.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Apr 1 2017 21:17:37 for chigraph by
+    <li class="footer">Generated on Fri May 19 2017 22:00:59 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

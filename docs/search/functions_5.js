@@ -7,7 +7,7 @@ var searchData=
   ['getorinsertentrynode',['getOrInsertEntryNode',['../structchi_1_1GraphFunction.html#a0e722c9bae3101c4bb54ad9baae6f841',1,'chi::GraphFunction']]],
   ['graphfunction',['GraphFunction',['../structchi_1_1GraphFunction.html#a44459c33f26a8f4d9529619991988100',1,'chi::GraphFunction']]],
   ['graphfunctiontojson',['graphFunctionToJson',['../namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1',1,'chi']]],
-  ['graphmodule',['GraphModule',['../structchi_1_1GraphModule.html#a1f776646b9c9bdd615f7e35cebf7760a',1,'chi::GraphModule']]],
+  ['graphmodule',['GraphModule',['../structchi_1_1GraphModule.html#adeeeec5c69812ddeb43a64d3009a4eda',1,'chi::GraphModule']]],
   ['graphmoduletojson',['graphModuleToJson',['../namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a',1,'chi']]],
   ['graphstruct',['GraphStruct',['../structchi_1_1GraphStruct.html#ab9d9a6c278322a563b1d57ec847abe63',1,'chi::GraphStruct']]],
   ['graphstructtojson',['graphStructToJson',['../namespacechi.html#af74872167b12e4ad8a387faab1f03fbb',1,'chi']]]

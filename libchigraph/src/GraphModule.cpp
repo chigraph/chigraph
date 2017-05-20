@@ -41,8 +41,7 @@ namespace chi {
 namespace {
 
 // read a whole stream to a string
-std::string read_all(std::istream & i, Result& res)
-{
+std::string read_all(std::istream& i, Result& res) {
 	std::string one;
 	std::string ret;
 	try {
@@ -50,9 +49,8 @@ std::string read_all(std::istream & i, Result& res)
 			ret += one;
 			ret += "\n";
 		}
-	}
-	catch (std::exception& e) {
-		res.addEntry("EUKN", "Failed to read from output stream", { {"Error Message", e.what()} });
+	} catch (std::exception& e) {
+		res.addEntry("EUKN", "Failed to read from output stream", {{"Error Message", e.what()}});
 		return "";
 	}
 	ret += one;
@@ -80,23 +78,26 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 
 		std::string generatedBitcode;
 		try {
-
 			exec_stream_t ctollvmExe;
-			ctollvmExe.set_wait_timeout(exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 100'000);
-			ctollvmExe.set_buffer_limit(exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 10'000'000);
+			ctollvmExe.set_wait_timeout(
+			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 100'000);
+			ctollvmExe.set_buffer_limit(
+			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 10'000'000);
 
-
-			auto exeLoc = fs::path(execPath).parent_path() / "chi-ctollvm"
-	#if WIN32
-						  ".exe"
-	#endif
-				;
-			assert(fs::is_regular_file(exeLoc) && "chi-ctollvm isn't installed in the same directory as chi");
+			auto exeLoc = fs::path(execPath).parent_path() /
+			              "chi-ctollvm"
+#if WIN32
+			              ".exe"
+#endif
+			    ;
+			assert(fs::is_regular_file(exeLoc) &&
+			       "chi-ctollvm isn't installed in the same directory as chi");
 
 			ctollvmExe.set_text_mode(exec_stream_t::s_in);
 			ctollvmExe.set_binary_mode(exec_stream_t::s_out);
 
-			ctollvmExe.start(exeLoc.string().c_str(), argsToChiCtoLLVM.begin(), argsToChiCtoLLVM.end());
+			ctollvmExe.start(exeLoc.string().c_str(), argsToChiCtoLLVM.begin(),
+			                 argsToChiCtoLLVM.end());
 
 			// push it the code and close the stream
 			ctollvmExe.in() << code;
@@ -107,7 +108,7 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 
 			// get stderr and stdout
 			generatedBitcode = read_all(ctollvmExe.out(), res);
-			auto errs = read_all(ctollvmExe.err(), res);
+			auto errs        = read_all(ctollvmExe.err(), res);
 
 			if (!ctollvmExe.close()) {
 				res.addEntry("EUKN", "Failed to close chi-ctollvm process", {});
@@ -117,44 +118,38 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 			auto errCode = ctollvmExe.exit_code();
 
 			if (errCode != 0) {
-				res.addEntry("EUKN", "Failed to Generate IR with clang", { {"Error", errs} });
+				res.addEntry("EUKN", "Failed to Generate IR with clang", {{"Error", errs}});
 				return nullptr;
 			}
 			if (!errs.empty()) {
-				res.addEntry("WUKN", "Failed to generate IR with clang", { {"Warning", errs} });
+				res.addEntry("WUKN", "Failed to generate IR with clang", {{"Warning", errs}});
 			}
 
-		}
-		catch (std::exception& e) {
-			res.addEntry("EUKN", "Failed to run chi-ctollvm", { {"Error Message", e.what()} });
+		} catch (std::exception& e) {
+			res.addEntry("EUKN", "Failed to run chi-ctollvm", {{"Error Message", e.what()}});
 			return nullptr;
 		}
 
 		auto errorOrMod = llvm::parseBitcodeFile(
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			llvm::MemoryBuffer::getMemBufferCopy
+		    llvm::MemoryBuffer::getMemBufferCopy
 #else
-			llvm::MemoryBufferRef
+		    llvm::MemoryBufferRef
 #endif
-			(generatedBitcode, "generated.bc"),
-			ctx); ;
+		    (generatedBitcode, "generated.bc"),
+		    ctx);
 		if (!errorOrMod) {
-
 			std::string errorMsg;
 
 #if LLVM_VERSION_AT_LEAST(4, 0)
 			auto E = errorOrMod.takeError();
 
-			llvm::handleAllErrors(std::move(E), [&errorMsg](llvm::ErrorInfoBase& err) {
-				errorMsg = err.message();
-			});
+			llvm::handleAllErrors(
+			    std::move(E), [&errorMsg](llvm::ErrorInfoBase& err) { errorMsg = err.message(); });
 #endif
 
-			res.addEntry("EUKN", "Failed to parse generated bitcode.", { {"Error Message", errorMsg} });
-
-#if LLVM_VERSION_AT_LEAST(4, 0)
-			llvm::handleAllErrors(errorOrMod.takeError());
-#endif
+			res.addEntry("EUKN", "Failed to parse generated bitcode.",
+			             {{"Error Message", errorMsg}});
 
 			return nullptr;
 		}
@@ -201,7 +196,7 @@ struct CFuncNode : NodeType {
 	    llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks,
 	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
 		assert(io.size() == dataInputs().size() + dataOutputs().size() && codegenInto != nullptr &&
-		        outputBlocks.size() == 1);
+		       outputBlocks.size() == 1);
 
 		Result res;
 
@@ -262,8 +257,7 @@ struct CFuncNode : NodeType {
 			outputName = dataOutputs()[0].name;
 		}
 
-		auto callinst = builder.CreateCall(
-		    llfunc, {io.data(), ioSize}, outputName);
+		auto callinst = builder.CreateCall(llfunc, {io.data(), ioSize}, outputName);
 		callinst->setDebugLoc(nodeLocation);
 
 		// store theoutput if there are any
@@ -574,7 +568,7 @@ struct GetLocalNodeType : public NodeType {
 }  // anon namespace
 
 GraphModule::GraphModule(Context& cont, boost::filesystem::path fullName,
-                         const std::vector<fs::path>& dependencies)
+                         const std::vector<boost::filesystem::path>& dependencies)
     : ChiModule(cont, fullName) {
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) { addDependency(dep); }
@@ -587,6 +581,16 @@ std::vector<std::string> GraphModule::typeNames() const {
 	for (const auto& ty : structs()) { ret.push_back(ty->name()); }
 
 	return ret;
+}
+
+Result GraphModule::addForwardDeclarations(llvm::Module& module) const {
+	// create prototypes
+	for (auto& graph : mFunctions) {
+		module.getOrInsertFunction(mangleFunctionName(fullName(), graph->name()),
+		                           graph->functionType());
+	}
+
+	return {};
 }
 
 Result GraphModule::generateModule(llvm::Module& module) {
@@ -646,10 +650,7 @@ Result GraphModule::generateModule(llvm::Module& module) {
 	                                                  "Chigraph Compiler", false, "", 0);
 
 	// create prototypes
-	for (auto& graph : mFunctions) {
-		module.getOrInsertFunction(mangleFunctionName(fullName(), graph->name()),
-		                           graph->functionType());
-	}
+	addForwardDeclarations(module);
 
 	for (auto& graph : mFunctions) {
 		res += compileFunction(*graph, &module,
@@ -708,6 +709,9 @@ GraphFunction* GraphModule::getOrCreateFunction(std::string                name,
 		return foundFunc;
 	}
 
+	// invalidate the cache
+	updateLastEditTime();
+
 	mFunctions.push_back(std::make_unique<GraphFunction>(*this, std::move(name), std::move(dataIns),
 	                                                     std::move(dataOuts), std::move(execIns),
 	                                                     std::move(execOuts)));
@@ -717,6 +721,9 @@ GraphFunction* GraphModule::getOrCreateFunction(std::string                name,
 }
 
 bool GraphModule::removeFunction(boost::string_view name, bool deleteReferences) {
+	// invalidate the cache
+	updateLastEditTime();
+
 	auto funcPtr = functionFromName(name);
 
 	if (funcPtr == nullptr) { return false; }
@@ -727,6 +734,9 @@ bool GraphModule::removeFunction(boost::string_view name, bool deleteReferences)
 }
 
 void GraphModule::removeFunction(GraphFunction& func, bool deleteReferences) {
+	// invalidate the cache
+	updateLastEditTime();
+
 	if (deleteReferences) {
 		auto references = context().findInstancesOfType(fullName(), func.name());
 
@@ -973,6 +983,8 @@ GraphStruct* GraphModule::getOrCreateStruct(std::string name, bool* inserted) {
 		if (inserted != nullptr) { *inserted = false; }
 		return str;
 	}
+	// invalidate the cache
+	updateLastEditTime();
 
 	mStructs.push_back(std::make_unique<GraphStruct>(*this, std::move(name)));
 
@@ -981,6 +993,9 @@ GraphStruct* GraphModule::getOrCreateStruct(std::string name, bool* inserted) {
 }
 
 bool GraphModule::removeStruct(boost::string_view name) {
+	// invalidate the cache
+	updateLastEditTime();
+
 	for (auto iter = structs().begin(); iter != structs().end(); ++iter) {
 		if ((*iter)->name() == name) {
 			mStructs.erase(iter);
@@ -994,6 +1009,9 @@ bool GraphModule::removeStruct(boost::string_view name) {
 
 void GraphModule::removeStruct(GraphStruct* tyToDel) {
 	assert(&tyToDel->module() == this);
+
+	// invalidate the cache
+	updateLastEditTime();
 
 	for (auto iter = structs().begin(); iter != structs().end(); ++iter) {
 		if (iter->get() == tyToDel) {

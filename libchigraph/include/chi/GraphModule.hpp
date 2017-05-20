@@ -37,6 +37,9 @@ struct GraphModule : public ChiModule {
 	std::vector<std::string> nodeTypeNames() const override;
 
 	std::vector<std::string> typeNames() const override;
+
+	Result addForwardDeclarations(llvm::Module& module) const override;
+
 	Result generateModule(llvm::Module& module) override;
 
 	/////////////////////
@@ -116,6 +119,7 @@ struct GraphModule : public ChiModule {
 
 	/// Remove a struct from the module by pointer
 	/// \param tyToDel Struct to delete, must be in this module
+	/// \pre `tyToDel->module() == this`
 	void removeStruct(GraphStruct* tyToDel);
 
 	/// \}

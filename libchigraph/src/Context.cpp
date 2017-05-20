@@ -31,12 +31,15 @@
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
 
+#include <deque>
+#include <unordered_set>
+
 #include <git2.h>
 
 namespace fs = boost::filesystem;
 
 namespace chi {
-Context::Context(const fs::path& workPath) {
+Context::Context(const boost::filesystem::path& workPath) : mModuleCache{*this} {
 	mWorkspacePath = workspaceFromChildPath(workPath);
 
 	git_libgit2_init();
@@ -44,14 +47,14 @@ Context::Context(const fs::path& workPath) {
 
 Context::~Context() = default;
 
-ChiModule* Context::moduleByFullName(const fs::path& fullModuleName) const noexcept {
+ChiModule* Context::moduleByFullName(const boost::filesystem::path& fullModuleName) const noexcept {
 	for (auto& module : mModules) {
 		if (module->fullName() == fullModuleName) { return module.get(); }
 	}
 	return nullptr;
 }
 
-GraphModule* Context::newGraphModule(const fs::path& fullName) {
+GraphModule* Context::newGraphModule(const boost::filesystem::path& fullName) {
 	// create the module
 	GraphModule* mod = nullptr;
 	{
@@ -88,6 +91,8 @@ std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
 }
 
 Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, ChiModule** toFill) {
+	assert(!name.empty() && "Name should not be empty when calling chi::Context::loadModule");
+
 	Result res;
 
 	auto requestedModCtx = res.addScopedContext({{"Requested Module Name", name.generic_string()}});
@@ -109,6 +114,15 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 		return {};
 	}
 
+	// see if it's already loaded
+	{
+		auto mod = moduleByFullName(name);
+		if (mod) {
+			if (toFill != nullptr) { *toFill = mod; }
+			return {};
+		}
+	}
+
 	if (workspacePath().empty()) {
 		res.addEntry("E52", "Cannot load module without a workspace path", {});
 		return res;
@@ -120,7 +134,8 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 
 	if (!fs::is_regular_file(fullPath)) {
 		res.addEntry("EUKN", "Failed to find module",
-		             {{"Workspace Path", workspacePath().string()}});
+		             {{"Workspace Path", workspacePath().string()},
+		              {"Expected Path", fullPath.generic_string()}});
 		return res;
 	}
 
@@ -138,6 +153,9 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 	GraphModule* toFillJson = nullptr;
 	res += addModuleFromJson(name.generic_string(), readJson, &toFillJson);
 	if (toFill != nullptr) { *toFill = toFillJson; }
+
+	// set this to the last time the file was edited
+	toFillJson->updateLastEditTime(boost::filesystem::last_write_time(fullPath));
 
 	return res;
 }
@@ -513,7 +531,8 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, boost::string_vie
 	return res;
 }
 
-Result Context::compileModule(const fs::path& fullName, std::unique_ptr<llvm::Module>* toFill) {
+Result Context::compileModule(const boost::filesystem::path& fullName, bool linkDependencies,
+                              std::unique_ptr<llvm::Module>* toFill) {
 	Result res;
 
 	auto mod = moduleByFullName(fullName);
@@ -522,45 +541,67 @@ Result Context::compileModule(const fs::path& fullName, std::unique_ptr<llvm::Mo
 		return res;
 	}
 
-	return compileModule(*mod, toFill);
+	return compileModule(*mod, linkDependencies, toFill);
 }
 
-Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toFill) {
+Result Context::compileModule(ChiModule& mod, bool linkDependencies,
+                              std::unique_ptr<llvm::Module>* toFill) {
 	assert(toFill != nullptr);
 
 	Result res;
 
 	auto modNameCtx = res.addScopedContext({{"Module Name", mod.fullName()}});
 
-	auto llmod = std::make_unique<llvm::Module>(mod.fullName(), llvmContext());
+	// generate module or load it from the cache
+	std::unique_ptr<llvm::Module> llmod;
+	{
+		// try to get it from the cache
+		llmod = moduleCache().retrieveFromCache(mod.fullNamePath(), mod.lastEditTime());
 
-	// generate dependencies
-	for (const auto& depName : mod.dependencies()) {
-		std::unique_ptr<llvm::Module> compiledDep;
-		res += compileModule(depName, &compiledDep);  // TODO(#62): detect circular dependencies
+		// compile it if the cache failed
+		if (!llmod) {
+			llmod = std::make_unique<llvm::Module>(mod.fullName(), llvmContext());
 
-		if (!res) { return res; }
+			// add forward declartions for all dependencies
+			{
+				std::unordered_set<fs::path> added(mod.dependencies().begin(),
+				                                   mod.dependencies().end());
+				std::deque<fs::path> depsToAdd(mod.dependencies().begin(),
+				                               mod.dependencies().end());
+				while (!depsToAdd.empty()) {
+					auto& depName = depsToAdd[0];
 
-// link it in
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-		llvm::Linker::LinkModules(llmod.get(), compiledDep.get()
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-		                                           ,
-		                          llvm::Linker::DestroySource, nullptr
-#endif
-		                          );
-#else
-		llvm::Linker::linkModules(*llmod, std::move(compiledDep));
-#endif
+					auto depMod = moduleByFullName(depName);
+					if (depMod == nullptr) {
+						res.addEntry("E36", "Could not find module",
+						             {{"module", depName.generic_string()}});
+						return res;
+					}
+
+					res += depMod->addForwardDeclarations(*llmod);
+					if (!res) { return res; }
+
+					for (const auto& depOfDep : depMod->dependencies()) {
+						if (added.find(depOfDep) == added.end()) {
+							depsToAdd.push_back(depOfDep);
+							added.insert(depOfDep);
+						}
+					}
+					depsToAdd.pop_front();
+				}
+			}
+
+			res += mod.generateModule(*llmod);
+
+			// set debug info version if it doesn't already have it
+			if (llmod->getModuleFlag("Debug Info Version") == nullptr) {
+				llmod->addModuleFlag(llvm::Module::Warning, "Debug Info Version",
+				                     llvm::DEBUG_METADATA_VERSION);
+			}
+		}
 	}
 
-	res += mod.generateModule(*llmod);
-
-	// set debug info version if it doesn't already have it
-	if (llmod->getModuleFlag("Debug Info Version") == nullptr) {
-		llmod->addModuleFlag(llvm::Module::Warning, "Debug Info Version",
-		                     llvm::DEBUG_METADATA_VERSION);
-	}
+#ifndef NDEBUG
 
 	// verify the created module
 	if (res) {
@@ -580,6 +621,33 @@ Result Context::compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toF
 
 			res.addEntry("EINT", "Internal compiler error: Invalid module created",
 			             {{"Error", err}, {"Full Name", mod.fullName()}, {"Module", moduleStr}});
+		}
+	}
+#endif
+
+	// cache the module
+	res += moduleCache().cacheModule(mod.fullNamePath(), *llmod, mod.lastEditTime());
+
+	// generate dependencies
+	if (linkDependencies) {
+		for (const auto& depName : mod.dependencies()) {
+			std::unique_ptr<llvm::Module> compiledDep;
+			res += compileModule(depName, true,
+			                     &compiledDep);  // TODO(#62): detect circular dependencies
+
+			if (!res) { return res; }
+
+// link it in
+#if LLVM_VERSION_LESS_EQUAL(3, 7)
+			llvm::Linker::LinkModules(llmod.get(), compiledDep.get()
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+			                                           ,
+			                          llvm::Linker::DestroySource, nullptr
+#endif
+			                          );
+#else
+			llvm::Linker::linkModules(*llmod, std::move(compiledDep));
+#endif
 		}
 	}
 
@@ -606,7 +674,7 @@ std::vector<NodeInstance*> Context::findInstancesOfType(const fs::path&    modul
 	return ret;
 }
 
-fs::path workspaceFromChildPath(const fs::path& path) {
+fs::path workspaceFromChildPath(const boost::filesystem::path& path) {
 	fs::path ret = path;
 
 	// initialize workspace directory
@@ -648,7 +716,7 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	        );
 
 	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
-	
+
 #ifndef _NDEBUG
 	EEBuilder.setVerifyModules(true);
 #endif
@@ -656,12 +724,12 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	EEBuilder.setOptLevel(optLevel);
 
 	EEBuilder.setErrorStr(&errMsg);
-	
+
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
 	EEBuilder.setUseMCJIT(true);
-	
+
 	auto DebugIRPass = createDebugIRPass();
-    DebugIRPass->runOnModule(*mod);
+	DebugIRPass->runOnModule(*mod);
 #endif
 
 	EEBuilder.setMCJITMemoryManager(
@@ -714,7 +782,7 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
                              std::vector<std::string> args, llvm::Function* funcToRun, int* ret) {
 	assert(mod);
-	
+
 	Result res;
 
 	if (funcToRun == nullptr) {
@@ -746,7 +814,7 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt
 	return res;
 }
 
-std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(const fs::path& path) {
+std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(const boost::filesystem::path& path) {
 	// handle github
 	{
 		auto beginIter = path.begin();

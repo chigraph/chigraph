@@ -1,6 +1,8 @@
 var searchData=
 [
   ['langmodule',['LangModule',['../structchi_1_1LangModule.html#a0d623aa2342eec20ab11150e793f6b9e',1,'chi::LangModule::LangModule()'],['../structchi_1_1Context.html#ab109ef2d751346da8db6d7c44fb0cd90',1,'chi::Context::langModule()']]],
+  ['lastedittime',['lastEditTime',['../structchi_1_1ChiModule.html#adc6b4278af40c9f50890ff773decaf8f',1,'chi::ChiModule']]],
+  ['linenumberfromnode',['lineNumberFromNode',['../namespacechi.html#a46ba4fa933baeba58beefc9e573b0668',1,'chi']]],
   ['listbreakpoints',['listBreakpoints',['../classchi_1_1Debugger.html#a4c2c30a9f418188aff807c51b0046bf5',1,'chi::Debugger']]],
   ['listmodulesinworkspace',['listModulesInWorkspace',['../structchi_1_1Context.html#a8a16da32d939654600ac50084381e054',1,'chi::Context']]],
   ['lldbdebugger',['lldbDebugger',['../classchi_1_1Debugger.html#a4bd2c4dcced3e704b6a4d71b7c2d53d4',1,'chi::Debugger']]],

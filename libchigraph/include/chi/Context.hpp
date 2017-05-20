@@ -11,12 +11,13 @@
 
 #include "chi/Flags.hpp"
 #include "chi/Fwd.hpp"
+#include "chi/ModuleCache.hpp"
 #include "chi/json.hpp"
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/Support/CodeGen.h>  // for CodeGenOpt
 
-#include <boost/filesystem.hpp>
+#include <boost/filesystem/path.hpp>
 #include <boost/utility/string_view.hpp>
 
 namespace chi {
@@ -74,6 +75,9 @@ struct Context {
 
 	/// Load a module from disk, also loads dependencies
 	/// \param[in] name The name of the moudle
+	/// \pre `!name.empty()`
+	/// \param[in] flags The flags--use `LoadSettings::Fetch` to fetch this module, or `LoadSettings::FetchRecursive` 
+	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
 	Result loadModule(const boost::filesystem::path& name,
@@ -137,22 +141,29 @@ struct Context {
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] fullName The full name of the module to compile.
 	/// If `moduleByFullName(fullName) == nullptr`, this function has no side-effects
+	/// \param[in] linkDependencies Should all the dependencies be linked in? If this is true this
+	/// module will be ready to be run.
 	/// \param[out] toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \return The `Result`
-	Result compileModule(const boost::filesystem::path& fullName,
+	Result compileModule(const boost::filesystem::path& fullName, bool linkDependencies,
 	                     std::unique_ptr<llvm::Module>* toFill);
 
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] mod The module to compile
+	/// \param[in] linkDepdnencies Should the dependencies be linked into the module?
 	/// \param[out] toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \pre `toFill != nullptr` (the value the `unique_ptr` points to be can be null, but not the
 	/// pointer to the `unique_ptr`)
 	/// \return The `Result`
-	Result compileModule(ChiModule& mod, std::unique_ptr<llvm::Module>* toFill);
+	Result compileModule(ChiModule& mod, bool linkDepdnencies,
+	                     std::unique_ptr<llvm::Module>* toFill);
 
 	/// Find all uses of a node type in all the loaded modules
+	/// \param module The name of the module that the type being search for is in
+	/// \param typeName The name of the type in `module` to search for
+	/// \return All the `NodeInstance`s that are of that type
 	std::vector<NodeInstance*> findInstancesOfType(const boost::filesystem::path& module,
 	                                               boost::string_view             typeName) const;
 
@@ -174,6 +185,13 @@ struct Context {
 		return ret;
 	}
 
+	/// Get the module cache
+	/// \return The ModuleCache
+	const ModuleCache& moduleCache() const { return mModuleCache; }
+
+	/// \copydoc Context::moduleCache
+	ModuleCache& moduleCache() { return mModuleCache; }
+
 private:
 	boost::filesystem::path mWorkspacePath;
 
@@ -186,6 +204,8 @@ private:
 	    mCompileCache;
 
 	LangModule* mLangModule = nullptr;
+
+	ModuleCache mModuleCache;
 };
 
 /// Get the workspace directory from a child of the workspace directory
@@ -207,6 +227,7 @@ std::string stringifyLLVMType(llvm::Type* ty);
 /// \param[in] args The arguments to pass to the function, empty by default
 /// \param[in] funcToRun The function to run. By default it uses "main".
 /// \param[out] ret The `GenericValue` to fill with the result of the function. Optional
+/// \return The Result
 Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
                        llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
                        std::vector<llvm::GenericValue> args     = {},
@@ -218,6 +239,7 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
 /// \param[in] args The arguments to main
 /// \param[in] funcToRun The function, defaults to "main" from `mod`
 /// \param[out] ret The return from main. Optional.
+/// \return The Result
 Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod,
                              llvm::CodeGenOpt::Level       optLevel = llvm::CodeGenOpt::Default,
                              std::vector<std::string>      args     = {},

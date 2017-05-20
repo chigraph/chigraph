@@ -92,6 +92,7 @@ public:
 	/// \pre `id < inst.outputDataConnections.size()`
 	/// \param frame The frame. If this isn't a valid `SBFrame` (the default), then it uses
 	/// `lldbProcess().GetSelectedThread().GetSelectedFrame()`
+	/// \return The LLDB value object, or invalid if it failed.
 	lldb::SBValue inspectNodeOutput(const NodeInstance& inst, size_t id, lldb::SBFrame frame = {});
 
 	/// Get the value of a local variable
@@ -111,14 +112,17 @@ public:
 
 	/// Get the target
 	/// Keep in mind the return isn't necessarily valid, although it should be
+	/// \return The LLDB target object
 	lldb::SBTarget lldbTarget() const { return mTarget; }
 
 	/// Get the process
 	/// This will only be valid if there's an attached process
+	/// \return The LLDB process object
 	lldb::SBProcess lldbProcess() const { return mProcess; }
 
 	/// Get the debugger
 	/// This should probably be valid...not sure why it wouldn't be
+	/// \return The LLDB debugger object
 	lldb::SBDebugger lldbDebugger() const { return mDebugger; }
 
 private:
@@ -131,6 +135,9 @@ private:
 	std::unordered_map<const NodeInstance*, lldb::SBBreakpoint> mBreakpoints;
 };
 
+/// Get the mapped line number from a node
+/// \param inst The instance to get the line number for
+/// \return The line number
 unsigned lineNumberFromNode(NodeInstance& inst);
 
 }  // namespace chi

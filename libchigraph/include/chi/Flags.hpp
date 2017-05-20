@@ -24,30 +24,66 @@ template <typename Enum>
 struct Flags {
 	static_assert(std::is_enum<Enum>::value, "Template argument to flags must be an enum");
 
+	/// Default constructor
 	Flags() = default;
+	
+	/// Constructor from an `Enum` type
+	/// \param e The enum to copy from
 	Flags(Enum e) : mData{static_cast<decltype(mData)>(e)} {}
 
+	/// Copy constructor
+	/// \param fl The Flags object to copy from
 	Flags(const Flags& fl) = default;
+	
+	/// Move constructor
+	/// \param fl The Flags object to move from
 	Flags(Flags&& fl)      = default;
 
-	Flags& operator=(const Flags&) = default;
-	Flags& operator=(Flags&&) = default;
+	/// Copy assignment
+	/// \param fl The Flags object to copy from
+	/// \return `*this`
+	Flags& operator=(const Flags& fl) = default;
+	
+	/// Move assignment
+	/// \param The Flags object to move from
+	/// \return `*this`
+	Flags& operator=(Flags&& fl) = default;
 
+	/// See if one Flags object is equal to the other
+	/// \param rhs The Flags object to comare to
+	/// \return if they are equal
 	bool operator==(const Flags& rhs) const { return mData == rhs.mData; }
 
+	/// See if one Flags object isn't equal to the other
+	/// \return if they are equal
 	bool operator!() const { return mData == 0; }
 
+	/// Check if the flags object isn't set to zero
+	/// Useful for use after a `&`
+	/// \return true if it's not zero
 	explicit operator bool() const { return mData != 0; }
 
+	/// Bitwise OR
+	/// \param rhs The Flags object to OR with
+	/// \return The new Flags object
 	Flags operator|(const Flags& rhs) const { return Flags{mData | rhs.mData}; }
 
+	/// Bitwise AND 
+	/// \param rhs The Flags object to AND with
+	/// \return The new Flags object
 	Flags operator&(const Flags& rhs) const { return Flags{mData & rhs.mData}; }
 
+	/// Bitwise OR assignment
+	/// \param rhs The Flags obejct to OR `*this` with
+	/// \return `*this`
 	Flags& operator|=(const Flags& rhs) {
 		mData |= rhs.mData;
 		return *this;
 	}
-
+	
+	/// Bitwise AND assignment
+	/// \param rhs The Flags obejct to AND `*this` with
+	/// \return `*this`
 	Flags& operator&=(const Flags& rhs) {
 		mData &= rhs.mData;
 		return *this;

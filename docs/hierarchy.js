@@ -12,8 +12,10 @@ var hierarchy =
     [ "chi::GraphStruct", "structchi_1_1GraphStruct.html", null ],
     [ "std::hash< boost::filesystem::path >", "structstd_1_1hash_3_01boost_1_1filesystem_1_1path_01_4.html", null ],
     [ "std::hash< boost::uuids::uuid >", "structstd_1_1hash_3_01boost_1_1uuids_1_1uuid_01_4.html", null ],
+    [ "chi::ModuleCache", "structchi_1_1ModuleCache.html", null ],
     [ "chi::NamedDataType", "structchi_1_1NamedDataType.html", null ],
     [ "chi::NodeInstance", "structchi_1_1NodeInstance.html", null ],
     [ "chi::NodeType", "structchi_1_1NodeType.html", null ],
-    [ "chi::Result", "structchi_1_1Result.html", null ]
+    [ "chi::Result", "structchi_1_1Result.html", null ],
+    [ "chi::Result::ScopedContext", "structchi_1_1Result_1_1ScopedContext.html", null ]
 ];
