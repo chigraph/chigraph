@@ -30,13 +30,14 @@ struct GraphStruct {
 	GraphModule& module() const { return *mModule; }
 
 	/// Set the name of the struct, and optionally update all references in the context
-	/// \warning If updateReferences is false or not all the modules that use this struct are loaded, then there WILL be broken references.
+	/// \warning If updateReferences is false or not all the modules that use this struct are
+	/// loaded, then there WILL be broken references.
 	/// \param newName The new name
 	/// \expects `!newName.empty()`
 	/// \param updateReferences Should all the references in the module be updated?
 	/// \return The nodes that were updated, garunteed to be empty of `updateReferences` is false
 	std::vector<NodeInstance*> setName(std::string newName, bool updateReferences = true);
-	
+
 	/// Get the name of the type
 	/// \return the name
 	const std::string& name() const { return mName; }
@@ -71,7 +72,7 @@ struct GraphStruct {
 
 private:
 	void updateNodeReferences();
-	
+
 	GraphModule* mModule;
 	Context*     mContext;
 

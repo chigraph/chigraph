@@ -17,9 +17,9 @@
 #include <llvm/Bitcode/BitcodeWriter.h>
 #endif
 
+#include <llvm/IR/Module.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
-#include <llvm/IR/Module.h>
 
 #include <lldb/API/SBListener.h>
 #include <lldb/API/SBThread.h>
@@ -164,15 +164,17 @@ Result Debugger::start(const char** argv, const char** envp,
 	fs::path tmpIRPath;
 	{
 		tmpIRPath = boost::filesystem::temp_directory_path() / fs::unique_path();
-		std::error_code      ec;  // TODO: use ec
-		std::string errorString; // only for LLVM 3.5
-		llvm::raw_fd_ostream file{tmpIRPath.string().c_str(),
+		std::error_code      ec;           // TODO: use ec
+		std::string          errorString;  // only for LLVM 3.5
+		llvm::raw_fd_ostream file {
+			tmpIRPath.string().c_str(),
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			errorString,
+			    errorString,
 #else
-			ec, 
+			    ec,
 #endif
-			llvm::sys::fs::F_RW};
+			    llvm::sys::fs::F_RW
+		};
 		llvm::WriteBitcodeToFile(mod.get(), file);
 	}
 

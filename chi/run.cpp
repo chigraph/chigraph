@@ -95,7 +95,10 @@ int run(const std::vector<std::string>& opts, const char* argv0) {
 	std::unique_ptr<llvm::Module> llmod;
 	res += c.compileModule(jmod->fullName(), true, &llmod);
 
-	if (!res) { std::cerr << "Error compiling module: " << res << std::endl; return 1; }
+	if (!res) {
+		std::cerr << "Error compiling module: " << res << std::endl;
+		return 1;
+	}
 
 	// run it!
 

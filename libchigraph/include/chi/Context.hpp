@@ -10,8 +10,8 @@
 #include <unordered_map>
 
 #include "chi/Flags.hpp"
-#include "chi/ModuleCache.hpp"
 #include "chi/Fwd.hpp"
+#include "chi/ModuleCache.hpp"
 #include "chi/json.hpp"
 
 #include <llvm/IR/LLVMContext.h>
@@ -139,7 +139,8 @@ struct Context {
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] fullName The full name of the module to compile.
 	/// If `moduleByFullName(fullName) == nullptr`, this function has no side-effects
-	/// \param[in] linkDependencies Should all the dependencies be linked in? If this is true this module will be ready to be run.
+	/// \param[in] linkDependencies Should all the dependencies be linked in? If this is true this
+	/// module will be ready to be run.
 	/// \param[out] toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
@@ -154,7 +155,8 @@ struct Context {
 	/// \pre `toFill != nullptr` (the value the `unique_ptr` points to be can be null, but not the
 	/// pointer to the `unique_ptr`)
 	/// \return The `Result`
-	Result compileModule(ChiModule& mod, bool linkDepdnencies, std::unique_ptr<llvm::Module>* toFill);
+	Result compileModule(ChiModule& mod, bool linkDepdnencies,
+	                     std::unique_ptr<llvm::Module>* toFill);
 
 	/// Find all uses of a node type in all the loaded modules
 	/// \param module The name of the module that the type being search for is in
@@ -180,11 +182,11 @@ struct Context {
 
 		return ret;
 	}
-	
+
 	/// Get the module cache
 	/// \return The ModuleCache
 	const ModuleCache& moduleCache() const { return mModuleCache; }
-	
+
 	/// \copydoc Context::moduleCache
 	ModuleCache& moduleCache() { return mModuleCache; }
 
@@ -200,7 +202,7 @@ private:
 	    mCompileCache;
 
 	LangModule* mLangModule = nullptr;
-	
+
 	ModuleCache mModuleCache;
 };
 

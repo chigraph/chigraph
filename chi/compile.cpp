@@ -38,8 +38,8 @@ int compile(const std::vector<std::string>& opts) {
 	    "output-type,t", po::value<std::string>(),
 	    "The output type, either bc or ll. If an output file is defined, then this can be "
 	    "inferred")("directory,C", po::value<std::string>(),
-	                "Directory to cd to before doing anything")
-		("no-dependencies,D", "Don't link the dependencies into the module");
+	                "Directory to cd to before doing anything")(
+	    "no-dependencies,D", "Don't link the dependencies into the module");
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1);
@@ -51,34 +51,30 @@ int compile(const std::vector<std::string>& opts) {
 		std::cerr << "chi compile: error: no input files" << std::endl;
 		return 1;
 	}
-	
+
 	// cd first if it was specified
-	if (vm.count("directory")) {
-		fs::current_path(vm["directory"].as<std::string>());
-	}
+	if (vm.count("directory")) { fs::current_path(vm["directory"].as<std::string>()); }
 
 	fs::path infile = vm["input-file"].as<std::string>();
 
-	Context        c{fs::current_path()};
-	
+	Context c{fs::current_path()};
+
 	// add .chimod suffix if it doesn't have it
-	if (infile.extension().empty()) {
-		infile.replace_extension(".chimod");
-	}
-	
+	if (infile.extension().empty()) { infile.replace_extension(".chimod"); }
+
 	// resolve the path---first see if it's relative to the current directory. if it's not, then
 	// try to get it relative to 'src'
 	infile = fs::absolute(infile, fs::current_path());
 	if (!fs::is_regular_file(infile)) {
 		infile = fs::absolute(infile, c.workspacePath() / "src");
-		
+
 		// if we still didn't find it, then error
 		if (!fs::is_regular_file(infile)) {
 			std::cerr << "chi compile: failed to find module: " << infile << std::endl;
 			return 1;
 		}
 	}
-	
+
 	// get module name
 	auto moduleName = fs::relative(infile, c.workspacePath() / "src").replace_extension("");
 

@@ -62,7 +62,7 @@ struct EntryNodeType : NodeType {
 	    const std::vector<llvm::BasicBlock*>& outputBlocks,
 	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
 		assert(io.size() == dataOutputs().size() && codegenInto != nullptr &&
-		        outputBlocks.size() == execOutputs().size());
+		       outputBlocks.size() == execOutputs().size());
 
 		llvm::IRBuilder<> builder(codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -217,7 +217,7 @@ struct ExitNodeType : NodeType {
 	    llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& /*outputBlocks*/,
 	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
 		assert(execInputID < execInputs().size() && io.size() == dataInputs().size() &&
-		        codegenInto != nullptr);
+		       codegenInto != nullptr);
 
 		// assign the return types
 		llvm::IRBuilder<> builder(codegenInto);

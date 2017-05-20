@@ -37,9 +37,9 @@ struct GraphModule : public ChiModule {
 	std::vector<std::string> nodeTypeNames() const override;
 
 	std::vector<std::string> typeNames() const override;
-	
+
 	Result addForwardDeclarations(llvm::Module& module) const override;
-	
+
 	Result generateModule(llvm::Module& module) override;
 
 	/////////////////////

@@ -2,8 +2,8 @@
 
 #include "chi/NameMangler.hpp"
 
-#include <vector>
 #include <cassert>
+#include <vector>
 
 namespace chi {
 std::string mangleFunctionName(std::string modName, const std::string& name) {
