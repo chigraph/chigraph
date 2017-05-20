@@ -1,3 +1,5 @@
+/// \file ModuleCache.hpp
+
 #pragma once
 
 #ifndef CHI_MODULE_CACHE_HPP
@@ -23,10 +25,11 @@ struct ModuleCache {
 
 	/// Cache a module
 	/// \param moduleName The name of the module to cache
-	/// \expects `!moduleName.empty()`
+	/// \pre `!moduleName.empty()`
 	/// \param compiledModule The IR that's been compiled from this module
 	/// \param timeAtFileRead The time to store as the cache time. Should be the time the module was
 	/// read from disk
+	/// \return The Result
 	Result cacheModule(const boost::filesystem::path& moduleName, llvm::Module& compiledModule,
 	                   std::time_t timeAtFileRead);
 
@@ -37,7 +40,7 @@ struct ModuleCache {
 
 	/// Inavlidate the cache, as it delete the cache file
 	/// \param moduleName The name of the module to invalidate
-	/// \expects `!moduleName.empty()`
+	/// \pre `!moduleName.empty()`
 	void invalidateCache(const boost::filesystem::path& moduleName);
 
 	/// Get the time that a cache was updated
@@ -47,7 +50,7 @@ struct ModuleCache {
 
 	/// Retrieve a module from the cache
 	/// \param moduleName The name of the module to retrieve
-	/// \expects `!moduleName.empty()`
+	/// \pre `!moduleName.empty()`
 	/// \param atLeastThisNew Make sure the cache is at least as new as this
 	/// \return A llvm::Module, or nullptr if no suitable cache was found
 	std::unique_ptr<llvm::Module> retrieveFromCache(const boost::filesystem::path& moduleName,

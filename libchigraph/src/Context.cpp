@@ -39,7 +39,7 @@
 namespace fs = boost::filesystem;
 
 namespace chi {
-Context::Context(const fs::path& workPath) : mModuleCache{*this} {
+Context::Context(const boost::filesystem::path& workPath) : mModuleCache{*this} {
 	mWorkspacePath = workspaceFromChildPath(workPath);
 
 	git_libgit2_init();
@@ -47,14 +47,14 @@ Context::Context(const fs::path& workPath) : mModuleCache{*this} {
 
 Context::~Context() = default;
 
-ChiModule* Context::moduleByFullName(const fs::path& fullModuleName) const noexcept {
+ChiModule* Context::moduleByFullName(const boost::filesystem::path& fullModuleName) const noexcept {
 	for (auto& module : mModules) {
 		if (module->fullName() == fullModuleName) { return module.get(); }
 	}
 	return nullptr;
 }
 
-GraphModule* Context::newGraphModule(const fs::path& fullName) {
+GraphModule* Context::newGraphModule(const boost::filesystem::path& fullName) {
 	// create the module
 	GraphModule* mod = nullptr;
 	{
@@ -531,7 +531,7 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, boost::string_vie
 	return res;
 }
 
-Result Context::compileModule(const fs::path& fullName, bool linkDependencies,
+Result Context::compileModule(const boost::filesystem::path& fullName, bool linkDependencies,
                               std::unique_ptr<llvm::Module>* toFill) {
 	Result res;
 
@@ -674,7 +674,7 @@ std::vector<NodeInstance*> Context::findInstancesOfType(const fs::path&    modul
 	return ret;
 }
 
-fs::path workspaceFromChildPath(const fs::path& path) {
+fs::path workspaceFromChildPath(const boost::filesystem::path& path) {
 	fs::path ret = path;
 
 	// initialize workspace directory
@@ -814,7 +814,7 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt
 	return res;
 }
 
-std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(const fs::path& path) {
+std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(const boost::filesystem::path& path) {
 	// handle github
 	{
 		auto beginIter = path.begin();

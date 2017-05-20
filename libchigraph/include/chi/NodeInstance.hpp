@@ -83,12 +83,15 @@ struct NodeInstance {
 	std::vector<std::vector<std::pair<NodeInstance*, size_t>>> outputDataConnections;
 
 	/// Get the containing Context object
+	/// \return The Context
 	Context& context() const { return *mContext; }
 
 	/// Get the containing GraphFunction
+	/// \return The Function this node belongs to
 	GraphFunction& function() const { return *mFunction; }
 
 	/// Get the containing GraphModule
+	/// \return The GraphModule this node belongs to
 	GraphModule& module() const { return *mGraphModule; }
 
 private:
@@ -113,7 +116,7 @@ private:
 /// \param lhsConnID The ID of data connection in \c lhs to be connected
 /// \param rhs The node to the right, that takes in the data as a parameter
 /// \param rhsConnID The ID of data input in \c rhs
-/// \expects `lhs.function() == rhs.connection()`
+/// \pre `lhs.function() == rhs.connection()`
 /// \return The result
 Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID);
 
@@ -122,7 +125,7 @@ Result connectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_
 /// \param lhsConnID The ID of exec connection in \c lhs to be connected
 /// \param rhs The node to the right, that takes in the exec as a parameter
 /// \param rhsConnID The ID of exec input in \c rhs
-/// \expects `lhs.function() == rhs.connection()`
+/// \pre `lhs.function() == rhs.connection()`
 /// \return The result
 Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_t rhsConnID);
 
@@ -130,7 +133,7 @@ Result connectExec(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs, size_
 /// \param lhs The left hand node
 /// \param lhsConnID The ID of the data connection to disconnect
 /// \param rhs The node that the data port is connected to
-/// \expects `lhs.function() == rhs.connection()`
+/// \pre `lhs.function() == rhs.connection()`
 /// \return The result
 Result disconnectData(NodeInstance& lhs, size_t lhsConnID, NodeInstance& rhs);
 

@@ -15,6 +15,7 @@ namespace chi {
 /// The module that provides built-in operations like literals, math operations, etc
 struct LangModule : ChiModule {
 	/// Default constructor, usually called from Context::loadModule("lang")
+	/// \param ctx The Context to construct from
 	LangModule(Context& ctx);
 
 	/// Destructor

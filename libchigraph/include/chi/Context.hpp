@@ -74,8 +74,10 @@ struct Context {
 	std::vector<std::string> listModulesInWorkspace() const noexcept;
 
 	/// Load a module from disk, also loads dependencies
-	/// \expects `!name.empty()`
 	/// \param[in] name The name of the moudle
+	/// \pre `!name.empty()`
+	/// \param[in] flags The flags--use `LoadSettings::Fetch` to fetch this module, or `LoadSettings::FetchRecursive` 
+	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
 	Result loadModule(const boost::filesystem::path& name,
@@ -225,6 +227,7 @@ std::string stringifyLLVMType(llvm::Type* ty);
 /// \param[in] args The arguments to pass to the function, empty by default
 /// \param[in] funcToRun The function to run. By default it uses "main".
 /// \param[out] ret The `GenericValue` to fill with the result of the function. Optional
+/// \return The Result
 Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
                        llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
                        std::vector<llvm::GenericValue> args     = {},
@@ -236,6 +239,7 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
 /// \param[in] args The arguments to main
 /// \param[in] funcToRun The function, defaults to "main" from `mod`
 /// \param[out] ret The return from main. Optional.
+/// \return The Result
 Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod,
                              llvm::CodeGenOpt::Level       optLevel = llvm::CodeGenOpt::Default,
                              std::vector<std::string>      args     = {},

@@ -7,8 +7,14 @@
 #include <functional>
 
 namespace std {
+
+/// Hasing for filesystem paths so they can be used with unordered_* containers
 template <>
 struct hash<boost::filesystem::path> {
+	
+	/// The hash fucntion
+	/// \param p The path to hash
+	/// \return The hash
 	size_t operator()(const boost::filesystem::path& p) const {
 		return std::hash<std::string>()(p.generic_string());
 	}

@@ -568,7 +568,7 @@ struct GetLocalNodeType : public NodeType {
 }  // anon namespace
 
 GraphModule::GraphModule(Context& cont, boost::filesystem::path fullName,
-                         const std::vector<fs::path>& dependencies)
+                         const std::vector<boost::filesystem::path>& dependencies)
     : ChiModule(cont, fullName) {
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) { addDependency(dep); }

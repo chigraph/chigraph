@@ -50,14 +50,17 @@ struct ChiModule {
 	virtual std::vector<std::string> nodeTypeNames() const = 0;
 
 	/// Get the possible DataType names
+	/// \return A `std::vector` of all the names of types this module has
 	virtual std::vector<std::string> typeNames() const = 0;
 
 	/// Get the short name of the module (the last bit)
 	/// \return The name
 	std::string shortName() const { return mName; }
 	/// Get the full name of the module
+	/// \return The full name
 	std::string fullName() const { return mFullName.generic_string(); }
 	/// Get the full name of the module in a path
+	/// \return The full name, as a boost::filesystem::path
 	boost::filesystem::path fullNamePath() const { return mFullName; }
 	/// Get the Context that this module belongs to
 	/// \return The context
@@ -94,6 +97,7 @@ struct ChiModule {
 	}
 
 	/// Get the time that this module was last edited
+	/// \return The `std::time_t` at which it was last edited
 	std::time_t lastEditTime() const { return mLastEditTime; }
 
 	/// Update the last edit time, signifying that it's been edited

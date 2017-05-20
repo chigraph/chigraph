@@ -19,6 +19,7 @@ struct DataType {
 	/// \param chiMod The module
 	/// \param typeName The ID of the type in the module
 	/// \param llvmtype The underlying type
+	/// \param debugTy The debug type for the DataType
 	DataType(ChiModule* chiMod = nullptr, std::string typeName = {}, llvm::Type* llvmtype = nullptr,
 	         llvm::DIType* debugTy = nullptr)
 	    : mModule(chiMod), mName{typeName}, mLLVMType{llvmtype}, mDIType{debugTy} {}
@@ -39,6 +40,7 @@ struct DataType {
 	/// \return The debug type
 	llvm::DIType* debugType() const { return mDIType; }
 	/// Check if the DataType is valid (if it's actually bound to a type and module)
+	/// \return `true` if valid, `false` otherwise
 	bool valid() const {
 		return mModule != nullptr && mName != "" && mLLVMType != nullptr && mDIType != nullptr;
 	}

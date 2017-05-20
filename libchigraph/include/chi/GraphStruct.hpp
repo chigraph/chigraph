@@ -33,7 +33,7 @@ struct GraphStruct {
 	/// \warning If updateReferences is false or not all the modules that use this struct are
 	/// loaded, then there WILL be broken references.
 	/// \param newName The new name
-	/// \expects `!newName.empty()`
+	/// \pre `!newName.empty()`
 	/// \param updateReferences Should all the references in the module be updated?
 	/// \return The nodes that were updated, garunteed to be empty of `updateReferences` is false
 	std::vector<NodeInstance*> setName(std::string newName, bool updateReferences = true);
@@ -48,10 +48,10 @@ struct GraphStruct {
 
 	/// Add a new type to the struct
 	/// \param ty The type
-	/// \expects `ty.vaid()`
+	/// \pre `ty.vaid()`
 	/// \param name The name of the type
 	/// \param addBefore The type to add the new type before. Use types().size() to add to the end
-	/// \expects `addBefore <= types().size()`
+	/// \pre `addBefore <= types().size()`
 	/// \param updateReferences Should the references to make and break nodes be updated?
 	void addType(DataType ty, std::string name, size_t addBefore, bool updateReferences = true);
 
@@ -68,6 +68,7 @@ struct GraphStruct {
 	void removeType(size_t id, bool updateReferences = true);
 
 	/// Get the DataType of the struct
+	/// \return The DataType
 	DataType dataType();
 
 private:
