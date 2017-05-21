@@ -12,6 +12,7 @@
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
+#include "chi/Subprocess.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
@@ -32,30 +33,11 @@
 
 #include <boost/uuid/uuid_io.hpp>
 
-#include <libexecstream/exec-stream.h>
-
 namespace fs = boost::filesystem;
 
 namespace chi {
 
 namespace {
-
-// read a whole stream to a string
-std::string read_all(std::istream& i, Result& res) {
-	std::string one;
-	std::string ret;
-	try {
-		while (std::getline(i, one).good()) {
-			ret += one;
-			ret += "\n";
-		}
-	} catch (std::exception& e) {
-		res.addEntry("EUKN", "Failed to read from output stream", {{"Error Message", e.what()}});
-		return "";
-	}
-	ret += one;
-	return ret;
-}
 
 // Compile C code to a llvm::Module
 std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_view code,
@@ -78,44 +60,36 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 
 		std::string generatedBitcode;
 		try {
-			exec_stream_t ctollvmExe;
-			ctollvmExe.set_wait_timeout(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 100'000);
-			ctollvmExe.set_buffer_limit(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 10'000'000);
 
 			auto exeLoc = fs::path(execPath).parent_path() /
-			              "chi-ctollvm"
+				"chi-ctollvm"
 #if WIN32
-			              ".exe"
+				".exe"
 #endif
-			    ;
+				;
 			assert(fs::is_regular_file(exeLoc) &&
-			       "chi-ctollvm isn't installed in the same directory as chi");
+				"chi-ctollvm isn't installed in the same directory as chi");
 
-			ctollvmExe.set_text_mode(exec_stream_t::s_in);
-			ctollvmExe.set_binary_mode(exec_stream_t::s_out);
 
-			ctollvmExe.start(exeLoc.string().c_str(), argsToChiCtoLLVM.begin(),
-			                 argsToChiCtoLLVM.end());
+			Subprocess ctollvmExe(exeLoc);
+			ctollvmExe.setArguments(argsToChiCtoLLVM);
+
+			std::string errs;
+			ctollvmExe.attachToStdOut([&generatedBitcode](const char* data, size_t size) {
+				generatedBitcode.append(data, size);
+			});
+			ctollvmExe.attachToStdErr([&errs](const char* data, size_t size) {
+				errs.append(data, size);
+			});
+
+			res += ctollvmExe.start();
 
 			// push it the code and close the stream
-			ctollvmExe.in() << code;
-			if (!ctollvmExe.close_in()) {
-				res.addEntry("EUKN", "Failed to close input stream to chi-ctollvm", {});
-				return nullptr;
-			}
+			res += ctollvmExe.pushToStdIn(code.data(), code.size());
+			res += ctollvmExe.closeStdIn();
 
-			// get stderr and stdout
-			generatedBitcode = read_all(ctollvmExe.out(), res);
-			auto errs        = read_all(ctollvmExe.err(), res);
-
-			if (!ctollvmExe.close()) {
-				res.addEntry("EUKN", "Failed to close chi-ctollvm process", {});
-				return nullptr;
-			}
-
-			auto errCode = ctollvmExe.exit_code();
+			// wait for the exit
+			auto errCode = ctollvmExe.exitCode();
 
 			if (errCode != 0) {
 				res.addEntry("EUKN", "Failed to Generate IR with clang", {{"Error", errs}});

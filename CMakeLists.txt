@@ -48,9 +48,6 @@ else()
 	set(Boost_PROGRAM_OPTIONS_LIBRARY boost_program_options)
 endif()
 
-# compile libexecstream
-add_subdirectory(third_party/libexecstream)
-
 # compile libgit2
 if (NOT CG_USE_SYSTEM_LIBGIT2)
 	add_subdirectory(third_party/libgit2)

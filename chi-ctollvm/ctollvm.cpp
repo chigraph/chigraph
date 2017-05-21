@@ -151,6 +151,7 @@ std::unique_ptr<llvm::Module> cToLLVM(LLVMContext& ctx, const char* execPath, co
 #endif
 			(compileArgs, diagnosticsEngine)
 		);
+	assert(invoc);
 
 	Clang->setInvocation(invoc
 #if LLVM_VERSION_MAJOR <= 3 && LLVM_VERSION_MINOR <= 7

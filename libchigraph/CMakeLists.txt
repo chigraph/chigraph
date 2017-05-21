@@ -2,6 +2,7 @@
 
 # Create the library
 set(CHI_PUBLIC_FILES
+	include/chi/Fwd.hpp
 	include/chi/ChiModule.hpp
 	include/chi/Context.hpp
 	include/chi/GraphFunction.hpp
@@ -17,6 +18,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/JsonSerializer.hpp
 	include/chi/GraphStruct.hpp
 	include/chi/ModuleCache.hpp
+	include/chi/Subprocess.hpp
 )
 set(CHI_PRIVATE_FILES
 	src/Context.cpp
@@ -35,6 +37,7 @@ set(CHI_PRIVATE_FILES
 	src/NodeType.cpp
 	src/DataType.cpp
 	src/ModuleCache.cpp
+	src/Subprocess.cpp
 )
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
@@ -142,7 +145,6 @@ PUBLIC
 	${LLVM_LINK_LIST}
 	${LLVM_SYSTEM_LINK_LIST}
 PRIVATE
-	libchigraphexecstream
 	${LIBGIT2_LIBRARIES}
 )
 
