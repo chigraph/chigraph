@@ -66,7 +66,6 @@ namespace chi{
 		std::unique_ptr<Implementation> mPimpl;
 
 		std::vector<std::string> mArguments;
-		std::vector<char> mCachedStdIn;
 
 		pipeHandler mStdOutHandler;
 		pipeHandler mStdErrHandler;
