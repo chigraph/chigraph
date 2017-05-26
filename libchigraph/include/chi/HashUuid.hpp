@@ -13,7 +13,6 @@ namespace std {
 /// Class so uuids can be used with unordered_* containers.
 template <>
 struct hash<boost::uuids::uuid> {
-	
 	/// The hash function
 	/// \param toHash The UUID to hash
 	/// \return The hash

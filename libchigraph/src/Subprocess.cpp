@@ -259,9 +259,8 @@ void Subprocess::kill() {
 }
 
 void Subprocess::wait() {
-	
 	assert(started() && "Cannot wait for a process before it's started");
-	
+
 	// wait for it to complete
 	WaitForSingleObject(mPimpl->procInfo.hProcess, INFINITE);
 }
@@ -279,7 +278,7 @@ int chi::Subprocess::exitCode() {
 
 bool Subprocess::running() {
 	assert(started() && "Must start a process before checking if it's running");
-	
+
 	if (mPimpl->procInfo.hProcess == 0) { return false; }
 	DWORD exitCode = 0;
 	if (!GetExitCodeProcess(mPimpl->procInfo.hProcess, &exitCode)) { return false; }
@@ -319,19 +318,16 @@ Subprocess::~Subprocess() {
 		close(mPimpl->stdinPipe[1]);
 		mPimpl->stdinPipe[1] = -1;
 	}
-	
+
 	close(mPimpl->stdoutPipe[0]);
 	mPimpl->stdoutPipe[0] = -1;
-	
+
 	close(mPimpl->stderrPipe[0]);
 	mPimpl->stderrPipe[0] = -1;
-	
-	
 
 	if (mPimpl->stdoutThread.joinable()) { mPimpl->stdoutThread.join(); }
 
 	if (mPimpl->stderrThread.joinable()) { mPimpl->stderrThread.join(); }
-
 }
 
 Result Subprocess::pushToStdIn(const char* data, size_t size) {
@@ -359,7 +355,7 @@ Result Subprocess::closeStdIn() {
 		return res;
 	}
 	mPimpl->stdinPipe[1] = -1;
-	
+
 	mStdInClosed = true;
 
 	return res;
@@ -449,15 +445,11 @@ Result Subprocess::start() {
 			ssize_t bytesRead = read(mPimpl->stdoutPipe[0], buffer.data(), buffer.size());
 
 			// error
-			if (bytesRead == -1) {
-				return;
-			}
+			if (bytesRead == -1) { return; }
 
-			// 0 is EOF			
-			if (bytesRead == 0) {
-				return;
-			}
-			
+			// 0 is EOF
+			if (bytesRead == 0) { return; }
+
 			if (mStdOutHandler) { mStdOutHandler(buffer.data(), bytesRead); }
 		}
 	});
@@ -470,14 +462,10 @@ Result Subprocess::start() {
 			ssize_t bytesRead = read(mPimpl->stderrPipe[0], buffer.data(), buffer.size());
 
 			// error
-			if (bytesRead == -1) {
-				return;
-			}
+			if (bytesRead == -1) { return; }
 
-			// 0 is EOF			
-			if (bytesRead == 0) {
-				return;
-			}
+			// 0 is EOF
+			if (bytesRead == 0) { return; }
 
 			if (mStdErrHandler) { mStdErrHandler(buffer.data(), bytesRead); }
 		}
@@ -493,56 +481,43 @@ void Subprocess::kill() {
 	::kill(mPimpl->childPID, SIGINT);
 }
 
-void Subprocess::wait() { 
-	
+void Subprocess::wait() {
 	assert(started() && "Cannot wait for a process before it's started");
-	
+
 	int exit_status;
 	waitpid(mPimpl->childPID, &exit_status, 0);
-	
-	if (WIFEXITED(exit_status)) {
-		mExitCode = WEXITSTATUS(exit_status);
-	}
-	
+
+	if (WIFEXITED(exit_status)) { mExitCode = WEXITSTATUS(exit_status); }
 }
 
 int chi::Subprocess::exitCode() {
-	
 	assert(started() && "Cannot get the exit code of a process before it's started");
-	
-	if (mExitCode) {
-		return *mExitCode;
-	}
-	
+
+	if (mExitCode) { return *mExitCode; }
+
 	int exit_status;
-	if (waitpid(mPimpl->childPID, &exit_status, 0) == -1) {
-		return -1;
-	}
-	
+	if (waitpid(mPimpl->childPID, &exit_status, 0) == -1) { return -1; }
+
 	if (WIFEXITED(exit_status)) {
 		mExitCode = WEXITSTATUS(exit_status);
 		return *mExitCode;
 	}
-	
+
 	return -1;
 }
 
 bool Subprocess::running() {
 	assert(started() && "Must start a process before checking if it's running");
-	
+
 	int exit_status;
-	
+
 	// WNOHANG makes sure it doesn't wait until the process is done
 	int status = waitpid(mPimpl->childPID, &exit_status, WNOHANG);
 	if (status == -1) {
-		return false; // error
+		return false;  // error
 	}
-	if (status == 0) {
-		return true;
-	}
-	if (WIFEXITED(exit_status)) {
-		mExitCode = int(WEXITSTATUS(exit_status));
-	}
+	if (status == 0) { return true; }
+	if (WIFEXITED(exit_status)) { mExitCode = int(WEXITSTATUS(exit_status)); }
 	return false;
 }
 
@@ -555,7 +530,8 @@ namespace chi {
 // Common functions
 Subprocess::Subprocess(const boost::filesystem::path& path)
     : mPimpl{std::make_unique<Subprocess::Implementation>()}, mExePath{path} {
-		assert(boost::filesystem::is_regular_file(path) && "the path passed to subprocess is not a regular file");
+	assert(boost::filesystem::is_regular_file(path) &&
+	       "the path passed to subprocess is not a regular file");
 }
 
 }  // namespace chi

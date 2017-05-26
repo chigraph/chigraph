@@ -70,7 +70,6 @@ namespace chi {
 struct Result {
 	/// A helper object for contexts that should be removed at the end of a scope
 	struct ScopedContext {
-		
 		/// Create a scoped context object
 		/// \param res The Result to add it to
 		/// \param ctxId The ID of this context object
@@ -80,8 +79,8 @@ struct Result {
 		~ScopedContext() { result.removeContext(contextId); }
 
 		/// The result object
-		Result&   result;
-		
+		Result& result;
+
 		/// The ID for this context
 		const int contextId;
 	};
@@ -94,7 +93,7 @@ struct Result {
 	/// true.
 	/// \param overview Basic overview of the error, this shouldn't change based on the instance of
 	/// the error
-	/// \param data The detailed description this instance of the error. 
+	/// \param data The detailed description this instance of the error.
 	/// \pre `data.is_object() == true`
 	void addEntry(const char* ec, const char* overview, nlohmann::json data);
 
@@ -130,7 +129,7 @@ struct Result {
 	/// Get the JSON associated with the context that's been added
 	/// \return The context JSON
 	nlohmann::json contextJson() const;
-	
+
 	/// Success test
 	/// \return True if successful
 	explicit operator bool() const { return success(); }
@@ -142,20 +141,18 @@ struct Result {
 	/// !Success test
 	/// \return If it's not successful
 	bool operator!() const { return !success(); }
-	
+
 	/// Dump to a pretty-printed error message
 	/// \return The human-readable error message
 	std::string dump() const;
-
 
 	/// The result JSON
 	nlohmann::json result_json;
 
 	/// If it's successful
 	bool mSuccess = true;
-	
+
 private:
-	
 	boost::container::flat_map<int, nlohmann::json> mContexts;
 };
 

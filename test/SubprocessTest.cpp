@@ -1,7 +1,7 @@
 #include <catch.hpp>
 
-#include <chi/Subprocess.hpp>
 #include <chi/Result.hpp>
+#include <chi/Subprocess.hpp>
 
 #include <llvm/Support/FileSystem.h>
 
@@ -14,13 +14,13 @@ namespace fs = boost::filesystem;
 using namespace std::chrono_literals;
 
 TEST_CASE("Subprocess", "") {
-	auto childPath = fs::path{ llvm::sys::fs::getMainExecutable(nullptr, nullptr) }.parent_path() / "subprocess_tester_child"
+	auto childPath = fs::path{llvm::sys::fs::getMainExecutable(nullptr, nullptr)}.parent_path() /
+	                 "subprocess_tester_child"
 #ifdef WIN32
-		".exe"
+	                 ".exe"
 #endif
-		;
+	    ;
 	std::cout << "Subprocess tester path: " << childPath << std::endl;
-
 
 	std::string stdOut, stdErr;
 
@@ -34,8 +34,8 @@ TEST_CASE("Subprocess", "") {
 	Result res;
 
 	WHEN("We create a process that just spits stuff out, then it works") {
-		Subprocess child{ childPath };
-		child.setArguments({ "helloworld" });
+		Subprocess child{childPath};
+		child.setArguments({"helloworld"});
 		attachToPipes(child);
 
 		res += child.start();
@@ -47,13 +47,11 @@ TEST_CASE("Subprocess", "") {
 		REQUIRE(stdOut == "Hello World!");
 		REQUIRE(stdErr == "");
 		REQUIRE(!child.running());
-
 	}
 
-
 	WHEN("We create a process that just echos") {
-		Subprocess child{ childPath };
-		child.setArguments({ "echo" });
+		Subprocess child{childPath};
+		child.setArguments({"echo"});
 		attachToPipes(child);
 
 		res += child.start();
@@ -68,12 +66,11 @@ TEST_CASE("Subprocess", "") {
 		REQUIRE(stdOut == "hello");
 		REQUIRE(stdErr == "");
 		REQUIRE(!child.running());
-
 	}
 
 	WHEN("We create a process that just echos to stderr") {
-		Subprocess child{ childPath };
-		child.setArguments({ "echostderr" });
+		Subprocess child{childPath};
+		child.setArguments({"echostderr"});
 		attachToPipes(child);
 
 		res += child.start();
@@ -88,12 +85,11 @@ TEST_CASE("Subprocess", "") {
 		REQUIRE(stdOut == "");
 		REQUIRE(stdErr == "hello");
 		REQUIRE(!child.running());
-
 	}
 
 	WHEN("We create a process that just echos to both stderr and stdout") {
-		Subprocess child{ childPath };
-		child.setArguments({ "echoboth" });
+		Subprocess child{childPath};
+		child.setArguments({"echoboth"});
 		attachToPipes(child);
 
 		res += child.start();
@@ -108,13 +104,11 @@ TEST_CASE("Subprocess", "") {
 		REQUIRE(stdOut == "hello");
 		REQUIRE(stdErr == "hello");
 		REQUIRE(!child.running());
-
 	}
 
-
 	WHEN("We create a process that just exits with code 1") {
-		Subprocess child{ childPath };
-		child.setArguments({ "exitwitherr1" });
+		Subprocess child{childPath};
+		child.setArguments({"exitwitherr1"});
 		attachToPipes(child);
 
 		res += child.start();
@@ -126,12 +120,11 @@ TEST_CASE("Subprocess", "") {
 		REQUIRE(stdOut == "");
 		REQUIRE(stdErr == "");
 		REQUIRE(!child.running());
-
 	}
 
 	WHEN("We create a process that sleeps so we can test running()") {
-		Subprocess child{ childPath };
-		child.setArguments({ "wait1s" });
+		Subprocess child{childPath};
+		child.setArguments({"wait1s"});
 		attachToPipes(child);
 
 		res += child.start();
@@ -149,6 +142,5 @@ TEST_CASE("Subprocess", "") {
 		REQUIRE(stdOut == "");
 		REQUIRE(stdErr == "");
 		REQUIRE(!child.running());
-
 	}
 }

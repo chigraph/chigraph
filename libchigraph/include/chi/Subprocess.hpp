@@ -18,38 +18,38 @@
 namespace chi {
 
 /// Provides an platform-independent abstraction for creating subprocesses.
-/// On OSX and Linux, this uses the POSIX api (`pipe()`, `fork()`, `exec()`, `write()`, `read()`, etc)
+/// On OSX and Linux, this uses the POSIX api (`pipe()`, `fork()`, `exec()`, `write()`, `read()`,
+/// etc)
 /// and on windows it uses the win32 API (`CreatePipe()`, `CreateProcess()`, `ReadFile()`, etc)
 ///
 /// Usage is you create a Subprocess class:
 /// \snippet SubprocessExample.cpp Constructing
-/// 
+///
 /// Now you can use any of the Setup Functions (see above).
-/// The string we pass to `attachStringToStdOut` is written from a differnt thread, so it's 
+/// The string we pass to `attachStringToStdOut` is written from a differnt thread, so it's
 /// not safe to acces it until the program has exited.
-/// 
+///
 /// \snippet SubprocessExample.cpp Setup
-/// 
-/// Once you're sure all youre setup variables are correctly set, start the process. 
+///
+/// Once you're sure all youre setup variables are correctly set, start the process.
 /// You cannot change any of the setup values once you have called start()
-/// 
+///
 /// \snippet SubprocessExample.cpp Start
-/// 
+///
 /// Now that it's started, we can write data (if we wish) to stdin:
-/// 
+///
 /// \snippet SubprocessExample.cpp Write to stdin
-/// 
-/// Now, you can use `running()` to see if the process has exited yet. We'll just use `exitCode()` 
+///
+/// Now, you can use `running()` to see if the process has exited yet. We'll just use `exitCode()`
 /// to wait for the process to complete and get its exit code:
-/// 
+///
 /// \snippet SubprocessExample.cpp Get Exit Code
-/// 
+///
 /// Now that the process has exited, it's safe to use the `stdOut` string:
-/// 
+///
 /// \snippet SubprocessExample.cpp Use byproducts
 ///
 struct Subprocess {
-
 	/// The function type for recieving data from pipes
 	using pipeHandler = std::function<void(const char* data, size_t size)>;
 
@@ -74,13 +74,14 @@ struct Subprocess {
 	template <typename ForwardIterator>
 	void setArguments(const ForwardIterator& begin, const ForwardIterator& end) {
 		// make sure the iterator type is good to go
-	static_assert(std::is_convertible<typename std::iterator_traits<ForwardIterator>::value_type,
-	                                  std::string>::value,
-	              "Cannot run setArguments with iterators not convertable to std::string");
+		static_assert(
+		    std::is_convertible<typename std::iterator_traits<ForwardIterator>::value_type,
+		                        std::string>::value,
+		    "Cannot run setArguments with iterators not convertable to std::string");
 
-	assert(!started()&& "Cannot set arguments after start() has been called");
+		assert(!started() && "Cannot set arguments after start() has been called");
 
-	mArguments = std::vector<std::string>(begin, end);
+		mArguments = std::vector<std::string>(begin, end);
 	}
 
 	/// Set the arguments for the program with a range
@@ -119,13 +120,14 @@ struct Subprocess {
 	/// \note `stdErrHandler` will exclusively be called from another thread.
 	/// \pre `started() == false`
 	void attachToStdErr(pipeHandler stdErrHandler) {
-		assert(!started()&&
+		assert(!started() &&
 		       "Cannot attach a differnt function to stderr after start() has been called");
 		mStdErrHandler = stdErrHandler;
 	}
 
 	/// Attach a string to stdout. Everything added to the string is appended.
-	/// This is just a convenicence function, it just calls attachToStdout with a function appending the data to the string.
+	/// This is just a convenicence function, it just calls attachToStdout with a function appending
+	/// the data to the string.
 	/// \param str The string to append stdout to
 	/// \note Don't try to read from `str` while the program is running, it could create a race
 	/// condition.
@@ -135,7 +137,8 @@ struct Subprocess {
 	}
 
 	/// Attach a string to stderr. Everything added to the string is appended.
-	/// This is just a convenicence function, it just calls attachToStdout with a function appending the data to the string.
+	/// This is just a convenicence function, it just calls attachToStdout with a function appending
+	/// the data to the string.
 	/// \param str The string to append stderr to
 	/// \note Don't try to read from `str` while the program is running, it could create a race
 	/// condition.
@@ -150,19 +153,18 @@ struct Subprocess {
 	void setWorkingDirectory(boost::filesystem::path newWd) { mWorkingDir = std::move(newWd); }
 
 	/// \}
-	
+
 	/// Start the process.
 	/// After this is called, most of the Setup Functions cannot be called anymore
 	/// \return The Result.
 	/// \pre `started() == false`
 	/// \post `started()`
 	Result start();
-	
+
 	/// Check if the child has started (`start()` has been called)
 	/// \return True if it has, false otherwise
 	bool started() const { return mStarted; }
 
-	
 	/// \name Runtime Functions
 	/// These functions are called while the process has started (ie after start() is called)
 	/// \{
@@ -185,7 +187,6 @@ struct Subprocess {
 	/// \return true if it is, false otherwise
 	bool isStdInClosed() const { return mStdInClosed; }
 
-	
 	/// Kill the child process
 	/// On POSIX, this sends SIGINT
 	/// \pre `started()`
@@ -204,9 +205,8 @@ struct Subprocess {
 	/// \return true if it's still running, false otherwise
 	/// \pre `started()`
 	bool running();
-	
+
 	/// \}
-	
 
 private:
 	struct Implementation;
@@ -223,12 +223,12 @@ private:
 
 	bool mStarted     = false;
 	bool mStdInClosed = false;
-	
+
 	boost::optional<int> mExitCode;
 };
 
 /// \example SubprocessExample.cpp
 
-} // namespace chi
+}  // namespace chi
 
 #endif  // CHI_SUBPROCESS_HPP

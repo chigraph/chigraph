@@ -118,9 +118,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 			}
 		}
 
-		THEN("Load module should fail") {
-			REQUIRE(!c.loadModule("github.com/hello"));
-		}
+		THEN("Load module should fail") { REQUIRE(!c.loadModule("github.com/hello")); }
 	}
 
 	GIVEN("A context constructed with a workspace") {}

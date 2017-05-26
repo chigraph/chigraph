@@ -24,8 +24,8 @@ using namespace chi;
 int main(int argc, char** argv) {
 	namespace po = boost::program_options;
 
-	po::options_description general(
-	    "chi: Chigraph command line. Usage: chi <command> <arguments>", 50);
+	po::options_description general("chi: Chigraph command line. Usage: chi <command> <arguments>",
+	                                50);
 
 	general.add_options()("help,h", "Produce Help Message")("command", po::value<std::string>(),
 	                                                        "which command")(

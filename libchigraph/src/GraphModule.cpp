@@ -60,16 +60,14 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 
 		std::string generatedBitcode;
 		try {
-
 			auto exeLoc = fs::path(execPath).parent_path() /
-				"chi-ctollvm"
+			              "chi-ctollvm"
 #if WIN32
-				".exe"
+			              ".exe"
 #endif
-				;
+			    ;
 			assert(fs::is_regular_file(exeLoc) &&
-				"chi-ctollvm isn't installed in the same directory as chi");
-
+			       "chi-ctollvm isn't installed in the same directory as chi");
 
 			Subprocess ctollvmExe(exeLoc);
 			ctollvmExe.setArguments(argsToChiCtoLLVM);

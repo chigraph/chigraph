@@ -814,7 +814,8 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt
 	return res;
 }
 
-std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(const boost::filesystem::path& path) {
+std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
+    const boost::filesystem::path& path) {
 	// handle github
 	{
 		auto beginIter = path.begin();

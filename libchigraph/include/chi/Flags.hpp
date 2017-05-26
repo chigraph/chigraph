@@ -28,7 +28,7 @@ struct Flags {
 
 	/// Default constructor
 	Flags() = default;
-	
+
 	/// Constructor from an `Enum` type
 	/// \param e The enum to copy from
 	Flags(Enum e) : mData{static_cast<decltype(mData)>(e)} {}
@@ -36,16 +36,16 @@ struct Flags {
 	/// Copy constructor
 	/// \param fl The Flags object to copy from
 	Flags(const Flags& fl) = default;
-	
+
 	/// Move constructor
 	/// \param fl The Flags object to move from
-	Flags(Flags&& fl)      = default;
+	Flags(Flags&& fl) = default;
 
 	/// Copy assignment
 	/// \param fl The Flags object to copy from
 	/// \return `*this`
 	Flags& operator=(const Flags& fl) = default;
-	
+
 	/// Move assignment
 	/// \param The Flags object to move from
 	/// \return `*this`
@@ -70,7 +70,7 @@ struct Flags {
 	/// \return The new Flags object
 	Flags operator|(const Flags& rhs) const { return Flags{mData | rhs.mData}; }
 
-	/// Bitwise AND 
+	/// Bitwise AND
 	/// \param rhs The Flags object to AND with
 	/// \return The new Flags object
 	Flags operator&(const Flags& rhs) const { return Flags{mData & rhs.mData}; }
@@ -82,7 +82,7 @@ struct Flags {
 		mData |= rhs.mData;
 		return *this;
 	}
-	
+
 	/// Bitwise AND assignment
 	/// \param rhs The Flags obejct to AND `*this` with
 	/// \return `*this`

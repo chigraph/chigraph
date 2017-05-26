@@ -1,8 +1,8 @@
-#include <chi/Subprocess.hpp>
 #include <chi/Context.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/JsonSerializer.hpp>
 #include <chi/Result.hpp>
+#include <chi/Subprocess.hpp>
 
 #include <boost/filesystem.hpp>
 
@@ -31,12 +31,11 @@ namespace fs = boost::filesystem;
 
 const char* exesuffix =
 #ifdef WIN32
-	"exe"
+    "exe"
 #else
-	""
+    ""
 #endif
-	;
-
+    ;
 
 std::string areArrayEqualUnordered(json lhs, json rhs) {
 	std::vector<json> objects;
@@ -215,14 +214,12 @@ int main(int argc, char** argv) {
 		std::string generatedir, chigstderr;
 		// go through chig compile
 		{
-			Subprocess chiexe{ chiExePath };
-			chiexe.setArguments({ "compile", "main.chimod" });
-			chiexe.attachToStdErr([&chigstderr](const char* data, size_t size) {
-				chigstderr.append(data, size);
-			});
-			chiexe.attachToStdOut([&generatedir](const char* data, size_t size) {
-				generatedir.append(data, size);
-			});
+			Subprocess chiexe{chiExePath};
+			chiexe.setArguments({"compile", "main.chimod"});
+			chiexe.attachToStdErr(
+			    [&chigstderr](const char* data, size_t size) { chigstderr.append(data, size); });
+			chiexe.attachToStdOut(
+			    [&generatedir](const char* data, size_t size) { generatedir.append(data, size); });
 
 			res += chiexe.start();
 			if (!res) {
@@ -245,14 +242,12 @@ int main(int argc, char** argv) {
 
 		{
 			// now go through lli
-			Subprocess interpretexe{ chiExePath };
+			Subprocess interpretexe{chiExePath};
 			interpretexe.setArguments({"interpret"});
-			interpretexe.attachToStdErr([&llistderr](const char* data, size_t size) {
-				llistderr.append(data, size);
-			});
-			interpretexe.attachToStdOut([&llistdout](const char* data, size_t size) {
-				llistdout.append(data, size);
-			});
+			interpretexe.attachToStdErr(
+			    [&llistderr](const char* data, size_t size) { llistderr.append(data, size); });
+			interpretexe.attachToStdOut(
+			    [&llistdout](const char* data, size_t size) { llistdout.append(data, size); });
 
 			res += interpretexe.start();
 			if (!res) {
@@ -306,7 +301,6 @@ int main(int argc, char** argv) {
 
 				return 1;
 			}
-
 		}
 
 		std::cout << "Suceeded." << std::endl;
@@ -320,7 +314,7 @@ int main(int argc, char** argv) {
 		std::string generatedstdout, generatedstderr;
 		// go through chig compile
 		{
-			Subprocess chiexe{ chiExePath };
+			Subprocess chiexe{chiExePath};
 			chiexe.attachToStdErr([&generatedstderr](const char* data, size_t size) {
 				generatedstderr.append(data, size);
 			});
@@ -362,7 +356,6 @@ int main(int argc, char** argv) {
 
 				return 1;
 			}
-
 		}
 
 		std::cout << "done." << std::endl;
@@ -374,14 +367,12 @@ int main(int argc, char** argv) {
 		std::string generatedir, chigstderr;
 		// go through chig compile
 		{
-			Subprocess chiexe{ chiExePath };
-			chiexe.setArguments({ "compile", "-tbc", "main.chimod" });
-			chiexe.attachToStdErr([&chigstderr](const char* data, size_t size) {
-				chigstderr.append(data, size);
-			});
-			chiexe.attachToStdOut([&generatedir](const char* data, size_t size) {
-				generatedir.append(data, size);
-			});
+			Subprocess chiexe{chiExePath};
+			chiexe.setArguments({"compile", "-tbc", "main.chimod"});
+			chiexe.attachToStdErr(
+			    [&chigstderr](const char* data, size_t size) { chigstderr.append(data, size); });
+			chiexe.attachToStdOut(
+			    [&generatedir](const char* data, size_t size) { generatedir.append(data, size); });
 
 			res += chiexe.start();
 			if (!res) {
@@ -392,7 +383,7 @@ int main(int argc, char** argv) {
 			// check stderr and return code
 			if (chiexe.exitCode() != 0) {
 				std::cerr << "Failed to generate module with chi compile: \n"
-					<< chigstderr << std::endl;
+				          << chigstderr << std::endl;
 				return 1;
 			}
 		}
@@ -404,14 +395,12 @@ int main(int argc, char** argv) {
 
 		{
 			// now go through lli
-			Subprocess interpretexe{ chiExePath };
-			interpretexe.setArguments({ "interpret" });
-			interpretexe.attachToStdErr([&llistderr](const char* data, size_t size) {
-				llistderr.append(data, size);
-			});
-			interpretexe.attachToStdOut([&llistdout](const char* data, size_t size) {
-				llistdout.append(data, size);
-			});
+			Subprocess interpretexe{chiExePath};
+			interpretexe.setArguments({"interpret"});
+			interpretexe.attachToStdErr(
+			    [&llistderr](const char* data, size_t size) { llistderr.append(data, size); });
+			interpretexe.attachToStdOut(
+			    [&llistdout](const char* data, size_t size) { llistdout.append(data, size); });
 
 			res += interpretexe.start();
 			if (!res) {
@@ -435,37 +424,36 @@ int main(int argc, char** argv) {
 
 			if (retcodelli != expectedreturncode) {
 				std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was "
-					<< expectedreturncode << std::endl
-					<< "stdout: \"" << llistdout << "\"" << std::endl
-					<< "stderr: \"" << llistderr << "\"" << std::endl
-					<< "generated IR" << std::endl
-					<< generatedir << std::endl;
+				          << expectedreturncode << std::endl
+				          << "stdout: \"" << llistdout << "\"" << std::endl
+				          << "stderr: \"" << llistderr << "\"" << std::endl
+				          << "generated IR" << std::endl
+				          << generatedir << std::endl;
 
 				return 1;
 			}
 
 			if (llistdout != expectedcout) {
 				std::cerr << "(lli ll) Unexpected stdout: \"" << llistdout << "\" expected was \""
-					<< expectedcout << "\"" << std::endl
-					<< "retcode: \"" << retcodelli << "\"" << std::endl
-					<< "stderr: \"" << llistderr << "\"" << std::endl
-					<< "generated IR" << std::endl
-					<< generatedir << std::endl;
+				          << expectedcout << "\"" << std::endl
+				          << "retcode: \"" << retcodelli << "\"" << std::endl
+				          << "stderr: \"" << llistderr << "\"" << std::endl
+				          << "generated IR" << std::endl
+				          << generatedir << std::endl;
 
 				return 1;
 			}
 
 			if (llistderr != expectedcerr) {
 				std::cerr << "(lli ll) Unexpected stderr: \"" << stderr << "\" expected was \""
-					<< expectedcerr << '\"' << std::endl
-					<< "retcode: \"" << retcodelli << "\"" << std::endl
-					<< "stdout: \"" << llistdout << "\"" << std::endl
-					<< "generated IR" << std::endl
-					<< generatedir << std::endl;
+				          << expectedcerr << '\"' << std::endl
+				          << "retcode: \"" << retcodelli << "\"" << std::endl
+				          << "stdout: \"" << llistdout << "\"" << std::endl
+				          << "generated IR" << std::endl
+				          << generatedir << std::endl;
 
 				return 1;
 			}
-
 		}
 
 		std::cout << "Suceeded." << std::endl;

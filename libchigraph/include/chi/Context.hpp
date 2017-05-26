@@ -76,7 +76,8 @@ struct Context {
 	/// Load a module from disk, also loads dependencies
 	/// \param[in] name The name of the moudle
 	/// \pre `!name.empty()`
-	/// \param[in] flags The flags--use `LoadSettings::Fetch` to fetch this module, or `LoadSettings::FetchRecursive` 
+	/// \param[in] flags The flags--use `LoadSettings::Fetch` to fetch this module, or
+	/// `LoadSettings::FetchRecursive`
 	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result

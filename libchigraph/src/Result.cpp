@@ -50,8 +50,10 @@ std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 namespace chi {
 
 void Result::addEntry(const char* ec, const char* overview, nlohmann::json data) {
-	assert(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W' && "error code passed to addEntry must start with E, I , or W");
-	assert((data.is_object() || data.is_null()) && "data passed to addEntry must be a json object or {}");
+	assert(ec[0] == 'E' || ec[0] == 'I' ||
+	       ec[0] == 'W' && "error code passed to addEntry must start with E, I , or W");
+	assert((data.is_object() || data.is_null()) &&
+	       "data passed to addEntry must be a json object or {}");
 
 	mergeJsonIntoConservative(data, contextJson());
 
@@ -81,7 +83,7 @@ std::string Result::dump() const {
 
 int Result::addContext(const nlohmann::json& data) {
 	assert(data.is_object() && "Json added to context must be an object");
-	
+
 	static int ctxId = 0;
 
 	mContexts.emplace(ctxId, data);
@@ -94,7 +96,9 @@ nlohmann::json Result::contextJson() const {
 	// merge all the contexts
 	auto merged = nlohmann::json::object();
 
-	for (const auto& ctx : mContexts | boost::adaptors::reversed) { mergeJsonIntoConservative(merged, ctx.second); }
+	for (const auto& ctx : mContexts | boost::adaptors::reversed) {
+		mergeJsonIntoConservative(merged, ctx.second);
+	}
 
 	return merged;
 }

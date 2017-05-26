@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 	if (mode == "exitwitherr1") { return 1; }
-	
+
 	std::cerr << "Unrecognized mode: " << mode << std::endl;
 	return 2;
 }

@@ -702,7 +702,7 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 			     }
 		     } else {
 			     res.addEntry("WUKN", "Data for lang:entry must have a exec element",
-				 { {"Data JSON", injson} });
+			                  {{"Data JSON", injson}});
 		     }
 
 		     if (res) {
