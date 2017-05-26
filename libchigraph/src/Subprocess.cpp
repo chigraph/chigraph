@@ -3,6 +3,7 @@
 #include "chi/Result.hpp"
 
 #include <cassert>
+#include <thread>
 
 #include <boost/algorithm/string/replace.hpp>
 
@@ -39,21 +40,49 @@ std::string GetLastErrorAsString()
 }
 } // namespace 
 
+
 struct Subprocess::Implementation {
-	HANDLE StdIn_Read = 0;
 	HANDLE StdIn_Write = 0;
 
 	HANDLE StdOut_Read = 0;
-	HANDLE StdOut_Write = 0;
 	
 	HANDLE StdErr_Read = 0;
-	HANDLE StdErr_Write = 0;
 
 	PROCESS_INFORMATION procInfo = {};
+
+	std::thread stdoutThread;
+	std::thread stderrThread;
 };
+
+Subprocess::~Subprocess() {
+	wait();
+
+	// close the FDs
+
+	CloseHandle(mPimpl->StdOut_Read);
+	CloseHandle(mPimpl->StdErr_Read);
+
+	mPimpl->StdOut_Read = nullptr;
+	mPimpl->StdErr_Read = nullptr;
+
+	if (mPimpl->StdIn_Write != nullptr) {
+		CloseHandle(mPimpl->StdIn_Write);
+		mPimpl->StdIn_Write = nullptr;
+	}
+
+	if (mPimpl->stdoutThread.joinable()) {
+		mPimpl->stdoutThread.join();
+	}
+
+	if (mPimpl->stderrThread.joinable()) {
+		mPimpl->stderrThread.join();
+	}
+}
+
 
 Result Subprocess::pushToStdIn(const char* data, size_t size)
 {
+	assert(running() && "Process must be running to push to stdin");
 
 	Result res;
 
@@ -80,57 +109,7 @@ Result Subprocess::closeStdIn()
 	if (!CloseHandle(mPimpl->StdIn_Write)) {
 		res.addEntry("EUKN", "Failed to close process stdin", { { "Error Message", GetLastErrorAsString() } });
 	}
-	mPimpl->StdIn_Write = 0;
-
-	return res;
-}
-
-Result Subprocess::handleInput()
-{
-	Result res;
-
-	std::array<char, 8192> buffer;
-
-	// read stdout
-	while (true) {
-		DWORD bytesRead;
-
-		if (!ReadFile(mPimpl->StdOut_Read, buffer.data(), buffer.size(), &bytesRead, nullptr)) {
-			if (GetLastError() != ERROR_MORE_DATA) {
-
-
-				res.addEntry("EUKN", "Failed to read from stdout pipe", { { "Error Message", GetLastErrorAsString() } });
-				return res;
-			}
-		}
-
-		// send it
-		if (mStdOutHandler) {
-			mStdOutHandler(buffer.data(), bytesRead);
-		}
-
-		if (bytesRead == 0) {
-			break;
-		}
-	}
-	// read stderr
-	while (true) {
-		DWORD bytesRead;
-
-		if (!ReadFile(mPimpl->StdErr_Read, buffer.data(), buffer.size(), &bytesRead, nullptr)) {
-			res.addEntry("EUKN", "Failed to read from stderr pipe", { { "Error Message", GetLastErrorAsString() } });
-			return res;
-		}
-
-		// send it
-		if (mStdErrHandler) {
-			mStdErrHandler(buffer.data(), bytesRead);
-		}
-
-		if (bytesRead == 0) {
-			break;
-		}
-	}
+	mPimpl->StdIn_Write = nullptr;
 
 	return res;
 }
@@ -145,8 +124,12 @@ Result Subprocess::start()
 	secAttributes.bInheritHandle = true;
 	secAttributes.lpSecurityDescriptor = nullptr;
 
+	HANDLE stdoutWrite;
+	HANDLE stderrWrite;
+	HANDLE stdinRead;
+
 	// create stdout pipe
-	if (!CreatePipe(&mPimpl->StdOut_Read, &mPimpl->StdOut_Write, &secAttributes, 0)) {
+	if (!CreatePipe(&mPimpl->StdOut_Read, &stdoutWrite, &secAttributes, 0)) {
 		res.addEntry("EUKN", "Failed to create stdout pipe", { { "Error Message", GetLastErrorAsString() } });
 		return res;
 	}
@@ -158,7 +141,7 @@ Result Subprocess::start()
 
 
 	// create stderr pipe
-	if (!CreatePipe(&mPimpl->StdErr_Read, &mPimpl->StdErr_Write, &secAttributes, 0)) {
+	if (!CreatePipe(&mPimpl->StdErr_Read, &stderrWrite, &secAttributes, 0)) {
 		res.addEntry("EUKN", "Failed to create stderr pipe", { { "Error Message", GetLastErrorAsString() } });
 		return res;
 	}
@@ -170,12 +153,12 @@ Result Subprocess::start()
 
 
 	// create stdin pipe
-	if (!CreatePipe(&mPimpl->StdIn_Read, &mPimpl->StdIn_Write, &secAttributes, 0)) {
+	if (!CreatePipe(&stdinRead, &mPimpl->StdIn_Write, &secAttributes, 0)) {
 		res.addEntry("EUKN", "Failed to create stdin pipe", { { "Error Message", GetLastErrorAsString() } });
 		return res;
 	}
 	// make sure the read handle isn't inhereited
-	if (!SetHandleInformation(mPimpl->StdIn_Read, HANDLE_FLAG_INHERIT, 0)) {
+	if (!SetHandleInformation(mPimpl->StdIn_Write, HANDLE_FLAG_INHERIT, 0)) {
 		res.addEntry("EUKN", "Failed to SetHandleInformation", { { "Error Message", GetLastErrorAsString() } });
 		return res;
 	}
@@ -195,13 +178,17 @@ Result Subprocess::start()
 		commandLine += L" \"" + wCmd + L'"';
 	}
 
+	ZeroMemory(&mPimpl->procInfo, sizeof(PROCESS_INFORMATION));
+
 	// setup startupInfo
-	STARTUPINFO startupInfo = {};
+	STARTUPINFO startupInfo;
+	ZeroMemory(&startupInfo, sizeof(STARTUPINFO));
+
 	startupInfo.cb = sizeof(STARTUPINFO);
-	startupInfo.hStdError = mPimpl->StdErr_Write;
-	startupInfo.hStdOutput = mPimpl->StdOut_Write;
-	startupInfo.hStdInput = mPimpl->StdIn_Read;
-	startupInfo.dwFlags = STARTF_USESTDHANDLES;
+	startupInfo.hStdError = stderrWrite;
+	startupInfo.hStdOutput = stdoutWrite;
+	startupInfo.hStdInput = stdinRead;
+	startupInfo.dwFlags |= STARTF_USESTDHANDLES;
 	
 	// create the process
 	if (!CreateProcessW(nullptr, &commandLine[0], nullptr, nullptr, TRUE, 0, nullptr, mWorkingDir.c_str(), &startupInfo, &mPimpl->procInfo)) {
@@ -209,12 +196,65 @@ Result Subprocess::start()
 		return res;
 	}
 
+	// Close the thread handle, we don't need it
+	CloseHandle(mPimpl->procInfo.hThread);
 
-	// write cached stdin
-	if (!mCachedStdIn.empty()) {
-		pushToStdIn(mCachedStdIn.data(), mCachedStdIn.size());
-		mCachedStdIn.clear();
-	}
+	// close the handles to the ends of the pipe we don't use
+	CloseHandle(stderrWrite);
+	CloseHandle(stdoutWrite);
+	CloseHandle(stdinRead);
+
+	// start threads for listening for input
+	mPimpl->stdoutThread = std::thread([this]() {
+		while (true) {
+			DWORD bytesRead;
+
+			std::vector<char> buffer;
+			buffer.resize(8192);
+
+
+			if (!ReadFile(mPimpl->StdOut_Read, buffer.data(), buffer.size(), &bytesRead, nullptr)) {
+				return;
+			}
+
+			if (bytesRead == 0) {
+				return;
+			}
+
+			// send it
+			if (mStdOutHandler) {
+				mStdOutHandler(buffer.data(), bytesRead);
+			}
+		}
+	});
+
+	// start threads for listening for input
+	mPimpl->stderrThread = std::thread([this]() {
+
+		while (true) {
+
+			DWORD bytesRead;
+
+			std::vector<char> buffer;
+			buffer.resize(8192);
+
+			if (!ReadFile(mPimpl->StdErr_Read, buffer.data(), buffer.size(), &bytesRead, nullptr)) {
+				return;
+			}
+
+			if (bytesRead == 0) {
+				return;
+			}
+
+			// send it
+			if (mStdErrHandler) {
+				mStdErrHandler(buffer.data(), bytesRead);
+			}
+		}
+
+
+	});
+
 
 	return res;
 }
@@ -230,12 +270,10 @@ void Subprocess::kill()
 void Subprocess::wait()
 {
 	// wait for it to complete
-	while (running()) {
+	WaitForSingleObject(mPimpl->procInfo.hProcess, INFINITE);
 
-		WaitForSingleObject(mPimpl->procInfo.hProcess, 100);
 
-		handleInput();
-	}
+	
 }
 
 int chi::Subprocess::exitCode()
@@ -265,10 +303,7 @@ bool Subprocess::running()
 
 void Subprocess::wait_for(std::chrono::milliseconds duration)
 {
-
 	WaitForSingleObject(mPimpl->procInfo.hProcess, duration.count());
-
-	handleInput();
 }
 
 // POSIX implementation
@@ -279,6 +314,5 @@ void Subprocess::wait_for(std::chrono::milliseconds duration)
 
 // Common functions
 Subprocess::Subprocess(const boost::filesystem::path& path) : mPimpl{ std::make_unique<Subprocess::Implementation>() }, mExePath{ path }  {}
-Subprocess::~Subprocess() = default;
 
 }

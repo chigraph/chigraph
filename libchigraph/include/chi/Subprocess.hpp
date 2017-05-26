@@ -46,8 +46,6 @@ namespace chi{
 		
 		Result pushToStdIn(const char* data, size_t size);
 		Result closeStdIn();
-		
-		Result handleInput();
 
 		Result start();
 		void kill();
