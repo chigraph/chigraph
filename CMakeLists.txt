@@ -79,15 +79,14 @@ if(CG_BUILD_TESTS)
 endif()
 
 # Examples
-if (CG_BUILD_EXAMPLES)
-	add_subdirectory(examples)
-endif()
+add_subdirectory(examples)
+
 
 # Documentation
 
 find_package(Doxygen)
 
-if(DOXYGEN_FOUND)
+if(DOXYGEN_FOUND AND DOXYGEN_DOT_FOUND)
 	
 	configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile)
 	
@@ -99,6 +98,6 @@ if(DOXYGEN_FOUND)
 	)
 	
 else()
-	message(WARNING "DOXYGEN not found, target `doc` will not be avaliable")
+	message(WARNING "either doxygen or dot not found, target `doc` will not be avaliable")
 endif()
 
