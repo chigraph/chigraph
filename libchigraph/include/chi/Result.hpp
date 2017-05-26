@@ -101,6 +101,7 @@ struct Result {
 	/// Add some json that will ALWAYS be merged with entries that are added and when results are
 	/// added to this Result
 	/// \param data The json to merge with every entry
+	/// \pre data.is_object()
 	/// \return The ID for this context, use this value with removeContext to remove it
 	int addContext(const nlohmann::json& data);
 
@@ -116,6 +117,7 @@ struct Result {
 	/// res.contextJson(); // returns {}
 	/// ```
 	/// \param data The data to add to each entry
+	/// \pre data.is_object()
 	/// \return The ScopedContext object. Shouldn't be discarded.
 	ScopedContext addScopedContext(const nlohmann::json& data) {
 		return ScopedContext{*this, addContext(data)};

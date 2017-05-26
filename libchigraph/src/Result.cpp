@@ -2,6 +2,8 @@
 
 #include "chi/Result.hpp"
 
+#include <boost/range/adaptor/reversed.hpp>
+
 namespace {
 
 /// merges `from` into `into`. If an entry is in both, it keeps into.
@@ -78,6 +80,8 @@ std::string Result::dump() const {
 }
 
 int Result::addContext(const nlohmann::json& data) {
+	assert(data.is_object() && "Json added to context must be an object");
+	
 	static int ctxId = 0;
 
 	mContexts.emplace(ctxId, data);
@@ -90,7 +94,7 @@ nlohmann::json Result::contextJson() const {
 	// merge all the contexts
 	auto merged = nlohmann::json::object();
 
-	for (const auto& ctx : mContexts) { mergeJsonIntoConservative(merged, ctx.second); }
+	for (const auto& ctx : mContexts | boost::adaptors::reversed) { mergeJsonIntoConservative(merged, ctx.second); }
 
 	return merged;
 }
