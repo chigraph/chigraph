@@ -1,10 +1,16 @@
 var searchData=
 [
-  ['makepure',['makePure',['../structchi_1_1NodeType.html#a77693a4c560da85835a2bd666f0bc39d',1,'chi::NodeType']]],
-  ['manglefunctionname',['mangleFunctionName',['../namespacechi.html#a44456c5ad1624ffdc805eb161eb948a1',1,'chi']]],
-  ['modifytype',['modifyType',['../structchi_1_1GraphStruct.html#a89d3ea5e72ed6e7d8380fb82fa5eb521',1,'chi::GraphStruct']]],
-  ['module',['module',['../structchi_1_1DataType.html#a41a23985893c9c15c49ed8c9eec9ea9c',1,'chi::DataType::module()'],['../structchi_1_1GraphFunction.html#a0564412e260698bdb3872d3d12dfc3bc',1,'chi::GraphFunction::module()'],['../structchi_1_1GraphStruct.html#a82a1da52a4bf23e1e7fef4d7228603b1',1,'chi::GraphStruct::module()'],['../structchi_1_1NodeInstance.html#a72d113cfee45f4017adf28b034c6f215',1,'chi::NodeInstance::module()'],['../structchi_1_1NodeType.html#a4fd551737d6b3bb4d6609f1ee8e054aa',1,'chi::NodeType::module()'],['../classchi_1_1Debugger.html#aeec97926d904907c3f2513a822a31696',1,'chi::Debugger::module()']]],
-  ['modulebyfullname',['moduleByFullName',['../structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5',1,'chi::Context']]],
-  ['modulecache',['moduleCache',['../structchi_1_1Context.html#afdf2d810191484be60d79abb03c5f7a7',1,'chi::Context::moduleCache() const'],['../structchi_1_1Context.html#a36c12b871ae11ae59a5ec1f2f2842ec7',1,'chi::Context::moduleCache()'],['../structchi_1_1ModuleCache.html#a471e0c0822bccdd1fa5ed1bc34f7d641',1,'chi::ModuleCache::ModuleCache()']]],
-  ['modules',['modules',['../structchi_1_1Context.html#acd60f2fe31d69d0c37652fb47fcf7b60',1,'chi::Context']]]
+  ['langmodule',['langModule',['../structchi_1_1Context.html#ab109ef2d751346da8db6d7c44fb0cd90',1,'chi::Context::langModule()'],['../structchi_1_1LangModule.html#a0d623aa2342eec20ab11150e793f6b9e',1,'chi::LangModule::LangModule()']]],
+  ['lastedittime',['lastEditTime',['../structchi_1_1ChiModule.html#adc6b4278af40c9f50890ff773decaf8f',1,'chi::ChiModule']]],
+  ['linenumberfromnode',['lineNumberFromNode',['../namespacechi.html#a46ba4fa933baeba58beefc9e573b0668',1,'chi']]],
+  ['listbreakpoints',['listBreakpoints',['../classchi_1_1Debugger.html#a4c2c30a9f418188aff807c51b0046bf5',1,'chi::Debugger']]],
+  ['listmodulesinworkspace',['listModulesInWorkspace',['../structchi_1_1Context.html#a8a16da32d939654600ac50084381e054',1,'chi::Context']]],
+  ['lldbdebugger',['lldbDebugger',['../classchi_1_1Debugger.html#a4bd2c4dcced3e704b6a4d71b7c2d53d4',1,'chi::Debugger']]],
+  ['lldbprocess',['lldbProcess',['../classchi_1_1Debugger.html#a1a6230fe4d30daf74c3112069f032a74',1,'chi::Debugger']]],
+  ['lldbtarget',['lldbTarget',['../classchi_1_1Debugger.html#a6b77f40a963c7afa6c85950b75781e87',1,'chi::Debugger']]],
+  ['llvmcontext',['llvmContext',['../structchi_1_1Context.html#a8b0dca76be969f24e02a1d286aea377c',1,'chi::Context']]],
+  ['llvmtype',['llvmType',['../structchi_1_1DataType.html#aec60eda3711da87c0b0b21392a32152c',1,'chi::DataType']]],
+  ['loadmodule',['loadModule',['../structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b',1,'chi::Context']]],
+  ['localvariablefromname',['localVariableFromName',['../structchi_1_1GraphFunction.html#a0123fb77fb0a19ea18163afb88f7687b',1,'chi::GraphFunction']]],
+  ['localvariables',['localVariables',['../structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d',1,'chi::GraphFunction']]]
 ];

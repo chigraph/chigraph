@@ -2,7 +2,7 @@ var searchData=
 [
   ['datainputs',['dataInputs',['../structchi_1_1GraphFunction.html#ab457f58fbb96c8089340b4ebd43cb633',1,'chi::GraphFunction::dataInputs()'],['../structchi_1_1NodeType.html#a7d2edfc21ff54a1ff8ad98fffb969268',1,'chi::NodeType::dataInputs()']]],
   ['dataoutputs',['dataOutputs',['../structchi_1_1GraphFunction.html#ab0bf0d819ff062c01220614f617d5965',1,'chi::GraphFunction::dataOutputs()'],['../structchi_1_1NodeType.html#aade37588d98e93b19a9a47e16c850684',1,'chi::NodeType::dataOutputs()']]],
-  ['datatype',['dataType',['../structchi_1_1GraphStruct.html#a27c5062196f73eae3125c0baeb592d00',1,'chi::GraphStruct::dataType()'],['../structchi_1_1DataType.html#a58eb461d78248b61f130ec425aaef0c8',1,'chi::DataType::DataType()']]],
+  ['datatype',['DataType',['../structchi_1_1DataType.html#a58eb461d78248b61f130ec425aaef0c8',1,'chi::DataType::DataType()'],['../structchi_1_1GraphStruct.html#a27c5062196f73eae3125c0baeb592d00',1,'chi::GraphStruct::dataType()']]],
   ['debugger',['Debugger',['../classchi_1_1Debugger.html#aaf3ba6d73ee9ccc016c87a58a5e0ffbe',1,'chi::Debugger']]],
   ['debugtype',['debugType',['../structchi_1_1DataType.html#a0d2b86be8cd74291255e8491e548f4de',1,'chi::DataType']]],
   ['dependencies',['dependencies',['../structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779',1,'chi::ChiModule']]],

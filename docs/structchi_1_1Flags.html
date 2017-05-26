@@ -146,7 +146,7 @@ struct chi::Flags&lt; Enum &gt;</h3>
 
 <p>A template class for type-safe flags. </p>
 <p>Usage: </p><div class="fragment"><div class="line"><span class="keyword">enum class</span> MyOpts {</div><div class="line">    First = 1u,</div><div class="line">    Second = 1u &lt;&lt; 1,</div><div class="line">    FirstAndSecond = First | Second,</div><div class="line">};</div><div class="line"></div><div class="line"><a class="code" href="structchi_1_1Flags.html">chi::Flags&lt;MyOpts&gt;</a> fl{MyOpts::First | MyOpts::Second};</div><div class="line">assert(fl &amp; MyOpts::First);</div></div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00024">24</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00026">26</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab878bfabc2bcf18f92072fd9d5b60c3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab878bfabc2bcf18f92072fd9d5b60c3c">&#9670;&nbsp;</a></span>Flags() <span class="overload">[1/3]</span></h2>
@@ -182,7 +182,7 @@ template&lt;typename Enum&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00032">32</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00034">34</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="structchi_1_1Flags.html#a423fb4774ea141fbdb47a78136115cdc">chi::Flags&lt; Enum &gt;::Flags()</a>, and <a class="el" href="structchi_1_1Flags.html#a11c8f2e11b96dce3b105a14c14870cf4">chi::Flags&lt; Enum &gt;::operator=()</a>.</p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -303,7 +303,7 @@ template&lt;typename Enum&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new <a class="el" href="structchi_1_1Flags.html" title="A template class for type-safe flags. ">Flags</a> object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00074">74</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00076">76</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
 
 </div>
 </div>
@@ -342,7 +342,7 @@ template&lt;typename Enum&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>*this</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00087">87</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00089">89</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="structchi_1_1Flags.html#a423fb4774ea141fbdb47a78136115cdc">chi::Flags&lt; Enum &gt;::Flags()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -383,7 +383,7 @@ template&lt;typename Enum&gt; </div>
 <p>Check if the flags object isn't set to zero Useful for use after a <code>&amp;</code> </p>
 <dl class="section return"><dt>Returns</dt><dd>true if it's not zero </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00064">64</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00066">66</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
 
 </div>
 </div>
@@ -415,7 +415,7 @@ template&lt;typename Enum&gt; </div>
 <p>See if one <a class="el" href="structchi_1_1Flags.html" title="A template class for type-safe flags. ">Flags</a> object isn't equal to the other. </p>
 <dl class="section return"><dt>Returns</dt><dd>if they are equal </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00059">59</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00061">61</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
 
 </div>
 </div>
@@ -454,7 +454,7 @@ template&lt;typename Enum&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>*this</code> </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="Flags_8hpp_source.html#l00032">chi::Flags&lt; Enum &gt;::Flags()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Flags_8hpp_source.html#l00034">chi::Flags&lt; Enum &gt;::Flags()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -537,7 +537,7 @@ template&lt;typename Enum&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>if they are equal </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00055">55</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00057">57</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
 
 </div>
 </div>
@@ -576,7 +576,7 @@ template&lt;typename Enum&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new <a class="el" href="structchi_1_1Flags.html" title="A template class for type-safe flags. ">Flags</a> object </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00069">69</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00071">71</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
 
 </div>
 </div>
@@ -615,7 +615,7 @@ template&lt;typename Enum&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>*this</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00079">79</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Flags_8hpp_source.html#l00081">81</a> of file <a class="el" href="Flags_8hpp_source.html">Flags.hpp</a>.</p>
 
 </div>
 </div>
@@ -628,7 +628,7 @@ template&lt;typename Enum&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechi.html">chi</a></li><li class="navelem"><a class="el" href="structchi_1_1Flags.html">Flags</a></li>
-    <li class="footer">Generated on Fri May 19 2017 22:00:59 for chigraph by
+    <li class="footer">Generated on Fri May 26 2017 10:35:55 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

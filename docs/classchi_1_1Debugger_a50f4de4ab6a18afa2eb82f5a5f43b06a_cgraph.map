@@ -1,48 +1,49 @@
 <map id="chi::Debugger::running" name="chi::Debugger::running">
-<area shape="rect" id="node2" href="$classchi_1_1Debugger.html#afa4d6023189ed9bcb8614468e37c7bed" title="Get the value of a local variable. " alt="" coords="221,275,404,317"/>
-<area shape="rect" id="node3" href="$classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681" title="Get the output of a node. " alt="" coords="221,486,404,527"/>
-<area shape="rect" id="node5" href="$classchi_1_1Debugger.html#a1a6230fe4d30daf74c3112069f032a74" title="Get the process This will only be valid if there&#39;s an attached process. " alt="" coords="739,291,917,317"/>
-<area shape="rect" id="node6" href="$classchi_1_1Debugger.html#ae142902fa85248f40cbeea7199c86ad9" title="Get a NodeInstance from a frame. " alt="" coords="468,261,673,288"/>
-<area shape="rect" id="node22" href="$classchi_1_1Debugger.html#a17c4ded82e7df22e6d513568d590d58a" title="Check if this debugger is attached to a process It&#39;s true if the process is stopped or if it&#39;s curret..." alt="" coords="485,1624,657,1651"/>
-<area shape="rect" id="node23" href="$classchi_1_1Debugger.html#a4c2c30a9f418188aff807c51b0046bf5" title="List the curretnly set breakpoints. " alt="" coords="215,1472,411,1499"/>
-<area shape="rect" id="node24" href="$classchi_1_1Debugger.html#a5fccfd6cf85feb1efbae75cf2f8bf06b" title="Pause the execution state. " alt="" coords="240,1421,385,1448"/>
-<area shape="rect" id="node26" href="$classchi_1_1Debugger.html#a496c2a258851076282d04b237e5ee45e" title="Continue the execution of the process. " alt="" coords="209,1320,416,1347"/>
-<area shape="rect" id="node27" href="$classchi_1_1Debugger.html#a7c314ed471ec401827778ad0d59b4570" title="Remove a breakpoint from a node. " alt="" coords="205,1523,420,1549"/>
-<area shape="rect" id="node28" href="$classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" title="Set a breakpoint on a given node. " alt="" coords="217,763,408,789"/>
-<area shape="rect" id="node4" href="$structchi_1_1NodeInstance.html#a8f64930fd9578431a11cad0702b4100c" title="Get the containing GraphFunction. " alt="" coords="1497,929,1632,970"/>
-<area shape="rect" id="node21" href="$structchi_1_1NodeInstance.html#a993d848a1b95077007e232d177f58308" title="Get the ID as a string. " alt="" coords="1497,730,1632,771"/>
-<area shape="rect" id="node7" href="$structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512" title="Get the Context that this module belongs to. " alt="" coords="749,341,907,368"/>
-<area shape="rect" id="node10" href="$structchi_1_1GraphModule.html#a0f4f97f458bbbacd6ff3c1be55441b98" title="Create the associations from line number and function in debug info. " alt="" coords="744,393,912,434"/>
-<area shape="rect" id="node16" href="$structchi_1_1GraphModule.html#a84474b5d18517fe46cc94560f746d6ce" title="Get a function from the name. " alt="" coords="739,225,917,266"/>
-<area shape="rect" id="node17" href="$classchi_1_1Debugger.html#aeec97926d904907c3f2513a822a31696" title="Get the module that&#39;s being debugged by this debugger. " alt="" coords="752,5,904,32"/>
-<area shape="rect" id="node18" href="$structchi_1_1GraphFunction.html#a0564412e260698bdb3872d3d12dfc3bc" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="762,57,894,98"/>
-<area shape="rect" id="node19" href="$structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5" title="Gets the module by the full name. " alt="" coords="721,123,935,149"/>
-<area shape="rect" id="node20" href="$namespacechi.html#a1d6b6147c7af9c57c248816b5b1eb6dc" title="Unmangle a function name. " alt="" coords="735,173,921,200"/>
-<area shape="rect" id="node8" href="$structchi_1_1ChiModule.html#a653e3aed05912857334655e06937b28d" title="Adds forward declartions for the functions in this module. " alt="" coords="984,269,1167,310"/>
-<area shape="rect" id="node9" href="$structchi_1_1ChiModule.html#a987c71edb997c5f041f69622cb0c86fe" title="Generate a llvm::Module from the module. " alt="" coords="992,334,1159,375"/>
-<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#a45255dbf09b56ac93b35ebc4d77bba5c" title="Get functions. " alt="" coords="983,400,1168,427"/>
-<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#aad5b2fd794606b66cec221408cf07af4" title="Get a struct by name. " alt="" coords="1482,298,1647,339"/>
-<area shape="rect" id="node13" href="$structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55" title="Create a new struct in the module. " alt="" coords="1216,327,1419,369"/>
-<area shape="rect" id="node15" href="$structchi_1_1GraphModule.html#a779d5c125ca7b556b114bb448f83dc3b" title="Remove a struct from the module by name. " alt="" coords="1230,393,1405,434"/>
-<area shape="rect" id="node14" href="$structchi_1_1ChiModule.html#af3cdb7e3d333fedc74ad862dcc5bca9f" title="Update the last edit time, signifying that it&#39;s been edited. " alt="" coords="1475,658,1655,699"/>
-<area shape="rect" id="node25" href="$structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" title="Add a entry to the result, either a warning or an error. " alt="" coords="1493,1472,1637,1499"/>
-<area shape="rect" id="node29" href="$namespacechi.html#a46ba4fa933baeba58beefc9e573b0668" title="Get the mapped line number from a node. " alt="" coords="485,661,657,688"/>
-<area shape="rect" id="node30" href="$structchi_1_1NodeInstance.html#a72d113cfee45f4017adf28b034c6f215" title="Get the containing GraphModule. " alt="" coords="761,882,895,923"/>
-<area shape="rect" id="node46" href="$structchi_1_1GraphModule.html#a1c1a23b9aa7967948e97dc9650099188" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="485,545,656,586"/>
-<area shape="rect" id="node31" href="$namespacechi.html#ab69b013712d615bf9901d7bf2b0b11fb" title="Connects two nodes&#39; data connections. " alt="" coords="1015,1168,1135,1195"/>
-<area shape="rect" id="node34" href="$namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e" title="Disconnect a data connection. " alt="" coords="1249,1168,1386,1195"/>
-<area shape="rect" id="node42" href="$namespacechi.html#a79423caa23a58e57b775c5137a03ee31" title="Connects two nodes&#39; exec connections. " alt="" coords="1014,889,1137,916"/>
-<area shape="rect" id="node43" href="$namespacechi.html#a103b99abd766aa4d303a5004fe783c03" title="Disconnect a exec connection. " alt="" coords="1247,763,1387,789"/>
-<area shape="rect" id="node32" href="$structchi_1_1NodeType.html#a7d2edfc21ff54a1ff8ad98fffb969268" title="Get the data inputs for the node. " alt="" coords="1477,1396,1652,1423"/>
-<area shape="rect" id="node33" href="$structchi_1_1NodeType.html#aade37588d98e93b19a9a47e16c850684" title="Get the data outputs for the node. " alt="" coords="1472,1219,1657,1245"/>
-<area shape="rect" id="node35" href="$structchi_1_1NodeType.html#a7031e3c04e9a0227b09f8f854ce8b7f9" title="Get the qualified name of the node type, like module.name():name() " alt="" coords="1467,1016,1663,1043"/>
-<area shape="rect" id="node39" href="$structchi_1_1NodeType.html#ac99bef32e3e5e564119dbb8de69d2273" title="Create the JSON necessary to store the object. " alt="" coords="1485,1320,1645,1347"/>
-<area shape="rect" id="node41" href="$structchi_1_1NodeInstance.html#a5d6678d5a90e6b1adb7dafb868b974b1" title="Get the type of the instance. " alt="" coords="1485,1092,1645,1119"/>
-<area shape="rect" id="node36" href="$structchi_1_1NodeType.html#a4fd551737d6b3bb4d6609f1ee8e054aa" title="Get the ChiModule this NodeType belongs to. " alt="" coords="1716,1041,1872,1068"/>
-<area shape="rect" id="node37" href="$structchi_1_1ChiModule.html#a92ab6d528ac41a91b6ac21ededfccc38" title="Get the full name of the module. " alt="" coords="1711,687,1877,713"/>
-<area shape="rect" id="node38" href="$structchi_1_1NodeType.html#ad301375a4b84ddc699337e285ee78cc3" title="Get the name of the NodeType in the ChiModule. " alt="" coords="1721,991,1867,1017"/>
-<area shape="rect" id="node40" href="$structchi_1_1NodeType.html#a9de5373607ac5fb322665c487010ecf2" title="Clones the type. " alt="" coords="1721,1320,1867,1347"/>
-<area shape="rect" id="node44" href="$structchi_1_1NodeType.html#ad64eac82c28fd530c943a4605a76c4af" title="Get the execution outputs for the node. " alt="" coords="1471,809,1659,836"/>
-<area shape="rect" id="node45" href="$structchi_1_1NodeType.html#a436716b15e57346da8e824c157f926a5" title="Get the execution inputs for the node. " alt="" coords="1228,864,1407,891"/>
-<area shape="rect" id="node47" href="$structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846" title="Get the workspace path of the Context. " alt="" coords="733,560,923,587"/>
+<area shape="rect" id="node2" href="$classchi_1_1Debugger.html#afa4d6023189ed9bcb8614468e37c7bed" title="Get the value of a local variable. " alt="" coords="221,189,404,231"/>
+<area shape="rect" id="node3" href="$classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681" title="Get the output of a node. " alt="" coords="221,400,404,441"/>
+<area shape="rect" id="node5" href="$classchi_1_1Debugger.html#a1a6230fe4d30daf74c3112069f032a74" title="Get the process This will only be valid if there&#39;s an attached process. " alt="" coords="739,290,917,317"/>
+<area shape="rect" id="node6" href="$classchi_1_1Debugger.html#ae142902fa85248f40cbeea7199c86ad9" title="Get a NodeInstance from a frame. " alt="" coords="468,247,673,274"/>
+<area shape="rect" id="node22" href="$classchi_1_1Debugger.html#a17c4ded82e7df22e6d513568d590d58a" title="Check if this debugger is attached to a process It&#39;s true if the process is stopped or if it&#39;s curret..." alt="" coords="485,1419,657,1446"/>
+<area shape="rect" id="node23" href="$classchi_1_1Debugger.html#a4c2c30a9f418188aff807c51b0046bf5" title="List the curretnly set breakpoints. " alt="" coords="215,1333,411,1359"/>
+<area shape="rect" id="node24" href="$classchi_1_1Debugger.html#a5fccfd6cf85feb1efbae75cf2f8bf06b" title="Pause the execution state. " alt="" coords="240,1282,385,1309"/>
+<area shape="rect" id="node27" href="$classchi_1_1Debugger.html#a496c2a258851076282d04b237e5ee45e" title="Continue the execution of the process. " alt="" coords="209,1181,416,1207"/>
+<area shape="rect" id="node28" href="$classchi_1_1Debugger.html#a7c314ed471ec401827778ad0d59b4570" title="Remove a breakpoint from a node. " alt="" coords="205,1383,420,1410"/>
+<area shape="rect" id="node29" href="$classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" title="Set a breakpoint on a given node. " alt="" coords="217,739,408,766"/>
+<area shape="rect" id="node4" href="$structchi_1_1NodeInstance.html#a8f64930fd9578431a11cad0702b4100c" title="Get the containing GraphFunction. " alt="" coords="1497,833,1632,875"/>
+<area shape="rect" id="node21" href="$structchi_1_1NodeInstance.html#a993d848a1b95077007e232d177f58308" title="Get the ID as a string. " alt="" coords="1497,535,1632,576"/>
+<area shape="rect" id="node7" href="$structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512" title="Get the Context that this module belongs to. " alt="" coords="749,458,907,485"/>
+<area shape="rect" id="node10" href="$structchi_1_1GraphModule.html#a0f4f97f458bbbacd6ff3c1be55441b98" title="Create the associations from line number and function in debug info. " alt="" coords="744,341,912,383"/>
+<area shape="rect" id="node16" href="$structchi_1_1GraphModule.html#a84474b5d18517fe46cc94560f746d6ce" title="Get a function from the name. " alt="" coords="739,5,917,47"/>
+<area shape="rect" id="node17" href="$classchi_1_1Debugger.html#aeec97926d904907c3f2513a822a31696" title="Get the module that&#39;s being debugged by this debugger. " alt="" coords="752,71,904,98"/>
+<area shape="rect" id="node18" href="$structchi_1_1GraphFunction.html#a0564412e260698bdb3872d3d12dfc3bc" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="762,123,894,164"/>
+<area shape="rect" id="node19" href="$structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5" title="Gets the module by the full name. " alt="" coords="721,189,935,215"/>
+<area shape="rect" id="node20" href="$namespacechi.html#a1d6b6147c7af9c57c248816b5b1eb6dc" title="Unmangle a function name. " alt="" coords="735,239,921,266"/>
+<area shape="rect" id="node8" href="$structchi_1_1ChiModule.html#a653e3aed05912857334655e06937b28d" title="Adds forward declartions for the functions in this module. " alt="" coords="984,421,1167,463"/>
+<area shape="rect" id="node9" href="$structchi_1_1ChiModule.html#a987c71edb997c5f041f69622cb0c86fe" title="Generate a llvm::Module from the module. " alt="" coords="992,356,1159,397"/>
+<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#a45255dbf09b56ac93b35ebc4d77bba5c" title="Get functions. " alt="" coords="983,214,1168,241"/>
+<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#aad5b2fd794606b66cec221408cf07af4" title="Get a struct by name. " alt="" coords="1482,144,1647,185"/>
+<area shape="rect" id="node13" href="$structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55" title="Create a new struct in the module. " alt="" coords="1216,173,1419,215"/>
+<area shape="rect" id="node15" href="$structchi_1_1GraphModule.html#a779d5c125ca7b556b114bb448f83dc3b" title="Remove a struct from the module by name. " alt="" coords="1230,239,1405,280"/>
+<area shape="rect" id="node14" href="$structchi_1_1ChiModule.html#af3cdb7e3d333fedc74ad862dcc5bca9f" title="Update the last edit time, signifying that it&#39;s been edited. " alt="" coords="1475,463,1655,504"/>
+<area shape="rect" id="node25" href="$structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" title="Add a entry to the result, either a warning or an error. " alt="" coords="1493,1267,1637,1294"/>
+<area shape="rect" id="node26" href="$structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0" title="Get the JSON associated with the context that&#39;s been added. " alt="" coords="1713,1267,1875,1294"/>
+<area shape="rect" id="node30" href="$namespacechi.html#a46ba4fa933baeba58beefc9e573b0668" title="Get the mapped line number from a node. " alt="" coords="485,589,657,615"/>
+<area shape="rect" id="node31" href="$structchi_1_1NodeInstance.html#a72d113cfee45f4017adf28b034c6f215" title="Get the containing GraphModule. " alt="" coords="761,703,895,744"/>
+<area shape="rect" id="node47" href="$structchi_1_1GraphModule.html#a1c1a23b9aa7967948e97dc9650099188" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="485,761,656,803"/>
+<area shape="rect" id="node32" href="$namespacechi.html#ab69b013712d615bf9901d7bf2b0b11fb" title="Connects two nodes&#39; data connections. " alt="" coords="1015,963,1135,990"/>
+<area shape="rect" id="node35" href="$namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e" title="Disconnect a data connection. " alt="" coords="1249,963,1386,990"/>
+<area shape="rect" id="node43" href="$namespacechi.html#a79423caa23a58e57b775c5137a03ee31" title="Connects two nodes&#39; exec connections. " alt="" coords="1014,710,1137,737"/>
+<area shape="rect" id="node44" href="$namespacechi.html#a103b99abd766aa4d303a5004fe783c03" title="Disconnect a exec connection. " alt="" coords="1247,558,1387,585"/>
+<area shape="rect" id="node33" href="$structchi_1_1NodeType.html#a7d2edfc21ff54a1ff8ad98fffb969268" title="Get the data inputs for the node. " alt="" coords="1477,1090,1652,1117"/>
+<area shape="rect" id="node34" href="$structchi_1_1NodeType.html#aade37588d98e93b19a9a47e16c850684" title="Get the data outputs for the node. " alt="" coords="1472,1166,1657,1193"/>
+<area shape="rect" id="node36" href="$structchi_1_1NodeType.html#a7031e3c04e9a0227b09f8f854ce8b7f9" title="Get the qualified name of the node type, like module.name():name() " alt="" coords="1467,761,1663,787"/>
+<area shape="rect" id="node40" href="$structchi_1_1NodeType.html#ac99bef32e3e5e564119dbb8de69d2273" title="Create the JSON necessary to store the object. " alt="" coords="1485,1027,1645,1054"/>
+<area shape="rect" id="node42" href="$structchi_1_1NodeInstance.html#a5d6678d5a90e6b1adb7dafb868b974b1" title="Get the type of the instance. " alt="" coords="1485,938,1645,965"/>
+<area shape="rect" id="node37" href="$structchi_1_1NodeType.html#a4fd551737d6b3bb4d6609f1ee8e054aa" title="Get the ChiModule this NodeType belongs to. " alt="" coords="1716,786,1872,813"/>
+<area shape="rect" id="node38" href="$structchi_1_1ChiModule.html#a92ab6d528ac41a91b6ac21ededfccc38" title="Get the full name of the module. " alt="" coords="1711,1343,1877,1370"/>
+<area shape="rect" id="node39" href="$structchi_1_1NodeType.html#ad301375a4b84ddc699337e285ee78cc3" title="Get the name of the NodeType in the ChiModule. " alt="" coords="1721,735,1867,762"/>
+<area shape="rect" id="node41" href="$structchi_1_1NodeType.html#a9de5373607ac5fb322665c487010ecf2" title="Clones the type. " alt="" coords="1721,1027,1867,1054"/>
+<area shape="rect" id="node45" href="$structchi_1_1NodeType.html#ad64eac82c28fd530c943a4605a76c4af" title="Get the execution outputs for the node. " alt="" coords="1471,605,1659,631"/>
+<area shape="rect" id="node46" href="$structchi_1_1NodeType.html#a436716b15e57346da8e824c157f926a5" title="Get the execution inputs for the node. " alt="" coords="1228,659,1407,686"/>
+<area shape="rect" id="node48" href="$structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846" title="Get the workspace path of the Context. " alt="" coords="733,769,923,795"/>
 </map>

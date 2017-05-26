@@ -17,5 +17,6 @@ var hierarchy =
     [ "chi::NodeInstance", "structchi_1_1NodeInstance.html", null ],
     [ "chi::NodeType", "structchi_1_1NodeType.html", null ],
     [ "chi::Result", "structchi_1_1Result.html", null ],
-    [ "chi::Result::ScopedContext", "structchi_1_1Result_1_1ScopedContext.html", null ]
+    [ "chi::Result::ScopedContext", "structchi_1_1Result_1_1ScopedContext.html", null ],
+    [ "chi::Subprocess", "structchi_1_1Subprocess.html", null ]
 ];

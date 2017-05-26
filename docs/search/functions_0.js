@@ -11,5 +11,10 @@ var searchData=
   ['addmodule',['addModule',['../structchi_1_1Context.html#af4a8f3fb758bbd0d1e0fdca431bdab2f',1,'chi::Context']]],
   ['addmodulefromjson',['addModuleFromJson',['../structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f',1,'chi::Context']]],
   ['addscopedcontext',['addScopedContext',['../structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6',1,'chi::Result']]],
-  ['addtype',['addType',['../structchi_1_1GraphStruct.html#aba05cdce9627a23da0449801e068d85d',1,'chi::GraphStruct']]]
+  ['addtype',['addType',['../structchi_1_1GraphStruct.html#aba05cdce9627a23da0449801e068d85d',1,'chi::GraphStruct']]],
+  ['arguments',['arguments',['../structchi_1_1Subprocess.html#a889d6dcbd8488df673b6e12c29447e7c',1,'chi::Subprocess']]],
+  ['attachstringtostderr',['attachStringToStdErr',['../structchi_1_1Subprocess.html#a3f07d6a6acf5e139c5161210ae0726cb',1,'chi::Subprocess']]],
+  ['attachstringtostdout',['attachStringToStdOut',['../structchi_1_1Subprocess.html#a1b08709bbb208a970888ebcccc58906c',1,'chi::Subprocess']]],
+  ['attachtostderr',['attachToStdErr',['../structchi_1_1Subprocess.html#ad1c5751c1ef62ae1020aafdbeee36fbb',1,'chi::Subprocess']]],
+  ['attachtostdout',['attachToStdOut',['../structchi_1_1Subprocess.html#a8a74fc88aa957ff035f446495b7c7a7a',1,'chi::Subprocess']]]
 ];

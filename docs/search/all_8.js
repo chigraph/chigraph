@@ -1,6 +1,8 @@
 var searchData=
 [
+  ['jsondeserializer_2ecpp',['JsonDeserializer.cpp',['../JsonDeserializer_8cpp.html',1,'']]],
   ['jsondeserializer_2ehpp',['JsonDeserializer.hpp',['../JsonDeserializer_8hpp.html',1,'']]],
+  ['jsonserializer_2ecpp',['JsonSerializer.cpp',['../JsonSerializer_8cpp.html',1,'']]],
   ['jsonserializer_2ehpp',['JsonSerializer.hpp',['../JsonSerializer_8hpp.html',1,'']]],
   ['jsontographfunction',['jsonToGraphFunction',['../namespacechi.html#a6a3fedb48e6702c016f996d8a7f445fc',1,'chi']]],
   ['jsontographmodule',['jsonToGraphModule',['../namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c',1,'chi']]],

@@ -13,5 +13,6 @@ var namespacechi =
     [ "NamedDataType", "structchi_1_1NamedDataType.html", "structchi_1_1NamedDataType" ],
     [ "NodeInstance", "structchi_1_1NodeInstance.html", "structchi_1_1NodeInstance" ],
     [ "NodeType", "structchi_1_1NodeType.html", "structchi_1_1NodeType" ],
-    [ "Result", "structchi_1_1Result.html", "structchi_1_1Result" ]
+    [ "Result", "structchi_1_1Result.html", "structchi_1_1Result" ],
+    [ "Subprocess", "structchi_1_1Subprocess.html", "structchi_1_1Subprocess" ]
 ];

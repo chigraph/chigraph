@@ -18,20 +18,22 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ]
+        [ "Variables", "functions_vars.html", null ],
+        [ "Typedefs", "functions_type.html", null ]
       ] ]
     ] ],
     [ "Files", null, [
       [ "File List", "files.html", "files" ]
-    ] ]
+    ] ],
+    [ "Examples", "examples.html", "examples" ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
 ".html",
-"structchi_1_1ChiModule.html#ad47cf06593a7af38d7639dc6413c7ad0",
-"structchi_1_1Result_1_1ScopedContext.html"
+"functions_s.html",
+"structchi_1_1NodeType.html#a51e055157f02937926552b750457d6b9"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

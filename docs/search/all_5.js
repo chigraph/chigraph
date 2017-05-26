@@ -15,6 +15,7 @@ var searchData=
   ['graphmodule_2ehpp',['GraphModule.hpp',['../GraphModule_8hpp.html',1,'']]],
   ['graphmoduletojson',['graphModuleToJson',['../namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a',1,'chi']]],
   ['graphstruct',['GraphStruct',['../structchi_1_1GraphStruct.html',1,'chi::GraphStruct'],['../structchi_1_1GraphStruct.html#ab9d9a6c278322a563b1d57ec847abe63',1,'chi::GraphStruct::GraphStruct()']]],
+  ['graphstruct_2ecpp',['GraphStruct.cpp',['../GraphStruct_8cpp.html',1,'']]],
   ['graphstruct_2ehpp',['GraphStruct.hpp',['../GraphStruct_8hpp.html',1,'']]],
   ['graphstructtojson',['graphStructToJson',['../namespacechi.html#af74872167b12e4ad8a387faab1f03fbb',1,'chi']]]
 ];

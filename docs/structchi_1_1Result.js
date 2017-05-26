@@ -5,6 +5,7 @@ var structchi_1_1Result =
     [ "addContext", "structchi_1_1Result.html#a5cbde12f0c21347635469c7acf8d4112", null ],
     [ "addEntry", "structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8", null ],
     [ "addScopedContext", "structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6", null ],
+    [ "contextJson", "structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0", null ],
     [ "dump", "structchi_1_1Result.html#a2e208b26f30dc292c5ab72354757b6dd", null ],
     [ "operator bool", "structchi_1_1Result.html#a26406ce67145a4e7893018ccbf50dc89", null ],
     [ "operator!", "structchi_1_1Result.html#ac4c9a2e6f79dbd1f49116370cfc96513", null ],

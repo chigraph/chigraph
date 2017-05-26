@@ -1,9 +1,9 @@
 <map id="chi::graphStructToJson" name="chi::graphStructToJson">
 <area shape="rect" id="node2" href="$structchi_1_1GraphStruct.html#ae1895cfaebac03e21d35ec2a155b3c10" title="Get the types the struct contains. " alt="" coords="211,170,368,196"/>
 <area shape="rect" id="node3" href="$structchi_1_1GraphStruct.html#aba05cdce9627a23da0449801e068d85d" title="Add a new type to the struct. " alt="" coords="427,144,602,171"/>
-<area shape="rect" id="node37" href="$structchi_1_1GraphStruct.html#a89d3ea5e72ed6e7d8380fb82fa5eb521" title="Change the type and name of a type. " alt="" coords="418,195,611,222"/>
-<area shape="rect" id="node38" href="$structchi_1_1GraphStruct.html#a759b0b44c984d7aaa6c2fb32e035264b" title="Remove a type from a struct. " alt="" coords="416,94,613,120"/>
-<area shape="rect" id="node39" href="$structchi_1_1GraphStruct.html#a27c5062196f73eae3125c0baeb592d00" title="Get the DataType of the struct. " alt="" coords="425,246,604,272"/>
+<area shape="rect" id="node38" href="$structchi_1_1GraphStruct.html#a89d3ea5e72ed6e7d8380fb82fa5eb521" title="Change the type and name of a type. " alt="" coords="418,195,611,222"/>
+<area shape="rect" id="node39" href="$structchi_1_1GraphStruct.html#a759b0b44c984d7aaa6c2fb32e035264b" title="Remove a type from a struct. " alt="" coords="416,94,613,120"/>
+<area shape="rect" id="node40" href="$structchi_1_1GraphStruct.html#a27c5062196f73eae3125c0baeb592d00" title="Get the DataType of the struct. " alt="" coords="425,246,604,272"/>
 <area shape="rect" id="node4" href="$structchi_1_1DataType.html#a03384814dde82f88fb097d556cb1da66" title="Check if the DataType is valid (if it&#39;s actually bound to a type and module) " alt="" coords="677,195,815,222"/>
 <area shape="rect" id="node5" href="$structchi_1_1GraphStruct.html#a82a1da52a4bf23e1e7fef4d7228603b1" title="Get the module. " alt="" coords="663,144,829,171"/>
 <area shape="rect" id="node7" href="$structchi_1_1ChiModule.html#af3cdb7e3d333fedc74ad862dcc5bca9f" title="Update the last edit time, signifying that it&#39;s been edited. " alt="" coords="2050,86,2230,128"/>
@@ -16,26 +16,27 @@
 <area shape="rect" id="node16" href="$structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512" title="Get the Context that this module belongs to. " alt="" coords="2318,596,2477,623"/>
 <area shape="rect" id="node20" href="$structchi_1_1ChiModule.html#a92ab6d528ac41a91b6ac21ededfccc38" title="Get the full name of the module. " alt="" coords="2314,414,2481,440"/>
 <area shape="rect" id="node22" href="$structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" title="Add a entry to the result, either a warning or an error. " alt="" coords="2325,866,2469,892"/>
-<area shape="rect" id="node23" href="$structchi_1_1Context.html#a9e0b185a1871ebfda5d7bd410bf085f2" title="Gets a DataType from a module. " alt="" coords="1792,967,1989,994"/>
-<area shape="rect" id="node27" href="$namespacechi.html#a2b3839fa03d8bfb6ef3238543d44d865" title="Parse something that looks like: {&quot;hello&quot;: &quot;there&quot;} into {&quot;hello&quot;, &quot;there&quot;}. " alt="" coords="1365,942,1505,968"/>
-<area shape="rect" id="node28" href="$namespacechi.html#aa47212ba13fb1a1d26774dc208c15255" title="Parse a colonated pair Example: lang:i32 would turn into {lang, i32}. " alt="" coords="1367,414,1502,440"/>
-<area shape="rect" id="node35" href="$structchi_1_1GraphModule.html#a84474b5d18517fe46cc94560f746d6ce" title="Get a function from the name. " alt="" coords="1345,465,1524,506"/>
-<area shape="rect" id="node36" href="$structchi_1_1GraphModule.html#aad5b2fd794606b66cec221408cf07af4" title="Get a struct by name. " alt="" coords="1352,530,1517,572"/>
+<area shape="rect" id="node24" href="$structchi_1_1Context.html#a9e0b185a1871ebfda5d7bd410bf085f2" title="Gets a DataType from a module. " alt="" coords="1792,967,1989,994"/>
+<area shape="rect" id="node28" href="$namespacechi.html#a2b3839fa03d8bfb6ef3238543d44d865" title="Parse something that looks like: {&quot;hello&quot;: &quot;there&quot;} into {&quot;hello&quot;, &quot;there&quot;}. " alt="" coords="1365,942,1505,968"/>
+<area shape="rect" id="node29" href="$namespacechi.html#aa47212ba13fb1a1d26774dc208c15255" title="Parse a colonated pair Example: lang:i32 would turn into {lang, i32}. " alt="" coords="1367,414,1502,440"/>
+<area shape="rect" id="node36" href="$structchi_1_1GraphModule.html#a84474b5d18517fe46cc94560f746d6ce" title="Get a function from the name. " alt="" coords="1345,465,1524,506"/>
+<area shape="rect" id="node37" href="$structchi_1_1GraphModule.html#aad5b2fd794606b66cec221408cf07af4" title="Get a struct by name. " alt="" coords="1352,530,1517,572"/>
 <area shape="rect" id="node13" href="$structchi_1_1GraphModule.html#a24162d01532244d8945128b71af5fc48" title="From C code, create a NodeType. " alt="" coords="1576,732,1744,773"/>
 <area shape="rect" id="node14" href="$structchi_1_1GraphModule.html#a10cfac308c6e0f1fa38be5513b2380cc" title="Get the path to the .c directory. It is not garunteed to exist, even if cEnabled() is true..." alt="" coords="1805,648,1977,689"/>
-<area shape="rect" id="node26" href="$namespacechi.html#a29ff9f3364b9ad0f25a990b8373971b4" title="Turns a type into a string. " alt="" coords="1813,714,1969,740"/>
+<area shape="rect" id="node27" href="$namespacechi.html#a29ff9f3364b9ad0f25a990b8373971b4" title="Turns a type into a string. " alt="" coords="1813,714,1969,740"/>
 <area shape="rect" id="node15" href="$structchi_1_1GraphModule.html#a1c1a23b9aa7967948e97dc9650099188" title="Get the path to the source file It&#39;s not garunteed to exist, because it could have not been saved..." alt="" coords="2055,530,2225,572"/>
 <area shape="rect" id="node21" href="$structchi_1_1ChiModule.html#a22ac89bd0e334cb920847973fa77e8ff" title="Get the short name of the module (the last bit) " alt="" coords="2051,647,2229,674"/>
 <area shape="rect" id="node19" href="$structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846" title="Get the workspace path of the Context. " alt="" coords="2303,538,2492,564"/>
-<area shape="rect" id="node17" href="$structchi_1_1ChiModule.html#a653e3aed05912857334655e06937b28d" title="Adds forward declartions for the functions in this module. " alt="" coords="2552,557,2735,598"/>
-<area shape="rect" id="node18" href="$structchi_1_1ChiModule.html#a987c71edb997c5f041f69622cb0c86fe" title="Generate a llvm::Module from the module. " alt="" coords="2560,622,2727,664"/>
-<area shape="rect" id="node24" href="$structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5" title="Gets the module by the full name. " alt="" coords="2291,786,2504,812"/>
-<area shape="rect" id="node25" href="$structchi_1_1ChiModule.html#a03aa9f90fafd384094861dfff13eba77" title="Get a DataType from the name. " alt="" coords="2037,967,2243,994"/>
-<area shape="rect" id="node29" href="$structchi_1_1GraphFunction.html#a0564412e260698bdb3872d3d12dfc3bc" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="2074,465,2206,506"/>
-<area shape="rect" id="node30" href="$structchi_1_1GraphFunction.html#a89069f6e08f71cfbafb245ea16c8d69f" title="Get the name of the function. " alt="" coords="1594,406,1726,448"/>
-<area shape="rect" id="node31" href="$structchi_1_1GraphFunction.html#ad739c826ed87035857193995c23cabe2" title="Get the qualified name of the function Same as module().fullName() + &quot;:&quot; + name();. " alt="" coords="1825,413,1957,454"/>
-<area shape="rect" id="node32" href="$structchi_1_1GraphFunction.html#a27c87614be4357e97c1ececd2228f865" title="Set the name of the function. " alt="" coords="1825,348,1957,389"/>
-<area shape="rect" id="node33" href="$structchi_1_1GraphFunction.html#aca401237496ae311e43c7a43519e4720" title="Get the context. " alt="" coords="2074,348,2206,389"/>
-<area shape="rect" id="node34" href="$structchi_1_1Context.html#a28706d36f049088c98cd726921512668" title="Gets a NodeType from the JSON and name. " alt="" coords="2047,749,2233,790"/>
-<area shape="rect" id="node40" href="$structchi_1_1Context.html#a8b0dca76be969f24e02a1d286aea377c" title="Get the LLVMContext " alt="" coords="661,448,831,475"/>
+<area shape="rect" id="node17" href="$structchi_1_1ChiModule.html#a653e3aed05912857334655e06937b28d" title="Adds forward declartions for the functions in this module. " alt="" coords="2552,622,2735,664"/>
+<area shape="rect" id="node18" href="$structchi_1_1ChiModule.html#a987c71edb997c5f041f69622cb0c86fe" title="Generate a llvm::Module from the module. " alt="" coords="2560,557,2727,598"/>
+<area shape="rect" id="node23" href="$structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0" title="Get the JSON associated with the context that&#39;s been added. " alt="" coords="2562,866,2725,892"/>
+<area shape="rect" id="node25" href="$structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5" title="Gets the module by the full name. " alt="" coords="2291,786,2504,812"/>
+<area shape="rect" id="node26" href="$structchi_1_1ChiModule.html#a03aa9f90fafd384094861dfff13eba77" title="Get a DataType from the name. " alt="" coords="2037,967,2243,994"/>
+<area shape="rect" id="node30" href="$structchi_1_1GraphFunction.html#a0564412e260698bdb3872d3d12dfc3bc" title="Get the GraphModule that contains this GraphFunction. " alt="" coords="2074,465,2206,506"/>
+<area shape="rect" id="node31" href="$structchi_1_1GraphFunction.html#a89069f6e08f71cfbafb245ea16c8d69f" title="Get the name of the function. " alt="" coords="1594,406,1726,448"/>
+<area shape="rect" id="node32" href="$structchi_1_1GraphFunction.html#ad739c826ed87035857193995c23cabe2" title="Get the qualified name of the function Same as module().fullName() + &quot;:&quot; + name();. " alt="" coords="1825,413,1957,454"/>
+<area shape="rect" id="node33" href="$structchi_1_1GraphFunction.html#a27c87614be4357e97c1ececd2228f865" title="Set the name of the function. " alt="" coords="1825,348,1957,389"/>
+<area shape="rect" id="node34" href="$structchi_1_1GraphFunction.html#aca401237496ae311e43c7a43519e4720" title="Get the context. " alt="" coords="2074,348,2206,389"/>
+<area shape="rect" id="node35" href="$structchi_1_1Context.html#a28706d36f049088c98cd726921512668" title="Gets a NodeType from the JSON and name. " alt="" coords="2047,749,2233,790"/>
+<area shape="rect" id="node41" href="$structchi_1_1Context.html#a8b0dca76be969f24e02a1d286aea377c" title="Get the LLVMContext " alt="" coords="661,448,831,475"/>
 </map>

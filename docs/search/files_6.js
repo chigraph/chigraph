@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['modulecache_2ecpp',['ModuleCache.cpp',['../ModuleCache_8cpp.html',1,'']]],
-  ['modulecache_2ehpp',['ModuleCache.hpp',['../ModuleCache_8hpp.html',1,'']]]
+  ['langmodule_2ecpp',['LangModule.cpp',['../LangModule_8cpp.html',1,'']]],
+  ['langmodule_2ehpp',['LangModule.hpp',['../LangModule_8hpp.html',1,'']]],
+  ['llvmversion_2ehpp',['LLVMVersion.hpp',['../LLVMVersion_8hpp.html',1,'']]]
 ];

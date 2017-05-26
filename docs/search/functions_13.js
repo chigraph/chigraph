@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['valid',['valid',['../structchi_1_1DataType.html#a03384814dde82f88fb097d556cb1da66',1,'chi::DataType::valid()'],['../structchi_1_1NamedDataType.html#ab3bb8be23239d44df3706f3cb6ce9fdf',1,'chi::NamedDataType::valid()']]],
-  ['validatefunction',['validateFunction',['../namespacechi.html#acdc71d0d7f04f55316cc16af79b7f5b1',1,'chi']]],
-  ['validatefunctionconnectionsaretwoway',['validateFunctionConnectionsAreTwoWay',['../namespacechi.html#a3e66ba93ae2a152ebc13ec75a15b6e74',1,'chi']]],
-  ['validatefunctionexecoutputs',['validateFunctionExecOutputs',['../namespacechi.html#ae075e3bed58aaa6484e4b0e90872c19e',1,'chi']]],
-  ['validatefunctionnodeinputs',['validateFunctionNodeInputs',['../namespacechi.html#a0d84079ff2eef897472e3096589e62d7',1,'chi']]]
+  ['unloadmodule',['unloadModule',['../structchi_1_1Context.html#a17e4d810afed483542eafea5b36792c5',1,'chi::Context']]],
+  ['unmanglefunctionname',['unmangleFunctionName',['../namespacechi.html#a1d6b6147c7af9c57c248816b5b1eb6dc',1,'chi']]],
+  ['unqualifiedname',['unqualifiedName',['../structchi_1_1DataType.html#a83a00e50994b0e126fdf856205a72a1e',1,'chi::DataType']]],
+  ['updatelastedittime',['updateLastEditTime',['../structchi_1_1ChiModule.html#af3cdb7e3d333fedc74ad862dcc5bca9f',1,'chi::ChiModule']]]
 ];
