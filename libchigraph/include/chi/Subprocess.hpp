@@ -16,6 +16,12 @@
 
 namespace chi{
 
+	/// Provides an platform-independent abstraction for creating subprocesses.
+	/// On OSX and Linux, this uses the posix api (pipe(), fork(), exec(), write(), read(), etc)
+	/// and on windows it uses the win32 API (CreatePipe(), CreateProcess(), etc)
+	/// 
+	/// Usage is you create a Subprocess class:
+	/// 
 	struct Subprocess {
 
 		enum PipeType {
@@ -25,9 +31,12 @@ namespace chi{
 
 		using pipeHandler = std::function<void(const char* data, size_t size)>;
 
+		/// \pre `boost::filesystem::is_regular_file(pathToExecutable)`
 		Subprocess(const boost::filesystem::path& pathToExecutable);
+		
 		~Subprocess();
 
+		
 		template<typename ForwardIterator>
 		void setArguments(const ForwardIterator& begin, const ForwardIterator& end);
 
@@ -38,16 +47,49 @@ namespace chi{
 
 		void attachToStdOut(pipeHandler stdOutHandler) { mStdOutHandler = stdOutHandler;  }
 		void attachToStdErr(pipeHandler stdErrHandler) { mStdErrHandler = stdErrHandler; }
+		
+		/// Attach a string to stdout. Everything added to the string is appended.
+		/// \param str The string to append stdout to
+		/// \note Don't try to read from `str` while the program is running, it could create a race condition.
+		/// Io is read in a separate thread
+		void attachStringToStdOut(std::string& str) {
+			attachToStdOut([&str](const char* data, size_t size) {
+				str.append(data, size);
+			});
+		}
+		
+		/// Attach a string to stderr. Everything added to the string is appended.
+		/// \param str The string to append stderr to
+		/// \note Don't try to read from `str` while the program is running, it could create a race condition.
+		/// Io is read in a separate thread
+		void attachStringToStdErr(std::string& str) {
+			attachToStdErr([&str](const char* data, size_t size) {
+				str.append(data, size);
+			});
+		}
+		
+		
 
-
+		
 		void setWorkingDirectory(boost::filesystem::path newWd) {
 			mWorkingDir = std::move(newWd);
 		}
 		
+		/// \pre `started()`
+		/// \prre `!isStdInClosed()`
 		Result pushToStdIn(const char* data, size_t size);
+		
+		/// \pre `!isStdInClosed()`
+		/// \pre `running()`
+		/// \post `isstdInClosed()`
 		Result closeStdIn();
+		
+		bool isStdInClosed() const { return mStdInClosed; }
 
+		/// \pre `!started()`
 		Result start();
+		
+		/// \pre `started()`
 		void kill();
 
 		void wait();
@@ -55,9 +97,10 @@ namespace chi{
 		// wait and get exit code
 		int exitCode();
 
-		bool running();
-
-		void wait_for(std::chrono::milliseconds duration);
+		/// \pre `started()`
+		bool running() const;
+		
+		bool started() const { return mStarted; }
 
 	private:
 		struct Implementation;
@@ -71,6 +114,9 @@ namespace chi{
 		boost::filesystem::path mExePath;
 
 		boost::filesystem::path mWorkingDir = boost::filesystem::current_path();
+		
+		bool mStarted = false;
+		bool mStdInClosed = false;
 	};
 
 	template<typename ForwardIterator>
