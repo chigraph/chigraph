@@ -70,7 +70,7 @@ struct Subprocess {
 	/// \param begin The start iterator of arguments. Should be an iterator of something
 	/// converatable to std::string
 	/// \param end The end iterator. Should be an iterator of something converatable to std::string
-	/// \pre `!started()`
+	/// \pre `started() == false`
 	template <typename ForwardIterator>
 	void setArguments(const ForwardIterator& begin, const ForwardIterator& end) {
 		// make sure the iterator type is good to go
@@ -78,14 +78,14 @@ struct Subprocess {
 	                                  std::string>::value,
 	              "Cannot run setArguments with iterators not convertable to std::string");
 
-	assert(!started() && "Cannot set arguments after start() has been called");
+	assert(!started()&& "Cannot set arguments after start() has been called");
 
 	mArguments = std::vector<std::string>(begin, end);
 	}
 
 	/// Set the arguments for the program with a range
 	/// \param range The range. Must have `begin()` and `end()` functions, which return iterators.
-	/// \pre `!started()`
+	/// \pre `started() == false`
 	template <typename Range>
 	void setArguments(Range&& range) {
 		setArguments(std::forward<Range>(range).begin(), std::forward<Range>(range).end());
@@ -93,7 +93,7 @@ struct Subprocess {
 
 	/// Set the arguments for the program with an initializer_list
 	/// \param init the initializer list
-	/// \pre `!started()`
+	/// \pre `started() == false`
 	void setArguments(std::initializer_list<const char*> init) {
 		setArguments(init.begin(), init.end());
 	}
@@ -106,7 +106,7 @@ struct Subprocess {
 	/// stdout pipe of the child, it will be sent to this handler
 	/// \param stdOutHandler The handler
 	/// \note `stdOutHandler` will exclusively be called from another thread.
-	/// \pre `!started()`
+	/// \pre `started() == false`
 	void attachToStdOut(pipeHandler stdOutHandler) {
 		assert(!started() &&
 		       "Cannot attach a differnt function to stdout after start() has been called");
@@ -117,9 +117,9 @@ struct Subprocess {
 	/// stderr pipe of the child, it will be sent to this handler
 	/// \param stdErrHandler The handler
 	/// \note `stdErrHandler` will exclusively be called from another thread.
-	/// \pre `!started()`
+	/// \pre `started() == false`
 	void attachToStdErr(pipeHandler stdErrHandler) {
-		assert(!started() &&
+		assert(!started()&&
 		       "Cannot attach a differnt function to stderr after start() has been called");
 		mStdErrHandler = stdErrHandler;
 	}
@@ -129,7 +129,7 @@ struct Subprocess {
 	/// \param str The string to append stdout to
 	/// \note Don't try to read from `str` while the program is running, it could create a race
 	/// condition.
-	/// \pre `!started()`
+	/// \pre `started() == false`
 	void attachStringToStdOut(std::string& str) {
 		attachToStdOut([&str](const char* data, size_t size) { str.append(data, size); });
 	}
@@ -139,14 +139,14 @@ struct Subprocess {
 	/// \param str The string to append stderr to
 	/// \note Don't try to read from `str` while the program is running, it could create a race
 	/// condition.
-	/// \pre `!started()`
+	/// \pre `started() == false`
 	void attachStringToStdErr(std::string& str) {
 		attachToStdErr([&str](const char* data, size_t size) { str.append(data, size); });
 	}
 
 	/// Set the working directory of the process.
 	/// \param newWd The new working directory
-	/// \pre `!started()`
+	/// \pre `started() == false`
 	void setWorkingDirectory(boost::filesystem::path newWd) { mWorkingDir = std::move(newWd); }
 
 	/// \}
@@ -154,7 +154,7 @@ struct Subprocess {
 	/// Start the process.
 	/// After this is called, most of the Setup Functions cannot be called anymore
 	/// \return The Result.
-	/// \pre `!started()`
+	/// \pre `started() == false`
 	/// \post `started()`
 	Result start();
 	
