@@ -1,3 +1,5 @@
+/// \file Subprocess.cpp
+
 #include "chi/Subprocess.hpp"
 
 #include "chi/Result.hpp"
@@ -257,6 +259,9 @@ void Subprocess::kill() {
 }
 
 void Subprocess::wait() {
+	
+	assert(started() && "Cannot wait for a process before it's started");
+	
 	// wait for it to complete
 	WaitForSingleObject(mPimpl->procInfo.hProcess, INFINITE);
 }
@@ -272,7 +277,7 @@ int chi::Subprocess::exitCode() {
 	return exitCode;
 }
 
-bool Subprocess::running() const {
+bool Subprocess::running() {
 	assert(started() && "Must start a process before checking if it's running");
 	
 	if (mPimpl->procInfo.hProcess == 0) { return false; }
@@ -394,15 +399,15 @@ Result Subprocess::start() {
 		// make read end of stdin pipe the stdin stream, and same for the other pipes
 		dup2(mPimpl->stdinPipe[0], 0);
 		dup2(mPimpl->stdoutPipe[1], 1);
-		dup2(mPimpl->stdoutPipe[1], 2);
+		dup2(mPimpl->stderrPipe[1], 2);
 
 		// close the other fds, we don't need them
 		close(mPimpl->stdinPipe[0]);
 		close(mPimpl->stdinPipe[1]);
 		close(mPimpl->stdoutPipe[0]);
-		close(mPimpl->stdinPipe[1]);
+		close(mPimpl->stdoutPipe[1]);
 		close(mPimpl->stderrPipe[0]);
-		close(mPimpl->stdinPipe[1]);
+		close(mPimpl->stderrPipe[1]);
 
 		// close open fds for the process (other than 0, 1, and 2 which are the std streams)
 		// https://stackoverflow.com/questions/899038/getting-the-highest-allocated-file-descriptor/899533#899533
@@ -417,6 +422,7 @@ Result Subprocess::start() {
 		std::string        exePathStr = mExePath.string();
 		argv.push_back(&exePathStr[0]);
 		for (auto& arg : mArguments) { argv.push_back(&arg[0]); }
+		argv.push_back(nullptr);
 
 		// run the process
 		execvp(mExePath.c_str(), argv.data());
@@ -447,8 +453,12 @@ Result Subprocess::start() {
 				return;
 			}
 
-			// 0 is EOF
-			if (bytesRead != 0 && mStdOutHandler) { mStdOutHandler(buffer.data(), bytesRead); }
+			// 0 is EOF			
+			if (bytesRead == 0) {
+				return;
+			}
+			
+			if (mStdOutHandler) { mStdOutHandler(buffer.data(), bytesRead); }
 		}
 	});
 
@@ -464,8 +474,12 @@ Result Subprocess::start() {
 				return;
 			}
 
-			// 0 is EOF
-			if (bytesRead != 0 && mStdErrHandler) { mStdErrHandler(buffer.data(), bytesRead); }
+			// 0 is EOF			
+			if (bytesRead == 0) {
+				return;
+			}
+
+			if (mStdErrHandler) { mStdErrHandler(buffer.data(), bytesRead); }
 		}
 	});
 
@@ -480,29 +494,56 @@ void Subprocess::kill() {
 }
 
 void Subprocess::wait() { 
-	int exit_status;
-	waitpid(mPimpl->childPID, &exit_status, 0); 
-}
-
-int chi::Subprocess::exitCode() {
+	
+	assert(started() && "Cannot wait for a process before it's started");
 	
 	int exit_status;
 	waitpid(mPimpl->childPID, &exit_status, 0);
 	
 	if (WIFEXITED(exit_status)) {
-		return WEXITSTATUS(exit_status);
+		mExitCode = WEXITSTATUS(exit_status);
+	}
+	
+}
+
+int chi::Subprocess::exitCode() {
+	
+	assert(started() && "Cannot get the exit code of a process before it's started");
+	
+	if (mExitCode) {
+		return *mExitCode;
+	}
+	
+	int exit_status;
+	if (waitpid(mPimpl->childPID, &exit_status, 0) == -1) {
+		return -1;
+	}
+	
+	if (WIFEXITED(exit_status)) {
+		mExitCode = WEXITSTATUS(exit_status);
+		return *mExitCode;
 	}
 	
 	return -1;
 }
 
-bool Subprocess::running() const {
+bool Subprocess::running() {
 	assert(started() && "Must start a process before checking if it's running");
 	
 	int exit_status;
-	waitpid(mPimpl->childPID, &exit_status, WNOHANG); // WNOHAND makes sure it doesn't wait until the process is done
 	
-	return !bool(WIFSTOPPED(exit_status));
+	// WNOHANG makes sure it doesn't wait until the process is done
+	int status = waitpid(mPimpl->childPID, &exit_status, WNOHANG);
+	if (status == -1) {
+		return false; // error
+	}
+	if (status == 0) {
+		return true;
+	}
+	if (WIFEXITED(exit_status)) {
+		mExitCode = int(WEXITSTATUS(exit_status));
+	}
+	return false;
 }
 
 }  // namespace chi

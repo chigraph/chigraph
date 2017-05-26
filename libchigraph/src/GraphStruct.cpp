@@ -1,3 +1,5 @@
+/// \file GraphStruct.cpp
+
 #include "chi/GraphStruct.hpp"
 #include "chi/Context.hpp"
 #include "chi/GraphModule.hpp"

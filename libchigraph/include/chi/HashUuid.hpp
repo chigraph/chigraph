@@ -1,3 +1,7 @@
+/// \file HashUuid.hpp
+
+#pragma once
+
 #ifndef CHI_HASH_UUID
 #define CHI_HASH_UUID
 

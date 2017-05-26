@@ -1,3 +1,5 @@
+/// \file HashFilesystemPath.hpp
+
 #pragma once
 
 #ifndef CHI_HASH_FILESYSTEM_PATH_HPP

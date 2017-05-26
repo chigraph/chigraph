@@ -19,6 +19,7 @@ TEST_CASE("Subprocess", "") {
 		".exe"
 #endif
 		;
+	std::cout << "Subprocess tester path: " << childPath << std::endl;
 
 
 	std::string stdOut, stdErr;
@@ -26,12 +27,8 @@ TEST_CASE("Subprocess", "") {
 	auto attachToPipes = [&stdOut, &stdErr](Subprocess& child) {
 		stdOut.clear();
 		stdErr.clear();
-		child.attachToStdErr([&stdErr](const char* data, size_t size) {
-			stdErr.append(data, size);
-		});
-		child.attachToStdOut([&stdOut](const char* data, size_t size) {
-			stdOut.append(data, size);
-		});
+		child.attachStringToStdErr(stdErr);
+		child.attachStringToStdOut(stdOut);
 	};
 
 	Result res;
@@ -45,8 +42,8 @@ TEST_CASE("Subprocess", "") {
 
 		// wait
 		auto code = child.exitCode();
-		REQUIRE(code == 0);
 		REQUIRE(res.dump() == "");
+		REQUIRE(code == 0);
 		REQUIRE(stdOut == "Hello World!");
 		REQUIRE(stdErr == "");
 		REQUIRE(!child.running());
@@ -66,8 +63,8 @@ TEST_CASE("Subprocess", "") {
 
 		// wait
 		auto code = child.exitCode();
-		REQUIRE(code == 0);
 		REQUIRE(res.dump() == "");
+		REQUIRE(code == 0);
 		REQUIRE(stdOut == "hello");
 		REQUIRE(stdErr == "");
 		REQUIRE(!child.running());
@@ -86,8 +83,8 @@ TEST_CASE("Subprocess", "") {
 
 		// wait
 		auto code = child.exitCode();
-		REQUIRE(code == 0);
 		REQUIRE(res.dump() == "");
+		REQUIRE(code == 0);
 		REQUIRE(stdOut == "");
 		REQUIRE(stdErr == "hello");
 		REQUIRE(!child.running());
@@ -106,8 +103,8 @@ TEST_CASE("Subprocess", "") {
 
 		// wait
 		auto code = child.exitCode();
-		REQUIRE(code == 0);
 		REQUIRE(res.dump() == "");
+		REQUIRE(code == 0);
 		REQUIRE(stdOut == "hello");
 		REQUIRE(stdErr == "hello");
 		REQUIRE(!child.running());
@@ -124,8 +121,8 @@ TEST_CASE("Subprocess", "") {
 
 		// wait
 		auto code = child.exitCode();
-		REQUIRE(code == 1);
 		REQUIRE(res.dump() == "");
+		REQUIRE(code == 1);
 		REQUIRE(stdOut == "");
 		REQUIRE(stdErr == "");
 		REQUIRE(!child.running());
@@ -147,8 +144,8 @@ TEST_CASE("Subprocess", "") {
 
 		// wait
 		auto code = child.exitCode();
-		REQUIRE(code == 0);
 		REQUIRE(res.dump() == "");
+		REQUIRE(code == 0);
 		REQUIRE(stdOut == "");
 		REQUIRE(stdErr == "");
 		REQUIRE(!child.running());

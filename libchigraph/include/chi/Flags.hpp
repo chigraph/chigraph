@@ -1,3 +1,5 @@
+/// \file Flags.hpp
+
 #pragma once
 
 #ifndef CHI_FLAGS_HPP

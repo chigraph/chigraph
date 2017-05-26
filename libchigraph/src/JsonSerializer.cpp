@@ -1,3 +1,5 @@
+/// \file JsonSerializer.cpp
+
 #include "chi/JsonSerializer.hpp"
 #include "chi/DataType.hpp"
 #include "chi/GraphFunction.hpp"

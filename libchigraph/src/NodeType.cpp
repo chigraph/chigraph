@@ -1,3 +1,5 @@
+/// \file NodeType.cpp
+
 #include "chi/NodeType.hpp"
 #include "chi/ChiModule.hpp"
 #include "chi/DataType.hpp"
