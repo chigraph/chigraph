@@ -291,7 +291,7 @@ bool Subprocess::running() {
 // POSIX implementation
 #else
 
-#include <bits/signum.h>
+#include <signal.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
