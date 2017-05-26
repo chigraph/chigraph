@@ -1,5 +1,4 @@
-#include <libexecstream/exec-stream.h>
-
+#include <chi/Subprocess.hpp>
 #include <chi/Context.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/JsonSerializer.hpp>
@@ -30,23 +29,14 @@ using namespace nlohmann;
 
 namespace fs = boost::filesystem;
 
-#ifndef WIN32
-const char* exesuffix = "";
+const char* exesuffix =
+#ifdef WIN32
+	"exe"
 #else
-const char* exesuffix = ".exe";
+	""
 #endif
+	;
 
-// read a whole stream to a string
-std::string read_all(std::istream& i) {
-	std::string one;
-	std::string ret;
-	while (std::getline(i, one).good()) {
-		ret += one;
-		ret += "\n";
-	}
-	ret += one;
-	return ret;
-}
 
 std::string areArrayEqualUnordered(json lhs, json rhs) {
 	std::vector<json> objects;
@@ -211,48 +201,41 @@ int main(int argc, char** argv) {
 	std::cout << "Testing " << testdesc << " with expected stdout: \"" << expectedcout
 	          << "\" and expected stderr \"" << expectedcerr << "\"" << std::endl;
 
-	auto chigExePath = fs::current_path() / ("chi" + std::string(exesuffix));
-
-	auto         modfile = moduleDir / "main.chimod";
-	fs::ifstream inmodfile(modfile);
-	json         chigmodule;
-	inmodfile >> chigmodule;
+	auto chiExePath = fs::current_path() / ("chi" + std::string(exesuffix));
 
 	fs::current_path(moduleDir);
 
 	std::cout << "Testing with chi compile | chi interpret...";
 	std::cout.flush();
 
+	Result res;
+
 	// chig compile + lli
 	{
 		std::string generatedir, chigstderr;
 		// go through chig compile
-		try {
-			exec_stream_t chigexe;
+		{
+			Subprocess chiexe{ chiExePath };
+			chiexe.setArguments({ "compile", "main.chimod" });
+			chiexe.attachToStdErr([&chigstderr](const char* data, size_t size) {
+				chigstderr.append(data, size);
+			});
+			chiexe.attachToStdOut([&generatedir](const char* data, size_t size) {
+				generatedir.append(data, size);
+			});
 
-			chigexe.set_wait_timeout(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 100'000);
-			chigexe.set_buffer_limit(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 10'000'000);
-
-			chigexe.start(chigExePath.string(), "compile main.chimod");
-
-			generatedir = read_all(chigexe.out());
-			chigstderr  = read_all(chigexe.err());
-
-			if (!chigexe.close()) {
-				std::cerr << "Failed to close chi compile executable" << std::endl;
+			res += chiexe.start();
+			if (!res) {
+				std::cerr << res << std::endl;
 				return 1;
 			}
+
 			// check stderr and return code
-			if (chigexe.exit_code() != 0) {
+			if (chiexe.exitCode() != 0) {
 				std::cerr << "Failed to generate module with chig compile: \n"
 				          << chigstderr << std::endl;
 				return 1;
 			}
-		} catch (std::exception& e) {
-			std::cerr << "Failed to run with chi compile | chi interpret" << std::endl;
-			return 1;
 		}
 
 		std::cout << "Compiled...";
@@ -260,32 +243,36 @@ int main(int argc, char** argv) {
 
 		std::string llistdout, llistderr;
 
-		try {
+		{
 			// now go through lli
-			exec_stream_t lliexe;
+			Subprocess interpretexe{ chiExePath };
+			interpretexe.setArguments({"interpret"});
+			interpretexe.attachToStdErr([&llistderr](const char* data, size_t size) {
+				llistderr.append(data, size);
+			});
+			interpretexe.attachToStdOut([&llistdout](const char* data, size_t size) {
+				llistdout.append(data, size);
+			});
 
-			lliexe.set_wait_timeout(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 100'000);
-			lliexe.set_buffer_limit(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 10'000'000);
-
-			lliexe.start(chigExePath.string(), "interpret");
-
-			lliexe.in() << generatedir;
-			if (!lliexe.close_in()) {
-				std::cerr << "Failed to close stdin for chi interpret" << std::endl;
+			res += interpretexe.start();
+			if (!res) {
+				std::cerr << res << std::endl;
 				return 1;
 			}
 
-			llistdout = read_all(lliexe.out());
-			llistderr = read_all(lliexe.err());
-
-			if (!lliexe.close()) {
-				std::cerr << "Failed to close chi interpret" << std::endl;
+			res += interpretexe.pushToStdIn(generatedir.data(), generatedir.size());
+			if (!res) {
+				std::cerr << res << std::endl;
 				return 1;
 			}
 
-			int retcodelli = lliexe.exit_code();
+			res += interpretexe.closeStdIn();
+			if (!res) {
+				std::cerr << res << std::endl;
+				return 1;
+			}
+
+			int retcodelli = interpretexe.exitCode();
 
 			if (retcodelli != expectedreturncode) {
 				std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was "
@@ -320,9 +307,6 @@ int main(int argc, char** argv) {
 				return 1;
 			}
 
-		} catch (std::exception& e) {
-			std::cerr << "Failed to run chi interpret: " << e.what() << std::endl;
-			return 1;
 		}
 
 		std::cout << "Suceeded." << std::endl;
@@ -335,25 +319,22 @@ int main(int argc, char** argv) {
 	{
 		std::string generatedstdout, generatedstderr;
 		// go through chig compile
-		try {
-			exec_stream_t chigexe;
+		{
+			Subprocess chiexe{ chiExePath };
+			chiexe.attachToStdErr([&generatedstderr](const char* data, size_t size) {
+				generatedstderr.append(data, size);
+			});
+			chiexe.attachToStdOut([&generatedstdout](const char* data, size_t size) {
+				generatedstdout.append(data, size);
+			});
 
-			chigexe.set_wait_timeout(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 100'000);
-			chigexe.set_buffer_limit(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 10'000'000);
-
-			chigexe.start(chigExePath.string(), "run main.chimod");
-
-			generatedstdout = read_all(chigexe.out());
-			generatedstderr = read_all(chigexe.err());
-
-			if (!chigexe.close()) {
-				std::cerr << "Failed to close chi run" << std::endl;
+			res += chiexe.start();
+			if (!res) {
+				std::cerr << res << std::endl;
 				return 1;
 			}
 
-			int retcode = chigexe.exit_code();
+			int retcode = chiexe.exitCode();
 
 			if (retcode != expectedreturncode) {
 				std::cerr << "(chig run) Unexpected retcode: " << retcode << " expected was "
@@ -382,9 +363,6 @@ int main(int argc, char** argv) {
 				return 1;
 			}
 
-		} catch (std::exception& e) {
-			std::cerr << "Failed to run chi run: " << e.what() << std::endl;
-			return 1;
 		}
 
 		std::cout << "done." << std::endl;
@@ -395,109 +373,102 @@ int main(int argc, char** argv) {
 	{
 		std::string generatedir, chigstderr;
 		// go through chig compile
+		{
+			Subprocess chiexe{ chiExePath };
+			chiexe.setArguments({ "compile", "-tbc", "main.chimod" });
+			chiexe.attachToStdErr([&chigstderr](const char* data, size_t size) {
+				chigstderr.append(data, size);
+			});
+			chiexe.attachToStdOut([&generatedir](const char* data, size_t size) {
+				generatedir.append(data, size);
+			});
 
-		try {
-			exec_stream_t chigexe;
-
-			chigexe.set_wait_timeout(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 100'000);
-			chigexe.set_buffer_limit(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 10'000'000);
-
-			chigexe.set_binary_mode(exec_stream_t::s_out);
-
-			chigexe.start(chigExePath.string(), "compile -tbc main.chimod");
-
-			generatedir = read_all(chigexe.out());
-			chigstderr  = read_all(chigexe.err());
-
-			if (!chigexe.close()) {
-				std::cerr << "Failed to close chi compile -tbc" << std::endl;
+			res += chiexe.start();
+			if (!res) {
+				std::cerr << res << std::endl;
 				return 1;
 			}
 
 			// check stderr and return code
-			if (chigexe.exit_code() != 0) {
-				std::cerr << "Failed to generate module with chig compile: \n"
-				          << chigstderr << std::endl;
+			if (chiexe.exitCode() != 0) {
+				std::cerr << "Failed to generate module with chi compile: \n"
+					<< chigstderr << std::endl;
 				return 1;
 			}
-
-		} catch (std::exception& e) {
-			std::cerr << "Failed to run chi compile -tbc: " << e.what() << std::endl;
-			return 1;
 		}
 
-		std::cout << "compiled...";
+		std::cout << "Compiled...";
 		std::cout.flush();
 
 		std::string llistdout, llistderr;
 
-		// now go through lli
+		{
+			// now go through lli
+			Subprocess interpretexe{ chiExePath };
+			interpretexe.setArguments({ "interpret" });
+			interpretexe.attachToStdErr([&llistderr](const char* data, size_t size) {
+				llistderr.append(data, size);
+			});
+			interpretexe.attachToStdOut([&llistdout](const char* data, size_t size) {
+				llistdout.append(data, size);
+			});
 
-		try {
-			exec_stream_t lliexe;
-
-			lliexe.set_wait_timeout(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 100'000);
-			lliexe.set_buffer_limit(
-			    exec_stream_t::s_out | exec_stream_t::s_err | exec_stream_t::s_in, 10'000'000);
-
-			lliexe.set_binary_mode(exec_stream_t::s_in);
-
-			lliexe.start(chigExePath.string(), "interpret");
-
-			lliexe.in() << generatedir;
-			if (!lliexe.close_in()) {
-				std::cerr << "Failed to close input stream for chi interpret for chi compile -tbc"
-				          << std::endl;
+			res += interpretexe.start();
+			if (!res) {
+				std::cerr << res << std::endl;
 				return 1;
 			}
 
-			llistdout = read_all(lliexe.out());
-			llistderr = read_all(lliexe.err());
-
-			if (!lliexe.close()) {
-				std::cerr << "Failed to close chi interpret executable for chi compile -tbc"
-				          << std::endl;
+			res += interpretexe.pushToStdIn(generatedir.data(), generatedir.size());
+			if (!res) {
+				std::cerr << res << std::endl;
 				return 1;
 			}
-			int retcodelli = lliexe.exit_code();
+
+			res += interpretexe.closeStdIn();
+			if (!res) {
+				std::cerr << res << std::endl;
+				return 1;
+			}
+
+			int retcodelli = interpretexe.exitCode();
 
 			if (retcodelli != expectedreturncode) {
-				std::cerr << "(lli bc) Unexpected retcode: " << retcodelli << " expected was "
-				          << expectedreturncode << std::endl
-				          << "stdout: \"" << llistdout << "\"" << std::endl
-				          << "stderr: \"" << llistderr << "\"" << std::endl;
+				std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was "
+					<< expectedreturncode << std::endl
+					<< "stdout: \"" << llistdout << "\"" << std::endl
+					<< "stderr: \"" << llistderr << "\"" << std::endl
+					<< "generated IR" << std::endl
+					<< generatedir << std::endl;
 
 				return 1;
 			}
 
 			if (llistdout != expectedcout) {
-				std::cerr << "(lli bc) Unexpected stdout: \"" << llistdout << "\" expected was \""
-				          << expectedcout << '\"' << std::endl
-				          << "retcode: \"" << retcodelli << "\"" << std::endl
-				          << "stderr: \"" << llistderr << "\"" << std::endl;
+				std::cerr << "(lli ll) Unexpected stdout: \"" << llistdout << "\" expected was \""
+					<< expectedcout << "\"" << std::endl
+					<< "retcode: \"" << retcodelli << "\"" << std::endl
+					<< "stderr: \"" << llistderr << "\"" << std::endl
+					<< "generated IR" << std::endl
+					<< generatedir << std::endl;
 
 				return 1;
 			}
 
 			if (llistderr != expectedcerr) {
-				std::cerr << "(lli bc) Unexpected stderr: \"" << stderr << "\" expected was \""
-				          << expectedcerr << '\"' << std::endl
-				          << "retcode: \"" << retcodelli << "\"" << std::endl
-				          << "stdout: \"" << llistdout << "\"" << std::endl;
+				std::cerr << "(lli ll) Unexpected stderr: \"" << stderr << "\" expected was \""
+					<< expectedcerr << '\"' << std::endl
+					<< "retcode: \"" << retcodelli << "\"" << std::endl
+					<< "stdout: \"" << llistdout << "\"" << std::endl
+					<< "generated IR" << std::endl
+					<< generatedir << std::endl;
 
 				return 1;
 			}
 
-		} catch (std::exception& e) {
-			std::cerr << "Failed to run chi interpret for chi compile -tbc: " << e.what()
-			          << std::endl;
-			return 1;
 		}
 
-		std::cout << "done." << std::endl;
+		std::cout << "Suceeded." << std::endl;
 	}
 
 	std::cout << "Testing serialize+deserialize...";
@@ -531,11 +502,17 @@ int main(int argc, char** argv) {
 			return 1;
 		}
 
-		std::string err = areJsonEqual(serializedmodule, chigmodule);
+		// load the module into memory
+		auto         modfile = moduleDir / "main.chimod";
+		fs::ifstream inmodfile(modfile);
+		json         chimodule;
+		inmodfile >> chimodule;
+
+		std::string err = areJsonEqual(serializedmodule, chimodule);
 		if (!err.empty()) {
 			std::cerr << "Serialization and deserialization failed. error: " + err +
 			                 "\n\n======ORIGINAL=======\n\n\n"
-			          << chigmodule.dump(-1) << "\n\n\n\n======SERIALIZED=====\n\n\n\n"
+			          << chimodule.dump(-1) << "\n\n\n\n======SERIALIZED=====\n\n\n\n"
 			          << serializedmodule.dump(-1) << std::endl;
 			return 1;
 		}

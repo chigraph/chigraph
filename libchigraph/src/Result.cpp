@@ -48,7 +48,8 @@ std::string prettyPrintJson(const nlohmann::json& j, int indentLevel) {
 namespace chi {
 
 void Result::addEntry(const char* ec, const char* overview, nlohmann::json data) {
-	assert(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W');
+	assert(ec[0] == 'E' || ec[0] == 'I' || ec[0] == 'W' && "error code passed to addEntry must start with E, I , or W");
+	assert((data.is_object() || data.is_null()) && "data passed to addEntry must be a json object or {}");
 
 	mergeJsonIntoConservative(data, contextJson());
 

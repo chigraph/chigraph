@@ -120,7 +120,6 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 
 		THEN("Load module should fail") {
 			REQUIRE(!c.loadModule("github.com/hello"));
-			REQUIRE(!c.loadModule(""));
 		}
 	}
 

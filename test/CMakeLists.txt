@@ -1,14 +1,10 @@
 include_directories(../third_party/Catch/include)
 
-# make llvm happy
-add_definitions("-D__STDC_LIMIT_MACROS")
-add_definitions("-D__STDC_CONSTANT_MACROS")
-
 set(TEST_SRCS
 	main.cpp
 	TestCommon.hpp
 	ContextTests.cpp
-	JSONSerializer.cpp
+	JSONSerializerTests.cpp
 	LangModuleTests.cpp
 	NameManglerTests.cpp
 	GraphModuleTest.cpp
@@ -17,6 +13,7 @@ set(TEST_SRCS
 	GraphFunctionExitTest.cpp
 	GraphFunctionInOutsTest.cpp
 	FetchTests.cpp
+	SubprocessTest.cpp
 )
 
 set(DEBUGGER_TEST_SRCS
@@ -38,6 +35,12 @@ add_test(NAME api_tests
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMAND api_tests
 )
+
+# add subprocess test executable
+add_executable(subprocess_tester_child SubprocessTesterChild.cpp)
+target_link_libraries(subprocess_tester_child)
+
+add_dependencies(api_tests subprocess_tester_child)
 
 add_subdirectory(error)
 add_subdirectory(codegen)

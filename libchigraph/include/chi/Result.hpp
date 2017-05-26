@@ -94,7 +94,8 @@ struct Result {
 	/// true.
 	/// \param overview Basic overview of the error, this shouldn't change based on the instance of
 	/// the error
-	/// \param data The detailed description this instance of the error
+	/// \param data The detailed description this instance of the error. 
+	/// \pre `data.is_object() == true`
 	void addEntry(const char* ec, const char* overview, nlohmann::json data);
 
 	/// Add some json that will ALWAYS be merged with entries that are added and when results are

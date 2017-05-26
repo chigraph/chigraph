@@ -32,7 +32,9 @@ namespace chi{
 		void setArguments(const ForwardIterator& begin, const ForwardIterator& end);
 
 		template<typename Range>
-		void setArguments(const Range& range);
+		void setArguments(Range&& range);
+
+		void setArguments(std::initializer_list<const char*> init);
 
 		const std::vector<std::string>& arguments() { return mArguments; }
 
@@ -80,9 +82,14 @@ namespace chi{
 	}
 
 	template<typename Range>
-	inline void Subprocess::setArguments(const Range& range)
+	inline void Subprocess::setArguments(Range&& range)
 	{
-		mArguments = std::vector<std::string>(range.begin(), range.end());
+		mArguments = std::vector<std::string>(std::forward<Range>(range).begin(), std::forward<Range>(range).end());
+	}
+
+	inline void Subprocess::setArguments(std::initializer_list<const char*> init)
+	{
+		mArguments = std::vector<std::string>(init.begin(), init.end());
 	}
 
 }
