@@ -89,7 +89,7 @@ std::unique_ptr<llvm::Module> ModuleCache::retrieveFromCache(
 	auto bcFileBufferOrError = llvm::MemoryBuffer::getFile(cachePath.string());
 	if (!bcFileBufferOrError) { return nullptr; }
 
-	auto errorOrMod = llvm::parseBitcodeFile(llvm::MemoryBufferRef(*bcFileBufferOrError.get()),
+	auto errorOrMod = llvm::parseBitcodeFile(bcFileBufferOrError.get()->getMemBufferRef(),
 	                                         context().llvmContext());
 
 	if (!errorOrMod) {
