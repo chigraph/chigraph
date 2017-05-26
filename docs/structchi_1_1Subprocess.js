@@ -13,7 +13,7 @@ var structchi_1_1Subprocess =
     [ "isStdInClosed", "structchi_1_1Subprocess.html#a9497b25fd496cd7a0ad464dfeb6e242d", null ],
     [ "kill", "structchi_1_1Subprocess.html#aaaf29ada876d6088621cc0d8c84c7e47", null ],
     [ "pushToStdIn", "structchi_1_1Subprocess.html#a62114d525126e682028af5a906f771a6", null ],
-    [ "running", "structchi_1_1Subprocess.html#ae9bc9855657b24db334384661644a80b", null ],
+    [ "running", "structchi_1_1Subprocess.html#ab07c04b4c4ef24cde067e11faf0837ce", null ],
     [ "setArguments", "structchi_1_1Subprocess.html#a38101f1406d62b1dc386072f576b990f", null ],
     [ "setArguments", "structchi_1_1Subprocess.html#a8a66d790bd0984727c5a45e00fb05f58", null ],
     [ "setArguments", "structchi_1_1Subprocess.html#ae280118b573601a288c6c8eaac834d6c", null ],
