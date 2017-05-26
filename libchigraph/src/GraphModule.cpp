@@ -75,12 +75,8 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 			ctollvmExe.setArguments(argsToChiCtoLLVM);
 
 			std::string errs;
-			ctollvmExe.attachToStdOut([&generatedBitcode](const char* data, size_t size) {
-				generatedBitcode.append(data, size);
-			});
-			ctollvmExe.attachToStdErr([&errs](const char* data, size_t size) {
-				errs.append(data, size);
-			});
+			ctollvmExe.attachStringToStdOut(generatedBitcode);
+			ctollvmExe.attachStringToStdErr(errs);
 
 			res += ctollvmExe.start();
 

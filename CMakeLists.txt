@@ -10,7 +10,8 @@ endif()
 set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
-option(CG_BUILD_DEBUGGER "Should the debugger be built" ON)
+option(CG_BUILD_EXAMPLES "Should the examples be built?" OFF)
+option(CG_BUILD_DEBUGGER "Should the debugger be built?" ON)
 option(CG_USE_SYSTEM_LIBGIT2 "Should the system try to find libgit2 from the system instead of the packaged version" OFF)
 option(CG_USE_SYSTEM_BOOST "Should the system try to find boost from the system instead of the packaged version" OFF)
 option(CG_INSTALL_STANDARD_CLANG_HEADERS "Should the system install the lib/clang folder? Set this to on if you are installing to somewhere other than the clang install prerix." OFF)
@@ -23,11 +24,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # make sure the rpath is good to go
 list(APPEND CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
-
-if (CG_BUILD_TESTS)
-	# disable tests
-	set(BUILD_CLAR OFF CACHE BOOL "")
-endif()
 
 if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
 	include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CheckCXX11Features.cmake)
@@ -49,12 +45,12 @@ else()
 endif()
 
 # compile libgit2
-if (NOT CG_USE_SYSTEM_LIBGIT2)
+if (CG_USE_SYSTEM_LIBGIT2)
+	find_package(libgit2 REQUIRED)
+else()
 	add_subdirectory(third_party/libgit2)
 	set(LIBGIT2_LIBRARIES git2)
 	set(LIBGIT2_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/libgit2/include)
-else()
-	find_package(libgit2 REQUIRED)
 endif()
 
 # find llvm-config. This dictates which clang etc is uses.
@@ -80,6 +76,11 @@ add_subdirectory(chi)
 if(CG_BUILD_TESTS)
 	enable_testing()
 	add_subdirectory(test)
+endif()
+
+# Examples
+if (CG_BUILD_EXAMPLES)
+	add_subdirectory(examples)
 endif()
 
 # Documentation
