@@ -32,6 +32,26 @@ else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_GREATER 3.1 OR ${CMAK
 	target_compile_features(chigraphgui PRIVATE cxx_variable_templates)
 endif()
 
+# find llvm-config. This dictates which clang etc is uses.
+# Clang MUST be installed in the same directory.
+find_program(LLVM_CONFIG llvm-config REQUIRED)
+message(STATUS "llvm-config found at ${LLVM_CONFIG}")
+
+execute_process(COMMAND ${LLVM_CONFIG} --version OUTPUT_VARIABLE LLVM_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+message(STATUS "LLVM version: ${LLVM_VERSION}")
+
+# see if llvm is built with expensive checks, which requires us to add -D_GLIBCXX_DEBUG to boost
+if (UNIX AND NOT APPLE)
+	execute_process(COMMAND ${LLVM_CONFIG} --cppflags OUTPUT_VARIABLE LLVM_CPPFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+	
+	if (LLVM_CPPFLAGS MATCHES ".*EXPENSIVE_CHECKS.*")
+		add_definitions("-D_GLIBCXX_DEBUG")
+		message(STATUS "Adding -D_GLIBCXX_DEBUG because LLVM was built with expensive checks")
+	endif()
+	
+endif()
+
+
 # we're building them ourselves, so don't auto-link in on windows
 add_definitions("-DBOOST_ALL_NO_LIB")
 
@@ -53,13 +73,6 @@ else()
 	set(LIBGIT2_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/libgit2/include)
 endif()
 
-# find llvm-config. This dictates which clang etc is uses.
-# Clang MUST be installed in the same directory.
-find_program(LLVM_CONFIG llvm-config REQUIRED)
-message(STATUS "llvm-config found at ${LLVM_CONFIG}")
-
-execute_process(COMMAND ${LLVM_CONFIG} --version OUTPUT_VARIABLE LLVM_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
-message(STATUS "LLVM version: ${LLVM_VERSION}")
 
 # add libchig
 add_subdirectory(chi-ctollvm)
