@@ -852,7 +852,11 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 
 	mDebugTypes["i8*"] = llvm::DIDerivedType::get(
 	    context().llvmContext(), llvm::dwarf::DW_TAG_pointer_type, nullptr, nullptr, 0, nullptr,
-	    charType, 64, 64, 0, llvm::DINode::DIFlags());  // TODO: 32bit support?
+	    charType, 64, 64, 0,
+#	if LLVM_VERSION_AT_LEAST(5, 0)
+			llvm::None,
+#	endif
+		llvm::DINode::DIFlags());  // TODO: 32bit support?
 #endif
 }
 

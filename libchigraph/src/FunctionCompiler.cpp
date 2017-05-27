@@ -466,7 +466,13 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 
 	// set argument names
 	auto idx = 0ull;
-	for (auto& arg : f->getArgumentList()) {
+	for (auto& arg : f->
+#if LLVM_VERSION_AT_LEAST(5, 0)
+			args()
+#else
+			getArgumentList()
+#endif	
+	) {
 		// the first one is the input exec ID
 		if (idx == 0) {
 			arg.setName("inputexec_id");
