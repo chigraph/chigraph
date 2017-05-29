@@ -19,7 +19,7 @@ build_script:
   - cd ../..
   - mkdir build
   - cd build
-  - cmake -G"Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE="%CONFIGURATION%" ..
+  - cmake -G"Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE="%CONFIGURATION%" -DLLVM_CONFIG="../third_party/llvm-%CONFIGURATION%/bin/llvm-config.exe" ..
   - msbuild chigraph.sln
 
  
