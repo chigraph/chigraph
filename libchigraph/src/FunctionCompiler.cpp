@@ -27,6 +27,230 @@ namespace fs = boost::filesystem;
 
 namespace chi {
 
+
+FunctionCompiler::FunctionCompiler(const chi::GraphFunction& func, llvm::Module& moduleToGenInto, llvm::DICompileUnit& debugCU, llvm::DIBuilder& debugBuilder)
+ :  mModule{&moduleToGenInto}, mDIBuilder{&debugBuilder}, mDebugCU{&debugCU}, mFunction{&func}, mContext{&func.context()} {}
+
+
+Result FunctionCompiler::compile(bool validate) {
+	Result res;
+	auto compilerCtx = res.addScopedContext({{"Function", function().name()}, {"Module", function().module().fullName()}});
+	
+	if (validate) {
+		res += validateFunction(function());
+		if (!res) { return res; }
+	}
+	
+
+	// get the entry node
+	auto entry = function().entryNode();
+	if (entry == nullptr) {
+		res.addEntry("EUKN", "No entry node", {});
+		return res;
+	}
+	
+	// create the debug file
+	auto debugFile = diBuilder().createFile(debugCompileUnit().getFilename(), debugCompileUnit().getDirectory());
+
+
+
+	auto            mangledName = mangleFunctionName(func.module().fullName(), func.name());
+	llvm::Function* f =
+	    llvm::cast<llvm::Function>(mod->getOrInsertFunction(mangledName, func.functionType()));
+
+	auto nodeLocations = func.module().createLineNumberAssoc();
+	auto entryLN       = nodeLocations.right.find(entry)->second;
+
+	// TODO(#65): line numbers?
+	auto debugFunc =
+	    debugBuilder.createFunction(debugFile, func.module().fullName() + ":" + func.name(),
+	                                mangledName, debugFile, entryLN, subroutineType, false, true, 0,
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+	                                0,
+#else
+	                                llvm::DINode::DIFlags{},
+#endif
+	                                false
+#if LLVM_VERSION_LESS_EQUAL(3, 7)
+	                                ,
+	                                f);
+#else
+	                                );
+#if LLVM_VERSION_LESS_EQUAL(3, 9)
+	f->setSubprogram(debugFunc);
+#endif
+#endif
+
+	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
+	llvm::BasicBlock* block =
+	    llvm::BasicBlock::Create(mod->getContext(), boost::uuids::to_string(entry->id()), f);
+	auto blockcpy = block;
+
+	// set argument names
+	auto idx = 0ull;
+	for (auto& arg : f->
+#if LLVM_VERSION_AT_LEAST(5, 0)
+			args()
+#else
+			getArgumentList()
+#endif	
+	) {
+		// the first one is the input exec ID
+		if (idx == 0) {
+			arg.setName("inputexec_id");
+
+			// create debug info
+			DataType intDataType;
+			res += func.context().typeFromModule("lang", "i32", &intDataType);
+			assert(intDataType.valid());
+			auto debugParam = debugBuilder.
+#if LLVM_VERSION_LESS_EQUAL(3, 7)
+			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
+			                                      "inputexec_id", debugFile, entryLN,
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+			                                      *
+#endif
+			                                      intDataType.debugType());
+#else
+
+			                  createParameterVariable(debugFunc, "inputexec_id", 1, debugFile,
+			                                          entryLN, intDataType.debugType());
+#endif
+			debugBuilder
+			    .insertDeclare(&arg, debugParam,
+#if LLVM_VERSION_AT_LEAST(3, 6)
+			                   debugBuilder.createExpression(),
+#if LLVM_VERSION_AT_LEAST(3, 7)
+			                   llvm::DebugLoc::get(entryLN, 1, debugFunc),
+#endif
+#endif
+			                   allocBlock)
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+			    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc))
+#endif
+			    ;  // TODO(#65): "line" numbers
+
+			++idx;
+			continue;
+		}
+
+		NamedDataType tyAndName;
+		// all the - 1's is becaues the first is the inputexec_id
+		if (idx - 1 < func.dataInputs().size()) {
+			tyAndName = func.dataInputs()[idx - 1];
+		} else {
+			tyAndName = func.dataOutputs()[idx - 1 - entry->type().dataOutputs().size()];
+		}
+		arg.setName(tyAndName.name);
+
+		// create debug info
+
+		// create DIType*
+		llvm::DIType* dType      = tyAndName.type.debugType();
+		auto          debugParam = debugBuilder.
+#if LLVM_VERSION_LESS_EQUAL(3, 7)
+		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
+		                                      tyAndName.name, debugFile, entryLN,
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+		                                      *
+#endif
+		                                      dType);
+#else
+		                  createParameterVariable(debugFunc, tyAndName.name,
+		                                          idx + 1,  // + 1 because it starts at 1
+		                                          debugFile, entryLN, dType);
+#endif
+		debugBuilder
+		    .insertDeclare(&arg, debugParam,
+#if LLVM_VERSION_AT_LEAST(3, 6)
+		                   debugBuilder.createExpression(),
+#if LLVM_VERSION_AT_LEAST(3, 7)
+		                   llvm::DebugLoc::get(entryLN, 1, debugFunc),
+#endif
+#endif
+		                   allocBlock)
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+		    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc))
+#endif
+		    ;  // TODO(#65): line numbers
+
+		++idx;
+	}
+
+	codegenMetadata codeMetadata {
+		allocBlock, &debugBuilder,
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+		    &
+#endif
+		    debugFunc,
+		    std::unordered_map<NodeInstance*, Cache>{}, nodeLocations
+	};
+
+	codegenHelper(entry, 0, block, codeMetadata, res);
+
+	llvm::IRBuilder<> allocbuilder(allocBlock);
+	allocbuilder.CreateBr(blockcpy);
+
+	return res;
+}
+
+void FunctionCompiler::createSubroutineType() {
+	// create debug function type
+	///////////////////////
+
+	// create param list
+	std::vector<
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+	    llvm::Value*
+#else
+	    llvm::Metadata*
+#endif
+	    >
+	    params;
+	{
+		// ret first
+		DataType intType;
+		res += function().context().typeFromModule("lang", "i32", &intType);
+		if (!res) { return res; }
+		assert(intType.valid());
+		params.push_back(
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+		    *
+#endif
+		    intType.debugType());
+
+		// then first in inputexec id
+		params.push_back(
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+		    *
+#endif
+		    intType.debugType());
+
+		// add paramters
+		for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
+			params.push_back(
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
+			    *
+#endif
+			    dType.type.debugType());
+		}
+	}
+
+	// create type
+	auto subroutineType = diBuilder().createSubroutineType(
+#if LLVM_VERSION_LESS_EQUAL(3, 7)
+	    debugFile,
+#endif
+	    diBuilder().
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+			getOrCreateArray
+#else
+			getOrCreateTypeArray
+#endif
+				(params));
+}
+
+
 namespace {
 
 struct Cache {
@@ -324,251 +548,6 @@ void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* b
 
 Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
                        llvm::DIBuilder& debugBuilder) {
-	assert(mod != nullptr);
-
-	Result res;
-
-	res += validateFunction(func);
-
-	if (!res) { return res; }
-
-	auto entry = func.entryNode();
-	if (entry == nullptr) {
-		res.addEntry("EUKN", "No entry node", {});
-		return res;
-	}
-
-	// make sure that the entry node has the functiontype
-	if (!std::equal(func.dataInputs().begin(), func.dataInputs().end(),
-	                entry->type().dataOutputs().begin())) {
-		nlohmann::json inFunc = nlohmann::json::array();
-		for (auto& in : func.dataInputs()) {
-			inFunc.push_back({{in.name, in.type.qualifiedName()}});
-		}
-
-		nlohmann::json inEntry = nlohmann::json::array();
-		for (auto& in :
-		     entry->type().dataOutputs()) {  // outputs to entry are inputs to the function
-			inEntry.push_back({{in.name, in.type.qualifiedName()}});
-		}
-
-		res.addEntry("EUKN", "Inputs to function doesn't match function inputs",
-		             {{"Function Inputs", inFunc}, {"Entry Inputs", inEntry}});
-		return res;
-	}
-
-	// make sure that the entry node has the functiontype
-	if (!std::equal(func.dataOutputs().begin(), func.dataOutputs().end(),
-	                func.dataOutputs().begin())) {
-		nlohmann::json outFunc = nlohmann::json::array();
-		for (auto& out : func.dataOutputs()) {
-			outFunc.push_back({{out.name, out.type.qualifiedName()}});
-		}
-
-		nlohmann::json outEntry = nlohmann::json::array();
-		for (auto& out : func.dataOutputs()) {
-			// inputs to the exit are outputs to the function
-			outEntry.push_back({{out.name, out.type.qualifiedName()}});
-		}
-
-		res.addEntry("EUKN", "Outputs to function doesn't match function exit",
-		             {{"Function Outputs", outFunc}, {"Entry Outputs", outEntry}});
-		return res;
-	}
-
-	auto debugFile = debugBuilder.createFile(debugCU->getFilename(), debugCU->getDirectory());
-
-	// create function type
-	///////////////////////
-
-	// create param list
-	std::vector<
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-	    llvm::Value*
-#else
-	    llvm::Metadata*
-#endif
-	    >
-	    params;
-	{
-		// ret first
-		DataType intType;
-		res += func.context().typeFromModule("lang", "i32", &intType);
-		if (!res) { return res; }
-		assert(intType.valid());
-		params.push_back(
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    *
-#endif
-		    intType.debugType());
-
-		// then first in inputexec id
-		params.push_back(
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    *
-#endif
-		    intType.debugType());
-
-		// add paramters
-		for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
-			params.push_back(
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			    *
-#endif
-			    dType.type.debugType());
-		}
-	}
-
-	// create type
-	auto subroutineType = debugBuilder.createSubroutineType(
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-	    debugFile,
-#endif
-	    debugBuilder.
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-	    getOrCreateArray
-#else
-	    getOrCreateTypeArray
-#endif
-	    (params));
-
-	auto            mangledName = mangleFunctionName(func.module().fullName(), func.name());
-	llvm::Function* f =
-	    llvm::cast<llvm::Function>(mod->getOrInsertFunction(mangledName, func.functionType()));
-
-	auto nodeLocations = func.module().createLineNumberAssoc();
-	auto entryLN       = nodeLocations.right.find(entry)->second;
-
-	// TODO(#65): line numbers?
-	auto debugFunc =
-	    debugBuilder.createFunction(debugFile, func.module().fullName() + ":" + func.name(),
-	                                mangledName, debugFile, entryLN, subroutineType, false, true, 0,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	                                0,
-#else
-	                                llvm::DINode::DIFlags{},
-#endif
-	                                false
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-	                                ,
-	                                f);
-#else
-	                                );
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-	f->setSubprogram(debugFunc);
-#endif
-#endif
-
-	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
-	llvm::BasicBlock* block =
-	    llvm::BasicBlock::Create(mod->getContext(), boost::uuids::to_string(entry->id()), f);
-	auto blockcpy = block;
-
-	// set argument names
-	auto idx = 0ull;
-	for (auto& arg : f->
-#if LLVM_VERSION_AT_LEAST(5, 0)
-			args()
-#else
-			getArgumentList()
-#endif	
-	) {
-		// the first one is the input exec ID
-		if (idx == 0) {
-			arg.setName("inputexec_id");
-
-			// create debug info
-			DataType intDataType;
-			res += func.context().typeFromModule("lang", "i32", &intDataType);
-			assert(intDataType.valid());
-			auto debugParam = debugBuilder.
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
-			                                      "inputexec_id", debugFile, entryLN,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			                                      *
-#endif
-			                                      intDataType.debugType());
-#else
-
-			                  createParameterVariable(debugFunc, "inputexec_id", 1, debugFile,
-			                                          entryLN, intDataType.debugType());
-#endif
-			debugBuilder
-			    .insertDeclare(&arg, debugParam,
-#if LLVM_VERSION_AT_LEAST(3, 6)
-			                   debugBuilder.createExpression(),
-#if LLVM_VERSION_AT_LEAST(3, 7)
-			                   llvm::DebugLoc::get(entryLN, 1, debugFunc),
-#endif
-#endif
-			                   allocBlock)
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc))
-#endif
-			    ;  // TODO(#65): "line" numbers
-
-			++idx;
-			continue;
-		}
-
-		NamedDataType tyAndName;
-		// all the - 1's is becaues the first is the inputexec_id
-		if (idx - 1 < func.dataInputs().size()) {
-			tyAndName = func.dataInputs()[idx - 1];
-		} else {
-			tyAndName = func.dataOutputs()[idx - 1 - entry->type().dataOutputs().size()];
-		}
-		arg.setName(tyAndName.name);
-
-		// create debug info
-
-		// create DIType*
-		llvm::DIType* dType      = tyAndName.type.debugType();
-		auto          debugParam = debugBuilder.
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
-		                                      tyAndName.name, debugFile, entryLN,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		                                      *
-#endif
-		                                      dType);
-#else
-		                  createParameterVariable(debugFunc, tyAndName.name,
-		                                          idx + 1,  // + 1 because it starts at 1
-		                                          debugFile, entryLN, dType);
-#endif
-		debugBuilder
-		    .insertDeclare(&arg, debugParam,
-#if LLVM_VERSION_AT_LEAST(3, 6)
-		                   debugBuilder.createExpression(),
-#if LLVM_VERSION_AT_LEAST(3, 7)
-		                   llvm::DebugLoc::get(entryLN, 1, debugFunc),
-#endif
-#endif
-		                   allocBlock)
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc))
-#endif
-		    ;  // TODO(#65): line numbers
-
-		++idx;
-	}
-
-	codegenMetadata codeMetadata {
-		allocBlock, &debugBuilder,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    &
-#endif
-		    debugFunc,
-		    std::unordered_map<NodeInstance*, Cache>{}, nodeLocations
-	};
-
-	codegenHelper(entry, 0, block, codeMetadata, res);
-
-	llvm::IRBuilder<> allocbuilder(allocBlock);
-	allocbuilder.CreateBr(blockcpy);
-
-	return res;
+	
 }
 }  // namespace chi

@@ -8,7 +8,35 @@
 
 #include "chi/Fwd.hpp"
 
+#include <memory>
+
 namespace chi {
+
+struct FunctionCompiler {
+	
+	FunctionCompiler(const GraphFunction& func, llvm::Module& moduleToGenInto, llvm::DICompileUnit& debugCU, llvm::DIBuilder& debugBuilder);
+	
+	Result compile(bool validate = true);
+	
+	void createSubroutineType();
+	
+	llvm::Module& llModule() const { return *mModule; }
+	llvm::DIBuilder& diBuilder() const { return *mDIBuilder; }
+	llvm::DICompileUnit& debugCompileUnit() const { return *mDebugCU; }
+	
+	const GraphFunction& function() const { return *mFunction; }
+	Context& context() const { return *mContext; }
+	
+private:
+	
+	llvm::Module* mModule;
+	llvm::DIBuilder* mDIBuilder;
+	llvm::DICompileUnit* mDebugCU;
+	
+	const GraphFunction* mFunction;
+	Context* mContext;
+	
+};
 
 /// Compile the graph to an \c llvm::Function (usually called from JsonModule::generateModule)
 /// \param func The function to compile

@@ -20,6 +20,7 @@ struct Result;
 struct DataType;
 struct ModuleCache;
 struct Subprocess;
+struct PureCompiler;
 }
 
 // some basic LLVM stuff to make compiles speedy quick

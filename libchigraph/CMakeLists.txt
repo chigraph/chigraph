@@ -2,41 +2,48 @@
 
 # Create the library
 set(CHI_PUBLIC_FILES
-	include/chi/Fwd.hpp
 	include/chi/ChiModule.hpp
 	include/chi/Context.hpp
+	include/chi/DataType.hpp
+	include/chi/Flags.hpp
+	include/chi/FunctionCompiler.hpp
+	include/chi/FunctionValidator.hpp
+	include/chi/Fwd.hpp
 	include/chi/GraphFunction.hpp
 	include/chi/GraphModule.hpp
-	include/chi/LangModule.hpp
-	include/chi/NodeInstance.hpp
-	include/chi/NodeType.hpp
-	include/chi/Result.hpp
-	include/chi/NameMangler.hpp
-	include/chi/FunctionValidator.hpp
-	include/chi/FunctionCompiler.hpp
+	include/chi/GraphStruct.hpp
+	include/chi/HashFilesystemPath.hpp
+	include/chi/HashUuid.hpp
 	include/chi/JsonDeserializer.hpp
 	include/chi/JsonSerializer.hpp
-	include/chi/GraphStruct.hpp
+	include/chi/LangModule.hpp
+	include/chi/LLVMVersion.hpp
 	include/chi/ModuleCache.hpp
+	include/chi/NameMangler.hpp
+	include/chi/NodeInstance.hpp
+	include/chi/NodeType.hpp
+	include/chi/PureCompiler.hpp
+	include/chi/Result.hpp
 	include/chi/Subprocess.hpp
 )
 set(CHI_PRIVATE_FILES
-	src/Context.cpp
-	src/NodeInstance.cpp
-	src/GraphFunction.cpp
-	src/LangModule.cpp
-	src/GraphModule.cpp
 	src/ChiModule.cpp
-	src/Result.cpp
-	src/NameMangler.cpp
-	src/FunctionValidator.cpp
+	src/Context.cpp
+	src/DataType.cpp
 	src/FunctionCompiler.cpp
+	src/FunctionValidator.cpp
+	src/GraphFunction.cpp
+	src/GraphModule.cpp
+	src/GraphStruct.cpp
 	src/JsonDeserializer.cpp
 	src/JsonSerializer.cpp
-	src/GraphStruct.cpp
-	src/NodeType.cpp
-	src/DataType.cpp
+	src/LangModule.cpp
 	src/ModuleCache.cpp
+	src/NameMangler.cpp
+	src/NodeInstance.cpp
+	src/NodeType.cpp
+	src/PureCompiler.cpp
+	src/Result.cpp
 	src/Subprocess.cpp
 )
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})

@@ -6,6 +6,7 @@
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
+#include "chi/DataType.hpp"
 
 #include <unordered_map>
 
@@ -17,7 +18,9 @@ Result validateFunction(const GraphFunction& func) {
 	res += validateFunctionConnectionsAreTwoWay(func);
 	res += validateFunctionNodeInputs(func);
 	res += validateFunctionExecOutputs(func);
-
+	res += validateFunctionEntryType(func);
+	res += validateFunctionExitTypes(func);
+	
 	return res;
 }
 
@@ -241,5 +244,68 @@ Result validateFunctionExecOutputs(const GraphFunction& func) {
 
 	return res;
 }
+
+Result validateFunctionEntryType(const GraphFunction& func) {
+	
+	Result res;
+	
+	auto entry = func.entryNode();
+	if (!entry) {
+		res.addEntry("EUKN", "Function  must have a valid entry node to validate the entry type", {{"Function", func.name()}, {"Module", func.module().fullName()}});
+		return res;
+	}
+	
+	// make sure that the entry node has the right data types
+	if (!std::equal(func.dataInputs().begin(), func.dataInputs().end(),
+	                entry->type().dataOutputs().begin())) {
+		nlohmann::json inFunc = nlohmann::json::array();
+		for (auto& in : func.dataInputs()) {
+			inFunc.push_back({{in.name, in.type.qualifiedName()}});
+		}
+
+		nlohmann::json inEntry = nlohmann::json::array();
+		for (auto& in :
+		     entry->type().dataOutputs()) {  // outputs to entry are inputs to the function
+			inEntry.push_back({{in.name, in.type.qualifiedName()}});
+		}
+
+		res.addEntry("EUKN", "Inputs to function doesn't match function inputs",
+		             {{"Function Inputs", inFunc}, {"Entry Inputs", inEntry}});
+		return res;
+	}
+	
+	return res;
+}
+
+Result validateFunctionExitTypes(const GraphFunction& func) {
+	
+	Result res;
+	
+	// make sure that each exit node has the right data types
+	for (auto exitNode : func.nodesWithType("lang", "exit")) {
+		if (!std::equal(func.dataOutputs().begin(), func.dataOutputs().end(),
+			exitNode->type().dataInputs().begin())) {
+			
+			nlohmann::json outFunc = nlohmann::json::array();
+			for (auto& out : func.dataOutputs()) {
+				outFunc.push_back({{out.name, out.type.qualifiedName()}});
+			}
+
+			nlohmann::json outExit = nlohmann::json::array();
+			for (auto& out : exitNode->type().dataOutputs()) {
+				// inputs to the exit are outputs to the function
+				            outExit.push_back({{out.name, out.type.qualifiedName()}});
+			}
+
+			res.addEntry("EUKN", "Outputs to function doesn't match function exit",
+						{{"Function Outputs", outFunc}, {"Exit Outputs", outExit}, {"Node ID", exitNode->stringId()}});
+			return res;
+		
+		}
+	}
+	
+	return res;
+}
+
 
 }  // namespace chi

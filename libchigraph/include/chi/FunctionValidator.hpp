@@ -36,6 +36,16 @@ Result validateFunctionNodeInputs(const GraphFunction& func);
 /// \return The Result
 Result validateFunctionExecOutputs(const GraphFunction& func);
 
+/// Make sure the function entry type aligns with the function type
+/// \param func The function to check
+/// \return The Result
+Result validateFunctionEntryType(const GraphFunction& func);
+
+/// Make sure the function exit types align with the function type
+/// \param func The function to check
+/// \return The Result
+Result validateFunctionExitTypes(const GraphFunction& func);
+
 /// \}
 }  // namespace chi
 
