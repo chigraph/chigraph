@@ -10,10 +10,11 @@ platform:
   - x64
 
 build_script:
-  - 'git submodule update --init --recursive'
   - ps: Invoke-WebRequest "https://github.com/chigraph/chigraph/releases/download/dependencies/llvm-4.0.0-${Env:CONFIGURATION}-msvc14-win64.tar.xz" -OutFile third_party/llvm-%CONFIGURATION%.tar.xz
   - ps: mkdir third_party/llvm-${Env:CONFIGURATION}
   - ps: cd third_party/llvm-${Env:CONFIGURATION}
+  - echo %cd%
+  - dir ..
   - ps: C:\python36\python.exe -m tarfile -e ../llvm-${Env:CONFIGURATION}.tar.xz
   - cd ../..
   - mkdir build
