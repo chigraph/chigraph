@@ -10,7 +10,7 @@ platform:
   - x64
 
 build_script:
-  - ps: Invoke-WebRequest "https://github.com/chigraph/chigraph/releases/download/dependencies/llvm-4.0.0-${Env:CONFIGURATION}-msvc14-win64.tar.xz" -OutFile third_party/llvm-%CONFIGURATION%.tar.xz
+  - ps: Invoke-WebRequest "https://github.com/chigraph/chigraph/releases/download/dependencies/llvm-4.0.0-${Env:CONFIGURATION}-msvc14-win64.tar.xz" -OutFile third_party/llvm-${Env:CONFIGURATION}.tar.xz
   - ps: mkdir third_party/llvm-${Env:CONFIGURATION}
   - ps: cd third_party/llvm-${Env:CONFIGURATION}
   - echo %cd%
