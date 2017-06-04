@@ -82,7 +82,7 @@ struct Context {
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
 	Result loadModule(const boost::filesystem::path& name,
-	                  Flags<LoadSettings>            flags  = LoadSettings::Default,
+	                  Flags<LoadSettings>            settings  = LoadSettings::Default,
 	                  ChiModule**                    toFill = nullptr);
 
 	/// Downloads a module from a remote URL, currently supports
@@ -153,19 +153,19 @@ struct Context {
 
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] mod The module to compile
-	/// \param[in] linkDepdnencies Should the dependencies be linked into the module?
+	/// \param[in] linkDependencies Should the dependencies be linked into the module?
 	/// \param[out] toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \pre `toFill != nullptr` (the value the `unique_ptr` points to be can be null, but not the
 	/// pointer to the `unique_ptr`)
 	/// \return The `Result`
-	Result compileModule(ChiModule& mod, bool linkDepdnencies,
+	Result compileModule(ChiModule& mod, bool linkDependencies,
 	                     std::unique_ptr<llvm::Module>* toFill);
 
 	/// Find all uses of a node type in all the loaded modules
-	/// \param module The name of the module that the type being search for is in
+	/// \param moduleName The name of the module that the type being search for is in
 	/// \param typeName The name of the type in `module` to search for
 	/// \return All the `NodeInstance`s that are of that type
-	std::vector<NodeInstance*> findInstancesOfType(const boost::filesystem::path& module,
+	std::vector<NodeInstance*> findInstancesOfType(const boost::filesystem::path& moduleName,
 	                                               boost::string_view             typeName) const;
 
 	/// Get the `LLVMContext`
@@ -231,7 +231,7 @@ std::string stringifyLLVMType(llvm::Type* ty);
 /// \return The Result
 Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
                        llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
-                       std::vector<llvm::GenericValue> args     = {},
+                       const std::vector<llvm::GenericValue>& args     = {},
                        llvm::Function* funcToRun = nullptr, llvm::GenericValue* ret = nullptr);
 
 /// Interpret LLVM IR as if it were the main function
@@ -243,7 +243,7 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
 /// \return The Result
 Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod,
                              llvm::CodeGenOpt::Level       optLevel = llvm::CodeGenOpt::Default,
-                             std::vector<std::string>      args     = {},
+                             const std::vector<std::string>&      args     = {},
                              llvm::Function* funcToRun = nullptr, int* ret = nullptr);
 
 /// The Version Control Types

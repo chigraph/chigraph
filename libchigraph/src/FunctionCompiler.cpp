@@ -433,7 +433,7 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
 	    (params));
 
 	auto            mangledName = mangleFunctionName(func.module().fullName(), func.name());
-	llvm::Function* f =
+	auto f =
 	    llvm::cast<llvm::Function>(mod->getOrInsertFunction(mangledName, func.functionType()));
 
 	auto nodeLocations = func.module().createLineNumberAssoc();

@@ -117,7 +117,7 @@ Result Context::loadModule(const fs::path& name, Flags<LoadSettings> settings, C
 	// see if it's already loaded
 	{
 		auto mod = moduleByFullName(name);
-		if (mod) {
+		if (mod != nullptr) {
 			if (toFill != nullptr) { *toFill = mod; }
 			return {};
 		}
@@ -194,7 +194,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			res.addEntry("EUKN", "Could not resolve URL for module", {});
 			return res;
 		}
-		assert(type == VCSType::Git);
+		assert(type == VCSType::Git && "Currently only Git is implemented for fetching modules.");
 
 		// open the repository
 		git_repository* repo;
@@ -227,11 +227,11 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		std::pair<std::string, git_oid> oid_to_merge;
 		git_repository_fetchhead_foreach(
 		    repo,
-		    [](const char* name, const char* url, const git_oid* oid, unsigned int is_merge,
+		    [](const char* name, const char* /*url*/, const git_oid* oid, unsigned int is_merge,
 		       void* payload) -> int {
 			    auto& oids_to_merge = *reinterpret_cast<std::pair<std::string, git_oid>*>(payload);
 
-			    if (is_merge) { oids_to_merge = {name, *oid}; }
+			    if (is_merge != 0u) { oids_to_merge = {name, *oid}; }
 
 			    return 0;
 
@@ -254,12 +254,12 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		git_merge_preference_t pref;
 		git_merge_analysis(&anaylisis, &pref, repo, annotatedCommits, 1);
 
-		if (anaylisis & GIT_MERGE_ANALYSIS_UP_TO_DATE || anaylisis & GIT_MERGE_ANALYSIS_NONE) {
+		if ((anaylisis & GIT_MERGE_ANALYSIS_UP_TO_DATE) != 0 || (anaylisis & GIT_MERGE_ANALYSIS_NONE) != 0) {
 			// nothing to do, just return
 			return res;
 		}
 
-		if (anaylisis & GIT_MERGE_ANALYSIS_FASTFORWARD) {
+		if ((anaylisis & GIT_MERGE_ANALYSIS_FASTFORWARD) != 0) {
 			// we can fast forward, do it
 
 			// get master
@@ -291,7 +291,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			}
 
 			// reset to it
-			git_oid oid;
+			git_oid oid{};
 			err = git_index_write_tree_to(&oid, head, repo);
 			if (err != 0) {
 				res.addEntry("EUKN", "Failed to write index to tree",
@@ -299,13 +299,17 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 				return res;
 			}
 
-		} else if (anaylisis & GIT_MERGE_ANALYSIS_NORMAL) {
+		} else if ((anaylisis & GIT_MERGE_ANALYSIS_NORMAL) != 0) {
 			// merge and commit
 			git_merge_options    mergeOpts    = GIT_MERGE_OPTIONS_INIT;
 			git_checkout_options checkoutOpts = GIT_CHECKOUT_OPTIONS_INIT;
 			checkoutOpts.checkout_strategy    = GIT_CHECKOUT_SAFE;  // see
 			// http://stackoverflow.com/questions/39651287/doing-a-git-pull-with-libgit2
 			err = git_merge(repo, annotatedCommits, 1, &mergeOpts, &checkoutOpts);
+			if (err != 0) {
+				res.addEntry("EUKN", "Failed to merge branch", {{"Error Message", giterr_last()->message}});
+				return res;
+			}
 
 			// see if there are conflicts
 
@@ -347,7 +351,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			}
 
 			// get the head commit
-			git_oid parent_headoid;
+			git_oid parent_headoid{};
 			err = git_reference_name_to_id(&parent_headoid, repo, "HEAD");
 			if (err != 0) {
 				res.addEntry("EUKN", "Failed to get reference to HEAD",
@@ -373,11 +377,11 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 
 			const git_commit* parents[] = {head_parent, origin_master_commit};
 
-			git_oid     newCommit;
+			git_oid     newCommit{};
 			std::string commitMsg = std::string("Merge ") + git_oid_tostr_s(&oid_to_merge.second);
 			err =
 			    git_commit_create(&newCommit, repo, "HEAD", committerSignature, committerSignature,
-			                      "UTF-8", commitMsg.c_str(), tree, 2, parents);
+			                      "UTF-8", commitMsg.c_str(), tree, sizeof(parents) / sizeof(git_commit*), static_cast<const git_commit**>(parents));
 			if (err != 0) {
 				res.addEntry("EUKN", "Failed to create commit",
 				             {{"Error Message", giterr_last()->message}});
@@ -414,7 +418,7 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 
 	if (recursive) {
 		// peek at the dependencies
-		// TODO: is there a cleaner way to do this?
+		// TODO(#79): is there a cleaner way to do this?
 		nlohmann::json j;
 		try {
 			fs::ifstream file{fileName};
@@ -744,7 +748,7 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 }  // anonymous namespace
 
 Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
-                       std::vector<llvm::GenericValue> args, llvm::Function* funcToRun,
+                       const std::vector<llvm::GenericValue>& args, llvm::Function* funcToRun,
                        llvm::GenericValue* ret) {
 	assert(mod);
 
@@ -780,7 +784,7 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 }
 
 Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
-                             std::vector<std::string> args, llvm::Function* funcToRun, int* ret) {
+                             const std::vector<std::string>& args, llvm::Function* funcToRun, int* ret) {
 	assert(mod);
 
 	Result res;
