@@ -288,7 +288,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 		}
 
 		if (node.find("data") == node.end()) {
-			res.addEntry("E9", "Node doens't have a data section", {"Node ID", nodeid});
+			res.addEntry("E9", "Node doens't have a data section", {{"Node ID", nodeid}});
 			return res;
 		}
 
@@ -338,7 +338,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 		for (auto& connection : input["connections"]) {
 			if (connection.find("type") == connection.end() ||
 			    !connection.find("type")->is_string()) {
-				res.addEntry("E14", "No type string in connection", {"connectionid", connID});
+				res.addEntry("E14", "No type string in connection", {{"connectionid", connID}});
 
 				++connID;
 				continue;
