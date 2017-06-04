@@ -56,13 +56,15 @@ struct FunctionCompiler {
 	bool compiled() const { return mCompiled; }
 	
 	/// Get a node compile for a certain (nonpure) node
-	/// \pre `compiled() == true` 
-	/// \pre `&inst.function() == &function()`
-	NodeCompiler& nodeCompilerForNode(NodeInstance& inst) const;
+	/// \pre `&node.function() == &function()`
+	NodeCompiler* nodeCompiler(NodeInstance& node);
+	NodeCompiler* getOrCreateNodeCompiler(NodeInstance& node);
 	
-	NodeCompiler& getOrCompileNode(NodeInstance& inst);
+	std::unordered_map<std::string, std::shared_ptr<void>>& compileCache() { return mCompileCache; }
 	
 private:
+	
+	Result compileNode(NodeInstance& node, size_t inputExecID);
 	
 	llvm::Module* mModule;
 	llvm::DIBuilder* mDIBuilder;

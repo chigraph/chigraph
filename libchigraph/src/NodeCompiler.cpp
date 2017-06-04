@@ -8,6 +8,7 @@
 #include "chi/FunctionCompiler.hpp"
 #include "chi/DataType.hpp"
 #include "chi/Context.hpp"
+#include "chi/Result.hpp"
 
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Function.h>
@@ -16,79 +17,18 @@
 
 namespace chi {
 
-NodeCompiler::NodeCompiler(FunctionCompiler& funcCompiler, NodeInstance& inst) 
-	: mCompiler{&funcCompiler}, mNode{&inst} {
-}
-
-bool NodeCompiler::pure() const { return node().type().pure(); }
-
-void NodeCompiler::compile(const std::vector<llvm::BasicBlock>& trailingBlocks) {
+NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& inst)
+	: mCompiler{&functionCompiler}, mNode{&inst} {
 	
-	assert(pure() || trailingBlocks.size() == node().outputExecConnections.size() && "Trailing blocks is the wrong size");
-	
-	// create the code block
-	mCodeBlock = llvm::BasicBlock::Create(context().llvmContext(), node().stringId(), &funcCompiler().llFunction());
-	
-	// only do this for non-pure nodes because pure nodes don't call their dependencies, they are called by the non-pure
-	if (!pure()) {
-	
-		// generate code for all the dependent pures
-		auto depPures = dependentPuresRecursive(node());
-		
-		// set our vector to be the same length
-		mPureBlocks.resize(depPures.size());
-		
-		// create the first pure block--the loop only creates the next one
-		if (!depPures.empty()) {
-			mPureBlocks[0] = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "__" + depPures[0]->stringId(), &funcCompiler().llFunction());
-		}
-		
-		for (int id = 0; id < depPures.size(); ++id) {
-			
-			// create a BasicBlock for the next one to br to--if we're on the last one, use the code block
-			llvm::BasicBlock* nextBlock = [&]{
-				if (id == depPures.size() - 1) {
-					return &codeBlock();
-				}
-				mPureBlocks[id + 1] = mPureBlocks[0] = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "__" + depPures[id + 1]->stringId(), &funcCompiler().llFunction());
-				return mPureBlocks[id + 1];
-			}();
-			
-			// set post-pure break to go to the next one
-			llvm::IRBuilder<> irBuilder{mPureBlocks[id]};
-			irBuilder.CreateStore(llvm::BlockAddress::get(nextBlock), &funcCompiler().postPureBreak());
-			
-			// br to the pure, terminating that BasicBlock
-			irBuilder.CreateBr(&funcCompiler().getOrCompileNode(*depPures[id]).firstBlock());
-		}
-		
-	}
-	
-	// inputs and outputs (inputs followed by outputs)
-	std::vector<llvm::Value*> io;
-	
-	// add inputs
-	for (auto idx = 0ull; idx < node().inputDataConnections.size(); ++idx) {
-		auto& connection = node().inputDataConnections[idx];
-		auto& remoteNode = *connection.first;
-		auto remoteID = connection.second;
-		
-		assert(remoteID < funcCompiler().getOrCompileNode(remoteNode).returnValues().size() && "Internal error: connection to a value doesn't exist");
-		
-		io.push_back(funcCompiler().getOrCompileNode(remoteNode).returnValues()[remoteID]);
-		
-		assert(io[io.size() - 1]->getType() == node().type().dataInputs()[idx].type.llvmType() && "Internal error: types do not match");
-		
-	}
-	
-	// add outputs
+	// alloca the outputs
 	llvm::IRBuilder<> allocBuilder(&funcCompiler().allocBlock());
 	for (auto idx = 0ull; idx < node().type().dataOutputs().size(); ++idx) {
+		
 		const auto& namedType = node().type().dataOutputs()[idx];
 		
 		// alloca the outputs
 		auto alloca = allocBuilder.CreateAlloca(namedType.type.llvmType(), nullptr, node().stringId() + "__" + std::to_string(idx));
-		
+			
 		// create debug info for the alloca
 		{
 			// get type
@@ -134,48 +74,164 @@ void NodeCompiler::compile(const std::vector<llvm::BasicBlock>& trailingBlocks) 
 				;
 		}
 		
-		// add it to the io vector and return list
-		io.push_back(alloca);
 		mReturnValues.push_back(alloca);
 	}
+	
+	// resize the inputexec specific variables
+	mPureBlocks.resize(node().type().execInputs().size());
+	mCodeBlocks.resize(node().type().execInputs().size(), nullptr);
+	
+	mCompiledInputs.resize(node().type().execInputs().size(), false);
+}
 
+bool NodeCompiler::pure() const { return node().type().pure(); }
+
+void NodeCompiler::compile_stage1(size_t inputExecID) {
+	
+	
+	// create the code block
+	auto& codeBlock = mCodeBlocks[inputExecID];
+	
+	// if we've already done stage 1 before, then just exit
+	if (codeBlock != nullptr) { return; }
+	
+	codeBlock = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "__" + std::to_string(inputExecID), &funcCompiler().llFunction());
+	
+	// only do this for non-pure nodes because pure nodes don't call their dependencies, they are called by the non-pure
+	if (!pure()) {
+	
+		// generate code for all the dependent pures
+		auto depPures = dependentPuresRecursive(node());
+		
+		// set our vector to be the same length
+		auto& pureBlocks = mPureBlocks[inputExecID];
+		pureBlocks.resize(depPures.size());
+		
+		// create the first pure block--the loop only creates the next one
+		if (!depPures.empty()) {
+			pureBlocks[0] = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "__" + std::to_string(inputExecID) + "__" + depPures[0]->stringId(), &funcCompiler().llFunction());
+		}
+		
+		for (int id = 0; id < depPures.size(); ++id) {
+			
+			// create a BasicBlock for the next one to br to--if we're on the last one, use the code block
+			llvm::BasicBlock* nextBlock = [&]{
+				if (id == depPures.size() - 1) {
+					return codeBlock;
+				}
+				pureBlocks[id + 1] = pureBlocks[0] = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "__" + std::to_string(inputExecID) + "__" + depPures[id + 1]->stringId(), &funcCompiler().llFunction());
+				return pureBlocks[id + 1];
+			}();
+			
+			// set post-pure break to go to the next one
+			llvm::IRBuilder<> irBuilder{pureBlocks[id]};
+			irBuilder.CreateStore(llvm::BlockAddress::get(nextBlock), &funcCompiler().postPureBreak());
+			
+			// br to the pure, terminating that BasicBlock
+			irBuilder.CreateBr(&funcCompiler().nodeCompiler(*depPures[id])->firstBlock(0));
+		}
+		
+	}
+	
+}
+
+Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlocks, size_t inputExecID) {
+	
+	assert(pure() || trailingBlocks.size() == node().outputExecConnections.size() && "Trailing blocks is the wrong size");
+	assert(inputExecID < node().type().execInputs().size());
+	
+	auto& codeBlock = mCodeBlocks[inputExecID];
+	
+	// skip if we've already compiled
+	if (compiled(inputExecID)) {return {};}
+	
+	// if we haven't done stage 1, then do it
+	if (codeBlock == nullptr) {
+		compile_stage1(inputExecID);
+	}
+	
+	// inputs and outputs (inputs followed by outputs)
+	std::vector<llvm::Value*> io;
+	
+	// add inputs
+	for (auto idx = 0ull; idx < node().inputDataConnections.size(); ++idx) {
+		auto& connection = node().inputDataConnections[idx];
+		auto& remoteNode = *connection.first;
+		auto remoteID = connection.second;
+		
+		assert(remoteID < funcCompiler().nodeCompiler(remoteNode)->returnValues().size() && "Internal error: connection to a value doesn't exist");
+		
+		io.push_back(funcCompiler().nodeCompiler(remoteNode)->returnValues()[remoteID]);
+		
+		assert(io[io.size() - 1]->getType() == node().type().dataInputs()[idx].type.llvmType() && "Internal error: types do not match");
+		
+	}
+	
+	// add outputs
+	std::copy(mReturnValues.begin(), mReturnValues.end(), std::back_inserter(io));
+
+	// on pure, jump to the set loc
+	if (pure()) {
+		auto brBlock = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "_jumpback");
+		llvm::IRBuilder<> builder(brBlock);
+		
+		builder.CreateIndirectBr(&funcCompiler().postPureBreak());
+		
+		trailingBlocks.resize(1);
+		trailingBlocks[0] = brBlock;
+	}
+	
 	// codegen
-	res +=
-	    node().type().codegen(execInputID, llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1,
+	Result res =
+	    node().type().codegen(inputExecID, llvm::DebugLoc::get(funcCompiler().nodeLineNumber(node()), 1,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 	                                                          *
 #endif
-	                                                          data.diFunc),
-	                         io, codeBlock, outputBlocks, data.compileCache);
-	if (!res) { return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}}; }
+	                                                          &funcCompiler().diFunction()),
+	                         io, codeBlock, trailingBlocks, funcCompiler().compileCache());
 
-	// TODO(#64): raise an error here instead
-	for (auto& bb : unusedBlocks) {
-		llvm::IRBuilder<> builder(bb);
+	mCompiledInputs[inputExecID] = true;
+		
+	return res;
 
-		builder.CreateRet(
-		    llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(mod->getContext()), 0, true));
-	}
-
-	data.nodeCache[node].lastNodeCodegenned = lastImpure;
-
-	return {needsCodegen, outputBlocks};
 }
 
-llvm::BasicBlock& NodeCompiler::firstBlock() const {
-	assert(compiled());
+llvm::BasicBlock& NodeCompiler::firstBlock(size_t inputExecID) const {
+	
+	assert(inputExecID < node().type().execInputs().size());
 	
 	if (mPureBlocks.empty()) {
-		return codeBlock();
+		return codeBlock(inputExecID);
 	}
-	return *mPureBlocks[0];
+	return *mPureBlocks[inputExecID][0];
+}
+
+
+
+llvm::BasicBlock& NodeCompiler::codeBlock(size_t inputExecID) const {
+    assert(compiled(inputExecID) && "Cannot get code block for node before compiling it");
+    assert(inputExecID < node().type().execInputs().size());
+    return *mCodeBlocks[inputExecID];
+
+}
+
+
+bool NodeCompiler::compiled(size_t inputExecID) const {
+    assert(inputExecID < node().type().execInputs().size());
+    return mCompiledInputs[inputExecID];
+}
+
+
+Context& NodeCompiler::context() const {
+	return node().context();
 }
 
 
 std::vector<NodeInstance*> dependentPuresRecursive(const NodeInstance& inst) {
 	std::vector<NodeInstance*> ret;
 	
-	for (const auto& conn : inst.inputDataConnections()) {
+	// TODO: remove duplicates in some intellegent way
+	for (const auto& conn : inst.inputDataConnections) {
 		
 		// if it isn't connected (this really shouldn't happen because that would fail validation), then skip.
 		if (conn.first == nullptr) {
@@ -184,7 +240,7 @@ std::vector<NodeInstance*> dependentPuresRecursive(const NodeInstance& inst) {
 		
 		if (conn.first->type().pure()) {
 			
-			auto deps = dependentPuresRecursive(conn.first);
+			auto deps = dependentPuresRecursive(*conn.first);
 			std::copy(deps.begin(), deps.end(), std::back_inserter(ret));
 			
 			ret.push_back(conn.first);
@@ -192,10 +248,6 @@ std::vector<NodeInstance*> dependentPuresRecursive(const NodeInstance& inst) {
 	}
 	
 	return ret;
-}
-
-Context& NodeCompiler::context() const {
-	return node().context();
 }
 
 } // namespace chi

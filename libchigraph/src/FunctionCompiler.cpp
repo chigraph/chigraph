@@ -185,28 +185,67 @@ Result FunctionCompiler::initialize(bool validate) {
 	return res;
 }
 
+Result FunctionCompiler::compileNode(NodeInstance& node, size_t inputExecID) {
+	
+	Result res;
+	
+	if (node.type().pure()) {
+		// just compile it
+		auto compiler = getOrCreateNodeCompiler(node);
+		res += compiler->compile_stage2({}, inputExecID);
+		
+		return res;
+	}
+	
+	// if it's not pure
+	
+	// compile the dependent pures
+	auto depPures = dependentPuresRecursive(node);
+	for (auto pure : depPures) {
+		res += compileNode(*pure, 0);
+		
+		if (!res) { return res; }
+	}
+	
+	std::vector<llvm::BasicBlock*> outputBlocks;
+	// make sure the output nodes have done stage 1 and collect output blocks
+	for (const auto& conn : node.outputExecConnections) {
+		auto compiler = getOrCreateNodeCompiler(*conn.first);
+		compiler->compile_stage1(conn.second);
+		
+		outputBlocks.push_back(&compiler->firstBlock(conn.second));
+	}
+	
+	// compile this one
+	auto compiler = getOrCreateNodeCompiler(node);
+	res += compiler->compile_stage2(outputBlocks, inputExecID);
+	if (!res) {
+		return res;
+	}
+	
+	// recurse
+	for (const auto& conn : node.outputExecConnections) {
+		res += compileNode(*conn.first, conn.second);
+		if (!res ) {
+			return res;
+		}
+	}
+	
+	return res;
+}
+
+
 Result FunctionCompiler::compile() {
 	
 	assert(initialized() && "You must initialize a FunctionCompiler before you compile it");
 	assert(compiled() == false && "You cannot compile a FunctionCompiler twice");
 	
-	boost::dynamic_bitset<>        needsCodegen;
-	std::vector<llvm::BasicBlock*> outputBlocks;
-	std::tie(needsCodegen, outputBlocks) =
-	    codegenNode(node, nullptr, nullptr, execInputID, block, data, res);
-
-	if (!res) { return; }
-
-	// recurse!
-	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
-		auto& output = node->outputExecConnections[idx];
-		if (output.first != nullptr && needsCodegen[idx]) {
-			codegenHelper(output.first, output.second, outputBlocks[idx], data, res);
-		}
-	}
-
-	llvm::IRBuilder<> allocbuilder(allocBlock);
-	allocbuilder.CreateBr(blockcpy);
+	// compile the entry
+	auto entry = function().entryNode();
+	assert(entry != nullptr);
+	
+	// recurse
+	return compileNode(*entry, 0);
 }
 
 llvm::DISubroutineType* FunctionCompiler::createSubroutineType() {
@@ -271,34 +310,33 @@ GraphModule& FunctionCompiler::module() const {
     return function().module();
 }
 
-NodeCompiler& FunctionCompiler::nodeCompilerForNode(NodeInstance& inst) const {
-	assert(&inst.function() == &function() && "Cannot get a NodeCompiler for a node instance not in this function");
-	assert(compiled() && "Cannot get a NodeCompiler for a node until the function has been compiled");
+NodeCompiler* FunctionCompiler::nodeCompiler(NodeInstance& node) {
+	assert(&node.function() == &function() && "Cannot get a NodeCompiler for a node instance not in this function");
 	
-	auto iter = mNodeCompilers.find(&inst);
+	auto iter = mNodeCompilers.find(&node);
 	if (iter != mNodeCompilers.end()) {
-		return iter->second;
+		return &iter->second;
 	}
-	
-	assert(false && "Failed to find a FunctionCompiler for a node");
-	std::terminate(); // for release configs
-	
+	return nullptr;
 }
 
-namespace {
-
-/// \return The output connections that need codegen and the output blocks
-std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
-    NodeInstance* node, llvm::BasicBlock* pureTerminator, NodeInstance* lastImpure,
-    unsigned execInputID, llvm::BasicBlock* block, codegenMetadata& data, Result& res) {
+NodeCompiler* FunctionCompiler::getOrCreateNodeCompiler(NodeInstance& node) {
+	assert(&node.function() == &function() && "Cannot get a NodeCompiler for a node instance not in this function");
+	
+	auto iter = mNodeCompilers.find(&node);
+	if (iter != mNodeCompilers.end()) {
+		return &iter->second;
+	}
+	return &mNodeCompilers.emplace(&node, NodeCompiler{*this, node}).first->second;
 	
 }
-
-
-}  // anonymous namespace
 
 Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
                        llvm::DIBuilder& debugBuilder) {
+	
+	FunctionCompiler compiler{func, *mod, *debugCU, debugBuilder};
+	
+	return compiler.compile();
 	
 }
 
