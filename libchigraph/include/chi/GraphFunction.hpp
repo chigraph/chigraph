@@ -187,7 +187,7 @@ struct GraphFunction {
 
 	/// Remove an data output from the argument list
 	/// Also removes invalid connections
-	/// If idx is out of range, this function does nothing.
+	/// If idx is out of range, this function does nothing.	
 	/// \param idx The index to delete
 	void removeDataOutput(size_t idx);
 	/// Modify an data output (change it's type and docstring)

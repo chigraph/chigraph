@@ -22,9 +22,9 @@ set(CHI_PUBLIC_FILES
 	include/chi/NameMangler.hpp
 	include/chi/NodeInstance.hpp
 	include/chi/NodeType.hpp
-	include/chi/PureCompiler.hpp
 	include/chi/Result.hpp
 	include/chi/Subprocess.hpp
+	include/chi/NodeCompiler.hpp
 )
 set(CHI_PRIVATE_FILES
 	src/ChiModule.cpp
@@ -42,9 +42,9 @@ set(CHI_PRIVATE_FILES
 	src/NameMangler.cpp
 	src/NodeInstance.cpp
 	src/NodeType.cpp
-	src/PureCompiler.cpp
 	src/Result.cpp
 	src/Subprocess.cpp
+	src/NodeCompiler.cpp
 )
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 

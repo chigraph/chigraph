@@ -10,6 +10,7 @@
 #include "chi/NameMangler.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
+#include "chi/LangModule.hpp"
 #include "chi/Result.hpp"
 
 #include <boost/bimap.hpp>
@@ -29,10 +30,12 @@ namespace chi {
 
 
 FunctionCompiler::FunctionCompiler(const chi::GraphFunction& func, llvm::Module& moduleToGenInto, llvm::DICompileUnit& debugCU, llvm::DIBuilder& debugBuilder)
- :  mModule{&moduleToGenInto}, mDIBuilder{&debugBuilder}, mDebugCU{&debugCU}, mFunction{&func}, mContext{&func.context()} {}
+ :  mModule{&moduleToGenInto}, mDIBuilder{&debugBuilder}, mDebugCU{&debugCU}, mFunction{&func} {}
 
 
-Result FunctionCompiler::compile(bool validate) {
+Result FunctionCompiler::initialize(bool validate) {
+	assert(initialized() == false && "Cannot initialize a FunctionCompiler more than once");
+	
 	Result res;
 	auto compilerCtx = res.addScopedContext({{"Function", function().name()}, {"Module", function().module().fullName()}});
 	
@@ -49,21 +52,23 @@ Result FunctionCompiler::compile(bool validate) {
 		return res;
 	}
 	
+	
+	// create function
+	auto mangledName = mangleFunctionName(module().fullName(), function().name());
+	llvm::Function* f =
+	    llvm::cast<llvm::Function>(llModule().getOrInsertFunction(mangledName, function().functionType()));
+
 	// create the debug file
 	auto debugFile = diBuilder().createFile(debugCompileUnit().getFilename(), debugCompileUnit().getDirectory());
 
-
-
-	auto            mangledName = mangleFunctionName(func.module().fullName(), func.name());
-	llvm::Function* f =
-	    llvm::cast<llvm::Function>(mod->getOrInsertFunction(mangledName, func.functionType()));
-
-	auto nodeLocations = func.module().createLineNumberAssoc();
-	auto entryLN       = nodeLocations.right.find(entry)->second;
+	auto subroutineType = createSubroutineType();
+		
+	mNodeLocations = module().createLineNumberAssoc();
+	auto entryLN       = nodeLineNumber(*entry);
 
 	// TODO(#65): line numbers?
-	auto debugFunc =
-	    debugBuilder.createFunction(debugFile, func.module().fullName() + ":" + func.name(),
+	mDebugFunc =
+	    diBuilder().createFunction(debugFile, module().fullName() + ":" + function().name(),
 	                                mangledName, debugFile, entryLN, subroutineType, false, true, 0,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 	                                0,
@@ -72,19 +77,17 @@ Result FunctionCompiler::compile(bool validate) {
 #endif
 	                                false
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-	                                ,
-	                                f);
+	                                , f);
 #else
 	                                );
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-	f->setSubprogram(debugFunc);
-#endif
+#	if LLVM_VERSION_LESS_EQUAL(3, 9)
+	f->setSubprogram(mDebugFunc);
+#	endif
 #endif
 
-	llvm::BasicBlock* allocBlock = llvm::BasicBlock::Create(mod->getContext(), "alloc", f);
-	llvm::BasicBlock* block =
-	    llvm::BasicBlock::Create(mod->getContext(), boost::uuids::to_string(entry->id()), f);
-	auto blockcpy = block;
+	mAllocBlock = llvm::BasicBlock::Create(context().llvmContext(), "alloc", f);
+	llvm::BasicBlock* entryBlock =
+	    llvm::BasicBlock::Create(context().llvmContext(), boost::uuids::to_string(entry->id()), f);
 
 	// set argument names
 	auto idx = 0ull;
@@ -101,11 +104,11 @@ Result FunctionCompiler::compile(bool validate) {
 
 			// create debug info
 			DataType intDataType;
-			res += func.context().typeFromModule("lang", "i32", &intDataType);
+			res += context().typeFromModule("lang", "i32", &intDataType);
 			assert(intDataType.valid());
-			auto debugParam = debugBuilder.
+			auto debugParam = diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
+			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, mDebugFunc,
 			                                      "inputexec_id", debugFile, entryLN,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 			                                      *
@@ -113,20 +116,20 @@ Result FunctionCompiler::compile(bool validate) {
 			                                      intDataType.debugType());
 #else
 
-			                  createParameterVariable(debugFunc, "inputexec_id", 1, debugFile,
+			                  createParameterVariable(mDebugFunc, "inputexec_id", 1, debugFile,
 			                                          entryLN, intDataType.debugType());
 #endif
-			debugBuilder
+			diBuilder()
 			    .insertDeclare(&arg, debugParam,
 #if LLVM_VERSION_AT_LEAST(3, 6)
-			                   debugBuilder.createExpression(),
-#if LLVM_VERSION_AT_LEAST(3, 7)
-			                   llvm::DebugLoc::get(entryLN, 1, debugFunc),
+			                   diBuilder().createExpression(),
+#	if LLVM_VERSION_AT_LEAST(3, 7)
+			                   llvm::DebugLoc::get(entryLN, 1, mDebugFunc),
+#	endif
 #endif
-#endif
-			                   allocBlock)
+			                   &allocBlock())
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-			    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc))
+			    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, mDebugFunc))
 #endif
 			    ;  // TODO(#65): "line" numbers
 
@@ -136,10 +139,10 @@ Result FunctionCompiler::compile(bool validate) {
 
 		NamedDataType tyAndName;
 		// all the - 1's is becaues the first is the inputexec_id
-		if (idx - 1 < func.dataInputs().size()) {
-			tyAndName = func.dataInputs()[idx - 1];
+		if (idx - 1 < function().dataInputs().size()) {
+			tyAndName = function().dataInputs()[idx - 1];
 		} else {
-			tyAndName = func.dataOutputs()[idx - 1 - entry->type().dataOutputs().size()];
+			tyAndName = function().dataOutputs()[idx - 1 - entry->type().dataOutputs().size()];
 		}
 		arg.setName(tyAndName.name);
 
@@ -147,56 +150,66 @@ Result FunctionCompiler::compile(bool validate) {
 
 		// create DIType*
 		llvm::DIType* dType      = tyAndName.type.debugType();
-		auto          debugParam = debugBuilder.
+		auto          debugParam = diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, debugFunc,
+		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, mDebugFunc,
 		                                      tyAndName.name, debugFile, entryLN,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 		                                      *
 #endif
 		                                      dType);
 #else
-		                  createParameterVariable(debugFunc, tyAndName.name,
+		                  createParameterVariable(mDebugFunc, tyAndName.name,
 		                                          idx + 1,  // + 1 because it starts at 1
 		                                          debugFile, entryLN, dType);
 #endif
-		debugBuilder
+		diBuilder()
 		    .insertDeclare(&arg, debugParam,
 #if LLVM_VERSION_AT_LEAST(3, 6)
-		                   debugBuilder.createExpression(),
-#if LLVM_VERSION_AT_LEAST(3, 7)
-		                   llvm::DebugLoc::get(entryLN, 1, debugFunc),
+		                   diBuilder().createExpression(),
+#	if LLVM_VERSION_AT_LEAST(3, 7)
+		                   llvm::DebugLoc::get(entryLN, 1, mDebugFunc),
+#	endif
 #endif
-#endif
-		                   allocBlock)
+		                   &allocBlock())
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, debugFunc))
+		    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, mDebugFunc))
 #endif
 		    ;  // TODO(#65): line numbers
 
 		++idx;
 	}
-
-	codegenMetadata codeMetadata {
-		allocBlock, &debugBuilder,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    &
-#endif
-		    debugFunc,
-		    std::unordered_map<NodeInstance*, Cache>{}, nodeLocations
-	};
-
-	codegenHelper(entry, 0, block, codeMetadata, res);
-
-	llvm::IRBuilder<> allocbuilder(allocBlock);
-	allocbuilder.CreateBr(blockcpy);
+	
+	mInitialized = true;
 
 	return res;
 }
 
-void FunctionCompiler::createSubroutineType() {
-	// create debug function type
-	///////////////////////
+Result FunctionCompiler::compile() {
+	
+	assert(initialized() && "You must initialize a FunctionCompiler before you compile it");
+	assert(compiled() == false && "You cannot compile a FunctionCompiler twice");
+	
+	boost::dynamic_bitset<>        needsCodegen;
+	std::vector<llvm::BasicBlock*> outputBlocks;
+	std::tie(needsCodegen, outputBlocks) =
+	    codegenNode(node, nullptr, nullptr, execInputID, block, data, res);
+
+	if (!res) { return; }
+
+	// recurse!
+	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
+		auto& output = node->outputExecConnections[idx];
+		if (output.first != nullptr && needsCodegen[idx]) {
+			codegenHelper(output.first, output.second, outputBlocks[idx], data, res);
+		}
+	}
+
+	llvm::IRBuilder<> allocbuilder(allocBlock);
+	allocbuilder.CreateBr(blockcpy);
+}
+
+llvm::DISubroutineType* FunctionCompiler::createSubroutineType() {
 
 	// create param list
 	std::vector<
@@ -205,14 +218,12 @@ void FunctionCompiler::createSubroutineType() {
 #else
 	    llvm::Metadata*
 #endif
-	    >
-	    params;
+	    > params;
 	{
 		// ret first
-		DataType intType;
-		res += function().context().typeFromModule("lang", "i32", &intType);
-		if (!res) { return res; }
+		DataType intType = function().context().langModule()->typeFromName("i32");
 		assert(intType.valid());
+		
 		params.push_back(
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 		    *
@@ -227,7 +238,7 @@ void FunctionCompiler::createSubroutineType() {
 		    intType.debugType());
 
 		// add paramters
-		for (const auto& dType : boost::range::join(func.dataInputs(), func.dataOutputs())) {
+		for (const auto& dType : boost::range::join(function().dataInputs(), function().dataOutputs())) {
 			params.push_back(
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 			    *
@@ -248,301 +259,41 @@ void FunctionCompiler::createSubroutineType() {
 			getOrCreateTypeArray
 #endif
 				(params));
+	
+	return subroutineType;
 }
 
 
+Context& FunctionCompiler::context() const {
+    return function().context();
+}
+GraphModule& FunctionCompiler::module() const {
+    return function().module();
+}
+
+NodeCompiler& FunctionCompiler::nodeCompilerForNode(NodeInstance& inst) const {
+	assert(&inst.function() == &function() && "Cannot get a NodeCompiler for a node instance not in this function");
+	assert(compiled() && "Cannot get a NodeCompiler for a node until the function has been compiled");
+	
+	auto iter = mNodeCompilers.find(&inst);
+	if (iter != mNodeCompilers.end()) {
+		return iter->second;
+	}
+	
+	assert(false && "Failed to find a FunctionCompiler for a node");
+	std::terminate(); // for release configs
+	
+}
+
 namespace {
-
-struct Cache {
-	// only used for pure nodes
-	NodeInstance*                  lastNodeCodegenned = nullptr;
-	std::vector<llvm::Value*>      outputs;
-	std::vector<llvm::BasicBlock*> inputBlock;  // one for each exec input
-};
-
-struct codegenMetadata {
-	llvm::BasicBlock*   allocBlock;
-	llvm::DIBuilder*    dbuilder;
-	llvm::DISubprogram* diFunc;
-	std::unordered_map<NodeInstance*, Cache>               nodeCache;
-	boost::bimap<unsigned, NodeInstance*>                  nodeLocations;
-	std::unordered_map<std::string, std::shared_ptr<void>> compileCache;
-};
 
 /// \return The output connections that need codegen and the output blocks
 std::pair<boost::dynamic_bitset<>, std::vector<llvm::BasicBlock*>> codegenNode(
     NodeInstance* node, llvm::BasicBlock* pureTerminator, NodeInstance* lastImpure,
     unsigned execInputID, llvm::BasicBlock* block, codegenMetadata& data, Result& res) {
-	llvm::IRBuilder<> pureBuilder(block);
-	auto              f   = data.allocBlock->getParent();
-	auto              mod = data.allocBlock
-	               ->
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	           getParent()
-	               ->getParent()
-#else
-	           getModule()
-#endif
-	    ;
-
-	auto codeBlock = llvm::BasicBlock::Create(node->context().llvmContext(),
-	                                          boost::uuids::to_string(node->id()) + "_code", f);
-	llvm::IRBuilder<> builder(codeBlock);
-
-	// get inputs and outputs
-	std::vector<llvm::Value*> io;
-
-	// add inputs
-	{
-		// process pures -- call them again if they're out of date
-		{
-			std::vector<NodeInstance*>     pureDependencies;
-			std::vector<llvm::BasicBlock*> pureBBs;
-			for (const auto& param : node->inputDataConnections) {
-				if (param.first->type().pure()) {
-					auto        impure = node->type().pure() ? lastImpure : node;
-					const auto& cache  = data.nodeCache[param.first];
-					if (cache.lastNodeCodegenned != impure) {
-						pureDependencies.push_back(param.first);
-						pureBBs.push_back(llvm::BasicBlock::Create(
-						    node->context().llvmContext(),
-						    boost::uuids::to_string(param.first->id()) + "____" +
-						        boost::uuids::to_string(impure->id()),
-						    f));
-					}
-				}
-			}
-			pureBBs.push_back(codeBlock);
-
-			for (auto idx = 0ull; idx < pureDependencies.size(); ++idx) {
-				auto pureNode            = pureDependencies[idx];
-				auto pureCodegenInto     = pureBBs[idx];
-				auto pureTerminatorBlock = pureBBs[idx + 1];
-
-				auto impure = node->type().pure() ? lastImpure : node;
-				codegenNode(pureNode, pureTerminatorBlock, impure, execInputID, pureCodegenInto,
-				            data, res);
-			}
-			if (pureDependencies.empty()) {
-				pureBuilder.CreateBr(codeBlock);
-			} else {
-				pureBuilder.CreateBr(pureBBs[0]);
-			}
-		}
-
-		size_t inputID = 0;
-		for (auto& param : node->inputDataConnections) {
-			// make sure everything is A-OK
-			if (param.first == nullptr) {
-				res.addEntry("EUKN", "No data input to node",
-				             {{"Node ID", node->id()},
-				              {"input ID", inputID},
-				              {"nodetype", node->type().qualifiedName()}});
-
-				return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}};
-			}
-
-			auto cacheiter = data.nodeCache.find(param.first);
-			if (cacheiter == data.nodeCache.end()) {
-				res.addEntry("EUKN", "Failed to find in cache", {{"Node ID", param.first->id()}});
-
-				return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}};
-			}
-
-			auto& cacheObject = cacheiter->second;
-			if (param.second >= cacheObject.outputs.size()) {
-				res.addEntry("EUKN", "No data input to node",
-				             {{"Node ID", node->id()},
-				              {"input ID", inputID},
-				              {"nodetype", node->type().qualifiedName()}});
-
-				return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}};
-			}
-
-			// get pointers to the objects
-			auto value = cacheObject.outputs[param.second];
-			// dereference
-			io.push_back(builder.CreateLoad(value));
-
-			// make sure it's the right type
-			if (io[io.size() - 1]->getType() !=
-			    node->type().dataInputs()[inputID].type.llvmType()) {
-				res.addEntry(
-				    "EINT", "Internal codegen error: unexpected type in cache.",
-				    {{"Expected LLVM type",
-				      stringifyLLVMType(node->type().dataInputs()[inputID].type.llvmType())},
-				     {"Found type", stringifyLLVMType(io[io.size() - 1]->getType())},
-				     {"Node ID", node->id()},
-				     {"Input ID", inputID}});
-			}
-		}
-	}
-
-	// get outputs
-	{
-		llvm::IRBuilder<> allocBuilder(data.allocBlock);
-
-		// create outputs
-		auto& outputCache = data.nodeCache[node].outputs;
-		outputCache.resize(node->type().dataOutputs().size(), nullptr);
-
-		auto id = 0ull;
-		for (auto& output : node->type().dataOutputs()) {
-			if (outputCache[id] != nullptr) {
-				io.push_back(outputCache[id]);
-				++id;
-				continue;
-			}
-
-			llvm::AllocaInst* alloc = allocBuilder.CreateAlloca(
-			    output.type.llvmType(), nullptr,
-			    boost::uuids::to_string(node->id()) + "__" + std::to_string(id));
-			outputCache[id] = alloc;
-			io.push_back(alloc);
-
-			// create debug info
-			{
-				// get type
-				llvm::DIType* dType = output.type.debugType();
-
-				// TODO(#63): better names
-				auto debugVar =
-				    data.dbuilder->
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-				    createLocalVariable(
-				        llvm::dwarf::DW_TAG_auto_variable,
-#else
-				    createAutoVariable(
-#endif
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-				        *
-#endif
-				        data.diFunc,
-				        boost::uuids::to_string(node->id()) + "__" + std::to_string(id),
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-				        data.dbuilder->createFile(
-				            fs::path(data.diFunc->getFilename()).filename().string(),
-				            fs::path(data.diFunc->getFilename()).parent_path().string()),
-#else
-				        data.diFunc->getFile(),
-#endif
-				        1,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-				        *
-#endif
-				        dType);
-
-				data.dbuilder
-				    ->insertDeclare(alloc, debugVar,
-#if LLVM_VERSION_AT_LEAST(3, 6)
-				                    data.dbuilder->createExpression(),
-#if LLVM_VERSION_AT_LEAST(3, 7)
-				                    llvm::DebugLoc::get(1, 1, data.diFunc),
-#endif
-#endif
-				                    data.allocBlock)
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-				    ->setDebugLoc(llvm::DebugLoc::get(1, 1, *data.diFunc))
-#endif
-				    ;
-			}
-
-			// make sure the type is right
-			if (llvm::PointerType::get(output.type.llvmType(), 0) != alloc->getType()) {
-				res.addEntry(
-				    "EINT", "Internal codegen error: unexpected type returned from alloca.",
-				    {{"Expected LLVM type",
-				      stringifyLLVMType(llvm::PointerType::get(output.type.llvmType(), 0))},
-				     {"Yielded type", stringifyLLVMType(alloc->getType())},
-				     {"Node ID", node->id()}});
-			}
-			++id;
-		}
-	}
-
-	// add this block to the cache
-	if (node->type().qualifiedName() != "lang:entry") {
-		data.nodeCache[node].inputBlock.resize(
-		    node->type().pure() ? 1 : node->inputExecConnections.size(), nullptr);
-		data.nodeCache[node].inputBlock[execInputID] = block;
-	}
-
-	// create output blocks
-	std::vector<llvm::BasicBlock*> outputBlocks;
-	std::vector<llvm::BasicBlock*> unusedBlocks;
-	boost::dynamic_bitset<>
-	    needsCodegen;  // this holds if each block needs to recurse of it it's already in the cache
-	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
-		// see if we can find it in the cache
-		NodeInstance* remoteNode;
-		size_t        remotePortIdx;
-		std::tie(remoteNode, remotePortIdx) = node->outputExecConnections[idx];
-
-		auto remoteCache =
-		    data.nodeCache[remoteNode];  // this will construct it if it doesn't exist
-		if (remoteCache.inputBlock.size() > remotePortIdx &&
-		    remoteCache.inputBlock[remotePortIdx] != nullptr) {
-			// this means it's already in the cache
-			outputBlocks.push_back(remoteCache.inputBlock[remotePortIdx]);
-			needsCodegen.push_back(false);
-		} else {
-			auto outBlock =
-			    llvm::BasicBlock::Create(f->getContext(), node->type().execOutputs()[idx], f);
-			outputBlocks.push_back(outBlock);
-			needsCodegen.push_back(true);  // these need codegen
-			if (node->outputExecConnections[idx].first != nullptr) {
-				outBlock->setName("node_" + boost::uuids::to_string(
-				                                node->outputExecConnections[idx].first->id()));
-			} else {
-				unusedBlocks.push_back(outBlock);
-			}
-		}
-	}
-	if (node->type().pure()) { outputBlocks.push_back(pureTerminator); }
-
-	// codegen
-	res +=
-	    node->type().codegen(execInputID, llvm::DebugLoc::get(data.nodeLocations.right.at(node), 1,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	                                                          *
-#endif
-	                                                          data.diFunc),
-	                         io, codeBlock, outputBlocks, data.compileCache);
-	if (!res) { return {boost::dynamic_bitset<>{}, std::vector<llvm::BasicBlock*>{}}; }
-
-	// TODO(#64): raise an error here instead
-	for (auto& bb : unusedBlocks) {
-		llvm::IRBuilder<> builder(bb);
-
-		builder.CreateRet(
-		    llvm::ConstantInt::get(llvm::IntegerType::getInt32Ty(mod->getContext()), 0, true));
-	}
-
-	data.nodeCache[node].lastNodeCodegenned = lastImpure;
-
-	return {needsCodegen, outputBlocks};
+	
 }
 
-/// \internal
-/// Codegens a single input to a node
-/// All of these nodes are garunteed to be impure
-void codegenHelper(NodeInstance* node, unsigned execInputID, llvm::BasicBlock* block,
-                   codegenMetadata& data, Result& res) {
-	boost::dynamic_bitset<>        needsCodegen;
-	std::vector<llvm::BasicBlock*> outputBlocks;
-	std::tie(needsCodegen, outputBlocks) =
-	    codegenNode(node, nullptr, nullptr, execInputID, block, data, res);
-
-	if (!res) { return; }
-
-	// recurse!
-	for (auto idx = 0ull; idx < node->outputExecConnections.size(); ++idx) {
-		auto& output = node->outputExecConnections[idx];
-		if (output.first != nullptr && needsCodegen[idx]) {
-			codegenHelper(output.first, output.second, outputBlocks[idx], data, res);
-		}
-	}
-}
 
 }  // anonymous namespace
 
@@ -550,4 +301,5 @@ Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICom
                        llvm::DIBuilder& debugBuilder) {
 	
 }
+
 }  // namespace chi
