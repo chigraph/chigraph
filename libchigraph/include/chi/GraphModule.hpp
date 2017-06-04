@@ -129,7 +129,7 @@ struct GraphModule : public ChiModule {
 
 	/// Set if C support is enabled
 	/// \param newValue true to enable C support, false to disable it
-	void setCEnabled(bool newValue) { mCEnabled = true; }
+	void setCEnabled(bool newValue) { mCEnabled = newValue; }
 
 	/// Gets if C support is enabled
 	/// \return true if C support is enabled

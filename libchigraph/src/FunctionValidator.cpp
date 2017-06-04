@@ -202,7 +202,6 @@ Result validateFunctionNodeInputs(const GraphFunction& func) {
 
 	if (entry == nullptr) {
 		return res;
-		// TODO: should this be an error?
 	}
 
 	std::unordered_map<const NodeInstance*, std::vector<int>> alreadyCalled;

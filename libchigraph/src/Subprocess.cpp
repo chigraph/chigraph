@@ -107,7 +107,7 @@ Result Subprocess::closeStdIn() {
 	}
 	mPimpl->StdIn_Write = nullptr;
 
-	mIsStdInClosed = true;
+	mStdInClosed = true;
 
 	return res;
 }

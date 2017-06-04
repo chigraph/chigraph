@@ -155,6 +155,10 @@ PRIVATE
 	${LIBGIT2_LIBRARIES}
 )
 
+# link to threads
+find_package(Threads)
+target_link_libraries(chigraph PRIVATE Threads::Threads)
+
 # link ffi on unix
 if (NOT WIN32)
 	target_link_libraries(chigraph 

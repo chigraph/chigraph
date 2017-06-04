@@ -86,7 +86,7 @@ struct ChiModule {
 	/// Loads the module from context() if it isn't already loaded
 	/// \param newDepFullPath The dependency, full path
 	/// \return The result
-	Result addDependency(const boost::filesystem::path& newDepFullPath);
+	Result addDependency(boost::filesystem::path newDepFullPath);
 
 	/// Remove a dependency
 	/// Does not unload from context

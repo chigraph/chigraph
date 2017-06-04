@@ -10,7 +10,7 @@ ChiModule::ChiModule(Context& contextArg, boost::filesystem::path moduleFullName
 	mName = mFullName.filename().string();
 }
 
-Result ChiModule::addDependency(const boost::filesystem::path& newDepFullPath) {
+Result ChiModule::addDependency(boost::filesystem::path newDepFullPath) {
 	Result res = context().loadModule(newDepFullPath);
 
 	if (res) { mDependencies.emplace(std::move(newDepFullPath)); }

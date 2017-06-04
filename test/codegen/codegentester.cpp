@@ -68,6 +68,10 @@ std::string areJsonEqual(json lhs, json rhs) {
 	errstring = areArrayEqualUnordered(lhs["dependencies"], rhs["dependencies"]);
 	if (!errstring.empty()) return "dependencies not equal: " + errstring;
 
+	if (lhs["has_c_support"] != rhs["has_c_support"]) {
+		return "has_c_support doesn't match: serialized: " + lhs["has_c_support"].dump(-1) + " original: " + rhs["has_c_support"].dump(-1);
+	}
+	
 	auto& lgraphs = lhs["graphs"];
 	auto& rgraphs = rhs["graphs"];
 
@@ -96,21 +100,21 @@ std::string areJsonEqual(json lhs, json rhs) {
 		     ++nodeIter) {
 			auto& lnode = nodeIter.value();
 			auto& rnode = rgraph["nodes"][nodeIter.key()];
-			if (abs(float(lnode["location"][0]) - float(rnode["location"][0])) >= .00001) {
+			if (std::abs(float(lnode["location"][0]) - float(rnode["location"][0])) >= .00001) {
 				return "node with id: " + nodeIter.key() + " in graph #" + std::to_string(iter) +
 				       " has a non-matching x location. Original: " +
 				       std::to_string(float(lnode["location"][0])) +
 				       " Serialized: " + std::to_string(float(rnode["location"][0]));
 			}
 
-			if (abs(float(lnode["location"][1]) - float(rnode["location"][1])) >= .00001) {
+			if (std::abs(float(lnode["location"][1]) - float(rnode["location"][1])) >= .00001) {
 				return "node with id: " + nodeIter.key() + " in graph #" + std::to_string(iter) +
 				       " has a non-matching y location. Original: " +
 				       std::to_string(float(lnode["location"][1])) +
 				       " Serialized: " + std::to_string(float(rnode["location"][1]));
 			}
 
-			if (lnode["data"] != rnode["data"]) {
+			if (lnode["data"].dump(-1) != rnode["data"].dump(-1)) {
 				return "node with id: " + nodeIter.key() + " in graph #" + std::to_string(iter) +
 				       " have non-matching data. Original: \n\n" + rnode["data"].dump(-1) +
 				       "\n\nSerialized: \n\n" + lnode["data"].dump(-1);
@@ -309,12 +313,12 @@ int main(int argc, char** argv) {
 	std::cout << "Testing with chi run...";
 	std::cout.flush();
 
-	// chig run
+	// chi run
 	{
 		std::string generatedstdout, generatedstderr;
-		// go through chig compile
 		{
 			Subprocess chiexe{chiExePath};
+			chiexe.setArguments({"run", "main.chimod"});
 			chiexe.attachToStdErr([&generatedstderr](const char* data, size_t size) {
 				generatedstderr.append(data, size);
 			});
@@ -331,7 +335,7 @@ int main(int argc, char** argv) {
 			int retcode = chiexe.exitCode();
 
 			if (retcode != expectedreturncode) {
-				std::cerr << "(chig run) Unexpected retcode: " << retcode << " expected was "
+				std::cerr << "(chi run) Unexpected retcode: " << retcode << " expected was "
 				          << expectedreturncode << std::endl
 				          << "stdout: \"" << generatedstdout << "\"" << std::endl
 				          << "stderr: \"" << generatedstderr << "\"" << std::endl;
@@ -340,7 +344,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (generatedstdout != expectedcout) {
-				std::cerr << "(chig run) Unexpected stdout: \"" << generatedstdout
+				std::cerr << "(chi run) Unexpected stdout: \"" << generatedstdout
 				          << "\" expected was \"" << expectedcout << '\"' << std::endl
 				          << "retcode: \"" << retcode << "\"" << std::endl
 				          << "stderr: \"" << generatedstderr << "\"" << std::endl;
@@ -349,7 +353,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (generatedstderr != expectedcerr) {
-				std::cerr << "(chig run) Unexpected stderr: \"" << generatedstderr
+				std::cerr << "(chi run) Unexpected stderr: \"" << generatedstderr
 				          << "\" expected was \"" << expectedcerr << '\"' << std::endl
 				          << "retcode: \"" << retcode << "\"" << std::endl
 				          << "stdout: \"" << generatedstdout << "\"" << std::endl;
@@ -426,10 +430,7 @@ int main(int argc, char** argv) {
 				std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was "
 				          << expectedreturncode << std::endl
 				          << "stdout: \"" << llistdout << "\"" << std::endl
-				          << "stderr: \"" << llistderr << "\"" << std::endl
-				          << "generated IR" << std::endl
-				          << generatedir << std::endl;
-
+				          << "stderr: \"" << llistderr << "\"" << std::endl;
 				return 1;
 			}
 
@@ -437,9 +438,7 @@ int main(int argc, char** argv) {
 				std::cerr << "(lli ll) Unexpected stdout: \"" << llistdout << "\" expected was \""
 				          << expectedcout << "\"" << std::endl
 				          << "retcode: \"" << retcodelli << "\"" << std::endl
-				          << "stderr: \"" << llistderr << "\"" << std::endl
-				          << "generated IR" << std::endl
-				          << generatedir << std::endl;
+				          << "stderr: \"" << llistderr << "\"" << std::endl;
 
 				return 1;
 			}
@@ -448,9 +447,7 @@ int main(int argc, char** argv) {
 				std::cerr << "(lli ll) Unexpected stderr: \"" << stderr << "\" expected was \""
 				          << expectedcerr << '\"' << std::endl
 				          << "retcode: \"" << retcodelli << "\"" << std::endl
-				          << "stdout: \"" << llistdout << "\"" << std::endl
-				          << "generated IR" << std::endl
-				          << generatedir << std::endl;
+				          << "stdout: \"" << llistdout << "\"" << std::endl;
 
 				return 1;
 			}
