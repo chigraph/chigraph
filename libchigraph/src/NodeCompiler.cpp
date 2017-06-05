@@ -77,11 +77,13 @@ NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& ins
 		mReturnValues.push_back(alloca);
 	}
 	
-	// resize the inputexec specific variables
-	mPureBlocks.resize(node().type().execInputs().size());
-	mCodeBlocks.resize(node().type().execInputs().size(), nullptr);
+	auto size = inputExecs();
 	
-	mCompiledInputs.resize(node().type().execInputs().size(), false);
+	// resize the inputexec specific variables
+	mPureBlocks.resize(size);
+	mCodeBlocks.resize(size, nullptr);
+	
+	mCompiledInputs.resize(size, false);
 }
 
 bool NodeCompiler::pure() const { return node().type().pure(); }
@@ -138,7 +140,7 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlocks, size_t inputExecID) {
 	
 	assert(pure() || trailingBlocks.size() == node().outputExecConnections.size() && "Trailing blocks is the wrong size");
-	assert(inputExecID < node().type().execInputs().size());
+	assert(inputExecID < inputExecs());
 	
 	auto& codeBlock = mCodeBlocks[inputExecID];
 	
@@ -149,6 +151,7 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 	if (codeBlock == nullptr) {
 		compile_stage1(inputExecID);
 	}
+	llvm::IRBuilder<> codeBuilder{codeBlock};
 	
 	// inputs and outputs (inputs followed by outputs)
 	std::vector<llvm::Value*> io;
@@ -161,7 +164,8 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 		
 		assert(remoteID < funcCompiler().nodeCompiler(remoteNode)->returnValues().size() && "Internal error: connection to a value doesn't exist");
 		
-		io.push_back(funcCompiler().nodeCompiler(remoteNode)->returnValues()[remoteID]);
+		auto loaded = codeBuilder.CreateLoad(funcCompiler().nodeCompiler(remoteNode)->returnValues()[remoteID]);
+		io.push_back(loaded);
 		
 		assert(io[io.size() - 1]->getType() == node().type().dataInputs()[idx].type.llvmType() && "Internal error: types do not match");
 		
@@ -198,9 +202,9 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 
 llvm::BasicBlock& NodeCompiler::firstBlock(size_t inputExecID) const {
 	
-	assert(inputExecID < node().type().execInputs().size());
+	assert(inputExecID < inputExecs());
 	
-	if (mPureBlocks.empty()) {
+	if (mPureBlocks[inputExecID].empty()) {
 		return codeBlock(inputExecID);
 	}
 	return *mPureBlocks[inputExecID][0];
@@ -210,20 +214,30 @@ llvm::BasicBlock& NodeCompiler::firstBlock(size_t inputExecID) const {
 
 llvm::BasicBlock& NodeCompiler::codeBlock(size_t inputExecID) const {
     assert(compiled(inputExecID) && "Cannot get code block for node before compiling it");
-    assert(inputExecID < node().type().execInputs().size());
+	assert(inputExecID < inputExecs());
     return *mCodeBlocks[inputExecID];
 
 }
 
 
 bool NodeCompiler::compiled(size_t inputExecID) const {
-    assert(inputExecID < node().type().execInputs().size());
+	assert(inputExecID < inputExecs());
     return mCompiledInputs[inputExecID];
 }
 
 
 Context& NodeCompiler::context() const {
 	return node().context();
+}
+
+
+size_t NodeCompiler::inputExecs() const {
+	if (pure()) {
+		return 1;
+	} else if (node().type().qualifiedName() == "lang:entry") {
+		return 1;
+	}
+	return node().inputDataConnections.size();
 }
 
 

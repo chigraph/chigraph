@@ -64,18 +64,19 @@ struct FunctionCompiler {
 	
 private:
 	
+	Result compilePureDependencies(NodeInstance& node);
 	Result compileNode(NodeInstance& node, size_t inputExecID);
 	
-	llvm::Module* mModule;
-	llvm::DIBuilder* mDIBuilder;
-	llvm::DICompileUnit* mDebugCU;
-	llvm::DISubprogram* mDebugFunc;
+	llvm::Module* mModule = nullptr;
+	llvm::DIBuilder* mDIBuilder = nullptr;
+	llvm::DICompileUnit* mDebugCU = nullptr;
+	llvm::DISubprogram* mDebugFunc = nullptr;
 	
-	const GraphFunction* mFunction;
+	const GraphFunction* mFunction = nullptr;
 	
-	llvm::Function* mLLFunction;
-	llvm::BasicBlock*   mAllocBlock;
-	llvm::DISubprogram* mDISubprogram;
+	llvm::Function* mLLFunction = nullptr;
+	llvm::BasicBlock*   mAllocBlock = nullptr;
+	llvm::DISubprogram* mDISubprogram = nullptr;
 	
 	std::unordered_map<NodeInstance*, NodeCompiler> mNodeCompilers;
 	

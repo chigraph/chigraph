@@ -44,21 +44,25 @@ struct NodeCompiler {
 	/// \param trailingBlocks The basic blocks to br to when the node is done, one for each exec output
 	/// \pre `pure() || (trailingBlock != nullptr)` 
 	/// Either it's pure (in which case `trailingBlock` is ignored) or it must be defined
-	/// \pre `inputExecID < node().type().execInputs().size()`
+	/// \pre `inputExecID < inputExecs()`
 	Result compile_stage2(std::vector<llvm::BasicBlock*> trailingBlocks, size_t inputExecID);
 	
-	/// \pre `inputExecID < node().type().execInputs().size()`
+	/// \pre `inputExecID < inputExecs()`
 	bool compiled(size_t inputExecID) const;
 	
-	/// \pre `inputExecID < node().type().execInputs().size()`
+	/// \pre `inputExecID < inputExecs()`
 	llvm::BasicBlock& firstBlock(size_t inputExecID) const;
 	
 	/// \pre `compiled(inputExecID)`
-	/// \pre `inputExecID < node().type().execInputs().size()`
+	/// \pre `inputExecID < inputExecs()`
 	llvm::BasicBlock& codeBlock(size_t inputExecID) const;
 	
 	/// Just node().context()
 	Context& context() const;
+	
+	/// The number of input execs that we can compile
+	/// If it's pure or an entry node, this is 1, otherwise it's node().inputExecConnections().size()
+	size_t inputExecs() const;
 	
 	/// Get return values
 	std::vector<llvm::Value*> returnValues() const { return mReturnValues; }
@@ -81,7 +85,7 @@ private:
 /// Get the pures a NodeInstance relies on
 /// These are all the dependent pures (it's fetched recursively)
 /// They are in the order of dependency, for examply if node X depends on node Y, then node Y will come before node X
-/// \note Recursive based on how many pures are in a chain. Cyclic pure dependencies will crash.
+/// \warning Recursive based on how many pures are in a chain. Cyclic pure dependencies will crash.
 /// TODO: make sure they don't crash, and issue a nice error
 /// \param inst The NodeInstance to get the dependent pures for
 /// \return All the directly dependent pures
