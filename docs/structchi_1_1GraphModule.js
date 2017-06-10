@@ -3,7 +3,7 @@ var structchi_1_1GraphModule =
     [ "GraphModule", "structchi_1_1GraphModule.html#adeeeec5c69812ddeb43a64d3009a4eda", null ],
     [ "GraphModule", "structchi_1_1GraphModule.html#a59114e88ab9a0fe04dfe492ea245a536", null ],
     [ "GraphModule", "structchi_1_1GraphModule.html#a2d83c5d76d6fec455a0b8401a925890e", null ],
-    [ "addDependency", "structchi_1_1GraphModule.html#aab11d61e0c0138e5fc5ce176c20e3bec", null ],
+    [ "addDependency", "structchi_1_1GraphModule.html#a61a5581c1a0a6467a24edde9eaaa60e0", null ],
     [ "addForwardDeclarations", "structchi_1_1GraphModule.html#ab745d8ac6ffb5b4385c24379dd4a60d2", null ],
     [ "cEnabled", "structchi_1_1GraphModule.html#ac251cc6b4242642f6601c8c3607f5747", null ],
     [ "context", "structchi_1_1GraphModule.html#a5c28c9fe74ad3cb704b613843b267512", null ],

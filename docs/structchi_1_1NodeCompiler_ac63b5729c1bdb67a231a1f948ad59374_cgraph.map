@@ -1,0 +1,31 @@
+<map id="chi::NodeCompiler::codeBlock" name="chi::NodeCompiler::codeBlock">
+<area shape="rect" id="node2" href="$structchi_1_1NodeCompiler.html#a4599a3322541fe67adfa343c19b00dc4" title="The number of input execs that we can compile If it&#39;s pure or an entry node, this is 1..." alt="" coords="189,280,325,321"/>
+<area shape="rect" id="node3" href="$structchi_1_1NodeCompiler.html#aa31a7c7955b51e5610b966f81bdc989d" title="node().type().pure() " alt="" coords="373,422,535,449"/>
+<area shape="rect" id="node4" href="$structchi_1_1NodeCompiler.html#a8a595537ffd4b3116059d59e3fd61f8b" title="The node we&#39;re compiling. " alt="" coords="583,245,747,271"/>
+<area shape="rect" id="node17" href="$structchi_1_1NodeInstance.html#a5d6678d5a90e6b1adb7dafb868b974b1" title="Get the type of the instance. " alt="" coords="1072,533,1232,559"/>
+<area shape="rect" id="node22" href="$structchi_1_1NodeType.html#a0e5eb5e2862761cd67f3ff4761175dd5" title="Get if this node is pure. " alt="" coords="595,903,734,930"/>
+<area shape="rect" id="node5" href="$structchi_1_1NodeCompiler.html#af391b4e8ecebe8859490749bac0425de" title="Add the basic blocks and fill the pure blocks, but don&#39;t fill the code block nop if its already been ..." alt="" coords="1084,584,1220,625"/>
+<area shape="rect" id="node6" href="$structchi_1_1NodeCompiler.html#a7b0bd7aecf8cfc98804b31b21066b6d1" title="Just node().context() " alt="" coords="1310,307,1446,348"/>
+<area shape="rect" id="node13" href="$structchi_1_1NodeCompiler.html#a12c42cfcd23400c523184966ed238806" title="Get the first block to jump to for the node If there are dependent pures, it&#39;s the first pure block O..." alt="" coords="1310,929,1446,971"/>
+<area shape="rect" id="node14" href="$structchi_1_1NodeCompiler.html#ac3f5bd1f1f84fc1b35fc8ad54db3c844" title="Fill the codegen block If compile_stage1 hasn&#39;t been called for this inputExecID, then it will be cal..." alt="" coords="829,307,965,348"/>
+<area shape="rect" id="node15" href="$structchi_1_1NodeCompiler.html#ab3db1222a66ea1767cd6dbc8a8a10963" title="Get if compile_stage2 has been called for a given inputExecID. " alt="" coords="1084,197,1220,239"/>
+<area shape="rect" id="node20" href="$structchi_1_1NodeCompiler.html#a3825379c4840a017b6ab91ec5b42cc6c" title="Get the module being generated. " alt="" coords="829,59,965,100"/>
+<area shape="rect" id="node8" href="$structchi_1_1NodeCompiler.html#afd650ba41704bbeca337cbadb18f03cf" title="Get the function compiler. " alt="" coords="1310,241,1446,283"/>
+<area shape="rect" id="node9" href="$namespacechi.html#a00be19cc8464681f474ecbcd27abe13c" title="Get the pures a NodeInstance relies on These are all the dependent pures (it&#39;s fetched recursively) T..." alt="" coords="1500,621,1699,647"/>
+<area shape="rect" id="node10" href="$structchi_1_1FunctionCompiler.html#a85f29ea79e8fab1c963f096be468a1a5" title="Get a node compile for a certain node. " alt="" coords="1304,525,1452,567"/>
+<area shape="rect" id="node12" href="$structchi_1_1NodeCompiler.html#a7dc06ad0390f2113fbeb5e7c0cf3dd06" title="Get the IndirectBrInst* for the pure. " alt="" coords="1310,643,1446,684"/>
+<area shape="rect" id="node7" href="$structchi_1_1NodeInstance.html#ac2ada83d65425a80a4af74da5414fd75" title="Get the containing Context object. " alt="" coords="1532,307,1667,348"/>
+<area shape="rect" id="node11" href="$structchi_1_1NodeInstance.html#a8f64930fd9578431a11cad0702b4100c" title="Get the containing GraphFunction. " alt="" coords="1532,525,1667,567"/>
+<area shape="rect" id="node16" href="$structchi_1_1NodeCompiler.html#a4798bbddf994de6c4e3f607991456e09" title="Get return values. " alt="" coords="1084,467,1220,508"/>
+<area shape="rect" id="node18" href="$structchi_1_1NodeType.html#a7d2edfc21ff54a1ff8ad98fffb969268" title="Get the data inputs for the node. " alt="" coords="1065,365,1239,391"/>
+<area shape="rect" id="node19" href="$structchi_1_1NodeType.html#ac6662ce1a327258cd1f879b63cfbfa06" title="A virtual function that is called when this node needs to be called. " alt="" coords="1071,415,1233,442"/>
+<area shape="rect" id="node21" href="$structchi_1_1FunctionCompiler.html#a3bc147aa1b93c8e8c08c91ade3e13024" title="Get the module being generated. " alt="" coords="1078,5,1226,47"/>
+<area shape="rect" id="node23" href="$structchi_1_1NodeType.html#a10040e688128ae57832b5d74f877d7f8" title="Set the data inputs for the NodeType. " alt="" coords="800,853,995,879"/>
+<area shape="rect" id="node24" href="$structchi_1_1NodeType.html#a8930cb5b0eeb371ddd5f6201d415cce8" title="Set the data outputs for the NodeType. " alt="" coords="795,903,1000,930"/>
+<area shape="rect" id="node25" href="$structchi_1_1NodeType.html#aa56443539eb98affe4f99ead153602b6" title="Set the exec inputs for the NodeType. " alt="" coords="1053,1106,1251,1133"/>
+<area shape="rect" id="node26" href="$structchi_1_1NodeType.html#a1b28b4ea8dc3536633c72dbcc107c5c0" title="Set the exec outputs for the NodeType. " alt="" coords="1048,1030,1256,1057"/>
+<area shape="rect" id="node27" href="$structchi_1_1NodeType.html#a81a3e2d37acdb057c11282d3e1ea6bc1" title="Set the name of the type. " alt="" coords="814,954,981,981"/>
+<area shape="rect" id="node28" href="$structchi_1_1NodeType.html#a51e055157f02937926552b750457d6b9" title="Set the description of the node. " alt="" coords="799,751,996,778"/>
+<area shape="rect" id="node29" href="$structchi_1_1NodeType.html#a77693a4c560da85835a2bd666f0bc39d" title="Make this node pure For more info on what this means, see https://en.wikipedia.org/wiki/Pure_function..." alt="" coords="811,1055,984,1082"/>
+<area shape="rect" id="node30" href="$structchi_1_1NodeType.html#adf8b95a4dc2a7a5253a71624a5d59ab3" title="Get the node instance. " alt="" coords="801,802,993,829"/>
+</map>

@@ -23,6 +23,7 @@ var searchData=
   ['result_2ehpp',['Result.hpp',['../Result_8hpp.html',1,'']]],
   ['result_5fjson',['result_json',['../structchi_1_1Result.html#a22548cdff3037498a9cd978383458812',1,'chi::Result']]],
   ['retrievefromcache',['retrieveFromCache',['../structchi_1_1ModuleCache.html#a9822fcf51ebd701cb2dc59a858080bf0',1,'chi::ModuleCache']]],
+  ['returnvalues',['returnValues',['../structchi_1_1NodeCompiler.html#a4798bbddf994de6c4e3f607991456e09',1,'chi::NodeCompiler']]],
   ['retypedatainput',['retypeDataInput',['../structchi_1_1GraphFunction.html#aa69ea8953b3c1b9da14a5364c747e49b',1,'chi::GraphFunction']]],
   ['retypedataoutput',['retypeDataOutput',['../structchi_1_1GraphFunction.html#a7772a0180716a2c29436d086d757743e',1,'chi::GraphFunction']]],
   ['retypelocalvariable',['retypeLocalVariable',['../structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a',1,'chi::GraphFunction']]],

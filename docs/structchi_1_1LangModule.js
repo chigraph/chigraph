@@ -2,7 +2,7 @@ var structchi_1_1LangModule =
 [
     [ "LangModule", "structchi_1_1LangModule.html#a0d623aa2342eec20ab11150e793f6b9e", null ],
     [ "~LangModule", "structchi_1_1LangModule.html#adf246308e91faa5f0db890331ab573ce", null ],
-    [ "addDependency", "structchi_1_1LangModule.html#aab11d61e0c0138e5fc5ce176c20e3bec", null ],
+    [ "addDependency", "structchi_1_1LangModule.html#a61a5581c1a0a6467a24edde9eaaa60e0", null ],
     [ "addForwardDeclarations", "structchi_1_1LangModule.html#a38055e01447bcb2956e57984ce467a72", null ],
     [ "context", "structchi_1_1LangModule.html#a5c28c9fe74ad3cb704b613843b267512", null ],
     [ "dependencies", "structchi_1_1LangModule.html#a9c0d4b1b54bca0194ea4061ae4883779", null ],

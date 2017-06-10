@@ -9,60 +9,60 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1532)">
 <title>chi::ChiModule::dependencies</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-1532 2163,-1532 2163,4 -4,4"/>
-<!-- Node126 -->
+<!-- Node128 -->
 <g id="node1" class="node">
-<title>Node126</title>
+<title>Node128</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-791.5 0,-810.5 147,-810.5 147,-791.5 0,-791.5"/>
 <text text-anchor="middle" x="73.5" y="-798.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ChiModule::dependencies</text>
 </g>
-<!-- Node127 -->
+<!-- Node129 -->
 <g id="node2" class="node">
-<title>Node127</title>
-<g id="a_node2"><a xlink:href="structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec" target="_top" xlink:title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded...">
+<title>Node129</title>
+<g id="a_node2"><a xlink:href="structchi_1_1ChiModule.html#a61a5581c1a0a6467a24edde9eaaa60e0" target="_top" xlink:title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded...">
 <polygon fill="#ffffff" stroke="#000000" points="183,-791.5 183,-810.5 340,-810.5 340,-791.5 183,-791.5"/>
 <text text-anchor="middle" x="261.5" y="-798.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ChiModule::addDependency</text>
 </a>
 </g>
 </g>
-<!-- Node126&#45;&gt;Node127 -->
+<!-- Node128&#45;&gt;Node129 -->
 <g id="edge1" class="edge">
-<title>Node126&#45;&gt;Node127</title>
+<title>Node128&#45;&gt;Node129</title>
 <path fill="none" stroke="#191970" d="M147.263,-801C155.6919,-801 164.3487,-801 172.9445,-801"/>
 <polygon fill="#191970" stroke="#191970" points="172.9901,-804.5001 182.99,-801 172.99,-797.5001 172.9901,-804.5001"/>
 </g>
-<!-- Node128 -->
+<!-- Node130 -->
 <g id="node3" class="node">
-<title>Node128</title>
+<title>Node130</title>
 <g id="a_node3"><a xlink:href="structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512" target="_top" xlink:title="Get the Context that this module belongs to. ">
 <polygon fill="#ffffff" stroke="#000000" points="1120.5,-171.5 1120.5,-190.5 1239.5,-190.5 1239.5,-171.5 1120.5,-171.5"/>
 <text text-anchor="middle" x="1180" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ChiModule::context</text>
 </a>
 </g>
 </g>
-<!-- Node127&#45;&gt;Node128 -->
+<!-- Node129&#45;&gt;Node130 -->
 <g id="edge2" class="edge">
-<title>Node127&#45;&gt;Node128</title>
+<title>Node129&#45;&gt;Node130</title>
 <path fill="none" stroke="#191970" d="M262.6453,-791.0372C272.0022,-714.8159 342.7182,-227 620,-227 620,-227 620,-227 806.5,-227 919.4418,-227 1050.1633,-206.0245 1123.152,-192.4017"/>
 <polygon fill="#191970" stroke="#191970" points="1123.8829,-195.8256 1133.06,-190.5312 1122.5843,-188.9471 1123.8829,-195.8256"/>
 </g>
-<!-- Node131 -->
+<!-- Node133 -->
 <g id="node6" class="node">
-<title>Node131</title>
-<g id="a_node6"><a xlink:href="structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b" target="_top" xlink:title="Load a module from disk, also loads dependencies. ">
+<title>Node133</title>
+<g id="a_node6"><a xlink:href="structchi_1_1Context.html#a8ca4bb6f163efb356cc8e10c63215651" target="_top" xlink:title="Load a module from disk, also loads dependencies. ">
 <polygon fill="#ffffff" stroke="#000000" points="376,-1366.5 376,-1385.5 501,-1385.5 501,-1366.5 376,-1366.5"/>
 <text text-anchor="middle" x="438.5" y="-1373.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::loadModule</text>
 </a>
 </g>
 </g>
-<!-- Node127&#45;&gt;Node131 -->
+<!-- Node129&#45;&gt;Node133 -->
 <g id="edge5" class="edge">
-<title>Node127&#45;&gt;Node131</title>
+<title>Node129&#45;&gt;Node133</title>
 <path fill="none" stroke="#191970" d="M264.4245,-810.5005C284.6816,-876.3076 404.1524,-1264.4189 432.479,-1356.4403"/>
 <polygon fill="#191970" stroke="#191970" points="429.1816,-1357.6253 435.4688,-1366.153 435.8719,-1355.5659 429.1816,-1357.6253"/>
 </g>
-<!-- Node129 -->
+<!-- Node131 -->
 <g id="node4" class="node">
-<title>Node129</title>
+<title>Node131</title>
 <g id="a_node4"><a xlink:href="structchi_1_1ChiModule.html#a653e3aed05912857334655e06937b28d" target="_top" xlink:title="Adds forward declartions for the functions in this module. ">
 <polygon fill="#ffffff" stroke="#000000" points="1303.5,-154 1303.5,-184 1440.5,-184 1440.5,-154 1303.5,-154"/>
 <text text-anchor="start" x="1311.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ChiModule::addForward</text>
@@ -70,15 +70,15 @@
 </a>
 </g>
 </g>
-<!-- Node128&#45;&gt;Node129 -->
+<!-- Node130&#45;&gt;Node131 -->
 <g id="edge3" class="edge">
-<title>Node128&#45;&gt;Node129</title>
+<title>Node130&#45;&gt;Node131</title>
 <path fill="none" stroke="#191970" d="M1239.6975,-177.2689C1256.5375,-176.2164 1275.1253,-175.0547 1292.9131,-173.9429"/>
 <polygon fill="#191970" stroke="#191970" points="1293.5124,-177.4124 1303.2746,-173.2953 1293.0757,-170.426 1293.5124,-177.4124"/>
 </g>
-<!-- Node130 -->
+<!-- Node132 -->
 <g id="node5" class="node">
-<title>Node130</title>
+<title>Node132</title>
 <g id="a_node5"><a xlink:href="structchi_1_1ChiModule.html#a987c71edb997c5f041f69622cb0c86fe" target="_top" xlink:title="Generate a llvm::Module from the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="1309.5,-105 1309.5,-135 1434.5,-135 1434.5,-105 1309.5,-105"/>
 <text text-anchor="start" x="1317.5" y="-123" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ChiModule::generate</text>
@@ -86,75 +86,75 @@
 </a>
 </g>
 </g>
-<!-- Node128&#45;&gt;Node130 -->
+<!-- Node130&#45;&gt;Node132 -->
 <g id="edge4" class="edge">
-<title>Node128&#45;&gt;Node130</title>
+<title>Node130&#45;&gt;Node132</title>
 <path fill="none" stroke="#191970" d="M1208.4707,-171.3537C1231.0656,-163.7565 1263.4843,-152.9856 1292,-144 1298.3186,-142.0089 1304.9299,-139.9641 1311.5282,-137.9482"/>
 <polygon fill="#191970" stroke="#191970" points="1312.5998,-141.2807 1321.1505,-135.0249 1310.5649,-134.5829 1312.5998,-141.2807"/>
 </g>
-<!-- Node132 -->
+<!-- Node134 -->
 <g id="node7" class="node">
-<title>Node132</title>
+<title>Node134</title>
 <g id="a_node7"><a xlink:href="structchi_1_1Context.html#af4a8f3fb758bbd0d1e0fdca431bdab2f" target="_top" xlink:title="Adds a custom module to the Context. ">
 <polygon fill="#ffffff" stroke="#000000" points="1119,-1271.5 1119,-1290.5 1241,-1290.5 1241,-1271.5 1119,-1271.5"/>
 <text text-anchor="middle" x="1180" y="-1278.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::addModule</text>
 </a>
 </g>
 </g>
-<!-- Node131&#45;&gt;Node132 -->
+<!-- Node133&#45;&gt;Node134 -->
 <g id="edge6" class="edge">
-<title>Node131&#45;&gt;Node132</title>
+<title>Node133&#45;&gt;Node134</title>
 <path fill="none" stroke="#191970" d="M501.008,-1366.9633C512.9521,-1365.2797 525.3588,-1363.5604 537,-1362 744.5068,-1334.1851 990.0711,-1304.0108 1108.7361,-1289.6024"/>
 <polygon fill="#191970" stroke="#191970" points="1109.2788,-1293.0623 1118.7843,-1288.3832 1108.4355,-1286.1133 1109.2788,-1293.0623"/>
 </g>
-<!-- Node133 -->
+<!-- Node135 -->
 <g id="node8" class="node">
-<title>Node133</title>
+<title>Node135</title>
 <g id="a_node8"><a xlink:href="structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5" target="_top" xlink:title="Gets the module by the full name. ">
 <polygon fill="#ffffff" stroke="#000000" points="1292,-1271.5 1292,-1290.5 1452,-1290.5 1452,-1271.5 1292,-1271.5"/>
 <text text-anchor="middle" x="1372" y="-1278.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::moduleByFullName</text>
 </a>
 </g>
 </g>
-<!-- Node131&#45;&gt;Node133 -->
+<!-- Node133&#45;&gt;Node135 -->
 <g id="edge98" class="edge">
-<title>Node131&#45;&gt;Node133</title>
+<title>Node133&#45;&gt;Node135</title>
 <path fill="none" stroke="#191970" d="M501.0088,-1376C574.224,-1376 699.1667,-1376 806.5,-1376 806.5,-1376 806.5,-1376 989,-1376 1122.9097,-1376 1275.6145,-1320.6159 1340.3447,-1294.4234"/>
 <polygon fill="#191970" stroke="#191970" points="1341.6757,-1297.6605 1349.6035,-1290.6319 1339.023,-1291.1826 1341.6757,-1297.6605"/>
 </g>
-<!-- Node134 -->
+<!-- Node136 -->
 <g id="node9" class="node">
-<title>Node134</title>
+<title>Node136</title>
 <g id="a_node9"><a xlink:href="structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" target="_top" xlink:title="Load a module from JSON – avoid this use the string overload. ">
 <polygon fill="#ffffff" stroke="#000000" points="537,-1271.5 537,-1290.5 703,-1290.5 703,-1271.5 537,-1271.5"/>
 <text text-anchor="middle" x="620" y="-1278.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::addModuleFromJson</text>
 </a>
 </g>
 </g>
-<!-- Node131&#45;&gt;Node134 -->
+<!-- Node133&#45;&gt;Node136 -->
 <g id="edge8" class="edge">
-<title>Node131&#45;&gt;Node134</title>
+<title>Node133&#45;&gt;Node136</title>
 <path fill="none" stroke="#191970" d="M456.6323,-1366.3739C476.3771,-1355.9043 508.8978,-1338.697 537,-1324 555.513,-1314.318 576.3955,-1303.4998 592.583,-1295.1365"/>
 <polygon fill="#191970" stroke="#191970" points="594.2382,-1298.221 601.518,-1290.5232 591.0267,-1292.0011 594.2382,-1298.221"/>
 </g>
-<!-- Node135 -->
+<!-- Node137 -->
 <g id="node10" class="node">
-<title>Node135</title>
+<title>Node137</title>
 <g id="a_node10"><a xlink:href="structchi_1_1Result.html#a5cd21feaa68ac0d813b3eec7d3ea34c6" target="_top" xlink:title="Add a context with a scope Example usage: chi::Result res; res.contextJson(); // returns {} { &#160;&#160;&#160;&#160;aut...">
 <polygon fill="#ffffff" stroke="#000000" points="913,-1480.5 913,-1499.5 1065,-1499.5 1065,-1480.5 913,-1480.5"/>
 <text text-anchor="middle" x="989" y="-1487.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::addScopedContext</text>
 </a>
 </g>
 </g>
-<!-- Node131&#45;&gt;Node135 -->
+<!-- Node133&#45;&gt;Node137 -->
 <g id="edge92" class="edge">
-<title>Node131&#45;&gt;Node135</title>
+<title>Node133&#45;&gt;Node137</title>
 <path fill="none" stroke="#191970" d="M444.7182,-1385.5676C458.4827,-1405.7784 493.7579,-1452.4795 537,-1471 665.9576,-1526.2324 835.002,-1513.6408 925.4164,-1500.9816"/>
 <polygon fill="#191970" stroke="#191970" points="926.1167,-1504.4168 935.5128,-1499.5216 925.1148,-1497.4889 926.1167,-1504.4168"/>
 </g>
-<!-- Node145 -->
+<!-- Node147 -->
 <g id="node20" class="node">
-<title>Node145</title>
+<title>Node147</title>
 <g id="a_node20"><a xlink:href="structchi_1_1ChiModule.html#af3cdb7e3d333fedc74ad862dcc5bca9f" target="_top" xlink:title="Update the last edit time, signifying that it&#39;s been edited. ">
 <polygon fill="#ffffff" stroke="#000000" points="1857,-437 1857,-467 1992,-467 1992,-437 1857,-437"/>
 <text text-anchor="start" x="1865" y="-455" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ChiModule::updateLast</text>
@@ -162,189 +162,189 @@
 </a>
 </g>
 </g>
-<!-- Node131&#45;&gt;Node145 -->
+<!-- Node133&#45;&gt;Node147 -->
 <g id="edge99" class="edge">
-<title>Node131&#45;&gt;Node145</title>
+<title>Node133&#45;&gt;Node147</title>
 <path fill="none" stroke="#191970" d="M438.9671,-1366.3738C445.0563,-1246.0416 513.4842,-38 806.5,-38 806.5,-38 806.5,-38 1180,-38 1477.6763,-38 1594.9609,-50.5157 1815,-251 1870.106,-301.2088 1903.2506,-385.7713 1917.0281,-427.3742"/>
 <polygon fill="#191970" stroke="#191970" points="1913.7229,-428.5293 1920.1151,-436.9786 1920.3871,-426.3873 1913.7229,-428.5293"/>
 </g>
-<!-- Node184 -->
+<!-- Node186 -->
 <g id="node46" class="node">
-<title>Node184</title>
+<title>Node186</title>
 <g id="a_node46"><a xlink:href="structchi_1_1Context.html#a24fd4f52e8cc081116a45de3a698d846" target="_top" xlink:title="Get the workspace path of the Context. ">
 <polygon fill="#ffffff" stroke="#000000" points="918,-1404.5 918,-1423.5 1060,-1423.5 1060,-1404.5 918,-1404.5"/>
 <text text-anchor="middle" x="989" y="-1411.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::workspacePath</text>
 </a>
 </g>
 </g>
-<!-- Node131&#45;&gt;Node184 -->
+<!-- Node133&#45;&gt;Node186 -->
 <g id="edge100" class="edge">
-<title>Node131&#45;&gt;Node184</title>
+<title>Node133&#45;&gt;Node186</title>
 <path fill="none" stroke="#191970" d="M446.7447,-1385.7599C462.2645,-1403.2806 497.8026,-1439.4973 537,-1453 607.6991,-1477.3545 822.1765,-1444.127 928.2588,-1425.3367"/>
 <polygon fill="#191970" stroke="#191970" points="928.9489,-1428.7689 938.178,-1423.5657 927.7185,-1421.8779 928.9489,-1428.7689"/>
 </g>
-<!-- Node186 -->
+<!-- Node188 -->
 <g id="node48" class="node">
-<title>Node186</title>
+<title>Node188</title>
 <g id="a_node48"><a xlink:href="structchi_1_1Context.html#adb50cef8d976f87057394192cb02b8ff" target="_top" xlink:title="Downloads a module from a remote URL, currently supports. ">
 <polygon fill="#ffffff" stroke="#000000" points="742.5,-1404.5 742.5,-1423.5 870.5,-1423.5 870.5,-1404.5 742.5,-1404.5"/>
 <text text-anchor="middle" x="806.5" y="-1411.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::fetchModule</text>
 </a>
 </g>
 </g>
-<!-- Node131&#45;&gt;Node186 -->
+<!-- Node133&#45;&gt;Node188 -->
 <g id="edge93" class="edge">
-<title>Node131&#45;&gt;Node186</title>
+<title>Node133&#45;&gt;Node188</title>
 <path fill="none" stroke="#191970" d="M450.3078,-1385.65C467.9094,-1399.3447 502.6528,-1423.7783 537,-1433 614.0287,-1453.6809 707.6301,-1438.5057 761.8039,-1425.983"/>
 <polygon fill="#191970" stroke="#191970" points="762.8571,-1429.3301 771.772,-1423.6052 761.2328,-1422.5212 762.8571,-1429.3301"/>
 </g>
-<!-- Node188 -->
+<!-- Node190 -->
 <g id="node50" class="node">
-<title>Node188</title>
+<title>Node190</title>
 <g id="a_node50"><a xlink:href="structchi_1_1Context.html#ab109ef2d751346da8db6d7c44fb0cd90" target="_top" xlink:title="Get the LangModule, if it has been loaded. ">
 <polygon fill="#ffffff" stroke="#000000" points="557.5,-1404.5 557.5,-1423.5 682.5,-1423.5 682.5,-1404.5 557.5,-1404.5"/>
 <text text-anchor="middle" x="620" y="-1411.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::langModule</text>
 </a>
 </g>
 </g>
-<!-- Node131&#45;&gt;Node188 -->
+<!-- Node133&#45;&gt;Node190 -->
 <g id="edge97" class="edge">
-<title>Node131&#45;&gt;Node188</title>
+<title>Node133&#45;&gt;Node190</title>
 <path fill="none" stroke="#191970" d="M484.3001,-1385.589C508.6826,-1390.6939 538.8567,-1397.0113 564.5557,-1402.3918"/>
 <polygon fill="#191970" stroke="#191970" points="564.0242,-1405.8564 574.5292,-1404.4799 565.4587,-1399.0049 564.0242,-1405.8564"/>
 </g>
-<!-- Node132&#45;&gt;Node133 -->
+<!-- Node134&#45;&gt;Node135 -->
 <g id="edge7" class="edge">
-<title>Node132&#45;&gt;Node133</title>
+<title>Node134&#45;&gt;Node135</title>
 <path fill="none" stroke="#191970" d="M1241.0138,-1281C1254.0026,-1281 1267.9813,-1281 1281.7991,-1281"/>
 <polygon fill="#191970" stroke="#191970" points="1281.8158,-1284.5001 1291.8158,-1281 1281.8158,-1277.5001 1281.8158,-1284.5001"/>
 </g>
-<!-- Node134&#45;&gt;Node133 -->
+<!-- Node136&#45;&gt;Node135 -->
 <g id="edge90" class="edge">
-<title>Node134&#45;&gt;Node133</title>
+<title>Node136&#45;&gt;Node135</title>
 <path fill="none" stroke="#191970" d="M703.2389,-1289.3606C824.8741,-1300.2461 1058.229,-1316.0896 1256,-1300 1275.2213,-1298.4363 1296.0586,-1295.438 1314.6997,-1292.2773"/>
 <polygon fill="#191970" stroke="#191970" points="1315.5567,-1295.6807 1324.8057,-1290.5128 1314.3526,-1288.785 1315.5567,-1295.6807"/>
 </g>
-<!-- Node134&#45;&gt;Node135 -->
+<!-- Node136&#45;&gt;Node137 -->
 <g id="edge9" class="edge">
-<title>Node134&#45;&gt;Node135</title>
+<title>Node136&#45;&gt;Node137</title>
 <path fill="none" stroke="#191970" d="M627.0089,-1290.705C650.1927,-1322.6975 723.7893,-1423.3495 739,-1433 787.9837,-1464.078 851.8774,-1478.2861 902.8094,-1484.7462"/>
 <polygon fill="#191970" stroke="#191970" points="902.471,-1488.2305 912.8147,-1485.9376 903.2987,-1481.2796 902.471,-1488.2305"/>
 </g>
-<!-- Node139 -->
+<!-- Node141 -->
 <g id="node14" class="node">
-<title>Node139</title>
+<title>Node141</title>
 <g id="a_node14"><a xlink:href="structchi_1_1ChiModule.html#a92ab6d528ac41a91b6ac21ededfccc38" target="_top" xlink:title="Get the full name of the module. ">
 <polygon fill="#ffffff" stroke="#000000" points="2034,-66.5 2034,-85.5 2159,-85.5 2159,-66.5 2034,-66.5"/>
 <text text-anchor="middle" x="2096.5" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ChiModule::fullName</text>
 </a>
 </g>
 </g>
-<!-- Node134&#45;&gt;Node139 -->
+<!-- Node136&#45;&gt;Node141 -->
 <g id="edge13" class="edge">
-<title>Node134&#45;&gt;Node139</title>
+<title>Node136&#45;&gt;Node141</title>
 <path fill="none" stroke="#191970" d="M621.1779,-1271.0864C630.8696,-1192.3242 702.3941,-661.2939 910,-293 996.9563,-138.7391 1002.9186,0 1180,0 1180,0 1180,0 1739,0 1858.8592,0 1996.4788,-41.3783 2060.3916,-63.0713"/>
 <polygon fill="#191970" stroke="#191970" points="2059.4077,-66.4341 2070.0024,-66.3745 2061.683,-59.8141 2059.4077,-66.4341"/>
 </g>
-<!-- Node140 -->
+<!-- Node142 -->
 <g id="node15" class="node">
-<title>Node140</title>
+<title>Node142</title>
 <g id="a_node15"><a xlink:href="namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" target="_top" xlink:title="Load a GraphModule from json. ">
 <polygon fill="#ffffff" stroke="#000000" points="745.5,-1252.5 745.5,-1271.5 867.5,-1271.5 867.5,-1252.5 745.5,-1252.5"/>
 <text text-anchor="middle" x="806.5" y="-1259.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::jsonToGraphModule</text>
 </a>
 </g>
 </g>
-<!-- Node134&#45;&gt;Node140 -->
+<!-- Node136&#45;&gt;Node142 -->
 <g id="edge14" class="edge">
-<title>Node134&#45;&gt;Node140</title>
+<title>Node136&#45;&gt;Node142</title>
 <path fill="none" stroke="#191970" d="M703.1594,-1272.528C713.9066,-1271.4331 724.8346,-1270.3198 735.3635,-1269.2472"/>
 <polygon fill="#191970" stroke="#191970" points="735.7232,-1272.7287 745.3169,-1268.2331 735.0136,-1265.7648 735.7232,-1272.7287"/>
 </g>
-<!-- Node185 -->
+<!-- Node187 -->
 <g id="node47" class="node">
-<title>Node185</title>
+<title>Node187</title>
 <g id="a_node47"><a xlink:href="structchi_1_1Context.html#a17e4d810afed483542eafea5b36792c5" target="_top" xlink:title="Unloads a module. ">
 <polygon fill="#ffffff" stroke="#000000" points="739,-1214.5 739,-1233.5 874,-1233.5 874,-1214.5 739,-1214.5"/>
 <text text-anchor="middle" x="806.5" y="-1221.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::unloadModule</text>
 </a>
 </g>
 </g>
-<!-- Node134&#45;&gt;Node185 -->
+<!-- Node136&#45;&gt;Node187 -->
 <g id="edge91" class="edge">
-<title>Node134&#45;&gt;Node185</title>
+<title>Node136&#45;&gt;Node187</title>
 <path fill="none" stroke="#191970" d="M649.2543,-1271.3461C673.2889,-1263.49 708.2588,-1252.2318 739,-1243 746.3775,-1240.7845 754.2317,-1238.5035 761.8761,-1236.3247"/>
 <polygon fill="#191970" stroke="#191970" points="763.0768,-1239.6225 771.7471,-1233.5334 761.172,-1232.8866 763.0768,-1239.6225"/>
 </g>
-<!-- Node136 -->
+<!-- Node138 -->
 <g id="node11" class="node">
-<title>Node136</title>
+<title>Node138</title>
 <g id="a_node11"><a xlink:href="structchi_1_1Result.html#a5cbde12f0c21347635469c7acf8d4112" target="_top" xlink:title="Add some json that will ALWAYS be merged with entries that are added and when results are added to th...">
 <polygon fill="#ffffff" stroke="#000000" points="1120.5,-1470.5 1120.5,-1489.5 1239.5,-1489.5 1239.5,-1470.5 1120.5,-1470.5"/>
 <text text-anchor="middle" x="1180" y="-1477.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::addContext</text>
 </a>
 </g>
 </g>
-<!-- Node135&#45;&gt;Node136 -->
+<!-- Node137&#45;&gt;Node138 -->
 <g id="edge10" class="edge">
-<title>Node135&#45;&gt;Node136</title>
+<title>Node137&#45;&gt;Node138</title>
 <path fill="none" stroke="#191970" d="M1065.0371,-1486.019C1079.998,-1485.2357 1095.6244,-1484.4176 1110.3622,-1483.646"/>
 <polygon fill="#191970" stroke="#191970" points="1110.6009,-1487.1384 1120.4041,-1483.1202 1110.2348,-1480.1479 1110.6009,-1487.1384"/>
 </g>
-<!-- Node137 -->
+<!-- Node139 -->
 <g id="node12" class="node">
-<title>Node137</title>
+<title>Node139</title>
 <g id="a_node12"><a xlink:href="structchi_1_1Result.html#ab801a9230e3e46dc771f260992e4e84d" target="_top" xlink:title="Removes a previously added context. ">
 <polygon fill="#ffffff" stroke="#000000" points="1112.5,-1508.5 1112.5,-1527.5 1247.5,-1527.5 1247.5,-1508.5 1112.5,-1508.5"/>
 <text text-anchor="middle" x="1180" y="-1515.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::removeContext</text>
 </a>
 </g>
 </g>
-<!-- Node135&#45;&gt;Node137 -->
+<!-- Node137&#45;&gt;Node139 -->
 <g id="edge11" class="edge">
-<title>Node135&#45;&gt;Node137</title>
+<title>Node137&#45;&gt;Node139</title>
 <path fill="none" stroke="#191970" d="M1053.9304,-1499.5186C1070.2302,-1501.9081 1087.8581,-1504.4923 1104.6198,-1506.9495"/>
 <polygon fill="#191970" stroke="#191970" points="1104.5228,-1510.4726 1114.9248,-1508.4602 1105.5382,-1503.5466 1104.5228,-1510.4726"/>
 </g>
-<!-- Node138 -->
+<!-- Node140 -->
 <g id="node13" class="node">
-<title>Node138</title>
+<title>Node140</title>
 <g id="a_node13"><a xlink:href="structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0" target="_top" xlink:title="Get the JSON associated with the context that&#39;s been added. ">
 <polygon fill="#ffffff" stroke="#000000" points="2035.5,-1252.5 2035.5,-1271.5 2157.5,-1271.5 2157.5,-1252.5 2035.5,-1252.5"/>
 <text text-anchor="middle" x="2096.5" y="-1259.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::contextJson</text>
 </a>
 </g>
 </g>
-<!-- Node135&#45;&gt;Node138 -->
+<!-- Node137&#45;&gt;Node140 -->
 <g id="edge12" class="edge">
-<title>Node135&#45;&gt;Node138</title>
+<title>Node137&#45;&gt;Node140</title>
 <path fill="none" stroke="#191970" d="M1030.0703,-1480.4099C1042.2973,-1477.4774 1055.71,-1474.1838 1068,-1471 1084.0752,-1466.8356 1087.6853,-1464.0958 1104,-1461 1221.6599,-1438.6737 1252.2406,-1433 1372,-1433 1372,-1433 1372,-1433 1739,-1433 1881.4335,-1433 2027.2942,-1321.1708 2077.8915,-1278.3817"/>
 <polygon fill="#191970" stroke="#191970" points="2080.3875,-1280.8519 2085.6973,-1271.6837 2075.829,-1275.5395 2080.3875,-1280.8519"/>
 </g>
-<!-- Node140&#45;&gt;Node135 -->
+<!-- Node142&#45;&gt;Node137 -->
 <g id="edge17" class="edge">
-<title>Node140&#45;&gt;Node135</title>
+<title>Node142&#45;&gt;Node137</title>
 <path fill="none" stroke="#191970" d="M811.503,-1271.6337C822.8238,-1293.4813 851.1943,-1348.5042 874,-1395 890.4591,-1428.5565 880.99,-1447.4339 910,-1471 912.0598,-1472.6732 914.2434,-1474.2032 916.5217,-1475.6018"/>
 <polygon fill="#191970" stroke="#191970" points="915.2272,-1478.8732 925.7157,-1480.3711 918.4506,-1472.6595 915.2272,-1478.8732"/>
 </g>
-<!-- Node141 -->
+<!-- Node143 -->
 <g id="node16" class="node">
-<title>Node141</title>
+<title>Node143</title>
 <g id="a_node16"><a xlink:href="structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" target="_top" xlink:title="Add a entry to the result, either a warning or an error. ">
 <polygon fill="#ffffff" stroke="#000000" points="1870.5,-1081.5 1870.5,-1100.5 1978.5,-1100.5 1978.5,-1081.5 1870.5,-1081.5"/>
 <text text-anchor="middle" x="1924.5" y="-1088.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::addEntry</text>
 </a>
 </g>
 </g>
-<!-- Node140&#45;&gt;Node141 -->
+<!-- Node142&#45;&gt;Node143 -->
 <g id="edge15" class="edge">
-<title>Node140&#45;&gt;Node141</title>
+<title>Node142&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M848.5603,-1252.4887C867.2653,-1248.7234 889.623,-1244.8549 910,-1243 1114.4879,-1224.3861 1166.6667,-1243 1372,-1243 1372,-1243 1372,-1243 1557.5,-1243 1673.0575,-1243 1712.3182,-1260.0092 1815,-1207 1859.4914,-1184.0315 1895.7553,-1135.6479 1913.2218,-1109.2035"/>
 <polygon fill="#191970" stroke="#191970" points="1916.3264,-1110.8463 1918.7867,-1100.5411 1910.437,-1107.0628 1916.3264,-1110.8463"/>
 </g>
-<!-- Node142 -->
+<!-- Node144 -->
 <g id="node17" class="node">
-<title>Node142</title>
+<title>Node144</title>
 <g id="a_node17"><a xlink:href="namespacechi.html#af483dab3c6b3b1ee261f223bd83d5670" target="_top" xlink:title="Create a forward declaration of a function in a module with an empty graph. ">
 <polygon fill="#ffffff" stroke="#000000" points="926,-303 926,-333 1052,-333 1052,-303 926,-303"/>
 <text text-anchor="start" x="934" y="-321" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::createGraphFunction</text>
@@ -352,90 +352,90 @@
 </a>
 </g>
 </g>
-<!-- Node140&#45;&gt;Node142 -->
+<!-- Node142&#45;&gt;Node144 -->
 <g id="edge18" class="edge">
-<title>Node140&#45;&gt;Node142</title>
+<title>Node142&#45;&gt;Node144</title>
 <path fill="none" stroke="#191970" d="M863.1214,-1252.4055C867.2559,-1249.9104 870.9801,-1246.8202 874,-1243 933.8613,-1167.2758 864.2644,-460.0046 910,-375 918.2287,-359.706 932.5671,-347.5103 946.7896,-338.3881"/>
 <polygon fill="#191970" stroke="#191970" points="948.8085,-341.2582 955.5745,-333.1051 945.201,-335.2593 948.8085,-341.2582"/>
 </g>
-<!-- Node158 -->
+<!-- Node160 -->
 <g id="node28" class="node">
-<title>Node158</title>
+<title>Node160</title>
 <g id="a_node28"><a xlink:href="namespacechi.html#a6a3fedb48e6702c016f996d8a7f445fc" target="_top" xlink:title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ...">
 <polygon fill="#ffffff" stroke="#000000" points="925,-1019.5 925,-1038.5 1053,-1038.5 1053,-1019.5 925,-1019.5"/>
 <text text-anchor="middle" x="989" y="-1026.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::jsonToGraphFunction</text>
 </a>
 </g>
 </g>
-<!-- Node140&#45;&gt;Node158 -->
+<!-- Node142&#45;&gt;Node160 -->
 <g id="edge34" class="edge">
-<title>Node140&#45;&gt;Node158</title>
+<title>Node142&#45;&gt;Node160</title>
 <path fill="none" stroke="#191970" d="M857.7134,-1252.4353C863.5643,-1249.976 869.1568,-1246.8849 874,-1243 939.2364,-1190.6721 972.4061,-1091.024 984.047,-1048.7499"/>
 <polygon fill="#191970" stroke="#191970" points="987.4878,-1049.4285 986.6596,-1038.866 980.7202,-1047.6396 987.4878,-1049.4285"/>
 </g>
-<!-- Node180 -->
+<!-- Node182 -->
 <g id="node43" class="node">
-<title>Node180</title>
+<title>Node182</title>
 <g id="a_node43"><a xlink:href="namespacechi.html#a629f77832b6e7a6e0eaab123c4be1cda" target="_top" xlink:title="Load a GraphStruct from json. ">
 <polygon fill="#ffffff" stroke="#000000" points="930.5,-384.5 930.5,-403.5 1047.5,-403.5 1047.5,-384.5 930.5,-384.5"/>
 <text text-anchor="middle" x="989" y="-391.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::jsonToGraphStruct</text>
 </a>
 </g>
 </g>
-<!-- Node140&#45;&gt;Node180 -->
+<!-- Node142&#45;&gt;Node182 -->
 <g id="edge79" class="edge">
-<title>Node140&#45;&gt;Node180</title>
+<title>Node142&#45;&gt;Node182</title>
 <path fill="none" stroke="#191970" d="M862.1137,-1252.4566C866.5752,-1249.9634 870.6457,-1246.8591 874,-1243 881.0893,-1234.8437 970.1512,-541.2674 986.4482,-413.9563"/>
 <polygon fill="#191970" stroke="#191970" points="989.9596,-414.09 987.7571,-403.7266 983.0162,-413.2015 989.9596,-414.09"/>
 </g>
-<!-- Node183 -->
+<!-- Node185 -->
 <g id="node45" class="node">
-<title>Node183</title>
+<title>Node185</title>
 <g id="a_node45"><a xlink:href="structchi_1_1Context.html#a906c9187e13e2194a3f68d48973529f6" target="_top" xlink:title="Create a new GraphModule with the given full name. ">
 <polygon fill="#ffffff" stroke="#000000" points="914,-1252.5 914,-1271.5 1064,-1271.5 1064,-1252.5 914,-1252.5"/>
 <text text-anchor="middle" x="989" y="-1259.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::newGraphModule</text>
 </a>
 </g>
 </g>
-<!-- Node140&#45;&gt;Node183 -->
+<!-- Node142&#45;&gt;Node185 -->
 <g id="edge87" class="edge">
-<title>Node140&#45;&gt;Node183</title>
+<title>Node142&#45;&gt;Node185</title>
 <path fill="none" stroke="#191970" d="M867.5236,-1262C879.1,-1262 891.4082,-1262 903.5775,-1262"/>
 <polygon fill="#191970" stroke="#191970" points="903.7481,-1265.5001 913.748,-1262 903.748,-1258.5001 903.7481,-1265.5001"/>
 </g>
-<!-- Node140&#45;&gt;Node184 -->
+<!-- Node142&#45;&gt;Node186 -->
 <g id="edge89" class="edge">
-<title>Node140&#45;&gt;Node184</title>
+<title>Node142&#45;&gt;Node186</title>
 <path fill="none" stroke="#191970" d="M817.9162,-1271.5083C848.3863,-1296.8861 931.8855,-1366.4307 969.8085,-1398.0158"/>
 <polygon fill="#191970" stroke="#191970" points="967.6642,-1400.7849 977.5881,-1404.4953 972.1441,-1395.4061 967.6642,-1400.7849"/>
 </g>
-<!-- Node141&#45;&gt;Node138 -->
+<!-- Node143&#45;&gt;Node140 -->
 <g id="edge16" class="edge">
-<title>Node141&#45;&gt;Node138</title>
+<title>Node143&#45;&gt;Node140</title>
 <path fill="none" stroke="#191970" d="M1934.2403,-1100.6837C1962.3855,-1128.6653 2044.0761,-1209.8809 2079.6336,-1245.2317"/>
 <polygon fill="#191970" stroke="#191970" points="2077.3072,-1247.8542 2086.8665,-1252.4226 2082.2425,-1242.89 2077.3072,-1247.8542"/>
 </g>
-<!-- Node142&#45;&gt;Node128 -->
+<!-- Node144&#45;&gt;Node130 -->
 <g id="edge20" class="edge">
-<title>Node142&#45;&gt;Node128</title>
+<title>Node144&#45;&gt;Node130</title>
 <path fill="none" stroke="#191970" d="M1005.4008,-302.7254C1021.6371,-287.4402 1047.0343,-263.0858 1068,-241 1084.6954,-223.4127 1083.2963,-212.6256 1104,-200 1107.5924,-197.8093 1111.4264,-195.8706 1115.3913,-194.155"/>
 <polygon fill="#191970" stroke="#191970" points="1116.7397,-197.3866 1124.8278,-190.5431 1114.2374,-190.8491 1116.7397,-197.3866"/>
 </g>
-<!-- Node142&#45;&gt;Node139 -->
+<!-- Node144&#45;&gt;Node141 -->
 <g id="edge21" class="edge">
-<title>Node142&#45;&gt;Node139</title>
+<title>Node144&#45;&gt;Node141</title>
 <path fill="none" stroke="#191970" d="M996.2663,-302.79C1011.7744,-271.8795 1051.062,-201.3284 1104,-162 1204.4154,-87.4001 1246.9065,-76 1372,-76 1372,-76 1372,-76 1739,-76 1837.4958,-76 1951.256,-76 2023.5058,-76"/>
 <polygon fill="#191970" stroke="#191970" points="2023.8576,-79.5001 2033.8576,-76 2023.8576,-72.5001 2023.8576,-79.5001"/>
 </g>
-<!-- Node142&#45;&gt;Node141 -->
+<!-- Node144&#45;&gt;Node143 -->
 <g id="edge19" class="edge">
-<title>Node142&#45;&gt;Node141</title>
+<title>Node144&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M1021.6366,-333.0894C1038.4145,-342.6337 1057.4957,-356.6535 1068,-375 1152.5118,-522.606 1022.5978,-606.6566 1104,-756 1154.8934,-849.3708 1197.3561,-855.5151 1292,-904 1357.8533,-937.7358 1384.8673,-918.8879 1452,-950 1469.447,-958.0857 1470.4806,-966.0722 1488,-974 1557.278,-1005.3494 1771.9086,-1056.3052 1872.0498,-1079.2014"/>
 <polygon fill="#191970" stroke="#191970" points="1871.4239,-1082.6485 1881.9518,-1081.4592 1872.9801,-1075.8236 1871.4239,-1082.6485"/>
 </g>
-<!-- Node143 -->
+<!-- Node145 -->
 <g id="node18" class="node">
-<title>Node143</title>
+<title>Node145</title>
 <g id="a_node18"><a xlink:href="structchi_1_1GraphModule.html#af61aef2776a0e219ffca2d22e109909f" target="_top" xlink:title="Create a new function if it does&#39;t already exist. ">
 <polygon fill="#ffffff" stroke="#000000" points="1104,-210 1104,-240 1256,-240 1256,-210 1104,-210"/>
 <text text-anchor="start" x="1112" y="-228" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::getOrCreate</text>
@@ -443,45 +443,45 @@
 </a>
 </g>
 </g>
-<!-- Node142&#45;&gt;Node143 -->
+<!-- Node144&#45;&gt;Node145 -->
 <g id="edge22" class="edge">
-<title>Node142&#45;&gt;Node143</title>
+<title>Node144&#45;&gt;Node145</title>
 <path fill="none" stroke="#191970" d="M1010.6355,-302.9056C1033.147,-287.7156 1069.8201,-264.3931 1104,-249 1108.1575,-247.1277 1112.5039,-245.3397 1116.9218,-243.6454"/>
 <polygon fill="#191970" stroke="#191970" points="1118.4685,-246.8067 1126.6618,-240.0894 1116.0679,-240.2312 1118.4685,-246.8067"/>
 </g>
-<!-- Node146 -->
+<!-- Node148 -->
 <g id="node21" class="node">
-<title>Node146</title>
+<title>Node148</title>
 <g id="a_node21"><a xlink:href="namespacechi.html#aa47212ba13fb1a1d26774dc208c15255" target="_top" xlink:title="Parse a colonated pair Example: lang:i32 would turn into {lang, i32}. ">
 <polygon fill="#ffffff" stroke="#000000" points="1129.5,-384.5 1129.5,-403.5 1230.5,-403.5 1230.5,-384.5 1129.5,-384.5"/>
 <text text-anchor="middle" x="1180" y="-391.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::parseColonPair</text>
 </a>
 </g>
 </g>
-<!-- Node142&#45;&gt;Node146 -->
+<!-- Node144&#45;&gt;Node148 -->
 <g id="edge25" class="edge">
-<title>Node142&#45;&gt;Node146</title>
+<title>Node144&#45;&gt;Node148</title>
 <path fill="none" stroke="#191970" d="M1026.7355,-333.0152C1061.6647,-346.9137 1113.1078,-367.3832 1146.5856,-380.7042"/>
 <polygon fill="#191970" stroke="#191970" points="1145.3557,-383.9817 1155.9412,-384.4269 1147.9438,-377.4777 1145.3557,-383.9817"/>
 </g>
-<!-- Node154 -->
+<!-- Node156 -->
 <g id="node24" class="node">
-<title>Node154</title>
+<title>Node156</title>
 <g id="a_node24"><a xlink:href="namespacechi.html#a2b3839fa03d8bfb6ef3238543d44d865" target="_top" xlink:title="Parse something that looks like: {&quot;hello&quot;: &quot;there&quot;} into {&quot;hello&quot;, &quot;there&quot;}. ">
 <polygon fill="#ffffff" stroke="#000000" points="1127.5,-308.5 1127.5,-327.5 1232.5,-327.5 1232.5,-308.5 1127.5,-308.5"/>
 <text text-anchor="middle" x="1180" y="-315.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::parseObjectPair</text>
 </a>
 </g>
 </g>
-<!-- Node142&#45;&gt;Node154 -->
+<!-- Node144&#45;&gt;Node156 -->
 <g id="edge28" class="edge">
-<title>Node142&#45;&gt;Node154</title>
+<title>Node144&#45;&gt;Node156</title>
 <path fill="none" stroke="#191970" d="M1052.0699,-318C1072.987,-318 1096.2594,-318 1117.1592,-318"/>
 <polygon fill="#191970" stroke="#191970" points="1117.2079,-321.5001 1127.2079,-318 1117.2078,-314.5001 1117.2079,-321.5001"/>
 </g>
-<!-- Node155 -->
+<!-- Node157 -->
 <g id="node25" class="node">
-<title>Node155</title>
+<title>Node157</title>
 <g id="a_node25"><a xlink:href="structchi_1_1GraphFunction.html#afdcae25278b1de714d77cf8051172cdf" target="_top" xlink:title="Set the description of the function. ">
 <polygon fill="#ffffff" stroke="#000000" points="1130.5,-259 1130.5,-289 1229.5,-289 1229.5,-259 1130.5,-259"/>
 <text text-anchor="start" x="1138.5" y="-277" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -489,30 +489,30 @@
 </a>
 </g>
 </g>
-<!-- Node142&#45;&gt;Node155 -->
+<!-- Node144&#45;&gt;Node157 -->
 <g id="edge29" class="edge">
-<title>Node142&#45;&gt;Node155</title>
+<title>Node144&#45;&gt;Node157</title>
 <path fill="none" stroke="#191970" d="M1052.0699,-303.4708C1074.1194,-298.3913 1098.7862,-292.7089 1120.5322,-287.6994"/>
 <polygon fill="#191970" stroke="#191970" points="1121.3391,-291.1053 1130.2981,-285.4497 1119.7676,-284.2839 1121.3391,-291.1053"/>
 </g>
-<!-- Node156 -->
+<!-- Node158 -->
 <g id="node26" class="node">
-<title>Node156</title>
+<title>Node158</title>
 <g id="a_node26"><a xlink:href="structchi_1_1Context.html#a9e0b185a1871ebfda5d7bd410bf085f2" target="_top" xlink:title="Gets a DataType from a module. ">
 <polygon fill="#ffffff" stroke="#000000" points="1106,-1019.5 1106,-1038.5 1254,-1038.5 1254,-1019.5 1106,-1019.5"/>
 <text text-anchor="middle" x="1180" y="-1026.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::typeFromModule</text>
 </a>
 </g>
 </g>
-<!-- Node142&#45;&gt;Node156 -->
+<!-- Node144&#45;&gt;Node158 -->
 <g id="edge30" class="edge">
-<title>Node142&#45;&gt;Node156</title>
+<title>Node144&#45;&gt;Node158</title>
 <path fill="none" stroke="#191970" d="M1022.3132,-333.1661C1039.0729,-342.6602 1057.9227,-356.6082 1068,-375 1135.809,-498.7563 1014.7092,-899.7259 1104,-1009 1105.295,-1010.5848 1106.6991,-1012.0525 1108.1951,-1013.4114"/>
 <polygon fill="#191970" stroke="#191970" points="1106.2126,-1016.2972 1116.3617,-1019.338 1110.324,-1010.6318 1106.2126,-1016.2972"/>
 </g>
-<!-- Node144 -->
+<!-- Node146 -->
 <g id="node19" class="node">
-<title>Node144</title>
+<title>Node146</title>
 <g id="a_node19"><a xlink:href="structchi_1_1GraphModule.html#a84474b5d18517fe46cc94560f746d6ce" target="_top" xlink:title="Get a function from the name. ">
 <polygon fill="#ffffff" stroke="#000000" points="1305,-242 1305,-272 1439,-272 1439,-242 1305,-242"/>
 <text text-anchor="start" x="1313" y="-260" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::function</text>
@@ -520,21 +520,21 @@
 </a>
 </g>
 </g>
-<!-- Node143&#45;&gt;Node144 -->
+<!-- Node145&#45;&gt;Node146 -->
 <g id="edge23" class="edge">
-<title>Node143&#45;&gt;Node144</title>
+<title>Node145&#45;&gt;Node146</title>
 <path fill="none" stroke="#191970" d="M1256.1592,-237.6932C1268.8817,-239.8136 1282.0902,-242.015 1294.8375,-244.1396"/>
 <polygon fill="#191970" stroke="#191970" points="1294.5042,-247.6322 1304.9436,-245.8239 1295.655,-240.7275 1294.5042,-247.6322"/>
 </g>
-<!-- Node143&#45;&gt;Node145 -->
+<!-- Node145&#45;&gt;Node147 -->
 <g id="edge24" class="edge">
-<title>Node143&#45;&gt;Node145</title>
+<title>Node145&#45;&gt;Node147</title>
 <path fill="none" stroke="#191970" d="M1256.0007,-217.862C1382.2306,-209.8056 1638.6497,-209.9116 1815,-320 1858.5313,-347.1748 1893.0792,-397.5877 1911.0094,-427.6326"/>
 <polygon fill="#191970" stroke="#191970" points="1908.1825,-429.7337 1916.2373,-436.6165 1914.2327,-426.213 1908.1825,-429.7337"/>
 </g>
-<!-- Node147 -->
+<!-- Node149 -->
 <g id="node22" class="node">
-<title>Node147</title>
+<title>Node149</title>
 <g id="a_node22"><a xlink:href="structchi_1_1GraphFunction.html#a0564412e260698bdb3872d3d12dfc3bc" target="_top" xlink:title="Get the GraphModule that contains this GraphFunction. ">
 <polygon fill="#ffffff" stroke="#000000" points="1322.5,-379 1322.5,-409 1421.5,-409 1421.5,-379 1322.5,-379"/>
 <text text-anchor="start" x="1330.5" y="-397" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -542,15 +542,15 @@
 </a>
 </g>
 </g>
-<!-- Node146&#45;&gt;Node147 -->
+<!-- Node148&#45;&gt;Node149 -->
 <g id="edge26" class="edge">
-<title>Node146&#45;&gt;Node147</title>
+<title>Node148&#45;&gt;Node149</title>
 <path fill="none" stroke="#191970" d="M1230.6969,-394C1255.7078,-394 1286.0417,-394 1312.1827,-394"/>
 <polygon fill="#191970" stroke="#191970" points="1312.349,-397.5001 1322.349,-394 1312.3489,-390.5001 1312.349,-397.5001"/>
 </g>
-<!-- Node148 -->
+<!-- Node150 -->
 <g id="node23" class="node">
-<title>Node148</title>
+<title>Node150</title>
 <g id="a_node23"><a xlink:href="structchi_1_1GraphFunction.html#a89069f6e08f71cfbafb245ea16c8d69f" target="_top" xlink:title="Get the name of the function. ">
 <polygon fill="#ffffff" stroke="#ff0000" points="1322.5,-330 1322.5,-360 1421.5,-360 1421.5,-330 1322.5,-330"/>
 <text text-anchor="start" x="1330.5" y="-348" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -558,90 +558,90 @@
 </a>
 </g>
 </g>
-<!-- Node146&#45;&gt;Node148 -->
+<!-- Node148&#45;&gt;Node150 -->
 <g id="edge27" class="edge">
-<title>Node146&#45;&gt;Node148</title>
+<title>Node148&#45;&gt;Node150</title>
 <path fill="none" stroke="#191970" d="M1217.4753,-384.436C1244.4573,-377.55 1281.4136,-368.1184 1312.4192,-360.2055"/>
 <polygon fill="#191970" stroke="#191970" points="1313.4328,-363.5591 1322.2567,-357.6949 1311.7018,-356.7765 1313.4328,-363.5591"/>
 </g>
-<!-- Node156&#45;&gt;Node133 -->
+<!-- Node158&#45;&gt;Node135 -->
 <g id="edge32" class="edge">
-<title>Node156&#45;&gt;Node133</title>
+<title>Node158&#45;&gt;Node135</title>
 <path fill="none" stroke="#191970" d="M1241.2109,-1038.5015C1246.583,-1040.9975 1251.6295,-1044.1141 1256,-1048 1289.7432,-1078.0019 1272.613,-1102.2218 1292,-1143 1313.1801,-1187.5497 1343.6171,-1236.9151 1360.1749,-1262.8264"/>
 <polygon fill="#191970" stroke="#191970" points="1357.248,-1264.7459 1365.6043,-1271.2592 1363.1336,-1260.9565 1357.248,-1264.7459"/>
 </g>
-<!-- Node156&#45;&gt;Node141 -->
+<!-- Node158&#45;&gt;Node143 -->
 <g id="edge31" class="edge">
-<title>Node156&#45;&gt;Node141</title>
+<title>Node158&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M1239.0406,-1038.631C1245.0969,-1041.0859 1250.8914,-1044.1577 1256,-1048 1281.4652,-1067.1528 1264.3854,-1094.1021 1292,-1110 1387.0896,-1164.7437 1718.8741,-1122.4889 1860.0839,-1101.2774"/>
 <polygon fill="#191970" stroke="#191970" points="1860.9577,-1104.6851 1870.3205,-1099.7264 1859.909,-1097.7641 1860.9577,-1104.6851"/>
 </g>
-<!-- Node157 -->
+<!-- Node159 -->
 <g id="node27" class="node">
-<title>Node157</title>
+<title>Node159</title>
 <g id="a_node27"><a xlink:href="structchi_1_1ChiModule.html#a03aa9f90fafd384094861dfff13eba77" target="_top" xlink:title="Get a DataType from the name. ">
 <polygon fill="#ffffff" stroke="#000000" points="1295,-1081.5 1295,-1100.5 1449,-1100.5 1449,-1081.5 1295,-1081.5"/>
 <text text-anchor="middle" x="1372" y="-1088.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ChiModule::typeFromName</text>
 </a>
 </g>
 </g>
-<!-- Node156&#45;&gt;Node157 -->
+<!-- Node158&#45;&gt;Node159 -->
 <g id="edge33" class="edge">
-<title>Node156&#45;&gt;Node157</title>
+<title>Node158&#45;&gt;Node159</title>
 <path fill="none" stroke="#191970" d="M1228.2134,-1038.5501C1237.6121,-1041.1062 1247.2564,-1044.2335 1256,-1048 1273.4376,-1055.5117 1274.5624,-1063.4883 1292,-1071 1298.6892,-1073.8815 1305.8792,-1076.4076 1313.1068,-1078.6058"/>
 <polygon fill="#191970" stroke="#191970" points="1312.3663,-1082.0339 1322.9423,-1081.4026 1314.281,-1075.3009 1312.3663,-1082.0339"/>
 </g>
-<!-- Node158&#45;&gt;Node141 -->
+<!-- Node160&#45;&gt;Node143 -->
 <g id="edge35" class="edge">
-<title>Node158&#45;&gt;Node141</title>
+<title>Node160&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M997.664,-1038.7527C1015.4167,-1057.9896 1058.133,-1100.5532 1104,-1119 1319.9881,-1205.866 1394.4082,-1157.8797 1627,-1148 1710.7821,-1144.4412 1733.1927,-1150.43 1815,-1132 1842.8201,-1125.7325 1873.0821,-1113.9969 1894.7281,-1104.682"/>
 <polygon fill="#191970" stroke="#191970" points="1896.277,-1107.8245 1904.0275,-1100.6008 1893.4639,-1101.4146 1896.277,-1107.8245"/>
 </g>
-<!-- Node158&#45;&gt;Node146 -->
+<!-- Node160&#45;&gt;Node148 -->
 <g id="edge77" class="edge">
-<title>Node158&#45;&gt;Node146</title>
+<title>Node160&#45;&gt;Node148</title>
 <path fill="none" stroke="#191970" d="M989.4258,-1019.1237C992.7184,-947.3534 1016.3813,-506.0788 1104,-413 1108.4659,-408.2558 1113.9218,-404.6218 1119.8408,-401.8487"/>
 <polygon fill="#191970" stroke="#191970" points="1121.3644,-405.013 1129.4475,-398.1637 1118.8573,-398.4774 1121.3644,-405.013"/>
 </g>
-<!-- Node158&#45;&gt;Node156 -->
+<!-- Node160&#45;&gt;Node158 -->
 <g id="edge78" class="edge">
-<title>Node158&#45;&gt;Node156</title>
+<title>Node160&#45;&gt;Node158</title>
 <path fill="none" stroke="#191970" d="M1053.1316,-1029C1066.7359,-1029 1081.2956,-1029 1095.5245,-1029"/>
 <polygon fill="#191970" stroke="#191970" points="1095.8084,-1032.5001 1105.8084,-1029 1095.8084,-1025.5001 1095.8084,-1032.5001"/>
 </g>
-<!-- Node159 -->
+<!-- Node161 -->
 <g id="node29" class="node">
-<title>Node159</title>
+<title>Node161</title>
 <g id="a_node29"><a xlink:href="namespacechi.html#ab69b013712d615bf9901d7bf2b0b11fb" target="_top" xlink:title="Connects two nodes&#39; data connections. ">
 <polygon fill="#ffffff" stroke="#ff0000" points="1135,-727.5 1135,-746.5 1225,-746.5 1225,-727.5 1135,-727.5"/>
 <text text-anchor="middle" x="1180" y="-734.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::connectData</text>
 </a>
 </g>
 </g>
-<!-- Node158&#45;&gt;Node159 -->
+<!-- Node160&#45;&gt;Node161 -->
 <g id="edge36" class="edge">
-<title>Node158&#45;&gt;Node159</title>
+<title>Node160&#45;&gt;Node161</title>
 <path fill="none" stroke="#191970" d="M995.3549,-1019.2846C1022.829,-977.2824 1131.6454,-810.9243 1168.0583,-755.2564"/>
 <polygon fill="#191970" stroke="#191970" points="1171.0762,-757.0365 1173.6212,-746.7519 1165.2181,-753.2046 1171.0762,-757.0365"/>
 </g>
-<!-- Node165 -->
+<!-- Node167 -->
 <g id="node35" class="node">
-<title>Node165</title>
+<title>Node167</title>
 <g id="a_node35"><a xlink:href="namespacechi.html#a79423caa23a58e57b775c5137a03ee31" target="_top" xlink:title="Connects two nodes&#39; exec connections. ">
 <polygon fill="#ffffff" stroke="#ff0000" points="1693,-657.5 1693,-676.5 1785,-676.5 1785,-657.5 1693,-657.5"/>
 <text text-anchor="middle" x="1739" y="-664.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::connectExec</text>
 </a>
 </g>
 </g>
-<!-- Node158&#45;&gt;Node165 -->
+<!-- Node160&#45;&gt;Node167 -->
 <g id="edge63" class="edge">
-<title>Node158&#45;&gt;Node165</title>
+<title>Node160&#45;&gt;Node167</title>
 <path fill="none" stroke="#191970" d="M990.5132,-1019.428C997.2721,-979.1238 1027.7787,-820.5785 1104,-718 1166.4528,-633.9512 1193.5985,-611.8008 1292,-576 1431.9787,-525.0724 1487.9587,-512.5662 1627,-566 1670.5345,-582.7304 1707.7099,-625.0767 1726.2987,-649.292"/>
 <polygon fill="#191970" stroke="#191970" points="1723.4979,-651.3909 1732.2837,-657.3121 1729.108,-647.2044 1723.4979,-651.3909"/>
 </g>
-<!-- Node151 -->
+<!-- Node153 -->
 <g id="node38" class="node">
-<title>Node151</title>
+<title>Node153</title>
 <g id="a_node38"><a xlink:href="structchi_1_1GraphFunction.html#aca401237496ae311e43c7a43519e4720" target="_top" xlink:title="Get the context. ">
 <polygon fill="#ffffff" stroke="#000000" points="1130.5,-1058 1130.5,-1088 1229.5,-1088 1229.5,-1058 1130.5,-1058"/>
 <text text-anchor="start" x="1138.5" y="-1076" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -649,15 +649,15 @@
 </a>
 </g>
 </g>
-<!-- Node158&#45;&gt;Node151 -->
+<!-- Node160&#45;&gt;Node153 -->
 <g id="edge64" class="edge">
-<title>Node158&#45;&gt;Node151</title>
+<title>Node160&#45;&gt;Node153</title>
 <path fill="none" stroke="#191970" d="M1030.4442,-1038.5473C1056.6487,-1044.584 1090.9497,-1052.4858 1120.0911,-1059.199"/>
 <polygon fill="#191970" stroke="#191970" points="1119.6314,-1062.6847 1130.1619,-1061.519 1121.2028,-1055.8634 1119.6314,-1062.6847"/>
 </g>
-<!-- Node176 -->
+<!-- Node178 -->
 <g id="node39" class="node">
-<title>Node176</title>
+<title>Node178</title>
 <g id="a_node39"><a xlink:href="structchi_1_1GraphFunction.html#a9a3b003e74692f5d0aa474d28c0dd23d" target="_top" xlink:title="Create a new local varaible in the module. ">
 <polygon fill="#ffffff" stroke="#ff0000" points="1113,-423 1113,-453 1247,-453 1247,-423 1113,-423"/>
 <text text-anchor="start" x="1121" y="-441" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -665,15 +665,15 @@
 </a>
 </g>
 </g>
-<!-- Node158&#45;&gt;Node176 -->
+<!-- Node160&#45;&gt;Node178 -->
 <g id="edge65" class="edge">
-<title>Node158&#45;&gt;Node176</title>
+<title>Node160&#45;&gt;Node178</title>
 <path fill="none" stroke="#191970" d="M990.2315,-1019.2172C998.4475,-954.9855 1046.7432,-593.3293 1104,-500 1114.1232,-483.499 1130.2437,-469.4265 1145.0383,-458.8797"/>
 <polygon fill="#191970" stroke="#191970" points="1147.2479,-461.6094 1153.5405,-453.0857 1143.3059,-455.8248 1147.2479,-461.6094"/>
 </g>
-<!-- Node178 -->
+<!-- Node180 -->
 <g id="node40" class="node">
-<title>Node178</title>
+<title>Node180</title>
 <g id="a_node40"><a xlink:href="structchi_1_1GraphFunction.html#ac75470b92fcf30495c7daab64d999ed8" target="_top" xlink:title="Add a node to the graph. ">
 <polygon fill="#ffffff" stroke="#000000" points="1130.5,-970 1130.5,-1000 1229.5,-1000 1229.5,-970 1130.5,-970"/>
 <text text-anchor="start" x="1138.5" y="-988" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -681,15 +681,15 @@
 </a>
 </g>
 </g>
-<!-- Node158&#45;&gt;Node178 -->
+<!-- Node160&#45;&gt;Node180 -->
 <g id="edge68" class="edge">
-<title>Node158&#45;&gt;Node178</title>
+<title>Node160&#45;&gt;Node180</title>
 <path fill="none" stroke="#191970" d="M1030.4442,-1019.4527C1056.6487,-1013.416 1090.9497,-1005.5142 1120.0911,-998.801"/>
 <polygon fill="#191970" stroke="#191970" points="1121.2028,-1002.1366 1130.1619,-996.481 1119.6314,-995.3153 1121.2028,-1002.1366"/>
 </g>
-<!-- Node179 -->
+<!-- Node181 -->
 <g id="node41" class="node">
-<title>Node179</title>
+<title>Node181</title>
 <g id="a_node41"><a xlink:href="structchi_1_1GraphFunction.html#aa5985d96d7564d7ee7f240fdb02b41a6" target="_top" xlink:title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. ">
 <polygon fill="#ffffff" stroke="#000000" points="1322.5,-1032 1322.5,-1062 1421.5,-1062 1421.5,-1032 1322.5,-1032"/>
 <text text-anchor="start" x="1330.5" y="-1050" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphFunction</text>
@@ -697,15 +697,15 @@
 </a>
 </g>
 </g>
-<!-- Node158&#45;&gt;Node179 -->
+<!-- Node160&#45;&gt;Node181 -->
 <g id="edge73" class="edge">
-<title>Node158&#45;&gt;Node179</title>
+<title>Node160&#45;&gt;Node181</title>
 <path fill="none" stroke="#191970" d="M1000.4417,-1038.663C1020.0851,-1054.5474 1062.1632,-1085.5563 1104,-1097 1169.1618,-1114.8238 1191.5319,-1117.1894 1256,-1097 1274.5894,-1091.1784 1274.5016,-1080.5595 1292,-1072 1298.5601,-1068.7911 1305.6228,-1065.8795 1312.7388,-1063.272"/>
 <polygon fill="#191970" stroke="#191970" points="1314.1349,-1066.4923 1322.4334,-1059.9054 1311.8386,-1059.8796 1314.1349,-1066.4923"/>
 </g>
-<!-- Node153 -->
+<!-- Node155 -->
 <g id="node42" class="node">
-<title>Node153</title>
+<title>Node155</title>
 <g id="a_node42"><a xlink:href="structchi_1_1Context.html#a28706d36f049088c98cd726921512668" target="_top" xlink:title="Gets a NodeType from the JSON and name. ">
 <polygon fill="#ffffff" stroke="#000000" points="1110,-1184 1110,-1214 1250,-1214 1250,-1184 1110,-1184"/>
 <text text-anchor="start" x="1118" y="-1202" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::nodeTypeFrom</text>
@@ -713,72 +713,72 @@
 </a>
 </g>
 </g>
-<!-- Node158&#45;&gt;Node153 -->
+<!-- Node160&#45;&gt;Node155 -->
 <g id="edge74" class="edge">
-<title>Node158&#45;&gt;Node153</title>
+<title>Node160&#45;&gt;Node155</title>
 <path fill="none" stroke="#191970" d="M994.4533,-1038.5696C1009.0763,-1063.4445 1051.6257,-1130.8498 1104,-1169 1109.4696,-1172.9841 1115.5397,-1176.5251 1121.7966,-1179.6498"/>
 <polygon fill="#191970" stroke="#191970" points="1120.504,-1182.9082 1131.0491,-1183.933 1123.4447,-1176.5558 1120.504,-1182.9082"/>
 </g>
-<!-- Node159&#45;&gt;Node141 -->
+<!-- Node161&#45;&gt;Node143 -->
 <g id="edge37" class="edge">
-<title>Node159&#45;&gt;Node141</title>
+<title>Node161&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M1185.4416,-746.5001C1199.6915,-770.5109 1240.5782,-834.055 1292,-867 1354.3018,-906.9155 1387.1835,-877.3127 1452,-913 1470.7527,-923.3251 1468.7065,-935.7247 1488,-945 1620.8901,-1008.8863 1680.8993,-939.6955 1815,-1001 1853.3292,-1018.5223 1889.3823,-1052.8808 1909.0498,-1073.706"/>
 <polygon fill="#191970" stroke="#191970" points="1906.6268,-1076.2412 1915.9828,-1081.2128 1911.7692,-1071.4918 1906.6268,-1076.2412"/>
 </g>
-<!-- Node159&#45;&gt;Node145 -->
+<!-- Node161&#45;&gt;Node147 -->
 <g id="edge62" class="edge">
-<title>Node159&#45;&gt;Node145</title>
+<title>Node161&#45;&gt;Node147</title>
 <path fill="none" stroke="#191970" d="M1181.7963,-727.2403C1188.7273,-692.643 1217.1747,-575.1935 1292,-524 1336.9614,-493.2386 1687.8673,-467.1511 1846.7701,-456.7857"/>
 <polygon fill="#191970" stroke="#191970" points="1847.2011,-460.2652 1856.9538,-456.1258 1846.7484,-453.2799 1847.2011,-460.2652"/>
 </g>
-<!-- Node160 -->
+<!-- Node162 -->
 <g id="node30" class="node">
-<title>Node160</title>
+<title>Node162</title>
 <g id="a_node30"><a xlink:href="structchi_1_1NodeType.html#a7d2edfc21ff54a1ff8ad98fffb969268" target="_top" xlink:title="Get the data inputs for the node. ">
 <polygon fill="#ffffff" stroke="#000000" points="1492,-891.5 1492,-910.5 1623,-910.5 1623,-891.5 1492,-891.5"/>
 <text text-anchor="middle" x="1557.5" y="-898.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::NodeType::dataInputs</text>
 </a>
 </g>
 </g>
-<!-- Node159&#45;&gt;Node160 -->
+<!-- Node161&#45;&gt;Node162 -->
 <g id="edge38" class="edge">
-<title>Node159&#45;&gt;Node160</title>
+<title>Node161&#45;&gt;Node162</title>
 <path fill="none" stroke="#191970" d="M1196.2038,-746.6091C1217.5553,-758.9488 1256.5605,-780.3905 1292,-794 1360.74,-820.3976 1390.3794,-796.6897 1452,-837 1473.4337,-851.0213 1466.5966,-867.9325 1488,-882 1491.1098,-884.0439 1494.4354,-885.8694 1497.8847,-887.4996"/>
 <polygon fill="#191970" stroke="#191970" points="1496.6623,-890.7816 1507.2406,-891.3746 1499.3409,-884.3143 1496.6623,-890.7816"/>
 </g>
-<!-- Node161 -->
+<!-- Node163 -->
 <g id="node31" class="node">
-<title>Node161</title>
+<title>Node163</title>
 <g id="a_node31"><a xlink:href="structchi_1_1NodeType.html#aade37588d98e93b19a9a47e16c850684" target="_top" xlink:title="Get the data outputs for the node. ">
 <polygon fill="#ffffff" stroke="#000000" points="1488,-853.5 1488,-872.5 1627,-872.5 1627,-853.5 1488,-853.5"/>
 <text text-anchor="middle" x="1557.5" y="-860.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::NodeType::dataOutputs</text>
 </a>
 </g>
 </g>
-<!-- Node159&#45;&gt;Node161 -->
+<!-- Node161&#45;&gt;Node163 -->
 <g id="edge39" class="edge">
-<title>Node159&#45;&gt;Node161</title>
+<title>Node161&#45;&gt;Node163</title>
 <path fill="none" stroke="#191970" d="M1225.242,-745.7561C1297.4303,-759.959 1432.5541,-787.5789 1452,-799 1472.6236,-811.1127 1468.0628,-825.7879 1488,-839 1494.5091,-843.3135 1501.8759,-846.9359 1509.3187,-849.9513"/>
 <polygon fill="#191970" stroke="#191970" points="1508.1353,-853.2453 1518.7281,-853.4523 1510.5764,-846.6847 1508.1353,-853.2453"/>
 </g>
-<!-- Node162 -->
+<!-- Node164 -->
 <g id="node32" class="node">
-<title>Node162</title>
+<title>Node164</title>
 <g id="a_node32"><a xlink:href="namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e" target="_top" xlink:title="Disconnect a data connection. ">
 <polygon fill="#ffffff" stroke="#ff0000" points="1320.5,-727.5 1320.5,-746.5 1423.5,-746.5 1423.5,-727.5 1320.5,-727.5"/>
 <text text-anchor="middle" x="1372" y="-734.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::disconnectData</text>
 </a>
 </g>
 </g>
-<!-- Node159&#45;&gt;Node162 -->
+<!-- Node161&#45;&gt;Node164 -->
 <g id="edge40" class="edge">
-<title>Node159&#45;&gt;Node162</title>
+<title>Node161&#45;&gt;Node164</title>
 <path fill="none" stroke="#191970" d="M1225.0155,-737C1250.4841,-737 1282.6973,-737 1310.4714,-737"/>
 <polygon fill="#191970" stroke="#191970" points="1310.4825,-740.5001 1320.4824,-737 1310.4824,-733.5001 1310.4825,-740.5001"/>
 </g>
-<!-- Node163 -->
+<!-- Node165 -->
 <g id="node33" class="node">
-<title>Node163</title>
+<title>Node165</title>
 <g id="a_node33"><a xlink:href="structchi_1_1NodeInstance.html#a8f64930fd9578431a11cad0702b4100c" target="_top" xlink:title="Get the containing GraphFunction. ">
 <polygon fill="#ffffff" stroke="#000000" points="1874,-772 1874,-802 1975,-802 1975,-772 1874,-772"/>
 <text text-anchor="start" x="1882" y="-790" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::NodeInstance::</text>
@@ -786,15 +786,15 @@
 </a>
 </g>
 </g>
-<!-- Node159&#45;&gt;Node163 -->
+<!-- Node161&#45;&gt;Node165 -->
 <g id="edge58" class="edge">
-<title>Node159&#45;&gt;Node163</title>
+<title>Node161&#45;&gt;Node165</title>
 <path fill="none" stroke="#191970" d="M1188.8875,-746.711C1206.6542,-765.5497 1248.5905,-807.203 1292,-830 1357.4001,-864.3456 1390.4182,-834.2021 1452,-875 1473.3519,-889.1456 1464.9154,-908.905 1488,-920 1634.8756,-990.5921 1827.5417,-861.8677 1897.5803,-808.5602"/>
 <polygon fill="#191970" stroke="#191970" points="1900.1017,-811.0356 1905.8809,-802.1557 1895.8255,-805.4935 1900.1017,-811.0356"/>
 </g>
-<!-- Node164 -->
+<!-- Node166 -->
 <g id="node34" class="node">
-<title>Node164</title>
+<title>Node166</title>
 <g id="a_node34"><a xlink:href="structchi_1_1NodeInstance.html#a72d113cfee45f4017adf28b034c6f215" target="_top" xlink:title="Get the containing GraphModule. ">
 <polygon fill="#ffffff" stroke="#ff0000" points="1507,-652 1507,-682 1608,-682 1608,-652 1507,-652"/>
 <text text-anchor="start" x="1515" y="-670" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::NodeInstance::</text>
@@ -802,225 +802,225 @@
 </a>
 </g>
 </g>
-<!-- Node159&#45;&gt;Node164 -->
+<!-- Node161&#45;&gt;Node166 -->
 <g id="edge59" class="edge">
-<title>Node159&#45;&gt;Node164</title>
+<title>Node161&#45;&gt;Node166</title>
 <path fill="none" stroke="#191970" d="M1210.5726,-727.4362C1272.833,-712.5449 1415.3352,-685.7157 1497.0168,-673.1058"/>
 <polygon fill="#191970" stroke="#191970" points="1497.5483,-676.5653 1506.9097,-671.6041 1496.4976,-669.6446 1497.5483,-676.5653"/>
 </g>
-<!-- Node168 -->
+<!-- Node170 -->
 <g id="node36" class="node">
-<title>Node168</title>
+<title>Node170</title>
 <g id="a_node36"><a xlink:href="structchi_1_1NodeType.html#a7031e3c04e9a0227b09f8f854ce8b7f9" target="_top" xlink:title="Get the qualified name of the node type, like module.name():name() ">
 <polygon fill="#ffffff" stroke="#ff0000" points="1851,-597.5 1851,-616.5 1998,-616.5 1998,-597.5 1851,-597.5"/>
 <text text-anchor="middle" x="1924.5" y="-604.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::NodeType::qualifiedName</text>
 </a>
 </g>
 </g>
-<!-- Node159&#45;&gt;Node168 -->
+<!-- Node161&#45;&gt;Node170 -->
 <g id="edge60" class="edge">
-<title>Node159&#45;&gt;Node168</title>
+<title>Node161&#45;&gt;Node170</title>
 <path fill="none" stroke="#191970" d="M1183.1959,-727.4727C1193.4991,-698.4604 1228.8951,-611.0489 1292,-576 1494.5665,-463.4931 1792.3023,-557.2492 1891.2038,-593.8982"/>
 <polygon fill="#191970" stroke="#191970" points="1890.0861,-597.2171 1900.6781,-597.4614 1892.5503,-590.6652 1890.0861,-597.2171"/>
 </g>
-<!-- Node174 -->
+<!-- Node176 -->
 <g id="node37" class="node">
-<title>Node174</title>
+<title>Node176</title>
 <g id="a_node37"><a xlink:href="structchi_1_1NodeType.html#ac99bef32e3e5e564119dbb8de69d2273" target="_top" xlink:title="Create the JSON necessary to store the object. ">
 <polygon fill="#ffffff" stroke="#ff0000" points="1497.5,-575.5 1497.5,-594.5 1617.5,-594.5 1617.5,-575.5 1497.5,-575.5"/>
 <text text-anchor="middle" x="1557.5" y="-582.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::NodeType::toJSON</text>
 </a>
 </g>
 </g>
-<!-- Node159&#45;&gt;Node174 -->
+<!-- Node161&#45;&gt;Node176 -->
 <g id="edge61" class="edge">
-<title>Node159&#45;&gt;Node174</title>
+<title>Node161&#45;&gt;Node176</title>
 <path fill="none" stroke="#191970" d="M1185.2808,-727.4957C1199.1534,-703.5674 1239.2276,-640.8388 1292,-614 1352.7942,-583.0815 1431.3805,-578.1195 1487.2413,-579.4931"/>
 <polygon fill="#191970" stroke="#191970" points="1487.2908,-582.9964 1497.3978,-579.8185 1487.5151,-576 1487.2908,-582.9964"/>
 </g>
-<!-- Node162&#45;&gt;Node141 -->
+<!-- Node164&#45;&gt;Node143 -->
 <g id="edge41" class="edge">
-<title>Node162&#45;&gt;Node141</title>
+<title>Node164&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M1423.4799,-746.5036C1433.2124,-749.2307 1443.1181,-752.6765 1452,-757 1470.2252,-765.8716 1470.5237,-774.7315 1488,-785 1545.8635,-818.9988 1567.5605,-812.8384 1627,-844 1714.5817,-889.9154 1740.2481,-898.2627 1815,-963 1854.9454,-997.5939 1893.0548,-1047.1233 1912.0187,-1073.2689"/>
 <polygon fill="#191970" stroke="#191970" points="1909.231,-1075.3876 1917.8997,-1081.4789 1914.9217,-1071.3112 1909.231,-1075.3876"/>
 </g>
-<!-- Node162&#45;&gt;Node145 -->
+<!-- Node164&#45;&gt;Node147 -->
 <g id="edge57" class="edge">
-<title>Node162&#45;&gt;Node145</title>
+<title>Node164&#45;&gt;Node147</title>
 <path fill="none" stroke="#191970" d="M1423.6045,-734.0831C1533.8325,-727.4236 1784.7318,-709.8173 1815,-686 1851.4657,-657.3061 1831.9202,-630.2971 1851,-588 1869.2629,-547.5137 1894.6285,-502.5391 1910.2821,-475.7976"/>
 <polygon fill="#191970" stroke="#191970" points="1913.3245,-477.5287 1915.3864,-467.1365 1907.2938,-473.9747 1913.3245,-477.5287"/>
 </g>
-<!-- Node162&#45;&gt;Node160 -->
+<!-- Node164&#45;&gt;Node162 -->
 <g id="edge42" class="edge">
-<title>Node162&#45;&gt;Node160</title>
+<title>Node164&#45;&gt;Node162</title>
 <path fill="none" stroke="#191970" d="M1389.0467,-746.6462C1406.8021,-757.4294 1434.431,-776.3797 1452,-799 1476.6646,-830.756 1457.6173,-855.6622 1488,-882 1489.9435,-883.6848 1492.0232,-885.2215 1494.2047,-886.623"/>
 <polygon fill="#191970" stroke="#191970" points="1492.5863,-889.7267 1503.0504,-891.3863 1495.9051,-883.5635 1492.5863,-889.7267"/>
 </g>
-<!-- Node162&#45;&gt;Node161 -->
+<!-- Node164&#45;&gt;Node163 -->
 <g id="edge43" class="edge">
-<title>Node162&#45;&gt;Node161</title>
+<title>Node164&#45;&gt;Node163</title>
 <path fill="none" stroke="#191970" d="M1423.5244,-745.4771C1433.7941,-748.9927 1443.8971,-753.9656 1452,-761 1480.832,-786.0298 1459.6877,-813.3838 1488,-839 1492.4874,-843.06 1497.6961,-846.4394 1503.2051,-849.251"/>
 <polygon fill="#191970" stroke="#191970" points="1502.126,-852.6015 1512.6855,-853.4665 1504.9702,-846.2053 1502.126,-852.6015"/>
 </g>
-<!-- Node162&#45;&gt;Node163 -->
+<!-- Node164&#45;&gt;Node165 -->
 <g id="edge44" class="edge">
-<title>Node162&#45;&gt;Node163</title>
+<title>Node164&#45;&gt;Node165</title>
 <path fill="none" stroke="#191970" d="M1407.5165,-746.5645C1430.3353,-752.3096 1460.7084,-759.2177 1488,-763 1621.1484,-781.4528 1778.9918,-785.8602 1863.6282,-786.8243"/>
 <polygon fill="#191970" stroke="#191970" points="1863.7943,-790.3261 1873.8293,-786.9277 1863.8653,-783.3264 1863.7943,-790.3261"/>
 </g>
-<!-- Node162&#45;&gt;Node164 -->
+<!-- Node164&#45;&gt;Node166 -->
 <g id="edge45" class="edge">
-<title>Node162&#45;&gt;Node164</title>
+<title>Node164&#45;&gt;Node166</title>
 <path fill="none" stroke="#191970" d="M1382.3837,-727.4501C1397.668,-718.8876 1427.1054,-708.3481 1452,-699 1466.7134,-693.475 1482.5309,-687.4004 1497.3264,-681.9332"/>
 <polygon fill="#191970" stroke="#191970" points="1498.6898,-685.1614 1506.8797,-678.4401 1496.2859,-678.5871 1498.6898,-685.1614"/>
 </g>
-<!-- Node162&#45;&gt;Node168 -->
+<!-- Node164&#45;&gt;Node170 -->
 <g id="edge55" class="edge">
-<title>Node162&#45;&gt;Node168</title>
+<title>Node164&#45;&gt;Node170</title>
 <path fill="none" stroke="#191970" d="M1423.8298,-740.5481C1525.3945,-746.6998 1746.6562,-755.924 1815,-725 1861.4651,-703.9756 1897.3266,-652.966 1914.0915,-625.4029"/>
 <polygon fill="#191970" stroke="#191970" points="1917.1475,-627.1108 1919.2111,-616.7188 1911.1174,-623.5557 1917.1475,-627.1108"/>
 </g>
-<!-- Node162&#45;&gt;Node174 -->
+<!-- Node164&#45;&gt;Node176 -->
 <g id="edge56" class="edge">
-<title>Node162&#45;&gt;Node174</title>
+<title>Node164&#45;&gt;Node176</title>
 <path fill="none" stroke="#191970" d="M1383.6039,-727.4917C1414.5748,-702.1139 1499.4467,-632.5693 1537.993,-600.9842"/>
 <polygon fill="#191970" stroke="#191970" points="1540.3839,-603.55 1545.9005,-594.5047 1535.9473,-598.1355 1540.3839,-603.55"/>
 </g>
-<!-- Node164&#45;&gt;Node159 -->
+<!-- Node166&#45;&gt;Node161 -->
 <g id="edge46" class="edge">
-<title>Node164&#45;&gt;Node159</title>
+<title>Node166&#45;&gt;Node161</title>
 <path fill="none" stroke="#191970" d="M1506.881,-681.1642C1436.133,-696.8591 1308.1694,-720.6398 1235.0954,-731.7186"/>
 <polygon fill="#191970" stroke="#191970" points="1234.537,-728.2631 1225.1604,-733.1954 1235.5663,-735.187 1234.537,-728.2631"/>
 </g>
-<!-- Node164&#45;&gt;Node162 -->
+<!-- Node166&#45;&gt;Node164 -->
 <g id="edge54" class="edge">
-<title>Node164&#45;&gt;Node162</title>
+<title>Node166&#45;&gt;Node164</title>
 <path fill="none" stroke="#191970" d="M1536.5366,-682.1125C1515.2864,-692.6949 1481.434,-705.9473 1452,-717 1445.7742,-719.3378 1439.2643,-721.7502 1432.7626,-724.0896"/>
 <polygon fill="#191970" stroke="#191970" points="1431.5356,-720.8111 1423.277,-727.4478 1433.8718,-727.4098 1431.5356,-720.8111"/>
 </g>
-<!-- Node164&#45;&gt;Node165 -->
+<!-- Node166&#45;&gt;Node167 -->
 <g id="edge47" class="edge">
-<title>Node164&#45;&gt;Node165</title>
+<title>Node166&#45;&gt;Node167</title>
 <path fill="none" stroke="#191970" d="M1608.0579,-660.8766C1631.1745,-660.1066 1658.6515,-660.0463 1682.4519,-660.6955"/>
 <polygon fill="#191970" stroke="#191970" points="1682.642,-664.2034 1692.7505,-661.0304 1682.8695,-657.2071 1682.642,-664.2034"/>
 </g>
-<!-- Node165&#45;&gt;Node141 -->
+<!-- Node167&#45;&gt;Node143 -->
 <g id="edge48" class="edge">
-<title>Node165&#45;&gt;Node141</title>
+<title>Node167&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M1743.223,-676.6525C1766.9189,-730.8147 1883.451,-997.1737 1916.0265,-1071.6319"/>
 <polygon fill="#191970" stroke="#191970" points="1912.9876,-1073.4183 1920.2024,-1081.177 1919.4007,-1070.6125 1912.9876,-1073.4183"/>
 </g>
-<!-- Node165&#45;&gt;Node145 -->
+<!-- Node167&#45;&gt;Node147 -->
 <g id="edge53" class="edge">
-<title>Node165&#45;&gt;Node145</title>
+<title>Node167&#45;&gt;Node147</title>
 <path fill="none" stroke="#191970" d="M1777.2464,-657.4112C1790.2494,-652.7963 1804.2071,-646.205 1815,-637 1828.8812,-625.1611 1885.4368,-523.4836 1911.3807,-476.109"/>
 <polygon fill="#191970" stroke="#191970" points="1914.559,-477.5915 1916.283,-467.1379 1908.4163,-474.2348 1914.559,-477.5915"/>
 </g>
-<!-- Node165&#45;&gt;Node163 -->
+<!-- Node167&#45;&gt;Node165 -->
 <g id="edge49" class="edge">
-<title>Node165&#45;&gt;Node163</title>
+<title>Node167&#45;&gt;Node165</title>
 <path fill="none" stroke="#191970" d="M1753.8667,-676.6173C1783.9028,-696.0477 1852.3965,-740.3562 1892.8793,-766.5446"/>
 <polygon fill="#191970" stroke="#191970" points="1891.0146,-769.5067 1901.3119,-771.9996 1894.8167,-763.6293 1891.0146,-769.5067"/>
 </g>
-<!-- Node165&#45;&gt;Node164 -->
+<!-- Node167&#45;&gt;Node166 -->
 <g id="edge50" class="edge">
-<title>Node165&#45;&gt;Node164</title>
+<title>Node167&#45;&gt;Node166</title>
 <path fill="none" stroke="#191970" d="M1692.7505,-672.9696C1670.1131,-673.8328 1642.5661,-673.9799 1618.255,-673.411"/>
 <polygon fill="#191970" stroke="#191970" points="1618.1526,-669.9068 1608.0579,-673.1234 1617.9552,-676.904 1618.1526,-669.9068"/>
 </g>
-<!-- Node165&#45;&gt;Node168 -->
+<!-- Node167&#45;&gt;Node170 -->
 <g id="edge51" class="edge">
-<title>Node165&#45;&gt;Node168</title>
+<title>Node167&#45;&gt;Node170</title>
 <path fill="none" stroke="#191970" d="M1768.393,-657.4928C1799.9138,-647.2974 1850.1352,-631.0533 1885.0715,-619.7531"/>
 <polygon fill="#191970" stroke="#191970" points="1886.5004,-622.9696 1894.938,-616.5618 1884.3461,-616.3093 1886.5004,-622.9696"/>
 </g>
-<!-- Node168&#45;&gt;Node139 -->
+<!-- Node170&#45;&gt;Node141 -->
 <g id="edge52" class="edge">
-<title>Node168&#45;&gt;Node139</title>
+<title>Node170&#45;&gt;Node141</title>
 <path fill="none" stroke="#191970" d="M1931.1863,-597.2688C1945.4323,-576.1243 1979.0216,-524.0207 1998,-476 2053.4488,-335.6993 2084.3958,-155.0334 2093.5726,-95.777"/>
 <polygon fill="#191970" stroke="#191970" points="2097.0781,-96.0045 2095.1186,-85.5924 2090.1574,-94.9539 2097.0781,-96.0045"/>
 </g>
-<!-- Node176&#45;&gt;Node145 -->
+<!-- Node178&#45;&gt;Node147 -->
 <g id="edge67" class="edge">
-<title>Node176&#45;&gt;Node145</title>
+<title>Node178&#45;&gt;Node147</title>
 <path fill="none" stroke="#191970" d="M1247.0532,-439.2609C1385.015,-441.8552 1699.9799,-447.778 1846.6615,-450.5363"/>
 <polygon fill="#191970" stroke="#191970" points="1846.8629,-454.0406 1856.927,-450.7293 1846.9946,-447.0418 1846.8629,-454.0406"/>
 </g>
-<!-- Node176&#45;&gt;Node147 -->
+<!-- Node178&#45;&gt;Node149 -->
 <g id="edge66" class="edge">
-<title>Node176&#45;&gt;Node147</title>
+<title>Node178&#45;&gt;Node149</title>
 <path fill="none" stroke="#191970" d="M1245.5385,-422.9808C1267.2022,-418.0162 1291.1747,-412.5225 1312.3712,-407.6649"/>
 <polygon fill="#191970" stroke="#191970" points="1313.2473,-411.055 1322.2128,-405.4096 1311.6836,-404.2318 1313.2473,-411.055"/>
 </g>
-<!-- Node178&#45;&gt;Node141 -->
+<!-- Node180&#45;&gt;Node143 -->
 <g id="edge69" class="edge">
-<title>Node178&#45;&gt;Node141</title>
+<title>Node180&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M1229.6333,-981.1158C1286.972,-978.9243 1382.3457,-982.522 1452,-1022 1474.2824,-1034.629 1465.2288,-1055.2752 1488,-1067 1551.098,-1099.4887 1754.9678,-1097.3169 1860.2501,-1093.7878"/>
 <polygon fill="#191970" stroke="#191970" points="1860.5593,-1097.2792 1870.4309,-1093.432 1860.3147,-1090.2835 1860.5593,-1097.2792"/>
 </g>
-<!-- Node178&#45;&gt;Node145 -->
+<!-- Node180&#45;&gt;Node147 -->
 <g id="edge72" class="edge">
-<title>Node178&#45;&gt;Node145</title>
+<title>Node180&#45;&gt;Node147</title>
 <path fill="none" stroke="#191970" d="M1182.1697,-969.6883C1189.3178,-924.7555 1216.1658,-791.7934 1292,-718 1404.7156,-608.3177 1480.347,-660.8146 1627,-604 1726.4396,-565.4762 1836.5017,-503.8824 1890.6334,-472.229"/>
 <polygon fill="#191970" stroke="#191970" points="1892.605,-475.13 1899.4537,-467.0463 1889.0588,-469.0948 1892.605,-475.13"/>
 </g>
-<!-- Node178&#45;&gt;Node147 -->
+<!-- Node180&#45;&gt;Node149 -->
 <g id="edge70" class="edge">
-<title>Node178&#45;&gt;Node147</title>
+<title>Node180&#45;&gt;Node149</title>
 <path fill="none" stroke="#191970" d="M1185.4524,-969.8437C1198.4997,-933.3172 1232.2023,-837.4191 1256,-756 1274.2658,-693.507 1272.8508,-676.228 1292,-614 1314.1571,-541.9976 1346.1704,-458.9221 1362.1499,-418.5593"/>
 <polygon fill="#191970" stroke="#191970" points="1365.4983,-419.6108 1365.9413,-409.0252 1358.9938,-417.0241 1365.4983,-419.6108"/>
 </g>
-<!-- Node178&#45;&gt;Node179 -->
+<!-- Node180&#45;&gt;Node181 -->
 <g id="edge71" class="edge">
-<title>Node178&#45;&gt;Node179</title>
+<title>Node180&#45;&gt;Node181</title>
 <path fill="none" stroke="#191970" d="M1226.4778,-1000.0085C1253.2827,-1008.6642 1287.1808,-1019.6105 1315.5152,-1028.7601"/>
 <polygon fill="#191970" stroke="#191970" points="1314.693,-1032.1725 1325.2847,-1031.9149 1316.8441,-1025.5112 1314.693,-1032.1725"/>
 </g>
-<!-- Node153&#45;&gt;Node133 -->
+<!-- Node155&#45;&gt;Node135 -->
 <g id="edge76" class="edge">
-<title>Node153&#45;&gt;Node133</title>
+<title>Node155&#45;&gt;Node135</title>
 <path fill="none" stroke="#191970" d="M1215.2158,-1214.0401C1250.8847,-1229.2737 1305.572,-1252.6297 1340.0301,-1267.3462"/>
 <polygon fill="#191970" stroke="#191970" points="1339.0342,-1270.7266 1349.6053,-1271.4356 1341.7836,-1264.2892 1339.0342,-1270.7266"/>
 </g>
-<!-- Node153&#45;&gt;Node141 -->
+<!-- Node155&#45;&gt;Node143 -->
 <g id="edge75" class="edge">
-<title>Node153&#45;&gt;Node141</title>
+<title>Node155&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M1250.2435,-1202.678C1393.293,-1209.2494 1713.4538,-1219.0081 1815,-1181 1854.8771,-1166.0742 1890.8727,-1130.2091 1910.0161,-1108.5294"/>
 <polygon fill="#191970" stroke="#191970" points="1912.8567,-1110.5939 1916.7184,-1100.7279 1907.547,-1106.0324 1912.8567,-1110.5939"/>
 </g>
-<!-- Node180&#45;&gt;Node128 -->
+<!-- Node182&#45;&gt;Node130 -->
 <g id="edge81" class="edge">
-<title>Node180&#45;&gt;Node128</title>
+<title>Node182&#45;&gt;Node130</title>
 <path fill="none" stroke="#191970" d="M1012.1585,-384.4423C1030.0343,-375.8927 1054.0055,-361.666 1068,-342 1105.749,-288.9526 1057.8857,-245.9618 1104,-200 1106.2397,-197.7677 1108.6994,-195.7842 1111.3207,-194.0227"/>
 <polygon fill="#191970" stroke="#191970" points="1113.1198,-197.0273 1120.171,-189.1195 1109.7275,-190.9042 1113.1198,-197.0273"/>
 </g>
-<!-- Node180&#45;&gt;Node141 -->
+<!-- Node182&#45;&gt;Node143 -->
 <g id="edge80" class="edge">
-<title>Node180&#45;&gt;Node141</title>
+<title>Node182&#45;&gt;Node143</title>
 <path fill="none" stroke="#191970" d="M989.695,-403.6674C994.5675,-468.6759 1025.7263,-841.8061 1104,-917 1160.6472,-971.4184 1385.5116,-937.1722 1452,-979 1475.1779,-993.5812 1464.569,-1014.8291 1488,-1029 1549.3246,-1066.0885 1754.4994,-1082.0923 1860.257,-1088.0125"/>
 <polygon fill="#191970" stroke="#191970" points="1860.3064,-1091.5203 1870.4824,-1088.5708 1860.6881,-1084.5307 1860.3064,-1091.5203"/>
 </g>
-<!-- Node180&#45;&gt;Node146 -->
+<!-- Node182&#45;&gt;Node148 -->
 <g id="edge84" class="edge">
-<title>Node180&#45;&gt;Node146</title>
+<title>Node182&#45;&gt;Node148</title>
 <path fill="none" stroke="#191970" d="M1047.6043,-394C1070.2369,-394 1096.1364,-394 1118.9913,-394"/>
 <polygon fill="#191970" stroke="#191970" points="1119.2554,-397.5001 1129.2553,-394 1119.2553,-390.5001 1119.2554,-397.5001"/>
 </g>
-<!-- Node180&#45;&gt;Node154 -->
+<!-- Node182&#45;&gt;Node156 -->
 <g id="edge85" class="edge">
-<title>Node180&#45;&gt;Node154</title>
+<title>Node182&#45;&gt;Node156</title>
 <path fill="none" stroke="#191970" d="M1008.2358,-384.452C1030.8355,-373.4345 1069.6172,-355.149 1104,-342 1114.5875,-337.951 1126.1816,-334.0357 1137.0538,-330.5832"/>
 <polygon fill="#191970" stroke="#191970" points="1138.2792,-333.8675 1146.786,-327.5521 1136.1976,-327.1841 1138.2792,-333.8675"/>
 </g>
-<!-- Node180&#45;&gt;Node156 -->
+<!-- Node182&#45;&gt;Node158 -->
 <g id="edge86" class="edge">
-<title>Node180&#45;&gt;Node156</title>
+<title>Node182&#45;&gt;Node158</title>
 <path fill="none" stroke="#191970" d="M989.4399,-403.8496C992.8331,-475.427 1017.0803,-915.5418 1104,-1009 1105.6231,-1010.7452 1107.3787,-1012.3454 1109.2409,-1013.8122"/>
 <polygon fill="#191970" stroke="#191970" points="1107.7009,-1016.9821 1118.0102,-1019.4253 1111.4746,-1011.0864 1107.7009,-1016.9821"/>
 </g>
-<!-- Node181 -->
+<!-- Node183 -->
 <g id="node44" class="node">
-<title>Node181</title>
+<title>Node183</title>
 <g id="a_node44"><a xlink:href="structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55" target="_top" xlink:title="Create a new struct in the module. ">
 <polygon fill="#ffffff" stroke="#ff0000" points="1663,-330 1663,-360 1815,-360 1815,-330 1663,-330"/>
 <text text-anchor="start" x="1671" y="-348" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::GraphModule::getOrCreate</text>
@@ -1028,48 +1028,48 @@
 </a>
 </g>
 </g>
-<!-- Node180&#45;&gt;Node181 -->
+<!-- Node182&#45;&gt;Node183 -->
 <g id="edge82" class="edge">
-<title>Node180&#45;&gt;Node181</title>
+<title>Node182&#45;&gt;Node183</title>
 <path fill="none" stroke="#191970" d="M1040.4741,-384.4781C1106.3658,-372.0352 1216.7072,-350.2725 1256,-337 1272.7637,-331.3375 1274.7345,-323.8716 1292,-320 1419.5624,-291.3956 1572.4586,-311.1696 1662.3354,-328.0992"/>
 <polygon fill="#191970" stroke="#191970" points="1661.6921,-331.5395 1672.1727,-329.9884 1663.0123,-324.6651 1661.6921,-331.5395"/>
 </g>
-<!-- Node181&#45;&gt;Node145 -->
+<!-- Node183&#45;&gt;Node147 -->
 <g id="edge83" class="edge">
-<title>Node181&#45;&gt;Node145</title>
+<title>Node183&#45;&gt;Node147</title>
 <path fill="none" stroke="#191970" d="M1765.1842,-360.1035C1797.776,-378.9031 1853.545,-411.0718 1889.7045,-431.9293"/>
 <polygon fill="#191970" stroke="#191970" points="1888.0379,-435.0085 1898.449,-436.9733 1891.5356,-428.9449 1888.0379,-435.0085"/>
 </g>
-<!-- Node183&#45;&gt;Node132 -->
+<!-- Node185&#45;&gt;Node134 -->
 <g id="edge88" class="edge">
-<title>Node183&#45;&gt;Node132</title>
+<title>Node185&#45;&gt;Node134</title>
 <path fill="none" stroke="#191970" d="M1064.2141,-1269.482C1078.9726,-1270.9502 1094.4087,-1272.4857 1109.0231,-1273.9395"/>
 <polygon fill="#191970" stroke="#191970" points="1108.6936,-1277.4239 1118.991,-1274.931 1109.3866,-1270.4583 1108.6936,-1277.4239"/>
 </g>
-<!-- Node186&#45;&gt;Node135 -->
+<!-- Node188&#45;&gt;Node137 -->
 <g id="edge94" class="edge">
-<title>Node186&#45;&gt;Node135</title>
+<title>Node188&#45;&gt;Node137</title>
 <path fill="none" stroke="#191970" d="M841.6945,-1423.5449C852.4716,-1427.2371 864.0896,-1432.0354 874,-1438 892.5967,-1449.1925 890.8385,-1460.8045 910,-1471 914.2886,-1473.2819 918.8529,-1475.2937 923.5413,-1477.0668"/>
 <polygon fill="#191970" stroke="#191970" points="922.6958,-1480.476 933.2902,-1480.381 924.9489,-1473.8485 922.6958,-1480.476"/>
 </g>
-<!-- Node186&#45;&gt;Node184 -->
+<!-- Node188&#45;&gt;Node186 -->
 <g id="edge96" class="edge">
-<title>Node186&#45;&gt;Node184</title>
+<title>Node188&#45;&gt;Node186</title>
 <path fill="none" stroke="#191970" d="M870.5861,-1414C882.5417,-1414 895.1819,-1414 907.5773,-1414"/>
 <polygon fill="#191970" stroke="#191970" points="907.9116,-1417.5001 917.9115,-1414 907.9115,-1410.5001 907.9116,-1417.5001"/>
 </g>
-<!-- Node187 -->
+<!-- Node189 -->
 <g id="node49" class="node">
-<title>Node187</title>
+<title>Node189</title>
 <g id="a_node49"><a xlink:href="namespacechi.html#aa39dc32f0a553366a3e039b3f26402be" target="_top" xlink:title="Get the URL for a VCS repository from a module name. ">
 <polygon fill="#ffffff" stroke="#000000" points="910,-1442.5 910,-1461.5 1068,-1461.5 1068,-1442.5 910,-1442.5"/>
 <text text-anchor="middle" x="989" y="-1449.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::resolveUrlFromModuleName</text>
 </a>
 </g>
 </g>
-<!-- Node186&#45;&gt;Node187 -->
+<!-- Node188&#45;&gt;Node189 -->
 <g id="edge95" class="edge">
-<title>Node186&#45;&gt;Node187</title>
+<title>Node188&#45;&gt;Node189</title>
 <path fill="none" stroke="#191970" d="M852.5525,-1423.589C877.0692,-1428.6939 907.4096,-1435.0113 933.2502,-1440.3918"/>
 <polygon fill="#191970" stroke="#191970" points="932.7752,-1443.8679 943.2787,-1442.4799 934.2022,-1437.0149 932.7752,-1443.8679"/>
 </g>

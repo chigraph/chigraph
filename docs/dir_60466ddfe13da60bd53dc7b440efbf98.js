@@ -24,6 +24,7 @@ var dir_60466ddfe13da60bd53dc7b440efbf98 =
     [ "LLVMVersion.hpp", "LLVMVersion_8hpp.html", "LLVMVersion_8hpp" ],
     [ "ModuleCache.hpp", "ModuleCache_8hpp.html", "ModuleCache_8hpp" ],
     [ "NameMangler.hpp", "NameMangler_8hpp.html", "NameMangler_8hpp" ],
+    [ "NodeCompiler.hpp", "NodeCompiler_8hpp.html", "NodeCompiler_8hpp" ],
     [ "NodeInstance.hpp", "NodeInstance_8hpp.html", "NodeInstance_8hpp" ],
     [ "NodeType.hpp", "NodeType_8hpp.html", [
       [ "NodeType", "structchi_1_1NodeType.html", "structchi_1_1NodeType" ]

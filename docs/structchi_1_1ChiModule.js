@@ -2,7 +2,7 @@ var structchi_1_1ChiModule =
 [
     [ "ChiModule", "structchi_1_1ChiModule.html#ab4ae38ecae0ef9a760abb37ead43f7c6", null ],
     [ "~ChiModule", "structchi_1_1ChiModule.html#accb2ff65140708ed943ce167f95694c3", null ],
-    [ "addDependency", "structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec", null ],
+    [ "addDependency", "structchi_1_1ChiModule.html#a61a5581c1a0a6467a24edde9eaaa60e0", null ],
     [ "addForwardDeclarations", "structchi_1_1ChiModule.html#a653e3aed05912857334655e06937b28d", null ],
     [ "context", "structchi_1_1ChiModule.html#a5c28c9fe74ad3cb704b613843b267512", null ],
     [ "dependencies", "structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779", null ],

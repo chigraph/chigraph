@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('FunctionCompiler_8hpp.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -96,23 +97,36 @@ $(document).ready(function(){initNavTree('FunctionCompiler_8hpp.html','');});
 <p>Defines functions for compiling GraphFunction objects.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="Fwd_8hpp_source.html">chi/Fwd.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="NodeCompiler_8hpp_source.html">chi/NodeCompiler.hpp</a>&quot;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;unordered_map&gt;</code><br />
+<code>#include &lt;boost/bimap.hpp&gt;</code><br />
+<code>#include &lt;boost/utility/string_view.hpp&gt;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for FunctionCompiler.hpp:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="FunctionCompiler_8hpp__incl.svg" width="184" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="FunctionCompiler_8hpp__incl.svg" width="100%" height="462"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> This graph shows which files directly or indirectly include this file:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="FunctionCompiler_8hpp__dep__incl.svg" width="408" height="142"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="FunctionCompiler_8hpp__dep__incl.svg" width="648" height="142"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 </div>
 <p><a href="FunctionCompiler_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html">chi::FunctionCompiler</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for compiling <code>GraphFunctions</code> into <code>llvm::Function</code>s.  <a href="structchi_1_1FunctionCompiler.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacechi"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html">chi</a></td></tr>
@@ -135,7 +149,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_34e10b5b492257989639aef8a1d83500.html">libchigraph</a></li><li class="navelem"><a class="el" href="dir_75c0988e4ae6b2079d4f109cef45c903.html">include</a></li><li class="navelem"><a class="el" href="dir_60466ddfe13da60bd53dc7b440efbf98.html">chi</a></li><li class="navelem"><a class="el" href="FunctionCompiler_8hpp.html">FunctionCompiler.hpp</a></li>
-    <li class="footer">Generated on Fri May 26 2017 12:58:59 for chigraph by
+    <li class="footer">Generated on Fri Jun 9 2017 21:16:59 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

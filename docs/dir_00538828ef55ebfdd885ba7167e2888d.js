@@ -13,6 +13,7 @@ var dir_00538828ef55ebfdd885ba7167e2888d =
     [ "LangModule.cpp", "LangModule_8cpp.html", "LangModule_8cpp" ],
     [ "ModuleCache.cpp", "ModuleCache_8cpp.html", null ],
     [ "NameMangler.cpp", "NameMangler_8cpp.html", "NameMangler_8cpp" ],
+    [ "NodeCompiler.cpp", "NodeCompiler_8cpp_source.html", null ],
     [ "NodeInstance.cpp", "NodeInstance_8cpp.html", "NodeInstance_8cpp" ],
     [ "NodeType.cpp", "NodeType_8cpp.html", null ],
     [ "Result.cpp", "Result_8cpp.html", "Result_8cpp" ],

@@ -48,112 +48,112 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 626;
 var viewHeight = 142;
-var sectionId = 'dynsection-19';
+var sectionId = 'dynsection-18';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chi::Context::moduleCache</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-138 622,-138 622,4 -4,4"/>
-<!-- Node398 -->
+<!-- Node397 -->
 <g id="node1" class="node">
-<title>Node398</title>
+<title>Node397</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-57.5 0,-76.5 134,-76.5 134,-57.5 0,-57.5"/>
 <text text-anchor="middle" x="67" y="-64.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::moduleCache</text>
 </g>
-<!-- Node399 -->
+<!-- Node398 -->
 <g id="node2" class="node">
-<title>Node399</title>
-<g id="a_node2"><a xlink:href="namespacechi.html#a7e61e4cd27bcf0a9e891f1b2c676f5e9" target="_top" xlink:title="Interpret LLVM IR, just a convenience function. ">
+<title>Node398</title>
+<g id="a_node2"><a xlink:href="namespacechi.html#a0fd66f4db0dbade845553826bd971190" target="_top" xlink:title="Interpret LLVM IR, just a convenience function. ">
 <polygon fill="#ffffff" stroke="#000000" points="190,-114.5 190,-133.5 296,-133.5 296,-114.5 190,-114.5"/>
 <text text-anchor="middle" x="243" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::interpretLLVMIR</text>
 </a>
 </g>
 </g>
-<!-- Node398&#45;&gt;Node399 -->
+<!-- Node397&#45;&gt;Node398 -->
 <g id="edge1" class="edge">
-<title>Node398&#45;&gt;Node399</title>
+<title>Node397&#45;&gt;Node398</title>
 <path fill="none" stroke="#191970" d="M90.9095,-76.5856C111.6383,-84.7113 142.5392,-96.3839 170,-105 177.5557,-107.3707 185.6149,-109.6815 193.5182,-111.8285"/>
 <polygon fill="#191970" stroke="#191970" points="192.8326,-115.2677 203.396,-114.4525 194.6299,-108.5023 192.8326,-115.2677"/>
 </g>
-<!-- Node402 -->
+<!-- Node401 -->
 <g id="node5" class="node">
-<title>Node402</title>
-<g id="a_node5"><a xlink:href="namespacechi.html#adc5f3044ad1373c5c3034ff81add867d" target="_top" xlink:title="Interpret LLVM IR as if it were the main function. ">
+<title>Node401</title>
+<g id="a_node5"><a xlink:href="namespacechi.html#a33d2592c56c0b169c44b14332e80db44" target="_top" xlink:title="Interpret LLVM IR as if it were the main function. ">
 <polygon fill="#ffffff" stroke="#000000" points="173.5,-76.5 173.5,-95.5 312.5,-95.5 312.5,-76.5 173.5,-76.5"/>
 <text text-anchor="middle" x="243" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::interpretLLVMIRAsMain</text>
 </a>
 </g>
 </g>
-<!-- Node398&#45;&gt;Node402 -->
+<!-- Node397&#45;&gt;Node401 -->
 <g id="edge4" class="edge">
-<title>Node398&#45;&gt;Node402</title>
+<title>Node397&#45;&gt;Node401</title>
 <path fill="none" stroke="#191970" d="M134.0401,-74.2373C143.5572,-75.2647 153.4215,-76.3296 163.1517,-77.38"/>
 <polygon fill="#191970" stroke="#191970" points="162.905,-80.8736 173.2229,-78.4672 163.6564,-73.9141 162.905,-80.8736"/>
 </g>
-<!-- Node403 -->
+<!-- Node402 -->
 <g id="node6" class="node">
-<title>Node403</title>
+<title>Node402</title>
 <g id="a_node6"><a xlink:href="namespacechi.html#a29ff9f3364b9ad0f25a990b8373971b4" target="_top" xlink:title="Turns a type into a string. ">
 <polygon fill="#ffffff" stroke="#000000" points="184.5,-38.5 184.5,-57.5 301.5,-57.5 301.5,-38.5 184.5,-38.5"/>
 <text text-anchor="middle" x="243" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::stringifyLLVMType</text>
 </a>
 </g>
 </g>
-<!-- Node398&#45;&gt;Node403 -->
+<!-- Node397&#45;&gt;Node402 -->
 <g id="edge6" class="edge">
-<title>Node398&#45;&gt;Node403</title>
+<title>Node397&#45;&gt;Node402</title>
 <path fill="none" stroke="#191970" d="M134.0401,-59.7627C147.2775,-58.3337 161.1866,-56.8321 174.4724,-55.3979"/>
 <polygon fill="#191970" stroke="#191970" points="174.9226,-58.8697 184.4891,-54.3165 174.1712,-51.9101 174.9226,-58.8697"/>
 </g>
-<!-- Node404 -->
+<!-- Node403 -->
 <g id="node7" class="node">
-<title>Node404</title>
+<title>Node403</title>
 <g id="a_node7"><a xlink:href="namespacechi.html#af9629143a0367909c7d5173453012335" target="_top" xlink:title="Get the workspace directory from a child of the workspace directory Example: say you have a workspace...">
 <polygon fill="#ffffff" stroke="#000000" points="170,-.5 170,-19.5 316,-19.5 316,-.5 170,-.5"/>
 <text text-anchor="middle" x="243" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::workspaceFromChildPath</text>
 </a>
 </g>
 </g>
-<!-- Node398&#45;&gt;Node404 -->
+<!-- Node397&#45;&gt;Node403 -->
 <g id="edge7" class="edge">
-<title>Node398&#45;&gt;Node404</title>
+<title>Node397&#45;&gt;Node403</title>
 <path fill="none" stroke="#191970" d="M90.9095,-57.4144C111.6383,-49.2887 142.5392,-37.6161 170,-29 177.5557,-26.6293 185.6149,-24.3185 193.5182,-22.1715"/>
 <polygon fill="#191970" stroke="#191970" points="194.6299,-25.4977 203.396,-19.5475 192.8326,-18.7323 194.6299,-25.4977"/>
 </g>
-<!-- Node400 -->
+<!-- Node399 -->
 <g id="node3" class="node">
-<title>Node400</title>
+<title>Node399</title>
 <g id="a_node3"><a xlink:href="structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" target="_top" xlink:title="Add a entry to the result, either a warning or an error. ">
 <polygon fill="#ffffff" stroke="#000000" points="352,-95.5 352,-114.5 460,-114.5 460,-95.5 352,-95.5"/>
 <text text-anchor="middle" x="406" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::addEntry</text>
 </a>
 </g>
 </g>
-<!-- Node399&#45;&gt;Node400 -->
+<!-- Node398&#45;&gt;Node399 -->
 <g id="edge2" class="edge">
-<title>Node399&#45;&gt;Node400</title>
+<title>Node398&#45;&gt;Node399</title>
 <path fill="none" stroke="#191970" d="M296.3723,-117.7787C310.8564,-116.0904 326.6915,-114.2445 341.7097,-112.494"/>
 <polygon fill="#191970" stroke="#191970" points="342.4223,-115.9347 351.9498,-111.3003 341.6118,-108.9818 342.4223,-115.9347"/>
 </g>
-<!-- Node401 -->
+<!-- Node400 -->
 <g id="node4" class="node">
-<title>Node401</title>
+<title>Node400</title>
 <g id="a_node4"><a xlink:href="structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0" target="_top" xlink:title="Get the JSON associated with the context that&#39;s been added. ">
 <polygon fill="#ffffff" stroke="#000000" points="496,-95.5 496,-114.5 618,-114.5 618,-95.5 496,-95.5"/>
 <text text-anchor="middle" x="557" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::contextJson</text>
 </a>
 </g>
 </g>
-<!-- Node400&#45;&gt;Node401 -->
+<!-- Node399&#45;&gt;Node400 -->
 <g id="edge3" class="edge">
-<title>Node400&#45;&gt;Node401</title>
+<title>Node399&#45;&gt;Node400</title>
 <path fill="none" stroke="#191970" d="M460.088,-105C468.4208,-105 477.1331,-105 485.7706,-105"/>
 <polygon fill="#191970" stroke="#191970" points="485.8487,-108.5001 495.8487,-105 485.8486,-101.5001 485.8487,-108.5001"/>
 </g>
-<!-- Node402&#45;&gt;Node400 -->
+<!-- Node401&#45;&gt;Node399 -->
 <g id="edge5" class="edge">
-<title>Node402&#45;&gt;Node400</title>
+<title>Node401&#45;&gt;Node399</title>
 <path fill="none" stroke="#191970" d="M312.5995,-94.1128C322.2583,-95.2387 332.145,-96.3911 341.7011,-97.505"/>
 <polygon fill="#191970" stroke="#191970" points="341.5764,-101.0141 351.9144,-98.6955 342.3869,-94.0612 341.5764,-101.0141"/>
 </g>

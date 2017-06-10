@@ -1,7 +1,8 @@
 <map id="chi::GraphFunction::entryNode" name="chi::GraphFunction::entryNode">
-<area shape="rect" id="node2" href="$namespacechi.html#a8329038fce8125396cc9775460aa427b" title="Compile the graph to an llvm::Function (usually called from JsonModule::generateModule) ..." alt="" coords="596,95,739,121"/>
-<area shape="rect" id="node3" href="$structchi_1_1GraphFunction.html#a0e722c9bae3101c4bb54ad9baae6f841" title="Creates an entry node if it doesn&#39;t already exist, else just return it. " alt="" coords="193,43,349,85"/>
-<area shape="rect" id="node4" href="$structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="411,58,543,99"/>
-<area shape="rect" id="node5" href="$namespacechi.html#a0d84079ff2eef897472e3096589e62d7" title="Make sure that nodes are called before their outputs are used. " alt="" coords="185,161,357,202"/>
-<area shape="rect" id="node6" href="$namespacechi.html#acdc71d0d7f04f55316cc16af79b7f5b1" title="Validate that a function is compilable. " alt="" coords="405,153,548,180"/>
+<area shape="rect" id="node2" href="$structchi_1_1GraphFunction.html#a0e722c9bae3101c4bb54ad9baae6f841" title="Creates an entry node if it doesn&#39;t already exist, else just return it. " alt="" coords="209,5,365,47"/>
+<area shape="rect" id="node3" href="$structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="441,48,573,89"/>
+<area shape="rect" id="node4" href="$namespacechi.html#ad34490af81585a6e47a52e672ea33f01" title="Make sure the function entry type aligns with the function type. " alt="" coords="185,122,388,149"/>
+<area shape="rect" id="node7" href="$namespacechi.html#a0d84079ff2eef897472e3096589e62d7" title="Make sure that nodes are called before their outputs are used. " alt="" coords="201,173,373,215"/>
+<area shape="rect" id="node5" href="$namespacechi.html#acdc71d0d7f04f55316cc16af79b7f5b1" title="Validate that a function is compilable. " alt="" coords="436,139,579,166"/>
+<area shape="rect" id="node6" href="$structchi_1_1FunctionCompiler.html#a344523ec8a120e2001436268bd47de52" title="Creates the function, but don&#39;t actually generate into it. " alt="" coords="627,132,775,173"/>
 </map>

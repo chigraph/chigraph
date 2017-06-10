@@ -1,28 +1,46 @@
 <map id="chi::NodeInstance::function" name="chi::NodeInstance::function">
-<area shape="rect" id="node2" href="$namespacechi.html#ab69b013712d615bf9901d7bf2b0b11fb" title="Connects two nodes&#39; data connections. " alt="" coords="188,202,308,229"/>
-<area shape="rect" id="node15" href="$namespacechi.html#a79423caa23a58e57b775c5137a03ee31" title="Connects two nodes&#39; exec connections. " alt="" coords="841,311,963,338"/>
-<area shape="rect" id="node16" href="$namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e" title="Disconnect a data connection. " alt="" coords="604,97,741,123"/>
-<area shape="rect" id="node27" href="$classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681" title="Get the output of a node. " alt="" coords="356,5,539,47"/>
-<area shape="rect" id="node3" href="$namespacechi.html#a6a3fedb48e6702c016f996d8a7f445fc" title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ..." alt="" coords="1045,339,1216,366"/>
-<area shape="rect" id="node13" href="$structchi_1_1NodeInstance.html#a72d113cfee45f4017adf28b034c6f215" title="Get the containing GraphModule. " alt="" coords="380,195,515,236"/>
-<area shape="rect" id="node4" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="1264,331,1427,358"/>
-<area shape="rect" id="node5" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="1475,327,1696,354"/>
-<area shape="rect" id="node6" href="$structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b" title="Load a module from disk, also loads dependencies. " alt="" coords="1747,326,1913,353"/>
-<area shape="rect" id="node7" href="$structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="1964,325,2173,351"/>
-<area shape="rect" id="node8" href="$structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779" title="Get the dependencies. " alt="" coords="2228,274,2424,301"/>
-<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#adeeeec5c69812ddeb43a64d3009a4eda" title="Construct a GraphModule. " alt="" coords="2221,325,2431,351"/>
-<area shape="rect" id="node9" href="$structchi_1_1Context.html#a1a0ed6a11af4c2625955bc5df77e135c" title="Compile a module to a llvm::Module. " alt="" coords="2479,274,2665,301"/>
-<area shape="rect" id="node10" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="2490,223,2654,250"/>
-<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="2713,223,2915,250"/>
-<area shape="rect" id="node14" href="$structchi_1_1NodeInstance.html#a5e8c1bd26bd3fbba3a0f7191e7c7f594" title="Set the type of the node instance. " alt="" coords="835,176,969,217"/>
-<area shape="rect" id="node22" href="$namespacechi.html#a103b99abd766aa4d303a5004fe783c03" title="Disconnect a exec connection. " alt="" coords="603,249,743,275"/>
-<area shape="rect" id="node23" href="$classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" title="Set a breakpoint on a given node. " alt="" coords="807,97,997,123"/>
-<area shape="rect" id="node25" href="$namespacechi.html#a46ba4fa933baeba58beefc9e573b0668" title="Get the mapped line number from a node. " alt="" coords="587,46,759,73"/>
-<area shape="rect" id="node17" href="$structchi_1_1GraphFunction.html#a2248f5089ddc01a46b9ba4129925a44c" title="Remove a node from the function. " alt="" coords="836,241,968,283"/>
-<area shape="rect" id="node18" href="$structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="1065,273,1197,315"/>
-<area shape="rect" id="node19" href="$structchi_1_1GraphFunction.html#a81f2a4203abba46ff8494a6a7e192094" title="Remove a local variable from the function by name. " alt="" coords="1270,216,1421,257"/>
-<area shape="rect" id="node20" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="1519,216,1651,257"/>
-<area shape="rect" id="node21" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="1744,223,1916,250"/>
-<area shape="rect" id="node24" href="$classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" title="Check if the process is executing. " alt="" coords="1055,46,1207,73"/>
-<area shape="rect" id="node26" href="$classchi_1_1Debugger.html#a4bd2c4dcced3e704b6a4d71b7c2d53d4" title="Get the debugger This should probably be valid...not sure why it wouldn&#39;t be. " alt="" coords="809,46,995,73"/>
+<area shape="rect" id="node2" href="$namespacechi.html#ab69b013712d615bf9901d7bf2b0b11fb" title="Connects two nodes&#39; data connections. " alt="" coords="219,204,339,231"/>
+<area shape="rect" id="node15" href="$namespacechi.html#a79423caa23a58e57b775c5137a03ee31" title="Connects two nodes&#39; exec connections. " alt="" coords="878,84,1001,111"/>
+<area shape="rect" id="node16" href="$namespacechi.html#a4694f9910cf90fd7c202fe117c4f257e" title="Disconnect a data connection. " alt="" coords="636,62,773,88"/>
+<area shape="rect" id="node27" href="$structchi_1_1FunctionCompiler.html#a83ceb200ef91138e1df8c08a05b51dc1" title="Get or create a node compiler for a node. " alt="" coords="188,1098,369,1140"/>
+<area shape="rect" id="node30" href="$classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681" title="Get the output of a node. " alt="" coords="613,390,796,432"/>
+<area shape="rect" id="node31" href="$structchi_1_1FunctionCompiler.html#a85f29ea79e8fab1c963f096be468a1a5" title="Get a node compile for a certain node. " alt="" coords="205,652,353,693"/>
+<area shape="rect" id="node43" href="$structchi_1_1FunctionCompiler.html#ad3a3ebb8527c7d061f3a33075b7a2d18" title="Get the debug line number for the node instance Unique for each node. " alt="" coords="205,1374,353,1416"/>
+<area shape="rect" id="node3" href="$namespacechi.html#a6a3fedb48e6702c016f996d8a7f445fc" title="Load a GraphFunction–must already exist (use createGraphFunctionDeclarationFromJson) ..." alt="" coords="1083,34,1253,60"/>
+<area shape="rect" id="node13" href="$structchi_1_1NodeInstance.html#a72d113cfee45f4017adf28b034c6f215" title="Get the containing GraphModule. " alt="" coords="424,197,559,238"/>
+<area shape="rect" id="node4" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="1301,34,1464,60"/>
+<area shape="rect" id="node5" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="1512,34,1733,60"/>
+<area shape="rect" id="node6" href="$structchi_1_1Context.html#a8ca4bb6f163efb356cc8e10c63215651" title="Load a module from disk, also loads dependencies. " alt="" coords="1784,34,1951,60"/>
+<area shape="rect" id="node7" href="$structchi_1_1ChiModule.html#a61a5581c1a0a6467a24edde9eaaa60e0" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="2001,34,2211,60"/>
+<area shape="rect" id="node8" href="$structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779" title="Get the dependencies. " alt="" coords="2265,63,2461,90"/>
+<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#adeeeec5c69812ddeb43a64d3009a4eda" title="Construct a GraphModule. " alt="" coords="2259,12,2468,39"/>
+<area shape="rect" id="node9" href="$structchi_1_1Context.html#ae21e68cd2d6ec6a8d6923fa330b36827" title="Compile a module to a llvm::Module. " alt="" coords="2516,63,2703,90"/>
+<area shape="rect" id="node10" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="2527,114,2691,140"/>
+<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="2751,114,2952,140"/>
+<area shape="rect" id="node14" href="$structchi_1_1NodeInstance.html#a5e8c1bd26bd3fbba3a0f7191e7c7f594" title="Set the type of the node instance. " alt="" coords="872,201,1007,242"/>
+<area shape="rect" id="node22" href="$namespacechi.html#a103b99abd766aa4d303a5004fe783c03" title="Disconnect a exec connection. " alt="" coords="635,187,775,214"/>
+<area shape="rect" id="node23" href="$classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" title="Set a breakpoint on a given node. " alt="" coords="844,339,1035,366"/>
+<area shape="rect" id="node25" href="$namespacechi.html#a46ba4fa933baeba58beefc9e573b0668" title="Get the mapped line number from a node. " alt="" coords="619,288,791,315"/>
+<area shape="rect" id="node17" href="$structchi_1_1GraphFunction.html#a2248f5089ddc01a46b9ba4129925a44c" title="Remove a node from the function. " alt="" coords="873,136,1005,177"/>
+<area shape="rect" id="node18" href="$structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="1102,165,1234,206"/>
+<area shape="rect" id="node19" href="$structchi_1_1GraphFunction.html#a81f2a4203abba46ff8494a6a7e192094" title="Remove a local variable from the function by name. " alt="" coords="1307,106,1458,148"/>
+<area shape="rect" id="node20" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="1557,106,1689,148"/>
+<area shape="rect" id="node21" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="1781,114,1953,140"/>
+<area shape="rect" id="node24" href="$classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" title="Check if the process is executing. " alt="" coords="1092,366,1244,392"/>
+<area shape="rect" id="node26" href="$classchi_1_1Debugger.html#a4bd2c4dcced3e704b6a4d71b7c2d53d4" title="Get the debugger This should probably be valid...not sure why it wouldn&#39;t be. " alt="" coords="847,288,1032,315"/>
+<area shape="rect" id="node28" href="$structchi_1_1FunctionCompiler.html#ad5d91d8dbaa379a0b90107f37427dec8" title="Generates the contents of the function. " alt="" coords="2032,1013,2180,1054"/>
+<area shape="rect" id="node29" href="$structchi_1_1FunctionCompiler.html#afae7957136615c414090dd9930e05c54" title="Get if the function has been compiled (compile() has been called) " alt="" coords="417,1098,565,1140"/>
+<area shape="rect" id="node32" href="$structchi_1_1NodeCompiler.html#af391b4e8ecebe8859490749bac0425de" title="Add the basic blocks and fill the pure blocks, but don&#39;t fill the code block nop if its already been ..." alt="" coords="423,757,559,798"/>
+<area shape="rect" id="node33" href="$structchi_1_1NodeCompiler.html#ac3f5bd1f1f84fc1b35fc8ad54db3c844" title="Fill the codegen block If compile_stage1 hasn&#39;t been called for this inputExecID, then it will be cal..." alt="" coords="637,926,773,968"/>
+<area shape="rect" id="node34" href="$structchi_1_1NodeCompiler.html#a8a595537ffd4b3116059d59e3fd61f8b" title="The node we&#39;re compiling. " alt="" coords="857,876,1021,903"/>
+<area shape="rect" id="node35" href="$structchi_1_1NodeCompiler.html#a7b0bd7aecf8cfc98804b31b21066b6d1" title="Just node().context() " alt="" coords="1100,1004,1236,1045"/>
+<area shape="rect" id="node36" href="$structchi_1_1NodeCompiler.html#a4599a3322541fe67adfa343c19b00dc4" title="The number of input execs that we can compile If it&#39;s pure or an entry node, this is 1..." alt="" coords="1315,886,1451,928"/>
+<area shape="rect" id="node40" href="$structchi_1_1NodeCompiler.html#a60d81f093668468eb14be0e18e319ed5" title="Constructor. " alt="" coords="1100,812,1236,853"/>
+<area shape="rect" id="node41" href="$structchi_1_1NodeCompiler.html#aa31a7c7955b51e5610b966f81bdc989d" title="node().type().pure() " alt="" coords="1087,659,1249,686"/>
+<area shape="rect" id="node37" href="$structchi_1_1NodeCompiler.html#ac63b5729c1bdb67a231a1f948ad59374" title="Get the code block for a given inputExecID Requires that compile_stage1 has been called for this ID..." alt="" coords="1555,794,1691,836"/>
+<area shape="rect" id="node38" href="$structchi_1_1NodeCompiler.html#a12c42cfcd23400c523184966ed238806" title="Get the first block to jump to for the node If there are dependent pures, it&#39;s the first pure block O..." alt="" coords="1799,794,1935,836"/>
+<area shape="rect" id="node39" href="$structchi_1_1NodeCompiler.html#ab3db1222a66ea1767cd6dbc8a8a10963" title="Get if compile_stage2 has been called for a given inputExecID. " alt="" coords="1555,945,1691,986"/>
+<area shape="rect" id="node42" href="$structchi_1_1NodeCompiler.html#a7dc06ad0390f2113fbeb5e7c0cf3dd06" title="Get the IndirectBrInst* for the pure. " alt="" coords="1315,626,1451,668"/>
+<area shape="rect" id="node44" href="$structchi_1_1FunctionCompiler.html#a7c93960313bdbd91fb703b7095a51e94" title="Get the graph function &#160;The GraphFunction. " alt="" coords="417,1374,565,1416"/>
+<area shape="rect" id="node45" href="$structchi_1_1FunctionCompiler.html#a344523ec8a120e2001436268bd47de52" title="Creates the function, but don&#39;t actually generate into it. " alt="" coords="417,1440,565,1481"/>
 </map>

@@ -1,36 +1,37 @@
 <map id="chi::GraphModule::structFromName" name="chi::GraphModule::structFromName">
-<area shape="rect" id="node2" href="$structchi_1_1GraphModule.html#a45255dbf09b56ac93b35ebc4d77bba5c" title="Get functions. " alt="" coords="490,235,675,261"/>
-<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55" title="Create a new struct in the module. " alt="" coords="228,202,431,243"/>
-<area shape="rect" id="node21" href="$structchi_1_1GraphModule.html#a133c0595e0bb888f958e9769838f6c0c" title="Create a node type that is in the module from the name and json. " alt="" coords="488,419,677,461"/>
-<area shape="rect" id="node35" href="$structchi_1_1GraphModule.html#af24296727c4121733d9995c122b6e7bc" title="Get a DataType from the name. " alt="" coords="219,369,440,396"/>
-<area shape="rect" id="node3" href="$structchi_1_1GraphModule.html#a0f4f97f458bbbacd6ff3c1be55441b98" title="Create the associations from line number and function in debug info. " alt="" coords="730,187,898,229"/>
-<area shape="rect" id="node10" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1985,325,2149,352"/>
-<area shape="rect" id="node4" href="$namespacechi.html#a46ba4fa933baeba58beefc9e573b0668" title="Get the mapped line number from a node. " alt="" coords="975,195,1147,221"/>
-<area shape="rect" id="node8" href="$classchi_1_1Debugger.html#ae142902fa85248f40cbeea7199c86ad9" title="Get a NodeInstance from a frame. " alt="" coords="959,123,1164,149"/>
-<area shape="rect" id="node5" href="$classchi_1_1Debugger.html#a4bd2c4dcced3e704b6a4d71b7c2d53d4" title="Get the debugger This should probably be valid...not sure why it wouldn&#39;t be. " alt="" coords="1223,173,1408,200"/>
-<area shape="rect" id="node6" href="$classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" title="Set a breakpoint on a given node. " alt="" coords="1220,224,1411,251"/>
-<area shape="rect" id="node7" href="$classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" title="Check if the process is executing. " alt="" coords="1487,123,1639,149"/>
-<area shape="rect" id="node9" href="$classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681" title="Get the output of a node. " alt="" coords="1224,57,1407,98"/>
-<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="2208,325,2409,352"/>
-<area shape="rect" id="node13" href="$namespacechi.html#a629f77832b6e7a6e0eaab123c4be1cda" title="Load a GraphStruct from json. " alt="" coords="505,92,661,119"/>
-<area shape="rect" id="node14" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="733,65,895,92"/>
-<area shape="rect" id="node15" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="951,39,1172,65"/>
-<area shape="rect" id="node16" href="$structchi_1_1Context.html#a508c786fe61ffa67c2a44850ecac4a7b" title="Load a module from disk, also loads dependencies. " alt="" coords="1232,5,1399,32"/>
-<area shape="rect" id="node17" href="$structchi_1_1ChiModule.html#aab11d61e0c0138e5fc5ce176c20e3bec" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="1459,39,1668,65"/>
-<area shape="rect" id="node18" href="$structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779" title="Get the dependencies. " alt="" coords="1723,39,1919,65"/>
-<area shape="rect" id="node20" href="$structchi_1_1GraphModule.html#adeeeec5c69812ddeb43a64d3009a4eda" title="Construct a GraphModule. " alt="" coords="1716,89,1925,116"/>
-<area shape="rect" id="node19" href="$structchi_1_1Context.html#a1a0ed6a11af4c2625955bc5df77e135c" title="Compile a module to a llvm::Module. " alt="" coords="1973,39,2160,65"/>
-<area shape="rect" id="node22" href="$structchi_1_1GraphStruct.html#a27c5062196f73eae3125c0baeb592d00" title="Get the DataType of the struct. " alt="" coords="1226,376,1405,403"/>
-<area shape="rect" id="node28" href="$structchi_1_1GraphFunction.html#a60bc423cb4fed3605a446da112949483" title="Rename a local variable. " alt="" coords="739,478,889,519"/>
-<area shape="rect" id="node31" href="$structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a" title="Set a new type to a local variable. " alt="" coords="742,543,886,585"/>
-<area shape="rect" id="node32" href="$structchi_1_1GraphStruct.html#a464c5edd4ebcb07161c3d05312f1fc33" title="Set the name of the struct, and optionally update all references in the context. " alt="" coords="725,427,903,453"/>
-<area shape="rect" id="node23" href="$structchi_1_1GraphStruct.html#ae1895cfaebac03e21d35ec2a155b3c10" title="Get the types the struct contains. " alt="" coords="1485,376,1642,403"/>
-<area shape="rect" id="node24" href="$structchi_1_1GraphStruct.html#aba05cdce9627a23da0449801e068d85d" title="Add a new type to the struct. " alt="" coords="1733,325,1908,352"/>
-<area shape="rect" id="node25" href="$structchi_1_1GraphStruct.html#a89d3ea5e72ed6e7d8380fb82fa5eb521" title="Change the type and name of a type. " alt="" coords="1724,427,1917,453"/>
-<area shape="rect" id="node26" href="$structchi_1_1GraphStruct.html#a759b0b44c984d7aaa6c2fb32e035264b" title="Remove a type from a struct. " alt="" coords="1722,477,1919,504"/>
-<area shape="rect" id="node27" href="$namespacechi.html#af74872167b12e4ad8a387faab1f03fbb" title="Serialize a GraphStruct to json. " alt="" coords="1742,376,1899,403"/>
-<area shape="rect" id="node29" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="995,543,1127,585"/>
-<area shape="rect" id="node30" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="1477,595,1649,621"/>
-<area shape="rect" id="node33" href="$structchi_1_1GraphStruct.html#a82a1da52a4bf23e1e7fef4d7228603b1" title="Get the module. " alt="" coords="978,427,1145,453"/>
-<area shape="rect" id="node34" href="$structchi_1_1GraphModule.html#ac7147fb4875838de42b33a72834f3203" title="Remove a struct from the module by pointer. " alt="" coords="1228,478,1403,519"/>
+<area shape="rect" id="node2" href="$structchi_1_1GraphModule.html#a45255dbf09b56ac93b35ebc4d77bba5c" title="Get functions. " alt="" coords="490,236,675,263"/>
+<area shape="rect" id="node13" href="$structchi_1_1GraphModule.html#a63117b26fc55e86e740926994f54fe55" title="Create a new struct in the module. " alt="" coords="228,203,431,245"/>
+<area shape="rect" id="node22" href="$structchi_1_1GraphModule.html#a133c0595e0bb888f958e9769838f6c0c" title="Create a node type that is in the module from the name and json. " alt="" coords="488,419,677,461"/>
+<area shape="rect" id="node36" href="$structchi_1_1GraphModule.html#af24296727c4121733d9995c122b6e7bc" title="Get a DataType from the name. " alt="" coords="219,371,440,397"/>
+<area shape="rect" id="node3" href="$structchi_1_1GraphModule.html#a0f4f97f458bbbacd6ff3c1be55441b98" title="Create the associations from line number and function in debug info. " alt="" coords="730,177,898,218"/>
+<area shape="rect" id="node11" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1985,325,2149,352"/>
+<area shape="rect" id="node4" href="$structchi_1_1FunctionCompiler.html#a344523ec8a120e2001436268bd47de52" title="Creates the function, but don&#39;t actually generate into it. " alt="" coords="987,158,1135,199"/>
+<area shape="rect" id="node5" href="$namespacechi.html#a46ba4fa933baeba58beefc9e573b0668" title="Get the mapped line number from a node. " alt="" coords="975,224,1147,251"/>
+<area shape="rect" id="node9" href="$classchi_1_1Debugger.html#ae142902fa85248f40cbeea7199c86ad9" title="Get a NodeInstance from a frame. " alt="" coords="959,107,1164,133"/>
+<area shape="rect" id="node6" href="$classchi_1_1Debugger.html#a4bd2c4dcced3e704b6a4d71b7c2d53d4" title="Get the debugger This should probably be valid...not sure why it wouldn&#39;t be. " alt="" coords="1223,224,1408,251"/>
+<area shape="rect" id="node7" href="$classchi_1_1Debugger.html#a91a4d103d38bb2b1132ec7f83f4d77e2" title="Set a breakpoint on a given node. " alt="" coords="1220,173,1411,200"/>
+<area shape="rect" id="node8" href="$classchi_1_1Debugger.html#a50f4de4ab6a18afa2eb82f5a5f43b06a" title="Check if the process is executing. " alt="" coords="1487,115,1639,141"/>
+<area shape="rect" id="node10" href="$classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681" title="Get the output of a node. " alt="" coords="1224,107,1407,149"/>
+<area shape="rect" id="node12" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="2208,325,2409,352"/>
+<area shape="rect" id="node14" href="$namespacechi.html#a629f77832b6e7a6e0eaab123c4be1cda" title="Load a GraphStruct from json. " alt="" coords="505,108,661,135"/>
+<area shape="rect" id="node15" href="$namespacechi.html#a4489e333fecc4168278e94f8b3f81e3c" title="Load a GraphModule from json. " alt="" coords="733,88,895,115"/>
+<area shape="rect" id="node16" href="$structchi_1_1Context.html#a2db103f3a2f77710dfa51489f63ec97f" title="Load a module from JSON – avoid this use the string overload. " alt="" coords="951,31,1172,57"/>
+<area shape="rect" id="node17" href="$structchi_1_1Context.html#a8ca4bb6f163efb356cc8e10c63215651" title="Load a module from disk, also loads dependencies. " alt="" coords="1232,5,1399,32"/>
+<area shape="rect" id="node18" href="$structchi_1_1ChiModule.html#a61a5581c1a0a6467a24edde9eaaa60e0" title="Add a dependency to the module Loads the module from context() if it isn&#39;t already loaded..." alt="" coords="1459,35,1668,61"/>
+<area shape="rect" id="node19" href="$structchi_1_1ChiModule.html#a9c0d4b1b54bca0194ea4061ae4883779" title="Get the dependencies. " alt="" coords="1723,35,1919,61"/>
+<area shape="rect" id="node21" href="$structchi_1_1GraphModule.html#adeeeec5c69812ddeb43a64d3009a4eda" title="Construct a GraphModule. " alt="" coords="1716,85,1925,112"/>
+<area shape="rect" id="node20" href="$structchi_1_1Context.html#ae21e68cd2d6ec6a8d6923fa330b36827" title="Compile a module to a llvm::Module. " alt="" coords="1973,35,2160,61"/>
+<area shape="rect" id="node23" href="$structchi_1_1GraphStruct.html#a27c5062196f73eae3125c0baeb592d00" title="Get the DataType of the struct. " alt="" coords="1226,376,1405,403"/>
+<area shape="rect" id="node29" href="$structchi_1_1GraphFunction.html#a60bc423cb4fed3605a446da112949483" title="Rename a local variable. " alt="" coords="739,478,889,519"/>
+<area shape="rect" id="node32" href="$structchi_1_1GraphFunction.html#a4c38679ec5e727bfb71c8eaaa5a8ca1a" title="Set a new type to a local variable. " alt="" coords="742,543,886,585"/>
+<area shape="rect" id="node33" href="$structchi_1_1GraphStruct.html#a464c5edd4ebcb07161c3d05312f1fc33" title="Set the name of the struct, and optionally update all references in the context. " alt="" coords="725,427,903,453"/>
+<area shape="rect" id="node24" href="$structchi_1_1GraphStruct.html#ae1895cfaebac03e21d35ec2a155b3c10" title="Get the types the struct contains. " alt="" coords="1485,376,1642,403"/>
+<area shape="rect" id="node25" href="$structchi_1_1GraphStruct.html#aba05cdce9627a23da0449801e068d85d" title="Add a new type to the struct. " alt="" coords="1733,325,1908,352"/>
+<area shape="rect" id="node26" href="$structchi_1_1GraphStruct.html#a89d3ea5e72ed6e7d8380fb82fa5eb521" title="Change the type and name of a type. " alt="" coords="1724,427,1917,453"/>
+<area shape="rect" id="node27" href="$structchi_1_1GraphStruct.html#a759b0b44c984d7aaa6c2fb32e035264b" title="Remove a type from a struct. " alt="" coords="1722,477,1919,504"/>
+<area shape="rect" id="node28" href="$namespacechi.html#af74872167b12e4ad8a387faab1f03fbb" title="Serialize a GraphStruct to json. " alt="" coords="1742,376,1899,403"/>
+<area shape="rect" id="node30" href="$structchi_1_1GraphFunction.html#a44f8f791775e4878b6bde37140cd131d" title="Get the local variables. " alt="" coords="995,543,1127,585"/>
+<area shape="rect" id="node31" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="1477,595,1649,621"/>
+<area shape="rect" id="node34" href="$structchi_1_1GraphStruct.html#a82a1da52a4bf23e1e7fef4d7228603b1" title="Get the module. " alt="" coords="978,427,1145,453"/>
+<area shape="rect" id="node35" href="$structchi_1_1GraphModule.html#ac7147fb4875838de42b33a72834f3203" title="Remove a struct from the module by pointer. " alt="" coords="1228,478,1403,519"/>
 </map>

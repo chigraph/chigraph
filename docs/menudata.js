@@ -6,7 +6,6 @@ var menudata={children:[
 {text:"All",url:"namespacemembers.html",children:[
 {text:"c",url:"namespacemembers.html#index_c"},
 {text:"d",url:"namespacemembers.html#index_d"},
-{text:"f",url:"namespacemembers.html#index_f"},
 {text:"g",url:"namespacemembers.html#index_g"},
 {text:"i",url:"namespacemembers.html#index_i"},
 {text:"j",url:"namespacemembers.html#index_j"},
@@ -19,8 +18,7 @@ var menudata={children:[
 {text:"v",url:"namespacemembers.html#index_v"},
 {text:"w",url:"namespacemembers.html#index_w"}]},
 {text:"Functions",url:"namespacemembers_func.html"},
-{text:"Enumerations",url:"namespacemembers_enum.html"},
-{text:"Enumerator",url:"namespacemembers_eval.html"}]}]},
+{text:"Enumerations",url:"namespacemembers_enum.html"}]}]},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},
@@ -35,6 +33,7 @@ var menudata={children:[
 {text:"g",url:"functions_g.html#index_g"},
 {text:"h",url:"functions_h.html#index_h"},
 {text:"i",url:"functions_i.html#index_i"},
+{text:"j",url:"functions_j.html#index_j"},
 {text:"k",url:"functions_k.html#index_k"},
 {text:"l",url:"functions_l.html#index_l"},
 {text:"m",url:"functions_m.html#index_m"},
@@ -60,6 +59,7 @@ var menudata={children:[
 {text:"g",url:"functions_func_g.html#index_g"},
 {text:"h",url:"functions_func_h.html#index_h"},
 {text:"i",url:"functions_func_i.html#index_i"},
+{text:"j",url:"functions_func_j.html#index_j"},
 {text:"k",url:"functions_func_k.html#index_k"},
 {text:"l",url:"functions_func_l.html#index_l"},
 {text:"m",url:"functions_func_m.html#index_m"},
