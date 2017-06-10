@@ -22,9 +22,13 @@
 #endif
 
 #include <llvm/IR/Module.h>
+#include <llvm/IR/DebugInfo.h>
+#include <llvm/IR/LegacyPassManager.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/ToolOutputFile.h>
 #include <llvm/Support/raw_os_ostream.h>
+#include <llvm/Transforms/IPO/PassManagerBuilder.h>
+#include <llvm/Transforms/IPO.h>
 
 using namespace chi;
 
@@ -43,7 +47,9 @@ int compile(const std::vector<std::string>& opts) {
 		("no-dependencies,D", "Don't link the dependencies into the module")
 		("fresh,f", "Don't use the cache")
 		("machine-readable,m", "Create machine readable error messages (in JSON)")
+		("no-debug,n", "Strip debug information from the module")
 		("help,h", "Show this help page")
+		("optimization,O", po::value<int>()->default_value(2), "The optimization level. Either 0, 1, 2, or 3")
 		;
 	// clang-format on
 
@@ -119,7 +125,44 @@ int compile(const std::vector<std::string>& opts) {
 		}
 		return 1;
 	}
+	
+	// strip debug if specified
+	if (vm.count("no-debug") != 0) {
+		llvm::StripDebugInfo(*llmod);
+	}
 
+	// optimize
+	
+	// get the level
+	auto levelInt = vm["optimization"].as<int>();
+
+	// vaidate it
+	if (levelInt < 0 || levelInt > 3) {
+		std::cerr << "Unrecognized optimization level: " << levelInt << std::endl;
+		return 1;
+	}
+	
+	llvm::PassManagerBuilder passBuilder;
+	passBuilder.OptLevel = levelInt;
+	
+	// add inliner
+	if (levelInt > 1) {
+		passBuilder.Inliner = llvm::createFunctionInliningPass(levelInt, 1);
+	}
+	
+	llvm::legacy::FunctionPassManager fpm{llmod.get()};
+	passBuilder.populateFunctionPassManager(fpm);
+	
+	llvm::legacy::PassManager mpm;
+	passBuilder.populateModulePassManager(mpm);
+	
+	// run function passes
+	for (auto& func : *llmod) {
+		fpm.run(func);
+	}
+	
+	mpm.run(*llmod);
+	
 	// get outpath
 	fs::path outpath = vm["output"].as<std::string>();
 
