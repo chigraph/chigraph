@@ -89,7 +89,7 @@ NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& ins
 bool NodeCompiler::pure() const { return node().type().pure(); }
 
 void NodeCompiler::compile_stage1(size_t inputExecID) {
-	
+	assert(inputExecID < inputExecs() && "Cannot compile_stage1 for a inputexec that doesn't exist");
 	
 	// create the code block
 	auto& codeBlock = mCodeBlocks[inputExecID];
@@ -126,7 +126,7 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 			}();
 			
 			// add nextBlock to the list of possible locations for the indirectbr
-			funcCompiler().nodeCompiler(*depPures[id])->jumpBackInst()->addDestination(nextBlock);
+			funcCompiler().nodeCompiler(*depPures[id])->jumpBackInst().addDestination(nextBlock);
 			
 			// set post-pure break to go to the next one
 			llvm::IRBuilder<> irBuilder{pureBlocks[id]};

@@ -37,6 +37,8 @@ FunctionCompiler::FunctionCompiler(const chi::GraphFunction& func, llvm::Module&
 Result FunctionCompiler::initialize(bool validate) {
 	assert(initialized() == false && "Cannot initialize a FunctionCompiler more than once");
 	
+	mInitialized = true;
+	
 	Result res;
 	auto compilerCtx = res.addScopedContext({{"Function", function().name()}, {"Module", function().module().fullName()}});
 	
@@ -179,7 +181,6 @@ Result FunctionCompiler::initialize(bool validate) {
 		++idx;
 	}
 	
-	mInitialized = true;
 
 	// create mPostPureBreak
 	llvm::IRBuilder<> allocBuilder{&allocBlock()};
@@ -340,6 +341,8 @@ llvm::DISubroutineType* FunctionCompiler::createSubroutineType() {
 }
 
 llvm::Value* FunctionCompiler::localVariable(boost::string_view name) {
+	assert(initialized() && "Please initialize the function compiler before getting a local variable");
+	
 	auto iter = mLocalVariables.find(name.to_string());
 	if (iter != mLocalVariables.end()) {
 		return iter->second;
@@ -355,6 +358,8 @@ Context& FunctionCompiler::context() const {
 }
 
 int FunctionCompiler::nodeLineNumber(NodeInstance& node) {
+	assert(&node.function() == &function() && "Cannot get node line number for a node not in the function");
+	
 	auto iter = mNodeLocations.right.find(&node);
 	if (iter == mNodeLocations.right.end()) {
 		return -1; // ?
