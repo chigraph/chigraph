@@ -32,14 +32,20 @@ namespace fs = boost::filesystem;
 namespace po = boost::program_options;
 
 int compile(const std::vector<std::string>& opts) {
-	po::options_description compile_opts("compile options");
-	compile_opts.add_options()("input-file", po::value<std::string>(), "Input file")(
-	    "output,o", po::value<std::string>(), "Output file, - for stdout")(
-	    "output-type,t", po::value<std::string>(),
-	    "The output type, either bc or ll. If an output file is defined, then this can be "
-	    "inferred")("directory,C", po::value<std::string>(),
-	                "Directory to cd to before doing anything")(
-	    "no-dependencies,D", "Don't link the dependencies into the module");
+	po::options_description compile_opts("chi compile");
+	
+	// clang-format off
+	compile_opts.add_options()
+		("input-file", po::value<std::string>(), "Input file")
+		("output,o", po::value<std::string>()->default_value("-"), "Output file, - for stdout (the default)")
+		(",c", "Output a binary file (llvm bitcode)")
+		(",S", "Output a textual file (llvm assembly)")
+		("no-dependencies,D", "Don't link the dependencies into the module")
+		("fresh,f", "Don't use the cache")
+		("machine-readable,m", "Create machine readable error messages (in JSON)")
+		("help,h", "Show this help page")
+		;
+	// clang-format on
 
 	po::positional_options_description pos;
 	pos.add("input-file", 1);
@@ -47,13 +53,20 @@ int compile(const std::vector<std::string>& opts) {
 	po::variables_map vm;
 	po::store(po::command_line_parser(opts).options(compile_opts).positional(pos).run(), vm);
 
+	if (vm.count("help") != 0) {
+		std::cerr << compile_opts << std::endl;
+		return 0;
+	}
+	
 	if (vm.count("input-file") == 0) {
-		std::cerr << "chi compile: error: no input files" << std::endl;
+		std::cerr << "chi compile: error: no input files. Use chi compile --help for usage." << std::endl;
 		return 1;
 	}
-
-	// cd first if it was specified
-	if (vm.count("directory")) { fs::current_path(vm["directory"].as<std::string>()); }
+	
+	if (vm.count("help") != 0) {
+		std::cerr << compile_opts << std::endl;
+		return 0;
+	}
 
 	fs::path infile = vm["input-file"].as<std::string>();
 
@@ -88,52 +101,79 @@ int compile(const std::vector<std::string>& opts) {
 		std::cerr << res << std::endl;
 		return 1;
 	}
+	
+	// make settings
+	Flags<CompileSettings> settings;
+	if (vm.count("no-dependencies") == 0) {
+		settings |= CompileSettings::LinkDependencies;
+	}
+	if (vm.count("fresh") == 0) {
+		settings |= CompileSettings::UseCache;
+	}
 
 	std::unique_ptr<llvm::Module> llmod;
-	res += c.compileModule(*chiModule, vm.count("no-dependencies") == 0, &llmod);
+	res += c.compileModule(*chiModule, settings, &llmod);
 
 	if (!res) {
-		std::cerr << "chi compile: Failed to compile module: " << std::endl << res << std::endl;
+		
+		if (vm.count("machine-readable") == 0) {
+			std::cerr << "chi compile: Failed to compile module: " << std::endl << res << std::endl;	
+		} else {
+			std::cerr << res.result_json.dump(2) << std::endl;
+		}
 		return 1;
 	}
 
-	fs::path outpath;
-	if (vm.count("output") != 0) {
-		outpath = vm["output"].as<std::string>();
-	} else {
-		outpath = "-";
+	// get outpath
+	fs::path outpath = vm["output"].as<std::string>();
+
+	// get output type
+	bool binaryOutput = false;
+	
+	// first see if we can deduce from output file
+	if (outpath != "-") {
+		auto ext = outpath.extension();
+		if (ext == ".ll") {
+			binaryOutput = false;
+		}
+		if (ext == ".bc") {
+			binaryOutput = true;
+		}
 	}
 
-	// create output
-	{
-		std::string outtype;
-		if (vm.count("output-type") != 0) {
-			outtype = vm["output-type"].as<std::string>();
-
-		} else {
-			// Then infer from extension or ll if cout is being used
-			outtype = outpath.string() == "-" ? "ll" : outpath.extension().string().substr(1);
-		}
-
-		std::error_code          ec;
-		llvm::sys::fs::OpenFlags OpenFlags = llvm::sys::fs::F_None;
-		if (outtype == "ll") { OpenFlags |= llvm::sys::fs::F_Text; }
-		std::string errorString;  // only for LLVM 3.5-
-		auto        outFile = std::make_unique<llvm::tool_output_file>
+	
+	// then see if options were applied--these take precedence
+	
+	// first make sure they weren't both specified
+	if (vm.count("-S") != 0 && vm.count("c") != 0) {
+		std::cerr << "chi compile: cannot specify both -S and -c, please only specify one" << std::endl;
+		return 1;
+	}
+	
+	if (vm.count("-S") != 0) {
+		binaryOutput = false;
+	}
+	if (vm.count("-c") != 0) {
+		binaryOutput = true;
+	}
+	
+	std::error_code          ec;
+	llvm::sys::fs::OpenFlags OpenFlags = llvm::sys::fs::F_None;
+	if (!binaryOutput) { OpenFlags |= llvm::sys::fs::F_Text; }
+	
+	std::string errorString;  // only for LLVM 3.5-
+	auto      outFile   = std::make_unique<llvm::tool_output_file>
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-		    (outpath.string().c_str(), errorString, OpenFlags);
+		(outpath.string().c_str(), errorString, OpenFlags);
 #else
-		    (outpath.string(), ec, OpenFlags);
+		(outpath.string(), ec, OpenFlags);
 #endif
-		if (outtype == "bc") {
-			llvm::WriteBitcodeToFile(llmod.get(), outFile->os());
-		} else if (outtype == "ll") {
-			llmod->print(outFile->os(), nullptr);
-		} else {
-			std::cerr << "chi compile: Unrecognized output-type: " << outtype << std::endl;
-			return 1;
-		}
+	if (binaryOutput) {
+		llvm::WriteBitcodeToFile(llmod.get(), outFile->os());
+	} else {
+		llmod->print(outFile->os(), nullptr);
 	}
+	outFile->keep();
 
 	return 0;
 }

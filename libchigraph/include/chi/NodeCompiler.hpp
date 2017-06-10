@@ -53,9 +53,10 @@ struct NodeCompiler {
 	/// \pre `inputExecID < inputExecs()`
 	llvm::BasicBlock& firstBlock(size_t inputExecID) const;
 	
-	/// \pre `compiled(inputExecID)`
 	/// \pre `inputExecID < inputExecs()`
 	llvm::BasicBlock& codeBlock(size_t inputExecID) const;
+	
+	llvm::Module& llvmModule() const;
 	
 	/// Just node().context()
 	Context& context() const;
@@ -66,6 +67,9 @@ struct NodeCompiler {
 	
 	/// Get return values
 	std::vector<llvm::Value*> returnValues() const { return mReturnValues; }
+	
+	/// Get the IndirectBrInst* for the pure (always nullptr if this node is nonpure)
+	llvm::IndirectBrInst* jumpBackInst() const { return mJumpBackInst; }
 	
 private:
 	
@@ -78,6 +82,8 @@ private:
 	std::vector<llvm::Value*> mReturnValues;
 	
 	boost::dynamic_bitset<> mCompiledInputs;
+	
+	llvm::IndirectBrInst* mJumpBackInst = nullptr;
 	
 };
 

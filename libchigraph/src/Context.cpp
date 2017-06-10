@@ -535,7 +535,7 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, boost::string_vie
 	return res;
 }
 
-Result Context::compileModule(const boost::filesystem::path& fullName, bool linkDependencies,
+Result Context::compileModule(const boost::filesystem::path& fullName, Flags<CompileSettings> settings,
                               std::unique_ptr<llvm::Module>* toFill) {
 	Result res;
 
@@ -545,10 +545,10 @@ Result Context::compileModule(const boost::filesystem::path& fullName, bool link
 		return res;
 	}
 
-	return compileModule(*mod, linkDependencies, toFill);
+	return compileModule(*mod, settings, toFill);
 }
 
-Result Context::compileModule(ChiModule& mod, bool linkDependencies,
+Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
                               std::unique_ptr<llvm::Module>* toFill) {
 	assert(toFill != nullptr);
 
@@ -560,9 +560,11 @@ Result Context::compileModule(ChiModule& mod, bool linkDependencies,
 	std::unique_ptr<llvm::Module> llmod;
 	{
 		// try to get it from the cache
-		llmod = moduleCache().retrieveFromCache(mod.fullNamePath(), mod.lastEditTime());
+		if (settings & CompileSettings::UseCache) {
+			llmod = moduleCache().retrieveFromCache(mod.fullNamePath(), mod.lastEditTime());
+		}
 
-		// compile it if the cache failed
+		// compile it if the cache failed or if 
 		if (!llmod) {
 			llmod = std::make_unique<llvm::Module>(mod.fullName(), llvmContext());
 
@@ -631,12 +633,12 @@ Result Context::compileModule(ChiModule& mod, bool linkDependencies,
 
 	// cache the module
 	res += moduleCache().cacheModule(mod.fullNamePath(), *llmod, mod.lastEditTime());
-
+	
 	// generate dependencies
-	if (linkDependencies) {
+	if (settings & CompileSettings::LinkDependencies) {
 		for (const auto& depName : mod.dependencies()) {
 			std::unique_ptr<llvm::Module> compiledDep;
-			res += compileModule(depName, true,
+			res += compileModule(depName, settings,
 			                     &compiledDep);  // TODO(#62): detect circular dependencies
 
 			if (!res) { return res; }

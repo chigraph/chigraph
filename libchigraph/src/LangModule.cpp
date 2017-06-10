@@ -30,13 +30,10 @@ struct IfNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 2);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == 1 && outputBlocks.size() == 2);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
@@ -57,18 +54,15 @@ struct EntryNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*inputExecID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == dataOutputs().size() && codegenInto != nullptr &&
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == dataOutputs().size() &&
 		       outputBlocks.size() == execOutputs().size());
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		// store the arguments
-		auto arg_iter = codegenInto->getParent()->arg_begin();
+		auto arg_iter = codegenInto.getParent()->arg_begin();
 		++arg_iter;  // skip the first argument, which is the input exec ID
 		for (const auto& iovalue : io) {
 			builder.CreateStore(&*arg_iter, iovalue);
@@ -76,7 +70,7 @@ struct EntryNodeType : NodeType {
 			++arg_iter;
 		}
 
-		auto inExecID   = &*codegenInto->getParent()->arg_begin();
+		auto inExecID   = &*codegenInto.getParent()->arg_begin();
 		auto switchInst = builder.CreateSwitch(inExecID, outputBlocks[0], execOutputs().size());
 
 		for (auto id = 0ull; id < execOutputs().size(); ++id) {
@@ -115,13 +109,10 @@ struct ConstIntNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*inputExecID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == 1 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		builder.CreateStore(builder.getInt32(number), io[0], false);
@@ -147,13 +138,10 @@ struct ConstFloatNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*inputExecID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == 1 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		builder.CreateStore(llvm::ConstantFP::get(builder.getFloatTy(), number), io[0]);
@@ -179,13 +167,10 @@ struct ConstBoolNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*inputExecID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == 1 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		builder.CreateStore(builder.getInt1(value), io[0], false);
@@ -213,17 +198,14 @@ struct ExitNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	    llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& /*outputBlocks*/,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(execInputID < execInputs().size() && io.size() == dataInputs().size() &&
-		       codegenInto != nullptr);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(execInputID < execInputs().size() && io.size() == dataInputs().size());
 
 		// assign the return types
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		llvm::Function* f = codegenInto->getParent();
+		llvm::Function* f = codegenInto.getParent();
 		size_t          ret_start =
 		    f->arg_size() - io.size();  // returns are after args, find where returns start
 		auto arg_iter = f->arg_begin();
@@ -268,13 +250,10 @@ struct StringLiteralNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == 1 && codegenInto != nullptr && outputBlocks.size() == 1);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == 1 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		auto global = builder.CreateGlobalString(literalString);
@@ -314,13 +293,10 @@ struct IntToFloatNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == 2 && codegenInto != nullptr && outputBlocks.size() == 1);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == 2 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		auto casted =
@@ -346,13 +322,10 @@ struct FloatToIntNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == 2 && codegenInto != nullptr && outputBlocks.size() == 1);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == 2 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		auto casted =
@@ -408,13 +381,10 @@ struct BinaryOperationNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == 3 && codegenInto != nullptr && outputBlocks.size() == 1);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == 3 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		llvm::Value* result = nullptr;
@@ -486,13 +456,10 @@ struct CompareNodeType : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	    const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	    const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == 3 && codegenInto != nullptr && outputBlocks.size() == 1);
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == 3 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		llvm::Value* result = nullptr;

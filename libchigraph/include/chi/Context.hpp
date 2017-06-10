@@ -23,13 +23,29 @@
 namespace chi {
 
 /// Settings for loading modules
-enum LoadSettings {
+enum class LoadSettings {
 	/// default, just load from disk
 	Default = 0u,
 	/// fetch the repository that's being loaded
 	Fetch = 1u,
 	/// also fetch dependencies
 	FetchRecursive = Fetch | 1u << 1,
+};
+
+/// Settings for compiling modules
+enum class CompileSettings {
+	
+	/// Use the cache in lib
+	UseCache = 1u,
+	
+	/// Link in dependencies
+	/// If this is set, it will be a ready to run module
+	/// If not, it'll contain forward declarations for dependencies and full definitons
+	/// For functions in that module
+	LinkDependencies = 1u << 1,
+	
+	/// Default, which is both
+	Default = UseCache | LinkDependencies
 };
 
 /// The class that handles the loading, creation, storing, and compilation of modules
@@ -76,7 +92,7 @@ struct Context {
 	/// Load a module from disk, also loads dependencies
 	/// \param[in] name The name of the moudle
 	/// \pre `!name.empty()`
-	/// \param[in] flags The flags--use `LoadSettings::Fetch` to fetch this module, or
+	/// \param[in] settings The flags--use `LoadSettings::Fetch` to fetch this module, or
 	/// `LoadSettings::FetchRecursive`
 	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
@@ -142,23 +158,22 @@ struct Context {
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] fullName The full name of the module to compile.
 	/// If `moduleByFullName(fullName) == nullptr`, this function has no side-effects
-	/// \param[in] linkDependencies Should all the dependencies be linked in? If this is true this
-	/// module will be ready to be run.
+	/// \param[in] settings The settings. See CompileSettings for more info
 	/// \param[out] toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \return The `Result`
-	Result compileModule(const boost::filesystem::path& fullName, bool linkDependencies,
+	Result compileModule(const boost::filesystem::path& fullName, Flags<CompileSettings> settings,
 	                     std::unique_ptr<llvm::Module>* toFill);
 
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] mod The module to compile
-	/// \param[in] linkDependencies Should the dependencies be linked into the module?
+	/// \param[in] settings The settings. See CompileSettings for more details
 	/// \param[out] toFill The \c llvm::Module to fill -- this can be nullptr it will be replaced
 	/// \pre `toFill != nullptr` (the value the `unique_ptr` points to be can be null, but not the
 	/// pointer to the `unique_ptr`)
 	/// \return The `Result`
-	Result compileModule(ChiModule& mod, bool linkDependencies,
+	Result compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 	                     std::unique_ptr<llvm::Module>* toFill);
 
 	/// Find all uses of a node type in all the loaded modules

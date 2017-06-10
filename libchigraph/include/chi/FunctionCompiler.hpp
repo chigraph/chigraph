@@ -13,6 +13,7 @@
 #include <unordered_map>
 
 #include <boost/bimap.hpp>
+#include <boost/utility/string_view.hpp>
 
 namespace chi {
 
@@ -34,11 +35,12 @@ struct FunctionCompiler {
 	llvm::DISubroutineType* createSubroutineType();
 	
 	llvm::DISubprogram& diFunction() const { return *mDebugFunc; }
-	llvm::Module& llModule() const { return *mModule; }
+	llvm::Module& llvmModule() const { return *mModule; }
 	llvm::DIBuilder& diBuilder() const { return *mDIBuilder; }
 	llvm::DICompileUnit& debugCompileUnit() const { return *mDebugCU; }
 	llvm::BasicBlock& allocBlock() const { return *mAllocBlock; }
 	
+	llvm::Value* localVariable(boost::string_view name);
 	
 	/// \pre `initialized() == true`
 	llvm::Function& llFunction() const { assert(initialized() && "Please initialize the function compiler before trying to get the LLVM function") ;return *mLLFunction; }
@@ -60,12 +62,9 @@ struct FunctionCompiler {
 	NodeCompiler* nodeCompiler(NodeInstance& node);
 	NodeCompiler* getOrCreateNodeCompiler(NodeInstance& node);
 	
-	std::unordered_map<std::string, std::shared_ptr<void>>& compileCache() { return mCompileCache; }
-	
 private:
 	
-	Result compilePureDependencies(NodeInstance& node);
-	Result compileNode(NodeInstance& node, size_t inputExecID);
+	std::unordered_map<std::string, llvm::Value*> mLocalVariables;
 	
 	llvm::Module* mModule = nullptr;
 	llvm::DIBuilder* mDIBuilder = nullptr;
@@ -81,7 +80,6 @@ private:
 	std::unordered_map<NodeInstance*, NodeCompiler> mNodeCompilers;
 	
 	boost::bimap<unsigned, NodeInstance*>                  mNodeLocations;
-	std::unordered_map<std::string, std::shared_ptr<void>> mCompileCache;
 	
 	bool mInitialized = false;
 	bool mCompiled = false;

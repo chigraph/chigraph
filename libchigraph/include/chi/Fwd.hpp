@@ -38,6 +38,7 @@ class DISubprogram;
 class Function;
 class FunctionType;
 class BasicBlock;
+class IndirectBrInst;
 class DebugLoc;
 class Value;
 class GenericValue;

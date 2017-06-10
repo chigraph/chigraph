@@ -160,10 +160,8 @@ struct CFuncNode : NodeType {
 	}
 
 	Result codegen(
-	    size_t /*inID*/, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	    llvm::BasicBlock* codegenInto, const std::vector<llvm::BasicBlock*>& outputBlocks,
-	    std::unordered_map<std::string, std::shared_ptr<void>>& /*compileCache*/) override {
-		assert(io.size() == dataInputs().size() + dataOutputs().size() && codegenInto != nullptr &&
+	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == dataInputs().size() + dataOutputs().size() &&
 		       outputBlocks.size() == 1);
 
 		Result res;
@@ -187,15 +185,7 @@ struct CFuncNode : NodeType {
 
 		// link it in
 
-		auto parentModule = codegenInto
-		                        ->
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		                    getParent()
-		                        ->getParent()
-#else
-		                    getModule()
-#endif
-		    ;
+		auto parentModule = &compiler.llvmModule();
 
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 		llvm::Linker::LinkModules(parentModule, copymod
@@ -213,7 +203,7 @@ struct CFuncNode : NodeType {
 		auto llfunc = parentModule->getFunction(mFunctionName);
 		assert(llfunc != nullptr);
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 
 		size_t ioSize = io.size();
 
@@ -305,24 +295,13 @@ struct GraphFuncCallType : public NodeType {
 		setExecOutputs(mygraph->execOutputs());
 	}
 
-	Result codegen(size_t execInputID, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks,
-	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		Result res = {};
 
-		llvm::IRBuilder<> builder(codegenInto);
+		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		auto func = codegenInto
-		                ->
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		            getParent()
-		                ->getParent()
-#else
-		            getModule()
-#endif
-		                ->getFunction(mangleFunctionName(module().fullName(), name()));
+		auto func = compiler.funcCompiler().llvmModule().getFunction(mangleFunctionName(module().fullName(), name()));
 
 		if (func == nullptr) {
 			res.addEntry("EINT", "Could not find function in llvm module",
@@ -372,11 +351,8 @@ struct MakeStructNodeType : public NodeType {
 		setDataOutputs({{"", ty.dataType()}});
 	}
 
-	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks,
-	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
-		llvm::IRBuilder<> builder{codegenInto};
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		llvm::Value* out = io[io.size() - 1];  // output goes last
@@ -415,11 +391,8 @@ struct BreakStructNodeType : public NodeType {
 		setDataOutputs(ty.types());
 	}
 
-	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks,
-	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
-		llvm::IRBuilder<> builder{codegenInto};
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		// create temp struct
@@ -462,22 +435,15 @@ struct SetLocalNodeType : public NodeType {
 		setExecOutputs({""});
 	}
 
-	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks,
-	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
-		llvm::IRBuilder<> builder{codegenInto};
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		std::shared_ptr<void>& local = compileCache[mDataType.name];
-
-		if (local == nullptr) {
-			// create a new one!
-			local = std::make_shared<llvm::Value*>(builder.CreateAlloca(mDataType.type.llvmType()));
-		}
-
+		auto value = compiler.funcCompiler().localVariable(mDataType.name);
+		assert(value != nullptr);
+		
 		// set the value!
-		builder.CreateStore(io[0], *static_cast<llvm::Value**>(local.get()));
+		builder.CreateStore(io[0], value);
 
 		builder.CreateBr(outputBlocks[0]);
 
@@ -502,23 +468,14 @@ struct GetLocalNodeType : public NodeType {
 		makePure();
 	}
 
-	Result codegen(size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>& io, llvm::BasicBlock* codegenInto,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks,
-	               std::unordered_map<std::string, std::shared_ptr<void>>& compileCache) override {
-		llvm::IRBuilder<> builder{codegenInto};
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		std::shared_ptr<void>& local = compileCache[mDataType.name];
+		auto value = compiler.funcCompiler().localVariable(mDataType.name);
+		assert(value != nullptr);
 
-		if (local == nullptr) {
-			// create a new one!
-			local = std::make_shared<llvm::Value*>(builder.CreateAlloca(mDataType.type.llvmType()));
-
-			// TODO: create an error here
-		}
-
-		builder.CreateStore(builder.CreateLoad(*static_cast<llvm::Value**>(local.get())), io[0]);
+		builder.CreateStore(builder.CreateLoad(value), io[0]);
 
 		builder.CreateBr(outputBlocks[0]);
 

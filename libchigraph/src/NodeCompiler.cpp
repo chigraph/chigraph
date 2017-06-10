@@ -97,7 +97,7 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 	// if we've already done stage 1 before, then just exit
 	if (codeBlock != nullptr) { return; }
 	
-	codeBlock = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "__" + std::to_string(inputExecID), &funcCompiler().llFunction());
+	codeBlock = llvm::BasicBlock::Create(context().llvmContext(), "node_" + node().stringId() + "__" + std::to_string(inputExecID), &funcCompiler().llFunction());
 	
 	// only do this for non-pure nodes because pure nodes don't call their dependencies, they are called by the non-pure
 	if (!pure()) {
@@ -111,7 +111,7 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 		
 		// create the first pure block--the loop only creates the next one
 		if (!depPures.empty()) {
-			pureBlocks[0] = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "__" + std::to_string(inputExecID) + "__" + depPures[0]->stringId(), &funcCompiler().llFunction());
+			pureBlocks[0] = llvm::BasicBlock::Create(context().llvmContext(), "node_" + node().stringId() + "__" + std::to_string(inputExecID) + "__" + depPures[0]->stringId(), &funcCompiler().llFunction());
 		}
 		
 		for (int id = 0; id < depPures.size(); ++id) {
@@ -121,9 +121,12 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 				if (id == depPures.size() - 1) {
 					return codeBlock;
 				}
-				pureBlocks[id + 1] = pureBlocks[0] = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "__" + std::to_string(inputExecID) + "__" + depPures[id + 1]->stringId(), &funcCompiler().llFunction());
+				pureBlocks[id + 1] = llvm::BasicBlock::Create(context().llvmContext(), "node_" + node().stringId() + "__" + std::to_string(inputExecID) + "__" + depPures[id + 1]->stringId(), &funcCompiler().llFunction());
 				return pureBlocks[id + 1];
 			}();
+			
+			// add nextBlock to the list of possible locations for the indirectbr
+			funcCompiler().nodeCompiler(*depPures[id])->jumpBackInst()->addDestination(nextBlock);
 			
 			// set post-pure break to go to the next one
 			llvm::IRBuilder<> irBuilder{pureBlocks[id]};
@@ -176,10 +179,10 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 
 	// on pure, jump to the set loc
 	if (pure()) {
-		auto brBlock = llvm::BasicBlock::Create(context().llvmContext(), node().stringId() + "_jumpback");
+		auto brBlock = llvm::BasicBlock::Create(context().llvmContext(), "node_" + node().stringId() + "_jumpback", &funcCompiler().llFunction());
 		llvm::IRBuilder<> builder(brBlock);
 		
-		builder.CreateIndirectBr(&funcCompiler().postPureBreak());
+		mJumpBackInst = builder.CreateIndirectBr(builder.CreateLoad(&funcCompiler().postPureBreak()));
 		
 		trailingBlocks.resize(1);
 		trailingBlocks[0] = brBlock;
@@ -187,12 +190,12 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 	
 	// codegen
 	Result res =
-	    node().type().codegen(inputExecID, llvm::DebugLoc::get(funcCompiler().nodeLineNumber(node()), 1,
+	    node().type().codegen(*this, *codeBlock, inputExecID, llvm::DebugLoc::get(funcCompiler().nodeLineNumber(node()), 1,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 	                                                          *
 #endif
 	                                                          &funcCompiler().diFunction()),
-	                         io, codeBlock, trailingBlocks, funcCompiler().compileCache());
+	                         io, trailingBlocks);
 
 	mCompiledInputs[inputExecID] = true;
 		
@@ -213,12 +216,14 @@ llvm::BasicBlock& NodeCompiler::firstBlock(size_t inputExecID) const {
 
 
 llvm::BasicBlock& NodeCompiler::codeBlock(size_t inputExecID) const {
-    assert(compiled(inputExecID) && "Cannot get code block for node before compiling it");
 	assert(inputExecID < inputExecs());
     return *mCodeBlocks[inputExecID];
 
 }
 
+llvm::Module& NodeCompiler::llvmModule() const {
+	return funcCompiler().llvmModule();
+}
 
 bool NodeCompiler::compiled(size_t inputExecID) const {
 	assert(inputExecID < inputExecs());
@@ -237,7 +242,7 @@ size_t NodeCompiler::inputExecs() const {
 	} else if (node().type().qualifiedName() == "lang:entry") {
 		return 1;
 	}
-	return node().inputDataConnections.size();
+	return node().inputExecConnections.size();
 }
 
 

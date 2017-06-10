@@ -12,6 +12,7 @@
 #include "chi/NodeType.hpp"
 #include "chi/LangModule.hpp"
 #include "chi/Result.hpp"
+#include "chi/DataType.hpp"
 
 #include <boost/bimap.hpp>
 #include <boost/dynamic_bitset.hpp>
@@ -56,7 +57,7 @@ Result FunctionCompiler::initialize(bool validate) {
 	// create function
 	auto mangledName = mangleFunctionName(module().fullName(), function().name());
 	mLLFunction =
-	    llvm::cast<llvm::Function>(llModule().getOrInsertFunction(mangledName, function().functionType()));
+	    llvm::cast<llvm::Function>(llvmModule().getOrInsertFunction(mangledName, function().functionType()));
 
 	// create the debug file
 	auto debugFile = diBuilder().createFile(debugCompileUnit().getFilename(), debugCompileUnit().getDirectory());
@@ -86,8 +87,6 @@ Result FunctionCompiler::initialize(bool validate) {
 #endif
 
 	mAllocBlock = llvm::BasicBlock::Create(context().llvmContext(), "alloc", mLLFunction);
-	llvm::BasicBlock* entryBlock =
-	    llvm::BasicBlock::Create(context().llvmContext(), boost::uuids::to_string(entry->id()), mLLFunction);
 
 	// set argument names
 	auto idx = 0ull;
@@ -184,71 +183,16 @@ Result FunctionCompiler::initialize(bool validate) {
 
 	// create mPostPureBreak
 	llvm::IRBuilder<> allocBuilder{&allocBlock()};
-	mPostPureBreak = allocBuilder.CreateAlloca(llvm::IntegerType::getInt8PtrTy(context().llvmContext()));
+	mPostPureBreak = allocBuilder.CreateAlloca(llvm::IntegerType::getInt8PtrTy(context().llvmContext()), nullptr, "pure_jumpback");
 	
-	return res;
-}
-
-Result FunctionCompiler::compilePureDependencies(NodeInstance& node) {
-	Result res;
-	
-	auto depPures = dependentPuresRecursive(node);
-	for (auto pure : depPures) {
-		res += compileNode(*pure, 0);
-		
-		if (!res) { return res; }
-	}
-	return res;
-}
-
-Result FunctionCompiler::compileNode(NodeInstance& node, size_t inputExecID) {
-	
-	Result res;
-	
-	if (node.type().pure()) {
-		// just compile it
-		auto compiler = getOrCreateNodeCompiler(node);
-		res += compiler->compile_stage2({}, inputExecID);
-		
-		return res;
-	}
-	
-	// if it's not pure
-	
-	// compile the dependent pures
-	res += compilePureDependencies(node);
-	if (!res ) { return res; }
-
-	std::vector<llvm::BasicBlock*> outputBlocks;
-	// make sure the output nodes have done stage 1 and collect output blocks
-	for (const auto& conn : node.outputExecConnections) {
-		res += compilePureDependencies(*conn.first);
-		if (!res) { return res; }
-		
-		auto compiler = getOrCreateNodeCompiler(*conn.first);
-		compiler->compile_stage1(conn.second);
-		
-		outputBlocks.push_back(&compiler->firstBlock(conn.second));
-	}
-	
-	// compile this one
-	auto compiler = getOrCreateNodeCompiler(node);
-	res += compiler->compile_stage2(outputBlocks, inputExecID);
-	if (!res) {
-		return res;
-	}
-	
-	// recurse
-	for (const auto& conn : node.outputExecConnections) {
-		res += compileNode(*conn.first, conn.second);
-		if (!res ) {
-			return res;
-		}
+	// alloc local variables and zero them
+	for (const auto& localVar : function().localVariables()) {
+		mLocalVariables[localVar.name] = allocBuilder.CreateAlloca(localVar.type.llvmType(), nullptr, "var_" + localVar.name);
+		allocBuilder.CreateStore(llvm::ConstantAggregateZero::get(localVar.type.llvmType()), mLocalVariables[localVar.name]);
 	}
 	
 	return res;
 }
-
 
 Result FunctionCompiler::compile() {
 	
@@ -259,8 +203,86 @@ Result FunctionCompiler::compile() {
 	auto entry = function().entryNode();
 	assert(entry != nullptr);
 	
-	// recurse
-	return compileNode(*entry, 0);
+	
+	
+	std::deque<std::pair<NodeInstance*, size_t>> nodesToCompile;
+	nodesToCompile.emplace_back(entry, 0);
+
+	Result res;
+	
+		
+	auto compilePureDependencies = [this] (NodeInstance& node) {
+		Result res;
+		
+		auto depPures = dependentPuresRecursive(node);
+		for (auto pure : depPures) {
+			auto compiler = getOrCreateNodeCompiler(*pure);
+			res += compiler->compile_stage2({}, 0);
+		
+			if (!res) { return res; }
+		}
+		return res;
+	};
+	
+	
+	while(!nodesToCompile.empty()) {
+	
+		auto& node = *nodesToCompile[0].first;
+		auto inputExecID = nodesToCompile[0].second;
+		
+		assert (!node.type().pure());
+		
+		
+		
+		auto compiler = getOrCreateNodeCompiler(node);
+		if (compiler->compiled(inputExecID)) {
+			
+			nodesToCompile.pop_front();
+			
+			continue;
+		}
+		
+		// compile dependent pures
+		res += compilePureDependencies(node);
+		if (!res ) { return res; }
+		
+
+		std::vector<llvm::BasicBlock*> outputBlocks;
+		// make sure the output nodes have done stage 1 and collect output blocks
+		for (const auto& conn : node.outputExecConnections) {
+			res += compilePureDependencies(*conn.first);
+			if (!res) { return res; }
+			
+			auto depCompiler = getOrCreateNodeCompiler(*conn.first);
+			         depCompiler->compile_stage1(conn.second);
+			
+			outputBlocks.push_back(&depCompiler->firstBlock(conn.second));
+		}
+		
+		// compile this one
+		res += compiler->compile_stage2(outputBlocks, inputExecID);
+		if (!res) {
+			return res;
+		}
+		
+		// recurse
+		for (const auto& conn : node.outputExecConnections) {
+			// add them to the end
+			nodesToCompile.emplace_back(conn.first, conn.second);
+		}
+		
+		// pop it off
+		nodesToCompile.pop_front();
+	}
+	
+	
+	if (!res) { return res; }
+	
+	llvm::IRBuilder<> allocBuilder{&allocBlock()};
+	allocBuilder.CreateBr(&nodeCompiler(*entry)->firstBlock(0));
+	
+	return res;
+	
 }
 
 llvm::DISubroutineType* FunctionCompiler::createSubroutineType() {
@@ -315,6 +337,14 @@ llvm::DISubroutineType* FunctionCompiler::createSubroutineType() {
 				(params));
 	
 	return subroutineType;
+}
+
+llvm::Value* FunctionCompiler::localVariable(boost::string_view name) {
+	auto iter = mLocalVariables.find(name.to_string());
+	if (iter != mLocalVariables.end()) {
+		return iter->second;
+	}
+	return nullptr;
 }
 
 GraphModule& FunctionCompiler::module() const {

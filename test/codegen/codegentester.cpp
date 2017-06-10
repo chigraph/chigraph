@@ -219,7 +219,7 @@ int main(int argc, char** argv) {
 		// go through chig compile
 		{
 			Subprocess chiexe{chiExePath};
-			chiexe.setArguments({"compile", "main.chimod"});
+			chiexe.setArguments({"compile", "-f", "main.chimod"});
 			chiexe.attachToStdErr(
 			    [&chigstderr](const char* data, size_t size) { chigstderr.append(data, size); });
 			chiexe.attachToStdOut(
@@ -365,14 +365,14 @@ int main(int argc, char** argv) {
 		std::cout << "done." << std::endl;
 	}
 
-	std::cout << "testing with chi compile -tbc | chi interpret";
+	std::cout << "testing with chi compile -c | chi interpret";
 	std::cout.flush();
 	{
 		std::string generatedir, chigstderr;
 		// go through chig compile
 		{
 			Subprocess chiexe{chiExePath};
-			chiexe.setArguments({"compile", "-tbc", "main.chimod"});
+			chiexe.setArguments({"compile", "-c", "-f", "main.chimod"});
 			chiexe.attachToStdErr(
 			    [&chigstderr](const char* data, size_t size) { chigstderr.append(data, size); });
 			chiexe.attachToStdOut(
@@ -427,7 +427,7 @@ int main(int argc, char** argv) {
 			int retcodelli = interpretexe.exitCode();
 
 			if (retcodelli != expectedreturncode) {
-				std::cerr << "(lli ll) Unexpected retcode: " << retcodelli << " expected was "
+				std::cerr << "(lli bc) Unexpected retcode: " << retcodelli << " expected was "
 				          << expectedreturncode << std::endl
 				          << "stdout: \"" << llistdout << "\"" << std::endl
 				          << "stderr: \"" << llistderr << "\"" << std::endl;
@@ -435,7 +435,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (llistdout != expectedcout) {
-				std::cerr << "(lli ll) Unexpected stdout: \"" << llistdout << "\" expected was \""
+				std::cerr << "(lli bc) Unexpected stdout: \"" << llistdout << "\" expected was \""
 				          << expectedcout << "\"" << std::endl
 				          << "retcode: \"" << retcodelli << "\"" << std::endl
 				          << "stderr: \"" << llistderr << "\"" << std::endl;
@@ -444,7 +444,7 @@ int main(int argc, char** argv) {
 			}
 
 			if (llistderr != expectedcerr) {
-				std::cerr << "(lli ll) Unexpected stderr: \"" << stderr << "\" expected was \""
+				std::cerr << "(lli bc) Unexpected stderr: \"" << stderr << "\" expected was \""
 				          << expectedcerr << '\"' << std::endl
 				          << "retcode: \"" << retcodelli << "\"" << std::endl
 				          << "stdout: \"" << llistdout << "\"" << std::endl;
