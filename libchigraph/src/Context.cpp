@@ -254,7 +254,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 		git_merge_preference_t pref;
 		git_merge_analysis(&anaylisis, &pref, repo, annotatedCommits, 1);
 
-		if ((anaylisis & GIT_MERGE_ANALYSIS_UP_TO_DATE) != 0 || (anaylisis & GIT_MERGE_ANALYSIS_NONE) != 0) {
+		if ((anaylisis & GIT_MERGE_ANALYSIS_UP_TO_DATE) != 0 ||
+		    (anaylisis & GIT_MERGE_ANALYSIS_NONE) != 0) {
 			// nothing to do, just return
 			return res;
 		}
@@ -307,7 +308,8 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 			// http://stackoverflow.com/questions/39651287/doing-a-git-pull-with-libgit2
 			err = git_merge(repo, annotatedCommits, 1, &mergeOpts, &checkoutOpts);
 			if (err != 0) {
-				res.addEntry("EUKN", "Failed to merge branch", {{"Error Message", giterr_last()->message}});
+				res.addEntry("EUKN", "Failed to merge branch",
+				             {{"Error Message", giterr_last()->message}});
 				return res;
 			}
 
@@ -379,9 +381,10 @@ Result Context::fetchModule(const fs::path& name, bool recursive) {
 
 			git_oid     newCommit{};
 			std::string commitMsg = std::string("Merge ") + git_oid_tostr_s(&oid_to_merge.second);
-			err =
-			    git_commit_create(&newCommit, repo, "HEAD", committerSignature, committerSignature,
-			                      "UTF-8", commitMsg.c_str(), tree, sizeof(parents) / sizeof(git_commit*), static_cast<const git_commit**>(parents));
+			err                   = git_commit_create(&newCommit, repo, "HEAD", committerSignature,
+			                        committerSignature, "UTF-8", commitMsg.c_str(), tree,
+			                        sizeof(parents) / sizeof(git_commit*),
+			                        static_cast<const git_commit**>(parents));
 			if (err != 0) {
 				res.addEntry("EUKN", "Failed to create commit",
 				             {{"Error Message", giterr_last()->message}});
@@ -535,7 +538,8 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, boost::string_vie
 	return res;
 }
 
-Result Context::compileModule(const boost::filesystem::path& fullName, Flags<CompileSettings> settings,
+Result Context::compileModule(const boost::filesystem::path& fullName,
+                              Flags<CompileSettings>         settings,
                               std::unique_ptr<llvm::Module>* toFill) {
 	Result res;
 
@@ -564,7 +568,7 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 			llmod = moduleCache().retrieveFromCache(mod.fullNamePath(), mod.lastEditTime());
 		}
 
-		// compile it if the cache failed or if 
+		// compile it if the cache failed or if
 		if (!llmod) {
 			llmod = std::make_unique<llvm::Module>(mod.fullName(), llvmContext());
 
@@ -633,7 +637,7 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 
 	// cache the module
 	res += moduleCache().cacheModule(mod.fullNamePath(), *llmod, mod.lastEditTime());
-	
+
 	// generate dependencies
 	if (settings & CompileSettings::LinkDependencies) {
 		for (const auto& depName : mod.dependencies()) {
@@ -786,7 +790,8 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Leve
 }
 
 Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod, llvm::CodeGenOpt::Level optLevel,
-                             const std::vector<std::string>& args, llvm::Function* funcToRun, int* ret) {
+                             const std::vector<std::string>& args, llvm::Function* funcToRun,
+                             int* ret) {
 	assert(mod);
 
 	Result res;

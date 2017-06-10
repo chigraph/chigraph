@@ -32,7 +32,7 @@ public:
 	/// Get the qualified name of the node type, like module.name():name()
 	/// \return The qualified name
 	std::string qualifiedName() const;
-	
+
 	/// A virtual function that is called when this node needs to be called
 	/// \param compiler The compiler
 	/// \param execInputID The ID of the exec input
@@ -44,8 +44,10 @@ public:
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
 	/// numOutputExecs.
 	/// \return The Result
-	virtual Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) = 0;
+	virtual Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto,
+	                       size_t execInputID, const llvm::DebugLoc& nodeLocation,
+	                       const std::vector<llvm::Value*>&      io,
+	                       const std::vector<llvm::BasicBlock*>& outputBlocks) = 0;
 
 	/// Create the JSON necessary to store the object.
 	/// \return The json obejct

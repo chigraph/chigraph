@@ -147,20 +147,20 @@ DataType GraphStruct::dataType() {
 		                                debugType->getSizeInBits(), 8, currentOffset, 0, *debugType)
 #else
 		    llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member,
-#	if LLVM_VERSION_LESS_EQUAL(3, 8)
+#if LLVM_VERSION_LESS_EQUAL(3, 8)
 		                             llvm::MDString::get(context().llvmContext(), type.name),
-#	else
+#else
 		                             type.name,
-#	endif
+#endif
 		                             nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8,
-		                             currentOffset, 
-#	if LLVM_VERSION_AT_LEAST(5, 0)
-							   llvm::None,
-#	endif
-							   llvm::DINode::DIFlags{}, nullptr)
+		                             currentOffset,
+#if LLVM_VERSION_AT_LEAST(5, 0)
+		                             llvm::None,
+#endif
+		                             llvm::DINode::DIFlags{}, nullptr)
 #endif
 		    ;
-		
+
 		diTypes.push_back(member);
 
 		currentOffset += debugType->getSizeInBits();

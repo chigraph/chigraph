@@ -32,14 +32,14 @@ using namespace chi;
 
 int run(const std::vector<std::string>& opts, const char* argv0) {
 	po::options_description run_opts;
-	
+
 	// clang-format off
 	run_opts.add_options()
 		("input-file", po::value<std::string>(), "The input file, - for stdin. Should be a chig module")
 		("subargs", po::value<std::vector<std::string>>(), "Arguments to call main with")
 		;
 	// clang-format on
-	
+
 	po::positional_options_description pos;
 	pos.add("input-file", 1).add("subargs", -1);
 

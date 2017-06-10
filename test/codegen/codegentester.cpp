@@ -69,9 +69,10 @@ std::string areJsonEqual(json lhs, json rhs) {
 	if (!errstring.empty()) return "dependencies not equal: " + errstring;
 
 	if (lhs["has_c_support"] != rhs["has_c_support"]) {
-		return "has_c_support doesn't match: serialized: " + lhs["has_c_support"].dump(-1) + " original: " + rhs["has_c_support"].dump(-1);
+		return "has_c_support doesn't match: serialized: " + lhs["has_c_support"].dump(-1) +
+		       " original: " + rhs["has_c_support"].dump(-1);
 	}
-	
+
 	auto& lgraphs = lhs["graphs"];
 	auto& rgraphs = rhs["graphs"];
 

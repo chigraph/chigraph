@@ -34,16 +34,16 @@ enum class LoadSettings {
 
 /// Settings for compiling modules
 enum class CompileSettings {
-	
+
 	/// Use the cache in lib
 	UseCache = 1u,
-	
+
 	/// Link in dependencies
 	/// If this is set, it will be a ready to run module
 	/// If not, it'll contain forward declarations for dependencies and full definitons
 	/// For functions in that module
 	LinkDependencies = 1u << 1,
-	
+
 	/// Default, which is both
 	Default = UseCache | LinkDependencies
 };
@@ -98,8 +98,8 @@ struct Context {
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
 	Result loadModule(const boost::filesystem::path& name,
-	                  Flags<LoadSettings>            settings  = LoadSettings::Default,
-	                  ChiModule**                    toFill = nullptr);
+	                  Flags<LoadSettings>            settings = LoadSettings::Default,
+	                  ChiModule**                    toFill   = nullptr);
 
 	/// Downloads a module from a remote URL, currently supports
 	///  - github
@@ -244,8 +244,8 @@ std::string stringifyLLVMType(llvm::Type* ty);
 /// \param[in] funcToRun The function to run. By default it uses "main".
 /// \param[out] ret The `GenericValue` to fill with the result of the function. Optional
 /// \return The Result
-Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
-                       llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
+Result interpretLLVMIR(std::unique_ptr<llvm::Module>          mod,
+                       llvm::CodeGenOpt::Level                optLevel = llvm::CodeGenOpt::Default,
                        const std::vector<llvm::GenericValue>& args     = {},
                        llvm::Function* funcToRun = nullptr, llvm::GenericValue* ret = nullptr);
 
@@ -256,9 +256,9 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module>   mod,
 /// \param[in] funcToRun The function, defaults to "main" from `mod`
 /// \param[out] ret The return from main. Optional.
 /// \return The Result
-Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module> mod,
-                             llvm::CodeGenOpt::Level       optLevel = llvm::CodeGenOpt::Default,
-                             const std::vector<std::string>&      args     = {},
+Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module>   mod,
+                             llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
+                             const std::vector<std::string>& args     = {},
                              llvm::Function* funcToRun = nullptr, int* ret = nullptr);
 
 /// The Version Control Types

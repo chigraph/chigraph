@@ -33,7 +33,7 @@ namespace po = boost::program_options;
 
 int compile(const std::vector<std::string>& opts) {
 	po::options_description compile_opts("chi compile");
-	
+
 	// clang-format off
 	compile_opts.add_options()
 		("input-file", po::value<std::string>(), "Input file")
@@ -57,12 +57,13 @@ int compile(const std::vector<std::string>& opts) {
 		std::cerr << compile_opts << std::endl;
 		return 0;
 	}
-	
+
 	if (vm.count("input-file") == 0) {
-		std::cerr << "chi compile: error: no input files. Use chi compile --help for usage." << std::endl;
+		std::cerr << "chi compile: error: no input files. Use chi compile --help for usage."
+		          << std::endl;
 		return 1;
 	}
-	
+
 	if (vm.count("help") != 0) {
 		std::cerr << compile_opts << std::endl;
 		return 0;
@@ -101,23 +102,18 @@ int compile(const std::vector<std::string>& opts) {
 		std::cerr << res << std::endl;
 		return 1;
 	}
-	
+
 	// make settings
 	Flags<CompileSettings> settings;
-	if (vm.count("no-dependencies") == 0) {
-		settings |= CompileSettings::LinkDependencies;
-	}
-	if (vm.count("fresh") == 0) {
-		settings |= CompileSettings::UseCache;
-	}
+	if (vm.count("no-dependencies") == 0) { settings |= CompileSettings::LinkDependencies; }
+	if (vm.count("fresh") == 0) { settings |= CompileSettings::UseCache; }
 
 	std::unique_ptr<llvm::Module> llmod;
 	res += c.compileModule(*chiModule, settings, &llmod);
 
 	if (!res) {
-		
 		if (vm.count("machine-readable") == 0) {
-			std::cerr << "chi compile: Failed to compile module: " << std::endl << res << std::endl;	
+			std::cerr << "chi compile: Failed to compile module: " << std::endl << res << std::endl;
 		} else {
 			std::cerr << res.result_json.dump(2) << std::endl;
 		}
@@ -129,44 +125,36 @@ int compile(const std::vector<std::string>& opts) {
 
 	// get output type
 	bool binaryOutput = false;
-	
+
 	// first see if we can deduce from output file
 	if (outpath != "-") {
 		auto ext = outpath.extension();
-		if (ext == ".ll") {
-			binaryOutput = false;
-		}
-		if (ext == ".bc") {
-			binaryOutput = true;
-		}
+		if (ext == ".ll") { binaryOutput = false; }
+		if (ext == ".bc") { binaryOutput = true; }
 	}
 
-	
 	// then see if options were applied--these take precedence
-	
+
 	// first make sure they weren't both specified
 	if (vm.count("-S") != 0 && vm.count("c") != 0) {
-		std::cerr << "chi compile: cannot specify both -S and -c, please only specify one" << std::endl;
+		std::cerr << "chi compile: cannot specify both -S and -c, please only specify one"
+		          << std::endl;
 		return 1;
 	}
-	
-	if (vm.count("-S") != 0) {
-		binaryOutput = false;
-	}
-	if (vm.count("-c") != 0) {
-		binaryOutput = true;
-	}
-	
+
+	if (vm.count("-S") != 0) { binaryOutput = false; }
+	if (vm.count("-c") != 0) { binaryOutput = true; }
+
 	std::error_code          ec;
 	llvm::sys::fs::OpenFlags OpenFlags = llvm::sys::fs::F_None;
 	if (!binaryOutput) { OpenFlags |= llvm::sys::fs::F_Text; }
-	
+
 	std::string errorString;  // only for LLVM 3.5-
-	auto      outFile   = std::make_unique<llvm::tool_output_file>
+	auto        outFile = std::make_unique<llvm::tool_output_file>
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-		(outpath.string().c_str(), errorString, OpenFlags);
+	    (outpath.string().c_str(), errorString, OpenFlags);
 #else
-		(outpath.string(), ec, OpenFlags);
+	    (outpath.string(), ec, OpenFlags);
 #endif
 	if (binaryOutput) {
 		llvm::WriteBitcodeToFile(llmod.get(), outFile->os());

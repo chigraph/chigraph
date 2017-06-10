@@ -29,8 +29,9 @@ struct IfNodeType : NodeType {
 		setDataInputs({{"condition", mod.typeFromName("i1")}});
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 2);
 
 		llvm::IRBuilder<> builder(&codegenInto);
@@ -53,10 +54,10 @@ struct EntryNodeType : NodeType {
 		setDataOutputs(std::move(dataInputs));
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
-		assert(io.size() == dataOutputs().size() &&
-		       outputBlocks.size() == execOutputs().size());
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == dataOutputs().size() && outputBlocks.size() == execOutputs().size());
 
 		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -108,8 +109,9 @@ struct ConstIntNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i32")}});
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(&codegenInto);
@@ -137,8 +139,9 @@ struct ConstFloatNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("float")}});
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(&codegenInto);
@@ -166,8 +169,9 @@ struct ConstBoolNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i1")}});
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(&codegenInto);
@@ -197,8 +201,9 @@ struct ExitNodeType : NodeType {
 		setDataInputs(std::move(dataOutputs));
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(execInputID < execInputs().size() && io.size() == dataInputs().size());
 
 		// assign the return types
@@ -249,8 +254,9 @@ struct StringLiteralNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i8*")}});
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(&codegenInto);
@@ -292,8 +298,9 @@ struct IntToFloatNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("float")}});
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 2 && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(&codegenInto);
@@ -321,8 +328,9 @@ struct FloatToIntNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i32")}});
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 2 && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(&codegenInto);
@@ -380,8 +388,9 @@ struct BinaryOperationNodeType : NodeType {
 		setDataOutputs({{"", ty}});
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 3 && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(&codegenInto);
@@ -455,8 +464,9 @@ struct CompareNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i1")}});
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 3 && outputBlocks.size() == 1);
 
 		llvm::IRBuilder<> builder(&codegenInto);
@@ -817,13 +827,13 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 	auto charType = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
 	                                       "lang:i8", 8, 8, llvm::dwarf::DW_ATE_unsigned_char);
 
-	mDebugTypes["i8*"] = llvm::DIDerivedType::get(
-	    context().llvmContext(), llvm::dwarf::DW_TAG_pointer_type, nullptr, nullptr, 0, nullptr,
-	    charType, 64, 64, 0,
-#	if LLVM_VERSION_AT_LEAST(5, 0)
-			llvm::None,
-#	endif
-		llvm::DINode::DIFlags());  // TODO: 32bit support?
+	mDebugTypes["i8*"] =
+	    llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_pointer_type, nullptr,
+	                             nullptr, 0, nullptr, charType, 64, 64, 0,
+#if LLVM_VERSION_AT_LEAST(5, 0)
+	                             llvm::None,
+#endif
+	                             llvm::DINode::DIFlags());  // TODO: 32bit support?
 #endif
 }
 

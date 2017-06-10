@@ -1,12 +1,12 @@
 /// \file FunctionValidator.cpp
 
 #include "chi/FunctionValidator.hpp"
+#include "chi/DataType.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
-#include "chi/DataType.hpp"
 
 #include <unordered_map>
 
@@ -20,7 +20,7 @@ Result validateFunction(const GraphFunction& func) {
 	res += validateFunctionExecOutputs(func);
 	res += validateFunctionEntryType(func);
 	res += validateFunctionExitTypes(func);
-	
+
 	return res;
 }
 
@@ -200,9 +200,7 @@ Result validateFunctionNodeInputs(const GraphFunction& func) {
 
 	auto entry = func.entryNode();
 
-	if (entry == nullptr) {
-		return res;
-	}
+	if (entry == nullptr) { return res; }
 
 	std::unordered_map<const NodeInstance*, std::vector<int>> alreadyCalled;
 	alreadyCalled.emplace(entry, std::vector<int>{});
@@ -245,15 +243,15 @@ Result validateFunctionExecOutputs(const GraphFunction& func) {
 }
 
 Result validateFunctionEntryType(const GraphFunction& func) {
-	
 	Result res;
-	
+
 	auto entry = func.entryNode();
 	if (!entry) {
-		res.addEntry("EUKN", "Function  must have a valid entry node to validate the entry type", {{"Function", func.name()}, {"Module", func.module().fullName()}});
+		res.addEntry("EUKN", "Function  must have a valid entry node to validate the entry type",
+		             {{"Function", func.name()}, {"Module", func.module().fullName()}});
 		return res;
 	}
-	
+
 	// make sure that the entry node has the right data types
 	if (!std::equal(func.dataInputs().begin(), func.dataInputs().end(),
 	                entry->type().dataOutputs().begin())) {
@@ -272,19 +270,17 @@ Result validateFunctionEntryType(const GraphFunction& func) {
 		             {{"Function Inputs", inFunc}, {"Entry Inputs", inEntry}});
 		return res;
 	}
-	
+
 	return res;
 }
 
 Result validateFunctionExitTypes(const GraphFunction& func) {
-	
 	Result res;
-	
+
 	// make sure that each exit node has the right data types
 	for (auto exitNode : func.nodesWithType("lang", "exit")) {
 		if (!std::equal(func.dataOutputs().begin(), func.dataOutputs().end(),
-			exitNode->type().dataInputs().begin())) {
-			
+		                exitNode->type().dataInputs().begin())) {
 			nlohmann::json outFunc = nlohmann::json::array();
 			for (auto& out : func.dataOutputs()) {
 				outFunc.push_back({{out.name, out.type.qualifiedName()}});
@@ -293,18 +289,18 @@ Result validateFunctionExitTypes(const GraphFunction& func) {
 			nlohmann::json outExit = nlohmann::json::array();
 			for (auto& out : exitNode->type().dataOutputs()) {
 				// inputs to the exit are outputs to the function
-				            outExit.push_back({{out.name, out.type.qualifiedName()}});
+				outExit.push_back({{out.name, out.type.qualifiedName()}});
 			}
 
 			res.addEntry("EUKN", "Outputs to function doesn't match function exit",
-						{{"Function Outputs", outFunc}, {"Exit Outputs", outExit}, {"Node ID", exitNode->stringId()}});
+			             {{"Function Outputs", outFunc},
+			              {"Exit Outputs", outExit},
+			              {"Node ID", exitNode->stringId()}});
 			return res;
-		
 		}
 	}
-	
+
 	return res;
 }
-
 
 }  // namespace chi

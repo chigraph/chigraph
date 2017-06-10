@@ -159,10 +159,10 @@ struct CFuncNode : NodeType {
 		if (mOutput.valid()) { setDataOutputs({{"", mOutput}}); }
 	}
 
-	Result codegen(
-	    NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
-		assert(io.size() == dataInputs().size() + dataOutputs().size() &&
-		       outputBlocks.size() == 1);
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+		assert(io.size() == dataInputs().size() + dataOutputs().size() && outputBlocks.size() == 1);
 
 		Result res;
 
@@ -295,13 +295,16 @@ struct GraphFuncCallType : public NodeType {
 		setExecOutputs(mygraph->execOutputs());
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		Result res = {};
 
 		llvm::IRBuilder<> builder(&codegenInto);
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		auto func = compiler.funcCompiler().llvmModule().getFunction(mangleFunctionName(module().fullName(), name()));
+		auto func = compiler.funcCompiler().llvmModule().getFunction(
+		    mangleFunctionName(module().fullName(), name()));
 
 		if (func == nullptr) {
 			res.addEntry("EINT", "Could not find function in llvm module",
@@ -351,7 +354,9 @@ struct MakeStructNodeType : public NodeType {
 		setDataOutputs({{"", ty.dataType()}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
@@ -391,7 +396,9 @@ struct BreakStructNodeType : public NodeType {
 		setDataOutputs(ty.types());
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
@@ -435,13 +442,15 @@ struct SetLocalNodeType : public NodeType {
 		setExecOutputs({""});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		auto value = compiler.funcCompiler().localVariable(mDataType.name);
 		assert(value != nullptr);
-		
+
 		// set the value!
 		builder.CreateStore(io[0], value);
 
@@ -468,7 +477,9 @@ struct GetLocalNodeType : public NodeType {
 		makePure();
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID, const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io, const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
