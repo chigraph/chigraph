@@ -76,15 +76,12 @@ Result FunctionCompiler::initialize(bool validate) {
 #else
 	                               llvm::DINode::DIFlags{},
 #endif
-	                               false
+	                               false);
+	
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-	                               ,
-	                               mLLFunction);
+	mDebugFunc->replaceFunction(mLLFunction);
 #else
-	                               );
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-	f->setSubprogram(mDebugFunc);
-#endif
+	mLLFunction->setSubprogram(mDebugFunc);
 #endif
 
 	mAllocBlock = llvm::BasicBlock::Create(context().llvmContext(), "alloc", mLLFunction);
