@@ -84,15 +84,19 @@ int compile(const std::vector<std::string>& opts) {
 
 	// resolve the path---first see if it's relative to the current directory. if it's not, then
 	// try to get it relative to 'src'
-	infile = fs::absolute(infile, fs::current_path());
-	if (!fs::is_regular_file(infile)) {
-		infile = fs::absolute(infile, c.workspacePath() / "src");
+	auto infileRelToPwd = fs::absolute(infile, fs::current_path());
+	if (!fs::is_regular_file(infileRelToPwd)) {
+		auto infileRelToSrc = fs::absolute(infile, c.workspacePath() / "src");
 
 		// if we still didn't find it, then error
-		if (!fs::is_regular_file(infile)) {
+		if (!fs::is_regular_file(infileRelToSrc)) {
 			std::cerr << "chi compile: failed to find module: " << infile << std::endl;
 			return 1;
+		} else {
+			infile = infileRelToSrc;
 		}
+	} else {
+		infile = infileRelToPwd;
 	}
 
 	// get module name

@@ -159,7 +159,7 @@ struct CFuncNode : NodeType {
 		if (mOutput.valid()) { setDataOutputs({{"", mOutput}}); }
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
 	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
 	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == dataInputs().size() + dataOutputs().size() && outputBlocks.size() == 1);
@@ -354,7 +354,7 @@ struct MakeStructNodeType : public NodeType {
 		setDataOutputs({{"", ty.dataType()}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
+	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
 	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
 	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		llvm::IRBuilder<> builder{&codegenInto};
@@ -396,7 +396,7 @@ struct BreakStructNodeType : public NodeType {
 		setDataOutputs(ty.types());
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
 	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
 	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		llvm::IRBuilder<> builder{&codegenInto};
@@ -945,17 +945,9 @@ bool GraphModule::removeStruct(boost::string_view name) {
 
 void GraphModule::removeStruct(GraphStruct* tyToDel) {
 	assert(&tyToDel->module() == this);
-
-	// invalidate the cache
-	updateLastEditTime();
-
-	for (auto iter = structs().begin(); iter != structs().end(); ++iter) {
-		if (iter->get() == tyToDel) {
-			mStructs.erase(iter);
-			return;
-		}
-	}
-	assert(false);
+	
+	bool succeeded = removeStruct(tyToDel->name());
+	assert(succeeded);
 }
 
 boost::filesystem::path GraphModule::sourceFilePath() const {

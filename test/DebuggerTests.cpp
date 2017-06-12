@@ -61,14 +61,15 @@ TEST_CASE("Debugger", "") {
 	auto exitNode = putsNode->outputExecConnections[0].first;
 
 	// make a debugger
-	boost::filesystem::path chigPath =
+	boost::filesystem::path chiPath =
 	    boost::filesystem::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
 	    "chi";
 #ifdef _WIN32
 	chigPath.replace_extension(boost::filesystem::path(".exe"));
 #endif
+	REQUIRE(fs::is_regular_file(chiPath));
 
-	Debugger dbg{chigPath.string().c_str(), *gMod};
+	Debugger dbg{chiPath.string().c_str(), *gMod};
 
 	dbg.setBreakpoint(*putsNode);
 	dbg.setBreakpoint(*exitNode);

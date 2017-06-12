@@ -147,7 +147,6 @@ private:
 
 	llvm::Function*     mLLFunction   = nullptr;
 	llvm::BasicBlock*   mAllocBlock   = nullptr;
-	llvm::DISubprogram* mDISubprogram = nullptr;
 
 	std::unordered_map<NodeInstance*, NodeCompiler> mNodeCompilers;
 
