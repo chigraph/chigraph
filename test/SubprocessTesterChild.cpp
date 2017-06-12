@@ -3,10 +3,9 @@
 #include <string>
 #include <thread>
 
-using namespace std::chrono_literals;
 
 std::string readAllStdin() {
-	std::string ret{std::istreambuf_iterator<char>{std::cin}, std::istreambuf_iterator<char>{}};
+	std::string ret(std::istreambuf_iterator<char>{std::cin}, std::istreambuf_iterator<char>{});
 
 	return ret;
 }
@@ -20,7 +19,7 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
-	auto mode = std::string{argv[1]};
+	auto mode = std::string(argv[1]);
 
 	if (mode == "echo") {
 		std::cout << readAllStdin();
@@ -41,7 +40,7 @@ int main(int argc, char** argv) {
 		return 0;
 	}
 	if (mode == "wait1s") {
-		std::this_thread::sleep_for(1s);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 		return 0;
 	}
 	if (mode == "exitwitherr1") { return 1; }

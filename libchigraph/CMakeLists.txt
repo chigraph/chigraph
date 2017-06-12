@@ -157,7 +157,7 @@ PRIVATE
 
 # link to threads
 find_package(Threads)
-target_link_libraries(chigraph PRIVATE Threads::Threads)
+target_link_libraries(chigraph PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
 # link ffi on unix
 if (NOT WIN32)

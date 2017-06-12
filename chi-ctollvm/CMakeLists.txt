@@ -111,7 +111,6 @@ TARGET chi-ctollvm POST_BUILD
 COMMAND ${CMAKE_COMMAND} -E copy_directory
 	${CLANG_LIB_DIR}/clang
 	${CMAKE_BINARY_DIR}/lib/clang
-BYPRODUCTS ${CMAKE_BINARY_DIR}/lib/clang
 COMMENT "Copying standard clang includes from ${CLANG_LIB_DIR}/clang to ${CMAKE_BINARY_DIR}/lib/clang"
 )
 
