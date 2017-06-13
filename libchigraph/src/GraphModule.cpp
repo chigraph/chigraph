@@ -799,7 +799,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 
 	if (graph == nullptr) {
 		// if it wasn't found, then see if it's a struct breaker or maker
-		std::string nameStr{name};
+		std::string nameStr{name.to_string()};
 		if (nameStr.substr(0, 6) == "_make_") {
 			auto str = structFromName(nameStr.substr(6));
 			if (str != nullptr) {
