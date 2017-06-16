@@ -65,7 +65,7 @@ TEST_CASE("Debugger", "") {
 	    boost::filesystem::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
 	    "chi";
 #ifdef _WIN32
-	chigPath.replace_extension(boost::filesystem::path(".exe"));
+	chiPath.replace_extension(boost::filesystem::path(".exe"));
 #endif
 	REQUIRE(fs::is_regular_file(chiPath));
 
@@ -86,7 +86,10 @@ TEST_CASE("Debugger", "") {
 			          << lldb::SBProcess::GetStateFromEvent(ev) << std::endl;
 		std::cout.flush();
 
-		if (lldb::SBProcess::GetStateFromEvent(ev) == lldb::eStateStopped) break;
+		auto state = lldb::SBProcess::GetStateFromEvent(ev);
+		REQUIRE(state != lldb::eStateExited);
+		if (state == lldb::eStateStopped) break;
+
 	}
 
 	dbg.processContinue();

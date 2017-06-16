@@ -732,7 +732,9 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 
 	EEBuilder.setErrorStr(&errMsg);
 
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
 	EEBuilder.setUseMCJIT(true);
+#endif
 
 	EEBuilder.setMCJITMemoryManager(
 #if LLVM_VERSION_AT_LEAST(3, 6)

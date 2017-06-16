@@ -20,7 +20,6 @@ TEST_CASE("Subprocess", "") {
 	                 ".exe"
 #endif
 	    ;
-	std::cout << "Subprocess tester path: " << childPath << std::endl;
 
 	std::string stdOut, stdErr;
 
