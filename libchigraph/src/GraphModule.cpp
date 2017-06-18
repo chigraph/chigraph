@@ -701,7 +701,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 	// see if it's a C call
 	if (cEnabled() && name == "c-call") {
 		if (!jsonData.is_object()) {
-			res.addEntry("WUKN", "Data for c-call must be an object", {{"Given Data"}, jsonData});
+			res.addEntry("WUKN", "Data for c-call must be an object", {{"Given Data", jsonData}});
 		}
 
 		std::string code;
@@ -713,7 +713,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 			    "WUKN",
 			    "Data for c-call must have a pair with the key of code and that the data is a "
 			    "string",
-			    {{"Given Data"}, jsonData});
+			    {{"Given Data", jsonData}});
 		}
 
 		std::string function;
@@ -725,7 +725,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 			    "WUKN",
 			    "Data for c-call must have a pair with the key of function and that the data is a "
 			    "string",
-			    {{"Given Data"}, jsonData});
+			    {{"Given Data", jsonData}});
 		}
 
 		std::vector<std::string> extraFlags;
@@ -737,7 +737,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 			}
 		} else {
 			res.addEntry("WUKN", "Data for c-call must have an extraflags array",
-			             {{"Given Data"}, jsonData});
+			             {{"Given Data", jsonData}});
 		}
 
 		std::vector<NamedDataType> inputs;
@@ -759,7 +759,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 
 		} else {
 			res.addEntry("WUKN", "Data for c-call must have an inputs array",
-			             {{"Given Data"}, jsonData});
+			             {{"Given Data", jsonData}});
 		}
 
 		DataType output;
@@ -777,13 +777,13 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 			else if (!outputJson.is_null()) {
 				res.addEntry("WUKN",
 				             R"("output" element in c-call must be either null or a string)",
-				             {{"Given Data"}, jsonData});
+				             {{"Given Data", jsonData}});
 			}
 		} else {
 			res.addEntry(
 			    "WUKN",
 			    "Data for c-call must have an output element that is either null or a string",
-			    {{"Given Data"}, jsonData});
+			    {{"Given Data", jsonData}});
 		}
 
 		*toFill = std::make_unique<CFuncNode>(*this, code, function, extraFlags, inputs, output);

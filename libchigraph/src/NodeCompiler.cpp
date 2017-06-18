@@ -151,8 +151,8 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 
 Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlocks,
                                     size_t                         inputExecID) {
-	assert(pure() ||
-	       trailingBlocks.size() == node().outputExecConnections.size() &&
+	assert((pure() ||
+	       trailingBlocks.size() == node().outputExecConnections.size()) &&
 	           "Trailing blocks is the wrong size");
 	assert(inputExecID < inputExecs());
 
