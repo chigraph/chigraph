@@ -25,6 +25,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/Result.hpp
 	include/chi/Subprocess.hpp
 	include/chi/NodeCompiler.hpp
+	include/chi/LibCLocator.hpp
 )
 set(CHI_PRIVATE_FILES
 	src/ChiModule.cpp
@@ -45,6 +46,7 @@ set(CHI_PRIVATE_FILES
 	src/Result.cpp
 	src/Subprocess.cpp
 	src/NodeCompiler.cpp
+	src/LibCLocator.cpp
 )
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
