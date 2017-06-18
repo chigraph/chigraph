@@ -28,8 +28,6 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
 	include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CheckCXX11Features.cmake)
 	CXX11_CHECK_FEATURE("variadic_templates" 2555 HAS_CXX11_VARIADIC_TEMPLATES)
-else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_GREATER 3.1 OR ${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_EQUAL 3.1)
-	target_compile_features(chigraphgui PRIVATE cxx_variable_templates)
 endif()
 
 # find llvm-config. This dictates which clang etc is uses.
@@ -50,6 +48,16 @@ if (UNIX AND NOT APPLE)
 	endif()
 	
 endif()
+
+# use -Wall and -Werror with gccish compilers
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
+	CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
+	CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic-errors -Werror -Wno-unused-parameter -Wno-missing-field-initializers")
+
+endif()
+
 
 
 # we're building them ourselves, so don't auto-link in on windows

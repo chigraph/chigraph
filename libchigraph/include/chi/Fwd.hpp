@@ -41,7 +41,7 @@ class BasicBlock;
 class IndirectBrInst;
 class DebugLoc;
 class Value;
-class GenericValue;
+struct GenericValue;
 }
 
 #endif  // CHI_FWD_HPP

@@ -122,7 +122,7 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 			                                         &funcCompiler().llFunction());
 		}
 
-		for (int id = 0; id < depPures.size(); ++id) {
+		for (auto id = 0ull; id < depPures.size(); ++id) {
 			// create a BasicBlock for the next one to br to--if we're on the last one, use the code
 			// block
 			llvm::BasicBlock* nextBlock = [&] {
