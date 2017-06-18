@@ -361,7 +361,7 @@ struct MakeStructNodeType : public NodeType {
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		llvm::Value* out = io[io.size() - 1];  // output goes last
-		for (auto id = 0; id < io.size() - 1; ++id) {
+		for (auto id = 0ull; id < io.size() - 1; ++id) {
 			auto ptr = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
 			    mStruct->dataType().llvmType(),
@@ -406,7 +406,7 @@ struct BreakStructNodeType : public NodeType {
 		auto tempStruct = builder.CreateAlloca(mStruct->dataType().llvmType());
 		builder.CreateStore(io[0], tempStruct);
 
-		for (auto id = 1; id < io.size(); ++id) {
+		for (auto id = 1ull; id < io.size(); ++id) {
 			auto ptr = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
 			    nullptr,
