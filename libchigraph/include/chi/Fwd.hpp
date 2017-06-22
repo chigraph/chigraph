@@ -33,7 +33,6 @@ class Type;
 class DIType;
 class DIBuilder;
 class DICompileUnit;
-class DISubroutineType;
 class DISubprogram;
 class Function;
 class FunctionType;
