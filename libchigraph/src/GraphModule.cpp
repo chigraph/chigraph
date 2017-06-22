@@ -361,7 +361,7 @@ struct MakeStructNodeType : public NodeType {
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		llvm::Value* out = io[io.size() - 1];  // output goes last
-		for (auto id = 0; id < io.size() - 1; ++id) {
+		for (auto id = 0ull; id < io.size() - 1; ++id) {
 			auto ptr = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
 			    mStruct->dataType().llvmType(),
@@ -406,7 +406,7 @@ struct BreakStructNodeType : public NodeType {
 		auto tempStruct = builder.CreateAlloca(mStruct->dataType().llvmType());
 		builder.CreateStore(io[0], tempStruct);
 
-		for (auto id = 1; id < io.size(); ++id) {
+		for (auto id = 1ull; id < io.size(); ++id) {
 			auto ptr = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
 			    nullptr,
@@ -701,7 +701,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 	// see if it's a C call
 	if (cEnabled() && name == "c-call") {
 		if (!jsonData.is_object()) {
-			res.addEntry("WUKN", "Data for c-call must be an object", {{"Given Data"}, jsonData});
+			res.addEntry("WUKN", "Data for c-call must be an object", {{"Given Data", jsonData}});
 		}
 
 		std::string code;
@@ -713,7 +713,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 			    "WUKN",
 			    "Data for c-call must have a pair with the key of code and that the data is a "
 			    "string",
-			    {{"Given Data"}, jsonData});
+			    {{"Given Data", jsonData}});
 		}
 
 		std::string function;
@@ -725,7 +725,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 			    "WUKN",
 			    "Data for c-call must have a pair with the key of function and that the data is a "
 			    "string",
-			    {{"Given Data"}, jsonData});
+			    {{"Given Data", jsonData}});
 		}
 
 		std::vector<std::string> extraFlags;
@@ -737,7 +737,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 			}
 		} else {
 			res.addEntry("WUKN", "Data for c-call must have an extraflags array",
-			             {{"Given Data"}, jsonData});
+			             {{"Given Data", jsonData}});
 		}
 
 		std::vector<NamedDataType> inputs;
@@ -759,7 +759,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 
 		} else {
 			res.addEntry("WUKN", "Data for c-call must have an inputs array",
-			             {{"Given Data"}, jsonData});
+			             {{"Given Data", jsonData}});
 		}
 
 		DataType output;
@@ -777,13 +777,13 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 			else if (!outputJson.is_null()) {
 				res.addEntry("WUKN",
 				             R"("output" element in c-call must be either null or a string)",
-				             {{"Given Data"}, jsonData});
+				             {{"Given Data", jsonData}});
 			}
 		} else {
 			res.addEntry(
 			    "WUKN",
 			    "Data for c-call must have an output element that is either null or a string",
-			    {{"Given Data"}, jsonData});
+			    {{"Given Data", jsonData}});
 		}
 
 		*toFill = std::make_unique<CFuncNode>(*this, code, function, extraFlags, inputs, output);
@@ -799,7 +799,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 
 	if (graph == nullptr) {
 		// if it wasn't found, then see if it's a struct breaker or maker
-		std::string nameStr{name};
+		std::string nameStr{name.to_string()};
 		if (nameStr.substr(0, 6) == "_make_") {
 			auto str = structFromName(nameStr.substr(6));
 			if (str != nullptr) {

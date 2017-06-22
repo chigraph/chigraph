@@ -33,7 +33,6 @@ class Type;
 class DIType;
 class DIBuilder;
 class DICompileUnit;
-class DISubroutineType;
 class DISubprogram;
 class Function;
 class FunctionType;
@@ -41,7 +40,7 @@ class BasicBlock;
 class IndirectBrInst;
 class DebugLoc;
 class Value;
-class GenericValue;
+struct GenericValue;
 }
 
 #endif  // CHI_FWD_HPP

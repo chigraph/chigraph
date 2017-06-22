@@ -39,8 +39,14 @@ add_test(NAME api_tests
 
 # add subprocess test executable
 add_executable(subprocess_tester_child SubprocessTesterChild.cpp)
-target_link_libraries(subprocess_tester_child)
-target_compile_features(subprocess_tester_child PRIVATE cxx_variable_templates)
+	
+# and make sure we get the compile option to enable it if the compiler needs it
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
+	CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
+	CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	target_compile_options(subprocess_tester_child PUBLIC -std=c++14)
+endif()
+
 
 add_dependencies(api_tests subprocess_tester_child)
 

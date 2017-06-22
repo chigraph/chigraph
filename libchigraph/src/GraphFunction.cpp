@@ -249,8 +249,6 @@ void GraphFunction::addDataOutput(const DataType& type, std::string name, size_t
 	// invalidate the cache
 	module().updateLastEditTime();
 
-	assert(addBefore >= 0);
-
 	if (addBefore < mDataOutputs.size()) {
 		mDataOutputs.emplace(mDataOutputs.cbegin() + addBefore, std::move(name), type);
 	} else {

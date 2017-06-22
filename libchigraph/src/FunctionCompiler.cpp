@@ -59,7 +59,7 @@ Result FunctionCompiler::initialize(bool validate) {
 	    llvmModule().getOrInsertFunction(mangledName, function().functionType()));
 
 	// create the debug file
-	auto debugFile =
+	mDebugFile =
 	    diBuilder().createFile(debugCompileUnit().getFilename(), debugCompileUnit().getDirectory());
 
 	auto subroutineType = createSubroutineType();
@@ -69,8 +69,8 @@ Result FunctionCompiler::initialize(bool validate) {
 
 	// TODO(#65): line numbers?
 	mDebugFunc =
-	    diBuilder().createFunction(debugFile, module().fullName() + ":" + function().name(),
-	                               mangledName, debugFile, entryLN, subroutineType, false, true, 0,
+	    diBuilder().createFunction(debugFile(), module().fullName() + ":" + function().name(),
+	                               mangledName, debugFile(), entryLN, subroutineType, false, true, 0,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 	                               0,
 #else
@@ -106,14 +106,14 @@ Result FunctionCompiler::initialize(bool validate) {
 			auto debugParam = diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, mDebugFunc,
-			                                      "inputexec_id", debugFile, entryLN,
+			                                      "inputexec_id", debugFile(), entryLN,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 			                                      *
 #endif
 			                                      intDataType.debugType());
 #else
 
-			                  createParameterVariable(mDebugFunc, "inputexec_id", 1, debugFile,
+			                  createParameterVariable(mDebugFunc, "inputexec_id", 1, debugFile(),
 			                                          entryLN, intDataType.debugType());
 #endif
 			diBuilder()
@@ -150,7 +150,7 @@ Result FunctionCompiler::initialize(bool validate) {
 		auto          debugParam = diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, mDebugFunc,
-		                                      tyAndName.name, debugFile, entryLN,
+		                                      tyAndName.name, debugFile(), entryLN,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 		                                      *
 #endif
@@ -158,7 +158,7 @@ Result FunctionCompiler::initialize(bool validate) {
 #else
 		                  createParameterVariable(mDebugFunc, tyAndName.name,
 		                                          idx + 1,  // + 1 because it starts at 1
-		                                          debugFile, entryLN, dType);
+		                                          debugFile(), entryLN, dType);
 #endif
 		diBuilder()
 		    .insertDeclare(&arg, debugParam,
@@ -270,7 +270,7 @@ Result FunctionCompiler::compile() {
 	return res;
 }
 
-llvm::DISubroutineType* FunctionCompiler::createSubroutineType() {
+FunctionCompiler::FunctionDebugType FunctionCompiler::createSubroutineType() {
 	// create param list
 	std::vector<
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
@@ -312,7 +312,7 @@ llvm::DISubroutineType* FunctionCompiler::createSubroutineType() {
 	// create type
 	auto subroutineType = diBuilder().createSubroutineType(
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-	    debugFile,
+	    debugFile(),
 #endif
 	    diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 5)

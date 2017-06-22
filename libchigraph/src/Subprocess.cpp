@@ -37,6 +37,35 @@ std::string GetLastErrorAsString() {
 
 	return message;
 }
+// taken from https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-set-a-thread-name-in-native-code
+#pragma pack(push,8)  
+typedef struct tagTHREADNAME_INFO
+{
+	DWORD dwType; // Must be 0x1000.  
+	LPCSTR szName; // Pointer to name (in user addr space).  
+	DWORD dwThreadID; // Thread ID (-1=caller thread).  
+	DWORD dwFlags; // Reserved for future use, must be zero.  
+} THREADNAME_INFO;
+#pragma pack(pop)
+
+
+
+void SetThreadName(HANDLE thread, const char* name) {
+	THREADNAME_INFO info;
+	info.dwType = 0x1000;
+	info.szName = name;
+	info.dwThreadID = GetThreadId(thread);
+	info.dwFlags = 0;
+#pragma warning(push)  
+#pragma warning(disable: 6320 6322)  
+	__try{
+		RaiseException(0x406D1388, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*)&info);
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER){
+	}
+#pragma warning(pop)  
+
+}
 }  // namespace
 
 struct Subprocess::Implementation {
@@ -227,6 +256,15 @@ Result Subprocess::start() {
 			if (mStdOutHandler) { mStdOutHandler(buffer.data(), bytesRead); }
 		}
 	});
+	
+#ifndef NDEBUG
+	{
+		auto threadName = mExePath.filename().string() + " stdout reader";
+
+		// name the thread for debugging
+		SetThreadName(mPimpl->stdoutThread.native_handle(), threadName.c_str());
+	}
+#endif
 
 	// start threads for listening for input
 	mPimpl->stderrThread = std::thread([this]() {
@@ -249,6 +287,15 @@ Result Subprocess::start() {
 
 	});
 
+#ifndef NDEBUG
+	{
+		auto threadName = mExePath.filename().string() + " stderr reader";
+
+		// name the thread for debugging
+		SetThreadName(mPimpl->stderrThread.native_handle(), threadName.c_str());
+	}
+#endif
+	
 	mStarted = true;
 
 	return res;

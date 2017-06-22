@@ -25,6 +25,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/Result.hpp
 	include/chi/Subprocess.hpp
 	include/chi/NodeCompiler.hpp
+	include/chi/LibCLocator.hpp
 )
 set(CHI_PRIVATE_FILES
 	src/ChiModule.cpp
@@ -45,6 +46,7 @@ set(CHI_PRIVATE_FILES
 	src/Result.cpp
 	src/Subprocess.cpp
 	src/NodeCompiler.cpp
+	src/LibCLocator.cpp
 )
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
@@ -157,7 +159,7 @@ PRIVATE
 
 # link to threads
 find_package(Threads)
-target_link_libraries(chigraph PRIVATE Threads::Threads)
+target_link_libraries(chigraph PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
 # link ffi on unix
 if (NOT WIN32)

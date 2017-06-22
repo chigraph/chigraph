@@ -15,30 +15,32 @@ namespace chi {
 ///
 /// ## Usage:
 /// If you want to construct a default result object, just call the default constructor:
-/// ```
-/// Result res;
-/// ```
+/// \snippet ResultExample.cpp Constructing
+///
 /// `res` is the most common name for an error object, prefer it to other names.
+///
+/// When constructed, results are successful by default:
+/// \snippet ResultExample.cpp bValid
 ///
 /// When an error, warning, or just some event that requries logging needs to be added to the result
 /// object,
 /// call `Result::addEntry`:
-/// ```
-/// Result res;
-/// res.addEntry("E231", "Some error occured", {{"Line Number", 34}});
-/// ```
-/// Note the `E` at the beginning of the error code, this is important. If it's an `E`, it's
-/// considered an error,
-/// and will mark the result as errored. If it's a `W`, then it's logged, but _it's still considred
-/// successful_.
-///
+/// \snippet ResultExample.cpp AddWEntry
+/// 
+/// note the `W` at the beginning of the error code, this is important. If it's an `W`, it's
+/// considered an warning and the result will still be considered successful:
+/// \snippet ResultExample.cpp bValid2
+/// 
+/// If that leading character to the error code is an 'E', then it's considered an error
+/// \snippet ResultExample.cpp AddEEntry
+/// 
+/// And the result is not successful anymore:
+/// \snippet ResultExample.cpp Check
+/// 
 /// If you're calling another operation that emits a Result object, then there's an easy to
 /// integrate that result object: the opeartor+=
-///
-/// ```
-/// Result res;
-/// res += connectExec(...); // or any function that returns a Result
-/// ```
+/// \snippet ResultExample.cpp Append
+/// 
 /// ## Standardized names in data:
 /// In order to have good parsing of errors, some standards are good.
 /// If you are trying to represent this data in your error, use these
@@ -155,6 +157,10 @@ struct Result {
 private:
 	boost::container::flat_map<int, nlohmann::json> mContexts;
 };
+
+
+/// \example ResultExample.cpp
+
 
 /// \name Result operators
 /// \{

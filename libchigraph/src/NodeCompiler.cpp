@@ -15,6 +15,8 @@
 #include <llvm/IR/Function.h>
 #include <llvm/IR/IRBuilder.h>
 
+namespace fs = boost::filesystem;
+
 namespace chi {
 
 NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& inst)
@@ -47,9 +49,9 @@ NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& ins
 			                    &funcCompiler().diFunction(),
 			                    node().stringId() + "__" + std::to_string(idx),
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-			                    data.dbuilder->createFile(
-			                        fs::path(data.diFunc->getFilename()).filename().string(),
-			                        fs::path(data.diFunc->getFilename()).parent_path().string()),
+			                    funcCompiler().diBuilder().createFile(
+			                        fs::path(funcCompiler().diFunction().getFilename()).filename().string(),
+			                        fs::path(funcCompiler().diFunction().getFilename()).parent_path().string()),
 #else
 			                    funcCompiler().diFunction().getFile(),
 #endif
@@ -70,7 +72,7 @@ NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& ins
 #endif
 			                   &funcCompiler().allocBlock())
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-			    ->setDebugLoc(llvm::DebugLoc::get(1, 1, *data.diFunc))
+			    ->setDebugLoc(llvm::DebugLoc::get(1, 1, funcCompiler().diFunction()))
 #endif
 			    ;
 		}
@@ -122,7 +124,7 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 			                                         &funcCompiler().llFunction());
 		}
 
-		for (int id = 0; id < depPures.size(); ++id) {
+		for (auto id = 0ull; id < depPures.size(); ++id) {
 			// create a BasicBlock for the next one to br to--if we're on the last one, use the code
 			// block
 			llvm::BasicBlock* nextBlock = [&] {
@@ -151,8 +153,8 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 
 Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlocks,
                                     size_t                         inputExecID) {
-	assert(pure() ||
-	       trailingBlocks.size() == node().outputExecConnections.size() &&
+	assert((pure() ||
+	       trailingBlocks.size() == node().outputExecConnections.size()) &&
 	           "Trailing blocks is the wrong size");
 	assert(inputExecID < inputExecs());
 
