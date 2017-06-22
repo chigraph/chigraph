@@ -44,30 +44,32 @@ struct FunctionCompiler {
 	/// \return The Result
 	Result compile();
 
-	using FunctionDebugType = 
+	using DebugFunctionType = 
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
 		llvm::DICompositeType
 #else
-		llvm::SubroutineType*
+		llvm::DISubroutineType*
 #endif
 		;
 
 
 	/// Create the subroutine type for the function
 	/// \return The subroutine type
-	FunctionDebugType createSubroutineType();
+	DebugFunctionType createSubroutineType();
 
+	using DebugFunction = llvm::DISubprogram
+#if LLVM_VERSION_AT_LEAST(3, 6)
+		*
+#endif
+		;
+	
 	/// Get the debug function.
 	/// \pre `initialized() == true`
 	/// \return The debug function
-	llvm::DISubprogram& diFunction() {
+	DebugFunction diFunction() {
 		assert(initialized() &&
 		       "Please initialize the function compiler before getting the debug function");
-		return 
-#if LLVM_VERSION_AT_LEAST(3, 6)
-			*
-#endif
-			mDebugFunc;
+		return mDebugFunc;
 	}
 
 	/// Get the module being generated
@@ -80,11 +82,7 @@ struct FunctionCompiler {
 
 	/// The compile unit for the module
 	/// \return The DICompileUnit
-	llvm::DICompileUnit& debugCompileUnit() const { return *mDebugCU; }
-
-	/// The file for the module
-	/// \return the DIFile
-	llvm::DIFile& debugFile() const { return *mDebugFile; }
+	llvm::DICompileUnit* debugCompileUnit() const { return mDebugCU; }
 
 	/// The block for allocating variables at the beginning of the function
 	/// \pre `initialized() == true`
@@ -161,17 +159,7 @@ private:
 	llvm::Module*        mModule    = nullptr;
 	llvm::DIBuilder*     mDIBuilder = nullptr;
 	llvm::DICompileUnit* mDebugCU   = nullptr;
-	llvm::DISubprogram
-#if LLVM_VERSION_AT_LEAST(3, 6)
-		*
-#endif
-		mDebugFunc{};
-
-	llvm::DIFile
-#if LLVM_VERSION_AT_LEAST(3, 6)
-		*
-#endif
-		mDebugFile = nullptr;
+	DebugFunction mDebugFunc{};
 
 	const GraphFunction* mFunction = nullptr;
 

@@ -43,17 +43,14 @@ NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& ins
 #else
 			                createAutoVariable(
 #endif
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			                    *
-#endif
-			                    &funcCompiler().diFunction(),
+			                    funcCompiler().diFunction(),
 			                    node().stringId() + "__" + std::to_string(idx),
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 			                    funcCompiler().diBuilder().createFile(
 			                        fs::path(funcCompiler().diFunction().getFilename()).filename().string(),
 			                        fs::path(funcCompiler().diFunction().getFilename()).parent_path().string()),
 #else
-			                    funcCompiler().diFunction().getFile(),
+			                    funcCompiler().diFunction()->getFile(),
 #endif
 			                    1,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
@@ -67,7 +64,7 @@ NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& ins
 #if LLVM_VERSION_AT_LEAST(3, 6)
 			                   funcCompiler().diBuilder().createExpression(),
 #if LLVM_VERSION_AT_LEAST(3, 7)
-			                   llvm::DebugLoc::get(1, 1, &funcCompiler().diFunction()),
+			                   llvm::DebugLoc::get(1, 1, funcCompiler().diFunction()),
 #endif
 #endif
 			                   &funcCompiler().allocBlock())
@@ -206,11 +203,7 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 
 	// codegen
 	Result res = node().type().codegen(*this, *codeBlock, inputExecID,
-	                                   llvm::DebugLoc::get(funcCompiler().nodeLineNumber(node()), 1,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	                                                       *
-#endif
-	                                                       &funcCompiler().diFunction()),
+	                                   llvm::DebugLoc::get(funcCompiler().nodeLineNumber(node()), 1, funcCompiler().diFunction()),
 	                                   io, trailingBlocks);
 
 	mCompiledInputs[inputExecID] = true;
