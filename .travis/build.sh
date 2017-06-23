@@ -24,6 +24,6 @@ else
 		-DLLVM_CONFIG=/usr/local/opt/llvm/bin/llvm-config \
 		-GNinja -DCG_BUILD_DEBUGGER=OFF
 	ninja
-	# ninja test
+	CTEST_OUTPUT_ON_FAILURE=1 ninja test
 	
 fi
