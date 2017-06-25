@@ -18,6 +18,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/JsonSerializer.hpp
 	include/chi/LangModule.hpp
 	include/chi/LLVMVersion.hpp
+	include/chi/DefaultModuleCache.hpp
 	include/chi/ModuleCache.hpp
 	include/chi/NameMangler.hpp
 	include/chi/NodeInstance.hpp
@@ -39,7 +40,7 @@ set(CHI_PRIVATE_FILES
 	src/JsonDeserializer.cpp
 	src/JsonSerializer.cpp
 	src/LangModule.cpp
-	src/ModuleCache.cpp
+	src/DefaultModuleCache.cpp
 	src/NameMangler.cpp
 	src/NodeInstance.cpp
 	src/NodeType.cpp
