@@ -13,6 +13,7 @@
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
 #include "chi/Subprocess.hpp"
+#include "chi/LibCLocator.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
@@ -46,6 +47,17 @@ std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_v
 	std::vector<const char*> cArgs;
 	for (const auto& arg : args) { cArgs.push_back(arg.c_str()); }
 	cArgs.push_back("-nostdlib");
+
+	std::vector<fs::path> stdIncludePaths;
+	res += stdCIncludePaths(stdIncludePaths);
+
+	std::vector<std::string> stdIncludePathsStr; // when we call string(), that can't be temp
+	for (const auto& p : stdIncludePaths) {
+		stdIncludePathsStr.push_back(p.string());
+
+		cArgs.push_back("-I");
+		cArgs.push_back(stdIncludePathsStr[stdIncludePathsStr.size() - 1].c_str());
+	}
 
 	std::string errors;
 
