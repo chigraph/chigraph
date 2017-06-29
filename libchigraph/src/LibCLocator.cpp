@@ -121,7 +121,13 @@ Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {
 
 // it actually works fine without anyting! yay!
 
+#include "chi/Result.hpp"
+
+namespace chi {
+
 Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {}
+
+} // namespace chi
 
 #else
 
