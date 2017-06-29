@@ -1,8 +1,22 @@
 /// \file CCompiler.cpp
 
+#include "chi/CCompiler.hpp"
+#include "chi/Result.hpp"
+#include "chi/LibCLocator.hpp"
+#include "chi/Subprocess.hpp"
+#include "chi/LLVMVersion.hpp"
 
+#if LLVM_VERSION_LESS_EQUAL(3, 9)
+#include <llvm/Bitcode/ReaderWriter.h>
+#else
+#include <llvm/Bitcode/BitcodeReader.h>
+#endif
 
-Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMContext& llvmContext, std::vector<std::string> arguments, const std::string& inputCCode, std::unique_ptr<llvm::Module>* toFill) {
+namespace fs = boost::filesystem;
+
+namespace chi {
+
+Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMContext& llvmContext, std::vector<std::string> arguments, boost::string_view inputCCode, std::unique_ptr<llvm::Module>* toFill) {
 
 	assert(toFill != nullptr && "null toFill passed to compileCToLLVM");
 	assert(fs::is_regular_file(ctollvmPath) &&
@@ -21,7 +35,7 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 
 	for (const auto& p : stdIncludePaths) {
 		arguments.push_back("-I");
-		cArgs.push_back(p.string());
+		arguments.push_back(p.string());
 	}
 
 	std::string errors;
@@ -46,7 +60,7 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 		res += ctollvmExe.start();
 
 		// push it the code and close the stream
-		res += ctollvmExe.pushToStdIn(code.data(), code.size());
+		res += ctollvmExe.pushToStdIn(inputCCode.data(), inputCCode.size());
 		res += ctollvmExe.closeStdIn();
 
 		if (!res) {
@@ -57,11 +71,11 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 		auto errCode = ctollvmExe.exitCode();
 
 		if (errCode != 0) {
-			res.addEntry("EUKN", "Failed to Generate IR with clang", {{"Error", errs}});
-			return nullptr;
+			res.addEntry("EUKN", "Failed to Generate IR with clang", {{"Error", errors}});
+			return res;
 		}
-		if (!errs.empty()) {
-			res.addEntry("WUKN", "Failed to generate IR with clang", {{"Warning", errs}});
+		if (!errors.empty()) {
+			res.addEntry("WUKN", "Failed to generate IR with clang", {{"Warning", errors}});
 		}
 
 		auto errorOrMod = llvm::parseBitcodeFile(
@@ -71,7 +85,7 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 		    llvm::MemoryBufferRef
 #endif
 		    (generatedBitcode, "generated.bc"),
-		    ctx);
+		    llvmContext);
 		if (!errorOrMod) {
 			std::string errorMsg;
 
@@ -107,10 +121,4 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 
 }
 
-// Compile C code to a llvm::Module
-std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_view code,
-                                           const std::vector<std::string>& args,
-                                           llvm::LLVMContext& ctx, Result& res) {
-}
-
-
+} // namepsace chi

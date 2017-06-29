@@ -6,6 +6,7 @@
 #include "chi/Fwd.hpp"
 
 #include <boost/filesystem/path.hpp>
+#include <boost/utility/string_view.hpp>
 
 namespace chi {
 
@@ -17,7 +18,7 @@ namespace chi {
 /// \param[in] inputCCode The C code to compile. If `arguments` contains input files, then this can be empty.
 /// \param[out] toFill The unique pointer module to create the module inside
 /// \return The Result
-Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMContext& llvmContext, std::vector<std::string> arguments, const std::string& inputCCode, std::unique_ptr<llvm::Module>* toFill);
+Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMContext& llvmContext, std::vector<std::string> arguments, boost::string_view inputCCode, std::unique_ptr<llvm::Module>* toFill);
 
 } // namespace chi
 

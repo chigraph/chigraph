@@ -24,11 +24,7 @@
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Transforms/Utils/Cloning.h>
 
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-#include <llvm/Bitcode/ReaderWriter.h>
-#else
-#include <llvm/Bitcode/BitcodeReader.h>
-#endif
+
 
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
@@ -74,9 +70,12 @@ struct CFuncNode : NodeType {
 			args.push_back("-I");
 			args.push_back(mGraphModule->pathToCSources().string());
 
-			llcompiledmod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(),
-			                             mCCode, args, context().llvmContext(), res);
-
+			res += compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() / "chi-ctollvm"
+#ifdef WIN32
+				".exe"
+#endif
+				, context().llvmContext(), args, mCCode, &llcompiledmod);
+			
 			if (!res) { return res; }
 		}
 
@@ -449,9 +448,12 @@ Result GraphModule::generateModule(llvm::Module& module) {
 				}
 
 				// compile it
-				auto generatedModule =
-				    compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), "",
-				                 {CFile.string()}, context().llvmContext(), res);
+				std::unique_ptr<llvm::Module> generatedModule;
+				res += compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() / "chi-ctollvm"
+#ifdef WIN32
+					".exe"
+#endif
+					, context().llvmContext(), {CFile.string()}, "", &generatedModule);
 
 				if (!res) { return res; }
 
@@ -865,9 +867,13 @@ Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
 	// add -I for the .c dir
 	clangArgs.push_back("-I");
 	clangArgs.push_back(pathToCSources().string());
-
-	auto mod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), code,
-	                        clangArgs, context().llvmContext(), res);
+	
+	std::unique_ptr<llvm::Module> mod;
+	res += compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() / "chi-ctollvm"
+#ifdef WIN32
+		".exe"
+#endif
+		, context().llvmContext(), clangArgs, code, &mod);
 
 	if (!res) { return res; }
 
