@@ -5,7 +5,7 @@
 
 namespace fs = boost::filesystem;
 
-#ifdef __linux__
+#if defined __linux__ || defined __APPLE__
 
 #include <cstdlib>
 #include <boost/algorithm/string/split.hpp>
@@ -43,7 +43,7 @@ Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {
 	for (const auto& possiblePath : paths) {
 		auto pathToCheck = fs::path{possiblePath} / "gcc";
 		
-		if (fs::is_regular_file(pathToCheck)) {
+		if (fs::is_regular_file(pathToCheck) || fs::is_symlink(pathToCheck)) {
 			gccPath = pathToCheck;
 			break;
 		}
@@ -116,9 +116,12 @@ Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {
 }
 } // chi
 
-#elif defined __APPLE__
 
 #elif defined WIN32
+
+// it actually works fine without anyting! yay!
+
+Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {}
 
 #else
 
