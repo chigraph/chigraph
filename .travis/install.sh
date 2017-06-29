@@ -3,7 +3,7 @@
 set -xe
 
 if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-	;
+
 else
 
 	brew install cmake ninja || echo
