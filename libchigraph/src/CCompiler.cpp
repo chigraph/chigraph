@@ -12,6 +12,8 @@
 #include <llvm/Bitcode/BitcodeReader.h>
 #endif
 
+#include <llvm/Support/MemoryBuffer.h>
+
 namespace fs = boost::filesystem;
 
 namespace chi {
