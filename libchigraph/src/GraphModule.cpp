@@ -22,6 +22,7 @@
 #include <llvm/Linker/Linker.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/MemoryBuffer.h>
+#include <llvm/Support/Compiler.h>
 #include <llvm/Transforms/Utils/Cloning.h>
 
 
@@ -848,7 +849,7 @@ bool GraphModule::removeStruct(boost::string_view name) {
 void GraphModule::removeStruct(GraphStruct* tyToDel) {
 	assert(&tyToDel->module() == this);
 	
-	__attribute__((unused)) bool succeeded = removeStruct(tyToDel->name());
+	LLVM_ATTRIBUTE_UNUSED bool succeeded = removeStruct(tyToDel->name());
 	assert(succeeded);
 }
 
