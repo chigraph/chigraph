@@ -13,6 +13,8 @@
 #include "chi/NodeType.hpp"
 #include "chi/Result.hpp"
 #include "chi/Subprocess.hpp"
+#include "chi/LibCLocator.hpp"
+#include "chi/CCompiler.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
@@ -22,11 +24,7 @@
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Transforms/Utils/Cloning.h>
 
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-#include <llvm/Bitcode/ReaderWriter.h>
-#else
-#include <llvm/Bitcode/BitcodeReader.h>
-#endif
+
 
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
@@ -38,108 +36,6 @@ namespace fs = boost::filesystem;
 namespace chi {
 
 namespace {
-
-// Compile C code to a llvm::Module
-std::unique_ptr<llvm::Module> compileCCode(const char* execPath, boost::string_view code,
-                                           const std::vector<std::string>& args,
-                                           llvm::LLVMContext& ctx, Result& res) {
-	std::vector<const char*> cArgs;
-	for (const auto& arg : args) { cArgs.push_back(arg.c_str()); }
-	cArgs.push_back("-nostdlib");
-
-	std::string errors;
-
-	// call chi-ctollvm
-	std::unique_ptr<llvm::Module> mod;
-	{
-		std::vector<const char*> argsToChiCtoLLVM;
-		for (auto arg : cArgs) {
-			argsToChiCtoLLVM.push_back("-c");
-			argsToChiCtoLLVM.push_back(arg);
-		}
-
-		std::string generatedBitcode;
-		try {
-			auto exeLoc = fs::path(execPath).parent_path() /
-			              "chi-ctollvm"
-#if WIN32
-			              ".exe"
-#endif
-			    ;
-			assert(fs::is_regular_file(exeLoc) &&
-			       "chi-ctollvm isn't installed in the same directory as chi");
-
-			Subprocess ctollvmExe(exeLoc);
-			ctollvmExe.setArguments(argsToChiCtoLLVM);
-
-			std::string errs;
-			ctollvmExe.attachStringToStdOut(generatedBitcode);
-			ctollvmExe.attachStringToStdErr(errs);
-
-			res += ctollvmExe.start();
-
-			// push it the code and close the stream
-			res += ctollvmExe.pushToStdIn(code.data(), code.size());
-			res += ctollvmExe.closeStdIn();
-
-			// wait for the exit
-			auto errCode = ctollvmExe.exitCode();
-
-			if (errCode != 0) {
-				res.addEntry("EUKN", "Failed to Generate IR with clang", {{"Error", errs}});
-				return nullptr;
-			}
-			if (!errs.empty()) {
-				res.addEntry("WUKN", "Failed to generate IR with clang", {{"Warning", errs}});
-			}
-
-		} catch (std::exception& e) {
-			res.addEntry("EUKN", "Failed to run chi-ctollvm", {{"Error Message", e.what()}});
-			return nullptr;
-		}
-
-		auto errorOrMod = llvm::parseBitcodeFile(
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-		    llvm::MemoryBuffer::getMemBufferCopy
-#else
-		    llvm::MemoryBufferRef
-#endif
-		    (generatedBitcode, "generated.bc"),
-		    ctx);
-		if (!errorOrMod) {
-			std::string errorMsg;
-
-#if LLVM_VERSION_AT_LEAST(4, 0)
-			auto E = errorOrMod.takeError();
-
-			llvm::handleAllErrors(
-			    std::move(E), [&errorMsg](llvm::ErrorInfoBase& err) { errorMsg = err.message(); });
-#endif
-
-			res.addEntry("EUKN", "Failed to parse generated bitcode.",
-			             {{"Error Message", errorMsg}});
-
-			return nullptr;
-		}
-		mod =
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    std::unique_ptr<llvm::Module>
-#else
-		    std::move
-#endif
-		    (errorOrMod.get());
-	}
-
-	if (mod == nullptr) {
-		res.addEntry("EUKN", "Failed to generate IR with clang", {{"Error", errors}});
-	} else if (!errors.empty()) {
-		res.addEntry("WUKN", "Warnings encountered while generating IR with clang",
-		             {{"Error", errors}});
-	}
-
-	return mod;
-}
-
 /// The NodeType for calling C functions
 struct CFuncNode : NodeType {
 	CFuncNode(GraphModule& mod, std::string cCode, std::string functionName,
@@ -174,9 +70,12 @@ struct CFuncNode : NodeType {
 			args.push_back("-I");
 			args.push_back(mGraphModule->pathToCSources().string());
 
-			llcompiledmod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(),
-			                             mCCode, args, context().llvmContext(), res);
-
+			res += compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() / "chi-ctollvm"
+#ifdef WIN32
+				".exe"
+#endif
+				, context().llvmContext(), args, mCCode, &llcompiledmod);
+			
 			if (!res) { return res; }
 		}
 
@@ -549,9 +448,12 @@ Result GraphModule::generateModule(llvm::Module& module) {
 				}
 
 				// compile it
-				auto generatedModule =
-				    compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), "",
-				                 {CFile.string()}, context().llvmContext(), res);
+				std::unique_ptr<llvm::Module> generatedModule;
+				res += compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() / "chi-ctollvm"
+#ifdef WIN32
+					".exe"
+#endif
+					, context().llvmContext(), {CFile.string()}, "", &generatedModule);
 
 				if (!res) { return res; }
 
@@ -946,7 +848,7 @@ bool GraphModule::removeStruct(boost::string_view name) {
 void GraphModule::removeStruct(GraphStruct* tyToDel) {
 	assert(&tyToDel->module() == this);
 	
-	bool succeeded = removeStruct(tyToDel->name());
+	__attribute__((unused)) bool succeeded = removeStruct(tyToDel->name());
 	assert(succeeded);
 }
 
@@ -965,9 +867,13 @@ Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
 	// add -I for the .c dir
 	clangArgs.push_back("-I");
 	clangArgs.push_back(pathToCSources().string());
-
-	auto mod = compileCCode(llvm::sys::fs::getMainExecutable(nullptr, nullptr).c_str(), code,
-	                        clangArgs, context().llvmContext(), res);
+	
+	std::unique_ptr<llvm::Module> mod;
+	res += compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() / "chi-ctollvm"
+#ifdef WIN32
+		".exe"
+#endif
+		, context().llvmContext(), clangArgs, code, &mod);
 
 	if (!res) { return res; }
 

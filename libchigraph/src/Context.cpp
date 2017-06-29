@@ -9,6 +9,7 @@
 #include "chi/LangModule.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/Result.hpp"
+#include "chi/DefaultModuleCache.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
@@ -36,8 +37,10 @@
 namespace fs = boost::filesystem;
 
 namespace chi {
-Context::Context(const boost::filesystem::path& workPath) : mModuleCache{*this} {
+Context::Context(const boost::filesystem::path& workPath) {
 	mWorkspacePath = workspaceFromChildPath(workPath);
+
+	mModuleCache = std::make_unique<DefaultModuleCache>(*this);
 
 	git_libgit2_init();
 }
@@ -842,6 +845,12 @@ std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
 		}
 	}
 	return std::make_tuple(VCSType::Unknown, "", "");
+}
+
+void Context::setModuleCache(std::unique_ptr<ModuleCache> newCache) {
+	assert(newCache != nullptr && "Cannot set the modulecache to be nullptr");
+
+	mModuleCache = std::move(newCache);
 }
 
 }  // namespace chi

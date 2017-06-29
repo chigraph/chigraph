@@ -18,6 +18,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/JsonSerializer.hpp
 	include/chi/LangModule.hpp
 	include/chi/LLVMVersion.hpp
+	include/chi/DefaultModuleCache.hpp
 	include/chi/ModuleCache.hpp
 	include/chi/NameMangler.hpp
 	include/chi/NodeInstance.hpp
@@ -26,6 +27,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/Subprocess.hpp
 	include/chi/NodeCompiler.hpp
 	include/chi/LibCLocator.hpp
+	include/chi/CCompiler.hpp
 )
 set(CHI_PRIVATE_FILES
 	src/ChiModule.cpp
@@ -39,7 +41,7 @@ set(CHI_PRIVATE_FILES
 	src/JsonDeserializer.cpp
 	src/JsonSerializer.cpp
 	src/LangModule.cpp
-	src/ModuleCache.cpp
+	src/DefaultModuleCache.cpp
 	src/NameMangler.cpp
 	src/NodeInstance.cpp
 	src/NodeType.cpp
@@ -47,6 +49,7 @@ set(CHI_PRIVATE_FILES
 	src/Subprocess.cpp
 	src/NodeCompiler.cpp
 	src/LibCLocator.cpp
+	src/CCompiler.cpp
 )
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 

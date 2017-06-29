@@ -1,9 +1,10 @@
-/// \file ModuleCache.cpp
+/// \file DefaultModuleCache.cpp
 
-#include <chi/Context.hpp>
-#include <chi/LLVMVersion.hpp>
-#include <chi/ModuleCache.hpp>
-#include <chi/Result.hpp>
+#include "chi/DefaultModuleCache.hpp"
+#include "chi/Context.hpp"
+#include "chi/LLVMVersion.hpp"
+#include "chi/ModuleCache.hpp"
+#include "chi/Result.hpp"
 
 #include <cassert>
 
@@ -21,11 +22,11 @@
 
 namespace chi {
 
-ModuleCache::ModuleCache(chi::Context& ctx) : mContext{&ctx} {}
+DefaultModuleCache::DefaultModuleCache(chi::Context& ctx) : ModuleCache{ctx} {}
 
-Result ModuleCache::cacheModule(const boost::filesystem::path& moduleName,
+Result DefaultModuleCache::cacheModule(const boost::filesystem::path& moduleName,
                                 llvm::Module& compiledModule, std::time_t timeAtFileRead) {
-	assert(!moduleName.empty() && "Cannot pass a empty module name to ModuleCache::cacheModule");
+	assert(!moduleName.empty() && "Cannot pass a empty module name to DefaultModuleCache::cacheModule");
 
 	Result res;
 
@@ -55,26 +56,26 @@ Result ModuleCache::cacheModule(const boost::filesystem::path& moduleName,
 	return res;
 }
 
-boost::filesystem::path ModuleCache::cachePathForModule(
+boost::filesystem::path DefaultModuleCache::cachePathForModule(
     const boost::filesystem::path& moduleName) const {
 	return context().workspacePath() / "lib" / (moduleName.string() + ".bc");
 }
 
-void ModuleCache::invalidateCache(const boost::filesystem::path& moduleName) {
-	assert(!moduleName.empty() && "Cannot pass empty path to ModuleCache::invalidateCache");
+void DefaultModuleCache::invalidateCache(const boost::filesystem::path& moduleName) {
+	assert(!moduleName.empty() && "Cannot pass empty path to DefaultModuleCache::invalidateCache");
 
 	auto cachePath = cachePathForModule(moduleName);
 
 	boost::filesystem::remove(cachePath);
 }
 
-std::time_t ModuleCache::cacheUpdateTime(const boost::filesystem::path& moduleName) const {
+std::time_t DefaultModuleCache::cacheUpdateTime(const boost::filesystem::path& moduleName) const {
 	return boost::filesystem::last_write_time(cachePathForModule(moduleName));
 }
 
-std::unique_ptr<llvm::Module> ModuleCache::retrieveFromCache(
+std::unique_ptr<llvm::Module> DefaultModuleCache::retrieveFromCache(
     const boost::filesystem::path& moduleName, std::time_t atLeastThisNew) {
-	assert(!moduleName.empty() && "Cannot pass empty path to ModuleCache::retrieveFromCache");
+	assert(!moduleName.empty() && "Cannot pass empty path to DefaultModuleCache::retrieveFromCache");
 
 	auto cachePath = cachePathForModule(moduleName);
 
