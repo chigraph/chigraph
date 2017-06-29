@@ -125,7 +125,7 @@ Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {
 
 namespace chi {
 
-Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {}
+Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) { return {}; }
 
 } // namespace chi
 
