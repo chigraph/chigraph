@@ -1,3 +1,4 @@
+sudo: required
 language: cpp
 dist: trusty
 
@@ -18,30 +19,6 @@ addons:
       - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.5 main'
         key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
       - sourceline: 'ppa:presslabs/gitfs'
-    packages:
-      - build-essential
-      - libedit-dev
-      - llvm-3.5-dev
-      - llvm-3.6-dev
-      - llvm-3.7-dev
-      - llvm-3.8-dev
-      - llvm-3.9-dev
-      - llvm-4.0-dev
-      - libclang-3.5-dev
-      - libclang-3.6-dev
-      - libclang-3.7-dev
-      - libclang-3.8-dev
-      - libclang-3.9-dev
-      - libclang-4.0-dev
-      - liblldb-3.5-dev
-      - liblldb-3.6-dev
-      - liblldb-3.7-dev
-      - liblldb-3.8-dev
-      - liblldb-3.9-dev
-      - liblldb-4.0-dev
-      - ninja-build
-      - g++-5
-      - g++-6
       
 matrix: 
   include: 
@@ -51,12 +28,12 @@ matrix:
       osx_image: xcode8.2
       env: BUILD_TYPE=Debug
     
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.5
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.6
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.7
-    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=571 LLVM_VERSION=3.8
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=58  LLVM_VERSION=3.9
-    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=58  LLVM_VERSION=4.0
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.5 PACKAGES='g++-5 gcc-5'
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.6 PACKAGES='g++-5 gcc-5'
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Debug     QT_VERSION=562 LLVM_VERSION=3.7 PACKAGES='g++-5 gcc-5'
+    - env: CXX_COMPILER=g++-5         C_COMPILER=gcc-5      BUILD_TYPE=Release   QT_VERSION=571 LLVM_VERSION=3.8 PACKAGES='g++-5 gcc-5'
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=58  LLVM_VERSION=3.9 PACKAGES='g++-6 gcc-6'
+    - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=58  LLVM_VERSION=4.0 PACKAGES='g++-6 gcc-6'
 
     - os: osx
       osx_image: xcode8.2
