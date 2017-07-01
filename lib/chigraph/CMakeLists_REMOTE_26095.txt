@@ -2,44 +2,53 @@
 
 # Create the library
 set(CHI_PUBLIC_FILES
-	include/chi/FunctionValidator.hpp
-	include/chi/NodeCompiler.hpp
-	include/chi/NameMangler.hpp
-	include/chi/DataType.hpp
-	include/chi/ModuleCache.hpp
-	include/chi/GraphFunction.hpp
 	include/chi/ChiModule.hpp
-	include/chi/JsonSerializer.hpp
 	include/chi/Context.hpp
-	include/chi/NodeType.hpp
+	include/chi/DataType.hpp
+	include/chi/Flags.hpp
 	include/chi/FunctionCompiler.hpp
+	include/chi/FunctionValidator.hpp
 	include/chi/Fwd.hpp
+	include/chi/GraphFunction.hpp
 	include/chi/GraphModule.hpp
 	include/chi/GraphStruct.hpp
+	include/chi/HashFilesystemPath.hpp
+	include/chi/HashUuid.hpp
 	include/chi/JsonDeserializer.hpp
+	include/chi/JsonSerializer.hpp
 	include/chi/LangModule.hpp
 	include/chi/LLVMVersion.hpp
 	include/chi/DefaultModuleCache.hpp
+	include/chi/ModuleCache.hpp
+	include/chi/NameMangler.hpp
 	include/chi/NodeInstance.hpp
+	include/chi/NodeType.hpp
+	include/chi/Result.hpp
+	include/chi/Subprocess.hpp
+	include/chi/NodeCompiler.hpp
+	include/chi/LibCLocator.hpp
 	include/chi/CCompiler.hpp
 )
 set(CHI_PRIVATE_FILES
-	src/Context.cpp
-	src/NameMangler.cpp
-	src/FunctionValidator.cpp
-	src/GraphStruct.cpp
-	src/JsonSerializer.cpp
-	src/GraphFunction.cpp
-	src/NodeType.cpp
-	src/LangModule.cpp
-	src/JsonDeserializer.cpp
-	src/DefaultModuleCache.cpp
 	src/ChiModule.cpp
-	src/GraphModule.cpp
-	src/NodeInstance.cpp
-	src/FunctionCompiler.cpp
+	src/Context.cpp
 	src/DataType.cpp
+	src/FunctionCompiler.cpp
+	src/FunctionValidator.cpp
+	src/GraphFunction.cpp
+	src/GraphModule.cpp
+	src/GraphStruct.cpp
+	src/JsonDeserializer.cpp
+	src/JsonSerializer.cpp
+	src/LangModule.cpp
+	src/DefaultModuleCache.cpp
+	src/NameMangler.cpp
+	src/NodeInstance.cpp
+	src/NodeType.cpp
+	src/Result.cpp
+	src/Subprocess.cpp
 	src/NodeCompiler.cpp
+	src/LibCLocator.cpp
 	src/CCompiler.cpp
 )
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
@@ -147,7 +156,6 @@ PUBLIC
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
 	${LLVM_SYSTEM_LINK_LIST}
-	chigraphsupport
 PRIVATE
 	${LIBGIT2_LIBRARIES}
 )
@@ -190,7 +198,7 @@ PUBLIC
 )
 
 # configure the config file
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/ChigraphConfig.cmake.in ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake @ONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/ChigraphConfig.cmake.in ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake @ONLY)
 
 # make sure chi-ctollvm is built first
 add_dependencies(chigraph chi-ctollvm)

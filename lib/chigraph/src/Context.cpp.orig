@@ -8,8 +8,12 @@
 #include "chi/LLVMVersion.hpp"
 #include "chi/LangModule.hpp"
 #include "chi/NodeInstance.hpp"
+<<<<<<< HEAD:lib/chigraph/src/Context.cpp
 #include "chi/Support/Result.hpp"
+=======
+#include "chi/Result.hpp"
 #include "chi/DefaultModuleCache.hpp"
+>>>>>>> b123fa97fdec36de3adf586dbc2fbd72e8f479c8:libchigraph/src/Context.cpp
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/GenericValue.h>

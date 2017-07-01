@@ -203,10 +203,15 @@ struct Context {
 
 	/// Get the module cache
 	/// \return The ModuleCache
-	const ModuleCache& moduleCache() const { return mModuleCache; }
+	const ModuleCache& moduleCache() const { return *mModuleCache; }
 
 	/// \copydoc Context::moduleCache
-	ModuleCache& moduleCache() { return mModuleCache; }
+	ModuleCache& moduleCache() { return *mModuleCache; }
+
+	/// Set the module cache
+	/// \param newCache The new module cache
+	/// \pre `newCache != nullptr`
+	void setModuleCache(std::unique_ptr<ModuleCache> newCache);
 
 private:
 	boost::filesystem::path mWorkspacePath;
@@ -221,7 +226,7 @@ private:
 
 	LangModule* mLangModule = nullptr;
 
-	ModuleCache mModuleCache;
+	std::unique_ptr<ModuleCache> mModuleCache;
 };
 
 /// Get the workspace directory from a child of the workspace directory

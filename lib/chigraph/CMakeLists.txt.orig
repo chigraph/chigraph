@@ -19,9 +19,20 @@ set(CHI_PUBLIC_FILES
 	include/chi/JsonDeserializer.hpp
 	include/chi/LangModule.hpp
 	include/chi/LLVMVersion.hpp
-	include/chi/DefaultModuleCache.hpp
+<<<<<<< HEAD:lib/chigraph/CMakeLists.txt
 	include/chi/NodeInstance.hpp
+=======
+	include/chi/DefaultModuleCache.hpp
+	include/chi/ModuleCache.hpp
+	include/chi/NameMangler.hpp
+	include/chi/NodeInstance.hpp
+	include/chi/NodeType.hpp
+	include/chi/Result.hpp
+	include/chi/Subprocess.hpp
+	include/chi/NodeCompiler.hpp
+	include/chi/LibCLocator.hpp
 	include/chi/CCompiler.hpp
+>>>>>>> b123fa97fdec36de3adf586dbc2fbd72e8f479c8:libchigraph/CMakeLists.txt
 )
 set(CHI_PRIVATE_FILES
 	src/Context.cpp
@@ -32,15 +43,24 @@ set(CHI_PRIVATE_FILES
 	src/GraphFunction.cpp
 	src/NodeType.cpp
 	src/LangModule.cpp
+<<<<<<< HEAD:lib/chigraph/CMakeLists.txt
 	src/JsonDeserializer.cpp
-	src/DefaultModuleCache.cpp
 	src/ChiModule.cpp
 	src/GraphModule.cpp
+	src/ModuleCache.cpp
+=======
+	src/DefaultModuleCache.cpp
+	src/NameMangler.cpp
+>>>>>>> b123fa97fdec36de3adf586dbc2fbd72e8f479c8:libchigraph/CMakeLists.txt
 	src/NodeInstance.cpp
 	src/FunctionCompiler.cpp
 	src/DataType.cpp
 	src/NodeCompiler.cpp
+<<<<<<< HEAD:lib/chigraph/CMakeLists.txt
+=======
+	src/LibCLocator.cpp
 	src/CCompiler.cpp
+>>>>>>> b123fa97fdec36de3adf586dbc2fbd72e8f479c8:libchigraph/CMakeLists.txt
 )
 add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
