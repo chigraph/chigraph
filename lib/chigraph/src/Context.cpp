@@ -1,6 +1,7 @@
 /// \file Context.cpp
 
 #include "chi/Context.hpp"
+#include "chi/DefaultModuleCache.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
@@ -9,7 +10,6 @@
 #include "chi/LangModule.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/Support/Result.hpp"
-#include "chi/DefaultModuleCache.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
@@ -23,7 +23,6 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
-
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>

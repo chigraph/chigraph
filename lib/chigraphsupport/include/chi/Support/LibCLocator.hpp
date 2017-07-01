@@ -18,7 +18,6 @@ namespace chi {
 Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill);
 
 /// \}
-
 }
 
-#endif // CHI_LIBCLOCATOR_HPP
+#endif  // CHI_LIBCLOCATOR_HPP

@@ -16,7 +16,7 @@ namespace chi {
 struct ModuleCache {
 	/// Create a module cache with a bound context
 	explicit ModuleCache(Context& ctx) : mContext{&ctx} {}
-	
+
 	/// Destructor
 	virtual ~ModuleCache() = default;
 
@@ -33,8 +33,8 @@ struct ModuleCache {
 	/// \param timeAtFileRead The time to store as the cache time. Should be the time the module was
 	/// read from disk
 	/// \return The Result
-	virtual Result cacheModule(const boost::filesystem::path& moduleName, llvm::Module& compiledModule,
-	                   std::time_t timeAtFileRead) = 0;
+	virtual Result cacheModule(const boost::filesystem::path& moduleName,
+	                           llvm::Module& compiledModule, std::time_t timeAtFileRead) = 0;
 
 	/// Inavlidate the cache, ie. delete the cache file
 	/// \param moduleName The name of the module to invalidate
@@ -51,8 +51,8 @@ struct ModuleCache {
 	/// \pre `!moduleName.empty()`
 	/// \param atLeastThisNew Make sure the cache is at least as new as this
 	/// \return A llvm::Module, or nullptr if no suitable cache was found
-	virtual std::unique_ptr<llvm::Module> retrieveFromCache(const boost::filesystem::path& moduleName,
-	                                                std::time_t                    atLeastThisNew) = 0;
+	virtual std::unique_ptr<llvm::Module> retrieveFromCache(
+	    const boost::filesystem::path& moduleName, std::time_t atLeastThisNew) = 0;
 
 	/// Get the context this cache is bound to
 	/// \return the `Context`

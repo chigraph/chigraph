@@ -59,8 +59,8 @@ Result FunctionCompiler::initialize(bool validate) {
 	    llvmModule().getOrInsertFunction(mangledName, function().functionType()));
 
 	// create the debug file
-	auto debugFile =
-	    diBuilder().createFile(debugCompileUnit()->getFilename(), debugCompileUnit()->getDirectory());
+	auto debugFile = diBuilder().createFile(debugCompileUnit()->getFilename(),
+	                                        debugCompileUnit()->getDirectory());
 
 	auto subroutineType = createSubroutineType();
 
@@ -77,7 +77,7 @@ Result FunctionCompiler::initialize(bool validate) {
 	                               llvm::DINode::DIFlags{},
 #endif
 	                               false);
-	
+
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 	mDebugFunc->replaceFunction(mLLFunction);
 #else

@@ -1,10 +1,10 @@
 /// \file CCompiler.cpp
 
 #include "chi/CCompiler.hpp"
-#include "chi/Support/Result.hpp"
-#include "chi/Support/LibCLocator.hpp"
-#include "chi/Support/Subprocess.hpp"
 #include "chi/LLVMVersion.hpp"
+#include "chi/Support/LibCLocator.hpp"
+#include "chi/Support/Result.hpp"
+#include "chi/Support/Subprocess.hpp"
 
 #if LLVM_VERSION_LESS_EQUAL(3, 9)
 #include <llvm/Bitcode/ReaderWriter.h>
@@ -18,8 +18,9 @@ namespace fs = boost::filesystem;
 
 namespace chi {
 
-Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMContext& llvmContext, std::vector<std::string> arguments, boost::string_view inputCCode, std::unique_ptr<llvm::Module>* toFill) {
-
+Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMContext& llvmContext,
+                      std::vector<std::string> arguments, boost::string_view inputCCode,
+                      std::unique_ptr<llvm::Module>* toFill) {
 	assert(toFill != nullptr && "null toFill passed to compileCToLLVM");
 	assert(fs::is_regular_file(ctollvmPath) &&
 	       "invalid path passed to compileCToLLVM for ctollvmPath");
@@ -31,9 +32,7 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 	// gather std include paths
 	std::vector<fs::path> stdIncludePaths;
 	res += stdCIncludePaths(stdIncludePaths);
-	if (!res) {
-		return res;
-	}
+	if (!res) { return res; }
 
 	for (const auto& p : stdIncludePaths) {
 		arguments.push_back("-I");
@@ -53,7 +52,7 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 		}
 
 		std::string generatedBitcode;
-		Subprocess ctollvmExe(ctollvmPath);
+		Subprocess  ctollvmExe(ctollvmPath);
 		ctollvmExe.setArguments(argsToChiCtoLLVM);
 
 		ctollvmExe.attachStringToStdOut(generatedBitcode);
@@ -65,9 +64,7 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 		res += ctollvmExe.pushToStdIn(inputCCode.data(), inputCCode.size());
 		res += ctollvmExe.closeStdIn();
 
-		if (!res) {
-			return res;
-		}
+		if (!res) { return res; }
 
 		// wait for the exit
 		auto errCode = ctollvmExe.exitCode();
@@ -120,7 +117,6 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 	}
 
 	return res;
-
 }
 
-} // namepsace chi
+}  // namepsace chi

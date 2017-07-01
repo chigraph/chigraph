@@ -7,8 +7,8 @@
 #define CHI_FUNCTION_COMPILER_HPP
 
 #include "chi/Fwd.hpp"
-#include "chi/NodeCompiler.hpp"
 #include "chi/LLVMVersion.hpp"
+#include "chi/NodeCompiler.hpp"
 
 #include <llvm/IR/DebugInfo.h>
 
@@ -44,14 +44,13 @@ struct FunctionCompiler {
 	/// \return The Result
 	Result compile();
 
-	using DebugFunctionType = 
+	using DebugFunctionType =
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-		llvm::DICompositeType
+	    llvm::DICompositeType
 #else
-		llvm::DISubroutineType*
+	    llvm::DISubroutineType*
 #endif
-		;
-
+	    ;
 
 	/// Create the subroutine type for the function
 	/// \return The subroutine type
@@ -59,10 +58,10 @@ struct FunctionCompiler {
 
 	using DebugFunction = llvm::DISubprogram
 #if LLVM_VERSION_AT_LEAST(3, 6)
-		*
+	    *
 #endif
-		;
-	
+	    ;
+
 	/// Get the debug function.
 	/// \pre `initialized() == true`
 	/// \return The debug function
@@ -159,12 +158,12 @@ private:
 	llvm::Module*        mModule    = nullptr;
 	llvm::DIBuilder*     mDIBuilder = nullptr;
 	llvm::DICompileUnit* mDebugCU   = nullptr;
-	DebugFunction mDebugFunc{};
+	DebugFunction        mDebugFunc{};
 
 	const GraphFunction* mFunction = nullptr;
 
-	llvm::Function*     mLLFunction   = nullptr;
-	llvm::BasicBlock*   mAllocBlock   = nullptr;
+	llvm::Function*   mLLFunction = nullptr;
+	llvm::BasicBlock* mAllocBlock = nullptr;
 
 	std::unordered_map<NodeInstance*, NodeCompiler> mNodeCompilers;
 

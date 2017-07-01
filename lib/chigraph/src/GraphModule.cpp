@@ -1,6 +1,7 @@
 /// \file GraphModule.cpp
 
 #include "chi/GraphModule.hpp"
+#include "chi/CCompiler.hpp"
 #include "chi/Context.hpp"
 #include "chi/FunctionCompiler.hpp"
 #include "chi/GraphFunction.hpp"
@@ -11,21 +12,18 @@
 #include "chi/NameMangler.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
+#include "chi/Support/LibCLocator.hpp"
 #include "chi/Support/Result.hpp"
 #include "chi/Support/Subprocess.hpp"
-#include "chi/Support/LibCLocator.hpp"
-#include "chi/CCompiler.hpp"
 
 #include <llvm/IR/DIBuilder.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
 #include <llvm/Linker/Linker.h>
+#include <llvm/Support/Compiler.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/MemoryBuffer.h>
-#include <llvm/Support/Compiler.h>
 #include <llvm/Transforms/Utils/Cloning.h>
-
-
 
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
@@ -71,12 +69,15 @@ struct CFuncNode : NodeType {
 			args.push_back("-I");
 			args.push_back(mGraphModule->pathToCSources().string());
 
-			res += compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() / "chi-ctollvm"
+			res += compileCToLLVM(
+			    fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
+			        "chi-ctollvm"
 #ifdef WIN32
-				".exe"
+			        ".exe"
 #endif
-				, context().llvmContext(), args, mCCode, &llcompiledmod);
-			
+			    ,
+			    context().llvmContext(), args, mCCode, &llcompiledmod);
+
 			if (!res) { return res; }
 		}
 
@@ -254,8 +255,9 @@ struct MakeStructNodeType : public NodeType {
 		setDataOutputs({{"", ty.dataType()}});
 	}
 
-	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto,
+	               size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const std::vector<llvm::Value*>&      io,
 	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -296,8 +298,9 @@ struct BreakStructNodeType : public NodeType {
 		setDataOutputs(ty.types());
 	}
 
-	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
+	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto,
+	               size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
+	               const std::vector<llvm::Value*>&      io,
 	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
@@ -450,11 +453,14 @@ Result GraphModule::generateModule(llvm::Module& module) {
 
 				// compile it
 				std::unique_ptr<llvm::Module> generatedModule;
-				res += compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() / "chi-ctollvm"
+				res += compileCToLLVM(
+				    fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
+				        "chi-ctollvm"
 #ifdef WIN32
-					".exe"
+				        ".exe"
 #endif
-					, context().llvmContext(), {CFile.string()}, "", &generatedModule);
+				    ,
+				    context().llvmContext(), {CFile.string()}, "", &generatedModule);
 
 				if (!res) { return res; }
 
@@ -848,7 +854,7 @@ bool GraphModule::removeStruct(boost::string_view name) {
 
 void GraphModule::removeStruct(GraphStruct* tyToDel) {
 	assert(&tyToDel->module() == this);
-	
+
 	LLVM_ATTRIBUTE_UNUSED bool succeeded = removeStruct(tyToDel->name());
 	assert(succeeded);
 }
@@ -868,13 +874,16 @@ Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
 	// add -I for the .c dir
 	clangArgs.push_back("-I");
 	clangArgs.push_back(pathToCSources().string());
-	
+
 	std::unique_ptr<llvm::Module> mod;
-	res += compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() / "chi-ctollvm"
+	res +=
+	    compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
+	                       "chi-ctollvm"
 #ifdef WIN32
-		".exe"
+	                       ".exe"
 #endif
-		, context().llvmContext(), clangArgs, code, &mod);
+	                   ,
+	                   context().llvmContext(), clangArgs, code, &mod);
 
 	if (!res) { return res; }
 

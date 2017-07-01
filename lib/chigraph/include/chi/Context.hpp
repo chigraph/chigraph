@@ -11,8 +11,8 @@
 
 #include "chi/Fwd.hpp"
 #include "chi/ModuleCache.hpp"
-#include "chi/Support/json.hpp"
 #include "chi/Support/Flags.hpp"
+#include "chi/Support/json.hpp"
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/Support/CodeGen.h>  // for CodeGenOpt

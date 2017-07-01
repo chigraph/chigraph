@@ -180,16 +180,15 @@ Result Debugger::start(const char** argv, const char** envp,
 
 	// create args
 	std::vector<const char*> args;
-	std::string tmpIRString = tmpIRPath.string();
+	std::string              tmpIRString = tmpIRPath.string();
 	{
 		args.push_back("interpret");
-        
+
 		args.push_back("-i");
 		args.push_back(tmpIRString.c_str());
-        
+
 		args.push_back("-O");
 		args.push_back("0");
-
 
 		if (argv != nullptr) {
 			for (; *argv != nullptr; ++argv) { args.push_back(*argv); }

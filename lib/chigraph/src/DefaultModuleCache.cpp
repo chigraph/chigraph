@@ -25,8 +25,9 @@ namespace chi {
 DefaultModuleCache::DefaultModuleCache(chi::Context& ctx) : ModuleCache{ctx} {}
 
 Result DefaultModuleCache::cacheModule(const boost::filesystem::path& moduleName,
-                                llvm::Module& compiledModule, std::time_t timeAtFileRead) {
-	assert(!moduleName.empty() && "Cannot pass a empty module name to DefaultModuleCache::cacheModule");
+                                       llvm::Module& compiledModule, std::time_t timeAtFileRead) {
+	assert(!moduleName.empty() &&
+	       "Cannot pass a empty module name to DefaultModuleCache::cacheModule");
 
 	Result res;
 
@@ -75,7 +76,8 @@ std::time_t DefaultModuleCache::cacheUpdateTime(const boost::filesystem::path& m
 
 std::unique_ptr<llvm::Module> DefaultModuleCache::retrieveFromCache(
     const boost::filesystem::path& moduleName, std::time_t atLeastThisNew) {
-	assert(!moduleName.empty() && "Cannot pass empty path to DefaultModuleCache::retrieveFromCache");
+	assert(!moduleName.empty() &&
+	       "Cannot pass empty path to DefaultModuleCache::retrieveFromCache");
 
 	auto cachePath = cachePathForModule(moduleName);
 

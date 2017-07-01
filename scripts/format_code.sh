@@ -6,5 +6,5 @@ cd $SCRIPTSDIR/..
 
 
 
-clang-format -style=file -i $(find libchigraph libchigraphdebugger chi test -name "*.cpp" -o -name "*.hpp")
+clang-format -style=file -i $(find lib chi chi-ctollvm -name "*.cpp" -o -name "*.hpp")
 

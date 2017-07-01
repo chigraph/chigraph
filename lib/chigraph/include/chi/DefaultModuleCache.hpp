@@ -8,7 +8,6 @@
 namespace chi {
 
 struct DefaultModuleCache : public ModuleCache {
-
 	/// Default constrcutor
 	/// \param ctx The context to cache for
 	DefaultModuleCache(Context& ctx);
@@ -30,10 +29,8 @@ struct DefaultModuleCache : public ModuleCache {
 
 	/// \copydoc ModuleCache::retrieveFromCache
 	std::unique_ptr<llvm::Module> retrieveFromCache(const boost::filesystem::path& moduleName,
-	                                                std::time_t                    atLeastThisNew) override;
-
+	                                                std::time_t atLeastThisNew) override;
 };
-
 }
 
-#endif // CHI_DEFAULT_MODULE_CACHE_HPP
+#endif  // CHI_DEFAULT_MODULE_CACHE_HPP

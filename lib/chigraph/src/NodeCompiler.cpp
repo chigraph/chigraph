@@ -36,27 +36,27 @@ NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& ins
 			llvm::DIType* dType = namedType.type.debugType();
 
 			// TODO(#63): better names
-			auto debugVar = funcCompiler().diBuilder().
+			auto debugVar =
+			    funcCompiler().diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-			                createLocalVariable(
-			                    llvm::dwarf::DW_TAG_auto_variable,
+			    createLocalVariable(
+			        llvm::dwarf::DW_TAG_auto_variable,
 #else
-			                createAutoVariable(
+			    createAutoVariable(
 #endif
-			                    funcCompiler().diFunction(),
-			                    node().stringId() + "__" + std::to_string(idx),
+			        funcCompiler().diFunction(), node().stringId() + "__" + std::to_string(idx),
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-			                    funcCompiler().diBuilder().createFile(
-			                        fs::path(funcCompiler().diFunction().getFilename()).filename().string(),
-			                        fs::path(funcCompiler().diFunction().getFilename()).parent_path().string()),
+			        funcCompiler().diBuilder().createFile(
+			            fs::path(funcCompiler().diFunction().getFilename()).filename().string(),
+			            fs::path(funcCompiler().diFunction().getFilename()).parent_path().string()),
 #else
-			                    funcCompiler().diFunction()->getFile(),
+			        funcCompiler().diFunction()->getFile(),
 #endif
-			                    1,
+			        1,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
-			                    *
+			        *
 #endif
-			                    dType);
+			        dType);
 
 			funcCompiler()
 			    .diBuilder()
@@ -150,9 +150,8 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 
 Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlocks,
                                     size_t                         inputExecID) {
-	assert((pure() ||
-	       trailingBlocks.size() == node().outputExecConnections.size()) &&
-	           "Trailing blocks is the wrong size");
+	assert((pure() || trailingBlocks.size() == node().outputExecConnections.size()) &&
+	       "Trailing blocks is the wrong size");
 	assert(inputExecID < inputExecs());
 
 	auto& codeBlock = mCodeBlocks[inputExecID];
@@ -202,9 +201,10 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 	}
 
 	// codegen
-	Result res = node().type().codegen(*this, *codeBlock, inputExecID,
-	                                   llvm::DebugLoc::get(funcCompiler().nodeLineNumber(node()), 1, funcCompiler().diFunction()),
-	                                   io, trailingBlocks);
+	Result res = node().type().codegen(
+	    *this, *codeBlock, inputExecID,
+	    llvm::DebugLoc::get(funcCompiler().nodeLineNumber(node()), 1, funcCompiler().diFunction()),
+	    io, trailingBlocks);
 
 	mCompiledInputs[inputExecID] = true;
 

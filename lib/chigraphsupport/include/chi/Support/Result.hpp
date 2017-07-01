@@ -26,21 +26,21 @@ namespace chi {
 /// object,
 /// call `Result::addEntry`:
 /// \snippet ResultExample.cpp AddWEntry
-/// 
+///
 /// note the `W` at the beginning of the error code, this is important. If it's an `W`, it's
 /// considered an warning and the result will still be considered successful:
 /// \snippet ResultExample.cpp bValid2
-/// 
+///
 /// If that leading character to the error code is an 'E', then it's considered an error
 /// \snippet ResultExample.cpp AddEEntry
-/// 
+///
 /// And the result is not successful anymore:
 /// \snippet ResultExample.cpp Check
-/// 
+///
 /// If you're calling another operation that emits a Result object, then there's an easy to
 /// integrate that result object: the opeartor+=
 /// \snippet ResultExample.cpp Append
-/// 
+///
 /// ## Standardized names in data:
 /// In order to have good parsing of errors, some standards are good.
 /// If you are trying to represent this data in your error, use these
@@ -158,9 +158,7 @@ private:
 	boost::container::flat_map<int, nlohmann::json> mContexts;
 };
 
-
 /// \example ResultExample.cpp
-
 
 /// \name Result operators
 /// \{
