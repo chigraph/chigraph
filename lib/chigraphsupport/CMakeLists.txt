@@ -23,3 +23,9 @@ target_link_libraries(chigraphsupport PUBLIC ${Boost_FILESYSTEM_LIBRARY} ${Boost
 
 target_include_directories(chigraphsupport PUBLIC include/ ${Boost_INCLUDE_DIRS})
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
+		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
+		CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	target_compile_options(chigraphsupport PUBLIC -std=c++14)
+endif()
+
