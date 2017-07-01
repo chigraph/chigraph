@@ -298,7 +298,7 @@ struct IntToFloatNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("float")}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
 	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
 	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 2 && outputBlocks.size() == 1);
@@ -388,7 +388,7 @@ struct BinaryOperationNodeType : NodeType {
 		setDataOutputs({{"", ty}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
 	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
 	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 3 && outputBlocks.size() == 1);
@@ -464,7 +464,7 @@ struct CompareNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i1")}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
+	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
 	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
 	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
 		assert(io.size() == 3 && outputBlocks.size() == 1);

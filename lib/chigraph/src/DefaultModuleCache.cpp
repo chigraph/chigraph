@@ -97,7 +97,7 @@ std::unique_ptr<llvm::Module> DefaultModuleCache::retrieveFromCache(
 #if LLVM_VERSION_AT_LEAST(4, 0)
 		auto E = errorOrMod.takeError();
 
-		llvm::handleAllErrors(std::move(E), [](llvm::ErrorInfoBase& err) {});
+		llvm::handleAllErrors(std::move(E), [](llvm::ErrorInfoBase& /*err*/) {});
 #endif
 
 		return nullptr;
