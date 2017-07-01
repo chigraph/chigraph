@@ -8,7 +8,7 @@
 #include <chi/LangModule.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/NodeType.hpp>
-#include <chi/Result.hpp>
+#include <chi/Support/Result.hpp>
 
 #include <boost/uuid/uuid_io.hpp>
 

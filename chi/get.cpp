@@ -2,7 +2,7 @@
 #include <vector>
 
 #include <chi/Context.hpp>
-#include <chi/Result.hpp>
+#include <chi/Support/Result.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>

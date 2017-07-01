@@ -1,6 +1,6 @@
 #include <chi/Context.hpp>
 #include <chi/LLVMVersion.hpp>
-#include <chi/Result.hpp>
+#include <chi/Support/Result.hpp>
 
 #include <llvm/IR/Module.h>
 #include <llvm/IRReader/IRReader.h>

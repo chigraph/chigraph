@@ -7,8 +7,8 @@
 #include <chi/GraphModule.hpp>
 #include <chi/JsonDeserializer.hpp>
 #include <chi/LangModule.hpp>
-#include <chi/Result.hpp>
-#include <chi/json.hpp>
+#include <chi/Support/Result.hpp>
+#include <chi/Support/json.hpp>
 
 #include <llvm/IR/Module.h>
 

@@ -3,7 +3,7 @@
 #include <chi/GraphModule.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/NodeType.hpp>
-#include <chi/Result.hpp>
+#include <chi/Support/Result.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>

@@ -83,14 +83,9 @@ else()
 endif()
 
 
-# add libchig
+# add the chigraph libraries
 add_subdirectory(chi-ctollvm)
-add_subdirectory(libchigraph)
-
-# add the debugger module
-if (CG_BUILD_DEBUGGER)
-	add_subdirectory(libchigraphdebugger)
-endif()
+add_subdirectory(lib)
 
 add_subdirectory(chi)
 

@@ -1,8 +1,8 @@
 #include <chi/Context.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/JsonSerializer.hpp>
-#include <chi/Result.hpp>
-#include <chi/Subprocess.hpp>
+#include <chi/Support/Result.hpp>
+#include <chi/Support/Subprocess.hpp>
 
 #include <boost/filesystem.hpp>
 

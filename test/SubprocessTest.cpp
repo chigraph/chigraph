@@ -1,7 +1,7 @@
 #include <catch.hpp>
 
-#include <chi/Result.hpp>
-#include <chi/Subprocess.hpp>
+#include <chi/Support/Result.hpp>
+#include <chi/Support/Subprocess.hpp>
 
 #include <llvm/Support/FileSystem.h>
 
