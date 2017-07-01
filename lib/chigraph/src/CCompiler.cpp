@@ -1,9 +1,9 @@
 /// \file CCompiler.cpp
 
 #include "chi/CCompiler.hpp"
-#include "chi/Result.hpp"
-#include "chi/LibCLocator.hpp"
-#include "chi/Subprocess.hpp"
+#include "chi/Support/Result.hpp"
+#include "chi/Support/LibCLocator.hpp"
+#include "chi/Support/Subprocess.hpp"
 #include "chi/LLVMVersion.hpp"
 
 #if LLVM_VERSION_LESS_EQUAL(3, 9)

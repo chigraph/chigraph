@@ -13,7 +13,7 @@
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
 #include "chi/Support/Subprocess.hpp"
-#include "chi/LibCLocator.hpp"
+#include "chi/Support/LibCLocator.hpp"
 #include "chi/CCompiler.hpp"
 
 #include <llvm/IR/DIBuilder.h>
