@@ -27,5 +27,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
 		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
 		CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_compile_options(chigraphsupport PUBLIC -std=c++14)
+	target_compile_options(chigraphsupport PUBLIC -Wall -Wextra -pedantic-errors -Werror -Wno-unused-parameter -Wno-missing-field-initializers)
 endif()
 

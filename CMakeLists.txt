@@ -49,17 +49,6 @@ if (UNIX AND NOT APPLE)
 	
 endif()
 
-# use -Wall and -Werror with gccish compilers
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
-	CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
-	CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic-errors -Werror -Wno-unused-parameter -Wno-missing-field-initializers")
-
-endif()
-
-
-
 # we're building them ourselves, so don't auto-link in on windows
 add_definitions("-DBOOST_ALL_NO_LIB")
 
