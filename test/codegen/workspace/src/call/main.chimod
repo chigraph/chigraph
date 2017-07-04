@@ -137,7 +137,7 @@
         },
         "3d7a9f86-6aed-4bb2-866e-cb4489142b06": {
           "data": {
-            "code": "#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}",
+            "code": "#include <stdint.h>\n#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}",
             "extraflags": [],
             "function": "dofree",
             "inputs": [
@@ -176,7 +176,7 @@
         },
         "bb38760c-5018-431b-86c4-087f5d233c29": {
           "data": {
-            "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%d\", val);\n\treturn a;\n}",
+            "code": "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%d\", val);\n\treturn a;\n}",
             "extraflags": [],
             "function": "doitoa",
             "inputs": [

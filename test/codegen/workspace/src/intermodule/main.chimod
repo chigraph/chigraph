@@ -1,5 +1,4 @@
 {
-  "has_c_support": true,
   "dependencies": [
     "intermodule/printer",
     "lang"
@@ -7,17 +6,6 @@
   "graphs": [
     {
       "connections": [
-        {
-          "input": [
-            "68d5bcc2-a260-48b1-b9ce-032466dea4c6",
-            0
-          ],
-          "output": [
-            "3cd01c89-8fa1-477e-a953-6cf4d125ee0e",
-            0
-          ],
-          "type": "exec"
-        },
         {
           "input": [
             "c4886ab8-e782-4279-961b-db9e4b32ba6d",
@@ -36,6 +24,28 @@
           ],
           "output": [
             "c4886ab8-e782-4279-961b-db9e4b32ba6d",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "49510c55-7bec-4398-83ee-bf8968960830",
+            0
+          ],
+          "output": [
+            "c4886ab8-e782-4279-961b-db9e4b32ba6d",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "3cd01c89-8fa1-477e-a953-6cf4d125ee0e",
+            0
+          ],
+          "output": [
+            "49510c55-7bec-4398-83ee-bf8968960830",
             0
           ],
           "type": "data"
@@ -64,28 +74,6 @@
         },
         {
           "input": [
-            "49510c55-7bec-4398-83ee-bf8968960830",
-            0
-          ],
-          "output": [
-            "c4886ab8-e782-4279-961b-db9e4b32ba6d",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "3cd01c89-8fa1-477e-a953-6cf4d125ee0e",
-            0
-          ],
-          "output": [
-            "49510c55-7bec-4398-83ee-bf8968960830",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
             "4caf7ce7-fea1-4f63-ad73-bd6cf4652164",
             0
           ],
@@ -105,6 +93,17 @@
             0
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "68d5bcc2-a260-48b1-b9ce-032466dea4c6",
+            0
+          ],
+          "output": [
+            "3cd01c89-8fa1-477e-a953-6cf4d125ee0e",
+            0
+          ],
+          "type": "exec"
         }
       ],
       "data_inputs": [],
@@ -129,8 +128,11 @@
         },
         "49510c55-7bec-4398-83ee-bf8968960830": {
           "data": {
-            "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%i\", val); \n\treturn a;\n}",
-            "extraflags": [],
+            "code": "include <stdio.h>\n#include <stdlib.h>\n#include <stdint.h>\n#include <string.h>\n\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%i\", val); \n\treturn a;\n}",
+            "extraflags": [
+              "-I",
+              "/home/russellg/projects/chigraph-gui/chigraph/test/codegen/workspace/src/intermodule/main.c"
+            ],
             "function": "doitoa",
             "inputs": [
               {
@@ -147,8 +149,11 @@
         },
         "4caf7ce7-fea1-4f63-ad73-bd6cf4652164": {
           "data": {
-            "code": "#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}\n",
-            "extraflags": [],
+            "code": "#include <stdint.h>\n#include <stdlib.h>\n\nvoid dofree(char* c) {\n\tfree(c);\n}\n",
+            "extraflags": [
+              "-I",
+              "/home/russellg/projects/chigraph-gui/chigraph/test/codegen/workspace/src/intermodule/main.c"
+            ],
             "function": "dofree",
             "inputs": [
               {
@@ -209,5 +214,6 @@
       "type": "function"
     }
   ],
+  "has_c_support": true,
   "types": {}
 }
