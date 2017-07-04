@@ -3,6 +3,7 @@
 #include <chi/JsonSerializer.hpp>
 #include <chi/Support/Result.hpp>
 #include <chi/Support/Subprocess.hpp>
+#include <chi/Support/LibCLocator.hpp>
 
 #include <boost/filesystem.hpp>
 
@@ -182,6 +183,16 @@ int main(int argc, char** argv) {
 		std::cerr << JSONfile << " doesn't exist" << std::endl;
 		return 1;
 	}
+	
+	// print the C include paths for debugging
+	std::vector<fs::path> paths;
+    stdCIncludePaths(paths);
+    
+    std::cout << "Standard C include paths: " << std::endl;
+    for (const auto& p : paths) {
+      std::cout << p.string() << std::endl;
+    }
+    std::cout << std::endl;
 
 	fs::ifstream jsonstream{JSONfile};
 
