@@ -105,9 +105,7 @@ Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {
 		std::string incPath = iter->substr(1);  // remove the first char, it's gonna be a space
 
 		// append it to `toFill`
-		if (fs::is_directory(incPath)) {
-			toFill.push_back(incPath);
-		}
+		if (fs::is_directory(incPath)) { toFill.push_back(incPath); }
 	}
 
 	return res;
