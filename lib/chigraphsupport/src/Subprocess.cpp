@@ -207,10 +207,10 @@ Result Subprocess::start() {
 	ZeroMemory(&mPimpl->procInfo, sizeof(PROCESS_INFORMATION));
 
 	// setup startupInfo
-	STARTUPINFO startupInfo;
-	ZeroMemory(&startupInfo, sizeof(STARTUPINFO));
+	STARTUPINFOW startupInfo;
+	ZeroMemory(&startupInfo, sizeof(startupInfo));
 
-	startupInfo.cb         = sizeof(STARTUPINFO);
+	startupInfo.cb         = sizeof(startupInfo);
 	startupInfo.hStdError  = stderrWrite;
 	startupInfo.hStdOutput = stdoutWrite;
 	startupInfo.hStdInput  = stdinRead;
