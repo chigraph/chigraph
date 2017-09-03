@@ -128,7 +128,7 @@
         },
         "49510c55-7bec-4398-83ee-bf8968960830": {
           "data": {
-            "code": "include <stdio.h>\n#include <stdlib.h>\n#include <stdint.h>\n#include <string.h>\n\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%i\", val); \n\treturn a;\n}",
+            "code": "#include <stdio.h>\n#include <stdlib.h>\n#include <stdint.h>\n#include <string.h>\n\nchar* doitoa(int val) {\n\tchar* a = malloc(33);\n\tmemset(a, 0, 33);\n\tsprintf(a, \"%i\", val); \n\treturn a;\n}",
             "extraflags": [
               "-I",
               "/home/russellg/projects/chigraph-gui/chigraph/test/codegen/workspace/src/intermodule/main.c"

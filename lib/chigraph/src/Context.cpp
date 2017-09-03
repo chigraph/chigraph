@@ -610,27 +610,30 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 		}
 	}
 
+	// exit if there's already an error to avoid caching it
+	if (!res) { return res; }
+
 #ifndef NDEBUG
 
 	// verify the created module
-	if (res) {
-		bool        errored;
-		std::string err;
+	bool        errored;
+	std::string err;
+	{
+		llvm::raw_string_ostream os(err);
+		errored = llvm::verifyModule(*llmod, &os);
+	}
+
+	if (errored) {
+
+		// print out the module for the good errors
+		std::string moduleStr;
 		{
-			llvm::raw_string_ostream os(err);
-			errored = llvm::verifyModule(*llmod, &os);
+			llvm::raw_string_ostream printerStr{moduleStr};
+			llmod->print(printerStr, nullptr);
 		}
 
-		if (errored) {
-			std::string moduleStr;
-			{
-				llvm::raw_string_ostream printerStr{moduleStr};
-				llmod->print(printerStr, nullptr);
-			}
-
-			res.addEntry("EINT", "Internal compiler error: Invalid module created",
-			             {{"Error", err}, {"Full Name", mod.fullName()}, {"Module", moduleStr}});
-		}
+		res.addEntry("EINT", "Internal compiler error: Invalid module created",
+		             {{"Error", err}, {"Full Name", mod.fullName()}, {"Module", moduleStr}});
 	}
 #endif
 
