@@ -1,4 +1,4 @@
 # Licenses
 
-Here's all the licenses of open source software I depend on. 
+Here's all the licenses of open source software chigraph depends on. 
 
