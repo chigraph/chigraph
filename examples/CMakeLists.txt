@@ -8,7 +8,7 @@ foreach (example ${EXAMPLE_NAMES})
 	set(target_name ${lowerexample}_example)
 
 	add_executable(${target_name} ${example}Example.cpp)
-	target_link_libraries(${target_name} chigraph)
+	target_link_libraries(${target_name} chigraphcore)
 	
 	
 	# remove them from all if requested
