@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 
+#include <chi/Fetcher/Fetcher.hpp>
 #include <chi/Context.hpp>
 #include <chi/Support/Result.hpp>
 
@@ -34,10 +35,16 @@ int get(const std::vector<std::string>& opts) {
 	}
 	auto modules = vm["module"].as<std::vector<std::string>>();
 
-	Context ctx{vm["workspace"].as<std::string>()};
+	auto workspacePath = workspaceFromChildPath(vm["workspace"].as<std::string>());
+
+	if (workspacePath.empty()) {
+		std::cerr << "Workspace path not an actual workspace" << std::endl;
+		return 1;
+	}
+
 	Result  res;
 
-	for (const auto& mod : modules) { res += ctx.fetchModule(mod, true); }
+	for (const auto& mod : modules) { res += fetchModule(workspacePath, mod, true); }
 
 	std::cout << res << std::endl;
 	if (!res) { return 1; }

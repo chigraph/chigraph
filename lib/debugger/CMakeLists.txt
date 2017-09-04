@@ -33,7 +33,7 @@ PUBLIC
 # Link to chigraph and LLDB
 target_link_libraries(chigraphdebugger
 PUBLIC 
-	chigraph
+	chigraphcore
 	"${LLDB_LIBRARY}"
 )
 

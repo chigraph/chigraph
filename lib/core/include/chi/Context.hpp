@@ -22,16 +22,6 @@
 
 namespace chi {
 
-/// Settings for loading modules
-enum class LoadSettings {
-	/// default, just load from disk
-	Default = 0u,
-	/// fetch the repository that's being loaded
-	Fetch = 1u,
-	/// also fetch dependencies
-	FetchRecursive = Fetch | 1u << 1,
-};
-
 /// Settings for compiling modules
 enum class CompileSettings {
 
@@ -87,27 +77,17 @@ struct Context {
 
 	/// Get the list of modules in the workspace
 	/// \return The module list
+	// init it (pretty sure it inits windows networking stuff)
 	std::vector<std::string> listModulesInWorkspace() const noexcept;
 
 	/// Load a module from disk, also loads dependencies
 	/// \param[in] name The name of the moudle
 	/// \pre `!name.empty()`
-	/// \param[in] settings The flags--use `LoadSettings::Fetch` to fetch this module, or
-	/// `LoadSettings::FetchRecursive`
 	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
 	Result loadModule(const boost::filesystem::path& name,
-	                  Flags<LoadSettings>            settings = LoadSettings::Default,
 	                  ChiModule**                    toFill   = nullptr);
-
-	/// Downloads a module from a remote URL, currently supports
-	///  - github
-	/// \pre `hasWorkspace() == true`
-	/// \param name The name of the module to fetch
-	/// \param recursive Should all dependencies be cloned as well?
-	/// \return The Result
-	Result fetchModule(const boost::filesystem::path& name, bool recursive);
 
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param[in] fullName The full path of the module, including URL
@@ -265,21 +245,6 @@ Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module>   mod,
                              llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
                              const std::vector<std::string>& args     = {},
                              llvm::Function* funcToRun = nullptr, int* ret = nullptr);
-
-/// The Version Control Types
-enum class VCSType {
-	/// Git
-	Git,
-	// TODO (#72): Implement more
-	Unknown,
-};
-
-/// Get the URL for a VCS repository from a module name.
-/// \param path The module name
-/// \return {The type of VCS that it is, the URL to clone, the relative path to clone to}
-std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
-    const boost::filesystem::path& path);
-
 }  // namespace chi
 
 #endif  // CHI_CONTEXT_HPP

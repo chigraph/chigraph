@@ -12,7 +12,6 @@ set(TEST_SRCS
 	GraphFunctionLocalsTest.cpp
 	GraphFunctionExitTest.cpp
 	GraphFunctionInOutsTest.cpp
-	FetchTests.cpp
 	SubprocessTest.cpp
 	ResultTest.cpp
 )
@@ -20,14 +19,24 @@ set(TEST_SRCS
 set(DEBUGGER_TEST_SRCS
 	DebuggerTests.cpp
 )
+set(FETCH_TEST_SRCS
+	FetchTests.cpp
+)
+
+if (CG_BUILD_FETCHER)
+	list(APPEND TEST_SRCS ${FETCH_TEST_SRCS})
+endif()
 
 if (CG_BUILD_DEBUGGER) 
 	list(APPEND TEST_SRCS ${DEBUGGER_TEST_SRCS})
 endif()
 
 add_executable(api_tests ${TEST_SRCS})
-target_link_libraries(api_tests PUBLIC chigraph)
+target_link_libraries(api_tests PUBLIC chigraphcore)
 
+if (CG_BUILD_FETCHER)
+	target_link_libraries(api_tests PUBLIC chigraphfetcher)
+endif()
 if (CG_BUILD_DEBUGGER)
 	target_link_libraries(api_tests PUBLIC chigraphdebugger)
 endif()

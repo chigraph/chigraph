@@ -482,7 +482,7 @@ int main(int argc, char** argv) {
 		GraphModule* deserialized;
 		{
 			ChiModule* cMod = nullptr;
-			r += c.loadModule(fullName, LoadSettings::Default, &cMod);
+			r += c.loadModule(fullName, &cMod);
 
 			if (!r) {
 				std::cerr << "Error loading module \n\n" << r << std::endl;

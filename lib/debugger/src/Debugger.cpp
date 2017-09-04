@@ -1,6 +1,6 @@
 /// \file Debugger.cpp
 
-#include "chi/Debugger.hpp"
+#include "chi/Support/Debugger.hpp"
 
 #include <chi/Context.hpp>
 #include <chi/LLVMVersion.hpp>

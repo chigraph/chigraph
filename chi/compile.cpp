@@ -106,7 +106,7 @@ int compile(const std::vector<std::string>& opts) {
 
 	// load it as a module
 	ChiModule* chiModule;
-	res += c.loadModule(moduleName, chi::LoadSettings::Default, &chiModule);
+	res += c.loadModule(moduleName, &chiModule);
 
 	if (!res) {
 		std::cerr << res << std::endl;

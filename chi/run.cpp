@@ -82,7 +82,7 @@ int run(const std::vector<std::string>& opts, const char* argv0) {
 		fs::path moduleName = fs::relative(fs::current_path(), c.workspacePath() / "src") / inpath;
 
 		ChiModule* cMod;
-		res += c.loadModule(moduleName.string(), LoadSettings::Default, &cMod);
+		res += c.loadModule(moduleName.string(), &cMod);
 		if (!res) {
 			std::cerr << res.dump();
 			return 1;

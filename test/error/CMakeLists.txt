@@ -1,5 +1,5 @@
 add_executable(error_tester errorchecker.cpp)
-target_link_libraries(error_tester PUBLIC chigraph)
+target_link_libraries(error_tester PUBLIC chigraphcore)
 
 # Errors
 file(GLOB ERROR_TESTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.chifn")

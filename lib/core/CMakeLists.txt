@@ -19,20 +19,9 @@ set(CHI_PUBLIC_FILES
 	include/chi/JsonDeserializer.hpp
 	include/chi/LangModule.hpp
 	include/chi/LLVMVersion.hpp
-<<<<<<< HEAD:lib/chigraph/CMakeLists.txt
-	include/chi/NodeInstance.hpp
-=======
 	include/chi/DefaultModuleCache.hpp
-	include/chi/ModuleCache.hpp
-	include/chi/NameMangler.hpp
 	include/chi/NodeInstance.hpp
-	include/chi/NodeType.hpp
-	include/chi/Result.hpp
-	include/chi/Subprocess.hpp
-	include/chi/NodeCompiler.hpp
-	include/chi/LibCLocator.hpp
 	include/chi/CCompiler.hpp
->>>>>>> b123fa97fdec36de3adf586dbc2fbd72e8f479c8:libchigraph/CMakeLists.txt
 )
 set(CHI_PRIVATE_FILES
 	src/Context.cpp
@@ -43,26 +32,17 @@ set(CHI_PRIVATE_FILES
 	src/GraphFunction.cpp
 	src/NodeType.cpp
 	src/LangModule.cpp
-<<<<<<< HEAD:lib/chigraph/CMakeLists.txt
 	src/JsonDeserializer.cpp
+	src/DefaultModuleCache.cpp
 	src/ChiModule.cpp
 	src/GraphModule.cpp
-	src/ModuleCache.cpp
-=======
-	src/DefaultModuleCache.cpp
-	src/NameMangler.cpp
->>>>>>> b123fa97fdec36de3adf586dbc2fbd72e8f479c8:libchigraph/CMakeLists.txt
 	src/NodeInstance.cpp
 	src/FunctionCompiler.cpp
 	src/DataType.cpp
 	src/NodeCompiler.cpp
-<<<<<<< HEAD:lib/chigraph/CMakeLists.txt
-=======
-	src/LibCLocator.cpp
 	src/CCompiler.cpp
->>>>>>> b123fa97fdec36de3adf586dbc2fbd72e8f479c8:libchigraph/CMakeLists.txt
 )
-add_library(chigraph STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
+add_library(chigraphcore STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
 # Make sure we have a good enough compiler
 
@@ -81,11 +61,11 @@ if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
 	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
 		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
 		CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-		target_compile_options(chigraph PUBLIC -std=c++14)
+		target_compile_options(chigraphcore PUBLIC -std=c++14)
 	endif()
 else()
 	# if we have an new enough cmake, then we can just use this call that does all that for us
-	target_compile_features(chigraph 
+	target_compile_features(chigraphcore 
 	PUBLIC 
 		cxx_aggregate_default_initializers
 		cxx_alias_templates
@@ -160,7 +140,7 @@ execute_process(COMMAND ${LLVM_CONFIG} --ldflags OUTPUT_VARIABLE LLVM_LD_FLAGS O
 string(REPLACE " " ";" LLVM_LD_FLAGS_LIST "${LLVM_LD_FLAGS}")
 message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 
-target_link_libraries(chigraph
+target_link_libraries(chigraphcore
 PUBLIC
 	${Boost_SYSTEM_LIBRARY}
 	${Boost_FILESYSTEM_LIBRARY}
@@ -168,17 +148,15 @@ PUBLIC
 	${LLVM_LINK_LIST}
 	${LLVM_SYSTEM_LINK_LIST}
 	chigraphsupport
-PRIVATE
-	${LIBGIT2_LIBRARIES}
 )
 
 # link to threads
 find_package(Threads)
-target_link_libraries(chigraph PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(chigraphcore PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
 # link ffi on unix
 if (NOT WIN32)
-	target_link_libraries(chigraph 
+	target_link_libraries(chigraphcore
 	PUBLIC	
 		ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
 	)
@@ -187,7 +165,7 @@ endif()
 # link to version
 if(WIN32)
 
-	target_link_libraries(chigraph
+	target_link_libraries(chigraphcore
     PUBLIC
         version.lib
     )
@@ -196,28 +174,26 @@ endif()
 # get include directories
 execute_process(COMMAND ${LLVM_CONFIG} --includedir OUTPUT_VARIABLE LLVM_INCLUDE_DIR  OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-target_include_directories(chigraph
+target_include_directories(chigraphcore
 PUBLIC
 	include/
-	${LIBGIT2_INCLUDE_DIR}
 	${LLVM_INCLUDE_DIR}
 )
 
-target_compile_options(chigraph
+target_compile_options(chigraphcore
 PUBLIC 
 	${LLVM_CXX_FLAGS_LIST}
-	${LIBGIT2_DEFINITIONS}
 )
 
 # configure the config file
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/ChigraphConfig.cmake.in ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake @ONLY)
 
 # make sure chi-ctollvm is built first
-add_dependencies(chigraph chi-ctollvm)
+add_dependencies(chigraphcore chi-ctollvm)
 
 install(FILES ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake DESTINATION lib/cmake/chigraph)
 
-install(TARGETS chigraph
+install(TARGETS chigraphcore
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib

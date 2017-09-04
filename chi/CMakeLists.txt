@@ -1,5 +1,23 @@
-add_executable(chi main.cpp compile.cpp run.cpp interpret.cpp get.cpp)
 
-target_link_libraries(chi chigraph ${llvm_libs} ${Boost_PROGRAM_OPTIONS_LIBRARY})
+set(CHI_SRCS
+	main.cpp
+	compile.cpp
+	run.cpp
+	interpret.cpp
+)
+
+if (CG_BUILD_FETCHER) 
+	list(APPEND CHI_SRCS get.cpp)
+else () 
+	list(APPEND CHI_SRCS get_nop.cpp)
+endif()
+
+add_executable(chi ${CHI_SRCS})
+
+target_link_libraries(chi chigraphcore ${Boost_PROGRAM_OPTIONS_LIBRARY})
+
+if (CG_BUILD_FETCHER) 
+	target_link_libraries(chi chigraphfetcher)
+endif()
 
 install(TARGETS chi DESTINATION bin)
