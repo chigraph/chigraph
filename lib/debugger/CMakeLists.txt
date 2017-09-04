@@ -20,7 +20,7 @@ set(DEBUGGER_SRCS
 	src/Debugger.cpp
 )
 set(DEBUGGER_HEADERS
-	include/chi/Debugger.hpp
+	include/chi/Debugger/Debugger.hpp
 )
 add_library(chigraphdebugger STATIC ${DEBUGGER_SRCS} ${DEBUGGER_HEADERS})
 
