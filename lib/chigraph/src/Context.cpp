@@ -624,7 +624,6 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 	}
 
 	if (errored) {
-
 		// print out the module for the good errors
 		std::string moduleStr;
 		{

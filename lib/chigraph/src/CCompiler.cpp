@@ -74,7 +74,8 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 			return res;
 		}
 		if (!errors.empty()) {
-			res.addEntry("WUKN", "Warnings emitted while generating IR with clang", {{"Warning", errors}});
+			res.addEntry("WUKN", "Warnings emitted while generating IR with clang",
+			             {{"Warning", errors}});
 		}
 
 		auto errorOrMod = llvm::parseBitcodeFile(
