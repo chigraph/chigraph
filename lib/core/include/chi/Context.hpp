@@ -38,7 +38,7 @@ enum class CompileSettings {
 	Default = UseCache | LinkDependencies
 };
 
-/// The class that handles the loading, creation, storing, and compilation of modules
+/// The class that handles the creation, storing, and compilation of modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 ///
 /// It stores all the modules and allows for compilation of them. Basic use looks like this:
@@ -54,8 +54,10 @@ enum class CompileSettings {
 /// ```
 struct Context {
 	/// Creates a context with just the lang module
-	/// \param workPath Path to the workspace, or a subdirectory of the workspace
-	Context(const boost::filesystem::path& workPath = {});
+	/// \param provider The module provider
+	/// \pre `provider != nullptr`
+	/// \param includeLangModule Should the lang module be included
+	Context(std::unique_ptr<ModuleProvider> provider, bool includeLangModule = true);
 
 	/// Destructor
 	~Context();

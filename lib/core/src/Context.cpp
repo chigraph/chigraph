@@ -65,26 +65,6 @@ GraphModule* Context::newGraphModule(const boost::filesystem::path& fullName) {
 }
 
 std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
-	std::vector<std::string> moduleList;
-
-	fs::path srcDir = workspacePath() / "src";
-
-	if (!fs::is_directory(srcDir)) { return {}; }
-
-	for (const auto& dirEntry : boost::make_iterator_range(
-	         fs::recursive_directory_iterator{srcDir, fs::symlink_option::recurse}, {})) {
-		const fs::path& p = dirEntry;
-
-		// see if it's a chigraph module
-		if (fs::is_regular_file(p) && p.extension() == ".chimod") {
-			fs::path relPath = fs::relative(p, srcDir);
-
-			relPath.replace_extension("");  // remove .chimod
-			moduleList.emplace_back(relPath.string());
-		}
-	}
-
-	return moduleList;
 }
 
 Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
