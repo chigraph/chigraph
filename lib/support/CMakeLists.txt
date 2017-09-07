@@ -18,8 +18,8 @@ set(CHIGRAPH_SUPPORT_SRCS
 
 add_library(chigraphsupport STATIC ${CHIGRAPH_SUPPORT_HEADERS} ${CHIGRAPH_SUPPORT_SRCS})
 
-#find_package(Threads REQUIRED) # subprocess uses threads
-#target_link_libraries(chigraphsupport PUBLIC ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+find_package(Threads REQUIRED) # subprocess uses threads
+target_link_libraries(chigraphsupport PUBLIC ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
 
 target_include_directories(chigraphsupport PUBLIC include/ ${Boost_INCLUDE_DIRS})
 
