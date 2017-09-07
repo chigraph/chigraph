@@ -3,53 +3,41 @@
 #ifndef CHI_WORKSPACE_MODULE_PROVIDER
 #define CHI_WORKSPACE_MODULE_PROVIDER
 
-#include "chi/ModuleCache.hpp"
+#include "chi/ModuleProvider.hpp"
 
 namespace chi {
 
 /// Provides and caches modules in a workspace format
-struct WorkspaceModuleProvider : public ModuleCache {
+struct WorkspaceModuleProvider : public ModuleProvider {
 	/// Default constrcutor
 	/// \pre `boost::filesystem::is_regular_file(workspacePath / ".chigraphworkspace")`
-	WorkspaceModuleProvider(const boost::filesytem::path& workspacePath);
+	WorkspaceModuleProvider(const boost::filesystem::path& workspacePath);
 
-	/// Read a module from disk
-	/// Assumes all dependencies are loaded, will error if not
-	/// \param moduleName The name of the module to load
-	/// \param toFill The GraphModule to fill
-	/// \return The Result
+	/// \copydoc ModuleProvider::loadModule
 	Result loadModule(const boost::filesystem::path& module, std::unique_ptr<GraphModule>* toFill) override;
 
-	/// Save a module to disk
-	/// \param modToSave the module to save
-	/// \return The Result
+	/// \copydoc ModuleProvider::saveModule
 	Result saveModule(const GraphModule& modToSave) const override;
 
-	/// List all the modules in the workspace
-	/// \return All the modules
+	/// \copydoc ModuleProvider::listModules
 	std::vector<boost::filesystem::path> listModules() const override;
 
-	/// Peek at a module's dependencies without loading it
-	/// \param module The  module to get the dependencies
-	/// \return The list of direct dependencies (not a recursive search)
+	/// \copydoc ModuleProvider::peekDepenencies
 	std::vector<boost::filesystem::path> peekDepenencies(const boost::filesystem::path& module) const override;
 
-	/// Get the cache name for a module. Basically `context().workspacePath() / moduleName + ".bc"`
-	/// \param moduleName The name of the module to get a cache path for
-	/// \return The path
-	boost::filesystem::path cachePathForModule(const boost::filesystem::path& moduleName) const override;
+	boost::filesystem::path cachePathForModule(const boost::filesystem::path& moduleName) const;
 
-	/// \copydoc ModuleCache::cacheModule
+	/// \copydoc ModuleProvider::cacheModule
 	Result cacheModule(const boost::filesystem::path& moduleName, llvm::Module& compiledModule,
 	                   std::time_t timeAtFileRead) override;
 
-	/// \copydoc ModuleCache::invalidateModule
+	/// \copydoc ModuleProvider::invalidateModule
 	void invalidateCache(const boost::filesystem::path& moduleName) override;
 
-	/// \copydoc ModuleCache::cacheUpdateTime
+	/// \copydoc ModuleProvider::cacheUpdateTime
 	std::time_t cacheUpdateTime(const boost::filesystem::path& moduleName) const override;
 
-	/// \copydoc ModuleCache::retrieveFromCache
+	/// \copydoc ModuleProvider::retrieveFromCache
 	std::unique_ptr<llvm::Module> retrieveFromCache(const boost::filesystem::path& moduleName,
 	                                                std::time_t atLeastThisNew) override;
 	
