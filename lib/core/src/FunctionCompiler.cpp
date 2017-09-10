@@ -186,7 +186,7 @@ Result FunctionCompiler::initialize(bool validate) {
 	for (const auto& localVar : function().localVariables()) {
 		mLocalVariables[localVar.name] =
 		    allocBuilder.CreateAlloca(localVar.type.llvmType(), nullptr, "var_" + localVar.name);
-		allocBuilder.CreateStore(llvm::ConstantAggregateZero::get(localVar.type.llvmType()),
+		allocBuilder.CreateStore(llvm::Constant::getNullValue(localVar.type.llvmType()),
 		                         mLocalVariables[localVar.name]);
 	}
 

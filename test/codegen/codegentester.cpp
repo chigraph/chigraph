@@ -184,16 +184,6 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	
-	// print the C include paths for debugging
-	std::vector<fs::path> paths;
-    stdCIncludePaths(paths);
-    
-    std::cout << "Standard C include paths: " << std::endl;
-    for (const auto& p : paths) {
-      std::cout << p.string() << std::endl;
-    }
-    std::cout << std::endl;
-
 	fs::ifstream jsonstream{JSONfile};
 
 	json j;
