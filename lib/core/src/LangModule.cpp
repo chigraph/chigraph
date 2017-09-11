@@ -22,7 +22,7 @@ namespace chi {
 namespace {
 /// NodeType for conditionals
 struct IfNodeType : NodeType {
-	IfNodeType(LangModule& mod) : NodeType(mod, "if", "branch on a bools") {
+	IfNodeType(LangModule& mod) : NodeType(mod, "if", "If") {
 		setExecInputs({""});
 		setExecOutputs({"True", "False"});
 
@@ -48,7 +48,7 @@ struct IfNodeType : NodeType {
 struct EntryNodeType : NodeType {
 	EntryNodeType(LangModule& mod, std::vector<NamedDataType> dataInputs,
 	              std::vector<std::string> execInputs)
-	    : NodeType(mod, "entry", "entry to a function") {
+	    : NodeType(mod, "entry", "Entry") {
 		setExecOutputs(std::move(execInputs));
 
 		setDataOutputs(std::move(dataInputs));
@@ -103,7 +103,7 @@ struct EntryNodeType : NodeType {
 
 struct ConstIntNodeType : NodeType {
 	ConstIntNodeType(LangModule& mod, int num)
-	    : NodeType(mod, "const-int", "Int literal"), number(num) {
+	    : NodeType(mod, "const-int", "Integer"), number(num) {
 		makePure();
 
 		setDataOutputs({{"", mod.typeFromName("i32")}});
@@ -133,7 +133,7 @@ struct ConstIntNodeType : NodeType {
 
 struct ConstFloatNodeType : NodeType {
 	ConstFloatNodeType(LangModule& mod, double num)
-	    : NodeType(mod, "const-float", "Float Literal"), number(num) {
+	    : NodeType(mod, "const-float", "Float"), number(num) {
 		makePure();
 
 		setDataOutputs({{"", mod.typeFromName("float")}});
@@ -248,7 +248,7 @@ struct ExitNodeType : NodeType {
 
 struct StringLiteralNodeType : NodeType {
 	StringLiteralNodeType(LangModule& mod, std::string str)
-	    : NodeType(mod, "strliteral", "string literal"), literalString(std::move(str)) {
+	    : NodeType(mod, "strliteral", "String"), literalString(std::move(str)) {
 		makePure();
 
 		setDataOutputs({{"", mod.typeFromName("i8*")}});
@@ -291,7 +291,7 @@ struct StringLiteralNodeType : NodeType {
 };
 
 struct IntToFloatNodeType : NodeType {
-	IntToFloatNodeType(LangModule& mod) : NodeType(mod, "inttofloat", "convert integer to float") {
+	IntToFloatNodeType(LangModule& mod) : NodeType(mod, "inttofloat", "Float -> Integer") {
 		makePure();
 
 		setDataInputs({{"", mod.typeFromName("i32")}});
@@ -322,7 +322,7 @@ struct IntToFloatNodeType : NodeType {
 };
 
 struct FloatToIntNodeType : NodeType {
-	FloatToIntNodeType(LangModule& mod) : NodeType(mod, "floattoint", "convert float to integer") {
+	FloatToIntNodeType(LangModule& mod) : NodeType(mod, "floattoint", "Float -> Integer") {
 		makePure();
 
 		setDataInputs({{"", mod.typeFromName("float")}});
@@ -740,7 +740,7 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 
 		     } else {
 			     res.addEntry("WUKN", "Data for lang:exit must have a exec element",
-			                  {{"Data JSON"}, injson});
+			                  {{"Data JSON", injson}});
 		     }
 
 		     return std::make_unique<ExitNodeType>(*this, std::move(dataOutputs),

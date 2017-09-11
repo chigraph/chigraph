@@ -4,6 +4,7 @@
 #include "chi/Context.hpp"
 #include "chi/LLVMVersion.hpp"
 #include "chi/ModuleCache.hpp"
+#include "chi/BitcodeParser.hpp"
 #include "chi/Support/Result.hpp"
 
 #include <cassert>
@@ -13,7 +14,6 @@
 #if LLVM_VERSION_LESS_EQUAL(3, 9)
 #include <llvm/Bitcode/ReaderWriter.h>
 #else
-#include <llvm/Bitcode/BitcodeReader.h>
 #include <llvm/Bitcode/BitcodeWriter.h>
 #endif
 
@@ -88,24 +88,13 @@ std::unique_ptr<llvm::Module> DefaultModuleCache::retrieveFromCache(
 	auto cacheEditTime = cacheUpdateTime(moduleName);
 	if (cacheEditTime < atLeastThisNew) { return nullptr; }
 
-	// if all of this is true, then we can read the cache
-	auto bcFileBufferOrError = llvm::MemoryBuffer::getFile(cachePath.string());
-	if (!bcFileBufferOrError) { return nullptr; }
+	// read the cache
+	std::unique_ptr<llvm::Module> fetchedMod;
+	auto res = parseBitcodeFile(cachePath, context().llvmContext(), &fetchedMod);
+	
+	if (!res) { return nullptr; }
 
-	auto errorOrMod = llvm::parseBitcodeFile(bcFileBufferOrError.get()->getMemBufferRef(),
-	                                         context().llvmContext());
-
-	if (!errorOrMod) {
-#if LLVM_VERSION_AT_LEAST(4, 0)
-		auto E = errorOrMod.takeError();
-
-		llvm::handleAllErrors(std::move(E), [](llvm::ErrorInfoBase& /*err*/) {});
-#endif
-
-		return nullptr;
-	}
-
-	return std::unique_ptr<llvm::Module>{std::move(errorOrMod.get())};
+	return fetchedMod;
 }
 
 }  // namespace chi

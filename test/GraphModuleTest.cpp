@@ -67,7 +67,7 @@ TEST_CASE("GraphModuleTest", "[module]") {
 			assertStructRemoved();
 		}
 		WHEN("We remove that struct using the other method") {
-			gMod->removeStruct(str);
+			gMod->removeStruct(*str);
 
 			assertStructRemoved();
 		}

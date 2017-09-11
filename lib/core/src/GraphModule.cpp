@@ -852,10 +852,10 @@ bool GraphModule::removeStruct(boost::string_view name) {
 	return false;
 }
 
-void GraphModule::removeStruct(GraphStruct* tyToDel) {
-	assert(&tyToDel->module() == this);
+void GraphModule::removeStruct(GraphStruct& tyToDel) {
+	assert(&tyToDel.module() == this);
 
-	LLVM_ATTRIBUTE_UNUSED bool succeeded = removeStruct(tyToDel->name());
+	LLVM_ATTRIBUTE_UNUSED bool succeeded = removeStruct(tyToDel.name());
 	assert(succeeded);
 }
 

@@ -9,6 +9,7 @@
 #include "chi/LLVMVersion.hpp"
 #include "chi/LangModule.hpp"
 #include "chi/NodeInstance.hpp"
+#include "chi/BitcodeParser.hpp"
 #include "chi/Support/Result.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
@@ -368,6 +369,33 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 			                          );
 #else
 			llvm::Linker::linkModules(*llmod, std::move(compiledDep));
+#endif
+		}
+		
+		// link in runtime if this is a main module
+		if (mod.shortName() == "main") {
+			// find the runtime
+			auto runtimebc = fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
+			
+			if (!fs::is_regular_file(runtimebc)) {
+				res.addEntry("EUKN", "Failed to find runtime.bc in lib/chigraph/runtime.bc", {{"Install prefix", fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path().parent_path().string()}});
+			}
+			
+			// load the BC file
+			std::unique_ptr<llvm::Module> runtimeMod;
+			res += parseBitcodeFile(runtimebc, llvmContext(), &runtimeMod);
+			if (!res) { return res; }
+			
+			// link it in
+#if LLVM_VERSION_LESS_EQUAL(3, 7)
+			llvm::Linker::LinkModules(llmod.get(), runtimeMod.get()
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+			                                           ,
+			                          llvm::Linker::DestroySource, nullptr
+#endif
+			                          );
+#else
+			llvm::Linker::linkModules(*llmod, std::move(runtimeMod));
 #endif
 		}
 	}

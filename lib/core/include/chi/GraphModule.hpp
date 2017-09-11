@@ -120,7 +120,7 @@ struct GraphModule : public ChiModule {
 	/// Remove a struct from the module by pointer
 	/// \param tyToDel Struct to delete, must be in this module
 	/// \pre `tyToDel->module() == this`
-	void removeStruct(GraphStruct* tyToDel);
+	void removeStruct(GraphStruct& tyToDel);
 
 	/// \}
 
