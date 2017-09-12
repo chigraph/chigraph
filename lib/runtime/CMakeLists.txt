@@ -32,5 +32,5 @@ add_custom_target(
 
 install(
 	FILES ${CMAKE_BINARY_DIR}/lib/chigraph/runtime.bc 
-	DESTINATION lib/chigraph/runtime.bc
+	DESTINATION lib/chigraph/
 )
