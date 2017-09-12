@@ -78,8 +78,10 @@ Result FunctionCompiler::initialize(bool validate) {
 #endif
 	                               false);
 
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 	mDebugFunc.replaceFunction(mLLFunction);
+#elif LLVM_VERSION_LESS_EQUAL(3, 7)
+	mDebugFunc->replaceFunction(mLLFunction);
 #else
 	mLLFunction->setSubprogram(mDebugFunc);
 #endif
