@@ -67,6 +67,8 @@ namespace {
 		return parseBitcodeMemBuff(bcFileBufferOrError.get()
 #if LLVM_VERSION_AT_LEAST(3, 6)
           ->getMemBufferRef()
+#else
+      .get()    
 #endif
         , ctx, toFill);
 	}
