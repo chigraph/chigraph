@@ -61,6 +61,11 @@ struct FunctionCompiler {
 	    *
 #endif
 	    ;
+    using DebugFile = llvm::DIFile
+#if LLVM_VERSION_AT_LEAST(3, 6)
+       *
+#endif
+  ;
 
 	/// Get the debug function.
 	/// \pre `initialized() == true`
@@ -158,6 +163,7 @@ private:
 	llvm::Module*        mModule    = nullptr;
 	llvm::DIBuilder*     mDIBuilder = nullptr;
 	llvm::DICompileUnit* mDebugCU   = nullptr;
+    DebugFile mDIFile{};
 	DebugFunction        mDebugFunc{};
 
 	const GraphFunction* mFunction = nullptr;
