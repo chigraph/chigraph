@@ -46,6 +46,11 @@ Result validateFunctionEntryType(const GraphFunction& func);
 /// \return The Result
 Result validateFunctionExitTypes(const GraphFunction& func);
 
+/// Make sure it's a valid signautre for a main function
+/// \param func The function to verify
+/// \return The Result
+Result validateFunctionMainSignature(const GraphFunction& func);
+
 /// \}
 }  // namespace chi
 
