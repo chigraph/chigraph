@@ -15,7 +15,8 @@ namespace chi {
 	
 namespace {
 	
-	Result parseBitcodeMemBuff(llvm::MemoryBufferRef buff, llvm::LLVMContext& ctx, std::unique_ptr<llvm::Module>* toFill) {
+    template<typename MemBuffType>
+	Result parseBitcodeMemBuff(MemBuffType buff, llvm::LLVMContext& ctx, std::unique_ptr<llvm::Module>* toFill) {
 		
 		assert(toFill != nullptr && "Cannot pass a null toFill pointer to parseBitcodeMemBuff");
 		
@@ -57,12 +58,15 @@ namespace {
 		// if all of this is true, then we can read the cache
 		auto bcFileBufferOrError = llvm::MemoryBuffer::getFile(file.string());
 		if (!bcFileBufferOrError) { 
-			res.addEntry("EUKN", "Failed to load LLVM module from disk: No such file", {{"File", file.string()}});
+			res.addEntry("EUKN", "Failed to load LLVM module from disk", {{"File", file.string()}});
 			return res;
 		}
-
 		
-		return parseBitcodeMemBuff(bcFileBufferOrError.get()->getMemBufferRef(), ctx, toFill);
+		return parseBitcodeMemBuff(bcFileBufferOrError.get()
+#if LLVM_VERSION_AT_LEAST(3, 6)
+          ->getMemBufferRef()
+#endif
+        , ctx, toFill);
 	}
 	Result parseBitcodeString(const std::string& bitcode, llvm::LLVMContext& ctx, std::unique_ptr<llvm::Module>* toFill) {
 
