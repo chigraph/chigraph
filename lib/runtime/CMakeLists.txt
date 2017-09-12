@@ -6,17 +6,19 @@ execute_process(COMMAND ${LLVM_CONFIG} --bindir OUTPUT_VARIABLE LLVM_BINDIR OUTP
 # get the short version of the version
 string(SUBSTRING ${LLVM_VER} 0 3 LLVM_VER)
 
-set(CLANG_EXE "${LLVM_BINDIR}/clang-${LLVM_VER}${CMAKE_EXECUTABLE_SUFFIX}")
+find_program(CLANG_EXE
+  NAMES clang-${LLVM_VER} clang
+  PATHS ${LLVM_BINDIR}
+  NO_DEFAULT_PATH)
 
 if (NOT EXISTS "${CLANG_EXE}")
-	message(FATAL_ERROR "Failed to find clang exectuable at ${CLANG_EXE} It is required to compile the runtime")
+	message(FATAL_ERROR "Failed to find clang exectuable in ${LLVM_BINDIR} It is required to compile the runtime")
 endif()
 message(STATUS "Clang found at: ${CLANG_EXE}")
 
 set(RUNTIME_SRCS
 	main.c
 )
-
 
 # Create the dir for it
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib/chigraph)
