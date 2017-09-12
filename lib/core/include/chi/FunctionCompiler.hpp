@@ -62,7 +62,7 @@ struct FunctionCompiler {
 #endif
 	    ;
     using DebugFile = llvm::DIFile
-#if LLVM_VERSION_AT_LEAST(3, 6)
+#if LLVM_VERSION_AT_LEAST(3, 7)
        *
 #endif
   ;
