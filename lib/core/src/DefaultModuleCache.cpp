@@ -40,9 +40,18 @@ Result DefaultModuleCache::cacheModule(const boost::filesystem::path& moduleName
 	{
 		// open the file
 		std::error_code      errCode;
-		llvm::raw_fd_ostream fileStream(cachePath.string(), errCode, llvm::sys::fs::F_RW);
+        std::string errString;
+        llvm::raw_fd_ostream fileStream {
+			cachePath.string(),
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+			    errorString,
+#else
+			    errCode,
+#endif
+			    llvm::sys::fs::F_RW
+		};
 
-		if (errCode) {
+		if (errCode || !errString.empty()) {
 			res.addEntry("EUKN", "Failed to open file", {{"Path", cachePath.string()}});
 			return res;
 		}
