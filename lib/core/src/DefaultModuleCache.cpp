@@ -44,7 +44,7 @@ Result DefaultModuleCache::cacheModule(const boost::filesystem::path& moduleName
         llvm::raw_fd_ostream fileStream {
 			cachePath.string(),
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
-			    errorString,
+			    errString,
 #else
 			    errCode,
 #endif
