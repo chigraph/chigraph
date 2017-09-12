@@ -312,7 +312,7 @@ FunctionCompiler::DebugFunctionType FunctionCompiler::createSubroutineType() {
 	// create type
 	auto subroutineType = diBuilder().createSubroutineType(
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-	    mDIFile
+	    mDIFile,
 #endif
 	    diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
