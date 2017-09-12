@@ -7,11 +7,11 @@ execute_process(COMMAND ${LLVM_CONFIG} --bindir OUTPUT_VARIABLE LLVM_BINDIR OUTP
 string(SUBSTRING ${LLVM_VER} 0 3 LLVM_VER)
 
 set(CLANG_EXE "${LLVM_BINDIR}/clang-${LLVM_VER}${CMAKE_EXECUTABLE_SUFFIX}")
-message(STATUS "Clang found at: ${CLANG_EXE}")
 
 if (NOT EXISTS "${CLANG_EXE}")
-	message(FATAL_ERROR "Failed to find clang exectuable at ${CLANG_EXE}. It is required to compile the runtime")
+	message(FATAL_ERROR "Failed to find clang exectuable at ${CLANG_EXE} It is required to compile the runtime")
 endif()
+message(STATUS "Clang found at: ${CLANG_EXE}")
 
 set(RUNTIME_SRCS
 	main.c
