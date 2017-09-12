@@ -11,6 +11,7 @@
 #endif
 
 #include <llvm/Support/MemoryBuffer.h>
+#include <llvm/IR/Module.h>
 
 namespace chi {
 	
