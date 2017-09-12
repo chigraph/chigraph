@@ -8,12 +8,14 @@ set (CHIGRAPH_SUPPORT_HEADERS
 	include/chi/Support/Result.hpp
 	include/chi/Support/HashFilesystemPath.hpp
 	include/chi/Support/Flags.hpp
+	include/chi/Support/ExecutablePath.hpp
 )
 
 set(CHIGRAPH_SUPPORT_SRCS
 	src/LibCLocator.cpp
 	src/Result.cpp
 	src/Subprocess.cpp
+	src/ExecutablePath.cpp
 )
 
 add_library(chigraphsupport STATIC ${CHIGRAPH_SUPPORT_HEADERS} ${CHIGRAPH_SUPPORT_SRCS})

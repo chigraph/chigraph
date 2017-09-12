@@ -11,6 +11,7 @@
 #include "chi/NodeInstance.hpp"
 #include "chi/BitcodeParser.hpp"
 #include "chi/Support/Result.hpp"
+#include "chi/Support/ExecutablePath.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
@@ -375,10 +376,10 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 		// link in runtime if this is a main module
 		if (mod.shortName() == "main") {
 			// find the runtime
-			auto runtimebc = fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
+			auto runtimebc = executablePath().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
 			
 			if (!fs::is_regular_file(runtimebc)) {
-				res.addEntry("EUKN", "Failed to find runtime.bc in lib/chigraph/runtime.bc", {{"Install prefix", fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path().parent_path().string()}});
+				res.addEntry("EUKN", "Failed to find runtime.bc in lib/chigraph/runtime.bc", {{"Install prefix", executablePath().parent_path().parent_path().string()}});
 			}
 			
 			// load the BC file
