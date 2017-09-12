@@ -10,6 +10,8 @@
 #include <llvm/Bitcode/BitcodeReader.h>
 #endif
 
+#include <llvm/Support/MemoryBuffer.h>
+
 namespace chi {
 	
 	
