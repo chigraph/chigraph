@@ -1,5 +1,4 @@
 {
-  "has_c_support": false,
   "dependencies": [
     "intprinter",
     "lang"
@@ -7,6 +6,17 @@
   "graphs": [
     {
       "connections": [
+        {
+          "input": [
+            "aa685b60-2feb-4e66-89c3-016d930c4e82",
+            0
+          ],
+          "output": [
+            "9acea025-97ad-42af-8ffb-503d4b0860e8",
+            0
+          ],
+          "type": "data"
+        },
         {
           "input": [
             "17e7ce13-35b6-4858-a0c2-a2bdc6f5d68b",
@@ -17,6 +27,17 @@
             0
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "3a835489-1a6b-4aef-bd7f-dce8861cdca2",
+            0
+          ],
+          "output": [
+            "3717ae4c-2afc-4c32-ac4a-246e451154ae",
+            0
+          ],
+          "type": "exec"
         },
         {
           "input": [
@@ -39,21 +60,14 @@
             0
           ],
           "type": "data"
-        },
-        {
-          "input": [
-            "3a835489-1a6b-4aef-bd7f-dce8861cdca2",
-            0
-          ],
-          "output": [
-            "3717ae4c-2afc-4c32-ac4a-246e451154ae",
-            0
-          ],
-          "type": "exec"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "",
       "exec_inputs": [
         ""
@@ -95,16 +109,28 @@
         },
         "9acea025-97ad-42af-8ffb-503d4b0860e8": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            797.0,
-            155.0
+            1016.0,
+            158.0
           ],
           "type": "lang:exit"
+        },
+        "aa685b60-2feb-4e66-89c3-016d930c4e82": {
+          "data": 0,
+          "location": [
+            739.0,
+            279.0
+          ],
+          "type": "lang:const-int"
         },
         "b1caf65d-f65f-4fc4-9821-e3b83724fd81": {
           "data": null,
@@ -118,5 +144,6 @@
       "type": "function"
     }
   ],
+  "has_c_support": false,
   "types": {}
 }

@@ -1,5 +1,4 @@
 {
-  "has_c_support": false,
   "dependencies": [
     "intprinter",
     "lang"
@@ -61,10 +60,25 @@
             0
           ],
           "type": "exec"
+        },
+        {
+          "input": [
+            "9ceff1f7-09c6-4b1c-afc8-47a18ca94ce2",
+            0
+          ],
+          "output": [
+            "bdd47573-061d-4890-90b4-eeb33bc951cb",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -90,6 +104,14 @@
             242.0
           ],
           "type": "lang:i32/i32"
+        },
+        "9ceff1f7-09c6-4b1c-afc8-47a18ca94ce2": {
+          "data": 0,
+          "location": [
+            640.0,
+            223.0
+          ],
+          "type": "lang:const-int"
         },
         "9dd374e7-d0d1-4367-9bc6-35680b8ba8b3": {
           "data": {
@@ -122,14 +144,18 @@
         },
         "bdd47573-061d-4890-90b4-eeb33bc951cb": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            753.0,
-            112.0
+            908.0,
+            122.0
           ],
           "type": "lang:exit"
         }
@@ -137,5 +163,6 @@
       "type": "function"
     }
   ],
+  "has_c_support": false,
   "types": {}
 }

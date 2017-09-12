@@ -1,5 +1,4 @@
 {
-  "has_c_support": false,
   "dependencies": [
     "intprinter",
     "lang"
@@ -17,28 +16,6 @@
             0
           ],
           "type": "exec"
-        },
-        {
-          "input": [
-            "d3ed0750-c87d-43c5-a392-c3ad139bc065",
-            0
-          ],
-          "output": [
-            "f981aee5-d2d3-493a-a116-b196e919e354",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "07c1a315-6e94-481c-aab4-19fec16d4ce9",
-            1
-          ],
-          "output": [
-            "f981aee5-d2d3-493a-a116-b196e919e354",
-            1
-          ],
-          "type": "data"
         },
         {
           "input": [
@@ -64,11 +41,88 @@
         },
         {
           "input": [
+            "07c1a315-6e94-481c-aab4-19fec16d4ce9",
+            0
+          ],
+          "output": [
+            "0f76cb0d-1056-4f5a-9ee4-f405e5eb50f3",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "4afa2448-3287-49fd-aeb0-88bdc33c01b7",
+            0
+          ],
+          "output": [
+            "0f76cb0d-1056-4f5a-9ee4-f405e5eb50f3",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
             "27abf71a-0d06-40c0-a936-b150be3cdd24",
             0
           ],
           "output": [
             "07c1a315-6e94-481c-aab4-19fec16d4ce9",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "d3ed0750-c87d-43c5-a392-c3ad139bc065",
+            0
+          ],
+          "output": [
+            "f981aee5-d2d3-493a-a116-b196e919e354",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "07c1a315-6e94-481c-aab4-19fec16d4ce9",
+            1
+          ],
+          "output": [
+            "f981aee5-d2d3-493a-a116-b196e919e354",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "4afa2448-3287-49fd-aeb0-88bdc33c01b7",
+            0
+          ],
+          "output": [
+            "27abf71a-0d06-40c0-a936-b150be3cdd24",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "d3ed0750-c87d-43c5-a392-c3ad139bc065",
+            0
+          ],
+          "output": [
+            "27abf71a-0d06-40c0-a936-b150be3cdd24",
+            1
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "dd8e0265-22b7-47bb-b56d-328897001f8b",
+            0
+          ],
+          "output": [
+            "cc82613d-d7b5-4b73-95ca-18af015e8c89",
             0
           ],
           "type": "data"
@@ -94,54 +148,14 @@
             0
           ],
           "type": "data"
-        },
-        {
-          "input": [
-            "07c1a315-6e94-481c-aab4-19fec16d4ce9",
-            0
-          ],
-          "output": [
-            "0f76cb0d-1056-4f5a-9ee4-f405e5eb50f3",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "4afa2448-3287-49fd-aeb0-88bdc33c01b7",
-            0
-          ],
-          "output": [
-            "0f76cb0d-1056-4f5a-9ee4-f405e5eb50f3",
-            1
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "4afa2448-3287-49fd-aeb0-88bdc33c01b7",
-            0
-          ],
-          "output": [
-            "27abf71a-0d06-40c0-a936-b150be3cdd24",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "d3ed0750-c87d-43c5-a392-c3ad139bc065",
-            0
-          ],
-          "output": [
-            "27abf71a-0d06-40c0-a936-b150be3cdd24",
-            1
-          ],
-          "type": "data"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -186,14 +200,18 @@
         },
         "cc82613d-d7b5-4b73-95ca-18af015e8c89": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            1788.13659667969,
-            278.586120605469
+            1938.02087402344,
+            230.5537109375
           ],
           "type": "lang:exit"
         },
@@ -202,6 +220,14 @@
           "location": [
             72.9777526855469,
             408.257934570312
+          ],
+          "type": "lang:const-int"
+        },
+        "dd8e0265-22b7-47bb-b56d-328897001f8b": {
+          "data": 0,
+          "location": [
+            1646.412109375,
+            438.078704833984
           ],
           "type": "lang:const-int"
         },
@@ -246,6 +272,7 @@
       "type": "function"
     }
   ],
+  "has_c_support": false,
   "types": {
     "intpair": [
       {

@@ -8,14 +8,14 @@
       "connections": [
         {
           "input": [
-            "e0e2e6e4-5c4d-452b-8072-9f7a5182041e",
+            "92a45529-0fd9-48cc-949b-90b3da7ffd30",
             0
           ],
           "output": [
-            "50bdb6dc-a414-40da-9432-b2939392b38e",
+            "e94efc47-c24f-470e-a8a5-74d28886874e",
             0
           ],
-          "type": "exec"
+          "type": "data"
         },
         {
           "input": [
@@ -38,10 +38,25 @@
             0
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "e0e2e6e4-5c4d-452b-8072-9f7a5182041e",
+            0
+          ],
+          "output": [
+            "50bdb6dc-a414-40da-9432-b2939392b38e",
+            0
+          ],
+          "type": "exec"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -60,6 +75,14 @@
           ],
           "type": "intprinter:printint"
         },
+        "92a45529-0fd9-48cc-949b-90b3da7ffd30": {
+          "data": 0,
+          "location": [
+            133.0,
+            234.0
+          ],
+          "type": "lang:const-int"
+        },
         "e0e2e6e4-5c4d-452b-8072-9f7a5182041e": {
           "data": {
             "data": [],
@@ -68,21 +91,25 @@
             ]
           },
           "location": [
-            -299.872009277344,
-            17.2208003997803
+            -305.872009277344,
+            -9.77919960021973
           ],
           "type": "lang:entry"
         },
         "e94efc47-c24f-470e-a8a5-74d28886874e": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            186.0,
-            1.83333337306976
+            440.0,
+            59.8333320617676
           ],
           "type": "lang:exit"
         },
@@ -90,7 +117,7 @@
           "data": 42,
           "location": [
             -345.145599365234,
-            190.387191772461
+            171.387191772461
           ],
           "type": "lang:const-int"
         }

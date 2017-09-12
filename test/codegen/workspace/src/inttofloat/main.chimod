@@ -1,5 +1,4 @@
 {
-  "has_c_support": false,
   "dependencies": [
     "intprinter",
     "lang"
@@ -17,61 +16,6 @@
             0
           ],
           "type": "data"
-        },
-        {
-          "input": [
-            "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
-            0
-          ],
-          "output": [
-            "6a776d45-3b04-4571-96df-8d39cc00e13f",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "43a26065-df96-4800-aeab-d42817471307",
-            0
-          ],
-          "output": [
-            "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "6a776d45-3b04-4571-96df-8d39cc00e13f",
-            0
-          ],
-          "output": [
-            "0db4f4f6-1015-4bc2-a00c-58719a856b79",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "c8f8c65e-61db-4948-90fa-03bffd4154d4",
-            0
-          ],
-          "output": [
-            "6a776d45-3b04-4571-96df-8d39cc00e13f",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "58ac8a9f-2918-4f21-b5ee-54873abb597b",
-            0
-          ],
-          "output": [
-            "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
-            0
-          ],
-          "type": "exec"
         },
         {
           "input": [
@@ -97,6 +41,50 @@
         },
         {
           "input": [
+            "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
+            0
+          ],
+          "output": [
+            "6a776d45-3b04-4571-96df-8d39cc00e13f",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "43a26065-df96-4800-aeab-d42817471307",
+            0
+          ],
+          "output": [
+            "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "58ac8a9f-2918-4f21-b5ee-54873abb597b",
+            0
+          ],
+          "output": [
+            "769c363e-9ac0-4f7b-b3e5-20323172dbe9",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "c8e0ccff-d9b6-48bc-9f99-5f1b565633d9",
+            0
+          ],
+          "output": [
+            "0db4f4f6-1015-4bc2-a00c-58719a856b79",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
             "3871d8e8-3e74-4dc4-af28-ae69f4fe7d60",
             0
           ],
@@ -116,10 +104,36 @@
             1
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "6a776d45-3b04-4571-96df-8d39cc00e13f",
+            0
+          ],
+          "output": [
+            "0db4f4f6-1015-4bc2-a00c-58719a856b79",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "c8f8c65e-61db-4948-90fa-03bffd4154d4",
+            0
+          ],
+          "output": [
+            "6a776d45-3b04-4571-96df-8d39cc00e13f",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "",
       "exec_inputs": [
         ""
@@ -132,14 +146,18 @@
       "nodes": {
         "0db4f4f6-1015-4bc2-a00c-58719a856b79": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            1384.80004882812,
-            158.399993896484
+            1641.80004882812,
+            173.399993896484
           ],
           "type": "lang:exit"
         },
@@ -204,6 +222,14 @@
           ],
           "type": "lang:const-int"
         },
+        "c8e0ccff-d9b6-48bc-9f99-5f1b565633d9": {
+          "data": 0,
+          "location": [
+            1351.0,
+            335.0
+          ],
+          "type": "lang:const-int"
+        },
         "c8f8c65e-61db-4948-90fa-03bffd4154d4": {
           "data": null,
           "location": [
@@ -224,5 +250,6 @@
       "type": "function"
     }
   ],
+  "has_c_support": false,
   "types": {}
 }

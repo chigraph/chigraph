@@ -8,6 +8,28 @@
       "connections": [
         {
           "input": [
+            "2e364630-0fb1-4ab3-8597-55dd983516f8",
+            0
+          ],
+          "output": [
+            "9478bd05-0a6f-48c7-8e35-f232f823c21a",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "36d10bf4-e114-448b-a6dc-20d4057733e2",
+            0
+          ],
+          "output": [
+            "2e364630-0fb1-4ab3-8597-55dd983516f8",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
             "3e9fc765-19b9-4306-a0cf-b9fef36219b6",
             0
           ],
@@ -63,29 +85,22 @@
         },
         {
           "input": [
-            "2e364630-0fb1-4ab3-8597-55dd983516f8",
+            "6c039c8f-5100-4056-accc-8ac2fda9a365",
             0
           ],
           "output": [
             "9478bd05-0a6f-48c7-8e35-f232f823c21a",
             0
           ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "36d10bf4-e114-448b-a6dc-20d4057733e2",
-            0
-          ],
-          "output": [
-            "2e364630-0fb1-4ab3-8597-55dd983516f8",
-            0
-          ],
           "type": "data"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -143,16 +158,28 @@
           ],
           "type": "localvars/main:_set_hello"
         },
+        "6c039c8f-5100-4056-accc-8ac2fda9a365": {
+          "data": 0,
+          "location": [
+            1136.0,
+            211.0
+          ],
+          "type": "lang:const-int"
+        },
         "9478bd05-0a6f-48c7-8e35-f232f823c21a": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            1185.0,
-            37.0
+            1392.0,
+            41.0
           ],
           "type": "lang:exit"
         },
