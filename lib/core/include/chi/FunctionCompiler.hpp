@@ -45,7 +45,7 @@ struct FunctionCompiler {
 	Result compile();
 
 	using DebugFunctionType =
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
+#if LLVM_VERSION_LESS_EQUAL(3, 6)
 	    llvm::DICompositeType
 #else
 	    llvm::DISubroutineType*
@@ -57,7 +57,7 @@ struct FunctionCompiler {
 	DebugFunctionType createSubroutineType();
 
 	using DebugFunction = llvm::DISubprogram
-#if LLVM_VERSION_AT_LEAST(3, 6)
+#if LLVM_VERSION_AT_LEAST(3, 7)
 	    *
 #endif
 	    ;
