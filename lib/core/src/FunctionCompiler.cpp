@@ -79,7 +79,7 @@ Result FunctionCompiler::initialize(bool validate) {
 	                               false);
 
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-	mDebugFunc->replaceFunction(mLLFunction);
+	mDebugFunc.replaceFunction(mLLFunction);
 #else
 	mLLFunction->setSubprogram(mDebugFunc);
 #endif
