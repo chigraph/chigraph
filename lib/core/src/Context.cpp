@@ -1,6 +1,7 @@
 /// \file Context.cpp
 
 #include "chi/Context.hpp"
+#include "chi/BitcodeParser.hpp"
 #include "chi/DefaultModuleCache.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
@@ -9,9 +10,8 @@
 #include "chi/LLVMVersion.hpp"
 #include "chi/LangModule.hpp"
 #include "chi/NodeInstance.hpp"
-#include "chi/BitcodeParser.hpp"
-#include "chi/Support/Result.hpp"
 #include "chi/Support/ExecutablePath.hpp"
+#include "chi/Support/Result.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
@@ -33,7 +33,6 @@
 #include <deque>
 #include <unordered_set>
 
-
 namespace fs = boost::filesystem;
 
 namespace chi {
@@ -41,7 +40,6 @@ Context::Context(const boost::filesystem::path& workPath) {
 	mWorkspacePath = workspaceFromChildPath(workPath);
 
 	mModuleCache = std::make_unique<DefaultModuleCache>(*this);
-
 }
 
 Context::~Context() = default;
@@ -372,22 +370,25 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 			llvm::Linker::linkModules(*llmod, std::move(compiledDep));
 #endif
 		}
-		
+
 		// link in runtime if this is a main module
 		if (mod.shortName() == "main") {
 			// find the runtime
-			auto runtimebc = executablePath().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
-			
+			auto runtimebc =
+			    executablePath().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
+
 			if (!fs::is_regular_file(runtimebc)) {
-				res.addEntry("EUKN", "Failed to find runtime.bc in lib/chigraph/runtime.bc", {{"Install prefix", executablePath().parent_path().parent_path().string()}});
+				res.addEntry(
+				    "EUKN", "Failed to find runtime.bc in lib/chigraph/runtime.bc",
+				    {{"Install prefix", executablePath().parent_path().parent_path().string()}});
 			}
-			
+
 			// load the BC file
 			std::unique_ptr<llvm::Module> runtimeMod;
 			res += parseBitcodeFile(runtimebc, llvmContext(), &runtimeMod);
 			if (!res) { return res; }
-			
-			// link it in
+
+// link it in
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 			llvm::Linker::LinkModules(llmod.get(), runtimeMod.get()
 #if LLVM_VERSION_LESS_EQUAL(3, 5)

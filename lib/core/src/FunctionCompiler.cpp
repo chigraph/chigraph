@@ -60,7 +60,7 @@ Result FunctionCompiler::initialize(bool validate) {
 
 	// create the debug file
 	mDIFile = diBuilder().createFile(debugCompileUnit()->getFilename(),
-	                                        debugCompileUnit()->getDirectory());
+	                                 debugCompileUnit()->getDirectory());
 
 	auto subroutineType = createSubroutineType();
 

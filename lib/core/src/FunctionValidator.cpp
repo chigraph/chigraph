@@ -20,10 +20,10 @@ Result validateFunction(const GraphFunction& func) {
 	res += validateFunctionExecOutputs(func);
 	res += validateFunctionEntryType(func);
 	res += validateFunctionExitTypes(func);
-    
-    if (func.name() == "main" && func.module().shortName() == "main") {
-      res += validateFunctionMainSignature(func);
-    }
+
+	if (func.name() == "main" && func.module().shortName() == "main") {
+		res += validateFunctionMainSignature(func);
+	}
 
 	return res;
 }
@@ -307,34 +307,38 @@ Result validateFunctionExitTypes(const GraphFunction& func) {
 	return res;
 }
 
-
 Result validateFunctionMainSignature(const GraphFunction& func) {
-  Result res;
-  
-  if (func.execInputs().size() != 1) {
-    res.addEntry("EUKN", "A main function must have exactly one exec in", {{"Exec Inputs", func.execInputs()}});
-  }
-  if (func.execOutputs().size() != 1) {
-    res.addEntry("EUKN", "A main function must have exactly one exec out", {{"Exec Outputs", func.execOutputs()}});
-  }
-  
-  if (!func.dataInputs().empty()) {
-    auto dataJson = nlohmann::json::array();
-    for (const auto& param : func.dataInputs()) {
-      dataJson.push_back({{param.name, param.type.qualifiedName()}});
-    }
-    
-    res.addEntry("EUKN", "A main function must have no data inputs", {{"Data Inputs", dataJson}});
-  }
-  if (func.dataOutputs().size() != 1 || func.dataOutputs()[0].type.qualifiedName() != "lang:i32") {
-    auto dataJson = nlohmann::json::array();
-    for (const auto& param : func.dataOutputs()) {
-      dataJson.push_back({{param.name, param.type.qualifiedName()}});
-    }
-    
-    res.addEntry("EUKN", "A main function must have exactly one data output that's a lang:i32", {{"Data Outputs", dataJson}});
-  }
-  return res;
+	Result res;
+
+	if (func.execInputs().size() != 1) {
+		res.addEntry("EUKN", "A main function must have exactly one exec in",
+		             {{"Exec Inputs", func.execInputs()}});
+	}
+	if (func.execOutputs().size() != 1) {
+		res.addEntry("EUKN", "A main function must have exactly one exec out",
+		             {{"Exec Outputs", func.execOutputs()}});
+	}
+
+	if (!func.dataInputs().empty()) {
+		auto dataJson = nlohmann::json::array();
+		for (const auto& param : func.dataInputs()) {
+			dataJson.push_back({{param.name, param.type.qualifiedName()}});
+		}
+
+		res.addEntry("EUKN", "A main function must have no data inputs",
+		             {{"Data Inputs", dataJson}});
+	}
+	if (func.dataOutputs().size() != 1 ||
+	    func.dataOutputs()[0].type.qualifiedName() != "lang:i32") {
+		auto dataJson = nlohmann::json::array();
+		for (const auto& param : func.dataOutputs()) {
+			dataJson.push_back({{param.name, param.type.qualifiedName()}});
+		}
+
+		res.addEntry("EUKN", "A main function must have exactly one data output that's a lang:i32",
+		             {{"Data Outputs", dataJson}});
+	}
+	return res;
 }
 
 }  // namespace chi

@@ -86,8 +86,7 @@ struct Context {
 	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
-	Result loadModule(const boost::filesystem::path& name,
-	                  ChiModule**                    toFill   = nullptr);
+	Result loadModule(const boost::filesystem::path& name, ChiModule** toFill = nullptr);
 
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param[in] fullName The full path of the module, including URL

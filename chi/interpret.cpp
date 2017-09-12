@@ -15,8 +15,8 @@
 #include <llvm/ExecutionEngine/ObjectCache.h>
 #include <llvm/ExecutionEngine/SectionMemoryManager.h>
 
-#include <string>
 #include <deque>
+#include <string>
 #include <vector>
 
 #include <boost/program_options.hpp>

@@ -148,11 +148,14 @@ int compile(const std::vector<std::string>& opts) {
 	passBuilder.OptLevel = levelInt;
 
 	// add inliner
-	if (levelInt > 1) { passBuilder.Inliner = llvm::createFunctionInliningPass(levelInt, 1
+	if (levelInt > 1) {
+		passBuilder.Inliner = llvm::createFunctionInliningPass(levelInt, 1
 #if LLVM_VERSION_AT_LEAST(5, 0)
-		, false
+		                                                       ,
+		                                                       false
 #endif
-	); }
+		                                                       );
+	}
 
 	llvm::legacy::FunctionPassManager fpm{llmod.get()};
 	passBuilder.populateFunctionPassManager(fpm);

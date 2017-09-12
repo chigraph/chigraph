@@ -2,15 +2,14 @@
 
 #include <git2.h>
 
-#include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/filesystem/operations.hpp>
 
 namespace fs = boost::filesystem;
 
 namespace chi {
 
 Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool recursive) {
-	
 	// init it (pretty sure it inits windows networking stuff)
 	git_libgit2_init();
 
@@ -296,7 +295,6 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 	return res;
 }
 
-
 std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
     const boost::filesystem::path& path) {
 	// handle github
@@ -322,6 +320,4 @@ std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
 	return std::make_tuple(VCSType::Unknown, "", "");
 }
 
-
-
-} // namespace chi
+}  // namespace chi

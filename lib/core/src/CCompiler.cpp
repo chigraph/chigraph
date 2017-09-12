@@ -1,8 +1,8 @@
 /// \file CCompiler.cpp
 
 #include "chi/CCompiler.hpp"
-#include "chi/LLVMVersion.hpp"
 #include "chi/BitcodeParser.hpp"
+#include "chi/LLVMVersion.hpp"
 #include "chi/Support/LibCLocator.hpp"
 #include "chi/Support/Result.hpp"
 #include "chi/Support/Subprocess.hpp"
@@ -74,9 +74,9 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 			             {{"Warning", errors}});
 		}
 
-		auto readCtx = res.addScopedContext({{"Error parsing bitcode file generated from clang", &inputCCode[0]}});
+		auto readCtx = res.addScopedContext(
+		    {{"Error parsing bitcode file generated from clang", &inputCCode[0]}});
 		res += parseBitcodeString(generatedBitcode, llvmContext, toFill);
-		
 	}
 
 	if (*toFill == nullptr) {
