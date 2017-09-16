@@ -296,6 +296,8 @@ struct IntToFloatNodeType : NodeType {
 
 		setDataInputs({{"", mod.typeFromName("i32")}});
 		setDataOutputs({{"", mod.typeFromName("float")}});
+		
+		makeConverter();
 	}
 
 	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto,
@@ -327,6 +329,8 @@ struct FloatToIntNodeType : NodeType {
 
 		setDataInputs({{"", mod.typeFromName("float")}});
 		setDataOutputs({{"", mod.typeFromName("i32")}});
+		
+		makeConverter();
 	}
 
 	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,

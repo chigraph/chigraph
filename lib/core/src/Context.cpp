@@ -4,6 +4,7 @@
 #include "chi/BitcodeParser.hpp"
 #include "chi/DefaultModuleCache.hpp"
 #include "chi/GraphFunction.hpp"
+#include "chi/NodeType.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
 #include "chi/JsonDeserializer.hpp"
@@ -190,10 +191,28 @@ bool Context::addModule(std::unique_ptr<ChiModule> modToAdd) noexcept {
 
 	if (modToAdd->fullName() == "lang") { mLangModule = dynamic_cast<LangModule*>(modToAdd.get()); }
 
+	// add the converter nodes
+	for (const auto& tyName : modToAdd->nodeTypeNames()) {
+		// create it
+		std::unique_ptr<NodeType> ty;
+		auto res = modToAdd->nodeTypeFromName(tyName, {}, &ty);
+		
+		if (!res) {
+			// converter nodes must be stateless
+			continue;
+		}
+		
+		if (!ty->converter()) {
+			continue;
+		}
+		
+		// add it!
+		mTypeConverters[ty->dataInputs()[0].type.qualifiedName()][ty->dataOutputs()[0].type.qualifiedName()] = std::move(ty);
+	}
+	
 	mModules.push_back(std::move(modToAdd));
-
-	assert(modToAdd == nullptr);
-
+	
+	
 	return true;
 }
 
@@ -246,6 +265,21 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, boost::string_vie
 
 	return res;
 }
+
+std::unique_ptr<NodeType> Context::createConverterNodeType(const DataType& fromType, const DataType& toType) {
+	auto fromIter = mTypeConverters.find(fromType.qualifiedName());
+	if (fromIter == mTypeConverters.end()) { 
+		return nullptr;
+	}
+	
+	auto toIter = fromIter->second.find(toType.qualifiedName());
+	if (toIter == fromIter->second.end()) {
+		return nullptr;
+	}
+	
+	return toIter->second->clone();
+}
+
 
 Result Context::compileModule(const boost::filesystem::path& fullName,
                               Flags<CompileSettings>         settings,

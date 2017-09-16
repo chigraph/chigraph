@@ -126,6 +126,12 @@ struct Context {
 	Result nodeTypeFromModule(const boost::filesystem::path& moduleName,
 	                          boost::string_view typeName, const nlohmann::json& data,
 	                          std::unique_ptr<NodeType>* toFill) noexcept;
+							  
+	/// Create a converter node
+	/// \param[in] fromType The type to convert from
+	/// \param[in] toType The type to convert to
+	/// \return The node type, or nullptr
+	std::unique_ptr<NodeType> createConverterNodeType(const DataType& fromType, const DataType& toType);
 
 	/// Get the workspace path of the Context
 	/// \return The workspace path
@@ -206,6 +212,8 @@ private:
 	LangModule* mLangModule = nullptr;
 
 	std::unique_ptr<ModuleCache> mModuleCache;
+	
+	std::unordered_map<std::string /*from Type*/, std::unordered_map<std::string /*to type*/, std::unique_ptr<NodeType>>> mTypeConverters;
 };
 
 /// Get the workspace directory from a child of the workspace directory
