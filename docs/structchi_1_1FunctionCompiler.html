@@ -85,6 +85,7 @@ $(document).ready(function(){initNavTree('structchi_1_1FunctionCompiler.html',''
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structchi_1_1FunctionCompiler-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -97,6 +98,18 @@ $(document).ready(function(){initNavTree('structchi_1_1FunctionCompiler.html',''
 
 <p><code>#include &lt;<a class="el" href="FunctionCompiler_8hpp_source.html">chi/FunctionCompiler.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:acaf6d9485f4454064c526c27dbab68b9"><td class="memItemLeft" align="right" valign="top"><a id="acaf6d9485f4454064c526c27dbab68b9"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>DebugFile</b> = llvm::DIFile</td></tr>
+<tr class="separator:acaf6d9485f4454064c526c27dbab68b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a726c68328f5512b8ec77531225b716fe"><td class="memItemLeft" align="right" valign="top"><a id="a726c68328f5512b8ec77531225b716fe"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>DebugFunction</b> = llvm::DISubprogram</td></tr>
+<tr class="separator:a726c68328f5512b8ec77531225b716fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a355498696d2591d92a6b774242ffd574"><td class="memItemLeft" align="right" valign="top"><a id="a355498696d2591d92a6b774242ffd574"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>DebugFunctionType</b> = llvm::DISubroutineType *</td></tr>
+<tr class="separator:a355498696d2591d92a6b774242ffd574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5fb0dc53b0e43d00ccc943755a660e99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#a5fb0dc53b0e43d00ccc943755a660e99">FunctionCompiler</a> (const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &amp;func, llvm::Module &amp;moduleToGenInto, llvm::DICompileUnit &amp;debugCU, llvm::DIBuilder &amp;debugBuilder)</td></tr>
@@ -114,18 +127,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a320ffa20b43bd6115fee6408ee9d3ba1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchi_1_1Context.html">Context</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#a320ffa20b43bd6115fee6408ee9d3ba1">context</a> () const</td></tr>
 <tr class="memdesc:a320ffa20b43bd6115fee6408ee9d3ba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <code><a class="el" href="structchi_1_1FunctionCompiler.html#a7c93960313bdbd91fb703b7095a51e94" title="Get the graph function  The GraphFunction. ">function()</a>.<a class="el" href="structchi_1_1FunctionCompiler.html#a320ffa20b43bd6115fee6408ee9d3ba1" title="Get function().context() ">context()</a></code>  <a href="#a320ffa20b43bd6115fee6408ee9d3ba1">More...</a><br /></td></tr>
 <tr class="separator:a320ffa20b43bd6115fee6408ee9d3ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7fab17d68ed66784203b5571b4b4c64"><td class="memItemLeft" align="right" valign="top">llvm::DISubroutineType *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#aa7fab17d68ed66784203b5571b4b4c64">createSubroutineType</a> ()</td></tr>
-<tr class="memdesc:aa7fab17d68ed66784203b5571b4b4c64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the subroutine type for the function.  <a href="#aa7fab17d68ed66784203b5571b4b4c64">More...</a><br /></td></tr>
-<tr class="separator:aa7fab17d68ed66784203b5571b4b4c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae99eb9e8df43451fde46ab2d4dc2831b"><td class="memItemLeft" align="right" valign="top">llvm::DICompileUnit &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#ae99eb9e8df43451fde46ab2d4dc2831b">debugCompileUnit</a> () const</td></tr>
-<tr class="memdesc:ae99eb9e8df43451fde46ab2d4dc2831b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The compile unit for the module.  <a href="#ae99eb9e8df43451fde46ab2d4dc2831b">More...</a><br /></td></tr>
-<tr class="separator:ae99eb9e8df43451fde46ab2d4dc2831b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affeb034e0b6a66320398482eda2f3945"><td class="memItemLeft" align="right" valign="top">DebugFunctionType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#affeb034e0b6a66320398482eda2f3945">createSubroutineType</a> ()</td></tr>
+<tr class="memdesc:affeb034e0b6a66320398482eda2f3945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the subroutine type for the function.  <a href="#affeb034e0b6a66320398482eda2f3945">More...</a><br /></td></tr>
+<tr class="separator:affeb034e0b6a66320398482eda2f3945"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a801b216f9d3db39c51d976b61fdbe7af"><td class="memItemLeft" align="right" valign="top">llvm::DICompileUnit *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#a801b216f9d3db39c51d976b61fdbe7af">debugCompileUnit</a> () const</td></tr>
+<tr class="memdesc:a801b216f9d3db39c51d976b61fdbe7af"><td class="mdescLeft">&#160;</td><td class="mdescRight">The compile unit for the module.  <a href="#a801b216f9d3db39c51d976b61fdbe7af">More...</a><br /></td></tr>
+<tr class="separator:a801b216f9d3db39c51d976b61fdbe7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa233d01c21e6204e0bb1a11947198dd"><td class="memItemLeft" align="right" valign="top">llvm::DIBuilder &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#afa233d01c21e6204e0bb1a11947198dd">diBuilder</a> () const</td></tr>
 <tr class="memdesc:afa233d01c21e6204e0bb1a11947198dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The debug builder we're using for the module.  <a href="#afa233d01c21e6204e0bb1a11947198dd">More...</a><br /></td></tr>
 <tr class="separator:afa233d01c21e6204e0bb1a11947198dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a954784b3a880577e9ce52e3847d3a95a"><td class="memItemLeft" align="right" valign="top">llvm::DISubprogram &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#a954784b3a880577e9ce52e3847d3a95a">diFunction</a> () const</td></tr>
-<tr class="memdesc:a954784b3a880577e9ce52e3847d3a95a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the debug function.  <a href="#a954784b3a880577e9ce52e3847d3a95a">More...</a><br /></td></tr>
-<tr class="separator:a954784b3a880577e9ce52e3847d3a95a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa97c31db4535d8921a0e0ac4d5397de1"><td class="memItemLeft" align="right" valign="top">DebugFunction&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#aa97c31db4535d8921a0e0ac4d5397de1">diFunction</a> ()</td></tr>
+<tr class="memdesc:aa97c31db4535d8921a0e0ac4d5397de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the debug function.  <a href="#aa97c31db4535d8921a0e0ac4d5397de1">More...</a><br /></td></tr>
+<tr class="separator:aa97c31db4535d8921a0e0ac4d5397de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c93960313bdbd91fb703b7095a51e94"><td class="memItemLeft" align="right" valign="top"><a id="a7c93960313bdbd91fb703b7095a51e94"></a>
 const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1FunctionCompiler.html#a7c93960313bdbd91fb703b7095a51e94">function</a> () const</td></tr>
 <tr class="memdesc:a7c93960313bdbd91fb703b7095a51e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the graph function  The <a class="el" href="structchi_1_1GraphFunction.html" title="this is an AST-like representation of a function in a graph It is used for IDE-like behavior...">GraphFunction</a>. <br /></td></tr>
@@ -164,7 +177,7 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for compiling <code>GraphFunctions</code> into <code>llvm::Function</code>s. </p>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00021">21</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00024">24</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5fb0dc53b0e43d00ccc943755a660e99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5fb0dc53b0e43d00ccc943755a660e99">&#9670;&nbsp;</a></span>FunctionCompiler()</h2>
@@ -247,26 +260,24 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <dl class="section pre"><dt>Precondition</dt><dd><code><a class="el" href="structchi_1_1FunctionCompiler.html#ac465b7c74ea65a5ca5f5ef748aca9258" title="Get if the function is initialized (initialize() has been called) ">initialized()</a> == true</code> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The alloc block </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00072">72</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00094">94</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00122">initialized()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00331">localVariable()</a>.</p>
+<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00144">initialized()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00330">localVariable()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00199">compile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00198">compile()</a>.</p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a6b947fd013eb2062a5ac74d771182d95_cgraph.svg" width="551" height="82"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a6b947fd013eb2062a5ac74d771182d95_cgraph.svg" width="551" height="82"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a6b947fd013eb2062a5ac74d771182d95_icgraph.svg" width="355" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a6b947fd013eb2062a5ac74d771182d95_icgraph.svg" width="355" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -293,16 +304,15 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <dl class="section post"><dt>Postcondition</dt><dd><code><a class="el" href="structchi_1_1FunctionCompiler.html#afae7957136615c414090dd9930e05c54" title="Get if the function has been compiled (compile() has been called) ">compiled()</a> == true</code> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchi_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00199">199</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00198">198</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00072">allocBlock()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00126">compiled()</a>, <a class="el" href="NodeCompiler_8cpp_source.html#l00249">chi::dependentPuresRecursive()</a>, <a class="el" href="NodeCompiler_8cpp_source.html#l00219">chi::NodeCompiler::firstBlock()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00363">getOrCreateNodeCompiler()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00122">initialized()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00354">nodeCompiler()</a>.</p>
+<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00094">allocBlock()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00148">compiled()</a>, <a class="el" href="NodeCompiler_8cpp_source.html#l00244">chi::dependentPuresRecursive()</a>, <a class="el" href="NodeCompiler_8cpp_source.html#l00214">chi::NodeCompiler::firstBlock()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00362">getOrCreateNodeCompiler()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00144">initialized()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00353">nodeCompiler()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_ad5d91d8dbaa379a0b90107f37427dec8_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_ad5d91d8dbaa379a0b90107f37427dec8_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -333,26 +343,24 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <p>Get if the function has been compiled (<code><a class="el" href="structchi_1_1FunctionCompiler.html#ad5d91d8dbaa379a0b90107f37427dec8" title="Generates the contents of the function. ">compile()</a></code> has been called) </p>
 <dl class="section return"><dt>Returns</dt><dd>True if it has, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00126">126</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00148">148</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="FunctionCompiler_8cpp_source.html#l00372">chi::compileFunction()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00363">getOrCreateNodeCompiler()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00354">nodeCompiler()</a>.</p>
+<p class="reference">References <a class="el" href="FunctionCompiler_8cpp_source.html#l00371">chi::compileFunction()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00362">getOrCreateNodeCompiler()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00353">nodeCompiler()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00199">compile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00198">compile()</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_afae7957136615c414090dd9930e05c54_cgraph.svg" width="571" height="170"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_afae7957136615c414090dd9930e05c54_cgraph.svg" width="571" height="170"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_afae7957136615c414090dd9930e05c54_icgraph.svg" width="355" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_afae7957136615c414090dd9930e05c54_icgraph.svg" width="355" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -375,28 +383,27 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <p>Get <code><a class="el" href="structchi_1_1FunctionCompiler.html#a7c93960313bdbd91fb703b7095a51e94" title="Get the graph function  The GraphFunction. ">function()</a>.<a class="el" href="structchi_1_1FunctionCompiler.html#a320ffa20b43bd6115fee6408ee9d3ba1" title="Get function().context() ">context()</a></code> </p>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structchi_1_1FunctionCompiler.html#a7c93960313bdbd91fb703b7095a51e94" title="Get the graph function  The GraphFunction. ">function()</a>.<a class="el" href="structchi_1_1FunctionCompiler.html#a320ffa20b43bd6115fee6408ee9d3ba1" title="Get function().context() ">context()</a></code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00341">341</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00340">340</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00276">createSubroutineType()</a>, and <a class="el" href="FunctionCompiler_8hpp_source.html#l00103">function()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00275">createSubroutineType()</a>, and <a class="el" href="FunctionCompiler_8hpp_source.html#l00125">function()</a>.</p>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a320ffa20b43bd6115fee6408ee9d3ba1_icgraph.svg" width="560" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a320ffa20b43bd6115fee6408ee9d3ba1_icgraph.svg" width="560" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="aa7fab17d68ed66784203b5571b4b4c64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7fab17d68ed66784203b5571b4b4c64">&#9670;&nbsp;</a></span>createSubroutineType()</h2>
+<a id="affeb034e0b6a66320398482eda2f3945"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affeb034e0b6a66320398482eda2f3945">&#9670;&nbsp;</a></span>createSubroutineType()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">llvm::DISubroutineType * chi::FunctionCompiler::createSubroutineType </td>
+          <td class="memname">FunctionCompiler::DebugFunctionType chi::FunctionCompiler::createSubroutineType </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -407,9 +414,9 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <p>Create the subroutine type for the function. </p>
 <dl class="section return"><dt>Returns</dt><dd>The subroutine type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00276">276</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00275">275</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="FunctionCompiler_8cpp_source.html#l00341">context()</a>, <a class="el" href="Context_8hpp_source.html#l00192">chi::Context::langModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00864">chi::LangModule::typeFromName()</a>, and <a class="el" href="DataType_8hpp_source.html#l00044">chi::DataType::valid()</a>.</p>
+<p class="reference">References <a class="el" href="FunctionCompiler_8cpp_source.html#l00340">context()</a>, <a class="el" href="Context_8hpp_source.html#l00177">chi::Context::langModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00871">chi::LangModule::typeFromName()</a>, and <a class="el" href="DataType_8hpp_source.html#l00044">chi::DataType::valid()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -417,22 +424,20 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_aa7fab17d68ed66784203b5571b4b4c64_cgraph.svg" width="100%" height="454"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_affeb034e0b6a66320398482eda2f3945_cgraph.svg" width="100%" height="454"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_aa7fab17d68ed66784203b5571b4b4c64_icgraph.svg" width="364" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_affeb034e0b6a66320398482eda2f3945_icgraph.svg" width="364" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ae99eb9e8df43451fde46ab2d4dc2831b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae99eb9e8df43451fde46ab2d4dc2831b">&#9670;&nbsp;</a></span>debugCompileUnit()</h2>
+<a id="a801b216f9d3db39c51d976b61fdbe7af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a801b216f9d3db39c51d976b61fdbe7af">&#9670;&nbsp;</a></span>debugCompileUnit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -441,7 +446,7 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">llvm::DICompileUnit&amp; chi::FunctionCompiler::debugCompileUnit </td>
+          <td class="memname">llvm::DICompileUnit* chi::FunctionCompiler::debugCompileUnit </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -457,7 +462,7 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <p>The compile unit for the module. </p>
 <dl class="section return"><dt>Returns</dt><dd>The DICompileUnit </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00067">67</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00089">89</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -465,8 +470,7 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_ae99eb9e8df43451fde46ab2d4dc2831b_icgraph.svg" width="355" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a801b216f9d3db39c51d976b61fdbe7af_icgraph.svg" width="355" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -497,22 +501,21 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <p>The debug builder we're using for the module. </p>
 <dl class="section return"><dt>Returns</dt><dd>The DIBuilder </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00063">63</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00085">85</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>, and <a class="el" href="NodeCompiler_8cpp_source.html#l00020">chi::NodeCompiler::NodeCompiler()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>, and <a class="el" href="NodeCompiler_8cpp_source.html#l00022">chi::NodeCompiler::NodeCompiler()</a>.</p>
 <div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_afa233d01c21e6204e0bb1a11947198dd_icgraph.svg" width="355" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_afa233d01c21e6204e0bb1a11947198dd_icgraph.svg" width="355" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a954784b3a880577e9ce52e3847d3a95a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a954784b3a880577e9ce52e3847d3a95a">&#9670;&nbsp;</a></span>diFunction()</h2>
+<a id="aa97c31db4535d8921a0e0ac4d5397de1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa97c31db4535d8921a0e0ac4d5397de1">&#9670;&nbsp;</a></span>diFunction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -521,10 +524,10 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">llvm::DISubprogram&amp; chi::FunctionCompiler::diFunction </td>
+          <td class="memname">DebugFunction chi::FunctionCompiler::diFunction </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -538,16 +541,15 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <dl class="section pre"><dt>Precondition</dt><dd><code><a class="el" href="structchi_1_1FunctionCompiler.html#ac465b7c74ea65a5ca5f5ef748aca9258" title="Get if the function is initialized (initialize() has been called) ">initialized()</a> == true</code> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The debug function </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00051">51</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00073">73</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00122">initialized()</a>.</p>
+<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00144">initialized()</a>.</p>
 <div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-10-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a954784b3a880577e9ce52e3847d3a95a_cgraph.svg" width="355" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_aa97c31db4535d8921a0e0ac4d5397de1_cgraph.svg" width="355" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -572,26 +574,24 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <dl class="section pre"><dt>Precondition</dt><dd><code>&amp;node.function() == &amp;<a class="el" href="structchi_1_1FunctionCompiler.html#a7c93960313bdbd91fb703b7095a51e94" title="Get the graph function  The GraphFunction. ">function()</a></code> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The compiler. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00363">363</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00362">362</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="NodeInstance_8hpp_source.html#l00091">chi::NodeInstance::function()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00199">compile()</a>, and <a class="el" href="FunctionCompiler_8hpp_source.html#l00126">compiled()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00198">compile()</a>, and <a class="el" href="FunctionCompiler_8hpp_source.html#l00148">compiled()</a>.</p>
 <div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-11-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a83ceb200ef91138e1df8c08a05b51dc1_cgraph.svg" width="375" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a83ceb200ef91138e1df8c08a05b51dc1_cgraph.svg" width="375" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-12-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-12-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a83ceb200ef91138e1df8c08a05b51dc1_icgraph.svg" width="584" height="82"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1FunctionCompiler_a83ceb200ef91138e1df8c08a05b51dc1_icgraph.svg" width="584" height="82"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -625,7 +625,7 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 
 <p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">35</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00052">chi::Result::addEntry()</a>, <a class="el" href="Result_8hpp_source.html#l00121">chi::Result::addScopedContext()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00885">chi::GraphModule::createLineNumberAssoc()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00276">createSubroutineType()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00067">debugCompileUnit()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00063">diBuilder()</a>, <a class="el" href="ChiModule_8hpp_source.html#l00061">chi::ChiModule::fullName()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00122">initialized()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00059">llvmModule()</a>, <a class="el" href="NameMangler_8cpp_source.html#l00009">chi::mangleFunctionName()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00340">module()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00343">nodeLineNumber()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00015">chi::validateFunction()</a>.</p>
+<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00052">chi::Result::addEntry()</a>, <a class="el" href="Result_8hpp_source.html#l00123">chi::Result::addScopedContext()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00794">chi::GraphModule::createLineNumberAssoc()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00275">createSubroutineType()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00089">debugCompileUnit()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00085">diBuilder()</a>, <a class="el" href="ChiModule_8hpp_source.html#l00061">chi::ChiModule::fullName()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00144">initialized()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00081">llvmModule()</a>, <a class="el" href="NameMangler_8cpp_source.html#l00009">chi::mangleFunctionName()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00339">module()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00342">nodeLineNumber()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00015">chi::validateFunction()</a>.</p>
 <div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-13-summary" class="dynsummary" style="display:block;">
@@ -663,9 +663,9 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <p>Get if the function is initialized (<code><a class="el" href="structchi_1_1FunctionCompiler.html#a344523ec8a120e2001436268bd47de52" title="Creates the function, but don&#39;t actually generate into it. ">initialize()</a></code> has been called) </p>
 <dl class="section return"><dt>Returns</dt><dd>True if it is, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00122">122</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00144">144</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8hpp_source.html#l00072">allocBlock()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00199">compile()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00051">diFunction()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00086">llFunction()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00331">localVariable()</a>, and <a class="el" href="FunctionCompiler_8hpp_source.html#l00095">postPureBreak()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8hpp_source.html#l00094">allocBlock()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00198">compile()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00073">diFunction()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>, <a class="el" href="FunctionCompiler_8hpp_source.html#l00108">llFunction()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00330">localVariable()</a>, and <a class="el" href="FunctionCompiler_8hpp_source.html#l00117">postPureBreak()</a>.</p>
 <div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-14-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-14-summary" class="dynsummary" style="display:block;">
@@ -704,9 +704,9 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <dl class="section pre"><dt>Precondition</dt><dd><code><a class="el" href="structchi_1_1FunctionCompiler.html#ac465b7c74ea65a5ca5f5ef748aca9258" title="Get if the function is initialized (initialize() has been called) ">initialized()</a> == true</code> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The function. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00086">86</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00108">108</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00122">initialized()</a>.</p>
+<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00144">initialized()</a>.</p>
 <div id="dynsection-15" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-15-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-15-summary" class="dynsummary" style="display:block;">
@@ -744,9 +744,9 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <p>Get the module being generated. </p>
 <dl class="section return"><dt>Returns</dt><dd>The Module </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00059">59</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00081">81</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>, and <a class="el" href="NodeCompiler_8cpp_source.html#l00231">chi::NodeCompiler::llvmModule()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>, and <a class="el" href="NodeCompiler_8cpp_source.html#l00226">chi::NodeCompiler::llvmModule()</a>.</p>
 <div id="dynsection-16" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-16-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-16-summary" class="dynsummary" style="display:block;">
@@ -778,11 +778,11 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <dl class="section pre"><dt>Precondition</dt><dd><code><a class="el" href="structchi_1_1FunctionCompiler.html#ac465b7c74ea65a5ca5f5ef748aca9258" title="Get if the function is initialized (initialize() has been called) ">initialized()</a> == true</code> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>nullptr if it doesn't exist. A value if it's valid. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00331">331</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00330">330</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00122">initialized()</a>.</p>
+<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00144">initialized()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8hpp_source.html#l00072">allocBlock()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8hpp_source.html#l00094">allocBlock()</a>.</p>
 <div id="dynsection-17" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-17-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-17-summary" class="dynsummary" style="display:block;">
@@ -820,9 +820,9 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <p>Get <code><a class="el" href="structchi_1_1FunctionCompiler.html#a7c93960313bdbd91fb703b7095a51e94" title="Get the graph function  The GraphFunction. ">function()</a>.<a class="el" href="structchi_1_1FunctionCompiler.html#a5be5f3d00d513273a40082140b514922" title="Get function().module() ">module()</a></code> </p>
 <dl class="section return"><dt>Returns</dt><dd><code><a class="el" href="structchi_1_1FunctionCompiler.html#a7c93960313bdbd91fb703b7095a51e94" title="Get the graph function  The GraphFunction. ">function()</a>.<a class="el" href="structchi_1_1FunctionCompiler.html#a5be5f3d00d513273a40082140b514922" title="Get function().module() ">module()</a></code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00340">340</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00339">339</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8hpp_source.html#l00103">function()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8hpp_source.html#l00125">function()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>.</p>
 <div id="dynsection-19" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-19-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-19-summary" class="dynsummary" style="display:block;">
@@ -854,11 +854,11 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <dl class="section pre"><dt>Precondition</dt><dd><code>&amp;node.function() == &amp;<a class="el" href="structchi_1_1FunctionCompiler.html#a7c93960313bdbd91fb703b7095a51e94" title="Get the graph function  The GraphFunction. ">function()</a></code> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The node compiler for the function </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00354">354</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00353">353</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="NodeInstance_8hpp_source.html#l00091">chi::NodeInstance::function()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00199">compile()</a>, <a class="el" href="NodeCompiler_8cpp_source.html#l00092">chi::NodeCompiler::compile_stage1()</a>, and <a class="el" href="FunctionCompiler_8hpp_source.html#l00126">compiled()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8cpp_source.html#l00198">compile()</a>, <a class="el" href="NodeCompiler_8cpp_source.html#l00091">chi::NodeCompiler::compile_stage1()</a>, and <a class="el" href="FunctionCompiler_8hpp_source.html#l00148">compiled()</a>.</p>
 <div id="dynsection-20" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-20-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-20-summary" class="dynsummary" style="display:block;">
@@ -904,11 +904,11 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The line number </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00343">343</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8cpp_source.html#l00342">342</a> of file <a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="NodeInstance_8hpp_source.html#l00091">chi::NodeInstance::function()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8hpp_source.html#l00103">function()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="FunctionCompiler_8hpp_source.html#l00125">function()</a>, and <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">initialize()</a>.</p>
 <div id="dynsection-22" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-22-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-22-summary" class="dynsummary" style="display:block;">
@@ -955,9 +955,9 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <dl class="section pre"><dt>Precondition</dt><dd><code><a class="el" href="structchi_1_1FunctionCompiler.html#ac465b7c74ea65a5ca5f5ef748aca9258" title="Get if the function is initialized (initialize() has been called) ">initialized()</a> == true</code> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The value </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00095">95</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="FunctionCompiler_8hpp_source.html#l00117">117</a> of file <a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00122">initialized()</a>.</p>
+<p class="reference">References <a class="el" href="FunctionCompiler_8hpp_source.html#l00144">initialized()</a>.</p>
 <div id="dynsection-24" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-24-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-24-summary" class="dynsummary" style="display:block;">
@@ -970,8 +970,8 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
-<li>libchigraph/include/chi/<a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a></li>
-<li>libchigraph/src/<a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a></li>
+<li>lib/core/include/chi/<a class="el" href="FunctionCompiler_8hpp_source.html">FunctionCompiler.hpp</a></li>
+<li>lib/core/src/<a class="el" href="FunctionCompiler_8cpp_source.html">FunctionCompiler.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -979,7 +979,7 @@ const <a class="el" href="structchi_1_1GraphFunction.html">GraphFunction</a> &am
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechi.html">chi</a></li><li class="navelem"><a class="el" href="structchi_1_1FunctionCompiler.html">FunctionCompiler</a></li>
-    <li class="footer">Generated on Fri Jun 9 2017 21:16:59 for chigraph by
+    <li class="footer">Generated on Sat Sep 16 2017 17:41:35 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

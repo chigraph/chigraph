@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['parsebitcodefile',['parseBitcodeFile',['../namespacechi.html#a9c3fbcf4f981b77fca1fe2db6315e341',1,'chi']]],
   ['parsecolonpair',['parseColonPair',['../namespacechi.html#aa47212ba13fb1a1d26774dc208c15255',1,'chi']]],
   ['parseobjectpair',['parseObjectPair',['../namespacechi.html#a2b3839fa03d8bfb6ef3238543d44d865',1,'chi']]],
   ['pathtocsources',['pathToCSources',['../structchi_1_1GraphModule.html#a10cfac308c6e0f1fa38be5513b2380cc',1,'chi::GraphModule']]],

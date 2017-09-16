@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['makeconverter',['makeConverter',['../structchi_1_1NodeType.html#a7d87ad6f9289fbbf76d7ef13498e78d1',1,'chi::NodeType']]],
   ['makepure',['makePure',['../structchi_1_1NodeType.html#a77693a4c560da85835a2bd666f0bc39d',1,'chi::NodeType']]],
   ['manglefunctionname',['mangleFunctionName',['../namespacechi.html#a44456c5ad1624ffdc805eb161eb948a1',1,'chi']]],
   ['modifytype',['modifyType',['../structchi_1_1GraphStruct.html#a89d3ea5e72ed6e7d8380fb82fa5eb521',1,'chi::GraphStruct']]],

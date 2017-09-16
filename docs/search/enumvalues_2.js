@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['git',['Git',['../namespacechi.html#a0019cbd6ec4fd8ff0206bac877add0c1a0bcc70105ad279503e31fe7b3f47b665',1,'chi']]]
+  ['usecache',['UseCache',['../namespacechi.html#a5ebe31b8bd52ced63520fbfd749e757fadcd9e587bf9e3e50e28d85f642306d33',1,'chi']]]
 ];

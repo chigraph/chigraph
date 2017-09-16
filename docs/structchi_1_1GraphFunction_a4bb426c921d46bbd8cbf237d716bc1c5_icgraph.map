@@ -1,18 +1,19 @@
 <map id="chi::GraphFunction::renameDataInput" name="chi::GraphFunction::renameDataInput">
-<area shape="rect" id="node2" href="$structchi_1_1GraphFunction.html#ab457f58fbb96c8089340b4ebd43cb633" title="Get the function data inputs in the format {type, docstring}. " alt="" coords="185,210,317,251"/>
-<area shape="rect" id="node3" href="$structchi_1_1GraphFunction.html#a1d740529978bdf31284b6b815ec0426b" title="Create a fresh NodeType for an entry. " alt="" coords="365,210,521,251"/>
-<area shape="rect" id="node9" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="1011,5,1183,32"/>
-<area shape="rect" id="node12" href="$structchi_1_1GraphFunction.html#ae47496f51bd5ba48bc0afd52f03ef722" title="Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two e..." alt="" coords="377,327,509,369"/>
-<area shape="rect" id="node13" href="$namespacechi.html#ad34490af81585a6e47a52e672ea33f01" title="Make sure the function entry type aligns with the function type. " alt="" coords="569,452,772,479"/>
-<area shape="rect" id="node17" href="$structchi_1_1GraphFunction.html#aa2c89c659786c9928a616a81dab267e4" title="Get the LLVM function type for the function. " alt="" coords="825,38,957,79"/>
-<area shape="rect" id="node4" href="$structchi_1_1GraphFunction.html#a0e722c9bae3101c4bb54ad9baae6f841" title="Creates an entry node if it doesn&#39;t already exist, else just return it. " alt="" coords="593,269,749,310"/>
-<area shape="rect" id="node5" href="$structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="1247,213,1379,254"/>
-<area shape="rect" id="node6" href="$structchi_1_1GraphFunction.html#a3c10d56dd68371400993b4a3c120f585" title="Rename an exec output If idx is out of range, this function does nothing. " alt="" coords="599,151,742,193"/>
-<area shape="rect" id="node7" href="$structchi_1_1GraphFunction.html#ab47bbbd84f14240b824c1a780b125207" title="Get the function exec outputs. " alt="" coords="825,103,957,145"/>
-<area shape="rect" id="node8" href="$structchi_1_1GraphFunction.html#af14ad950cfff4ad3091827f9b6ad1cd2" title="Create a fresh NodeType for an exit. " alt="" coords="1023,154,1171,195"/>
-<area shape="rect" id="node10" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1231,5,1395,32"/>
-<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="1443,5,1644,32"/>
-<area shape="rect" id="node16" href="$namespacechi.html#a0d84079ff2eef897472e3096589e62d7" title="Make sure that nodes are called before their outputs are used. " alt="" coords="585,386,757,427"/>
-<area shape="rect" id="node14" href="$namespacechi.html#acdc71d0d7f04f55316cc16af79b7f5b1" title="Validate that a function is compilable. " alt="" coords="820,423,963,449"/>
-<area shape="rect" id="node15" href="$structchi_1_1FunctionCompiler.html#a344523ec8a120e2001436268bd47de52" title="Creates the function, but don&#39;t actually generate into it. " alt="" coords="1023,415,1171,457"/>
+<area shape="rect" id="node2" href="$structchi_1_1GraphFunction.html#ab457f58fbb96c8089340b4ebd43cb633" title="Get the function data inputs in the format {type, docstring}. " alt="" coords="185,229,317,270"/>
+<area shape="rect" id="node3" href="$structchi_1_1GraphFunction.html#a1d740529978bdf31284b6b815ec0426b" title="Create a fresh NodeType for an entry. " alt="" coords="365,142,521,183"/>
+<area shape="rect" id="node9" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="955,5,1127,32"/>
+<area shape="rect" id="node12" href="$namespacechi.html#a6e8d6d34851f9df4edc4b82fedf424ce" title="Make sure it&#39;s a valid signautre for a main function. " alt="" coords="956,250,1127,291"/>
+<area shape="rect" id="node15" href="$structchi_1_1GraphFunction.html#ae47496f51bd5ba48bc0afd52f03ef722" title="Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two e..." alt="" coords="760,374,892,415"/>
+<area shape="rect" id="node16" href="$namespacechi.html#ad34490af81585a6e47a52e672ea33f01" title="Make sure the function entry type aligns with the function type. " alt="" coords="940,499,1143,525"/>
+<area shape="rect" id="node18" href="$structchi_1_1GraphFunction.html#aa2c89c659786c9928a616a81dab267e4" title="Get the LLVM function type for the function. " alt="" coords="575,199,707,241"/>
+<area shape="rect" id="node4" href="$structchi_1_1GraphFunction.html#a0e722c9bae3101c4bb54ad9baae6f841" title="Creates an entry node if it doesn&#39;t already exist, else just return it. " alt="" coords="963,315,1119,357"/>
+<area shape="rect" id="node5" href="$structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="1207,191,1339,233"/>
+<area shape="rect" id="node6" href="$structchi_1_1GraphFunction.html#a3c10d56dd68371400993b4a3c120f585" title="Rename an exec output If idx is out of range, this function does nothing. " alt="" coords="569,82,712,123"/>
+<area shape="rect" id="node7" href="$structchi_1_1GraphFunction.html#ab47bbbd84f14240b824c1a780b125207" title="Get the function exec outputs. " alt="" coords="760,82,892,123"/>
+<area shape="rect" id="node8" href="$structchi_1_1GraphFunction.html#af14ad950cfff4ad3091827f9b6ad1cd2" title="Create a fresh NodeType for an exit. " alt="" coords="967,82,1115,123"/>
+<area shape="rect" id="node10" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1191,5,1355,32"/>
+<area shape="rect" id="node11" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="1403,5,1604,32"/>
+<area shape="rect" id="node13" href="$namespacechi.html#acdc71d0d7f04f55316cc16af79b7f5b1" title="Validate that a function is compilable. " alt="" coords="1201,440,1344,467"/>
+<area shape="rect" id="node14" href="$structchi_1_1FunctionCompiler.html#a344523ec8a120e2001436268bd47de52" title="Creates the function, but don&#39;t actually generate into it. " alt="" coords="1429,433,1577,474"/>
+<area shape="rect" id="node17" href="$namespacechi.html#a0d84079ff2eef897472e3096589e62d7" title="Make sure that nodes are called before their outputs are used. " alt="" coords="955,433,1127,474"/>
 </map>

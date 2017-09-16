@@ -4,6 +4,7 @@ var namespacechi =
     [ "Context", "structchi_1_1Context.html", "structchi_1_1Context" ],
     [ "DataType", "structchi_1_1DataType.html", "structchi_1_1DataType" ],
     [ "Debugger", "classchi_1_1Debugger.html", "classchi_1_1Debugger" ],
+    [ "DefaultModuleCache", "structchi_1_1DefaultModuleCache.html", "structchi_1_1DefaultModuleCache" ],
     [ "Flags", "structchi_1_1Flags.html", "structchi_1_1Flags" ],
     [ "FunctionCompiler", "structchi_1_1FunctionCompiler.html", "structchi_1_1FunctionCompiler" ],
     [ "GraphFunction", "structchi_1_1GraphFunction.html", "structchi_1_1GraphFunction" ],

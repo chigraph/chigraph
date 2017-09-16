@@ -48,76 +48,76 @@ if (edges && edges.length) {
 <script type="text/javascript">
 var viewWidth = 510;
 var viewHeight = 104;
-var sectionId = 'dynsection-23';
+var sectionId = 'dynsection-22';
 </script>
 <script xlink:href="svgpan.js"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>chi::Context::typeFromModule</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-100 506,-100 506,4 -4,4"/>
-<!-- Node474 -->
+<!-- Node473 -->
 <g id="node1" class="node">
-<title>Node474</title>
+<title>Node473</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-38.5 0,-57.5 148,-57.5 148,-38.5 0,-38.5"/>
 <text text-anchor="middle" x="74" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::typeFromModule</text>
 </g>
-<!-- Node475 -->
+<!-- Node474 -->
 <g id="node2" class="node">
-<title>Node475</title>
+<title>Node474</title>
 <g id="a_node2"><a xlink:href="structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" target="_top" xlink:title="Add a entry to the result, either a warning or an error. ">
 <polygon fill="#ffffff" stroke="#000000" points="210,-76.5 210,-95.5 318,-95.5 318,-76.5 210,-76.5"/>
 <text text-anchor="middle" x="264" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::addEntry</text>
 </a>
 </g>
 </g>
-<!-- Node474&#45;&gt;Node475 -->
+<!-- Node473&#45;&gt;Node474 -->
 <g id="edge1" class="edge">
-<title>Node474&#45;&gt;Node475</title>
+<title>Node473&#45;&gt;Node474</title>
 <path fill="none" stroke="#191970" d="M121.945,-57.589C147.5823,-62.7165 179.3362,-69.0672 206.316,-74.4632"/>
 <polygon fill="#191970" stroke="#191970" points="205.9075,-77.9507 216.3997,-76.4799 207.2804,-71.0867 205.9075,-77.9507"/>
 </g>
-<!-- Node477 -->
+<!-- Node476 -->
 <g id="node4" class="node">
-<title>Node477</title>
+<title>Node476</title>
 <g id="a_node4"><a xlink:href="structchi_1_1Context.html#a8628a178e0a8a944065f2605d01a36d5" target="_top" xlink:title="Gets the module by the full name. ">
 <polygon fill="#ffffff" stroke="#000000" points="184,-38.5 184,-57.5 344,-57.5 344,-38.5 184,-38.5"/>
 <text text-anchor="middle" x="264" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Context::moduleByFullName</text>
 </a>
 </g>
 </g>
-<!-- Node474&#45;&gt;Node477 -->
+<!-- Node473&#45;&gt;Node476 -->
 <g id="edge3" class="edge">
-<title>Node474&#45;&gt;Node477</title>
+<title>Node473&#45;&gt;Node476</title>
 <path fill="none" stroke="#191970" d="M148.003,-48C156.4658,-48 165.1625,-48 173.8061,-48"/>
 <polygon fill="#191970" stroke="#191970" points="173.9112,-51.5001 183.9112,-48 173.9112,-44.5001 173.9112,-51.5001"/>
 </g>
-<!-- Node478 -->
+<!-- Node477 -->
 <g id="node5" class="node">
-<title>Node478</title>
+<title>Node477</title>
 <g id="a_node5"><a xlink:href="structchi_1_1ChiModule.html#a03aa9f90fafd384094861dfff13eba77" target="_top" xlink:title="Get a DataType from the name. ">
 <polygon fill="#ffffff" stroke="#000000" points="187,-.5 187,-19.5 341,-19.5 341,-.5 187,-.5"/>
 <text text-anchor="middle" x="264" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::ChiModule::typeFromName</text>
 </a>
 </g>
 </g>
-<!-- Node474&#45;&gt;Node478 -->
+<!-- Node473&#45;&gt;Node477 -->
 <g id="edge4" class="edge">
-<title>Node474&#45;&gt;Node478</title>
+<title>Node473&#45;&gt;Node477</title>
 <path fill="none" stroke="#191970" d="M121.945,-38.411C147.5823,-33.2835 179.3362,-26.9328 206.316,-21.5368"/>
 <polygon fill="#191970" stroke="#191970" points="207.2804,-24.9133 216.3997,-19.5201 205.9075,-18.0493 207.2804,-24.9133"/>
 </g>
-<!-- Node476 -->
+<!-- Node475 -->
 <g id="node3" class="node">
-<title>Node476</title>
+<title>Node475</title>
 <g id="a_node3"><a xlink:href="structchi_1_1Result.html#aa078d3cb3dfb2fb63e81b71acea036e0" target="_top" xlink:title="Get the JSON associated with the context that&#39;s been added. ">
 <polygon fill="#ffffff" stroke="#000000" points="380,-76.5 380,-95.5 502,-95.5 502,-76.5 380,-76.5"/>
 <text text-anchor="middle" x="441" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::Result::contextJson</text>
 </a>
 </g>
 </g>
-<!-- Node475&#45;&gt;Node476 -->
+<!-- Node474&#45;&gt;Node475 -->
 <g id="edge2" class="edge">
-<title>Node475&#45;&gt;Node476</title>
+<title>Node474&#45;&gt;Node475</title>
 <path fill="none" stroke="#191970" d="M318.0676,-86C334.3848,-86 352.5522,-86 369.8063,-86"/>
 <polygon fill="#191970" stroke="#191970" points="369.8388,-89.5001 379.8388,-86 369.8388,-82.5001 369.8388,-89.5001"/>
 </g>

@@ -6,5 +6,6 @@ var searchData=
   ['validatefunctionentrytype',['validateFunctionEntryType',['../namespacechi.html#ad34490af81585a6e47a52e672ea33f01',1,'chi']]],
   ['validatefunctionexecoutputs',['validateFunctionExecOutputs',['../namespacechi.html#ae075e3bed58aaa6484e4b0e90872c19e',1,'chi']]],
   ['validatefunctionexittypes',['validateFunctionExitTypes',['../namespacechi.html#af52d66c93c9e19da67c21bbb5747f5a4',1,'chi']]],
+  ['validatefunctionmainsignature',['validateFunctionMainSignature',['../namespacechi.html#a6e8d6d34851f9df4edc4b82fedf424ce',1,'chi']]],
   ['validatefunctionnodeinputs',['validateFunctionNodeInputs',['../namespacechi.html#a0d84079ff2eef897472e3096589e62d7',1,'chi']]]
 ];

@@ -9,46 +9,46 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 73.5)">
 <title>chi::LangModule::typeFromName</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-73.5 494,-73.5 494,4 -4,4"/>
-<!-- Node311 -->
+<!-- Node325 -->
 <g id="node1" class="node">
-<title>Node311</title>
+<title>Node325</title>
 <polygon fill="#bfbfbf" stroke="#000000" points="0,-22.5 0,-41.5 161,-41.5 161,-22.5 0,-22.5"/>
 <text text-anchor="middle" x="80.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::LangModule::typeFromName</text>
 </g>
-<!-- Node312 -->
+<!-- Node326 -->
 <g id="node2" class="node">
-<title>Node312</title>
-<g id="a_node2"><a xlink:href="structchi_1_1FunctionCompiler.html#aa7fab17d68ed66784203b5571b4b4c64" target="_top" xlink:title="Create the subroutine type for the function. ">
+<title>Node326</title>
+<g id="a_node2"><a xlink:href="structchi_1_1FunctionCompiler.html#affeb034e0b6a66320398482eda2f3945" target="_top" xlink:title="Create the subroutine type for the function. ">
 <polygon fill="#ffffff" stroke="#000000" points="211,-39 211,-69 329,-69 329,-39 211,-39"/>
 <text text-anchor="start" x="219" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::FunctionCompiler</text>
 <text text-anchor="middle" x="270" y="-46" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">::createSubroutineType</text>
 </a>
 </g>
 </g>
-<!-- Node311&#45;&gt;Node312 -->
+<!-- Node325&#45;&gt;Node326 -->
 <g id="edge1" class="edge">
-<title>Node311&#45;&gt;Node312</title>
+<title>Node325&#45;&gt;Node326</title>
 <path fill="none" stroke="#191970" d="M171.3862,-42.5514C184.8354,-44.1128 198.3885,-45.6863 210.9593,-47.1457"/>
 <polygon fill="#191970" stroke="#191970" points="171.4768,-39.0385 161.1398,-41.3619 170.6695,-45.9918 171.4768,-39.0385"/>
 </g>
-<!-- Node314 -->
+<!-- Node328 -->
 <g id="node4" class="node">
-<title>Node314</title>
+<title>Node328</title>
 <g id="a_node4"><a xlink:href="structchi_1_1LangModule.html#a0d623aa2342eec20ab11150e793f6b9e" target="_top" xlink:title="Default constructor, usually called from Context::loadModule(&quot;lang&quot;) ">
 <polygon fill="#ffffff" stroke="#000000" points="197,-.5 197,-19.5 343,-19.5 343,-.5 197,-.5"/>
 <text text-anchor="middle" x="270" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::LangModule::LangModule</text>
 </a>
 </g>
 </g>
-<!-- Node311&#45;&gt;Node314 -->
+<!-- Node325&#45;&gt;Node328 -->
 <g id="edge3" class="edge">
-<title>Node311&#45;&gt;Node314</title>
+<title>Node325&#45;&gt;Node328</title>
 <path fill="none" stroke="#191970" d="M171.2242,-21.4674C179.8466,-20.4664 188.5135,-19.4602 196.9387,-18.482"/>
 <polygon fill="#191970" stroke="#191970" points="170.6695,-18.0082 161.1398,-22.6381 171.4768,-24.9615 170.6695,-18.0082"/>
 </g>
-<!-- Node313 -->
+<!-- Node327 -->
 <g id="node3" class="node">
-<title>Node313</title>
+<title>Node327</title>
 <g id="a_node3"><a xlink:href="structchi_1_1FunctionCompiler.html#a344523ec8a120e2001436268bd47de52" target="_top" xlink:title="Creates the function, but don&#39;t actually generate into it. ">
 <polygon fill="#ffffff" stroke="#000000" points="379,-39 379,-69 490,-69 490,-39 379,-39"/>
 <text text-anchor="start" x="387" y="-57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">chi::FunctionCompiler</text>
@@ -56,9 +56,9 @@
 </a>
 </g>
 </g>
-<!-- Node312&#45;&gt;Node313 -->
+<!-- Node326&#45;&gt;Node327 -->
 <g id="edge2" class="edge">
-<title>Node312&#45;&gt;Node313</title>
+<title>Node326&#45;&gt;Node327</title>
 <path fill="none" stroke="#191970" d="M339.7236,-54C352.7579,-54 366.2219,-54 378.7648,-54"/>
 <polygon fill="#191970" stroke="#191970" points="339.3883,-50.5001 329.3883,-54 339.3882,-57.5001 339.3883,-50.5001"/>
 </g>

@@ -1,17 +1,18 @@
 <map id="chi::GraphFunction::dataInputs" name="chi::GraphFunction::dataInputs">
-<area shape="rect" id="node2" href="$structchi_1_1GraphFunction.html#a1d740529978bdf31284b6b815ec0426b" title="Create a fresh NodeType for an entry. " alt="" coords="185,210,341,251"/>
-<area shape="rect" id="node8" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="831,5,1003,32"/>
-<area shape="rect" id="node11" href="$structchi_1_1GraphFunction.html#ae47496f51bd5ba48bc0afd52f03ef722" title="Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two e..." alt="" coords="197,327,329,369"/>
-<area shape="rect" id="node15" href="$namespacechi.html#ad34490af81585a6e47a52e672ea33f01" title="Make sure the function entry type aligns with the function type. " alt="" coords="389,452,592,479"/>
-<area shape="rect" id="node16" href="$structchi_1_1GraphFunction.html#aa2c89c659786c9928a616a81dab267e4" title="Get the LLVM function type for the function. " alt="" coords="645,38,777,79"/>
-<area shape="rect" id="node3" href="$structchi_1_1GraphFunction.html#a0e722c9bae3101c4bb54ad9baae6f841" title="Creates an entry node if it doesn&#39;t already exist, else just return it. " alt="" coords="413,269,569,310"/>
-<area shape="rect" id="node4" href="$structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="1067,213,1199,254"/>
-<area shape="rect" id="node5" href="$structchi_1_1GraphFunction.html#a3c10d56dd68371400993b4a3c120f585" title="Rename an exec output If idx is out of range, this function does nothing. " alt="" coords="419,151,562,193"/>
-<area shape="rect" id="node6" href="$structchi_1_1GraphFunction.html#ab47bbbd84f14240b824c1a780b125207" title="Get the function exec outputs. " alt="" coords="645,103,777,145"/>
-<area shape="rect" id="node7" href="$structchi_1_1GraphFunction.html#af14ad950cfff4ad3091827f9b6ad1cd2" title="Create a fresh NodeType for an exit. " alt="" coords="843,154,991,195"/>
-<area shape="rect" id="node9" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1051,5,1215,32"/>
-<area shape="rect" id="node10" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="1263,5,1464,32"/>
-<area shape="rect" id="node12" href="$namespacechi.html#a0d84079ff2eef897472e3096589e62d7" title="Make sure that nodes are called before their outputs are used. " alt="" coords="405,386,577,427"/>
-<area shape="rect" id="node13" href="$namespacechi.html#acdc71d0d7f04f55316cc16af79b7f5b1" title="Validate that a function is compilable. " alt="" coords="640,423,783,449"/>
-<area shape="rect" id="node14" href="$structchi_1_1FunctionCompiler.html#a344523ec8a120e2001436268bd47de52" title="Creates the function, but don&#39;t actually generate into it. " alt="" coords="843,415,991,457"/>
+<area shape="rect" id="node2" href="$structchi_1_1GraphFunction.html#a1d740529978bdf31284b6b815ec0426b" title="Create a fresh NodeType for an entry. " alt="" coords="185,141,341,182"/>
+<area shape="rect" id="node7" href="$namespacechi.html#a6e8d6d34851f9df4edc4b82fedf424ce" title="Make sure it&#39;s a valid signautre for a main function. " alt="" coords="776,199,947,241"/>
+<area shape="rect" id="node11" href="$namespacechi.html#afd8b8d8a207d88359ad1e6a48d8f3bb1" title="Serialize a GraphFunction to json. " alt="" coords="775,5,947,32"/>
+<area shape="rect" id="node14" href="$structchi_1_1GraphFunction.html#ae47496f51bd5ba48bc0afd52f03ef722" title="Gets the node with type lang:entry returns nullptr on failure Also returns nullptr if there are two e..." alt="" coords="580,375,712,417"/>
+<area shape="rect" id="node16" href="$namespacechi.html#ad34490af81585a6e47a52e672ea33f01" title="Make sure the function entry type aligns with the function type. " alt="" coords="760,500,963,527"/>
+<area shape="rect" id="node17" href="$structchi_1_1GraphFunction.html#aa2c89c659786c9928a616a81dab267e4" title="Get the LLVM function type for the function. " alt="" coords="395,258,527,299"/>
+<area shape="rect" id="node3" href="$structchi_1_1GraphFunction.html#a0e722c9bae3101c4bb54ad9baae6f841" title="Creates an entry node if it doesn&#39;t already exist, else just return it. " alt="" coords="783,317,939,358"/>
+<area shape="rect" id="node4" href="$structchi_1_1GraphFunction.html#a900c0b670ad04a76b6add803ade7ae0d" title="Get the nodes in the function Usually called by connectData or connectExec or GraphFunction. " alt="" coords="1027,258,1159,299"/>
+<area shape="rect" id="node5" href="$structchi_1_1GraphFunction.html#a3c10d56dd68371400993b4a3c120f585" title="Rename an exec output If idx is out of range, this function does nothing. " alt="" coords="389,82,532,123"/>
+<area shape="rect" id="node6" href="$structchi_1_1GraphFunction.html#ab47bbbd84f14240b824c1a780b125207" title="Get the function exec outputs. " alt="" coords="580,31,712,73"/>
+<area shape="rect" id="node10" href="$structchi_1_1GraphFunction.html#af14ad950cfff4ad3091827f9b6ad1cd2" title="Create a fresh NodeType for an exit. " alt="" coords="787,82,935,123"/>
+<area shape="rect" id="node8" href="$namespacechi.html#acdc71d0d7f04f55316cc16af79b7f5b1" title="Validate that a function is compilable. " alt="" coords="1021,441,1164,468"/>
+<area shape="rect" id="node9" href="$structchi_1_1FunctionCompiler.html#a344523ec8a120e2001436268bd47de52" title="Creates the function, but don&#39;t actually generate into it. " alt="" coords="1249,434,1397,475"/>
+<area shape="rect" id="node12" href="$namespacechi.html#a9a4f3fa54c612f0c559a353bb7382d5a" title="Serialize a JsonModule to json. " alt="" coords="1011,5,1175,32"/>
+<area shape="rect" id="node13" href="$structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e" title="Serialize to disk in the context. " alt="" coords="1223,5,1424,32"/>
+<area shape="rect" id="node15" href="$namespacechi.html#a0d84079ff2eef897472e3096589e62d7" title="Make sure that nodes are called before their outputs are used. " alt="" coords="775,434,947,475"/>
 </map>

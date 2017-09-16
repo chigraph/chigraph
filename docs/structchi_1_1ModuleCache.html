@@ -88,14 +88,21 @@ $(document).ready(function(){initNavTree('structchi_1_1ModuleCache.html','');});
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structchi_1_1ModuleCache-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">chi::ModuleCache Struct Reference</div>  </div>
+<div class="title">chi::ModuleCache Struct Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This class caches modules into the lib/ direcotry of the workspace.  
+<p>This class provides an interface for creating module caches.  
  <a href="structchi_1_1ModuleCache.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ModuleCache_8hpp_source.html">chi/ModuleCache.hpp</a>&gt;</code></p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Inheritance diagram for chi::ModuleCache:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache__inherit__graph.svg" width="178" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -109,44 +116,48 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:add62dd291fc17dcc03d3f219c51a78d2"><td class="memItemLeft" align="right" valign="top"><a id="add62dd291fc17dcc03d3f219c51a78d2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ModuleCache</b> (<a class="el" href="structchi_1_1ModuleCache.html">ModuleCache</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:add62dd291fc17dcc03d3f219c51a78d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3f34f212105d721e10e9b24f005b977"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchi_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#ae3f34f212105d721e10e9b24f005b977">cacheModule</a> (const boost::filesystem::path &amp;moduleName, llvm::Module &amp;compiledModule, std::time_t timeAtFileRead)</td></tr>
-<tr class="memdesc:ae3f34f212105d721e10e9b24f005b977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache a module.  <a href="#ae3f34f212105d721e10e9b24f005b977">More...</a><br /></td></tr>
-<tr class="separator:ae3f34f212105d721e10e9b24f005b977"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7533652808cf359ed6ea975dbe11dd43"><td class="memItemLeft" align="right" valign="top">boost::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#a7533652808cf359ed6ea975dbe11dd43">cachePathForModule</a> (const boost::filesystem::path &amp;moduleName) const</td></tr>
-<tr class="memdesc:a7533652808cf359ed6ea975dbe11dd43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the cache name for a module.  <a href="#a7533652808cf359ed6ea975dbe11dd43">More...</a><br /></td></tr>
-<tr class="separator:a7533652808cf359ed6ea975dbe11dd43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84d4740ea3a35529be3797456995cf3f"><td class="memItemLeft" align="right" valign="top">std::time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#a84d4740ea3a35529be3797456995cf3f">cacheUpdateTime</a> (const boost::filesystem::path &amp;moduleName) const</td></tr>
-<tr class="memdesc:a84d4740ea3a35529be3797456995cf3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the time that a cache was updated.  <a href="#a84d4740ea3a35529be3797456995cf3f">More...</a><br /></td></tr>
-<tr class="separator:a84d4740ea3a35529be3797456995cf3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ebdd2fe3e0835df8abfb0efe642dad3"><td class="memItemLeft" align="right" valign="top"><a id="a5ebdd2fe3e0835df8abfb0efe642dad3"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#a5ebdd2fe3e0835df8abfb0efe642dad3">~ModuleCache</a> ()=default</td></tr>
+<tr class="memdesc:a5ebdd2fe3e0835df8abfb0efe642dad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="separator:a5ebdd2fe3e0835df8abfb0efe642dad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf93dc80687d0d13ebba4d3f5d215620"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structchi_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#acf93dc80687d0d13ebba4d3f5d215620">cacheModule</a> (const boost::filesystem::path &amp;moduleName, llvm::Module &amp;compiledModule, std::time_t timeAtFileRead)=0</td></tr>
+<tr class="memdesc:acf93dc80687d0d13ebba4d3f5d215620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cache a module.  <a href="#acf93dc80687d0d13ebba4d3f5d215620">More...</a><br /></td></tr>
+<tr class="separator:acf93dc80687d0d13ebba4d3f5d215620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa46e60b79154f29101838c25d0d52ff8"><td class="memItemLeft" align="right" valign="top">virtual std::time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#aa46e60b79154f29101838c25d0d52ff8">cacheUpdateTime</a> (const boost::filesystem::path &amp;moduleName) const =0</td></tr>
+<tr class="memdesc:aa46e60b79154f29101838c25d0d52ff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the time that a cache was updated.  <a href="#aa46e60b79154f29101838c25d0d52ff8">More...</a><br /></td></tr>
+<tr class="separator:aa46e60b79154f29101838c25d0d52ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00529c4dd7aa04ffdf43689abd24f183"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structchi_1_1Context.html">Context</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#a00529c4dd7aa04ffdf43689abd24f183">context</a> () const</td></tr>
 <tr class="memdesc:a00529c4dd7aa04ffdf43689abd24f183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the context this cache is bound to.  <a href="#a00529c4dd7aa04ffdf43689abd24f183">More...</a><br /></td></tr>
 <tr class="separator:a00529c4dd7aa04ffdf43689abd24f183"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28ab26c3bd85a4795d9c04809f9a687b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#a28ab26c3bd85a4795d9c04809f9a687b">invalidateCache</a> (const boost::filesystem::path &amp;moduleName)</td></tr>
-<tr class="memdesc:a28ab26c3bd85a4795d9c04809f9a687b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inavlidate the cache, as it delete the cache file.  <a href="#a28ab26c3bd85a4795d9c04809f9a687b">More...</a><br /></td></tr>
-<tr class="separator:a28ab26c3bd85a4795d9c04809f9a687b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1da914cd290102492f3b588af705d02c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#a1da914cd290102492f3b588af705d02c">invalidateCache</a> (const boost::filesystem::path &amp;moduleName)=0</td></tr>
+<tr class="memdesc:a1da914cd290102492f3b588af705d02c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inavlidate the cache, ie.  <a href="#a1da914cd290102492f3b588af705d02c">More...</a><br /></td></tr>
+<tr class="separator:a1da914cd290102492f3b588af705d02c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad903c2a61901bdb750698ba6f93911aa"><td class="memItemLeft" align="right" valign="top"><a id="ad903c2a61901bdb750698ba6f93911aa"></a>
 <a class="el" href="structchi_1_1ModuleCache.html">ModuleCache</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="structchi_1_1ModuleCache.html">ModuleCache</a> &amp;)=delete</td></tr>
 <tr class="separator:ad903c2a61901bdb750698ba6f93911aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71f1a9f2466fe55974f24ab389d693e2"><td class="memItemLeft" align="right" valign="top"><a id="a71f1a9f2466fe55974f24ab389d693e2"></a>
 <a class="el" href="structchi_1_1ModuleCache.html">ModuleCache</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="structchi_1_1ModuleCache.html">ModuleCache</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:a71f1a9f2466fe55974f24ab389d693e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9822fcf51ebd701cb2dc59a858080bf0"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; llvm::Module &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#a9822fcf51ebd701cb2dc59a858080bf0">retrieveFromCache</a> (const boost::filesystem::path &amp;moduleName, std::time_t atLeastThisNew)</td></tr>
-<tr class="memdesc:a9822fcf51ebd701cb2dc59a858080bf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a module from the cache.  <a href="#a9822fcf51ebd701cb2dc59a858080bf0">More...</a><br /></td></tr>
-<tr class="separator:a9822fcf51ebd701cb2dc59a858080bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a052da4f3f833549b36234932268d5e2c"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; llvm::Module &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchi_1_1ModuleCache.html#a052da4f3f833549b36234932268d5e2c">retrieveFromCache</a> (const boost::filesystem::path &amp;moduleName, std::time_t atLeastThisNew)=0</td></tr>
+<tr class="memdesc:a052da4f3f833549b36234932268d5e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a module from the cache.  <a href="#a052da4f3f833549b36234932268d5e2c">More...</a><br /></td></tr>
+<tr class="separator:a052da4f3f833549b36234932268d5e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class caches modules into the lib/ direcotry of the workspace. </p>
+<div class="textblock"><p>This class provides an interface for creating module caches. </p>
 
 <p class="definition">Definition at line <a class="el" href="ModuleCache_8hpp_source.html#l00016">16</a> of file <a class="el" href="ModuleCache_8hpp_source.html">ModuleCache.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae3f34f212105d721e10e9b24f005b977"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3f34f212105d721e10e9b24f005b977">&#9670;&nbsp;</a></span>cacheModule()</h2>
+<a id="acf93dc80687d0d13ebba4d3f5d215620"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf93dc80687d0d13ebba4d3f5d215620">&#9670;&nbsp;</a></span>cacheModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structchi_1_1Result.html">Result</a> chi::ModuleCache::cacheModule </td>
+          <td class="memname">virtual <a class="el" href="structchi_1_1Result.html">Result</a> chi::ModuleCache::cacheModule </td>
           <td>(</td>
           <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>moduleName</em>, </td>
@@ -169,6 +180,11 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Cache a module. </p>
@@ -188,91 +204,41 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchi_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00026">26</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
+<p>Implemented in <a class="el" href="structchi_1_1DefaultModuleCache.html#a5b638a834c434c103ebc5c0d3a70d021">chi::DefaultModuleCache</a>.</p>
 
-<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00555">chi::Context::compileModule()</a>.</p>
-<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_ae3f34f212105d721e10e9b24f005b977_cgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00298">chi::Context::compileModule()</a>, and <a class="el" href="ModuleCache_8hpp_source.html#l00018">ModuleCache()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_ae3f34f212105d721e10e9b24f005b977_icgraph.svg" width="456" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_acf93dc80687d0d13ebba4d3f5d215620_icgraph.svg" width="456" height="104"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a7533652808cf359ed6ea975dbe11dd43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7533652808cf359ed6ea975dbe11dd43">&#9670;&nbsp;</a></span>cachePathForModule()</h2>
+<a id="aa46e60b79154f29101838c25d0d52ff8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa46e60b79154f29101838c25d0d52ff8">&#9670;&nbsp;</a></span>cacheUpdateTime()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">boost::filesystem::path chi::ModuleCache::cachePathForModule </td>
+          <td class="memname">virtual std::time_t chi::ModuleCache::cacheUpdateTime </td>
           <td>(</td>
           <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>moduleName</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-<p>Get the cache name for a module. </p>
-<p>Basically <code><a class="el" href="structchi_1_1ModuleCache.html#a00529c4dd7aa04ffdf43689abd24f183" title="Get the context this cache is bound to. ">context()</a>.workspacePath() / moduleName + ".bc"</code> </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">moduleName</td><td>The name of the module to get a cache path for </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The path </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00058">58</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="ModuleCache_8hpp_source.html#l00061">context()</a>, and <a class="el" href="Context_8hpp_source.html#l00153">chi::Context::workspacePath()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="ModuleCache_8cpp_source.html#l00026">cacheModule()</a>, <a class="el" href="ModuleCache_8cpp_source.html#l00071">cacheUpdateTime()</a>, <a class="el" href="ModuleCache_8cpp_source.html#l00063">invalidateCache()</a>, and <a class="el" href="ModuleCache_8cpp_source.html#l00075">retrieveFromCache()</a>.</p>
-<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a7533652808cf359ed6ea975dbe11dd43_cgraph.svg" width="444" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-3-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a7533652808cf359ed6ea975dbe11dd43_icgraph.svg" width="100%" height="454"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div>
-
-</div>
-</div>
-<a id="a84d4740ea3a35529be3797456995cf3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84d4740ea3a35529be3797456995cf3f">&#9670;&nbsp;</a></span>cacheUpdateTime()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::time_t chi::ModuleCache::cacheUpdateTime </td>
-          <td>(</td>
-          <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
-          <td class="paramname"><em>moduleName</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get the time that a cache was updated. </p>
@@ -284,25 +250,15 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The time it was updated, or 0 if there is no cache </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00071">71</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
+<p>Implemented in <a class="el" href="structchi_1_1DefaultModuleCache.html#a550d8acf4e89a39d9399c0f512ac04f3">chi::DefaultModuleCache</a>.</p>
 
-<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="ModuleCache_8cpp_source.html#l00075">retrieveFromCache()</a>.</p>
-<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="ModuleCache_8hpp_source.html#l00018">ModuleCache()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-4-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a84d4740ea3a35529be3797456995cf3f_cgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-5-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a84d4740ea3a35529be3797456995cf3f_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_aa46e60b79154f29101838c25d0d52ff8_icgraph.svg" width="474" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -333,38 +289,46 @@ Public Member Functions</h2></td></tr>
 <p>Get the context this cache is bound to. </p>
 <dl class="section return"><dt>Returns</dt><dd>the <code><a class="el" href="structchi_1_1Context.html" title="The class that handles the loading, creation, storing, and compilation of modules It also stores a LL...">Context</a></code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8hpp_source.html#l00061">61</a> of file <a class="el" href="ModuleCache_8hpp_source.html">ModuleCache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ModuleCache_8hpp_source.html#l00059">59</a> of file <a class="el" href="ModuleCache_8hpp_source.html">ModuleCache.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>, and <a class="el" href="ModuleCache_8cpp_source.html#l00075">retrieveFromCache()</a>.</p>
-<div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-6-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="DefaultModuleCache_8cpp_source.html#l00070">chi::DefaultModuleCache::cachePathForModule()</a>, and <a class="el" href="DefaultModuleCache_8cpp_source.html#l00087">chi::DefaultModuleCache::retrieveFromCache()</a>.</p>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-6-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a00529c4dd7aa04ffdf43689abd24f183_icgraph.svg" width="100%" height="479"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a00529c4dd7aa04ffdf43689abd24f183_icgraph.svg" width="100%" height="504"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 
 </div>
 </div>
-<a id="a28ab26c3bd85a4795d9c04809f9a687b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28ab26c3bd85a4795d9c04809f9a687b">&#9670;&nbsp;</a></span>invalidateCache()</h2>
+<a id="a1da914cd290102492f3b588af705d02c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1da914cd290102492f3b588af705d02c">&#9670;&nbsp;</a></span>invalidateCache()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void chi::ModuleCache::invalidateCache </td>
+          <td class="memname">virtual void chi::ModuleCache::invalidateCache </td>
           <td>(</td>
           <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>moduleName</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Inavlidate the cache, as it delete the cache file. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Inavlidate the cache, ie. </p>
+<p>delete the cache file </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">moduleName</td><td>The name of the module to invalidate </td></tr>
   </table>
@@ -372,27 +336,30 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section pre"><dt>Precondition</dt><dd><code>!moduleName.empty()</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00063">63</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
+<p>Implemented in <a class="el" href="structchi_1_1DefaultModuleCache.html#a3b4f579458e59863f464f0b28e22ac10">chi::DefaultModuleCache</a>.</p>
 
-<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>.</p>
-<div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-7-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="ModuleCache_8hpp_source.html#l00018">ModuleCache()</a>.</p>
+<div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-4-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-7-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a28ab26c3bd85a4795d9c04809f9a687b_cgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div id="dynsection-4-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a1da914cd290102492f3b588af705d02c_icgraph.svg" width="424" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="a9822fcf51ebd701cb2dc59a858080bf0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9822fcf51ebd701cb2dc59a858080bf0">&#9670;&nbsp;</a></span>retrieveFromCache()</h2>
+<a id="a052da4f3f833549b36234932268d5e2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a052da4f3f833549b36234932268d5e2c">&#9670;&nbsp;</a></span>retrieveFromCache()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unique_ptr&lt; llvm::Module &gt; chi::ModuleCache::retrieveFromCache </td>
+          <td class="memname">virtual std::unique_ptr&lt;llvm::Module&gt; chi::ModuleCache::retrieveFromCache </td>
           <td>(</td>
           <td class="paramtype">const boost::filesystem::path &amp;&#160;</td>
           <td class="paramname"><em>moduleName</em>, </td>
@@ -409,6 +376,11 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Retrieve a module from the cache. </p>
@@ -427,32 +399,21 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A llvm::Module, or nullptr if no suitable cache was found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ModuleCache_8cpp_source.html#l00075">75</a> of file <a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a>.</p>
+<p>Implemented in <a class="el" href="structchi_1_1DefaultModuleCache.html#a0ed6e8d3f71ca9e215d3564d5beb46c9">chi::DefaultModuleCache</a>.</p>
 
-<p class="reference">References <a class="el" href="ModuleCache_8cpp_source.html#l00058">cachePathForModule()</a>, <a class="el" href="ModuleCache_8cpp_source.html#l00071">cacheUpdateTime()</a>, <a class="el" href="ModuleCache_8hpp_source.html#l00061">context()</a>, and <a class="el" href="Context_8hpp_source.html#l00188">chi::Context::llvmContext()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00555">chi::Context::compileModule()</a>.</p>
-<div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
-<div id="dynsection-8-summary" class="dynsummary" style="display:block;">
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00298">chi::Context::compileModule()</a>, and <a class="el" href="ModuleCache_8hpp_source.html#l00018">ModuleCache()</a>.</p>
+<div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-5-summary" class="dynsummary" style="display:block;">
 </div>
-<div id="dynsection-8-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a9822fcf51ebd701cb2dc59a858080bf0_cgraph.svg" width="100%" height="421"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-<div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
-<div id="dynsection-9-summary" class="dynsummary" style="display:block;">
-</div>
-<div id="dynsection-9-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a9822fcf51ebd701cb2dc59a858080bf0_icgraph.svg" width="423" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div id="dynsection-5-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1ModuleCache_a052da4f3f833549b36234932268d5e2c_icgraph.svg" width="423" height="104"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following files:<ul>
-<li>libchigraph/include/chi/<a class="el" href="ModuleCache_8hpp_source.html">ModuleCache.hpp</a></li>
-<li>libchigraph/src/<a class="el" href="ModuleCache_8cpp_source.html">ModuleCache.cpp</a></li>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>lib/core/include/chi/<a class="el" href="ModuleCache_8hpp_source.html">ModuleCache.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -460,7 +421,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechi.html">chi</a></li><li class="navelem"><a class="el" href="structchi_1_1ModuleCache.html">ModuleCache</a></li>
-    <li class="footer">Generated on Fri Jun 9 2017 21:16:59 for chigraph by
+    <li class="footer">Generated on Sat Sep 16 2017 17:41:35 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

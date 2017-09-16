@@ -5,5 +5,6 @@ var FunctionValidator_8cpp =
     [ "validateFunctionEntryType", "FunctionValidator_8cpp.html#ad34490af81585a6e47a52e672ea33f01", null ],
     [ "validateFunctionExecOutputs", "FunctionValidator_8cpp.html#ae075e3bed58aaa6484e4b0e90872c19e", null ],
     [ "validateFunctionExitTypes", "FunctionValidator_8cpp.html#af52d66c93c9e19da67c21bbb5747f5a4", null ],
+    [ "validateFunctionMainSignature", "FunctionValidator_8cpp.html#a6e8d6d34851f9df4edc4b82fedf424ce", null ],
     [ "validateFunctionNodeInputs", "FunctionValidator_8cpp.html#a0d84079ff2eef897472e3096589e62d7", null ]
 ];
