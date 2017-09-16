@@ -46,52 +46,6 @@ set(CHI_PRIVATE_FILES
 )
 add_library(chigraphcore STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
-# Make sure we have a good enough compiler
-
-# check that if we're using MSVC it's 2015+
-if (MSVC AND MSVC_VERSION LESS 1900)
-	message(FATAL_ERROR "Cannot use chigraph with MSVC older than 2015, please upgrade to 2015 or newer")
-endif()
-
-# Make sure our compiler supports the things I (and dependencies) use
-if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
-	CXX11_CHECK_FEATURE("rvalue_references"  2118 HAS_CXX11_RVALUE_REFERENCES)
-	CXX11_CHECK_FEATURE("variadic_templates" 2555 HAS_CXX11_VARIADIC_TEMPLATES)
-	CXX11_CHECK_FEATURE("constexpr"          2235 HAS_CXX11_CONSTEXPR)
-	
-	# and make sure we get the compile option to enable it if the compiler needs it
-	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
-		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
-		CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-		target_compile_options(chigraphcore PUBLIC -std=c++14)
-	endif()
-else()
-	# if we have an new enough cmake, then we can just use this call that does all that for us
-	target_compile_features(chigraphcore 
-	PUBLIC 
-		cxx_aggregate_default_initializers
-		cxx_alias_templates
-		cxx_auto_type
-		cxx_defaulted_functions
-		cxx_deleted_functions
-		cxx_generic_lambdas
-		cxx_inline_namespaces
-		cxx_lambdas
-		cxx_lambda_init_captures
-		cxx_noexcept
-		cxx_nullptr
-		cxx_override
-		cxx_range_for
-		cxx_raw_string_literals
-		cxx_right_angle_brackets
-		cxx_rvalue_references
-		cxx_strong_enums
-		cxx_variadic_templates
-		cxx_variable_templates
-	)
-endif()
-
-
 # get llvm libraries
 set(LLVM_COMPONENTS
 	executionengine

@@ -32,3 +32,11 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
 	target_compile_options(chigraphsupport PUBLIC -Wall -Wextra -pedantic-errors -Werror -Wno-unused-parameter -Wno-missing-field-initializers)
 endif()
 
+
+install(TARGETS chigraphsupport
+	RUNTIME DESTINATION bin
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+)
+
+install(DIRECTORY include/chi DESTINATION include)

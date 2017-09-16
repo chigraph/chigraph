@@ -26,9 +26,23 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 list(APPEND CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
-	include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CheckCXX11Features.cmake)
-	CXX11_CHECK_FEATURE("variadic_templates" 2555 HAS_CXX11_VARIADIC_TEMPLATES)
+# make sure this is a valid compiler
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	if ("${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 5.0)
+		message(FATAL_ERROR "GNU gcc version ${CMAKE_CXX_COMPILER_VERSION} is not new enough. Compiling chigraph requires gcc 5.0+ or clang 3.5+")
+	endif()
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	if ("${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 3.5)
+		message(FATAL_ERROR "Clang ${CMAKE_CXX_COMPILER_VERSION} is not new enough. Compiling chigraph requires gcc 5.0+ or clang 3.5+")
+	endif()
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+	if ("${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 6.0)
+		message(FATAL_ERROR "AppleClang ${CMAKE_CXX_COMPILER_VERSION} is not new enough. Compiling chigraph requires XCode 6.0+")
+	endif()
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	if ("${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 19.0)
+		message(FATAL_ERROR "MSVC ${CMAKE_CXX_COMPILER_VERSION} is not new enough. Compiling chigraph requires Visual Studio 2015+")
+	endif()
 endif()
 
 # find llvm-config. This dictates which clang etc is uses.
@@ -38,6 +52,9 @@ message(STATUS "llvm-config found at ${LLVM_CONFIG}")
 
 execute_process(COMMAND ${LLVM_CONFIG} --version OUTPUT_VARIABLE LLVM_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "LLVM version: ${LLVM_VERSION}")
+if ("${LLVM_VERSION}" VERSION_LESS 3.5)
+	message(FATAL_ERROR "LLVM version ${LLVM_VERSION} is not new enough. Compiling chigraph requires LLVM 3.5+")
+endif()
 
 # see if llvm is built with expensive checks, which requires us to add -D_GLIBCXX_DEBUG to boost
 if (UNIX AND NOT APPLE)

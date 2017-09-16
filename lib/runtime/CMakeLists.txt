@@ -13,7 +13,7 @@ find_program(CLANG_EXE
 	NO_DEFAULT_PATH
 )
 if (NOT EXISTS "${CLANG_EXE}")
-	message(FATAL_ERROR "Failed to find clang exectuable in ${LLVM_BINDIR} It is required to compile the runtime")
+	message(FATAL_ERROR "Failed to find clang exectuable in ${LLVM_BINDIR}/clang-${LLVM_VER} It is required to compile the runtime")
 endif()
 message(STATUS "Clang found at: ${CLANG_EXE}")
 

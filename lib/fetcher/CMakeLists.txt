@@ -29,3 +29,12 @@ PRIVATE
 	${LIBGIT2_LIBRARIES}
 )
 
+
+install(TARGETS chigraphfetcher
+	RUNTIME DESTINATION bin
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+)
+
+install(DIRECTORY include/chi DESTINATION include)
+

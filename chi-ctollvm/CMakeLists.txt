@@ -91,11 +91,11 @@ endforeach()
 
 target_link_libraries(chi-ctollvm ${LLVM_LINK_LIST} ${LLVM_SYSTEM_LINK_LIST} ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
-if(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_LESS 3.1)
-	CXX11_CHECK_FEATURE("constexpr"          2235 HAS_CXX11_CONSTEXPR)
-	set_property(TARGET chi-ctollvm PROPERTY CXX_STANDARD 14)
-else(${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_GREATER 3.1 OR ${CMAKE_VERSION_MAJOR}.${CMAKE_VERSION_MINOR} VERSION_EQUAL 3.1)
-	target_compile_features(chi-ctollvm PRIVATE cxx_variable_templates cxx_strong_enums)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
+		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
+		CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	target_compile_options(chi-ctollvm PUBLIC -std=c++14)
+	target_compile_options(chi-ctollvm PUBLIC -Wall -Wextra -pedantic-errors -Werror -Wno-unused-parameter -Wno-missing-field-initializers)
 endif()
 
 # link version
