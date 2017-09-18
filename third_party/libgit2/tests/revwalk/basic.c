@@ -177,7 +177,7 @@ void test_revwalk_basic__glob_heads_with_invalid(void)
 		/* walking */;
 
 	/* git log --branches --oneline | wc -l => 16 */
-	cl_assert_equal_i(18, i);
+	cl_assert_equal_i(19, i);
 }
 
 void test_revwalk_basic__push_head(void)
@@ -324,6 +324,40 @@ void test_revwalk_basic__hide_then_push(void)
 
 	cl_git_pass(git_revwalk_hide(_walk, &oid));
 	cl_git_pass(git_revwalk_push(_walk, &oid));
+
+	while (git_revwalk_next(&oid, _walk) == 0)
+		i++;
+
+	cl_assert_equal_i(i, 0);
+}
+
+void test_revwalk_basic__topo_crash(void)
+{
+	git_oid oid;
+	git_oid_fromstr(&oid, "5b5b025afb0b4c913b4c338a42934a3863bf3644");
+
+	revwalk_basic_setup_walk(NULL);
+	git_revwalk_sorting(_walk, GIT_SORT_TOPOLOGICAL);
+
+	cl_git_pass(git_revwalk_push(_walk, &oid));
+	cl_git_pass(git_revwalk_hide(_walk, &oid));
+
+	git_revwalk_next(&oid, _walk);
+}
+
+void test_revwalk_basic__from_new_to_old(void)
+{
+	git_oid from_oid, to_oid, oid;
+	int i = 0;
+
+	revwalk_basic_setup_walk(NULL);
+	git_revwalk_sorting(_walk, GIT_SORT_TIME);
+
+	cl_git_pass(git_oid_fromstr(&to_oid, "5b5b025afb0b4c913b4c338a42934a3863bf3644"));
+	cl_git_pass(git_oid_fromstr(&from_oid, "a4a7dce85cf63874e984719f4fdd239f5145052f"));
+
+	cl_git_pass(git_revwalk_push(_walk, &to_oid));
+	cl_git_pass(git_revwalk_hide(_walk, &from_oid));
 
 	while (git_revwalk_next(&oid, _walk) == 0)
 		i++;

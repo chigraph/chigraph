@@ -16,8 +16,6 @@
 #include "config.h"
 #include "repository.h"
 
-GIT__USE_STRMAP
-
 typedef enum {
 	DIFF_DRIVER_AUTO = 0,
 	DIFF_DRIVER_BINARY = 1,
@@ -151,7 +149,7 @@ static git_diff_driver_registry *git_repository_driver_registry(
 	}
 
 	if (!repo->diff_drivers)
-		giterr_set(GITERR_REPOSITORY, "Unable to create diff driver registry");
+		giterr_set(GITERR_REPOSITORY, "unable to create diff driver registry");
 
 	return repo->diff_drivers;
 }
@@ -217,7 +215,7 @@ static int git_diff_driver_builtin(
 		goto done;
 	}
 
-	git_strmap_insert(reg->drivers, drv->name, drv, error);
+	git_strmap_insert(reg->drivers, drv->name, drv, &error);
 	if (error > 0)
 		error = 0;
 
@@ -331,7 +329,7 @@ static int git_diff_driver_load(
 		goto done;
 
 	/* store driver in registry */
-	git_strmap_insert(reg->drivers, drv->name, drv, error);
+	git_strmap_insert(reg->drivers, drv->name, drv, &error);
 	if (error < 0)
 		goto done;
 	error = 0;

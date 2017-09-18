@@ -21,8 +21,6 @@
 #include <sys/types.h>
 #include <regex.h>
 
-GIT__USE_STRMAP
-
 typedef struct cvar_t {
 	struct cvar_t *next;
 	git_config_entry *entry;
@@ -126,7 +124,7 @@ static int config_snapshot(git_config_backend **out, git_config_backend *in);
 
 static void set_parse_error(struct reader *reader, int col, const char *error_str)
 {
-	giterr_set(GITERR_CONFIG, "Failed to parse config file: %s (in %s:%d, column %d)",
+	giterr_set(GITERR_CONFIG, "failed to parse config file: %s (in %s:%d, column %d)",
 		error_str, reader->file_path, reader->line_number, col);
 }
 
@@ -179,7 +177,7 @@ static int append_entry(git_strmap *values, cvar_t *var)
 
 	pos = git_strmap_lookup_index(values, var->entry->name);
 	if (!git_strmap_valid_index(values, pos)) {
-		git_strmap_insert(values, var->entry->name, var, error);
+		git_strmap_insert(values, var->entry->name, var, &error);
 	} else {
 		existing = git_strmap_value_at(values, pos);
 		while (existing->next != NULL) {
@@ -233,7 +231,7 @@ static refcounted_strmap *refcounted_strmap_take(diskfile_header *h)
 	refcounted_strmap *map;
 
 	if (git_mutex_lock(&h->values_mutex) < 0) {
-	    giterr_set(GITERR_OS, "Failed to lock config backend");
+	    giterr_set(GITERR_OS, "failed to lock config backend");
 	    return NULL;
 	}
 
@@ -322,7 +320,7 @@ static int config__refresh(git_config_backend *cfg)
 		goto out;
 
 	if ((error = git_mutex_lock(&b->header.values_mutex)) < 0) {
-		giterr_set(GITERR_OS, "Failed to lock config backend");
+		giterr_set(GITERR_OS, "failed to lock config backend");
 		goto out;
 	}
 
@@ -479,7 +477,7 @@ static int config_set(git_config_backend *cfg, const char *name, const char *val
 		cvar_t *existing = git_strmap_value_at(values, pos);
 
 		if (existing->next != NULL) {
-			giterr_set(GITERR_CONFIG, "Multivar incompatible with simple set");
+			giterr_set(GITERR_CONFIG, "multivar incompatible with simple set");
 			ret = -1;
 			goto out;
 		}
@@ -611,7 +609,7 @@ static int config_delete(git_config_backend *cfg, const char *name)
 
 	if (!git_strmap_valid_index(values, pos)) {
 		refcounted_strmap_free(map);
-		giterr_set(GITERR_CONFIG, "Could not find key '%s' to delete", name);
+		giterr_set(GITERR_CONFIG, "could not find key '%s' to delete", name);
 		return GIT_ENOTFOUND;
 	}
 
@@ -619,7 +617,7 @@ static int config_delete(git_config_backend *cfg, const char *name)
 	refcounted_strmap_free(map);
 
 	if (var->next != NULL) {
-		giterr_set(GITERR_CONFIG, "Cannot delete multivar with a single delete");
+		giterr_set(GITERR_CONFIG, "cannot delete multivar with a single delete");
 		return -1;
 	}
 
@@ -651,7 +649,7 @@ static int config_delete_multivar(git_config_backend *cfg, const char *name, con
 	if (!git_strmap_valid_index(values, pos)) {
 		refcounted_strmap_free(map);
 		git__free(key);
-		giterr_set(GITERR_CONFIG, "Could not find key '%s' to delete", name);
+		giterr_set(GITERR_CONFIG, "could not find key '%s' to delete", name);
 		return GIT_ENOTFOUND;
 	}
 
@@ -1029,7 +1027,7 @@ static int parse_section_header_ext(struct reader *reader, const char *line, con
 	first_quote = strchr(line, '"');
 	if (first_quote == NULL) {
 		set_parse_error(reader, 0, "Missing quotation marks in section header");
-		return -1;
+		goto end_error;
 	}
 
 	last_quote = strrchr(line, '"');
@@ -1037,14 +1035,15 @@ static int parse_section_header_ext(struct reader *reader, const char *line, con
 
 	if (quoted_len == 0) {
 		set_parse_error(reader, 0, "Missing closing quotation mark in section header");
-		return -1;
+		goto end_error;
 	}
 
 	GITERR_CHECK_ALLOC_ADD(&alloc_len, base_name_len, quoted_len);
 	GITERR_CHECK_ALLOC_ADD(&alloc_len, alloc_len, 2);
 
-	git_buf_grow(&buf, alloc_len);
-	git_buf_printf(&buf, "%s.", base_name);
+	if (git_buf_grow(&buf, alloc_len) < 0 ||
+	    git_buf_printf(&buf, "%s.", base_name) < 0)
+		goto end_error;
 
 	rpos = 0;
 
@@ -1060,8 +1059,7 @@ static int parse_section_header_ext(struct reader *reader, const char *line, con
 		switch (c) {
 		case 0:
 			set_parse_error(reader, 0, "Unexpected end-of-line in section header");
-			git_buf_free(&buf);
-			return -1;
+			goto end_error;
 
 		case '"':
 			goto end_parse;
@@ -1071,8 +1069,7 @@ static int parse_section_header_ext(struct reader *reader, const char *line, con
 
 			if (c == 0) {
 				set_parse_error(reader, rpos, "Unexpected end-of-line in section header");
-				git_buf_free(&buf);
-				return -1;
+				goto end_error;
 			}
 
 		default:
@@ -1084,6 +1081,9 @@ static int parse_section_header_ext(struct reader *reader, const char *line, con
 	} while (line + rpos < last_quote);
 
 end_parse:
+	if (git_buf_oom(&buf))
+		goto end_error;
+
 	if (line[rpos] != '"' || line[rpos + 1] != ']') {
 		set_parse_error(reader, rpos, "Unexpected text after closing quotes");
 		git_buf_free(&buf);
@@ -1092,6 +1092,11 @@ end_parse:
 
 	*section_name = git_buf_detach(&buf);
 	return 0;
+
+end_error:
+	git_buf_free(&buf);
+
+	return -1;
 }
 
 static int parse_section_header(struct reader *reader, char **section_out)
@@ -1251,7 +1256,7 @@ static int included_path(git_buf *out, const char *dir, const char *path)
 {
 	/* From the user's home */
 	if (path[0] == '~' && path[1] == '/')
-		return git_sysdir_find_global_file(out, &path[1]);
+		return git_sysdir_expand_global_file(out, &path[1]);
 
 	return git_path_join_unrooted(out, path, dir, NULL);
 }
@@ -1262,7 +1267,7 @@ static const char *escaped = "\n\t\b\"\\";
 /* Escape the values to write them to the file */
 static char *escape_value(const char *ptr)
 {
-	git_buf buf = GIT_BUF_INIT;
+	git_buf buf;
 	size_t len;
 	const char *esc;
 
@@ -1272,7 +1277,8 @@ static char *escape_value(const char *ptr)
 	if (!len)
 		return git__calloc(1, sizeof(char));
 
-	git_buf_grow(&buf, len);
+	if (git_buf_init(&buf, len) < 0)
+		return NULL;
 
 	while (*ptr != '\0') {
 		if ((esc = strchr(escaped, *ptr)) != NULL) {
@@ -1325,7 +1331,7 @@ static int unescape_line(
 				*fixed++ = escaped[esc - escapes];
 			} else {
 				git__free(str);
-				giterr_set(GITERR_CONFIG, "Invalid escape at %s", ptr);
+				giterr_set(GITERR_CONFIG, "invalid escape at %s", ptr);
 				return -1;
 			}
 		}
@@ -1639,7 +1645,7 @@ static int config_read(git_strmap *values, diskfile_backend *cfg_file, struct re
 	struct parse_data parse_data;
 
 	if (depth >= MAX_INCLUDE_DEPTH) {
-		giterr_set(GITERR_CONFIG, "Maximum config include depth reached");
+		giterr_set(GITERR_CONFIG, "maximum config include depth reached");
 		return -1;
 	}
 

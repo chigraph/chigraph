@@ -150,7 +150,7 @@ int git_sysdir_get_str(
 	GITERR_CHECK_ERROR(git_sysdir_get(&path, which));
 
 	if (!out || path->size >= outlen) {
-		giterr_set(GITERR_NOMEMORY, "Buffer is too short for the path");
+		giterr_set(GITERR_NOMEMORY, "buffer is too short for the path");
 		return GIT_EBUFS;
 	}
 
@@ -241,7 +241,7 @@ static int git_sysdir_find_in_dirlist(
 
 done:
 	git_buf_free(path);
-	giterr_set(GITERR_OS, "The %s file '%s' doesn't exist", label, name);
+	giterr_set(GITERR_OS, "the %s file '%s' doesn't exist", label, name);
 	return GIT_ENOTFOUND;
 }
 
@@ -275,3 +275,14 @@ int git_sysdir_find_template_dir(git_buf *path)
 		path, NULL, GIT_SYSDIR_TEMPLATE, "template");
 }
 
+int git_sysdir_expand_global_file(git_buf *path, const char *filename)
+{
+	int error;
+
+	if ((error = git_sysdir_find_global_file(path, NULL)) == 0) {
+		if (filename)
+			error = git_buf_joinpath(path, path->ptr, filename);
+	}
+
+	return error;
+}

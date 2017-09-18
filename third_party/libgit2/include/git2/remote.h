@@ -715,8 +715,8 @@ GIT_EXTERN(int) git_remote_prune(git_remote *remote, const git_remote_callbacks 
  * Peform all the steps from a push.
  *
  * @param remote the remote to push to
- * @param refspecs the refspecs to use for pushing. If none are
- * passed, the configured refspecs will be used
+ * @param refspecs the refspecs to use for pushing. If NULL or an empty
+ *                 array, the configured refspecs will be used
  * @param opts options to use for this push
  */
 GIT_EXTERN(int) git_remote_push(git_remote *remote,
@@ -796,7 +796,7 @@ GIT_EXTERN(int) git_remote_is_valid_name(const char *remote_name);
 * for the remote will be removed.
 *
 * @param repo the repository in which to act
-* @param name the name of the remove to delete
+* @param name the name of the remote to delete
 * @return 0 on success, or an error code.
 */
 GIT_EXTERN(int) git_remote_delete(git_repository *repo, const char *name);

@@ -33,7 +33,7 @@ static void ensure_repository_discover(const char *start_path,
 	git_buf_attach(&resolved, p_realpath(expected_path, NULL), 0);
 	cl_assert(resolved.size > 0);
 	cl_git_pass(git_path_to_dir(&resolved));
-	cl_git_pass(git_repository_discover(&found_path, start_path, 0, ceiling_dirs));
+	cl_git_pass(git_repository_discover(&found_path, start_path, 1, ceiling_dirs));
 
 	cl_assert_equal_s(found_path.ptr, resolved.ptr);
 
@@ -198,4 +198,13 @@ void test_repo_discover__discovery_starting_at_file_succeeds(void)
 	cl_assert(p_close(fd) == 0);
 
 	ensure_repository_discover(SUB_REPOSITORY_FOLDER "/file", ceiling_dirs.ptr, SUB_REPOSITORY_GITDIR);
+}
+
+void test_repo_discover__discovery_starting_at_system_root_causes_no_hang(void)
+{
+#ifdef GIT_WIN32
+	git_buf out = GIT_BUF_INIT;
+	cl_git_fail(git_repository_discover(&out, "C:/", 0, NULL));
+	cl_git_fail(git_repository_discover(&out, "//localhost/", 0, NULL));
+#endif
 }

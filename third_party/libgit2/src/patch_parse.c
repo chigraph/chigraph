@@ -444,9 +444,9 @@ static int parse_header_git(
 				goto done;
 
 			parse_advance_ws(ctx);
-			parse_advance_expected_str(ctx, "\n");
 
-			if (ctx->line_len > 0) {
+			if (parse_advance_expected_str(ctx, "\n") < 0 ||
+			    ctx->line_len > 0) {
 				error = parse_err("trailing data at line %"PRIuZ, ctx->line_num);
 				goto done;
 			}
@@ -562,8 +562,9 @@ static int parse_hunk_body(
 	int newlines = hunk->hunk.new_lines;
 
 	for (;
-		ctx->remain_len > 4 && (oldlines || newlines) &&
-		memcmp(ctx->line, "@@ -", 4) != 0;
+		ctx->remain_len > 1 &&
+		(oldlines || newlines) &&
+		(ctx->remain_len <= 4 || memcmp(ctx->line, "@@ -", 4) != 0);
 		parse_advance_line(ctx)) {
 
 		int origin;
