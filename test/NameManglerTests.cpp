@@ -10,7 +10,7 @@ TEST_CASE("Name Mangler", "") {
 	REQUIRE(mangleFunctionName("github.com/russelltg/test/lib", "docall") ==
 	        "github_dcom_srusselltg_stest_slib_mdocall");
 
-	REQUIRE(mangleFunctionName("github.com/russelltg/test/main", "main") == "main");
+	REQUIRE(mangleFunctionName("github.com/russelltg/test/main", "main") == "chigraph_main");
 
 	REQUIRE(mangleFunctionName("github.com/russelltg/test/main", "maina") ==
 	        "github_dcom_srusselltg_stest_smain_mmaina");
