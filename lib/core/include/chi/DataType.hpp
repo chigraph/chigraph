@@ -20,28 +20,32 @@ struct DataType {
 	/// \param typeName The ID of the type in the module
 	/// \param llvmtype The underlying type
 	/// \param debugTy The debug type for the DataType
+	/// \param reference if the type is a reference (refcounted)
 	DataType(ChiModule* chiMod = nullptr, std::string typeName = {}, llvm::Type* llvmtype = nullptr,
-	         llvm::DIType* debugTy = nullptr)
-	    : mModule(chiMod), mName{typeName}, mLLVMType{llvmtype}, mDIType{debugTy} {}
+	         llvm::DIType* debugTy = nullptr, bool reference = false) noexcept
+	    : mModule(chiMod), mName{typeName}, mLLVMType{llvmtype}, mDIType{debugTy}, mReference{reference} {}
 
 	/// Get the module this is a part of
 	/// \return The module
-	ChiModule& module() const { return *mModule; }
+	ChiModule& module() const noexcept { return *mModule; }
 	/// Get the unqualified name of the type
 	/// \return The unqualified name
-	const std::string& unqualifiedName() const { return mName; }
+	const std::string& unqualifiedName() const noexcept { return mName; }
 	/// Get the qualified name of the type (module().fullName() + ":" name())
 	/// \return The qualified name
-	std::string qualifiedName() const;
+	std::string qualifiedName() const noexcept;
 	/// Get the underlying \c llvm::Type
 	/// \return the \c llvm::Type
-	llvm::Type* llvmType() const { return mLLVMType; }
+	llvm::Type* llvmType() const noexcept { return mLLVMType; }
 	/// Get the debug type
 	/// \return The debug type
-	llvm::DIType* debugType() const { return mDIType; }
+	llvm::DIType* debugType() const noexcept { return mDIType; }
+	/// See if this type is a refernence
+	/// \return If it's a referencne
+	bool reference() const noexcept { return mReference; }
 	/// Check if the DataType is valid (if it's actually bound to a type and module)
 	/// \return `true` if valid, `false` otherwise
-	bool valid() const {
+	bool valid() const noexcept {
 		return mModule != nullptr && mName != "" && mLLVMType != nullptr && mDIType != nullptr;
 	}
 
@@ -50,6 +54,7 @@ private:
 	std::string   mName;
 	llvm::Type*   mLLVMType;
 	llvm::DIType* mDIType;
+	bool          mReference;
 };
 
 /// Equality check
