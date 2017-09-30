@@ -70,6 +70,10 @@ struct GraphStruct {
 	/// Get the DataType of the struct
 	/// \return The DataType
 	DataType dataType();
+	
+	/// Returns a void*, which is how structs are stored in
+	/// \return void*
+	static llvm::Type* storageType() noexcept;
 
 private:
 	void updateNodeReferences();
@@ -81,6 +85,7 @@ private:
 
 	std::string mName;
 
+	llvm::Type* mLLVMType = nullptr;
 	DataType mDataType;
 };
 }  // namespace chi

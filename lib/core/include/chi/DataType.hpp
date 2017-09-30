@@ -22,8 +22,7 @@ struct DataType {
 	/// \param debugTy The debug type for the DataType
 	/// \param reference if the type is a reference (refcounted)
 	DataType(ChiModule* chiMod = nullptr, std::string typeName = {}, llvm::Type* llvmtype = nullptr,
-	         llvm::DIType* debugTy = nullptr, bool reference = false) noexcept
-	    : mModule(chiMod), mName{typeName}, mLLVMType{llvmtype}, mDIType{debugTy}, mReference{reference} {}
+	         llvm::DIType* debugTy = nullptr, bool reference = false) noexcept;
 
 	/// Get the module this is a part of
 	/// \return The module

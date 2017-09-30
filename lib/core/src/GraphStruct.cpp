@@ -74,7 +74,7 @@ void GraphStruct::addType(DataType ty, std::string name, size_t addBefore, bool 
 	mTypes.emplace_back(name, ty);
 
 	// invalidate the current DataType
-	mDataType = {};
+	mLLVMType = {};
 
 	if (updateReferences) { updateNodeReferences(); }
 }
