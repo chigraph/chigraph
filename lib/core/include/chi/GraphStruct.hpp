@@ -67,16 +67,19 @@ struct GraphStruct {
 	/// \param updateReferences Should the references to make and break nodes be updated?
 	void removeType(size_t id, bool updateReferences = true);
 
-	/// Get the DataType of the struct
+	/// Get the DataType of the struct reference--essentially struct { uint64_t ref_count; storageType() storage; }*
 	/// \return The DataType
-	DataType dataType();
+	DataType dataType() noexcept;
 	
-	/// Returns a void*, which is how structs are stored in
-	/// \return void*
-	static llvm::Type* storageType() noexcept;
+	/// Returns the actual type of the struct, used when making and breaking
+	llvm::Type* storageType() noexcept;
+	
+	/// Returns the debug type of the struct
+	llvm::DIType* debugType() noexcept;
 
 private:
 	void updateNodeReferences();
+	void recalculateTypes() noexcept;
 
 	GraphModule* mModule;
 	Context*     mContext;
@@ -84,9 +87,11 @@ private:
 	std::vector<NamedDataType> mTypes;
 
 	std::string mName;
+	
+	DataType mDataType;
 
 	llvm::Type* mLLVMType = nullptr;
-	DataType mDataType;
+	llvm::DIType* mDIType = nullptr;
 };
 }  // namespace chi
 

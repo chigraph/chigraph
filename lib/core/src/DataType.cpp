@@ -15,9 +15,7 @@ DataType::DataType(ChiModule* chiMod, std::string typeName, llvm::Type* llvmtype
       mLLVMType{llvmtype},
       mDIType{debugTy},
       mReference{reference} {
-	assert((!reference || llvmType() == llvm::PointerType::get(
-	                                         llvm::Type::getVoidTy(module().context().llvmContext()), 0)) &&
-	                           "References must be a void* type");
+	assert((!reference || llvmType()->isPointerTy()) && "Reference must have pointer type");
 }
 
 std::string DataType::qualifiedName() const noexcept {

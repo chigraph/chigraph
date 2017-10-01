@@ -1,10 +1,10 @@
 /// \file GraphModule.cpp
 
-#include "chi/GraphModule.hpp"
 #include "chi/CCompiler.hpp"
 #include "chi/Context.hpp"
 #include "chi/FunctionCompiler.hpp"
 #include "chi/GraphFunction.hpp"
+#include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
 #include "chi/JsonDeserializer.hpp"
 #include "chi/JsonSerializer.hpp"
@@ -94,7 +94,7 @@ struct CFuncNode : NodeType {
 		                          ,
 		                          llvm::Linker::DestroySource, nullptr
 #endif
-		                          );
+		);
 #else
 		llvm::Linker::linkModules(*parentModule, std::move(copymod));
 #endif
@@ -262,16 +262,38 @@ struct MakeStructNodeType : public NodeType {
 		llvm::IRBuilder<> builder{&codegenInto};
 		builder.SetCurrentDebugLocation(nodeLocation);
 
-		llvm::Value* out = io[io.size() - 1];  // output goes last
+		// allocate for it
+		auto int64_type       = llvm::IntegerType::get(context().llvmContext(), 64);
+		auto allocatedVoidPtr = builder.CreateCall(
+		    codegenInto.getModule()->getOrInsertFunction(
+		        "chi_arc_create",
+		        llvm::FunctionType::get(
+		            llvm::PointerType::get(llvm::IntegerType::get(context().llvmContext(), 8), 0),
+		            {int64_type}, false)),
+		    {llvm::ConstantInt::get(int64_type,
+		                            codegenInto.getModule()->getDataLayout().getTypeAllocSize(
+		                                mStruct->storageType()))});
+		
+		// cast to the right type
+		auto ptrToData = builder.CreateCast(llvm::Instruction::BitCast, allocatedVoidPtr, mStruct->dataType().llvmType());
+		
+		// get the pointer to the struct
+		auto ptrToStruct = builder.CreateStructGEP(
+#if LLVM_VERSION_AT_LEAST(3, 7)
+			    nullptr,
+#endif
+			    ptrToData, 1);
+
 		for (auto id = 0ull; id < io.size() - 1; ++id) {
 			auto ptr = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
-			    mStruct->dataType().llvmType(),
+			    mStruct->storageType(),
 #endif
-			    out, id);
+			    ptrToStruct, id);
 			builder.CreateStore(io[id], ptr);
 		}
 
+		builder.CreateStore(ptrToData, io[io.size() - 1]);
 		builder.CreateBr(outputBlocks[0]);
 
 		return {};
@@ -306,19 +328,22 @@ struct BreakStructNodeType : public NodeType {
 		builder.SetCurrentDebugLocation(nodeLocation);
 
 		// create temp struct
-		auto tempStruct = builder.CreateAlloca(mStruct->dataType().llvmType());
-		builder.CreateStore(io[0], tempStruct);
+		auto ptrToStruct = builder.CreateStructGEP(
+#if LLVM_VERSION_AT_LEAST(3, 7)
+			nullptr,
+#endif
+			io[0], 1);
+		
 
 		for (auto id = 1ull; id < io.size(); ++id) {
 			auto ptr = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
-			    nullptr,
+			    mStruct->storageType(),
 #endif
-			    tempStruct, id - 1);
+			    ptrToStruct, id - 1);
 			std::string s = stringifyLLVMType(ptr->getType());
 
-			auto val = builder.CreateLoad(ptr);
-			builder.CreateStore(val, io[id]);
+			builder.CreateStore(builder.CreateLoad(ptr), io[id]);
 		}
 
 		builder.CreateBr(outputBlocks[0]);
@@ -404,7 +429,7 @@ struct GetLocalNodeType : public NodeType {
 	NamedDataType mDataType;
 };
 
-}  // anon namespace
+}  // namespace
 
 GraphModule::GraphModule(Context& cont, boost::filesystem::path fullName,
                          const std::vector<boost::filesystem::path>& dependencies)
@@ -464,7 +489,7 @@ Result GraphModule::generateModule(llvm::Module& module) {
 
 				if (!res) { return res; }
 
-// link it
+					// link it
 
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 				llvm::Linker::LinkModules(&module, generatedModule.get()
@@ -472,7 +497,7 @@ Result GraphModule::generateModule(llvm::Module& module) {
 				                                       ,
 				                          llvm::Linker::DestroySource, nullptr
 #endif
-				                          );
+				);
 #else
 				llvm::Linker::linkModules(module, std::move(generatedModule));
 #endif
