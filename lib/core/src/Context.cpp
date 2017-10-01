@@ -411,6 +411,11 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 			auto runtimebc =
 			    executablePath().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
 
+			// just in case the executable is in a "Debug" folder or something
+			if (!fs::is_regular_file(runtimebc)) {
+				runtimebc = executablePath().parent_path().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
+			}
+
 			if (!fs::is_regular_file(runtimebc)) {
 				res.addEntry(
 				    "EUKN", "Failed to find runtime.bc in lib/chigraph/runtime.bc",
