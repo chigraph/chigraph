@@ -87,9 +87,9 @@ struct Context {
 	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
-	Result loadModule(const boost::filesystem::path& name, ChiModule** toFill = nullptr);
+	Result loadModule(const boost::filesystem::path& name, GraphModule** toFill = nullptr);
 
-	/// Load a module from JSON -- avoid this use the string overload
+	/// Load a module from JSON -- avoid this use the string overload -- adds as a loaded module
 	/// \param[in] fullName The full path of the module, including URL
 	/// \param[in] json The JSON data
 	/// \param[out] toFill The GraphModule* to fill into, optional
@@ -97,7 +97,7 @@ struct Context {
 	Result addModuleFromJson(const boost::filesystem::path& fullName, const nlohmann::json& json,
 	                         GraphModule** toFill = nullptr);
 
-	/// Adds a custom module to the Context
+	/// Adds a custom module to the Context--adds it as a built-in module
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
 	/// \return True if the module was added (it didn't exist before)
 	bool addModule(std::unique_ptr<ChiModule> modToAdd) noexcept;
@@ -170,8 +170,20 @@ struct Context {
 	/// \return The modules
 	std::vector<ChiModule*> modules() const {
 		std::vector<ChiModule*> ret;
+		ret.reserve(mBuiltInModules.size() + mLoadedModules.size());
 
-		for (const auto& mod : mModules) { ret.push_back(mod.get()); }
+		for (const auto& mod : mBuiltInModules) { ret.push_back(mod.get()); }
+		for (const auto& mod : mLoadedModules) } ret.push_back(mod.get()); }
+
+		return ret;
+	}
+
+	/// Get the GraphModules loaded through the moduleProvider() in the Context
+	std::vector<GraphModule*> graphModules() const {
+		std::vector<GraphModule*> ret;
+		ret.reserve(mLoadedModules.size());
+
+		for (const auto& mod : mLoadedModules) { ret.push_back(mod.get(); }
 
 		return ret;
 	}
@@ -196,7 +208,7 @@ private:
 	    mCompileCache;
 
 	std::unique_ptr<ModuleProvider> mModuleProvider;
-	
+
 	std::unordered_map<std::string /*from Type*/, std::unordered_map<std::string /*to type*/, std::unique_ptr<NodeType>>> mTypeConverters;
 };
 
