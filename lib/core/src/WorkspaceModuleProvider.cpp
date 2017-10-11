@@ -3,6 +3,8 @@
 #include "chi/WorkspaceModuleProvider.hpp"
 #include "chi/Context.hpp"
 #include "chi/LLVMVersion.hpp"
+#include "chi/ModuleCache.hpp"
+#include "chi/BitcodeParser.hpp"
 #include "chi/Support/Result.hpp"
 
 #include <cassert>
@@ -12,10 +14,10 @@
 #if LLVM_VERSION_LESS_EQUAL(3, 9)
 #include <llvm/Bitcode/ReaderWriter.h>
 #else
-#include <llvm/Bitcode/BitcodeReader.h>
 #include <llvm/Bitcode/BitcodeWriter.h>
 #endif
 
+#include <llvm/IR/Module.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
 
@@ -75,9 +77,18 @@ Result WorkspaceModuleProvider::cacheModule(const boost::filesystem::path& modul
 	{
 		// open the file
 		std::error_code      errCode;
-		llvm::raw_fd_ostream fileStream(cachePath.string(), errCode, llvm::sys::fs::F_RW);
+        std::string errString;
+        llvm::raw_fd_ostream fileStream {
+			cachePath.string().c_str(),
+#if LLVM_VERSION_LESS_EQUAL(3, 5)
+			    errString,
+#else
+			    errCode,
+#endif
+			    llvm::sys::fs::F_RW
+		};
 
-		if (errCode) {
+		if (errCode || !errString.empty()) {
 			res.addEntry("EUKN", "Failed to open file", {{"Path", cachePath.string()}});
 			return res;
 		}
@@ -123,24 +134,13 @@ std::unique_ptr<llvm::Module> WorkspaceModuleProvider::retrieveFromCache(
 	auto cacheEditTime = cacheUpdateTime(moduleName);
 	if (cacheEditTime < atLeastThisNew) { return nullptr; }
 
-	// if all of this is true, then we can read the cache
-	auto bcFileBufferOrError = llvm::MemoryBuffer::getFile(cachePath.string());
-	if (!bcFileBufferOrError) { return nullptr; }
+	// read the cache
+	std::unique_ptr<llvm::Module> fetchedMod;
+	auto res = parseBitcodeFile(cachePath, context().llvmContext(), &fetchedMod);
+	
+	if (!res) { return nullptr; }
 
-	auto errorOrMod = llvm::parseBitcodeFile(bcFileBufferOrError.get()->getMemBufferRef(),
-	                                         context().llvmContext());
-
-	if (!errorOrMod) {
-#if LLVM_VERSION_AT_LEAST(4, 0)
-		auto E = errorOrMod.takeError();
-
-		llvm::handleAllErrors(std::move(E), [](llvm::ErrorInfoBase& /*err*/) {});
-#endif
-
-		return nullptr;
-	}
-
-	return std::unique_ptr<llvm::Module>{std::move(errorOrMod.get())};
+	return fetchedMod;
 }
 
 }  // namespace chi

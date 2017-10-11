@@ -5,7 +5,7 @@ set -xe
 if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	
 	sudo apt-get update && sudo apt-get install $PACKAGES \
-		llvm-${LLVM_VERSION}-dev libclang-${LLVM_VERSION}-dev \
+		llvm-${LLVM_VERSION}-dev clang-${LLVM_VERSION} libclang-${LLVM_VERSION}-dev \
 		libclang-common-${LLVM_VERSION}-dev ninja-build \
 		libedit-dev build-essential
 	

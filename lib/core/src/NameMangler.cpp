@@ -7,15 +7,15 @@
 
 namespace chi {
 std::string mangleFunctionName(std::string modName, const std::string& name) {
-	// escape characters
 
-	// if it is the special main module, then just return main
+	// if it is the special main module, then just return chigraph_main
 	if ((modName.substr(modName.rfind('/') + 1, modName.rfind('.')) == "main" ||
 	     modName.substr(modName.rfind('\\') + 1, modName.rfind('.')) == "main") &&
 	    name == "main") {
-		return "main";
+		return "chigraph_main";
 	}
 
+	// escape characters
 	// escape _
 	size_t id = modName.find('_');
 	while (id != std::string::npos) {

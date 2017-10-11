@@ -2,16 +2,12 @@
 
 #include "chi/CCompiler.hpp"
 #include "chi/LLVMVersion.hpp"
+#include "chi/BitcodeParser.hpp"
 #include "chi/Support/LibCLocator.hpp"
 #include "chi/Support/Result.hpp"
 #include "chi/Support/Subprocess.hpp"
 
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-#include <llvm/Bitcode/ReaderWriter.h>
-#else
-#include <llvm/Bitcode/BitcodeReader.h>
-#endif
-
+#include <llvm/IR/Module.h>
 #include <llvm/Support/MemoryBuffer.h>
 
 namespace fs = boost::filesystem;
@@ -78,36 +74,9 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 			             {{"Warning", errors}});
 		}
 
-		auto errorOrMod = llvm::parseBitcodeFile(
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-		    llvm::MemoryBuffer::getMemBufferCopy
-#else
-		    llvm::MemoryBufferRef
-#endif
-		    (generatedBitcode, "generated.bc"),
-		    llvmContext);
-		if (!errorOrMod) {
-			std::string errorMsg;
-
-#if LLVM_VERSION_AT_LEAST(4, 0)
-			auto E = errorOrMod.takeError();
-
-			llvm::handleAllErrors(
-			    std::move(E), [&errorMsg](llvm::ErrorInfoBase& err) { errorMsg = err.message(); });
-#endif
-
-			res.addEntry("EUKN", "Failed to parse generated bitcode.",
-			             {{"Error Message", errorMsg}});
-
-			return res;
-		}
-		*toFill =
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    std::unique_ptr<llvm::Module>
-#else
-		    std::move
-#endif
-		    (errorOrMod.get());
+		auto readCtx = res.addScopedContext({{"Error parsing bitcode file generated from clang", &inputCCode[0]}});
+		res += parseBitcodeString(generatedBitcode, llvmContext, toFill);
+		
 	}
 
 	if (*toFill == nullptr) {

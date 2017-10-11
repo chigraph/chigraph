@@ -35,7 +35,7 @@ int run(const std::vector<std::string>& opts, const char* argv0) {
 
 	// clang-format off
 	run_opts.add_options()
-		("input-file", po::value<std::string>(), "The input file, - for stdin. Should be a chig module")
+		("input-file", po::value<std::string>(), "The input file, - for stdin. Should be a chi module")
 		("subargs", po::value<std::vector<std::string>>(), "Arguments to call main with")
 		;
 	// clang-format on

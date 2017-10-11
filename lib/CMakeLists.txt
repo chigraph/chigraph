@@ -1,4 +1,5 @@
 
+add_subdirectory(runtime)
 add_subdirectory(support)
 add_subdirectory(core)
 

@@ -1,5 +1,4 @@
 {
-  "has_c_support": false,
   "dependencies": [
     "intprinter",
     "lang"
@@ -9,22 +8,22 @@
       "connections": [
         {
           "input": [
-            "2e364630-0fb1-4ab3-8597-55dd983516f8",
+            "3e9fc765-19b9-4306-a0cf-b9fef36219b6",
             0
           ],
           "output": [
-            "9478bd05-0a6f-48c7-8e35-f232f823c21a",
+            "55d4e21c-0eb2-43f6-a3e6-ecff5b55bfcf",
             0
           ],
           "type": "exec"
         },
         {
           "input": [
-            "36d10bf4-e114-448b-a6dc-20d4057733e2",
+            "96d44561-1407-41b9-bf8f-0f79bfad073a",
             0
           ],
           "output": [
-            "2e364630-0fb1-4ab3-8597-55dd983516f8",
+            "3e9fc765-19b9-4306-a0cf-b9fef36219b6",
             0
           ],
           "type": "data"
@@ -35,7 +34,7 @@
             0
           ],
           "output": [
-            "55d4e21c-0eb2-43f6-a3e6-ecff5b55bfcf",
+            "3e9fc765-19b9-4306-a0cf-b9fef36219b6",
             0
           ],
           "type": "exec"
@@ -61,6 +60,28 @@
             0
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "2e364630-0fb1-4ab3-8597-55dd983516f8",
+            0
+          ],
+          "output": [
+            "9478bd05-0a6f-48c7-8e35-f232f823c21a",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "36d10bf4-e114-448b-a6dc-20d4057733e2",
+            0
+          ],
+          "output": [
+            "2e364630-0fb1-4ab3-8597-55dd983516f8",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
@@ -80,8 +101,8 @@
         "2e364630-0fb1-4ab3-8597-55dd983516f8": {
           "data": null,
           "location": [
-            962.0,
-            129.800003051758
+            982.0,
+            49.8000030517578
           ],
           "type": "intprinter:printint"
         },
@@ -93,6 +114,14 @@
           ],
           "type": "localvars/main:_get_hello"
         },
+        "3e9fc765-19b9-4306-a0cf-b9fef36219b6": {
+          "data": null,
+          "location": [
+            262.0,
+            4.0
+          ],
+          "type": "intprinter:printint"
+        },
         "43b8dcd1-7933-4112-835d-a541bf733d60": {
           "data": {
             "data": [],
@@ -101,16 +130,16 @@
             ]
           },
           "location": [
-            142.0,
-            108.0
+            22.0,
+            7.0
           ],
           "type": "lang:entry"
         },
         "55d4e21c-0eb2-43f6-a3e6-ecff5b55bfcf": {
           "data": "lang:i32",
           "location": [
-            524.359985351562,
-            77.6240005493164
+            573.359985351562,
+            31.6240005493164
           ],
           "type": "localvars/main:_set_hello"
         },
@@ -122,10 +151,18 @@
             ]
           },
           "location": [
-            1195.0,
-            123.0
+            1185.0,
+            37.0
           ],
           "type": "lang:exit"
+        },
+        "96d44561-1407-41b9-bf8f-0f79bfad073a": {
+          "data": "lang:i32",
+          "location": [
+            20.0,
+            179.0
+          ],
+          "type": "localvars/main:_get_hello"
         },
         "bd5c5ae5-91b7-4596-a640-65779f31bd50": {
           "data": 12123,
@@ -139,5 +176,6 @@
       "type": "function"
     }
   ],
+  "has_c_support": false,
   "types": {}
 }

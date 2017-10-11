@@ -59,7 +59,7 @@ Result FunctionCompiler::initialize(bool validate) {
 	    llvmModule().getOrInsertFunction(mangledName, function().functionType()));
 
 	// create the debug file
-	auto debugFile = diBuilder().createFile(debugCompileUnit()->getFilename(),
+	mDIFile = diBuilder().createFile(debugCompileUnit()->getFilename(),
 	                                        debugCompileUnit()->getDirectory());
 
 	auto subroutineType = createSubroutineType();
@@ -69,8 +69,8 @@ Result FunctionCompiler::initialize(bool validate) {
 
 	// TODO(#65): line numbers?
 	mDebugFunc =
-	    diBuilder().createFunction(debugFile, module().fullName() + ":" + function().name(),
-	                               mangledName, debugFile, entryLN, subroutineType, false, true, 0,
+	    diBuilder().createFunction(mDIFile, module().fullName() + ":" + function().name(),
+	                               mangledName, mDIFile, entryLN, subroutineType, false, true, 0,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 	                               0,
 #else
@@ -79,7 +79,7 @@ Result FunctionCompiler::initialize(bool validate) {
 	                               false);
 
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-	mDebugFunc->replaceFunction(mLLFunction);
+	mDebugFunc.replaceFunction(mLLFunction);
 #else
 	mLLFunction->setSubprogram(mDebugFunc);
 #endif
@@ -106,14 +106,14 @@ Result FunctionCompiler::initialize(bool validate) {
 			auto debugParam = diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, mDebugFunc,
-			                                      "inputexec_id", debugFile, entryLN,
+			                                      "inputexec_id", mDIFile, entryLN,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 			                                      *
 #endif
 			                                      intDataType.debugType());
 #else
 
-			                  createParameterVariable(mDebugFunc, "inputexec_id", 1, debugFile,
+			                  createParameterVariable(mDebugFunc, "inputexec_id", 1, mDIFile,
 			                                          entryLN, intDataType.debugType());
 #endif
 			diBuilder()
@@ -150,7 +150,7 @@ Result FunctionCompiler::initialize(bool validate) {
 		auto          debugParam = diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, mDebugFunc,
-		                                      tyAndName.name, debugFile, entryLN,
+		                                      tyAndName.name, mDIFile, entryLN,
 #if LLVM_VERSION_LESS_EQUAL(3, 6)
 		                                      *
 #endif
@@ -158,7 +158,7 @@ Result FunctionCompiler::initialize(bool validate) {
 #else
 		                  createParameterVariable(mDebugFunc, tyAndName.name,
 		                                          idx + 1,  // + 1 because it starts at 1
-		                                          debugFile, entryLN, dType);
+		                                          mDIFile, entryLN, dType);
 #endif
 		diBuilder()
 		    .insertDeclare(&arg, debugParam,
@@ -186,7 +186,7 @@ Result FunctionCompiler::initialize(bool validate) {
 	for (const auto& localVar : function().localVariables()) {
 		mLocalVariables[localVar.name] =
 		    allocBuilder.CreateAlloca(localVar.type.llvmType(), nullptr, "var_" + localVar.name);
-		allocBuilder.CreateStore(llvm::ConstantAggregateZero::get(localVar.type.llvmType()),
+		allocBuilder.CreateStore(llvm::Constant::getNullValue(localVar.type.llvmType()),
 		                         mLocalVariables[localVar.name]);
 	}
 
@@ -312,7 +312,7 @@ FunctionCompiler::DebugFunctionType FunctionCompiler::createSubroutineType() {
 	// create type
 	auto subroutineType = diBuilder().createSubroutineType(
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
-	    diFunction()->getFile(),
+	    mDIFile,
 #endif
 	    diBuilder().
 #if LLVM_VERSION_LESS_EQUAL(3, 5)

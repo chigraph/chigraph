@@ -16,6 +16,7 @@
 #include <llvm/ExecutionEngine/SectionMemoryManager.h>
 
 #include <string>
+#include <deque>
 #include <vector>
 
 #include <boost/program_options.hpp>

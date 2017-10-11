@@ -75,6 +75,7 @@ TEST_CASE("Debugger", "") {
 	dbg.setBreakpoint(*exitNode);
 
 	res = dbg.start();
+	std::cout << "Started" << std::endl;
 	REQUIRE(res.dump() == "");
 
 	auto          listener = dbg.lldbDebugger().GetListener();
@@ -82,7 +83,7 @@ TEST_CASE("Debugger", "") {
 	while (true) {
 		listener.WaitForEvent(3, ev);
 		if (ev.IsValid())
-			std::cout << "EVENT" << ev.GetDataFlavor() << ", " << ev.GetBroadcasterClass() << ", "
+			std::cout << "EVENT: " << ev.GetDataFlavor() << ", " << ev.GetBroadcasterClass() << ", "
 			          << lldb::SBProcess::GetStateFromEvent(ev) << std::endl;
 		std::cout.flush();
 
@@ -93,11 +94,12 @@ TEST_CASE("Debugger", "") {
 	}
 
 	dbg.processContinue();
+	std::cout << "Continued for the first time" << std::endl;
 
 	while (true) {
 		listener.WaitForEvent(3, ev);
 		if (ev.IsValid())
-			std::cout << "EVENT" << ev.GetDataFlavor() << ", " << ev.GetBroadcasterClass() << ", "
+			std::cout << "EVENT: " << ev.GetDataFlavor() << ", " << ev.GetBroadcasterClass() << ", "
 			          << lldb::SBProcess::GetStateFromEvent(ev) << std::endl;
 		std::cout.flush();
 

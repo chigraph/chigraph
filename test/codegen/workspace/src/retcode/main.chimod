@@ -1,0 +1,91 @@
+{
+  "dependencies": [
+    "lang"
+  ],
+  "graphs": [
+    {
+      "connections": [
+        {
+          "input": [
+            "ee4045d8-88cc-43e8-ae4d-c11e48d450ed",
+            0
+          ],
+          "output": [
+            "b4087893-3467-49b0-a745-749570f08607",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "b0846ecf-1848-464b-8559-8fe4de8a3924",
+            0
+          ],
+          "output": [
+            "b4087893-3467-49b0-a745-749570f08607",
+            0
+          ],
+          "type": "data"
+        }
+      ],
+      "data_inputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
+      "description": "",
+      "exec_inputs": [
+        ""
+      ],
+      "exec_outputs": [
+        ""
+      ],
+      "local_variables": {},
+      "name": "main",
+      "nodes": {
+        "b0846ecf-1848-464b-8559-8fe4de8a3924": {
+          "data": 11,
+          "location": [
+            -161.0,
+            -9.0
+          ],
+          "type": "lang:const-int"
+        },
+        "b4087893-3467-49b0-a745-749570f08607": {
+          "data": {
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            272.0,
+            -126.0
+          ],
+          "type": "lang:exit"
+        },
+        "ee4045d8-88cc-43e8-ae4d-c11e48d450ed": {
+          "data": {
+            "data": [],
+            "exec": [
+              ""
+            ]
+          },
+          "location": [
+            -363.0,
+            -142.0
+          ],
+          "type": "lang:entry"
+        }
+      },
+      "type": "function"
+    }
+  ],
+  "has_c_support": false,
+  "types": {}
+}

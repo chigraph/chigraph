@@ -22,6 +22,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/WorkspaceModuleProvider.hpp
 	include/chi/NodeInstance.hpp
 	include/chi/CCompiler.hpp
+	include/chi/BitcodeParser.hpp
 )
 set(CHI_PRIVATE_FILES
 	src/Context.cpp
@@ -41,6 +42,7 @@ set(CHI_PRIVATE_FILES
 	src/DataType.cpp
 	src/NodeCompiler.cpp
 	src/CCompiler.cpp
+	src/BitcodeParser.cpp
 )
 add_library(chigraphcore STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
@@ -188,8 +190,8 @@ PUBLIC
 # configure the config file
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/ChigraphConfig.cmake.in ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake @ONLY)
 
-# make sure chi-ctollvm is built first
-add_dependencies(chigraphcore chi-ctollvm)
+# make sure chi-ctollvm and runtime is built first
+add_dependencies(chigraphcore chi-ctollvm chigraphruntime)
 
 install(FILES ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake DESTINATION lib/cmake/chigraph)
 
