@@ -1,4 +1,7 @@
-include_directories(../third_party/Catch/include)
+
+# Setup catch
+add_library(Catch INTERFACE)
+target_include_directories(Catch INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/Catch)
 
 set(TEST_SRCS
 	main.cpp
@@ -32,7 +35,7 @@ if (CG_BUILD_DEBUGGER)
 endif()
 
 add_executable(api_tests ${TEST_SRCS})
-target_link_libraries(api_tests PUBLIC chigraphcore)
+target_link_libraries(api_tests PUBLIC chigraphcore Catch)
 
 if (CG_BUILD_FETCHER)
 	target_link_libraries(api_tests PUBLIC chigraphfetcher)

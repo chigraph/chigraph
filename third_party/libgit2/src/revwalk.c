@@ -15,8 +15,6 @@
 #include "merge.h"
 #include "vector.h"
 
-GIT__USE_OIDMAP
-
 git_commit_list_node *git_revwalk__commit_lookup(
 	git_revwalk *walk, const git_oid *oid)
 {
@@ -25,9 +23,9 @@ git_commit_list_node *git_revwalk__commit_lookup(
 	int ret;
 
 	/* lookup and reserve space if not already present */
-	pos = kh_get(oid, walk->commits, oid);
-	if (pos != kh_end(walk->commits))
-		return kh_value(walk->commits, pos);
+	pos = git_oidmap_lookup_index(walk->commits, oid);
+	if (git_oidmap_valid_index(walk->commits, pos))
+		return git_oidmap_value_at(walk->commits, pos);
 
 	commit = git_commit_list_alloc_node(walk);
 	if (commit == NULL)
@@ -35,9 +33,9 @@ git_commit_list_node *git_revwalk__commit_lookup(
 
 	git_oid_cpy(&commit->oid, oid);
 
-	pos = kh_put(oid, walk->commits, &commit->oid, &ret);
+	pos = git_oidmap_put(walk->commits, &commit->oid, &ret);
 	assert(ret != 0);
-	kh_value(walk->commits, pos) = commit;
+	git_oidmap_set_value_at(walk->commits, pos, commit);
 
 	return commit;
 }
@@ -61,7 +59,7 @@ static int push_commit(git_revwalk *walk, const git_oid *oid, int uninteresting,
 		if (from_glob)
 			return 0;
 
-		giterr_set(GITERR_INVALID, "Object is not a committish");
+		giterr_set(GITERR_INVALID, "object is not a committish");
 		return -1;
 	}
 	if (error < 0)
@@ -198,7 +196,7 @@ int git_revwalk_push_range(git_revwalk *walk, const char *range)
 
 	if (revspec.flags & GIT_REVPARSE_MERGE_BASE) {
 		/* TODO: support "<commit>...<commit>" */
-		giterr_set(GITERR_INVALID, "Symmetric differences not implemented in revwalk");
+		giterr_set(GITERR_INVALID, "symmetric differences not implemented in revwalk");
 		return GIT_EINVALIDSPEC;
 	}
 
@@ -233,9 +231,12 @@ static int revwalk_next_timesort(git_commit_list_node **object_out, git_revwalk 
 {
 	git_commit_list_node *next;
 
-	if ((next = git_pqueue_pop(&walk->iterator_time)) != NULL) {
-		*object_out = next;
-		return 0;
+	while ((next = git_pqueue_pop(&walk->iterator_time)) != NULL) {
+		/* Some commits might become uninteresting after being added to the list */
+		if (!next->uninteresting) {
+			*object_out = next;
+			return 0;
+		}
 	}
 
 	giterr_clear();
@@ -702,7 +703,7 @@ void git_revwalk_reset(git_revwalk *walk)
 
 	assert(walk);
 
-	kh_foreach_value(walk->commits, commit, {
+	git_oidmap_foreach_value(walk->commits, commit, {
 		commit->seen = 0;
 		commit->in_degree = 0;
 		commit->topo_delay = 0;
@@ -733,7 +734,7 @@ int git_revwalk_add_hide_cb(
 
 	if (walk->hide_cb) {
 		/* There is already a callback added */
-		giterr_set(GITERR_INVALID, "There is already a callback added to hide commits in revision walker.");
+		giterr_set(GITERR_INVALID, "there is already a callback added to hide commits in revwalk");
 		return -1;
 	}
 

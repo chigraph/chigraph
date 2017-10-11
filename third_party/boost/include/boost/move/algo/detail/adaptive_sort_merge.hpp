@@ -154,20 +154,20 @@ typename iterator_traits<ForwardIt>::size_type
    return count;
 }
 
-template<class T>
+template<class T, class RandRawIt = T*>
 class adaptive_xbuf
 {
    adaptive_xbuf(const adaptive_xbuf &);
    adaptive_xbuf & operator=(const adaptive_xbuf &);
 
    public:
-   typedef T* iterator;
+   typedef RandRawIt iterator;
 
    adaptive_xbuf()
-      : m_ptr(0), m_size(0), m_capacity(0)
+      : m_ptr(), m_size(0), m_capacity(0)
    {}
 
-   adaptive_xbuf(T *raw_memory, std::size_t capacity)
+   adaptive_xbuf(RandRawIt raw_memory, std::size_t capacity)
       : m_ptr(raw_memory), m_size(0), m_capacity(capacity)
    {}
 
@@ -183,7 +183,7 @@ class adaptive_xbuf
          m_size = n;
       }
       else{
-         T *result = boost::move(first, first+m_size, m_ptr);
+         RandRawIt result = boost::move(first, first+m_size, m_ptr);
          boost::uninitialized_move(first+m_size, first+n, result);
          m_size = n;
       }
@@ -201,8 +201,8 @@ class adaptive_xbuf
    iterator add(RandIt it)
    {
       BOOST_ASSERT(m_size < m_capacity);
-      T * p_ret = m_ptr + m_size;
-      ::new(p_ret) T(::boost::move(*it));
+      RandRawIt p_ret = m_ptr + m_size;
+      ::new(&*p_ret) T(::boost::move(*it));
       ++m_size;
       return p_ret;
    }
@@ -249,14 +249,26 @@ class adaptive_xbuf
       }
    }
 
+   private:
+   template<class RIt>
+   static bool is_raw_ptr(RIt)
+   {
+      return false;
+   }
+
+   static bool is_raw_ptr(T*)
+   {
+      return true;
+   }
+
+   public:
    template<class U>
    bool supports_aligned_trailing(std::size_t size, std::size_t trail_count) const
    {
-      if(this->data()){
-         uintptr_t u_addr_sz = uintptr_t(this->data()+size);
-         uintptr_t u_addr_cp = uintptr_t(this->data()+this->capacity());
+      if(this->is_raw_ptr(this->data()) && m_capacity){
+         uintptr_t u_addr_sz = uintptr_t(&*(this->data()+size));
+         uintptr_t u_addr_cp = uintptr_t(&*(this->data()+this->capacity()));
          u_addr_sz = ((u_addr_sz + sizeof(U)-1)/sizeof(U))*sizeof(U);
-         
          return (u_addr_cp >= u_addr_sz) && ((u_addr_cp - u_addr_sz)/sizeof(U) >= trail_count);
       }
       return false;
@@ -271,7 +283,7 @@ class adaptive_xbuf
    template<class U>
    U *aligned_trailing(std::size_t pos) const
    {
-      uintptr_t u_addr = uintptr_t(this->data()+pos);
+      uintptr_t u_addr = uintptr_t(&*(this->data()+pos));
       u_addr = ((u_addr + sizeof(U)-1)/sizeof(U))*sizeof(U);
       return (U*)u_addr;
    }
@@ -302,7 +314,7 @@ class adaptive_xbuf
    }
 
    private:
-   T *m_ptr;
+   RandRawIt m_ptr;
    std::size_t m_size;
    std::size_t m_capacity;
 };
@@ -458,7 +470,7 @@ RandIt partial_merge_bufferless_impl
    if(first1 != last1 && comp(*last1, last1[-1])){
       do{
          RandIt const old_last1 = last1;
-         last1  = lower_bound(last1, last2, *first1, comp);
+         last1  = boost::movelib::lower_bound(last1, last2, *first1, comp);
          first1 = rotate_gcd(first1, old_last1, last1);//old_last1 == last1 supported
          if(last1 == last2){
             return first1;
@@ -604,13 +616,13 @@ void op_buffered_merge
       size_type const len1 = size_type(middle-first);
       size_type const len2 = size_type(last-middle);
       if(len1 <= len2){
-         first = upper_bound(first, middle, *middle, comp);
+         first = boost::movelib::upper_bound(first, middle, *middle, comp);
          xbuf.move_assign(first, size_type(middle-first));
          op_merge_with_right_placed
             (xbuf.data(), xbuf.end(), first, middle, last, comp, op);
       }
       else{
-         last = lower_bound(middle, last, middle[-1], comp);
+         last = boost::movelib::lower_bound(middle, last, middle[-1], comp);
          xbuf.move_assign(middle, size_type(last-middle));
          op_merge_with_left_placed
             (first, middle, last, xbuf.data(), xbuf.end(), comp, op);
@@ -618,11 +630,11 @@ void op_buffered_merge
    }
 }
 
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 void buffered_merge
       ( RandIt first, RandIt const middle, RandIt last
       , Compare comp
-      , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> &xbuf)
+      , XBuf &xbuf)
 {
    op_buffered_merge(first, middle, last, comp, move_op(), xbuf);
 }
@@ -633,15 +645,14 @@ void buffered_merge
 // in the begining of the range, and ordered according to comp
 // 
 // Returns the number of collected keys
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 typename iterator_traits<RandIt>::size_type
    collect_unique
       ( RandIt const first, RandIt const last
       , typename iterator_traits<RandIt>::size_type const max_collected, Compare comp
-      , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> & xbuf)
+      , XBuf & xbuf)
 {
    typedef typename iterator_traits<RandIt>::size_type size_type;
-   typedef typename iterator_traits<RandIt>::value_type value_type;
    size_type h = 0;
    if(max_collected){
       ++h;  // first key is always here
@@ -650,9 +661,9 @@ typename iterator_traits<RandIt>::size_type
       RandIt search_end = u;
 
       if(xbuf.capacity() >= max_collected){
-         value_type *const ph0 = xbuf.add(first);
+         typename XBuf::iterator const ph0 = xbuf.add(first);
          while(u != last && h < max_collected){
-            value_type * const r = lower_bound(ph0, xbuf.end(), *u, comp);
+            typename XBuf::iterator const r = boost::movelib::lower_bound(ph0, xbuf.end(), *u, comp);
             //If key not found add it to [h, h+h0)
             if(r == xbuf.end() || comp(*u, *r) ){
                RandIt const new_h0 = boost::move(search_end, u, h0);
@@ -669,7 +680,7 @@ typename iterator_traits<RandIt>::size_type
       }
       else{
          while(u != last && h < max_collected){
-            RandIt const r = lower_bound(h0, search_end, *u, comp);
+            RandIt const r = boost::movelib::lower_bound(h0, search_end, *u, comp);
             //If key not found add it to [h, h+h0)
             if(r == search_end || comp(*u, *r) ){
                RandIt const new_h0 = rotate_gcd(h0, search_end, u);
@@ -1666,14 +1677,14 @@ void op_merge_right_step_once
 //
 // As a last step, if auxiliary memory is available in-place merge is performed.
 // until all is merged or auxiliary memory is not large enough.
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 typename iterator_traits<RandIt>::size_type  
    adaptive_sort_build_blocks
       ( RandIt const first
       , typename iterator_traits<RandIt>::size_type const len
       , typename iterator_traits<RandIt>::size_type const l_base
       , typename iterator_traits<RandIt>::size_type const l_build_buf
-      , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> & xbuf
+      , XBuf & xbuf
       , Compare comp)
 {
    typedef typename iterator_traits<RandIt>::size_type  size_type;
@@ -1820,7 +1831,7 @@ void adaptive_sort_combine_blocks
 //Returns true if buffer is placed in 
 //[buffer+len-l_intbuf, buffer+len). Otherwise, buffer is
 //[buffer,buffer+l_intbuf)
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 bool adaptive_sort_combine_all_blocks
    ( RandIt keys
    , typename iterator_traits<RandIt>::size_type &n_keys
@@ -1828,7 +1839,7 @@ bool adaptive_sort_combine_all_blocks
    , typename iterator_traits<RandIt>::size_type const l_buf_plus_data
    , typename iterator_traits<RandIt>::size_type l_merged
    , typename iterator_traits<RandIt>::size_type &l_intbuf
-   , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> & xbuf
+   , XBuf & xbuf
    , Compare comp)
 {
    typedef typename iterator_traits<RandIt>::size_type  size_type;
@@ -1916,11 +1927,11 @@ bool adaptive_sort_combine_all_blocks
    return buffer_right;
 }
 
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 void stable_merge
       ( RandIt first, RandIt const middle, RandIt last
       , Compare comp
-      , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> &xbuf)
+      , XBuf &xbuf)
 {
    BOOST_ASSERT(xbuf.empty());
    typedef typename iterator_traits<RandIt>::size_type   size_type;
@@ -1937,13 +1948,13 @@ void stable_merge
 }
 
 
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 void adaptive_sort_final_merge( bool buffer_right
                               , RandIt const first
                               , typename iterator_traits<RandIt>::size_type const l_intbuf
                               , typename iterator_traits<RandIt>::size_type const n_keys
                               , typename iterator_traits<RandIt>::size_type const len
-                              , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> & xbuf
+                              , XBuf & xbuf
                               , Compare comp)
 {
    //BOOST_ASSERT(n_keys || xbuf.size() == l_intbuf);
@@ -1973,11 +1984,11 @@ void adaptive_sort_final_merge( bool buffer_right
    BOOST_MOVE_ADAPTIVE_SORT_PRINT("   After final_merge   : ", len);
 }
 
-template<class RandIt, class Compare, class Unsigned, class T>
+template<class RandIt, class Compare, class Unsigned, class XBuf>
 bool adaptive_sort_build_params
    (RandIt first, Unsigned const len, Compare comp
    , Unsigned &n_keys, Unsigned &l_intbuf, Unsigned &l_base, Unsigned &l_build_buf
-   , adaptive_xbuf<T> & xbuf
+   , XBuf & xbuf
    )
 {
    typedef Unsigned size_type;
@@ -2064,7 +2075,7 @@ bool adaptive_sort_build_params
    return true;
 }
 
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 inline void adaptive_merge_combine_blocks( RandIt first
                                       , typename iterator_traits<RandIt>::size_type len1
                                       , typename iterator_traits<RandIt>::size_type len2
@@ -2074,7 +2085,7 @@ inline void adaptive_merge_combine_blocks( RandIt first
                                       , bool use_internal_buf
                                       , bool xbuf_used
                                       , Compare comp
-                                      , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> & xbuf
+                                      , XBuf & xbuf
                                       )
 {
    typedef typename iterator_traits<RandIt>::size_type size_type;
@@ -2135,7 +2146,7 @@ inline void adaptive_merge_combine_blocks( RandIt first
    }
 }
 
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 inline void adaptive_merge_final_merge( RandIt first
                                       , typename iterator_traits<RandIt>::size_type len1
                                       , typename iterator_traits<RandIt>::size_type len2
@@ -2145,7 +2156,7 @@ inline void adaptive_merge_final_merge( RandIt first
                                       , bool use_internal_buf
                                       , bool xbuf_used
                                       , Compare comp
-                                      , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> & xbuf
+                                      , XBuf & xbuf
                                       )
 {
    typedef typename iterator_traits<RandIt>::size_type size_type;
@@ -2270,12 +2281,12 @@ inline SizeType adaptive_merge_n_keys_intbuf(SizeType &rl_block, SizeType len1, 
 //
 // * If auxiliary memory is available, the "build_blocks" will be extended to build bigger blocks
 //   using classic merge.
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 void adaptive_sort_impl
    ( RandIt first
    , typename iterator_traits<RandIt>::size_type const len
    , Compare comp
-   , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> & xbuf
+   , XBuf & xbuf
    )
 {
    typedef typename iterator_traits<RandIt>::size_type  size_type;
@@ -2368,13 +2379,13 @@ void adaptive_sort_impl
 // * If auxiliary memory is more than csqrtlen+n_keys*sizeof(std::size_t),
 //   then no csqrtlen need to be extracted and "combine_blocks" will use integral
 //   keys to combine blocks.
-template<class RandIt, class Compare>
+template<class RandIt, class Compare, class XBuf>
 void adaptive_merge_impl
    ( RandIt first
    , typename iterator_traits<RandIt>::size_type const len1
    , typename iterator_traits<RandIt>::size_type const len2
    , Compare comp
-   , adaptive_xbuf<typename iterator_traits<RandIt>::value_type> & xbuf
+   , XBuf & xbuf
    )
 {
    typedef typename iterator_traits<RandIt>::size_type size_type;

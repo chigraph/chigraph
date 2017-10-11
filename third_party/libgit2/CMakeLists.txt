@@ -37,6 +37,7 @@ OPTION( PROFILE				"Generate profiling information"		OFF )
 OPTION( ENABLE_TRACE		"Enables tracing support"				OFF )
 OPTION( LIBGIT2_FILENAME	"Name of the produced binary"			OFF )
 
+OPTION( USE_SHA1DC			"Use SHA-1 with collision detection"	OFF )
 OPTION( USE_ICONV			"Link with and use iconv library" 		OFF )
 OPTION( USE_SSH				"Link with libssh to enable SSH support" ON )
 OPTION( USE_GSSAPI			"Link with libgssapi for SPNEGO auth"   OFF )
@@ -237,8 +238,7 @@ ENDIF()
 
 IF (WIN32 AND WINHTTP)
 	ADD_DEFINITIONS(-DGIT_WINHTTP)
-	INCLUDE_DIRECTORIES(deps/http-parser)
-	FILE(GLOB SRC_HTTP deps/http-parser/*.c deps/http-parser/*.h)
+	ADD_DEFINITIONS(-DGIT_HTTPS)
 
 	# Since MinGW does not come with headers or an import library for winhttp,
 	# we have to include a private header and generate our own import library
@@ -291,27 +291,22 @@ ELSE ()
 		LINK_LIBRARIES(${CURL_LIBRARIES})
 		LIST(APPEND LIBGIT2_PC_LIBS ${CURL_LDFLAGS})
 	ENDIF()
-
-	FIND_PACKAGE(HTTP_Parser)
-	IF (HTTP_PARSER_FOUND AND HTTP_PARSER_VERSION_MAJOR EQUAL 2)
-		INCLUDE_DIRECTORIES(${HTTP_PARSER_INCLUDE_DIRS})
-		LINK_LIBRARIES(${HTTP_PARSER_LIBRARIES})
-		LIST(APPEND LIBGIT2_PC_LIBS "-lhttp_parser")
-	ELSE()
-		MESSAGE(STATUS "http-parser was not found or is too old; using bundled 3rd-party sources.")
-		INCLUDE_DIRECTORIES(deps/http-parser)
-		FILE(GLOB SRC_HTTP deps/http-parser/*.c deps/http-parser/*.h)
-	ENDIF()
 ENDIF()
 
 # Specify sha1 implementation
-IF (WIN32 AND NOT MINGW AND NOT SHA1_TYPE STREQUAL "builtin")
-	ADD_DEFINITIONS(-DWIN32_SHA1)
+IF (USE_SHA1DC)
+	ADD_DEFINITIONS(-DGIT_SHA1_COLLISIONDETECT)
+	ADD_DEFINITIONS(-DSHA1DC_NO_STANDARD_INCLUDES=1)
+	ADD_DEFINITIONS(-DSHA1DC_CUSTOM_INCLUDE_SHA1_C=\"common.h\")
+	ADD_DEFINITIONS(-DSHA1DC_CUSTOM_INCLUDE_UBC_CHECK_C=\"common.h\")
+	FILE(GLOB SRC_SHA1 src/hash/hash_collisiondetect.c src/hash/sha1dc/*)
+ELSEIF (WIN32 AND NOT MINGW)
+	ADD_DEFINITIONS(-DGIT_SHA1_WIN32)
 	FILE(GLOB SRC_SHA1 src/hash/hash_win32.c)
 ELSEIF (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-	ADD_DEFINITIONS(-DGIT_COMMON_CRYPTO)
-ELSEIF (OPENSSL_FOUND AND NOT SHA1_TYPE STREQUAL "builtin")
-	ADD_DEFINITIONS(-DOPENSSL_SHA1)
+	ADD_DEFINITIONS(-DGIT_SHA1_COMMON_CRYPTO)
+ELSEIF (OPENSSL_FOUND)
+	ADD_DEFINITIONS(-DGIT_SHA1_OPENSSL)
 	IF (CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 		LIST(APPEND LIBGIT2_PC_LIBS "-lssl")
 	ELSE()
@@ -330,6 +325,18 @@ ENDIF()
 IF(WIN32 OR AMIGA OR CMAKE_SYSTEM_NAME MATCHES "(Solaris|SunOS)")
 	INCLUDE_DIRECTORIES(deps/regex)
 	SET(SRC_REGEX deps/regex/regex.c)
+ENDIF()
+
+# Optional external dependency: http-parser
+FIND_PACKAGE(HTTP_Parser)
+IF (HTTP_PARSER_FOUND AND HTTP_PARSER_VERSION_MAJOR EQUAL 2)
+	INCLUDE_DIRECTORIES(${HTTP_PARSER_INCLUDE_DIRS})
+	LINK_LIBRARIES(${HTTP_PARSER_LIBRARIES})
+	LIST(APPEND LIBGIT2_PC_LIBS "-lhttp_parser")
+ELSE()
+	MESSAGE(STATUS "http-parser version 2 was not found; using bundled 3rd-party sources.")
+	INCLUDE_DIRECTORIES(deps/http-parser)
+	FILE(GLOB SRC_HTTP deps/http-parser/*.c deps/http-parser/*.h)
 ENDIF()
 
 # Optional external dependency: zlib
@@ -461,19 +468,17 @@ IF (MSVC)
 	SET(CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL}")
 
 	SET(WIN_RC "src/win32/git2.rc")
-
-   # Precompiled headers
-
 ELSE ()
-	SET(CMAKE_C_FLAGS "-D_GNU_SOURCE -Wall -Wextra ${CMAKE_C_FLAGS}")
+	SET(CMAKE_C_FLAGS "-D_GNU_SOURCE ${CMAKE_C_FLAGS}")
+
+	ADD_C_FLAG_IF_SUPPORTED(-Wall)
+	ADD_C_FLAG_IF_SUPPORTED(-Wextra)
 
 	IF (CMAKE_SYSTEM_NAME MATCHES "(Solaris|SunOS)")
 		SET(CMAKE_C_FLAGS "-std=c99 -D_POSIX_C_SOURCE=200112L -D__EXTENSIONS__ -D_POSIX_PTHREAD_SEMANTICS ${CMAKE_C_FLAGS}")
 	ENDIF()
 
-	IF (WIN32 AND NOT CYGWIN)
-		SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
-	ENDIF ()
+	SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG -O0")
 
 	IF (MINGW OR MSYS) # MinGW and MSYS always do PIC and complain if we tell them to
 		STRING(REGEX REPLACE "-fPIC" "" CMAKE_SHARED_LIBRARY_C_FLAGS "${CMAKE_SHARED_LIBRARY_C_FLAGS}")
@@ -540,11 +545,13 @@ ENDIF()
 
 IF (SECURITY_FOUND)
   ADD_DEFINITIONS(-DGIT_SECURE_TRANSPORT)
+  ADD_DEFINITIONS(-DGIT_HTTPS)
   INCLUDE_DIRECTORIES(${SECURITY_INCLUDE_DIR})
 ENDIF ()
 
 IF (OPENSSL_FOUND)
   ADD_DEFINITIONS(-DGIT_OPENSSL)
+  ADD_DEFINITIONS(-DGIT_HTTPS)
   INCLUDE_DIRECTORIES(${OPENSSL_INCLUDE_DIR})
   SET(SSL_LIBRARIES ${OPENSSL_LIBRARIES})
 ENDIF()
@@ -697,9 +704,9 @@ IF (BUILD_CLAR)
 
 	ENABLE_TESTING()
 	IF (WINHTTP OR OPENSSL_FOUND OR SECURITY_FOUND)
-		ADD_TEST(libgit2_clar libgit2_clar -ionline)
+		ADD_TEST(libgit2_clar libgit2_clar -ionline -xclone::local::git_style_unc_paths -xclone::local::standard_unc_paths_are_written_git_style)
 	ELSE ()
-		ADD_TEST(libgit2_clar libgit2_clar -v)
+		ADD_TEST(libgit2_clar libgit2_clar -v -xclone::local::git_style_unc_paths -xclone::local::standard_unc_paths_are_written_git_style)
 	ENDIF ()
 
 	# Add a test target which runs the cred callback tests, to be

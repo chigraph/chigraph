@@ -131,7 +131,7 @@ int git_diff__merge(
 	if (ignore_case != ((from->opts.flags & GIT_DIFF_IGNORE_CASE) != 0) ||
 		reversed    != ((from->opts.flags & GIT_DIFF_REVERSE) != 0)) {
 		giterr_set(GITERR_INVALID,
-			"Attempt to merge diffs created with conflicting options");
+			"attempt to merge diffs created with conflicting options");
 		return -1;
 	}
 
@@ -553,8 +553,8 @@ static int similarity_measure(
 
 	*score = -1;
 
-	/* don't try to compare files of different types */
-	if (GIT_MODE_TYPE(a_file->mode) != GIT_MODE_TYPE(b_file->mode))
+	/* don't try to compare things that aren't files */
+	if (!GIT_MODE_ISBLOB(a_file->mode) || !GIT_MODE_ISBLOB(b_file->mode))
 		return 0;
 
 	/* if exact match is requested, force calculation of missing OIDs now */

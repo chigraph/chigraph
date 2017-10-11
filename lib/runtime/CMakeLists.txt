@@ -41,7 +41,7 @@ foreach(src ${RUNTIME_SRCS})
 	set(output "${CMAKE_BINARY_DIR}/lib/runtime/runtime.obj/${src}.bc")
 	add_custom_command(
 		OUTPUT ${output}
-		COMMAND ${CLANG_EXE} ${CMAKE_CURRENT_SOURCE_DIR}/${src} -c -emit-llvm -O3 -o ${output}
+		COMMAND ${CLANG_EXE} ${CMAKE_CURRENT_SOURCE_DIR}/${src} -std=gnu11 -c -emit-llvm -O3 -o ${output}
 		DEPENDS ${src}
 		COMMENT "Generating ${src}.bc for runtime..."
 	)
