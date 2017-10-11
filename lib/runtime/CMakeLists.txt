@@ -37,11 +37,22 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib/chigraph)
 
 set(RUNTIME_COMPILEDBC "")
 
+# Generate the flags we need to pass to clang
+set(clangflags "-std=gnu11")
+if (CG_RUNTIME_DEBUG)
+	list(APPEND clangflags "-O0" "-g")
+else()
+	list(APPEND clangflags "-O3")
+endif()
+
+# add these last so they have priority
+list(APPEND clangflags ${CG_RUNTIME_CLANG_FLAGS})
+
 foreach(src ${RUNTIME_SRCS})
 	set(output "${CMAKE_BINARY_DIR}/lib/runtime/runtime.obj/${src}.bc")
 	add_custom_command(
 		OUTPUT ${output}
-		COMMAND ${CLANG_EXE} ${CMAKE_CURRENT_SOURCE_DIR}/${src} -std=gnu11 -c -emit-llvm -O3 -o ${output}
+		COMMAND ${CLANG_EXE} ${CMAKE_CURRENT_SOURCE_DIR}/${src} ${clangflags} -c -emit-llvm -o ${output}
 		DEPENDS ${src}
 		COMMENT "Generating ${src}.bc for runtime..."
 	)
