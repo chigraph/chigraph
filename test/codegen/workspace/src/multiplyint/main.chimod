@@ -1,5 +1,4 @@
 {
-  "has_c_support": false,
   "dependencies": [
     "intprinter",
     "lang"
@@ -7,28 +6,6 @@
   "graphs": [
     {
       "connections": [
-        {
-          "input": [
-            "57331dea-ce43-4740-871d-c60776f354f9",
-            0
-          ],
-          "output": [
-            "07f5317e-61dc-48fc-acb3-d3fa0a08a635",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "30bb58cf-0c5d-4a05-95a1-888372b623d1",
-            0
-          ],
-          "output": [
-            "57331dea-ce43-4740-871d-c60776f354f9",
-            0
-          ],
-          "type": "data"
-        },
         {
           "input": [
             "079421d3-66a4-4b9c-9bd4-e68a3a6fa6ae",
@@ -61,10 +38,47 @@
             1
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "cfdd5f24-68e4-4b40-9a88-6de2e40a8ce4",
+            0
+          ],
+          "output": [
+            "07f5317e-61dc-48fc-acb3-d3fa0a08a635",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "57331dea-ce43-4740-871d-c60776f354f9",
+            0
+          ],
+          "output": [
+            "07f5317e-61dc-48fc-acb3-d3fa0a08a635",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "30bb58cf-0c5d-4a05-95a1-888372b623d1",
+            0
+          ],
+          "output": [
+            "57331dea-ce43-4740-871d-c60776f354f9",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -90,7 +104,11 @@
         },
         "07f5317e-61dc-48fc-acb3-d3fa0a08a635": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
@@ -125,6 +143,14 @@
           ],
           "type": "intprinter:printint"
         },
+        "cfdd5f24-68e4-4b40-9a88-6de2e40a8ce4": {
+          "data": 0,
+          "location": [
+            720.0,
+            365.0
+          ],
+          "type": "lang:const-int"
+        },
         "febeae96-ac33-44df-a941-dde50fbf37f9": {
           "data": 124,
           "location": [
@@ -137,5 +163,6 @@
       "type": "function"
     }
   ],
+  "has_c_support": false,
   "types": {}
 }

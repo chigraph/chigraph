@@ -2,15 +2,14 @@
 
 #include <git2.h>
 
-#include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/filesystem/operations.hpp>
 
 namespace fs = boost::filesystem;
 
 namespace chi {
 
 Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool recursive) {
-	
 	// init it (pretty sure it inits windows networking stuff)
 	git_libgit2_init();
 
@@ -41,7 +40,7 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 			return res;
 		}
 
-		auto repoPathCtx = res.addScopedContext({{"Repo Path", repoPath}});
+		auto repoPathCtx = res.addScopedContext({{"Repo Path", repoPath.string()}});
 
 		if (type == VCSType::Unknown) {
 			res.addEntry("EUKN", "Could not resolve URL for module", {});
@@ -271,6 +270,11 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 			return res;
 		}
 	}
+	
+	if (!fs::is_regular_file(fileName)) {
+      res.addEntry("EUKN", "Module doesn't exist", {{"File Name", fileName.string()}});
+      return res;
+    }
 
 	if (recursive) {
 		// peek at the dependencies
@@ -281,7 +285,7 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 			file >> j;
 		} catch (std::exception& e) {
 			res.addEntry("EUKN", "Failed to parse JSON",
-			             {{"File", fileName}, {"Error Message", e.what()}});
+			             {{"File", fileName.string()}, {"Error Message", e.what()}});
 		}
 
 		if (j.find("dependencies") != j.end() || !j["dependencies"].is_array()) { return res; }
@@ -295,7 +299,6 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 
 	return res;
 }
-
 
 std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
     const boost::filesystem::path& path) {
@@ -322,6 +325,4 @@ std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
 	return std::make_tuple(VCSType::Unknown, "", "");
 }
 
-
-
-} // namespace chi
+}  // namespace chi

@@ -1,5 +1,4 @@
 {
-  "has_c_support": true,
   "dependencies": [
     "intprinter",
     "lang"
@@ -17,28 +16,6 @@
             0
           ],
           "type": "exec"
-        },
-        {
-          "input": [
-            "bb38760c-5018-431b-86c4-087f5d233c29",
-            0
-          ],
-          "output": [
-            "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e",
-            0
-          ],
-          "output": [
-            "bb38760c-5018-431b-86c4-087f5d233c29",
-            0
-          ],
-          "type": "data"
         },
         {
           "input": [
@@ -86,6 +63,28 @@
         },
         {
           "input": [
+            "bb38760c-5018-431b-86c4-087f5d233c29",
+            0
+          ],
+          "output": [
+            "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "392a1aa3-d64f-40b6-9b8d-51c7e01d2b0e",
+            0
+          ],
+          "output": [
+            "bb38760c-5018-431b-86c4-087f5d233c29",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
             "50d722fc-7c9a-4d5a-9a1c-6cbe354ad0cc",
             0
           ],
@@ -105,10 +104,25 @@
             0
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "66703ae2-ecb6-42c6-a306-5732953e1448",
+            0
+          ],
+          "output": [
+            "8526e191-b534-4910-953f-d10b7b206d50",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -161,16 +175,28 @@
           ],
           "type": "call/main:docall"
         },
+        "66703ae2-ecb6-42c6-a306-5732953e1448": {
+          "data": 0,
+          "location": [
+            1578.0,
+            270.0
+          ],
+          "type": "lang:const-int"
+        },
         "8526e191-b534-4910-953f-d10b7b206d50": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            1756.77990722656,
-            20.528263092041
+            1876.77990722656,
+            89.5282592773438
           ],
           "type": "lang:exit"
         },
@@ -329,5 +355,6 @@
       "type": "function"
     }
   ],
+  "has_c_support": true,
   "types": {}
 }

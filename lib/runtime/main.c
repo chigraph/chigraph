@@ -6,5 +6,4 @@ int main() {
 	chigraph_main(0, &retCode);
 	
 	return retCode;
-	
 }

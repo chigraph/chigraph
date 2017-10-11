@@ -1,12 +1,18 @@
 var searchData=
 [
-  ['parsecolonpair',['parseColonPair',['../namespacechi.html#aa47212ba13fb1a1d26774dc208c15255',1,'chi']]],
-  ['parseobjectpair',['parseObjectPair',['../namespacechi.html#a2b3839fa03d8bfb6ef3238543d44d865',1,'chi']]],
-  ['pathtocsources',['pathToCSources',['../structchi_1_1GraphModule.html#a10cfac308c6e0f1fa38be5513b2380cc',1,'chi::GraphModule']]],
-  ['pause',['pause',['../classchi_1_1Debugger.html#a5fccfd6cf85feb1efbae75cf2f8bf06b',1,'chi::Debugger']]],
-  ['pipehandler',['pipeHandler',['../structchi_1_1Subprocess.html#a7ae98dd49171bcffb8d3a64714b4f5b1',1,'chi::Subprocess']]],
-  ['postpurebreak',['postPureBreak',['../structchi_1_1FunctionCompiler.html#a6bbb1077fc678b9d2aebc1a42495dfb9',1,'chi::FunctionCompiler']]],
-  ['processcontinue',['processContinue',['../classchi_1_1Debugger.html#a496c2a258851076282d04b237e5ee45e',1,'chi::Debugger']]],
-  ['pure',['pure',['../structchi_1_1NodeCompiler.html#aa31a7c7955b51e5610b966f81bdc989d',1,'chi::NodeCompiler::pure()'],['../structchi_1_1NodeType.html#a0e5eb5e2862761cd67f3ff4761175dd5',1,'chi::NodeType::pure()']]],
-  ['pushtostdin',['pushToStdIn',['../structchi_1_1Subprocess.html#a62114d525126e682028af5a906f771a6',1,'chi::Subprocess']]]
+  ['operator_20_26',['operator &amp;',['../structchi_1_1Flags.html#af385da323047a5c2dc29be162dd647d5',1,'chi::Flags']]],
+  ['operator_20_26_3d',['operator &amp;=',['../structchi_1_1Flags.html#a8191559b93fead009e43b6300f1383a5',1,'chi::Flags']]],
+  ['operator_20bool',['operator bool',['../structchi_1_1Flags.html#a88ae58afc2e6da613fe21851095efdde',1,'chi::Flags::operator bool()'],['../structchi_1_1Result.html#a26406ce67145a4e7893018ccbf50dc89',1,'chi::Result::operator bool()']]],
+  ['operator_21',['operator!',['../structchi_1_1Flags.html#a79539b7330a1ef1f67f0ce203edb40e1',1,'chi::Flags::operator!()'],['../structchi_1_1Result.html#ac4c9a2e6f79dbd1f49116370cfc96513',1,'chi::Result::operator!()']]],
+  ['operator_21_3d',['operator!=',['../structchi_1_1DataType.html#ad14e85637a15b7f77cbc51d7139ebfd1',1,'chi::DataType::operator!=()'],['../structchi_1_1NamedDataType.html#a01bc75acad89fce92cb5c93323ff4c2d',1,'chi::NamedDataType::operator!=()']]],
+  ['operator_28_29',['operator()',['../structstd_1_1hash_3_01boost_1_1filesystem_1_1path_01_4.html#a9759b69dc14b65f0f3e63e8d45b8c080',1,'std::hash&lt; boost::filesystem::path &gt;::operator()()'],['../structstd_1_1hash_3_01boost_1_1uuids_1_1uuid_01_4.html#a32c18612e012a084e17821aaf47cf02a',1,'std::hash&lt; boost::uuids::uuid &gt;::operator()()']]],
+  ['operator_2b',['operator+',['../structchi_1_1Result.html#a8fb4cc68d78f0a0068c0ddd282875eee',1,'chi::Result']]],
+  ['operator_2b_3d',['operator+=',['../structchi_1_1Result.html#aa3dbb473ec8607456c13be950e739827',1,'chi::Result']]],
+  ['operator_3c_3c',['operator&lt;&lt;',['../structchi_1_1Result.html#a3a1caa60d79ed3cd997da1559bddd278',1,'chi::Result']]],
+  ['operator_3d',['operator=',['../structchi_1_1NodeCompiler.html#a71b9a6746dca01c0c42402a5ef082c54',1,'chi::NodeCompiler::operator=()'],['../structchi_1_1Flags.html#a11c8f2e11b96dce3b105a14c14870cf4',1,'chi::Flags::operator=(const Flags &amp;fl)=default'],['../structchi_1_1Flags.html#a9a05670d29d9cf847897154513ddabe9',1,'chi::Flags::operator=(Flags &amp;&amp;fl)=default']]],
+  ['operator_3d_3d',['operator==',['../structchi_1_1Flags.html#a6ee1e505bf9181403ec98fdb0555230d',1,'chi::Flags::operator==()'],['../structchi_1_1DataType.html#a28f2089d4e0ce03e737d2a82e473c927',1,'chi::DataType::operator==()'],['../structchi_1_1NamedDataType.html#a080914269173bb83b2ebf0ac622b66a0',1,'chi::NamedDataType::operator==()']]],
+  ['operator_7c',['operator|',['../structchi_1_1Flags.html#a11ee20d313c7590c6f00127d9fe35b64',1,'chi::Flags']]],
+  ['operator_7c_3d',['operator|=',['../structchi_1_1Flags.html#a1b135b1d822e9d03d2ac3ceb5f2f2b19',1,'chi::Flags']]],
+  ['outputdataconnections',['outputDataConnections',['../structchi_1_1NodeInstance.html#a7c07a36d22409a950ce18ab7eeae00f6',1,'chi::NodeInstance']]],
+  ['outputexecconnections',['outputExecConnections',['../structchi_1_1NodeInstance.html#ae15567fb9911109701a9d221b58494db',1,'chi::NodeInstance']]]
 ];

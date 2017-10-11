@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['chimodule_2ecpp',['ChiModule.cpp',['../ChiModule_8cpp.html',1,'']]],
-  ['chimodule_2ehpp',['ChiModule.hpp',['../ChiModule_8hpp.html',1,'']]],
-  ['context_2ecpp',['Context.cpp',['../Context_8cpp.html',1,'']]],
-  ['context_2ehpp',['Context.hpp',['../Context_8hpp.html',1,'']]]
+  ['bitcodeparser_2ecpp',['BitcodeParser.cpp',['../BitcodeParser_8cpp.html',1,'']]],
+  ['bitcodeparser_2ehpp',['BitcodeParser.hpp',['../BitcodeParser_8hpp.html',1,'']]]
 ];

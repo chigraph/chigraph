@@ -9,7 +9,7 @@ var searchData=
   ['inspectnodeoutput',['inspectNodeOutput',['../classchi_1_1Debugger.html#a7b4b8117f767d7fc591ff1f54516c681',1,'chi::Debugger']]],
   ['interpretllvmir',['interpretLLVMIR',['../namespacechi.html#a0fd66f4db0dbade845553826bd971190',1,'chi']]],
   ['interpretllvmirasmain',['interpretLLVMIRAsMain',['../namespacechi.html#a33d2592c56c0b169c44b14332e80db44',1,'chi']]],
-  ['invalidatecache',['invalidateCache',['../structchi_1_1ModuleCache.html#a28ab26c3bd85a4795d9c04809f9a687b',1,'chi::ModuleCache']]],
+  ['invalidatecache',['invalidateCache',['../structchi_1_1DefaultModuleCache.html#a3b4f579458e59863f464f0b28e22ac10',1,'chi::DefaultModuleCache::invalidateCache()'],['../structchi_1_1ModuleCache.html#a1da914cd290102492f3b588af705d02c',1,'chi::ModuleCache::invalidateCache()']]],
   ['isattached',['isAttached',['../classchi_1_1Debugger.html#a17c4ded82e7df22e6d513568d590d58a',1,'chi::Debugger']]],
   ['isstdinclosed',['isStdInClosed',['../structchi_1_1Subprocess.html#a9497b25fd496cd7a0ad464dfeb6e242d',1,'chi::Subprocess']]]
 ];

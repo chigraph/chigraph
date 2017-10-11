@@ -7,7 +7,6 @@
 
 namespace chi {
 std::string mangleFunctionName(std::string modName, const std::string& name) {
-
 	// if it is the special main module, then just return chigraph_main
 	if ((modName.substr(modName.rfind('/') + 1, modName.rfind('.')) == "main" ||
 	     modName.substr(modName.rfind('\\') + 1, modName.rfind('.')) == "main") &&

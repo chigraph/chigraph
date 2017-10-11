@@ -1,5 +1,4 @@
 {
-  "has_c_support": true,
   "dependencies": [
     "lang"
   ],
@@ -8,14 +7,14 @@
       "connections": [
         {
           "input": [
-            "658a61aa-6008-4aec-82bd-9a12a7984b94",
+            "b72973d2-ae85-44e8-92d9-f4c958d50cd9",
             0
           ],
           "output": [
-            "03cc1f46-6de5-4945-b874-c7cb4f43c65c",
+            "89554903-d262-48c8-922c-84d1be2406a0",
             0
           ],
-          "type": "exec"
+          "type": "data"
         },
         {
           "input": [
@@ -38,10 +37,25 @@
             0
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "658a61aa-6008-4aec-82bd-9a12a7984b94",
+            0
+          ],
+          "output": [
+            "03cc1f46-6de5-4945-b874-c7cb4f43c65c",
+            0
+          ],
+          "type": "exec"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -85,7 +99,11 @@
         },
         "89554903-d262-48c8-922c-84d1be2406a0": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
@@ -103,10 +121,19 @@
             235.0
           ],
           "type": "lang:strliteral"
+        },
+        "b72973d2-ae85-44e8-92d9-f4c958d50cd9": {
+          "data": 0,
+          "location": [
+            758.0,
+            273.0
+          ],
+          "type": "lang:const-int"
         }
       },
       "type": "function"
     }
   ],
+  "has_c_support": true,
   "types": {}
 }

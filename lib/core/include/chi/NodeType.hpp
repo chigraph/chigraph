@@ -84,6 +84,9 @@ public:
 	/// Get if this node is pure
 	/// \return If it's pure
 	bool pure() { return mPure; }
+	
+	/// Get if this node is a converter
+	bool converter() { return mConverter; }
 
 protected:
 	/// Set the data inputs for the NodeType
@@ -115,6 +118,11 @@ protected:
 	/// When they are called they are backpropagated and all called
 	/// They should usually be cheap and sideaffectless
 	void makePure();
+	
+	/// Make this a converter node
+	/// \pre `pure() == true`
+	/// Allows for this node to be created automatically for conversions
+	void makeConverter();
 
 	/// Get the node instance
 	/// \return the node instance
@@ -134,6 +142,7 @@ private:
 	std::vector<std::string> mExecOutputs;
 
 	bool mPure = false;
+	bool mConverter = false;
 };
 }  // namespace chi
 

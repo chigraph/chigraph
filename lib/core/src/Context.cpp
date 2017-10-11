@@ -3,15 +3,15 @@
 #include "chi/Context.hpp"
 #include "chi/ModuleProvider.hpp"
 #include "chi/GraphFunction.hpp"
+#include "chi/NodeType.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
 #include "chi/JsonDeserializer.hpp"
 #include "chi/LLVMVersion.hpp"
 #include "chi/LangModule.hpp"
 #include "chi/NodeInstance.hpp"
-#include "chi/BitcodeParser.hpp"
-#include "chi/Support/Result.hpp"
 #include "chi/Support/ExecutablePath.hpp"
+#include "chi/Support/Result.hpp"
 
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm/ExecutionEngine/GenericValue.h>
@@ -33,16 +33,22 @@
 #include <deque>
 #include <unordered_set>
 
-
 namespace fs = boost::filesystem;
 
 namespace chi {
+<<<<<<< HEAD
 Context::Context(std::unique_ptr<ModuleProvider> provider, bool includeLangModule)
 	: mModuleProvider{std::move(provider)} {
 	
 	if (includeLangModule) {
 		addModule(std::make_unique<LangModule>(*this));
 	}
+=======
+Context::Context(const boost::filesystem::path& workPath) {
+	mWorkspacePath = workspaceFromChildPath(workPath);
+
+	mModuleCache = std::make_unique<DefaultModuleCache>(*this);
+>>>>>>> be7691626782bb9eec7862463bbb2a03d461e62e
 }
 
 Context::~Context() = default;
@@ -168,10 +174,37 @@ bool Context::addModule(std::unique_ptr<ChiModule> modToAdd) noexcept {
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) { return false; }
 
+<<<<<<< HEAD
 	mBuiltInModules.push_back(std::move(modToAdd));
 
 	assert(modToAdd == nullptr);
 
+=======
+	if (modToAdd->fullName() == "lang") { mLangModule = dynamic_cast<LangModule*>(modToAdd.get()); }
+
+	// add the converter nodes
+	for (const auto& tyName : modToAdd->nodeTypeNames()) {
+		// create it
+		std::unique_ptr<NodeType> ty;
+		auto res = modToAdd->nodeTypeFromName(tyName, {}, &ty);
+		
+		if (!res) {
+			// converter nodes must be stateless
+			continue;
+		}
+		
+		if (!ty->converter()) {
+			continue;
+		}
+		
+		// add it!
+		mTypeConverters[ty->dataInputs()[0].type.qualifiedName()][ty->dataOutputs()[0].type.qualifiedName()] = std::move(ty);
+	}
+	
+	mModules.push_back(std::move(modToAdd));
+	
+	
+>>>>>>> be7691626782bb9eec7862463bbb2a03d461e62e
 	return true;
 }
 
@@ -224,6 +257,21 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, boost::string_vie
 
 	return res;
 }
+
+std::unique_ptr<NodeType> Context::createConverterNodeType(const DataType& fromType, const DataType& toType) {
+	auto fromIter = mTypeConverters.find(fromType.qualifiedName());
+	if (fromIter == mTypeConverters.end()) { 
+		return nullptr;
+	}
+	
+	auto toIter = fromIter->second.find(toType.qualifiedName());
+	if (toIter == fromIter->second.end()) {
+		return nullptr;
+	}
+	
+	return toIter->second->clone();
+}
+
 
 Result Context::compileModule(const boost::filesystem::path& fullName,
                               Flags<CompileSettings>         settings,
@@ -348,22 +396,25 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 			llvm::Linker::linkModules(*llmod, std::move(compiledDep));
 #endif
 		}
-		
+
 		// link in runtime if this is a main module
 		if (mod.shortName() == "main") {
 			// find the runtime
-			auto runtimebc = executablePath().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
-			
+			auto runtimebc =
+			    executablePath().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
+
 			if (!fs::is_regular_file(runtimebc)) {
-				res.addEntry("EUKN", "Failed to find runtime.bc in lib/chigraph/runtime.bc", {{"Install prefix", executablePath().parent_path().parent_path().string()}});
+				res.addEntry(
+				    "EUKN", "Failed to find runtime.bc in lib/chigraph/runtime.bc",
+				    {{"Install prefix", executablePath().parent_path().parent_path().string()}});
 			}
-			
+
 			// load the BC file
 			std::unique_ptr<llvm::Module> runtimeMod;
 			res += parseBitcodeFile(runtimebc, llvmContext(), &runtimeMod);
 			if (!res) { return res; }
-			
-			// link it in
+
+// link it in
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 			llvm::Linker::LinkModules(llmod.get(), runtimeMod.get()
 #if LLVM_VERSION_LESS_EQUAL(3, 5)

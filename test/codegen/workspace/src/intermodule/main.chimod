@@ -104,10 +104,25 @@
             0
           ],
           "type": "exec"
+        },
+        {
+          "input": [
+            "0c0828ab-4993-4f27-bd56-7fdaa1fd26bf",
+            0
+          ],
+          "output": [
+            "b5fb2695-79fe-44bd-b70c-8c920ad470fa",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -118,11 +133,19 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
+        "0c0828ab-4993-4f27-bd56-7fdaa1fd26bf": {
+          "data": 0,
+          "location": [
+            1820.0,
+            143.0
+          ],
+          "type": "lang:const-int"
+        },
         "3cd01c89-8fa1-477e-a953-6cf4d125ee0e": {
           "data": null,
           "location": [
-            975.0,
-            100.0
+            960.0,
+            103.0
           ],
           "type": "intermodule/printer:docall"
         },
@@ -142,8 +165,8 @@
             "output": "lang:i8*"
           },
           "location": [
-            1152.40002441406,
-            94.0
+            1114.40002441406,
+            90.0
           ],
           "type": "intermodule/main:c-call"
         },
@@ -163,8 +186,8 @@
             "output": null
           },
           "location": [
-            1543.51733398438,
-            63.3877372741699
+            1581.51733398438,
+            59.3877372741699
           ],
           "type": "intermodule/main:c-call"
         },
@@ -191,22 +214,26 @@
         },
         "b5fb2695-79fe-44bd-b70c-8c920ad470fa": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            1775.1103515625,
-            36.1672248840332
+            2059.1103515625,
+            -2.8327751159668
           ],
           "type": "lang:exit"
         },
         "c4886ab8-e782-4279-961b-db9e4b32ba6d": {
           "data": null,
           "location": [
-            1362.0,
-            39.5999984741211
+            1386.0,
+            69.5999984741211
           ],
           "type": "intermodule/printer:docall"
         }

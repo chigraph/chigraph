@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['fetchmodule',['fetchModule',['../structchi_1_1Context.html#adb50cef8d976f87057394192cb02b8ff',1,'chi::Context']]],
+  ['fetchmodule',['fetchModule',['../namespacechi.html#a3cb9bd41eebfa97c5819f48e176aa63d',1,'chi']]],
   ['findinstancesoftype',['findInstancesOfType',['../structchi_1_1Context.html#aeec68d24b0031bd29cbc272c8b5fd415',1,'chi::Context']]],
   ['firstblock',['firstBlock',['../structchi_1_1NodeCompiler.html#a12c42cfcd23400c523184966ed238806',1,'chi::NodeCompiler']]],
   ['flags',['Flags',['../structchi_1_1Flags.html#a423fb4774ea141fbdb47a78136115cdc',1,'chi::Flags::Flags()=default'],['../structchi_1_1Flags.html#ab878bfabc2bcf18f92072fd9d5b60c3c',1,'chi::Flags::Flags(Enum e)'],['../structchi_1_1Flags.html#ad5d95c6dd064e92a6d12046a86f3557b',1,'chi::Flags::Flags(const Flags &amp;fl)=default'],['../structchi_1_1Flags.html#a1fb37156bf786b94ace60c337f2407c9',1,'chi::Flags::Flags(Flags &amp;&amp;fl)=default']]],

@@ -1,5 +1,4 @@
 {
-  "has_c_support": false,
   "dependencies": [
     "intprinter",
     "lang"
@@ -39,10 +38,25 @@
             0
           ],
           "type": "exec"
+        },
+        {
+          "input": [
+            "66b84d8a-18f6-42a2-997d-ec1a9a12dbad",
+            0
+          ],
+          "output": [
+            "91d0474d-550f-4333-a821-eb222cee6f36",
+            0
+          ],
+          "type": "data"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -53,24 +67,36 @@
       "local_variables": {},
       "name": "main",
       "nodes": {
+        "66b84d8a-18f6-42a2-997d-ec1a9a12dbad": {
+          "data": 0,
+          "location": [
+            698.0,
+            386.0
+          ],
+          "type": "lang:const-int"
+        },
         "7e08b35b-fd50-4814-b324-e752b6305e11": {
           "data": null,
           "location": [
-            546.0,
+            548.0,
             240.0
           ],
           "type": "multiexec/main:multi"
         },
         "91d0474d-550f-4333-a821-eb222cee6f36": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            755.0,
-            266.0
+            976.0,
+            253.0
           ],
           "type": "lang:exit"
         },
@@ -161,7 +187,7 @@
       ],
       "data_inputs": [],
       "data_outputs": [],
-      "description": "main",
+      "description": "multi function",
       "exec_inputs": [
         "true",
         "false"
@@ -237,5 +263,6 @@
       "type": "function"
     }
   ],
+  "has_c_support": false,
   "types": {}
 }

@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('structchi_1_1Result.html','');});
 <p>The result object, used for identifiying errors with good diagnostics.  
  <a href="structchi_1_1Result.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="Result_8hpp_source.html">chi/Result.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="Result_8hpp_source.html">chi/Support/Result.hpp</a>&gt;</code></p>
 <div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Collaboration diagram for chi::Result:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -175,10 +175,8 @@ Related Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The result object, used for identifiying errors with good diagnostics. </p>
 <h2>Usage:</h2>
-<p>If you want to construct a default result object, just call the default constructor: </p><div class="fragment"><div class="line"><a class="code" href="structchi_1_1Result.html#aad77832631e03436010ecff5bb7ff597">Result</a> res;</div></div><!-- fragment --><p> <code>res</code> is the most common name for an error object, prefer it to other names.</p>
-<p>When an error, warning, or just some event that requries logging needs to be added to the result object, call <code><a class="el" href="structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" title="Add a entry to the result, either a warning or an error. ">Result::addEntry</a></code>: </p><div class="fragment"><div class="line"><a class="code" href="structchi_1_1Result.html#aad77832631e03436010ecff5bb7ff597">Result</a> res;</div><div class="line">res.addEntry(<span class="stringliteral">&quot;E231&quot;</span>, <span class="stringliteral">&quot;Some error occured&quot;</span>, {{<span class="stringliteral">&quot;Line Number&quot;</span>, 34}});</div></div><!-- fragment --><p> Note the <code>E</code> at the beginning of the error code, this is important. If it's an <code>E</code>, it's considered an error, and will mark the result as errored. If it's a <code>W</code>, then it's logged, but <em>it's still considred successful</em>.</p>
-<p>If you're calling another operation that emits a <a class="el" href="structchi_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> object, then there's an easy to integrate that result object: the opeartor+=</p>
-<div class="fragment"><div class="line"><a class="code" href="structchi_1_1Result.html#aad77832631e03436010ecff5bb7ff597">Result</a> res;</div><div class="line">res += <a class="code" href="namespacechi.html#a79423caa23a58e57b775c5137a03ee31">connectExec</a>(...); <span class="comment">// or any function that returns a Result</span></div></div><!-- fragment --> <h2>Standardized names in data:</h2>
+<p>If you want to construct a default result object, just call the default constructor: </p><div class="fragment"></div><!-- fragment --><p> <code>res</code> is the most common name for an error object, prefer it to other names.</p>
+<p>When constructed, results are successful by default: </p><div class="fragment"><div class="line">    assert(res.<a class="code" href="structchi_1_1Result.html#a98065cddbdc75d3130b5d8c3d567f507">success</a>());</div></div><!-- fragment --><p> When an error, warning, or just some event that requries logging needs to be added to the result object, call <code><a class="el" href="structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8" title="Add a entry to the result, either a warning or an error. ">Result::addEntry</a></code>: </p><div class="fragment"><div class="line">    res.<a class="code" href="structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8">addEntry</a>(<span class="stringliteral">&quot;W123&quot;</span>, <span class="stringliteral">&quot;Just a warning, don&#39;t fret.&quot;</span>, {{<span class="stringliteral">&quot;Probably here&quot;</span>, 21}});</div></div><!-- fragment --><p> note the <code>W</code> at the beginning of the error code, this is important. If it's an <code>W</code>, it's considered an warning and the result will still be considered successful: </p><div class="fragment"><div class="line">    assert(res.<a class="code" href="structchi_1_1Result.html#a98065cddbdc75d3130b5d8c3d567f507">success</a>());</div></div><!-- fragment --><p> If that leading character to the error code is an 'E', then it's considered an error </p><div class="fragment"><div class="line">    res.<a class="code" href="structchi_1_1Result.html#a59ef40f4a327cbdea263d6e4b5af2ad8">addEntry</a>(<span class="stringliteral">&quot;E231&quot;</span>, <span class="stringliteral">&quot;Some error occured&quot;</span>, {{<span class="stringliteral">&quot;Line Number&quot;</span>, 34}});</div></div><!-- fragment --><p> And the result is not successful anymore: </p><div class="fragment"><div class="line">    assert(!res.<a class="code" href="structchi_1_1Result.html#a98065cddbdc75d3130b5d8c3d567f507">success</a>());</div></div><!-- fragment --><p> If you're calling another operation that emits a <a class="el" href="structchi_1_1Result.html" title="The result object, used for identifiying errors with good diagnostics. ">Result</a> object, then there's an easy to integrate that result object: the opeartor+= </p><div class="fragment"><div class="line">    res += thisWillFail();</div></div><!-- fragment --> <h2>Standardized names in data:</h2>
 <p>In order to have good parsing of errors, some standards are good. If you are trying to represent this data in your error, use these standards so it can be parsed later on and presented to the user in a nice way</p>
 <table class="doxtable">
 <tr>
@@ -200,9 +198,9 @@ Related Functions</h2></td></tr>
 <li><code>overview</code>: A simple string representing the generics of the problem. It <em>shouldn't</em> differ from error to error, if you need to include specifics use the <code>data</code> element</li>
 <li><code>data</code>: Extra metadata for the error, including context and how the error occured. </li>
 </ul>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="SubprocessExample_8cpp-example.html#_a2">SubprocessExample.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="ResultExample_8cpp-example.html#_a0">ResultExample.cpp</a>, and <a class="el" href="SubprocessExample_8cpp-example.html#_a2">SubprocessExample.cpp</a>.</dd>
 </dl>
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00070">70</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00072">72</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5cbde12f0c21347635469c7acf8d4112"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5cbde12f0c21347635469c7acf8d4112">&#9670;&nbsp;</a></span>addContext()</h2>
@@ -232,7 +230,7 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00084">84</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00121">addScopedContext()</a>, and <a class="el" href="Result_8hpp_source.html#l00089">Result()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00123">addScopedContext()</a>, and <a class="el" href="Result_8hpp_source.html#l00091">Result()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -286,18 +284,20 @@ Related Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section pre"><dt>Precondition</dt><dd><code>data.is_object() == true</code> </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="ResultExample_8cpp-example.html#a1">ResultExample.cpp</a>.</dd>
+</dl>
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00052">52</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00095">contextJson()</a>, <a class="el" href="Result_8hpp_source.html#l00153">mSuccess</a>, and <a class="el" href="Result_8hpp_source.html#l00150">result_json</a>.</p>
+<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00095">contextJson()</a>, <a class="el" href="Result_8hpp_source.html#l00155">mSuccess</a>, and <a class="el" href="Result_8hpp_source.html#l00152">result_json</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Subprocess_8cpp_source.html#l00347">chi::Subprocess::closeStdIn()</a>, <a class="el" href="Context_8cpp_source.html#l00541">chi::Context::compileModule()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00128">chi::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00186">chi::connectExec()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00121">chi::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00965">chi::GraphModule::createNodeTypeFromCCode()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00229">chi::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00294">chi::disconnectExec()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">chi::FunctionCompiler::initialize()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00064">chi::GraphFunction::insertNode()</a>, <a class="el" href="Context_8cpp_source.html#l00756">chi::interpretLLVMIR()</a>, <a class="el" href="Context_8cpp_source.html#l00792">chi::interpretLLVMIRAsMain()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00232">chi::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00014">chi::jsonToGraphModule()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00450">chi::jsonToGraphStruct()</a>, <a class="el" href="Context_8cpp_source.html#l00525">chi::Context::nodeTypeFromModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00840">chi::LangModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00697">chi::GraphModule::nodeTypeFromName()</a>, <a class="el" href="Debugger_8cpp_source.html#l00093">chi::Debugger::pause()</a>, <a class="el" href="Debugger_8cpp_source.html#l00077">chi::Debugger::processContinue()</a>, <a class="el" href="Subprocess_8cpp_source.html#l00333">chi::Subprocess::pushToStdIn()</a>, <a class="el" href="Result_8hpp_source.html#l00089">Result()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00605">chi::GraphModule::saveToDisk()</a>, <a class="el" href="Debugger_8cpp_source.html#l00110">chi::Debugger::setBreakpoint()</a>, <a class="el" href="Debugger_8cpp_source.html#l00145">chi::Debugger::start()</a>, <a class="el" href="Subprocess_8cpp_source.html#l00364">chi::Subprocess::start()</a>, <a class="el" href="Debugger_8cpp_source.html#l00060">chi::Debugger::terminate()</a>, <a class="el" href="Context_8cpp_source.html#l00504">chi::Context::typeFromModule()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00027">chi::validateFunctionConnectionsAreTwoWay()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00245">chi::validateFunctionEntryType()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00218">chi::validateFunctionExecOutputs()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00277">chi::validateFunctionExitTypes()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Subprocess_8cpp_source.html#l00388">chi::Subprocess::closeStdIn()</a>, <a class="el" href="CCompiler_8cpp_source.html#l00017">chi::compileCToLLVM()</a>, <a class="el" href="Context_8cpp_source.html#l00284">chi::Context::compileModule()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00128">chi::connectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00186">chi::connectExec()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00121">chi::createGraphFunctionDeclarationFromJson()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00866">chi::GraphModule::createNodeTypeFromCCode()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00229">chi::disconnectData()</a>, <a class="el" href="NodeInstance_8cpp_source.html#l00294">chi::disconnectExec()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">chi::FunctionCompiler::initialize()</a>, <a class="el" href="GraphFunction_8cpp_source.html#l00064">chi::GraphFunction::insertNode()</a>, <a class="el" href="Context_8cpp_source.html#l00528">chi::interpretLLVMIR()</a>, <a class="el" href="Context_8cpp_source.html#l00564">chi::interpretLLVMIRAsMain()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00232">chi::jsonToGraphFunction()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00014">chi::jsonToGraphModule()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00450">chi::jsonToGraphStruct()</a>, <a class="el" href="Context_8cpp_source.html#l00253">chi::Context::nodeTypeFromModule()</a>, <a class="el" href="LangModule_8cpp_source.html#l00847">chi::LangModule::nodeTypeFromName()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00606">chi::GraphModule::nodeTypeFromName()</a>, <a class="el" href="BitcodeParser_8cpp_source.html#l00056">chi::parseBitcodeFile()</a>, <a class="el" href="Debugger_8cpp_source.html#l00093">chi::Debugger::pause()</a>, <a class="el" href="Debugger_8cpp_source.html#l00077">chi::Debugger::processContinue()</a>, <a class="el" href="Subprocess_8cpp_source.html#l00374">chi::Subprocess::pushToStdIn()</a>, <a class="el" href="Result_8hpp_source.html#l00091">Result()</a>, <a class="el" href="GraphModule_8cpp_source.html#l00514">chi::GraphModule::saveToDisk()</a>, <a class="el" href="Debugger_8cpp_source.html#l00110">chi::Debugger::setBreakpoint()</a>, <a class="el" href="Debugger_8cpp_source.html#l00145">chi::Debugger::start()</a>, <a class="el" href="Subprocess_8cpp_source.html#l00405">chi::Subprocess::start()</a>, <a class="el" href="Debugger_8cpp_source.html#l00060">chi::Debugger::terminate()</a>, <a class="el" href="Context_8cpp_source.html#l00232">chi::Context::typeFromModule()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00031">chi::validateFunctionConnectionsAreTwoWay()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00249">chi::validateFunctionEntryType()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00222">chi::validateFunctionExecOutputs()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00281">chi::validateFunctionExitTypes()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00310">chi::validateFunctionMainSignature()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-2-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a59ef40f4a327cbdea263d6e4b5af2ad8_cgraph.svg" width="366" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structchi_1_1Result_a59ef40f4a327cbdea263d6e4b5af2ad8_cgraph.svg" width="366" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
 </div>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
@@ -344,11 +344,11 @@ Related Functions</h2></td></tr>
 <dl class="section pre"><dt>Precondition</dt><dd>data.is_object() </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="structchi_1_1Result_1_1ScopedContext.html" title="A helper object for contexts that should be removed at the end of a scope. ">ScopedContext</a> object. Shouldn't be discarded. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00121">121</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00123">123</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Result_8cpp_source.html#l00084">addContext()</a>, <a class="el" href="Result_8cpp_source.html#l00095">contextJson()</a>, and <a class="el" href="Result_8cpp_source.html#l00093">removeContext()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00446">chi::Context::addModuleFromJson()</a>, <a class="el" href="Context_8cpp_source.html#l00555">chi::Context::compileModule()</a>, <a class="el" href="Context_8cpp_source.html#l00163">chi::Context::fetchModule()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">chi::FunctionCompiler::initialize()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00014">chi::jsonToGraphModule()</a>, <a class="el" href="Context_8cpp_source.html#l00093">chi::Context::loadModule()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00027">chi::validateFunctionConnectionsAreTwoWay()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00218">chi::validateFunctionExecOutputs()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00194">chi::validateFunctionNodeInputs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Context_8cpp_source.html#l00156">chi::Context::addModuleFromJson()</a>, <a class="el" href="CCompiler_8cpp_source.html#l00017">chi::compileCToLLVM()</a>, <a class="el" href="Context_8cpp_source.html#l00298">chi::Context::compileModule()</a>, <a class="el" href="FunctionCompiler_8cpp_source.html#l00035">chi::FunctionCompiler::initialize()</a>, <a class="el" href="JsonDeserializer_8cpp_source.html#l00014">chi::jsonToGraphModule()</a>, <a class="el" href="Context_8cpp_source.html#l00091">chi::Context::loadModule()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00031">chi::validateFunctionConnectionsAreTwoWay()</a>, <a class="el" href="FunctionValidator_8cpp_source.html#l00222">chi::validateFunctionExecOutputs()</a>, and <a class="el" href="FunctionValidator_8cpp_source.html#l00198">chi::validateFunctionNodeInputs()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
@@ -388,7 +388,7 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00095">95</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Result_8cpp_source.html#l00052">addEntry()</a>, <a class="el" href="Result_8hpp_source.html#l00121">addScopedContext()</a>, <a class="el" href="Result_8cpp_source.html#l00106">operator+()</a>, and <a class="el" href="Result_8cpp_source.html#l00127">operator+=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Result_8cpp_source.html#l00052">addEntry()</a>, <a class="el" href="Result_8hpp_source.html#l00123">addScopedContext()</a>, <a class="el" href="Result_8cpp_source.html#l00106">operator+()</a>, and <a class="el" href="Result_8cpp_source.html#l00127">operator+=()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -420,9 +420,9 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00065">65</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00150">result_json</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00152">result_json</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00143">operator!()</a>, and <a class="el" href="Result_8hpp_source.html#l00183">operator&lt;&lt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00145">operator!()</a>, and <a class="el" href="Result_8hpp_source.html#l00187">operator&lt;&lt;()</a>.</p>
 <div id="dynsection-7" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-7-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-7-summary" class="dynsummary" style="display:block;">
@@ -460,9 +460,9 @@ Related Functions</h2></td></tr>
 <p>Success test. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00135">135</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00137">137</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00139">success()</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00141">success()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
@@ -500,9 +500,9 @@ Related Functions</h2></td></tr>
 <p>!Success test </p>
 <dl class="section return"><dt>Returns</dt><dd>If it's not successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00143">143</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00145">145</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00065">dump()</a>, and <a class="el" href="Result_8hpp_source.html#l00139">success()</a>.</p>
+<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00065">dump()</a>, and <a class="el" href="Result_8hpp_source.html#l00141">success()</a>.</p>
 <div id="dynsection-9" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-9-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-9-summary" class="dynsummary" style="display:block;">
@@ -540,7 +540,7 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00093">93</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00121">addScopedContext()</a>, and <a class="el" href="Result_8hpp_source.html#l00079">chi::Result::ScopedContext::~ScopedContext()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00123">addScopedContext()</a>, and <a class="el" href="Result_8hpp_source.html#l00081">chi::Result::ScopedContext::~ScopedContext()</a>.</p>
 <div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
@@ -577,12 +577,13 @@ Related Functions</h2></td></tr>
 
 <p>Success test. </p>
 <dl class="section return"><dt>Returns</dt><dd>If it's successful </dd></dl>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="ResultExample_8cpp-example.html#a2">ResultExample.cpp</a>.</dd>
+</dl>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00141">141</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00139">139</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00155">mSuccess</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8hpp_source.html#l00153">mSuccess</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00135">operator bool()</a>, <a class="el" href="Result_8hpp_source.html#l00143">operator!()</a>, <a class="el" href="Result_8cpp_source.html#l00106">operator+()</a>, and <a class="el" href="Result_8cpp_source.html#l00127">operator+=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Result_8hpp_source.html#l00137">operator bool()</a>, <a class="el" href="Result_8hpp_source.html#l00145">operator!()</a>, <a class="el" href="Result_8cpp_source.html#l00106">operator+()</a>, and <a class="el" href="Result_8cpp_source.html#l00127">operator+=()</a>.</p>
 <div id="dynsection-11" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-11-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-11-summary" class="dynsummary" style="display:block;">
@@ -641,7 +642,7 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00106">106</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00095">contextJson()</a>, <a class="el" href="Result_8hpp_source.html#l00153">mSuccess</a>, <a class="el" href="Result_8hpp_source.html#l00150">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00139">success()</a>.</p>
+<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00095">contextJson()</a>, <a class="el" href="Result_8hpp_source.html#l00155">mSuccess</a>, <a class="el" href="Result_8hpp_source.html#l00152">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00141">success()</a>.</p>
 <div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-12-summary" class="dynsummary" style="display:block;">
@@ -699,7 +700,7 @@ Related Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Result_8cpp_source.html#l00127">127</a> of file <a class="el" href="Result_8cpp_source.html">Result.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00095">contextJson()</a>, <a class="el" href="Result_8hpp_source.html#l00153">mSuccess</a>, <a class="el" href="Result_8hpp_source.html#l00150">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00139">success()</a>.</p>
+<p class="reference">References <a class="el" href="Result_8cpp_source.html#l00095">contextJson()</a>, <a class="el" href="Result_8hpp_source.html#l00155">mSuccess</a>, <a class="el" href="Result_8hpp_source.html#l00152">result_json</a>, and <a class="el" href="Result_8hpp_source.html#l00141">success()</a>.</p>
 <div id="dynsection-13" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-13-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-13-summary" class="dynsummary" style="display:block;">
@@ -755,7 +756,7 @@ Related Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>lhs after printing </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00183">183</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Result_8hpp_source.html#l00187">187</a> of file <a class="el" href="Result_8hpp_source.html">Result.hpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Result_8cpp_source.html#l00065">dump()</a>.</p>
 <div id="dynsection-14" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -770,8 +771,8 @@ Related Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
-<li>libchigraph/include/chi/<a class="el" href="Result_8hpp_source.html">Result.hpp</a></li>
-<li>libchigraph/src/<a class="el" href="Result_8cpp_source.html">Result.cpp</a></li>
+<li>lib/support/include/chi/Support/<a class="el" href="Result_8hpp_source.html">Result.hpp</a></li>
+<li>lib/support/src/<a class="el" href="Result_8cpp_source.html">Result.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -779,7 +780,7 @@ Related Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacechi.html">chi</a></li><li class="navelem"><a class="el" href="structchi_1_1Result.html">Result</a></li>
-    <li class="footer">Generated on Fri Jun 9 2017 21:16:59 for chigraph by
+    <li class="footer">Generated on Sat Sep 16 2017 17:41:35 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

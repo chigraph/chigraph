@@ -87,8 +87,7 @@ struct Context {
 	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
-	Result loadModule(const boost::filesystem::path& name,
-	                  ChiModule**                    toFill   = nullptr);
+	Result loadModule(const boost::filesystem::path& name, ChiModule** toFill = nullptr);
 
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param[in] fullName The full path of the module, including URL
@@ -128,6 +127,12 @@ struct Context {
 	Result nodeTypeFromModule(const boost::filesystem::path& moduleName,
 	                          boost::string_view typeName, const nlohmann::json& data,
 	                          std::unique_ptr<NodeType>* toFill) noexcept;
+							  
+	/// Create a converter node
+	/// \param[in] fromType The type to convert from
+	/// \param[in] toType The type to convert to
+	/// \return The node type, or nullptr
+	std::unique_ptr<NodeType> createConverterNodeType(const DataType& fromType, const DataType& toType);
 
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] fullName The full name of the module to compile.
@@ -191,6 +196,8 @@ private:
 	    mCompileCache;
 
 	std::unique_ptr<ModuleProvider> mModuleProvider;
+	
+	std::unordered_map<std::string /*from Type*/, std::unordered_map<std::string /*to type*/, std::unique_ptr<NodeType>>> mTypeConverters;
 };
 
 /// Get the workspace directory from a child of the workspace directory

@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>chigraph: libchigraph/src/Context.cpp File Reference</title>
+<title>chigraph: lib/core/src/Context.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -92,14 +92,18 @@ $(document).ready(function(){initNavTree('Context_8cpp.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="Context_8hpp_source.html">chi/Context.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="BitcodeParser_8hpp_source.html">chi/BitcodeParser.hpp</a>&quot;</code><br />
+<code>#include &quot;chi/DefaultModuleCache.hpp&quot;</code><br />
 <code>#include &quot;<a class="el" href="GraphFunction_8hpp_source.html">chi/GraphFunction.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="NodeType_8hpp_source.html">chi/NodeType.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="GraphModule_8hpp_source.html">chi/GraphModule.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="GraphStruct_8hpp_source.html">chi/GraphStruct.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="JsonDeserializer_8hpp_source.html">chi/JsonDeserializer.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="LLVMVersion_8hpp_source.html">chi/LLVMVersion.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="LangModule_8hpp_source.html">chi/LangModule.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="NodeInstance_8hpp_source.html">chi/NodeInstance.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="Result_8hpp_source.html">chi/Result.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ExecutablePath_8hpp_source.html">chi/Support/ExecutablePath.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Result_8hpp_source.html">chi/Support/Result.hpp</a>&quot;</code><br />
 <code>#include &lt;llvm/ExecutionEngine/ExecutionEngine.h&gt;</code><br />
 <code>#include &lt;llvm/ExecutionEngine/GenericValue.h&gt;</code><br />
 <code>#include &lt;llvm/ExecutionEngine/SectionMemoryManager.h&gt;</code><br />
@@ -117,13 +121,13 @@ $(document).ready(function(){initNavTree('Context_8cpp.html','');});
 <code>#include &lt;boost/range.hpp&gt;</code><br />
 <code>#include &lt;deque&gt;</code><br />
 <code>#include &lt;unordered_set&gt;</code><br />
-<code>#include &lt;git2.h&gt;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for Context.cpp:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8cpp__incl.svg" width="100%" height="529"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Context_8cpp__incl.svg" width="100%" height="518"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 </div>
 </div>
 <p><a href="Context_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -142,9 +146,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a33d2592c56c0b169c44b14332e80db44"><td class="memItemLeft" align="right" valign="top">Result&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#a33d2592c56c0b169c44b14332e80db44">chi::interpretLLVMIRAsMain</a> (std::unique_ptr&lt; llvm::Module &gt; mod, llvm::CodeGenOpt::Level optLevel=llvm::CodeGenOpt::Default, const std::vector&lt; std::string &gt; &amp;args={}, llvm::Function *funcToRun=nullptr, int *ret=nullptr)</td></tr>
 <tr class="memdesc:a33d2592c56c0b169c44b14332e80db44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpret LLVM IR as if it were the main function.  <a href="namespacechi.html#a33d2592c56c0b169c44b14332e80db44">More...</a><br /></td></tr>
 <tr class="separator:a33d2592c56c0b169c44b14332e80db44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa39dc32f0a553366a3e039b3f26402be"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; VCSType, std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#aa39dc32f0a553366a3e039b3f26402be">chi::resolveUrlFromModuleName</a> (const boost::filesystem::path &amp;path)</td></tr>
-<tr class="memdesc:aa39dc32f0a553366a3e039b3f26402be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the URL for a VCS repository from a module name.  <a href="namespacechi.html#aa39dc32f0a553366a3e039b3f26402be">More...</a><br /></td></tr>
-<tr class="separator:aa39dc32f0a553366a3e039b3f26402be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29ff9f3364b9ad0f25a990b8373971b4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacechi.html#a29ff9f3364b9ad0f25a990b8373971b4">chi::stringifyLLVMType</a> (llvm::Type *ty)</td></tr>
 <tr class="memdesc:a29ff9f3364b9ad0f25a990b8373971b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns a type into a string.  <a href="namespacechi.html#a29ff9f3364b9ad0f25a990b8373971b4">More...</a><br /></td></tr>
 <tr class="separator:a29ff9f3364b9ad0f25a990b8373971b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,8 +158,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_34e10b5b492257989639aef8a1d83500.html">libchigraph</a></li><li class="navelem"><a class="el" href="dir_00538828ef55ebfdd885ba7167e2888d.html">src</a></li><li class="navelem"><a class="el" href="Context_8cpp.html">Context.cpp</a></li>
-    <li class="footer">Generated on Fri Jun 9 2017 21:16:59 for chigraph by
+    <li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_a2d5e495f4b604d04f57d90095a59dd6.html">core</a></li><li class="navelem"><a class="el" href="dir_4c9f1e14e2f6af37c0cac7b6ff4842b3.html">src</a></li><li class="navelem"><a class="el" href="Context_8cpp.html">Context.cpp</a></li>
+    <li class="footer">Generated on Sat Sep 16 2017 17:41:35 for chigraph by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

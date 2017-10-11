@@ -3,6 +3,7 @@ set(CG_USE_SYSTEM_LIBGIT2 @CG_USE_SYSTEM_LIBGIT2@)
 set(CG_LLVM_VERSION @LLVM_VERSION@)
 set(CG_LLVM_COMPONENTS @LLVM_COMPONENTS@)
 set(CG_BUILD_DEBUGGER @CG_BUILD_DEBUGGER@)
+set(CG_BUILD_FETCHER @CG_BUILD_FETCHER@)
 
 
 get_filename_component(CG_INSTALL_DIRECTORY "${CMAKE_CURRENT_LIST_FILE}" PATH)
@@ -26,43 +27,8 @@ else()
 	set_property(TARGET Boost::filesystem PROPERTY INTERFACE_LINK_LIBRARIES Boost::system)
 endif()
 
-
-# setup libgit2
-if (CG_USE_SYSTEM_LIBGIT2)
-	find_package(PkgConfig)
-	pkg_search_module(PC_LIBGIT2 libgit2)
-
-	set(LIBGIT2_DEFINITIONS ${PC_LIBGIT2_CFLAGS_OTHER})
-
-	find_path(LIBGIT2_INCLUDE_DIR NAMES git2.h
-		HINTS
-		${PC_LIBGIT2_INCLUDEDIR}
-		${PC_LIBGIT2_INCLUDE_DIRS}
-	)
-
-	find_library(LIBGIT2_LIBRARY NAMES git2
-	HINTS
-		${PC_LIBGIT2_LIBDIR}
-		${PC_LIBGIT2_LIBRARY_DIRS}
-	)
-
-else()
-	set(LIBGIT2_INCLUDE_DIR ${CG_INSTALL_DIRECTORY}/include)
-	find_library(LIBGIT2_LIBRARY NAMES git2 HINTS ${CG_INSTALL_DIRECTORY}/lib NO_DEFAULT_PATH)
-endif()
-
-add_library(libgit2 SHARED IMPORTED)
-set_property(TARGET libgit2 PROPERTY IMPORTED_LOCATION ${LIBGIT2_LIBRARY})
-set_property(TARGET libgit2 PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${LIBGIT2_INCLUDE_DIR})
-
 # setup threads
 find_package(Threads REQUIRED)
-
-# setup libexecstream
-find_library(LIBEXECSTREAM_LIBRARY NAMES libchigraphexecstream HINTS ${CG_INSTALL_DIRECTORY}/lib NO_DEFAULT_PATH)
-add_library(libchigraphexecstream STATIC IMPORTED)
-set_property(TARGET libchigraphexecstream PROPERTY IMPORTED_LOCATION ${LIBEXECSTREAM_LIBRARY})
-set_property(TARGET libchigraphexecstream PROPERTY INTERFACE_LINK_LIBRARIES Threads::Threads)
 
 # setup LLVM
 if (NOT LLVM_CONFIG)
@@ -94,12 +60,62 @@ execute_process(COMMAND ${LLVM_CONFIG} --ldflags OUTPUT_VARIABLE LLVM_LD_FLAGS O
 string(REPLACE " " ";" LLVM_LD_FLAGS_LIST "${LLVM_LD_FLAGS}")
 message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 
-# setup chigraph 
-add_library(chigraph STATIC IMPORTED)
-set_property(TARGET chigraph PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}chigraph${CMAKE_STATIC_LIBRARY_SUFFIX})
-set_property(TARGET chigraph PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
-set_property(TARGET chigraph PROPERTY INTERFACE_LINK_LIBRARIES libgit2 Boost::filesystem libchigraphexecstream ${LLVM_LD_FLAGS_LIST} ${LLVM_SYSTEM_LINK_LIST} ${LLVM_LINK_LIST})
-set_property(TARGET chigraph PROPERTY INTERFACE_COMPILE_OPTIONS ${LLVM_CXX_FLAGS_LIST})
+# setup chigraphsupport
+add_library(chigraphsupport STATIC IMPORTED)
+set_property(TARGET chigraphsupport PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}chigraphsupport${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_property(TARGET chigraphsupport PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
+set_property(TARGET chigraphsupport PROPERTY INTERFACE_LINK_LIBRARIES Boost::filesystem Threads::Threads)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
+		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
+		CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	set_property(TARGET chigraphsupport PROPERTY INTERFACE_COMPILE_OPTIONS -std=c++14)
+endif()
+
+add_library(chigraphcore STATIC IMPORTED)
+set_property(TARGET chigraphcore PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}chigraphcore${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_property(TARGET chigraphcore PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
+set_property(TARGET chigraphcore PROPERTY INTERFACE_LINK_LIBRARIES chigraphsupport ${LLVM_LD_FLAGS_LIST} ${LLVM_SYSTEM_LINK_LIST} ${LLVM_LINK_LIST})
+set_property(TARGET chigraphcore PROPERTY INTERFACE_COMPILE_OPTIONS ${LLVM_CXX_FLAGS_LIST})
+
+if (CG_BUILD_FETCHER)
+	
+	# setup libgit2
+	if (CG_USE_SYSTEM_LIBGIT2)
+		find_package(PkgConfig)
+		pkg_search_module(PC_LIBGIT2 libgit2)
+
+		set(LIBGIT2_DEFINITIONS ${PC_LIBGIT2_CFLAGS_OTHER})
+
+		find_path(LIBGIT2_INCLUDE_DIR NAMES git2.h
+			HINTS
+			${PC_LIBGIT2_INCLUDEDIR}
+			${PC_LIBGIT2_INCLUDE_DIRS}
+		)
+
+		find_library(LIBGIT2_LIBRARY NAMES git2
+		HINTS
+			${PC_LIBGIT2_LIBDIR}
+			${PC_LIBGIT2_LIBRARY_DIRS}
+		)
+
+	else()
+		set(LIBGIT2_INCLUDE_DIR ${CG_INSTALL_DIRECTORY}/include)
+		find_library(LIBGIT2_LIBRARY NAMES git2 HINTS ${CG_INSTALL_DIRECTORY}/lib NO_DEFAULT_PATH)
+	endif()
+
+	add_library(libgit2 SHARED IMPORTED)
+	set_property(TARGET libgit2 PROPERTY IMPORTED_LOCATION ${LIBGIT2_LIBRARY})
+	set_property(TARGET libgit2 PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${LIBGIT2_INCLUDE_DIR})
+	
+		
+	# setup chigraphfetcher
+	add_library(chigraphfetcher STATIC IMPORTED)
+	set_property(TARGET chigraphfetcher PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}chigraphfetcher${CMAKE_STATIC_LIBRARY_SUFFIX})
+	set_property(TARGET chigraphfetcher PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
+	set_property(TARGET chigraphfetcher PROPERTY INTERFACE_LINK_LIBRARIES chigraphsupport libgit2)
+
+endif()
 
 if (CG_BUILD_DEBUGGER)
 
@@ -115,5 +131,5 @@ if (CG_BUILD_DEBUGGER)
 
 	set_property(TARGET chigraphdebugger PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}chigraphdebugger${CMAKE_STATIC_LIBRARY_SUFFIX})
 	set_property(TARGET chigraphdebugger PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
-	set_property(TARGET chigraphdebugger PROPERTY INTERFACE_LINK_LIBRARIES ${LLDB_LIBRARY} chigraph)
+	set_property(TARGET chigraphdebugger PROPERTY INTERFACE_LINK_LIBRARIES ${LLDB_LIBRARY} chigraphcore)
 endif()

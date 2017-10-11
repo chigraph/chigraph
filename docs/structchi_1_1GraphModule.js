@@ -27,7 +27,7 @@ var structchi_1_1GraphModule =
     [ "removeFunction", "structchi_1_1GraphModule.html#a75f7c9ac46d89574ef2a2290ccea4fe8", null ],
     [ "removeFunction", "structchi_1_1GraphModule.html#af22aa5e1c4c11f79e7563041624e3fbb", null ],
     [ "removeStruct", "structchi_1_1GraphModule.html#a779d5c125ca7b556b114bb448f83dc3b", null ],
-    [ "removeStruct", "structchi_1_1GraphModule.html#ac7147fb4875838de42b33a72834f3203", null ],
+    [ "removeStruct", "structchi_1_1GraphModule.html#a3fcbfb1633209d96ee54e103b361e9fb", null ],
     [ "saveToDisk", "structchi_1_1GraphModule.html#a5cd9fb1738336d5d382ebb50753bda3e", null ],
     [ "setCEnabled", "structchi_1_1GraphModule.html#a5bbfa421aee82aa51eb10d6b97accbef", null ],
     [ "shortName", "structchi_1_1GraphModule.html#a22ac89bd0e334cb920847973fa77e8ff", null ],

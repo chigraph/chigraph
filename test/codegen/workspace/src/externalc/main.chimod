@@ -8,39 +8,6 @@
       "connections": [
         {
           "input": [
-            "8b7d3d1f-9ea2-4836-aea5-8e5ae0e1cac6",
-            0
-          ],
-          "output": [
-            "ca65c719-a80b-4772-8cca-5e0b4e56716c",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
-            "775eac71-eb8f-4158-a0c2-ecc4dae88958",
-            0
-          ],
-          "output": [
-            "8b7d3d1f-9ea2-4836-aea5-8e5ae0e1cac6",
-            0
-          ],
-          "type": "data"
-        },
-        {
-          "input": [
-            "f3c00873-3edf-47bd-ab42-689b24261ee6",
-            0
-          ],
-          "output": [
-            "775eac71-eb8f-4158-a0c2-ecc4dae88958",
-            0
-          ],
-          "type": "exec"
-        },
-        {
-          "input": [
             "775eac71-eb8f-4158-a0c2-ecc4dae88958",
             0
           ],
@@ -71,10 +38,58 @@
             1
           ],
           "type": "data"
+        },
+        {
+          "input": [
+            "8b7d3d1f-9ea2-4836-aea5-8e5ae0e1cac6",
+            0
+          ],
+          "output": [
+            "ca65c719-a80b-4772-8cca-5e0b4e56716c",
+            0
+          ],
+          "type": "exec"
+        },
+        {
+          "input": [
+            "775eac71-eb8f-4158-a0c2-ecc4dae88958",
+            0
+          ],
+          "output": [
+            "8b7d3d1f-9ea2-4836-aea5-8e5ae0e1cac6",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "82ffdc7e-db51-43a5-be67-f20d4891f41b",
+            0
+          ],
+          "output": [
+            "ca65c719-a80b-4772-8cca-5e0b4e56716c",
+            0
+          ],
+          "type": "data"
+        },
+        {
+          "input": [
+            "f3c00873-3edf-47bd-ab42-689b24261ee6",
+            0
+          ],
+          "output": [
+            "775eac71-eb8f-4158-a0c2-ecc4dae88958",
+            0
+          ],
+          "type": "exec"
         }
       ],
       "data_inputs": [],
-      "data_outputs": [],
+      "data_outputs": [
+        {
+          "": "lang:i32"
+        }
+      ],
       "description": "main",
       "exec_inputs": [
         ""
@@ -117,6 +132,14 @@
           ],
           "type": "externalc/main:c-call"
         },
+        "82ffdc7e-db51-43a5-be67-f20d4891f41b": {
+          "data": 0,
+          "location": [
+            127.0,
+            86.0
+          ],
+          "type": "lang:const-int"
+        },
         "8b7d3d1f-9ea2-4836-aea5-8e5ae0e1cac6": {
           "data": null,
           "location": [
@@ -135,14 +158,18 @@
         },
         "ca65c719-a80b-4772-8cca-5e0b4e56716c": {
           "data": {
-            "data": [],
+            "data": [
+              {
+                "": "lang:i32"
+              }
+            ],
             "exec": [
               ""
             ]
           },
           "location": [
-            232.0,
-            -45.0
+            382.0,
+            -64.0
           ],
           "type": "lang:exit"
         },

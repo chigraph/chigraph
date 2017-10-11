@@ -12,7 +12,6 @@ namespace chi {
 /// Get the path of the executable
 /// \return The exectuable path
 boost::filesystem::path executablePath();
-
 }
 
-#endif // CHI_SUPPORT_EXECUTABLE_PATH_HPP
+#endif  // CHI_SUPPORT_EXECUTABLE_PATH_HPP

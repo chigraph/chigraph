@@ -4,7 +4,6 @@
 #include "chi/Context.hpp"
 #include "chi/LLVMVersion.hpp"
 #include "chi/ModuleCache.hpp"
-#include "chi/BitcodeParser.hpp"
 #include "chi/Support/Result.hpp"
 
 #include <cassert>
@@ -77,8 +76,8 @@ Result WorkspaceModuleProvider::cacheModule(const boost::filesystem::path& modul
 	{
 		// open the file
 		std::error_code      errCode;
-        std::string errString;
-        llvm::raw_fd_ostream fileStream {
+		std::string          errString;
+		llvm::raw_fd_ostream fileStream {
 			cachePath.string().c_str(),
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
 			    errString,
@@ -137,7 +136,7 @@ std::unique_ptr<llvm::Module> WorkspaceModuleProvider::retrieveFromCache(
 	// read the cache
 	std::unique_ptr<llvm::Module> fetchedMod;
 	auto res = parseBitcodeFile(cachePath, context().llvmContext(), &fetchedMod);
-	
+
 	if (!res) { return nullptr; }
 
 	return fetchedMod;

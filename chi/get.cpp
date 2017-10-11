@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
 
-#include <chi/Fetcher/Fetcher.hpp>
 #include <chi/Context.hpp>
+#include <chi/Fetcher/Fetcher.hpp>
 #include <chi/Support/Result.hpp>
 
 #include <boost/filesystem.hpp>
@@ -42,7 +42,7 @@ int get(const std::vector<std::string>& opts) {
 		return 1;
 	}
 
-	Result  res;
+	Result res;
 
 	for (const auto& mod : modules) { res += fetchModule(workspacePath, mod, true); }
 
