@@ -1,7 +1,7 @@
 /// \file Context.cpp
 
 #include "chi/Context.hpp"
-#include "chi/DefaultModuleCache.hpp"
+#include "chi/ModuleProvider.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
@@ -35,11 +35,12 @@
 namespace fs = boost::filesystem;
 
 namespace chi {
-Context::Context(const boost::filesystem::path& workPath) {
-	mWorkspacePath = workspaceFromChildPath(workPath);
-
-	mModuleCache = std::make_unique<DefaultModuleCache>(*this);
-
+Context::Context(std::unique_ptr<ModuleProvider> provider, bool includeLangModule)
+	: mModuleProvider{std::move(provider)} {
+	
+	if (includeLangModule) {
+		addModule(std::make_unique<LangModule>(*this));
+	}
 }
 
 Context::~Context() = default;
@@ -75,17 +76,14 @@ Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
 	auto requestedModCtx = res.addScopedContext({{"Requested Module Name", name.generic_string()}});
 
 	// check for built-in modules
-	if (name == "lang") {
-		if (langModule() != nullptr) {
-			if (toFill != nullptr) { *toFill = langModule(); }
-			return {};
+	for (const auto& mod : mBuiltInModules) {
+		if (name == mod->fullName()) {
+			if (toFill != nullptr) {
+				*toFill = mod.get();
+			}
+			return res;
 		}
-		auto mod = std::make_unique<LangModule>(*this);
-		if (toFill != nullptr) { *toFill = mod.get(); }
-		addModule(std::move(mod));
-		return {};
 	}
-
 	// see if it's already loaded
 	{
 		auto mod = moduleByFullName(name);
@@ -168,9 +166,7 @@ bool Context::addModule(std::unique_ptr<ChiModule> modToAdd) noexcept {
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) { return false; }
 
-	if (modToAdd->fullName() == "lang") { mLangModule = dynamic_cast<LangModule*>(modToAdd.get()); }
-
-	mModules.push_back(std::move(modToAdd));
+	mBuiltInModules.push_back(std::move(modToAdd));
 
 	assert(modToAdd == nullptr);
 

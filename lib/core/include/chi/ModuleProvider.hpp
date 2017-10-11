@@ -18,17 +18,17 @@ struct ModuleProvider {
 	explicit ModuleProvider() {}
 
 	/// Destructor
-	virtual ~ModuleCache() = default;
+	virtual ~ModuleProvider() = default;
 
 	// No copy or move
-	ModuleCache(const ModuleCache&) = delete;
-	ModuleCache(ModuleCache&&)      = delete;
-	ModuleCache& operator=(const ModuleCache&) = delete;
-	ModuleCache& operator=(ModuleCache&&) = delete;
+	ModuleProvider(const ModuleProvider&) = delete;
+	ModuleProvider(ModuleProvider&&)      = delete;
+	ModuleProvider& operator=(const ModuleProvider&) = delete;
+	ModuleProvider& operator=(ModuleProvider&&) = delete;
 
 	/// Read a module from disk
 	/// Assumes all dependencies are loaded, will error if not
-	/// \param moduleName The name of the module to load
+	/// \param module The name of the module to load
 	/// \param toFill The GraphModule to fill
 	/// \return The Result
 	virtual Result loadModule(const boost::filesystem::path& module, std::unique_ptr<GraphModule>* toFill) = 0;

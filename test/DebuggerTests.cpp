@@ -1,7 +1,7 @@
 #include <catch.hpp>
 
 #include <chi/Context.hpp>
-#include <chi/Debugger.hpp>
+#include <chi/Debugger/Debugger.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/NodeType.hpp>
@@ -32,7 +32,7 @@ TEST_CASE("Debugger", "") {
 	GraphModule* gMod;
 	{
 		ChiModule* cMod;
-		res += ctx.loadModule("intermodule/main", LoadSettings::Default, &cMod);
+		res += ctx.loadModule("intermodule/main", &cMod);
 		gMod = static_cast<GraphModule*>(cMod);
 	}
 	REQUIRE(res.dump() == "");

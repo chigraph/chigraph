@@ -3,7 +3,6 @@
 #include "chi/WorkspaceModuleProvider.hpp"
 #include "chi/Context.hpp"
 #include "chi/LLVMVersion.hpp"
-#include "chi/ModuleCache.hpp"
 #include "chi/Support/Result.hpp"
 
 #include <cassert>

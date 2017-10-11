@@ -17,7 +17,7 @@ addons:
       - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.6 main'
         key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
       - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.5 main'
-        key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
+        key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
       - sourceline: 'ppa:presslabs/gitfs'
       
 matrix: 

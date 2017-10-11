@@ -10,7 +10,6 @@
 #include <unordered_map>
 
 #include "chi/Fwd.hpp"
-#include "chi/ModuleCache.hpp"
 #include "chi/Support/Flags.hpp"
 #include "chi/Support/json.hpp"
 
@@ -130,13 +129,6 @@ struct Context {
 	                          boost::string_view typeName, const nlohmann::json& data,
 	                          std::unique_ptr<NodeType>* toFill) noexcept;
 
-	/// Get the workspace path of the Context
-	/// \return The workspace path
-	boost::filesystem::path workspacePath() const { return mWorkspacePath; }
-	/// Check if this context has a workspace bound to it -- same as !workspacePath().empty()
-	/// \return If it has a workspace
-	bool hasWorkspace() const noexcept { return !workspacePath().empty(); }
-
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] fullName The full name of the module to compile.
 	/// If `moduleByFullName(fullName) == nullptr`, this function has no side-effects
@@ -169,10 +161,6 @@ struct Context {
 	/// \return The `LLVMContext`
 	llvm::LLVMContext& llvmContext() { return mLLVMContext; }
 
-	/// Get the `LangModule`, if it has been loaded
-	/// \return The `LangModule`
-	LangModule* langModule() const { return mLangModule; }
-
 	/// Get the modules in the Context
 	/// \return The modules
 	std::vector<ChiModule*> modules() const {
@@ -185,30 +173,24 @@ struct Context {
 
 	/// Get the module cache
 	/// \return The ModuleCache
-	const ModuleCache& moduleCache() const { return *mModuleCache; }
+	const ModuleProvider& moduleProvider() const { return *mModuleProvider; }
 
 	/// \copydoc Context::moduleCache
-	ModuleCache& moduleCache() { return *mModuleCache; }
-
-	/// Set the module cache
-	/// \param newCache The new module cache
-	/// \pre `newCache != nullptr`
-	void setModuleCache(std::unique_ptr<ModuleCache> newCache);
+	ModuleProvider& moduleProvider() { return *mModuleProvider; }
 
 private:
 	boost::filesystem::path mWorkspacePath;
 
 	llvm::LLVMContext mLLVMContext;
 
-	std::vector<std::unique_ptr<ChiModule>> mModules;
+	std::vector<std::unique_ptr<ChiModule>> mBuiltInModules;
+	std::vector<std::unique_ptr<GraphModule>> mLoadedModules;
 
 	// This cache is only for use during compilation to not duplicate modules
 	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/>
 	    mCompileCache;
 
-	LangModule* mLangModule = nullptr;
-
-	std::unique_ptr<ModuleCache> mModuleCache;
+	std::unique_ptr<ModuleProvider> mModuleProvider;
 };
 
 /// Get the workspace directory from a child of the workspace directory
