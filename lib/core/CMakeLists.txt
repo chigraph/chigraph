@@ -6,7 +6,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/NodeCompiler.hpp
 	include/chi/NameMangler.hpp
 	include/chi/DataType.hpp
-	include/chi/ModuleCache.hpp
+	include/chi/ModuleProvider.hpp
 	include/chi/GraphFunction.hpp
 	include/chi/ChiModule.hpp
 	include/chi/JsonSerializer.hpp
@@ -19,7 +19,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/JsonDeserializer.hpp
 	include/chi/LangModule.hpp
 	include/chi/LLVMVersion.hpp
-	include/chi/DefaultModuleCache.hpp
+	include/chi/WorkspaceModuleProvider.hpp
 	include/chi/NodeInstance.hpp
 	include/chi/CCompiler.hpp
 	include/chi/BitcodeParser.hpp
@@ -34,7 +34,7 @@ set(CHI_PRIVATE_FILES
 	src/NodeType.cpp
 	src/LangModule.cpp
 	src/JsonDeserializer.cpp
-	src/DefaultModuleCache.cpp
+	src/WorkspaceModuleProvider.cpp
 	src/ChiModule.cpp
 	src/GraphModule.cpp
 	src/NodeInstance.cpp

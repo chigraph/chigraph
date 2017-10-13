@@ -10,7 +10,6 @@
 #include <unordered_map>
 
 #include "chi/Fwd.hpp"
-#include "chi/ModuleCache.hpp"
 #include "chi/Support/Flags.hpp"
 #include "chi/Support/json.hpp"
 
@@ -38,7 +37,7 @@ enum class CompileSettings {
 	Default = UseCache | LinkDependencies
 };
 
-/// The class that handles the loading, creation, storing, and compilation of modules
+/// The class that handles the creation, storing, and compilation of modules
 /// It also stores a \c LLVMContext object to be used everywhere.
 ///
 /// It stores all the modules and allows for compilation of them. Basic use looks like this:
@@ -54,8 +53,10 @@ enum class CompileSettings {
 /// ```
 struct Context {
 	/// Creates a context with just the lang module
-	/// \param workPath Path to the workspace, or a subdirectory of the workspace
-	Context(const boost::filesystem::path& workPath = {});
+	/// \param provider The module provider
+	/// \pre `provider != nullptr`
+	/// \param includeLangModule Should the lang module be included
+	Context(std::unique_ptr<ModuleProvider> provider, bool includeLangModule = true);
 
 	/// Destructor
 	~Context();
@@ -86,9 +87,9 @@ struct Context {
 	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
-	Result loadModule(const boost::filesystem::path& name, ChiModule** toFill = nullptr);
+	Result loadModule(const boost::filesystem::path& name, GraphModule** toFill = nullptr);
 
-	/// Load a module from JSON -- avoid this use the string overload
+	/// Load a module from JSON -- avoid this use the string overload -- adds as a loaded module
 	/// \param[in] fullName The full path of the module, including URL
 	/// \param[in] json The JSON data
 	/// \param[out] toFill The GraphModule* to fill into, optional
@@ -96,7 +97,7 @@ struct Context {
 	Result addModuleFromJson(const boost::filesystem::path& fullName, const nlohmann::json& json,
 	                         GraphModule** toFill = nullptr);
 
-	/// Adds a custom module to the Context
+	/// Adds a custom module to the Context--adds it as a built-in module
 	/// \param modToAdd The module to add. The context will take excluseive ownership of it.
 	/// \return True if the module was added (it didn't exist before)
 	bool addModule(std::unique_ptr<ChiModule> modToAdd) noexcept;
@@ -133,13 +134,6 @@ struct Context {
 	/// \return The node type, or nullptr
 	std::unique_ptr<NodeType> createConverterNodeType(const DataType& fromType, const DataType& toType);
 
-	/// Get the workspace path of the Context
-	/// \return The workspace path
-	boost::filesystem::path workspacePath() const { return mWorkspacePath; }
-	/// Check if this context has a workspace bound to it -- same as !workspacePath().empty()
-	/// \return If it has a workspace
-	bool hasWorkspace() const noexcept { return !workspacePath().empty(); }
-
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] fullName The full name of the module to compile.
 	/// If `moduleByFullName(fullName) == nullptr`, this function has no side-effects
@@ -172,47 +166,49 @@ struct Context {
 	/// \return The `LLVMContext`
 	llvm::LLVMContext& llvmContext() { return mLLVMContext; }
 
-	/// Get the `LangModule`, if it has been loaded
-	/// \return The `LangModule`
-	LangModule* langModule() const { return mLangModule; }
-
 	/// Get the modules in the Context
 	/// \return The modules
 	std::vector<ChiModule*> modules() const {
 		std::vector<ChiModule*> ret;
+		ret.reserve(mBuiltInModules.size() + mLoadedModules.size());
 
-		for (const auto& mod : mModules) { ret.push_back(mod.get()); }
+		for (const auto& mod : mBuiltInModules) { ret.push_back(mod.get()); }
+		for (const auto& mod : mLoadedModules) } ret.push_back(mod.get()); }
+
+		return ret;
+	}
+
+	/// Get the GraphModules loaded through the moduleProvider() in the Context
+	std::vector<GraphModule*> graphModules() const {
+		std::vector<GraphModule*> ret;
+		ret.reserve(mLoadedModules.size());
+
+		for (const auto& mod : mLoadedModules) { ret.push_back(mod.get(); }
 
 		return ret;
 	}
 
 	/// Get the module cache
 	/// \return The ModuleCache
-	const ModuleCache& moduleCache() const { return *mModuleCache; }
+	const ModuleProvider& moduleProvider() const { return *mModuleProvider; }
 
 	/// \copydoc Context::moduleCache
-	ModuleCache& moduleCache() { return *mModuleCache; }
-
-	/// Set the module cache
-	/// \param newCache The new module cache
-	/// \pre `newCache != nullptr`
-	void setModuleCache(std::unique_ptr<ModuleCache> newCache);
+	ModuleProvider& moduleProvider() { return *mModuleProvider; }
 
 private:
 	boost::filesystem::path mWorkspacePath;
 
 	llvm::LLVMContext mLLVMContext;
 
-	std::vector<std::unique_ptr<ChiModule>> mModules;
+	std::vector<std::unique_ptr<ChiModule>> mBuiltInModules;
+	std::vector<std::unique_ptr<GraphModule>> mLoadedModules;
 
 	// This cache is only for use during compilation to not duplicate modules
 	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/>
 	    mCompileCache;
 
-	LangModule* mLangModule = nullptr;
+	std::unique_ptr<ModuleProvider> mModuleProvider;
 
-	std::unique_ptr<ModuleCache> mModuleCache;
-	
 	std::unordered_map<std::string /*from Type*/, std::unordered_map<std::string /*to type*/, std::unique_ptr<NodeType>>> mTypeConverters;
 };
 

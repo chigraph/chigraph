@@ -1,9 +1,9 @@
-/// \file ModuleCache.hpp
+/// \file ModuleProvider.hpp
 
 #pragma once
 
-#ifndef CHI_MODULE_CACHE_HPP
-#define CHI_MODULE_CACHE_HPP
+#ifndef CHI_MODULE_PROVIDER_HPP
+#define CHI_MODULE_PROVIDER_HPP
 
 #include <chi/Fwd.hpp>
 
@@ -12,19 +12,40 @@
 
 namespace chi {
 
-/// This class  provides an interface for creating module caches
-struct ModuleCache {
-	/// Create a module cache with a bound context
-	explicit ModuleCache(Context& ctx) : mContext{&ctx} {}
+/// This class  provides an interface for fetching and caching compiled modules
+struct ModuleProvider {
+	/// Create a module cache
+	explicit ModuleProvider() {}
 
 	/// Destructor
-	virtual ~ModuleCache() = default;
+	virtual ~ModuleProvider() = default;
 
 	// No copy or move
-	ModuleCache(const ModuleCache&) = delete;
-	ModuleCache(ModuleCache&&)      = delete;
-	ModuleCache& operator=(const ModuleCache&) = delete;
-	ModuleCache& operator=(ModuleCache&&) = delete;
+	ModuleProvider(const ModuleProvider&) = delete;
+	ModuleProvider(ModuleProvider&&)      = delete;
+	ModuleProvider& operator=(const ModuleProvider&) = delete;
+	ModuleProvider& operator=(ModuleProvider&&) = delete;
+
+	/// Read a module from disk
+	/// Assumes all dependencies are loaded, will error if not
+	/// \param module The name of the module to load
+	/// \param toFill The GraphModule to fill
+	/// \return The Result
+	virtual Result loadModule(const boost::filesystem::path& module, std::unique_ptr<GraphModule>* toFill) = 0;
+
+	/// Save a module to disk
+	/// \param modToSave the module to save
+	/// \return The Result
+	virtual Result saveModule(const GraphModule& modToSave) const = 0;
+
+	/// List all the modules in the workspace
+	/// \return All the modules
+	virtual std::vector<boost::filesystem::path> listModules() const = 0;
+
+	/// Peek at a module's dependencies without loading it
+	/// \param module The  module to get the dependencies
+	/// \return The list of direct dependencies (not a recursive search)
+	virtual std::vector<boost::filesystem::path> peekDepenencies(const boost::filesystem::path& module) const = 0;
 
 	/// Cache a module
 	/// \param moduleName The name of the module to cache
@@ -53,13 +74,6 @@ struct ModuleCache {
 	/// \return A llvm::Module, or nullptr if no suitable cache was found
 	virtual std::unique_ptr<llvm::Module> retrieveFromCache(
 	    const boost::filesystem::path& moduleName, std::time_t atLeastThisNew) = 0;
-
-	/// Get the context this cache is bound to
-	/// \return the `Context`
-	Context& context() const { return *mContext; }
-
-private:
-	Context* mContext;
 };
 
 }  // namespace chi

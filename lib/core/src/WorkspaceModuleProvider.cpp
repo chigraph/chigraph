@@ -1,7 +1,6 @@
-/// \file DefaultModuleCache.cpp
+/// \file WorkspaceModuleProvider.cpp
 
-#include "chi/DefaultModuleCache.hpp"
-#include "chi/BitcodeParser.hpp"
+#include "chi/WorkspaceModuleProvider.hpp"
 #include "chi/Context.hpp"
 #include "chi/LLVMVersion.hpp"
 #include "chi/ModuleCache.hpp"
@@ -23,9 +22,45 @@
 
 namespace chi {
 
-DefaultModuleCache::DefaultModuleCache(chi::Context& ctx) : ModuleCache{ctx} {}
+WorkspaceModuleProvider::WorkspaceModuleProvider(const boost::filesystem::path& workspacePath) : mWorkspacePath{workspacePath} {}
 
-Result DefaultModuleCache::cacheModule(const boost::filesystem::path& moduleName,
+Result WorkspaceModuleProvider::loadModule(const boost::filesystem::path& module, std::unique_ptr<GraphModule>* toFill) {
+
+}
+
+Result WorkspaceModuleProvider::saveModule(const GraphModule& modToSave) const {
+		
+} 
+
+std::vector<boost::filesystem::path> WorkspaceModuleProvider::listModules() const {
+	std::vector<boost::filesystem::path> moduleList;
+
+	fs::path srcDir = workspacePath() / "src";
+
+	if (!fs::is_directory(srcDir)) { return {}; }
+
+	for (const auto& dirEntry : boost::make_iterator_range(
+	         fs::recursive_directory_iterator{srcDir, fs::symlink_option::recurse}, {})) {
+		const fs::path& p = dirEntry;
+
+		// see if it's a chigraph module
+		if (fs::is_regular_file(p) && p.extension() == ".chimod") {
+			fs::path relPath = fs::relative(p, srcDir);
+
+			relPath.replace_extension("");  // remove .chimod
+			moduleList.emplace_back(relPath);
+		}
+	}
+
+	return moduleList;
+
+}
+
+std::vector<boost::filesystem::path> WorkspaceModuleProvider::peekDepenencies(const boost::filesystem::path& module) const {
+
+}
+
+Result WorkspaceModuleProvider::cacheModule(const boost::filesystem::path& moduleName,
                                        llvm::Module& compiledModule, std::time_t timeAtFileRead) {
 	assert(!moduleName.empty() &&
 	       "Cannot pass a empty module name to DefaultModuleCache::cacheModule");
@@ -67,12 +102,12 @@ Result DefaultModuleCache::cacheModule(const boost::filesystem::path& moduleName
 	return res;
 }
 
-boost::filesystem::path DefaultModuleCache::cachePathForModule(
+boost::filesystem::path WorkspaceModuleProvider::cachePathForModule(
     const boost::filesystem::path& moduleName) const {
 	return context().workspacePath() / "lib" / (moduleName.string() + ".bc");
 }
 
-void DefaultModuleCache::invalidateCache(const boost::filesystem::path& moduleName) {
+void WorkspaceModuleProvider::invalidateCache(const boost::filesystem::path& moduleName) {
 	assert(!moduleName.empty() && "Cannot pass empty path to DefaultModuleCache::invalidateCache");
 
 	auto cachePath = cachePathForModule(moduleName);
@@ -80,11 +115,11 @@ void DefaultModuleCache::invalidateCache(const boost::filesystem::path& moduleNa
 	boost::filesystem::remove(cachePath);
 }
 
-std::time_t DefaultModuleCache::cacheUpdateTime(const boost::filesystem::path& moduleName) const {
+std::time_t WorkspaceModuleProvider::cacheUpdateTime(const boost::filesystem::path& moduleName) const {
 	return boost::filesystem::last_write_time(cachePathForModule(moduleName));
 }
 
-std::unique_ptr<llvm::Module> DefaultModuleCache::retrieveFromCache(
+std::unique_ptr<llvm::Module> WorkspaceModuleProvider::retrieveFromCache(
     const boost::filesystem::path& moduleName, std::time_t atLeastThisNew) {
 	assert(!moduleName.empty() &&
 	       "Cannot pass empty path to DefaultModuleCache::retrieveFromCache");

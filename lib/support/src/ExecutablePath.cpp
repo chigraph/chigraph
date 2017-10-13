@@ -78,12 +78,16 @@ boost::filesystem::path executablePath() {
 	PathName.resize(Size);
 
 	// Convert the result from UTF-16 to UTF-8.
-	std::string PathNameUTF8(MAX_PATH);
-	if (UTF16ToUTF8(PathName.data(), PathName.size(), PathNameUTF8)) return "";
+	std::string PathNameUTF8(MAX_PATH, '\0');
 
-	return std::string(PathNameUTF8.c_str()());
+	int numWritten = WideCharToMultiByte(CP_ACP, WC_COMPOSITECHECK, PathName.data(), PathName.size(), &PathNameUTF8[0], PathNameUTF8.size(), nullptr, nullptr);
+	if (numWritten == 0) return "";
+
+	PathNameUTF8.resize(numWritten);
+	return PathNameUTF8;
 }
 
+} // namespace chi
 #else
 #error GetMainExecutable is not implemented on this host yet.
 #endif

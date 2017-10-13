@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
 
 	// clang-format off
 	general.add_options()
-		("C", po::value<std::string>(), "Directory to change to first")
+		("change-dir,C", po::value<std::string>(), "Directory to change to first")
 		("command", po::value<std::string>(), "which command")
 		("subargs", po::value<std::vector<std::string>>(), "arguments for command")
 		;

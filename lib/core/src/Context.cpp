@@ -1,8 +1,7 @@
 /// \file Context.cpp
 
 #include "chi/Context.hpp"
-#include "chi/BitcodeParser.hpp"
-#include "chi/DefaultModuleCache.hpp"
+#include "chi/ModuleProvider.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/GraphModule.hpp"
@@ -37,10 +36,19 @@
 namespace fs = boost::filesystem;
 
 namespace chi {
+<<<<<<< HEAD
+Context::Context(std::unique_ptr<ModuleProvider> provider, bool includeLangModule)
+	: mModuleProvider{std::move(provider)} {
+	
+	if (includeLangModule) {
+		addModule(std::make_unique<LangModule>(*this));
+	}
+=======
 Context::Context(const boost::filesystem::path& workPath) {
 	mWorkspacePath = workspaceFromChildPath(workPath);
 
 	mModuleCache = std::make_unique<DefaultModuleCache>(*this);
+>>>>>>> be7691626782bb9eec7862463bbb2a03d461e62e
 }
 
 Context::~Context() = default;
@@ -66,26 +74,6 @@ GraphModule* Context::newGraphModule(const boost::filesystem::path& fullName) {
 }
 
 std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
-	std::vector<std::string> moduleList;
-
-	fs::path srcDir = workspacePath() / "src";
-
-	if (!fs::is_directory(srcDir)) { return {}; }
-
-	for (const auto& dirEntry : boost::make_iterator_range(
-	         fs::recursive_directory_iterator{srcDir, fs::symlink_option::recurse}, {})) {
-		const fs::path& p = dirEntry;
-
-		// see if it's a chigraph module
-		if (fs::is_regular_file(p) && p.extension() == ".chimod") {
-			fs::path relPath = fs::relative(p, srcDir);
-
-			relPath.replace_extension("");  // remove .chimod
-			moduleList.emplace_back(relPath.string());
-		}
-	}
-
-	return moduleList;
 }
 
 Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
@@ -96,17 +84,14 @@ Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
 	auto requestedModCtx = res.addScopedContext({{"Requested Module Name", name.generic_string()}});
 
 	// check for built-in modules
-	if (name == "lang") {
-		if (langModule() != nullptr) {
-			if (toFill != nullptr) { *toFill = langModule(); }
-			return {};
+	for (const auto& mod : mBuiltInModules) {
+		if (name == mod->fullName()) {
+			if (toFill != nullptr) {
+				*toFill = mod.get();
+			}
+			return res;
 		}
-		auto mod = std::make_unique<LangModule>(*this);
-		if (toFill != nullptr) { *toFill = mod.get(); }
-		addModule(std::move(mod));
-		return {};
 	}
-
 	// see if it's already loaded
 	{
 		auto mod = moduleByFullName(name);
@@ -189,6 +174,12 @@ bool Context::addModule(std::unique_ptr<ChiModule> modToAdd) noexcept {
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) { return false; }
 
+<<<<<<< HEAD
+	mBuiltInModules.push_back(std::move(modToAdd));
+
+	assert(modToAdd == nullptr);
+
+=======
 	if (modToAdd->fullName() == "lang") { mLangModule = dynamic_cast<LangModule*>(modToAdd.get()); }
 
 	// add the converter nodes
@@ -213,6 +204,7 @@ bool Context::addModule(std::unique_ptr<ChiModule> modToAdd) noexcept {
 	mModules.push_back(std::move(modToAdd));
 	
 	
+>>>>>>> be7691626782bb9eec7862463bbb2a03d461e62e
 	return true;
 }
 
@@ -410,6 +402,11 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 			// find the runtime
 			auto runtimebc =
 			    executablePath().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
+
+			// just in case the executable is in a "Debug" folder or something
+			if (!fs::is_regular_file(runtimebc)) {
+				runtimebc = executablePath().parent_path().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
+			}
 
 			if (!fs::is_regular_file(runtimebc)) {
 				res.addEntry(

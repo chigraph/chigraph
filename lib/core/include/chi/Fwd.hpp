@@ -21,8 +21,7 @@ struct LangModule;
 struct NodeInstance;
 struct NodeType;
 struct DataType;
-struct ModuleCache;
-struct PureCompiler;
+struct ModuleProvider;
 }
 
 // some basic LLVM stuff to make compiles speedy quick
