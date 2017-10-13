@@ -33,7 +33,7 @@ struct GraphModule : public ChiModule {
 	Result nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
 	                        std::unique_ptr<NodeType>* toFill) override;
 
-	DataType typeFromName(boost::string_view name) override;
+	DataType                 typeFromName(boost::string_view name) override;
 	std::vector<std::string> nodeTypeNames() const override;
 
 	std::vector<std::string> typeNames() const override;
@@ -47,15 +47,6 @@ struct GraphModule : public ChiModule {
 	/// Create the associations from line number and function in debug info
 	/// \return A bimap of function to line number
 	boost::bimap<unsigned, NodeInstance*> createLineNumberAssoc() const;
-
-	/// Serialize to disk in the context
-	/// \return The Result
-	Result saveToDisk() const;
-
-	/// Get the path to the source file
-	/// It's not garunteed to exist, because it could have not been saved
-	/// \return The path
-	boost::filesystem::path sourceFilePath() const;
 
 	/// \name Function Creation and Manipulation
 	/// \{
@@ -145,11 +136,6 @@ struct GraphModule : public ChiModule {
 	Result createNodeTypeFromCCode(boost::string_view code, boost::string_view functionName,
 	                               std::vector<std::string>   clangArgs,
 	                               std::unique_ptr<NodeType>* toFill);
-
-	/// Get the path to the .c directory. It is not garunteed to exist, even if cEnabled() is true
-	boost::filesystem::path pathToCSources() const {
-		return sourceFilePath().parent_path() / (shortName() + ".c");
-	}
 
 	/// \}
 

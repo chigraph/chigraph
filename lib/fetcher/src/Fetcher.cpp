@@ -87,7 +87,7 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 
 			    return 0;
 
-			},
+		    },
 		    &oid_to_merge);
 
 		// get origin/master
@@ -234,9 +234,9 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 			git_oid     newCommit{};
 			std::string commitMsg = std::string("Merge ") + git_oid_tostr_s(&oid_to_merge.second);
 			err                   = git_commit_create(&newCommit, repo, "HEAD", committerSignature,
-			                        committerSignature, "UTF-8", commitMsg.c_str(), tree,
-			                        sizeof(parents) / sizeof(git_commit*),
-			                        static_cast<const git_commit**>(parents));
+                                    committerSignature, "UTF-8", commitMsg.c_str(), tree,
+                                    sizeof(parents) / sizeof(git_commit*),
+                                    static_cast<const git_commit**>(parents));
 			if (err != 0) {
 				res.addEntry("EUKN", "Failed to create commit",
 				             {{"Error Message", giterr_last()->message}});
@@ -270,11 +270,11 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 			return res;
 		}
 	}
-	
+
 	if (!fs::is_regular_file(fileName)) {
-      res.addEntry("EUKN", "Module doesn't exist", {{"File Name", fileName.string()}});
-      return res;
-    }
+		res.addEntry("EUKN", "Module doesn't exist", {{"File Name", fileName.string()}});
+		return res;
+	}
 
 	if (recursive) {
 		// peek at the dependencies

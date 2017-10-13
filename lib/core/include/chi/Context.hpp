@@ -76,18 +76,18 @@ struct Context {
 	/// \return The created GraphModule
 	GraphModule* newGraphModule(const boost::filesystem::path& fullName);
 
-	/// Get the list of modules in the workspace
+	/// Get the list of available modules
 	/// \return The module list
-	// init it (pretty sure it inits windows networking stuff)
-	std::vector<std::string> listModulesInWorkspace() const noexcept;
+	std::vector<boost::filesystem::path> listAvailableModules() const noexcept;
 
 	/// Load a module from disk, also loads dependencies
+	/// If it's a built-in module, then that will be returned
 	/// \param[in] name The name of the moudle
 	/// \pre `!name.empty()`
 	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
-	Result loadModule(const boost::filesystem::path& name, GraphModule** toFill = nullptr);
+	Result loadModule(const boost::filesystem::path& name, ChiModule** toFill = nullptr);
 
 	/// Load a module from JSON -- avoid this use the string overload -- adds as a loaded module
 	/// \param[in] fullName The full path of the module, including URL
@@ -127,12 +127,13 @@ struct Context {
 	Result nodeTypeFromModule(const boost::filesystem::path& moduleName,
 	                          boost::string_view typeName, const nlohmann::json& data,
 	                          std::unique_ptr<NodeType>* toFill) noexcept;
-							  
+
 	/// Create a converter node
 	/// \param[in] fromType The type to convert from
 	/// \param[in] toType The type to convert to
 	/// \return The node type, or nullptr
-	std::unique_ptr<NodeType> createConverterNodeType(const DataType& fromType, const DataType& toType);
+	std::unique_ptr<NodeType> createConverterNodeType(const DataType& fromType,
+	                                                  const DataType& toType);
 
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] fullName The full name of the module to compile.
@@ -168,22 +169,13 @@ struct Context {
 
 	/// Get the modules in the Context
 	/// \return The modules
-	std::vector<ChiModule*> modules() const {
-		std::vector<ChiModule*> ret;
-		ret.reserve(mBuiltInModules.size() + mLoadedModules.size());
-
-		for (const auto& mod : mBuiltInModules) { ret.push_back(mod.get()); }
-		for (const auto& mod : mLoadedModules) } ret.push_back(mod.get()); }
-
-		return ret;
-	}
-
+	std::vector<ChiModule*> modules() const;
 	/// Get the GraphModules loaded through the moduleProvider() in the Context
 	std::vector<GraphModule*> graphModules() const {
 		std::vector<GraphModule*> ret;
 		ret.reserve(mLoadedModules.size());
 
-		for (const auto& mod : mLoadedModules) { ret.push_back(mod.get(); }
+		for (const auto& mod : mLoadedModules) { ret.push_back(mod.get()); }
 
 		return ret;
 	}
@@ -200,7 +192,7 @@ private:
 
 	llvm::LLVMContext mLLVMContext;
 
-	std::vector<std::unique_ptr<ChiModule>> mBuiltInModules;
+	std::vector<std::unique_ptr<ChiModule>>   mBuiltInModules;
 	std::vector<std::unique_ptr<GraphModule>> mLoadedModules;
 
 	// This cache is only for use during compilation to not duplicate modules
@@ -209,7 +201,9 @@ private:
 
 	std::unique_ptr<ModuleProvider> mModuleProvider;
 
-	std::unordered_map<std::string /*from Type*/, std::unordered_map<std::string /*to type*/, std::unique_ptr<NodeType>>> mTypeConverters;
+	std::unordered_map<std::string /*from Type*/,
+	                   std::unordered_map<std::string /*to type*/, std::unique_ptr<NodeType>>>
+	    mTypeConverters;
 };
 
 /// Get the workspace directory from a child of the workspace directory

@@ -1,15 +1,15 @@
 /// \file Context.cpp
 
 #include "chi/Context.hpp"
-#include "chi/ModuleProvider.hpp"
 #include "chi/GraphFunction.hpp"
-#include "chi/NodeType.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
 #include "chi/JsonDeserializer.hpp"
 #include "chi/LLVMVersion.hpp"
 #include "chi/LangModule.hpp"
+#include "chi/ModuleProvider.hpp"
 #include "chi/NodeInstance.hpp"
+#include "chi/NodeType.hpp"
 #include "chi/Support/ExecutablePath.hpp"
 #include "chi/Support/Result.hpp"
 
@@ -36,25 +36,19 @@
 namespace fs = boost::filesystem;
 
 namespace chi {
-<<<<<<< HEAD
-Context::Context(std::unique_ptr<ModuleProvider> provider, bool includeLangModule)
-	: mModuleProvider{std::move(provider)} {
-	
-	if (includeLangModule) {
-		addModule(std::make_unique<LangModule>(*this));
-	}
-=======
-Context::Context(const boost::filesystem::path& workPath) {
-	mWorkspacePath = workspaceFromChildPath(workPath);
 
-	mModuleCache = std::make_unique<DefaultModuleCache>(*this);
->>>>>>> be7691626782bb9eec7862463bbb2a03d461e62e
+Context::Context(std::unique_ptr<ModuleProvider> provider, bool includeLangModule)
+    : mModuleProvider{std::move(provider)} {
+	if (includeLangModule) { addModule(std::make_unique<LangModule>(*this)); }
 }
 
 Context::~Context() = default;
 
 ChiModule* Context::moduleByFullName(const boost::filesystem::path& fullModuleName) const noexcept {
-	for (auto& module : mModules) {
+	for (auto& module : mBuiltInModules) {
+		if (module->fullName() == fullModuleName) { return module.get(); }
+	}
+	for (auto& module : mLoadedModules) {
 		if (module->fullName() == fullModuleName) { return module.get(); }
 	}
 	return nullptr;
@@ -73,7 +67,8 @@ GraphModule* Context::newGraphModule(const boost::filesystem::path& fullName) {
 	return mod;
 }
 
-std::vector<std::string> Context::listModulesInWorkspace() const noexcept {
+std::vector<fs::path> Context::listAvailableModules() const noexcept {
+	return moduleProvider()->listModules();
 }
 
 Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
@@ -83,15 +78,6 @@ Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
 
 	auto requestedModCtx = res.addScopedContext({{"Requested Module Name", name.generic_string()}});
 
-	// check for built-in modules
-	for (const auto& mod : mBuiltInModules) {
-		if (name == mod->fullName()) {
-			if (toFill != nullptr) {
-				*toFill = mod.get();
-			}
-			return res;
-		}
-	}
 	// see if it's already loaded
 	{
 		auto mod = moduleByFullName(name);
@@ -101,39 +87,18 @@ Result Context::loadModule(const fs::path& name, ChiModule** toFill) {
 		}
 	}
 
-	if (workspacePath().empty()) {
-		res.addEntry("E52", "Cannot load module without a workspace path", {});
-		return res;
-	}
+	nlohmann::json mod;
+	std::time_t    lastEditTime;
+	res += moduleProvider()->loadModule(name, &mod, &lastEditTime);
 
-	// find it in the workspace
-	fs::path fullPath = workspacePath() / "src" / name;
-	fullPath.replace_extension(".chimod");
+	if (!res) { return res; }
 
-	if (!fs::is_regular_file(fullPath)) {
-		res.addEntry("EUKN", "Failed to find module",
-		             {{"Workspace Path", workspacePath().string()},
-		              {"Expected Path", fullPath.generic_string()}});
-		return res;
-	}
+	GraphModule* toFillGraph;
+	res += addModuleFromJson(name, mod, &toFillGraph);
+	if (toFill != nullptr) { *toFill = toFillGraph; }
 
-	// load the JSON
-	nlohmann::json readJson = {};
-	try {
-		fs::ifstream inFile{fullPath};
-
-		inFile >> readJson;
-	} catch (std::exception& e) {
-		res.addEntry("EUKN", "Failed to parse json", {{"Error", e.what()}});
-		return res;
-	}
-
-	GraphModule* toFillJson = nullptr;
-	res += addModuleFromJson(name.generic_string(), readJson, &toFillJson);
-	if (toFill != nullptr) { *toFill = toFillJson; }
-
-	// set this to the last time the file was edited
-	toFillJson->updateLastEditTime(boost::filesystem::last_write_time(fullPath));
+	// update the last edit time
+	toFillGraph->updateLastEditTime(lastEditTime);
 
 	return res;
 }
@@ -174,37 +139,26 @@ bool Context::addModule(std::unique_ptr<ChiModule> modToAdd) noexcept {
 	auto ptr = moduleByFullName(modToAdd->fullName());
 	if (ptr != nullptr) { return false; }
 
-<<<<<<< HEAD
 	mBuiltInModules.push_back(std::move(modToAdd));
-
-	assert(modToAdd == nullptr);
-
-=======
-	if (modToAdd->fullName() == "lang") { mLangModule = dynamic_cast<LangModule*>(modToAdd.get()); }
 
 	// add the converter nodes
 	for (const auto& tyName : modToAdd->nodeTypeNames()) {
 		// create it
 		std::unique_ptr<NodeType> ty;
-		auto res = modToAdd->nodeTypeFromName(tyName, {}, &ty);
-		
+		auto                      res = modToAdd->nodeTypeFromName(tyName, {}, &ty);
+
 		if (!res) {
 			// converter nodes must be stateless
 			continue;
 		}
-		
-		if (!ty->converter()) {
-			continue;
-		}
-		
+
+		if (!ty->converter()) { continue; }
+
 		// add it!
-		mTypeConverters[ty->dataInputs()[0].type.qualifiedName()][ty->dataOutputs()[0].type.qualifiedName()] = std::move(ty);
+		mTypeConverters[ty->dataInputs()[0].type.qualifiedName()]
+		               [ty->dataOutputs()[0].type.qualifiedName()] = std::move(ty);
 	}
-	
-	mModules.push_back(std::move(modToAdd));
-	
-	
->>>>>>> be7691626782bb9eec7862463bbb2a03d461e62e
+
 	return true;
 }
 
@@ -258,20 +212,16 @@ Result Context::nodeTypeFromModule(const fs::path& moduleName, boost::string_vie
 	return res;
 }
 
-std::unique_ptr<NodeType> Context::createConverterNodeType(const DataType& fromType, const DataType& toType) {
+std::unique_ptr<NodeType> Context::createConverterNodeType(const DataType& fromType,
+                                                           const DataType& toType) {
 	auto fromIter = mTypeConverters.find(fromType.qualifiedName());
-	if (fromIter == mTypeConverters.end()) { 
-		return nullptr;
-	}
-	
+	if (fromIter == mTypeConverters.end()) { return nullptr; }
+
 	auto toIter = fromIter->second.find(toType.qualifiedName());
-	if (toIter == fromIter->second.end()) {
-		return nullptr;
-	}
-	
+	if (toIter == fromIter->second.end()) { return nullptr; }
+
 	return toIter->second->clone();
 }
-
 
 Result Context::compileModule(const boost::filesystem::path& fullName,
                               Flags<CompileSettings>         settings,
@@ -311,8 +261,8 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 			{
 				std::unordered_set<fs::path> added(mod.dependencies().begin(),
 				                                   mod.dependencies().end());
-				std::deque<fs::path> depsToAdd(mod.dependencies().begin(),
-				                               mod.dependencies().end());
+				std::deque<fs::path>         depsToAdd(mod.dependencies().begin(),
+                                               mod.dependencies().end());
 				while (!depsToAdd.empty()) {
 					auto& depName = depsToAdd[0];
 
@@ -391,7 +341,7 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 			                                           ,
 			                          llvm::Linker::DestroySource, nullptr
 #endif
-			                          );
+			);
 #else
 			llvm::Linker::linkModules(*llmod, std::move(compiledDep));
 #endif
@@ -405,7 +355,8 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 
 			// just in case the executable is in a "Debug" folder or something
 			if (!fs::is_regular_file(runtimebc)) {
-				runtimebc = executablePath().parent_path().parent_path().parent_path() / "lib" / "chigraph" / "runtime.bc";
+				runtimebc = executablePath().parent_path().parent_path().parent_path() / "lib" /
+				            "chigraph" / "runtime.bc";
 			}
 
 			if (!fs::is_regular_file(runtimebc)) {
@@ -426,7 +377,7 @@ Result Context::compileModule(ChiModule& mod, Flags<CompileSettings> settings,
 			                                           ,
 			                          llvm::Linker::DestroySource, nullptr
 #endif
-			                          );
+			);
 #else
 			llvm::Linker::linkModules(*llmod, std::move(runtimeMod));
 #endif
@@ -456,6 +407,16 @@ std::vector<NodeInstance*> Context::findInstancesOfType(const fs::path&    modul
 	return ret;
 }
 
+std::vector<ChiModule*> Context::modules() const {
+	std::vector<ChiModule*> ret;
+	ret.reserve(mBuiltInModules.size() + mLoadedModules.size());
+
+	for (const auto& mod : mBuiltInModules) { ret.push_back(mod.get()); }
+	for (const auto& mod : mLoadedModules) { ret.push_back(mod.get()); }
+
+	return ret;
+}
+
 fs::path workspaceFromChildPath(const boost::filesystem::path& path) {
 	fs::path ret = path;
 
@@ -466,6 +427,15 @@ fs::path workspaceFromChildPath(const boost::filesystem::path& path) {
 	}
 
 	return ret;  // it's ok if it's empty
+}
+
+std::vector<GraphModule*> Context::graphModules() const {
+	std::vector<GraphModule*> ret;
+	ret.reserve(mLoadedModules.size());
+
+	for (const auto& mod : mLoadedModules) { ret.push_back(mod.get()); }
+
+	return ret;
 }
 
 std::string stringifyLLVMType(llvm::Type* ty) {
@@ -495,7 +465,7 @@ std::unique_ptr<llvm::ExecutionEngine> createEE(std::unique_ptr<llvm::Module> mo
 	    std::move(mod)
 #endif
 
-	        );
+	);
 
 	EEBuilder.setEngineKind(llvm::EngineKind::JIT);
 

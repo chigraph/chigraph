@@ -14,16 +14,21 @@ struct WorkspaceModuleProvider : public ModuleProvider {
 	WorkspaceModuleProvider(const boost::filesystem::path& workspacePath);
 
 	/// \copydoc ModuleProvider::loadModule
-	Result loadModule(const boost::filesystem::path& module, std::unique_ptr<GraphModule>* toFill) override;
+	Result loadModule(const boost::filesystem::path& module, nlohmann::json* toFill,
+	                  std::time_t* toFillTime) override;
 
 	/// \copydoc ModuleProvider::saveModule
 	Result saveModule(const GraphModule& modToSave) const override;
+
+	/// \copydoc ModuleProvider::pathToCSources
+	boost::filesystem::path pathToCSources(const GraphModule& module) const override;
 
 	/// \copydoc ModuleProvider::listModules
 	std::vector<boost::filesystem::path> listModules() const override;
 
 	/// \copydoc ModuleProvider::peekDepenencies
-	std::vector<boost::filesystem::path> peekDepenencies(const boost::filesystem::path& module) const override;
+	std::vector<boost::filesystem::path> peekDepenencies(
+	    const boost::filesystem::path& module) const override;
 
 	boost::filesystem::path cachePathForModule(const boost::filesystem::path& moduleName) const;
 
@@ -40,13 +45,14 @@ struct WorkspaceModuleProvider : public ModuleProvider {
 	/// \copydoc ModuleProvider::retrieveFromCache
 	std::unique_ptr<llvm::Module> retrieveFromCache(const boost::filesystem::path& moduleName,
 	                                                std::time_t atLeastThisNew) override;
-	
 
 	boost::filesystem::path workspacePath() const { return mWorkspacePath; }
+
+	boost::filesystem::path pathFromModuleName(const boost::filesystem::path& fullName) const;
 
 private:
 	boost::filesystem::path mWorkspacePath;
 };
-}
+}  // namespace chi
 
 #endif  // CHI_WORKSPACE_MODULE_PROVIDER

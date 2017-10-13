@@ -5,10 +5,12 @@
 #ifndef CHI_MODULE_PROVIDER_HPP
 #define CHI_MODULE_PROVIDER_HPP
 
-#include <chi/Fwd.hpp>
+#include "chi/Fwd.hpp"
 
 #include <boost/filesystem/path.hpp>
 #include <ctime>
+
+#include "chi/Support/json.hpp"
 
 namespace chi {
 
@@ -29,15 +31,21 @@ struct ModuleProvider {
 	/// Read a module from disk
 	/// Assumes all dependencies are loaded, will error if not
 	/// \param module The name of the module to load
-	/// \param toFill The GraphModule to fill
+	/// \param toFill The JSON object to fill
+	/// \param toFillTime The time of that last edit of the module
 	/// \return The Result
-	virtual Result loadModule(const boost::filesystem::path& module, std::unique_ptr<GraphModule>* toFill) = 0;
+	virtual Result loadModule(const boost::filesystem::path& module, nlohmann::json* toFill,
+	                          std::time_t* toFillTime) = 0;
 
 	/// Save a module to disk
 	/// \param modToSave the module to save
 	/// \return The Result
 	virtual Result saveModule(const GraphModule& modToSave) const = 0;
 
+	/// Get the path to the C sources of a module
+	/// \param module The module to get the c source path
+	/// \return The path to the C sources
+	virtual boost::filesystem::path pathToCSources(const GraphModule& module) const = 0;
 	/// List all the modules in the workspace
 	/// \return All the modules
 	virtual std::vector<boost::filesystem::path> listModules() const = 0;
@@ -45,15 +53,15 @@ struct ModuleProvider {
 	/// Peek at a module's dependencies without loading it
 	/// \param module The  module to get the dependencies
 	/// \return The list of direct dependencies (not a recursive search)
-	virtual std::vector<boost::filesystem::path> peekDepenencies(const boost::filesystem::path& module) const = 0;
+	virtual std::vector<boost::filesystem::path> peekDepenencies(
+	    const boost::filesystem::path& module) const = 0;
 
 	/// Cache a module
 	/// \param moduleName The name of the module to cache
 	/// \pre `!moduleName.empty()`
 	/// \param compiledModule The IR that's been compiled from this module
-	/// \param timeAtFileRead The time to store as the cache time. Should be the time the module was
-	/// read from disk
-	/// \return The Result
+	/// \param timeAtFileRead The time to store as the cache time. Should be the time the module
+	/// was read from disk \return The Result
 	virtual Result cacheModule(const boost::filesystem::path& moduleName,
 	                           llvm::Module& compiledModule, std::time_t timeAtFileRead) = 0;
 

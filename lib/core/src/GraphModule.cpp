@@ -1,10 +1,10 @@
 /// \file GraphModule.cpp
 
+#include "chi/GraphModule.hpp"
 #include "chi/CCompiler.hpp"
 #include "chi/Context.hpp"
 #include "chi/FunctionCompiler.hpp"
 #include "chi/GraphFunction.hpp"
-#include "chi/GraphModule.hpp"
 #include "chi/GraphStruct.hpp"
 #include "chi/JsonDeserializer.hpp"
 #include "chi/JsonSerializer.hpp"
@@ -273,16 +273,17 @@ struct MakeStructNodeType : public NodeType {
 		    {llvm::ConstantInt::get(int64_type,
 		                            codegenInto.getModule()->getDataLayout().getTypeAllocSize(
 		                                mStruct->storageType()))});
-		
+
 		// cast to the right type
-		auto ptrToData = builder.CreateCast(llvm::Instruction::BitCast, allocatedVoidPtr, mStruct->dataType().llvmType());
-		
+		auto ptrToData = builder.CreateCast(llvm::Instruction::BitCast, allocatedVoidPtr,
+		                                    mStruct->dataType().llvmType());
+
 		// get the pointer to the struct
 		auto ptrToStruct = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
-			    nullptr,
+		    nullptr,
 #endif
-			    ptrToData, 1);
+		    ptrToData, 1);
 
 		for (auto id = 0ull; id < io.size() - 1; ++id) {
 			auto ptr = builder.CreateStructGEP(
@@ -330,10 +331,9 @@ struct BreakStructNodeType : public NodeType {
 		// create temp struct
 		auto ptrToStruct = builder.CreateStructGEP(
 #if LLVM_VERSION_AT_LEAST(3, 7)
-			nullptr,
+		    nullptr,
 #endif
-			io[0], 1);
-		
+		    io[0], 1);
 
 		for (auto id = 1ull; id < io.size(); ++id) {
 			auto ptr = builder.CreateStructGEP(
@@ -532,37 +532,6 @@ Result GraphModule::generateModule(llvm::Module& module) {
 	}
 
 	debugBuilder.finalize();
-
-	return res;
-}
-
-Result GraphModule::saveToDisk() const {
-	Result res;
-
-	// can't serialize without a workspace...
-	if (!context().hasWorkspace()) {
-		res.addEntry("EUKN", "Cannot serialize without a worksapce", {});
-		return res;
-	}
-
-	auto modulePath = sourceFilePath();
-
-	try {
-		// create directories that conatain the path
-		fs::create_directories(modulePath.parent_path());
-
-	} catch (std::exception& e) {
-		res.addEntry("EUKN", "Failed to create directoires in workspace",
-		             {{"Module File", modulePath.string()}});
-		return res;
-	}
-
-	// serialize
-	nlohmann::json toFill = graphModuleToJson(*this);
-
-	// save
-	fs::ofstream ostr(modulePath);
-	ostr << toFill.dump(2);
 
 	return res;
 }
@@ -882,10 +851,6 @@ void GraphModule::removeStruct(GraphStruct& tyToDel) {
 
 	LLVM_ATTRIBUTE_UNUSED bool succeeded = removeStruct(tyToDel.name());
 	assert(succeeded);
-}
-
-boost::filesystem::path GraphModule::sourceFilePath() const {
-	return context().workspacePath() / "src" / (fullName() + ".chimod");
 }
 
 Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
