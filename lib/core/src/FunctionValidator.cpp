@@ -258,7 +258,7 @@ Result validateFunctionEntryType(const GraphFunction& func) {
 
 	// make sure that the entry node has the right data types
 	if (!std::equal(func.dataInputs().begin(), func.dataInputs().end(),
-	                entry->type().dataOutputs().begin())) {
+	                entry->type().dataOutputs().begin(), entry->type().dataOutputs().end())) {
 		nlohmann::json inFunc = nlohmann::json::array();
 		for (auto& in : func.dataInputs()) {
 			inFunc.push_back({{in.name, in.type.qualifiedName()}});
@@ -284,7 +284,7 @@ Result validateFunctionExitTypes(const GraphFunction& func) {
 	// make sure that each exit node has the right data types
 	for (auto exitNode : func.nodesWithType("lang", "exit")) {
 		if (!std::equal(func.dataOutputs().begin(), func.dataOutputs().end(),
-		                exitNode->type().dataInputs().begin())) {
+		                exitNode->type().dataInputs().begin(), exitNode->type().dataInputs().end())) {
 			nlohmann::json outFunc = nlohmann::json::array();
 			for (auto& out : func.dataOutputs()) {
 				outFunc.push_back({{out.name, out.type.qualifiedName()}});
