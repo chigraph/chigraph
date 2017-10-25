@@ -1,51 +1,20 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-*.AppImage
-
-.vs/
-CMakeSettings.json
-
-
-
+# Build files:
 build/
+buildrel/
+builddebug/
+
+# KDevelop
 *.kdev4
 .kdev4/
+
+# CLion
 .idea/
 
-chig/include/chig/ToString.hpp
+# VS Code
+.vscode/
 
-test/codegen/workspace/lib
-
+# Qt Creator
 CMakeLists.txt.user
 
-cmake-build-debug/
-
+# macOS
 .DS_Store
-
-kf5.log
