@@ -24,6 +24,7 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Transforms/Utils/Cloning.h>
+#include <llvm/Support/Program.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
@@ -69,14 +70,14 @@ struct CFuncNode : NodeType {
 			args.push_back("-I");
 			args.push_back(mGraphModule->pathToCSources().string());
 
-			res += compileCToLLVM(
-			    fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
-			        "chi-ctollvm"
-#ifdef WIN32
-			        ".exe"
-#endif
-			    ,
-			    context().llvmContext(), args, mCCode, &llcompiledmod);
+			// find clang
+			auto clangExe = llvm::sys::findProgramByName(llvm::StringRef("clang"), llvm::ArrayRef<llvm::StringRef>());
+			if (!clangExe) {
+				res.addEntry("EUKN", "Failed to find clang in path", {{}});
+				return res;
+			}
+
+			res += compileCToLLVM(*clangExe, context().llvmContext(), args, mCCode, &llcompiledmod);
 
 			if (!res) { return res; }
 		}
@@ -451,16 +452,17 @@ Result GraphModule::generateModule(llvm::Module& module) {
 					continue;
 				}
 
+				// find clang
+				auto clangExe = llvm::sys::findProgramByName("clang");
+				if (!clangExe) {
+					res.addEntry("EUKN", "Failed to find clang in path", {{}});
+					return res;
+				}
+
+
 				// compile it
 				std::unique_ptr<llvm::Module> generatedModule;
-				res += compileCToLLVM(
-				    fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
-				        "chi-ctollvm"
-#ifdef WIN32
-				        ".exe"
-#endif
-				    ,
-				    context().llvmContext(), {CFile.string()}, "", &generatedModule);
+				res += compileCToLLVM(*clangExe, context().llvmContext(), {CFile.string()}, "", &generatedModule);
 
 				if (!res) { return res; }
 
@@ -876,14 +878,15 @@ Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
 	clangArgs.push_back(pathToCSources().string());
 
 	std::unique_ptr<llvm::Module> mod;
+	// find clang
+	auto clangExe = llvm::sys::findProgramByName("clang");
+	if (!clangExe) {
+		res.addEntry("EUKN", "Failed to find clang in path", {{}});
+		return res;
+	}
+
 	res +=
-	    compileCToLLVM(fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
-	                       "chi-ctollvm"
-#ifdef WIN32
-	                       ".exe"
-#endif
-	                   ,
-	                   context().llvmContext(), clangArgs, code, &mod);
+	    compileCToLLVM(*clangExe, context().llvmContext(), clangArgs, code, &mod);
 
 	if (!res) { return res; }
 

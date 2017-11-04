@@ -92,8 +92,8 @@ if (WIN32)
 	endif()
 
 	add_custom_command(TARGET chigraphdebugger POST_BUILD 
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LLDB_DLL} $<TARGET_FILE_DIR:chi-ctollvm> 
-	COMMENT "Copying LLDB dll from ${LLDB_DLL} to $<TARGET_FILE_DIR:chi-ctollvm>....")
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LLDB_DLL} $<TARGET_FILE_DIR:chi> 
+	COMMENT "Copying LLDB dll from ${LLDB_DLL} to $<TARGET_FILE_DIR:chi>....")
 
 endif()
 

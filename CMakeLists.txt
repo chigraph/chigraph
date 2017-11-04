@@ -97,7 +97,6 @@ endif()
 
 
 # add the chigraph libraries
-add_subdirectory(chi-ctollvm)
 add_subdirectory(lib)
 
 add_subdirectory(chi)

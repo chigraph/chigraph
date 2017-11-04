@@ -144,8 +144,8 @@ PUBLIC
 # configure the config file
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/ChigraphConfig.cmake.in ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake @ONLY)
 
-# make sure chi-ctollvm and runtime is built first
-add_dependencies(chigraphcore chi-ctollvm chigraphruntime)
+# make sure runtime is built first
+add_dependencies(chigraphcore chigraphruntime)
 
 install(FILES ${CMAKE_BINARY_DIR}/ChigraphConfig.cmake DESTINATION lib/cmake/chigraph)
 

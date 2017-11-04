@@ -14,16 +14,15 @@ namespace fs = boost::filesystem;
 
 namespace chi {
 
-Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMContext& llvmContext,
+Result compileCToLLVM(const boost::filesystem::path& clangPath, llvm::LLVMContext& llvmContext,
                       std::vector<std::string> arguments, boost::string_view inputCCode,
                       std::unique_ptr<llvm::Module>* toFill) {
 	assert(toFill != nullptr && "null toFill passed to compileCToLLVM");
-	assert(fs::is_regular_file(ctollvmPath) &&
-	       "invalid path passed to compileCToLLVM for ctollvmPath");
+	assert(fs::is_regular_file(clangPath) &&
+	       "invalid path passed to compileCToLLVM for clangPath");
 
 	Result res;
 
-	arguments.push_back("-nostdlib");
 
 	// gather std include paths
 	std::vector<fs::path> stdIncludePaths;
@@ -35,35 +34,45 @@ Result compileCToLLVM(const boost::filesystem::path& ctollvmPath, llvm::LLVMCont
 		arguments.push_back(p.string());
 	}
 
+	arguments.push_back("-nostdlib");
+
+	if (!inputCCode.empty()) {
+		arguments.emplace_back("-x");
+		arguments.emplace_back("c");
+		arguments.emplace_back("-");
+	}
+
+	arguments.emplace_back("-c");
+	arguments.emplace_back("-emit-llvm");
+	arguments.emplace_back("-o");
+	arguments.emplace_back("-");
+
+
+	auto argumentsContext = res.addScopedContext({{"clang arguments", arguments}});
+
 	std::string errors;
 
-	// call chi-ctollvm
+	// call clang
 	std::unique_ptr<llvm::Module> mod;
 	{
-		// chi-ctollvm accepts args in the style of -c <arg1> -c <arg2> ...
-		std::vector<std::string> argsToChiCtoLLVM;
-		for (const auto& arg : arguments) {
-			argsToChiCtoLLVM.push_back("-c");
-			argsToChiCtoLLVM.push_back(arg);
-		}
 
 		std::string generatedBitcode;
-		Subprocess  ctollvmExe(ctollvmPath);
-		ctollvmExe.setArguments(argsToChiCtoLLVM);
+		Subprocess  clangExe(clangPath);
+		clangExe.setArguments(arguments);
 
-		ctollvmExe.attachStringToStdOut(generatedBitcode);
-		ctollvmExe.attachStringToStdErr(errors);
+		clangExe.attachStringToStdOut(generatedBitcode);
+		clangExe.attachStringToStdErr(errors);
 
-		res += ctollvmExe.start();
+		res += clangExe.start();
 
 		// push it the code and close the stream
-		res += ctollvmExe.pushToStdIn(inputCCode.data(), inputCCode.size());
-		res += ctollvmExe.closeStdIn();
+		res += clangExe.pushToStdIn(inputCCode.data(), inputCCode.size());
+		res += clangExe.closeStdIn();
 
 		if (!res) { return res; }
 
 		// wait for the exit
-		auto errCode = ctollvmExe.exitCode();
+		auto errCode = clangExe.exitCode();
 
 		if (errCode != 0) {
 			res.addEntry("EUKN", "Failed to Generate IR with clang", {{"Error", errors}});
