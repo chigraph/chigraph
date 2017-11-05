@@ -21,8 +21,8 @@ TEST_CASE("Contexts can fetch remote modules", "[Context]") {
 	// create the .chigraphworkspace file
 	{ fs::ofstream stream{workspaceDir / ".chigraphworkspace"}; }
 
-	auto res = fetchModule(workspaceDir, "github.com/russelltg/hellochigraph/hello/main", true);
+	auto res = fetchModule(workspaceDir, "github.com/chigraph/hellochigraph/hello/main", true);
 	REQUIRE(res.dump() == "");
 
-	REQUIRE(fs::is_directory(workspaceDir / "src" / "github.com" / "russelltg" / "hellochigraph"));
+	REQUIRE(fs::is_directory(workspaceDir / "src" / "github.com" / "chigraph" / "hellochigraph"));
 }
