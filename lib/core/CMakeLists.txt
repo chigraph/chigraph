@@ -23,6 +23,7 @@ set(CHI_PUBLIC_FILES
 	include/chi/NodeInstance.hpp
 	include/chi/CCompiler.hpp
 	include/chi/BitcodeParser.hpp
+	include/chi/ClangFinder.hpp
 )
 set(CHI_PRIVATE_FILES
 	src/Context.cpp
@@ -43,6 +44,7 @@ set(CHI_PRIVATE_FILES
 	src/NodeCompiler.cpp
 	src/CCompiler.cpp
 	src/BitcodeParser.cpp
+	src/ClangFinder.cpp
 )
 add_library(chigraphcore STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
@@ -113,7 +115,7 @@ target_link_libraries(chigraphcore PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 # link ffi on unix
 if (NOT WIN32)
 	target_link_libraries(chigraphcore
-	PUBLIC	
+	PUBLIC
 		ffi # llvm often forgets to put this in --system-libs, so just link it anyways just in case
 	)
 endif()
@@ -137,7 +139,7 @@ PUBLIC
 )
 
 target_compile_options(chigraphcore
-PUBLIC 
+PUBLIC
 	${LLVM_CXX_FLAGS_LIST}
 )
 

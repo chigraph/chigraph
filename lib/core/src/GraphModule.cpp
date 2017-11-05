@@ -2,6 +2,7 @@
 
 #include "chi/GraphModule.hpp"
 #include "chi/CCompiler.hpp"
+#include "chi/ClangFinder.hpp"
 #include "chi/Context.hpp"
 #include "chi/FunctionCompiler.hpp"
 #include "chi/GraphFunction.hpp"
@@ -23,8 +24,8 @@
 #include <llvm/Support/Compiler.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/MemoryBuffer.h>
-#include <llvm/Transforms/Utils/Cloning.h>
 #include <llvm/Support/Program.h>
+#include <llvm/Transforms/Utils/Cloning.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/range.hpp>
@@ -71,13 +72,13 @@ struct CFuncNode : NodeType {
 			args.push_back(mGraphModule->pathToCSources().string());
 
 			// find clang
-			auto clangExe = llvm::sys::findProgramByName(llvm::StringRef("clang"), llvm::ArrayRef<llvm::StringRef>());
-			if (!clangExe) {
-				res.addEntry("EUKN", "Failed to find clang in path", {{}});
+			auto clangExe = findClang();
+			if (clangExe.empty()) {
+				res.addEntry("EUKN", "Failed to find clang in path", nlohmann::json::object());
 				return res;
 			}
 
-			res += compileCToLLVM(*clangExe, context().llvmContext(), args, mCCode, &llcompiledmod);
+			res += compileCToLLVM(clangExe, context().llvmContext(), args, mCCode, &llcompiledmod);
 
 			if (!res) { return res; }
 		}
@@ -95,7 +96,7 @@ struct CFuncNode : NodeType {
 		                          ,
 		                          llvm::Linker::DestroySource, nullptr
 #endif
-		                          );
+		);
 #else
 		llvm::Linker::linkModules(*parentModule, std::move(copymod));
 #endif
@@ -405,7 +406,7 @@ struct GetLocalNodeType : public NodeType {
 	NamedDataType mDataType;
 };
 
-}  // anon namespace
+}  // namespace
 
 GraphModule::GraphModule(Context& cont, boost::filesystem::path fullName,
                          const std::vector<boost::filesystem::path>& dependencies)
@@ -453,20 +454,20 @@ Result GraphModule::generateModule(llvm::Module& module) {
 				}
 
 				// find clang
-				auto clangExe = llvm::sys::findProgramByName("clang");
-				if (!clangExe) {
-					res.addEntry("EUKN", "Failed to find clang in path", {{}});
+				auto clangExe = findClang();
+				if (clangExe.empty()) {
+					res.addEntry("EUKN", "Failed to find clang in path", nlohmann::json::object());
 					return res;
 				}
 
-
 				// compile it
 				std::unique_ptr<llvm::Module> generatedModule;
-				res += compileCToLLVM(*clangExe, context().llvmContext(), {CFile.string()}, "", &generatedModule);
+				res += compileCToLLVM(clangExe, context().llvmContext(), {CFile.string()}, "",
+				                      &generatedModule);
 
 				if (!res) { return res; }
 
-// link it
+					// link it
 
 #if LLVM_VERSION_LESS_EQUAL(3, 7)
 				llvm::Linker::LinkModules(&module, generatedModule.get()
@@ -474,7 +475,7 @@ Result GraphModule::generateModule(llvm::Module& module) {
 				                                       ,
 				                          llvm::Linker::DestroySource, nullptr
 #endif
-				                          );
+				);
 #else
 				llvm::Linker::linkModules(module, std::move(generatedModule));
 #endif
@@ -879,14 +880,13 @@ Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
 
 	std::unique_ptr<llvm::Module> mod;
 	// find clang
-	auto clangExe = llvm::sys::findProgramByName("clang");
-	if (!clangExe) {
-		res.addEntry("EUKN", "Failed to find clang in path", {{}});
+	auto clangExe = findClang();
+	if (clangExe.empty()) {
+		res.addEntry("EUKN", "Failed to find clang in path", nlohmann::json::object());
 		return res;
 	}
 
-	res +=
-	    compileCToLLVM(*clangExe, context().llvmContext(), clangArgs, code, &mod);
+	res += compileCToLLVM(clangExe, context().llvmContext(), clangArgs, code, &mod);
 
 	if (!res) { return res; }
 
