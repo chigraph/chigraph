@@ -154,7 +154,7 @@ int compile(const std::vector<std::string>& opts) {
 		                                                       ,
 		                                                       false
 #endif
-		                                                       );
+		);
 	}
 
 	llvm::legacy::FunctionPassManager fpm{llmod.get()};
@@ -196,6 +196,14 @@ int compile(const std::vector<std::string>& opts) {
 	std::error_code          ec;
 	llvm::sys::fs::OpenFlags OpenFlags = llvm::sys::fs::F_None;
 	if (!binaryOutput) { OpenFlags |= llvm::sys::fs::F_Text; }
+
+	using toolOutput = llvm::
+#if LLVM_VERSION_LESS_EQUAL(5, 0)
+	    tool_output_file
+#else
+	    ToolOutputFile
+#endif
+	    ;
 
 	std::string errorString;  // only for LLVM 3.5-
 	auto        outFile = std::make_unique<llvm::tool_output_file>
