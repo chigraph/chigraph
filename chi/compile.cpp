@@ -206,7 +206,7 @@ int compile(const std::vector<std::string>& opts) {
 	    ;
 
 	std::string errorString;  // only for LLVM 3.5-
-	auto        outFile = std::make_unique<llvm::tool_output_file>
+	auto        outFile = std::make_unique<toolOutput>
 #if LLVM_VERSION_LESS_EQUAL(3, 5)
 	    (outpath.string().c_str(), errorString, OpenFlags);
 #else
