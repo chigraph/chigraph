@@ -10,7 +10,7 @@ Platform | Status
 ----- |  ----
 | Linux/macOS    | [![Travis branch](https://img.shields.io/travis/chigraph/chigraph/master.svg?style=flat-square)](https://travis-ci.org/chigraph/chigraph) |
 | Windows        |  [![AppVeyor](https://img.shields.io/appveyor/ci/guapotaco/chigraph-miekk.svg?style=flat-square)](https://ci.appveyor.com/project/GuapoTaco/chigraph-miekk) |
-| Buildbot       | [Buildbot](https;//ci.chigraph.io/) |
+| Buildbot       | [Buildbot](https://ci.chigraph.io/) |
 
 # What is chigraph?
 Chigraph,  pronunced chai-graph, is a new systems programming language. It's fast. It's scalable. And, more importantly, it's easy to learn. How does it achieve such goals? By scrapping the age-old standard of text (not entirely though). Here's a screenshot from [the Qt5 GUI](https://github.com/chigraph/chigraph-gui):
