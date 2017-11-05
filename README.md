@@ -81,6 +81,7 @@ If you have any questions, you're more than welcome to email me: [russellgreene8
 - Russell Greene (@russelltg) - Main contributor
 - Aun-Ali Zaidi (@aunali1) - Helped with some platform stuff, packaging
 
+
 # Technology used
 - [LLVM/Clang](http://llvm.org) for compilation
 - [libgit2](https://libgit2.github.com/) for downloading remote modules
