@@ -4,7 +4,6 @@
 
 __Build Status__
 
-
 Platform | Status
 ----- |  ----
 | Linux/macOS    | [![Travis branch](https://img.shields.io/travis/chigraph/chigraph/master.svg?style=flat-square)](https://travis-ci.org/chigraph/chigraph) |
