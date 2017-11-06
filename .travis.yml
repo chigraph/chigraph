@@ -35,6 +35,7 @@ matrix:
     - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Debug     QT_VERSION=58  LLVM_VERSION=3.9 PACKAGES='g++-6 gcc-6'
     - env: CXX_COMPILER=g++-6         C_COMPILER=gcc-6      BUILD_TYPE=Release   QT_VERSION=58  LLVM_VERSION=4.0 PACKAGES='g++-6 gcc-6'
 
+
     - os: osx
       osx_image: xcode8.2
       env: BUILD_TYPE=Release
