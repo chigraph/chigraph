@@ -17,6 +17,14 @@ if (NOT EXISTS "${CLANG_EXE}")
 endif()
 message(STATUS "Clang found at: ${CLANG_EXE}")
 
+if("CG_RUNTIME_COMPILER" STREQUAL "")
+    if ("LLVM_VERSION" STREQUAL 3.5)
+        message(FATAL_ERROR "For llvm 3.5, a runtime compiler must be specified or else the runtimr will not compile")
+	
+    endif()
+    set(CG_RUNTIME_COMPILER "${CLANG_EXE}")
+endif()
+
 # find llvm-link to link it into one .bc file
 find_program(LLVM_LINK_EXE
 	NAMES llvm-link-${LLVM_VER} llvm-link
@@ -52,7 +60,7 @@ foreach(src ${RUNTIME_SRCS})
 	set(output "${CMAKE_BINARY_DIR}/lib/runtime/runtime.obj/${src}.bc")
 	add_custom_command(
 		OUTPUT ${output}
-		COMMAND ${CLANG_EXE} ${CMAKE_CURRENT_SOURCE_DIR}/${src} ${clangflags} -c -emit-llvm -o ${output}
+		COMMAND ${CG_RUNTIME_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/${src} ${clangflags} -c -emit-llvm -o ${output}
 		DEPENDS ${src}
 		COMMENT "Generating ${src}.bc for runtime..."
 	)
