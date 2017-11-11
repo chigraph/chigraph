@@ -20,6 +20,7 @@ option(CG_RUNTIME_DEUBG "Use a non-optimzied runtime and generate debug info for
 
 # String options
 set(CG_RUNTIME_CLANG_FLAGS "" CACHE STRING "Flags to pass to clang while generating runtime.bc")
+set(CG_RUNTIME_COMPILER "" CACHE STRING "Compiler to compile the runtime with. If using llvm 3.5, this must be set to some newer clsng version.")
 
 # this is really important to keep install-like paths
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
