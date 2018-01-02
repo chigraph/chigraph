@@ -1,6 +1,7 @@
 cc_library(
     name = "git2",
     srcs = glob([
+        "src/*.h",
         "src/hash/*.h",
         "src/transports/*.h",
         "src/unix/*.h",
