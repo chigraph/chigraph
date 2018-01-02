@@ -30,20 +30,20 @@ http_archive(
     url = "https://github.com/PlacidBox/catch-bazel/archive/v1.9.6.tar.gz",
 )
 
-# new_http_archive(
-#     name = "llvm",
-#     build_file = "//:third_party/llvm/llvm.BUILD",
-#     strip_prefix = "llvm-release_50",
-#     urls = [
-#         "https://github.com/llvm-mirror/llvm/archive/release_50.tar.gz",
-#     ],
-# )
-
-new_local_repository(
+new_http_archive(
     name = "llvm",
-    build_file = "//third_party/llvm:llvm.BUILD",
-    path = "/home/russellg/projects/llvm-release_50",
+    build_file = "//:third_party/llvm/llvm.BUILD",
+    strip_prefix = "llvm-release_50",
+    urls = [
+        "https://github.com/llvm-mirror/llvm/archive/release_50.tar.gz",
+    ],
 )
+
+# new_local_repository(
+#     name = "llvm",
+#     build_file = "//third_party/llvm:llvm.BUILD",
+#     path = "/home/russellg/projects/llvm-release_50",
+# )
 
 new_http_archive(
     name = "zlib_archive",
