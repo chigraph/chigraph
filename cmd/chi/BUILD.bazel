@@ -3,20 +3,26 @@ cc_binary(
     srcs = [
         "main.cpp",
         "compile.cpp",
-#        "get_nop.cpp",
+        #        "get_nop.cpp",
         "get.cpp",
         "interpret.cpp",
-        "run.cpp"
-    ],    
-    nocopts = "-std=c\+\+0x",
-    deps = [
-        "//chi/Core:core",
-        "//chi/Support:support",
-        "//chi/CodeSupport:codesupport",
-        "//chi/Fetcher:fetcher",
-        "@boost//:program_options"
+        "run.cpp",
     ],
+    nocopts = "-std=c\+\+0x",
     visibility = [
-        "//visibility:public"
-    ]
+        "//visibility:public",
+    ],
+    deps = [
+        "//chi/CodeSupport:codesupport",
+        "//chi/Core:core",
+        "//chi/Fetcher:fetcher",
+        "//chi/Support:support",
+        "@boost//:program_options",
+        "@llvm//:aarch64_info",
+        "@llvm//:interpreter",
+        "@llvm//:ipo",
+        "@llvm//:ir_reader",
+        "@llvm//:mcjit",
+        "@llvm//:selection_dag",
+    ],
 )

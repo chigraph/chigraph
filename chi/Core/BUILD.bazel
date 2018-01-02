@@ -1,4 +1,4 @@
-headers = [ 
+headers = [
     "FunctionValidator.hpp",
     "NodeCompiler.hpp",
     "NameMangler.hpp",
@@ -18,10 +18,10 @@ headers = [
     "DefaultModuleCache.hpp",
     "NodeInstance.hpp",
     "CCompiler.hpp",
-    "ClangFinder.hpp"
+    "ClangFinder.hpp",
 ]
 
-cc_library (
+cc_library(
     name = "core_impl",
     srcs = [
         "Context.cpp",
@@ -44,28 +44,33 @@ cc_library (
         "ClangFinder.cpp",
     ] + headers,
     nocopts = "-std=c\+\+0x",
+    visibility = ["//visibility:private"],
     deps = [
-        "//chi/Support:support", 
         "//chi/CodeSupport:codesupport",
         "//chi/Runtime:runtime",
-        "@nlohmann_json//:json",
+        "//chi/Support:support",
+        "@boost//:bimap",
         "@boost//:uuid",
-        "@boost//:bimap"
+        "@llvm//:asm_parser",
+        "@llvm//:bit_writer",
+        "@llvm//:core",
+        "@llvm//:execution_engine",
+        "@llvm//:linker",
+        "@llvm//:x86_asm_parser",
+        "@llvm//:x86_code_gen",
+        "@llvm//:x86_info",
+        "@nlohmann_json//:json",
     ],
-    linkopts = [
-        "-lLLVM"
-    ],
-    visibility = ["//visibility:private"]
 )
 
-cc_inc_library (
+cc_inc_library(
     name = "core",
     hdrs = headers,
     visibility = ["//visibility:public"],
-    deps = [":core_impl"]
+    deps = [":core_impl"],
 )
 
-cc_test (
+cc_test(
     name = "core_test",
     srcs = [
         "ContextTests.cpp",
@@ -76,12 +81,12 @@ cc_test (
         "GraphModuleTest.cpp",
         "JSONSerializerTests.cpp",
         "LangModuleTests.cpp",
-        "NameManglerTests.cpp"
+        "NameManglerTests.cpp",
     ],
     nocopts = "-std=c\+\+0x",
     deps = [
-        "@catch//:main",
         ":core",
         "//test:common",
-    ]
+        "@catch//:main",
+    ],
 )

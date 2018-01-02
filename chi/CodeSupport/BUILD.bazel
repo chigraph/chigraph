@@ -1,20 +1,18 @@
-cc_library (
+cc_library(
     name = "codesupport",
     srcs = [
-        "BitcodeParser.cpp"
+        "BitcodeParser.cpp",
     ],
     hdrs = [
         "BitcodeParser.hpp",
+        "Fwd.hpp",
         "LLVMVersion.hpp",
-        "Fwd.hpp"
+    ],
+    visibility = [
+        "//visibility:public",
     ],
     deps = [
         "//chi/Support:support",
+        "@llvm//:bit_reader",
     ],
-    visibility = [
-        "//visibility:public"
-    ],
-    linkopts = [
-        "-lLLVM"
-    ]
 )

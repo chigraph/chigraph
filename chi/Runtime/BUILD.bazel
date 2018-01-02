@@ -1,4 +1,4 @@
-load ("//chi/Runtime:embed.bzl", "embed_file_in_cpp")
+load("//:tools/embed.bzl", "embed_file_in_cpp")
 
 native.genrule(
     name = "runtime_arcbc",
@@ -7,7 +7,6 @@ native.genrule(
     cmd = "clang -c -emit-llvm $(location arc.c) -o $(location arc.bc)",
     message = "Generating chigraph arc.c support bitcode library...",
 )
-
 
 native.genrule(
     name = "runtime_mainbc",
@@ -19,26 +18,33 @@ native.genrule(
 
 native.genrule(
     name = "runtime_linkbc",
-    srcs = ["main.bc", "arc.bc"],
+    srcs = [
+        "arc.bc",
+        "main.bc",
+        "@llvm//:llvm-link",
+    ],
     outs = ["runtime.bc"],
-    cmd = "llvm-link $(location main.bc) $(location arc.bc) -o $(location runtime.bc)",
+    cmd = "$(location @llvm//:llvm-link) $(location main.bc) $(location arc.bc) -o $(location runtime.bc)",
     message = "Linking chigraph support library...",
 )
 
 embed_file_in_cpp(
     name = "runtime_embedded",
     file = "runtime.bc",
-    function_name = "embedded_chigraph_runtime_bitcode"
+    function_name = "embedded_chigraph_runtime_bitcode",
 )
 
 cc_library(
     name = "runtime",
-    srcs = ["Runtime.cpp", "runtime_embedded.cpp"],
+    srcs = [
+        "Runtime.cpp",
+        "runtime_embedded.cpp",
+    ],
     hdrs = ["Runtime.hpp"],
+    visibility = [
+        "//chi/Core:__pkg__",
+    ],
     deps = [
         "//chi/CodeSupport:codesupport",
     ],
-    visibility = [
-        "//chi/Core:__pkg__"
-    ]
 )

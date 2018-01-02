@@ -20,7 +20,6 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Type.h>
-#include <llvm/IRReader/IRReader.h>
 #include <llvm/Support/Casting.h>
 #include <llvm/Support/ManagedStatic.h>
 #include <llvm/Support/SourceMgr.h>
