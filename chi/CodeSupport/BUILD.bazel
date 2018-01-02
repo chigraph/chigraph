@@ -9,6 +9,7 @@ cc_library(
         "LLVMVersion.hpp",
     ],
     copts = ["-std=c++14"],
+    nocopts = "-std=c\\+\\+0x",
     visibility = [
         "//visibility:public",
     ],
