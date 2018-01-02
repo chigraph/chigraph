@@ -8,6 +8,7 @@ cc_library(
         "Fwd.hpp",
         "LLVMVersion.hpp",
     ],
+    ccflags = ["-std=c++14"],
     visibility = [
         "//visibility:public",
     ],
