@@ -1,52 +1,12 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-*.AppImage
-
 .vs/
 .vscode/
 CMakeSettings.json
 
-
-
-build/
-*.kdev4
-.kdev4/
-.idea/
-
-chig/include/chig/ToString.hpp
-
-test/codegen/workspace/lib
-
-CMakeLists.txt.user
-
-cmake-build-debug/
-
 .DS_Store
 
-kf5.log
+bazel-bin
+bazel-chigraph
+bazel-genfiles
+bazel-out
+bazel-testlogs
+

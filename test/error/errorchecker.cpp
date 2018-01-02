@@ -2,13 +2,12 @@
 #include <iostream>
 #include <memory>
 
-#include <chi/Context.hpp>
-#include <chi/GraphFunction.hpp>
-#include <chi/GraphModule.hpp>
-#include <chi/JsonDeserializer.hpp>
-#include <chi/LangModule.hpp>
+#include <chi/Core/Context.hpp>
+#include <chi/Core/GraphFunction.hpp>
+#include <chi/Core/GraphModule.hpp>
+#include <chi/Core/JsonDeserializer.hpp>
+#include <chi/Core/LangModule.hpp>
 #include <chi/Support/Result.hpp>
-#include <chi/Support/json.hpp>
 
 #include <llvm/IR/Module.h>
 
@@ -36,7 +35,8 @@ int main(int argc, char** argv) {
 	const char* file        = argv[2];
 	const char* expectedErr = argv[3];
 
-	assert(boost::filesystem::is_regular_file(file) && "Pass a real file");
+	assert(boost::filesystem::is_regular_file(file) ||
+	       boost::filesystem::is_symlink(file) && "Pass a real file");
 
 	std::ifstream ifile(file);
 	std::string   str((std::istreambuf_iterator<char>(ifile)), std::istreambuf_iterator<char>());

@@ -1,11 +1,13 @@
-#include <chi/Context.hpp>
-#include <chi/GraphModule.hpp>
-#include <chi/JsonSerializer.hpp>
+#include <chi/Core/Context.hpp>
+#include <chi/Core/GraphModule.hpp>
+#include <chi/Core/JsonSerializer.hpp>
+#include <chi/Support/LibCLocator.hpp>
 #include <chi/Support/Result.hpp>
 #include <chi/Support/Subprocess.hpp>
-#include <chi/Support/LibCLocator.hpp>
 
 #include <boost/filesystem.hpp>
+
+#include <iostream>
 
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/IR/Argument.h>
@@ -165,15 +167,18 @@ std::string areJsonEqual(json lhs, json rhs) {
 
 int main(int argc, char** argv) {
 	if (argc != 2) {
-		std::cerr << "Usage: codegen_tester <path to module>" << std::endl;
+		std::cerr << "Usage: codegen_tester <path to json file>" << std::endl;
 		return 1;
 	}
 
-	fs::path moduleDir = argv[1];
-	if (!fs::is_directory(moduleDir)) {
-		std::cerr << moduleDir << " is not a directory" << std::endl;
+	fs::path JSONFile = argv[1];
+	if (!fs::is_regular_file(JSONFile) && !fs::is_symlink(JSONFile)) {
+		std::cerr << JSONFile.string() << " does not point to a file" << std::endl;
 		return 1;
 	}
+	// make it an absolute path
+	auto moduleDir = fs::absolute(JSONFile.parent_path());
+
 	std::string testName = moduleDir.filename().string();
 
 	fs::path JSONfile = moduleDir / (testName + ".json");
@@ -183,7 +188,7 @@ int main(int argc, char** argv) {
 		std::cerr << JSONfile << " doesn't exist" << std::endl;
 		return 1;
 	}
-	
+
 	fs::ifstream jsonstream{JSONfile};
 
 	json j;
@@ -206,7 +211,7 @@ int main(int argc, char** argv) {
 	std::cout << "Testing " << testdesc << " with expected stdout: \"" << expectedcout
 	          << "\" and expected stderr \"" << expectedcerr << "\"" << std::endl;
 
-	auto chiExePath = fs::current_path() / ("chi" + std::string(exesuffix));
+	auto chiExePath = fs::current_path() / "cmd" / "chi" / ("chi" + std::string(exesuffix));
 
 	fs::current_path(moduleDir);
 
@@ -222,10 +227,8 @@ int main(int argc, char** argv) {
 		{
 			Subprocess chiexe{chiExePath};
 			chiexe.setArguments({"compile", "-f", "main.chimod"});
-			chiexe.attachToStdErr(
-			    [&chigstderr](const char* data, size_t size) { chigstderr.append(data, size); });
-			chiexe.attachToStdOut(
-			    [&generatedir](const char* data, size_t size) { generatedir.append(data, size); });
+			chiexe.attachStringToStdErr(chigstderr);
+			chiexe.attachStringToStdOut(generatedir);
 
 			res += chiexe.start();
 			if (!res) {
@@ -250,10 +253,8 @@ int main(int argc, char** argv) {
 			// now go through lli
 			Subprocess interpretexe{chiExePath};
 			interpretexe.setArguments({"interpret"});
-			interpretexe.attachToStdErr(
-			    [&llistderr](const char* data, size_t size) { llistderr.append(data, size); });
-			interpretexe.attachToStdOut(
-			    [&llistdout](const char* data, size_t size) { llistdout.append(data, size); });
+			interpretexe.attachStringToStdErr(llistderr);
+			interpretexe.attachStringToStdOut(llistdout);
 
 			res += interpretexe.start();
 			if (!res) {
@@ -320,13 +321,9 @@ int main(int argc, char** argv) {
 		std::string generatedstdout, generatedstderr;
 		{
 			Subprocess chiexe{chiExePath};
-			chiexe.setArguments({"run", "main.chimod"});
-			chiexe.attachToStdErr([&generatedstderr](const char* data, size_t size) {
-				generatedstderr.append(data, size);
-			});
-			chiexe.attachToStdOut([&generatedstdout](const char* data, size_t size) {
-				generatedstdout.append(data, size);
-			});
+			chiexe.setArguments({"run", "-f", "main.chimod"});
+			chiexe.attachStringToStdErr(generatedstderr);
+			chiexe.attachStringToStdOut(generatedstdout);
 
 			res += chiexe.start();
 			if (!res) {
@@ -375,10 +372,8 @@ int main(int argc, char** argv) {
 		{
 			Subprocess chiexe{chiExePath};
 			chiexe.setArguments({"compile", "-c", "-f", "main.chimod"});
-			chiexe.attachToStdErr(
-			    [&chigstderr](const char* data, size_t size) { chigstderr.append(data, size); });
-			chiexe.attachToStdOut(
-			    [&generatedir](const char* data, size_t size) { generatedir.append(data, size); });
+			chiexe.attachStringToStdErr(chigstderr);
+			chiexe.attachStringToStdOut(generatedir);
 
 			res += chiexe.start();
 			if (!res) {
@@ -403,10 +398,8 @@ int main(int argc, char** argv) {
 			// now go through lli
 			Subprocess interpretexe{chiExePath};
 			interpretexe.setArguments({"interpret"});
-			interpretexe.attachToStdErr(
-			    [&llistderr](const char* data, size_t size) { llistderr.append(data, size); });
-			interpretexe.attachToStdOut(
-			    [&llistdout](const char* data, size_t size) { llistdout.append(data, size); });
+			interpretexe.attachStringToStdErr(llistderr);
+			interpretexe.attachStringToStdOut(llistdout);
 
 			res += interpretexe.start();
 			if (!res) {
@@ -465,8 +458,9 @@ int main(int argc, char** argv) {
 	{
 		Result r;
 
-		Context  c{moduleDir};
-		fs::path fullName = fs::relative(moduleDir, c.workspacePath() / "src") / "main";
+		Context  c{fs::current_path()};
+		fs::path fullName = moduleDir.lexically_relative(c.workspacePath() / "src") / "main";
+		std::cerr << fullName.string();
 
 		// test serialization and deserialization
 		GraphModule* deserialized;

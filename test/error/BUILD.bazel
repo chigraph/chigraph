@@ -1,0 +1,14 @@
+[cc_test(
+    name = "error_%s" % f[:f.rfind(".")],
+    srcs = ["errorchecker.cpp"],
+    args = [
+        "mod" if (f[f.rfind(".") + 1:] == "chimod") else "func",
+        "$(location %s)" % f,
+        f[:f.find(".")],
+    ],
+    data = [f],
+    deps = [
+        "//chi/Core:core",
+        "//chi/Support:support",
+    ],
+) for f in glob(["E*"])]

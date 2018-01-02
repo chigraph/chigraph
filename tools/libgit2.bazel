@@ -1,0 +1,10 @@
+cc_library (
+    name = "git2",
+    hdrs = glob([
+        "**/*.h"
+    ]),
+    linkopts = ["-lgit2"],
+    visibility = [
+        "//visibility:public"
+    ]
+)

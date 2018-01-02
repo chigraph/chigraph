@@ -1,0 +1,31 @@
+cc_library (
+    name = "fetcher_impl",
+    srcs = ["Fetcher.cpp"],
+    hdrs = ["Fetcher.hpp"],
+    deps = [
+        "//chi/Support:support",
+        "@com_libgit2//:git2"
+    ],
+    visibility = [
+        "//visibility:private"
+    ]
+)
+
+cc_inc_library (
+    name = "fetcher",
+    hdrs = ["Fetcher.hpp"],
+    deps = [":fetcher_impl"],
+    visibility = [
+        "//visibility:public"
+    ]
+)
+
+cc_test (
+    name = "fetcher_test",
+    srcs = ["FetcherTests.cpp"],
+    deps = [
+        "@catch//:main",
+        ":fetcher",
+        "//test:common",
+    ]
+)

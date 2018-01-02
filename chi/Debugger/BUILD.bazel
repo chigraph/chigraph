@@ -1,0 +1,35 @@
+cc_library (
+    name = "debugger_impl",
+    srcs = ["Debugger.cpp"],
+    hdrs = ["Debugger.hpp"],
+    deps = [
+        "//chi/Core:core",
+        "//chi/CodeSupport:codesupport",
+        "@boost//:uuid"
+    ],
+    linkopts = [
+        "-llldb"
+    ],
+    visibility = ["//visibility:private"]
+)
+
+cc_inc_library (
+    name = "debugger",
+    hdrs = ["Debugger.hpp"],
+    visibility = ["//visibility:public"],
+    deps = [":debugger_impl"]
+)
+
+cc_test (
+    name = "debugger_test",
+    srcs = ["DebuggerTests.cpp"],
+    deps = [
+        "@catch//:main",
+        ":debugger",
+        "//test:common",
+    ],
+    data = [
+        "//test/codegen:workspace",
+        "//cmd/chi:chi"
+    ]
+)

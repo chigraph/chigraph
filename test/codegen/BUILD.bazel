@@ -1,0 +1,27 @@
+[cc_test(
+    name = "codegen_%s" % f[f.rfind("/") + 1:f.rfind(".")],
+    srcs = ["codegentester.cpp"],
+    args = ["$(location %s)" % f],
+    data = [
+        "//cmd/chi",
+        f,
+        ":workspace",
+    ],
+    deps = [
+        "//chi/Core:core",
+    ],
+) for f in glob(["workspace/src/*/*.json"])]
+
+filegroup(
+    name = "workspace",
+    srcs = glob([
+        "workspace/src/*/*.chimod",
+        "workspace/*",
+        "workspace/src/*",
+        "workspace/src/*/*/*.c",
+        "workspace/src/*/*/*.h",
+    ]),
+    visibility = [
+        "//visibility:public",
+    ],
+)

@@ -1,0 +1,44 @@
+load ("//chi/Runtime:embed.bzl", "embed_file_in_cpp")
+
+native.genrule(
+    name = "runtime_arcbc",
+    srcs = ["arc.c"],
+    outs = ["arc.bc"],
+    cmd = "clang -c -emit-llvm $(location arc.c) -o $(location arc.bc)",
+    message = "Generating chigraph arc.c support bitcode library...",
+)
+
+
+native.genrule(
+    name = "runtime_mainbc",
+    srcs = ["main.c"],
+    outs = ["main.bc"],
+    cmd = "clang -c -emit-llvm $(location main.c) -o $(location main.bc)",
+    message = "Generating chigraph main.c support bitcode library...",
+)
+
+native.genrule(
+    name = "runtime_linkbc",
+    srcs = ["main.bc", "arc.bc"],
+    outs = ["runtime.bc"],
+    cmd = "llvm-link $(location main.bc) $(location arc.bc) -o $(location runtime.bc)",
+    message = "Linking chigraph support library...",
+)
+
+embed_file_in_cpp(
+    name = "runtime_embedded",
+    file = "runtime.bc",
+    function_name = "embedded_chigraph_runtime_bitcode"
+)
+
+cc_library(
+    name = "runtime",
+    srcs = ["Runtime.cpp", "runtime_embedded.cpp"],
+    hdrs = ["Runtime.hpp"],
+    deps = [
+        "//chi/CodeSupport:codesupport",
+    ],
+    visibility = [
+        "//chi/Core:__pkg__"
+    ]
+)
