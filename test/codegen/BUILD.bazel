@@ -1,16 +1,21 @@
-[cc_test(
+[sh_test(
     name = "codegen_%s" % f[f.rfind("/") + 1:f.rfind(".")],
-    srcs = ["codegentester.cpp"],
+    srcs = ["codegentester"],
     args = ["$(location %s)" % f],
     data = [
         "//cmd/chi",
         f,
         ":workspace",
     ],
+) for f in glob(["workspace/src/*/*.json"])]
+
+cc_binary(
+    name = "codegentester",
+    srcs = ["codegentester.cpp"],
     deps = [
         "//chi/Core:core",
     ],
-) for f in glob(["workspace/src/*/*.json"])]
+)
 
 filegroup(
     name = "workspace",
