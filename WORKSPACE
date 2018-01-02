@@ -20,7 +20,7 @@ boost_deps()
 new_http_archive(
     name = "libgit2",
     build_file = "third_party/libgit2.bazel",
-    strip_prefix = "libgit2-0.26.0/src",
+    strip_prefix = "libgit2-0.26.0",
     urls = ["https://github.com/chigraph/chigraph/releases/download/dependencies/libgit2-0.26.0-ascii.zip"],
 )
 
