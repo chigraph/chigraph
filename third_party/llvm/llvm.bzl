@@ -36,7 +36,7 @@ def gentbl(name, tblgen, td_file, td_srcs, tbl_outs, library = True, **kwargs):
         tools=[tblgen],
         message="Generating code from table: %s" % td_file,
         cmd=(("$(location %s) " + "-I external/llvm/include " +
-              "-I external/llvm/tools/clang/include " +
+              "-I external/clang/include " +
               "-I $$(dirname $(location %s)) " + "%s $(location %s) -o $@") % (
                   tblgen, td_file, opts, td_file)))
   # For now, all generated files can be assumed to comprise public interfaces.

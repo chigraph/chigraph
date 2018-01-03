@@ -1,28 +1,26 @@
 load("//:tools/embed.bzl", "embed_file_in_cpp")
 
-native.genrule(
-    name = "runtime_arcbc",
-    srcs = ["arc.c"],
-    outs = ["arc.bc"],
-    cmd = "clang -c -emit-llvm $(location arc.c) -o $(location arc.bc)",
-    message = "Generating chigraph arc.c support bitcode library...",
-)
+runtime_srcs = [
+    "arc.c",
+    "main.c",
+]
 
-native.genrule(
-    name = "runtime_mainbc",
-    srcs = ["main.c"],
-    outs = ["main.bc"],
-    cmd = "clang -c -emit-llvm $(location main.c) -o $(location main.bc)",
-    message = "Generating chigraph main.c support bitcode library...",
-)
+[genrule(
+    name = "runtime_%s" % f,
+    srcs = [f],
+    outs = ["%s.bc" % f],
+    cmd = "$(location @clang//:clang) -c -emit-llvm $(location %s) -o $(location %s.bc)" % (
+        f,
+        f,
+    ),
+    message = "Generating %s.bc for chigraph runtime..." % f,
+) for f in runtime_srcs]
 
-native.genrule(
+genrule(
     name = "runtime_linkbc",
     srcs = [
-        "arc.bc",
-        "main.bc",
         "@llvm//:llvm-link",
-    ],
+    ] + ["%s.bc" % f for f in runtime_srcs],
     outs = ["runtime.bc"],
     cmd = "$(location @llvm//:llvm-link) $(location main.bc) $(location arc.bc) -o $(location runtime.bc)",
     message = "Linking chigraph support library...",

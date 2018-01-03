@@ -1712,6 +1712,18 @@ cc_library(
     ],
 )
 
+cc_library (
+    name = "option",
+    srcs = glob([
+        "lib/Option/*.cpp",
+        "lib/Option/*.h"
+    ]),
+    hdrs = glob([
+        "include/llvm/Option/*.h",
+        "include/llvm/Option/*.td",
+    ]),
+)
+
 cc_library(
     name = "orc_jit",
     srcs = glob([
