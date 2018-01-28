@@ -1,0 +1,333 @@
+
+load(
+    "@org_chigraph_chigraph//:third_party/llvm/llvm.bzl",
+    "expand_cmake_vars",
+    "cmake_var_string",
+)
+
+# Expanded files
+################
+
+cmake_vars = cmake_var_string({
+    "LLDB_CONFIG_TERMIOS_SUPPORTED": 0,
+    "LLDB_DISABLE_POSIX": 0,
+    "HAVE_SYS_EVENT_H": 1,
+    "HAVE_PPOLL": 1,
+    "HAVE_SIGACTION": 1,
+    "HAVE_PROCESS_VM_READY": 1,
+    "HAVE_NR_PROCESS_VM_READY": 1,
+})
+
+expand_cmake_vars (
+    name = "host_config_h_gen",
+    src = "include/lldb/Host/Config.h.cmake",
+    cmake_vars = cmake_vars,
+    dst = "include/lldb/Host/Config.h",
+)
+
+# Libraries
+###########
+
+cc_library(
+    name = "core",
+    srcs = glob([
+        "source/Core/*.cpp",
+        "source/Core/*.h",
+
+        "include/lldb/Target/*.h",
+        "include/lldb/Symbol/*.h",
+        "include/lldb/Breakpoint/*.h",
+        "include/lldb/Expression/*.h",
+        "include/lldb/Interpreter/*.h",
+        "include/lldb/DataFormatters/*.h",
+
+        "source/Commands/*.h",
+
+        "source/Plugins/ExpressionParser/Clang/*.h",
+        "source/Plugins/Process/Utility/*.h",
+    ]) + [
+        "source/Plugins/Language/CPlusPlus/CPlusPlusLanguage.h",
+        "source/Plugins/Language/ObjC/ObjCLanguage.h",
+        "source/Plugins/ObjectFile/JIT/ObjectFileJIT.h",
+    ],
+    hdrs = glob([
+        "include/lldb/Core/*.h"
+    ]),
+    deps = [
+        ":utility",
+        ":host",
+        "@clang//:ast",
+    ]
+)
+
+cc_library(
+    name = "symbol",
+    srcs = glob([
+        "source/Symbol/*.h",
+        "source/Symbol/*.cpp",
+
+        "source/Plugins/SymbolFile/DWARF/*.h",
+        "source/Plugins/SymbolFile/PDB/*.h",
+        "source/Plugins/ObjectContainer/BSD-Archive/*.h",
+        "source/Plugins/ExpressionParser/Go/*.h",
+    ]),
+    hdrs = glob([
+        "include/lldb/Symbol/*.h",
+    ]),
+    deps = [
+        "@clang//:frontend",
+        ":core",
+    ]
+)
+
+cc_library(
+    name = "breakpoint",
+    srcs = glob([
+        "source/Breakpoint/*.cpp",
+        "source/Breakpoint/*.h",
+    ]),
+    hdrs = glob([
+        "include/lldb/Breakpoint/*.h"
+    ]),
+    deps = [
+        ":core"
+    ]
+)
+
+cc_library (
+    name = "expression",
+    srcs = glob([
+        "source/Expression/*.cpp",
+        "source/Expression/*.h",
+
+        "source/Plugins/SymbolFile/DWARF/*.h",
+    ]),
+    hdrs = glob([
+        "include/lldb/Expression/*.h",
+    ]),
+    deps = [
+        ":core",
+        ":target",
+    ]
+)
+
+cc_library (
+  name = "target",
+  srcs = glob([
+      "source/Target/*.cpp",
+      "source/Target/*.h",
+  ]),
+  hdrs = glob([
+      "include/lldb/Target/*.h",
+  ]),
+  deps = [
+      ":utility",
+      ":host",
+      ":core",
+  ]
+)
+
+cc_library (
+    name = "host",
+    srcs = glob([
+        "source/Host/*.cpp",
+        "source/Host/*.h",
+    ]),
+    hdrs = glob([
+        "include/lldb/Host/*.h",
+        "include/lldb/Host/common/*.h",
+        "include/lldb/Host/linux/*.h",
+        "include/lldb/Host/posix/*.h",
+        "include/lldb/Host/windows/*.h",
+
+    ]),
+    deps = [
+        ":utility"
+    ]
+)
+
+cc_library (
+    name = "utility",
+    srcs = glob([
+        "source/Utility/*.cpp",
+        "source/Utility/*.h",
+    ]),
+    hdrs = glob([
+        "include/lldb/Utility/*.h",
+        "include/lldb/*.h",
+    ]),
+    deps = [
+        "@llvm//:support",
+        "@llvm//:binary_format",
+    ],
+    includes = ["source", "include"]
+)
+
+cc_library(
+    name = "initialization",
+    srcs = glob([
+        "source/Initialization/*.cpp",
+        "source/Initialization/*.h",
+
+        "source/Plugins/Instruction/*/*.h",
+        "source/Plugins/ObjectContainer/*/*.h",
+        "source/Plugins/ObjectFile/*/*.h",
+        "source/Plugins/Process/*/*.h",
+        "source/Plugins/Process/gdb-remote/*.h",
+    ]),
+    hdrs = glob([
+        "include/lldb/Initialization/*.h",
+    ]),
+    deps = [
+        ":core"
+    ]
+)
+
+cc_library(
+    name = "commands",
+    srcs = glob([
+        "source/Commands/*.h",
+        "source/Commands/*.cpp",
+    ]),
+    hdrs = glob([
+        "include/lldb/Commands/*.h",
+    ]),
+    deps = [
+        ":core",
+    ]
+)
+
+cc_library(
+    name = "dataFormatters",
+    srcs = glob([
+        "source/DataFormatters/*.h",
+        "source/DataFormatters/*.cpp",
+    ]),
+    hdrs = glob([
+        "include/lldb/DataFormatters/*.h",
+    ]),
+    deps = [
+        ":core",
+    ]
+)
+
+# Plugins
+#########
+
+modificications = {
+    "ScriptInterpreter/Python": {
+        "copts": ["-I/usr/include/python3.6m"],
+        "srcs": [
+            "include/lldb/API/*.h"
+        ]
+    },
+    "Process/Utility": {
+        "deps": [":pluginProcesself-core"],
+        "srcs": [
+            "source/Plugins/ObjectFile/ELF/*.h",
+        ]
+    },
+    "Language/ObjC": {
+        "srcs": [
+            "source/Plugins/LanguageRuntime/ObjC/AppleObjCRuntime/*.h",
+        ]
+    },
+    "Process/Linux": {
+        "srcs": [
+            "source/Plugins/ObjectFile/ELF/*.h",
+            "source/Plugins/Process/POSIX/*.h",
+        ]
+    },
+    "Process/elf-core": {
+        "srcs": [
+            "source/Plugins/ObjectFile/ELF/*.h",
+            "source/Plugins/DynamicLoader/POSIX-DYLD/*.h",
+        ],
+    },
+    "ExpressionParser/Clang": {
+        "deps": [
+            "@clang//:sema",
+            "@clang//:code_gen",
+            "@clang//:rewrite",
+        ]
+    },
+    "Platform/gdb-server": {
+        "srcs": [
+            "source/Plugins/Process/gdb-remote/*.h"
+        ]
+    },
+    "Process/gdb-remote": {
+        "srcs": [
+            "source/Plugins/Platform/MacOSX/*.h",
+            "source/Plugins/Platform/POSIX/*.h",
+        ]
+    },
+    "Process/mach-core": {
+        "srcs": [
+            "source/Plugins/Process/Utility/*.h",
+            "source/Plugins/DynamicLoader/*/*.h",
+        ],
+        "includes": [
+            "source/Plugins/Process/Utility"
+        ]
+    },
+    "Process/minidump": {
+        "srcs": [
+            "source/Plugins/Process/elf-core/*.h",
+        ]
+    },
+}
+
+excluded = ["source/Plugins%s/CMakeLists.txt" % name for name in [
+    "",
+
+    "/Platform/MacOSX",
+    "/Platform/MacOSX-Kernel",
+    "/Platform/NetBSD",
+    "/Platform/FreeBSD",
+    "/Platform/OpenBSD",
+    "/Platform/Android",
+
+    "/Process/NetBSD",
+    "/Process/MacOSX-Kernel",
+    "/Process/FreeBSD",
+    "/Process/Windows/Common",
+
+    "/DynamicLoader/Darwin-Kernel",
+]]
+
+[
+    cc_library(
+        name = "plugin%s" % name.replace('/', ''),
+        srcs = glob([
+          "source/Plugins/%s/*.cpp" % name,
+          "source/Plugins/%s/*.h" % name,
+        ] + modificications.get(name, {}).get("srcs", [])),
+        deps = [
+            ":core",
+        ] + modificications.get(name, {}).get("deps", []),
+        includes = modificications.get(name, {}).get("includes", []),
+        copts = modificications.get(name, {}).get("copts", []),
+    )
+    for name in [ name[15:-15] for name in glob(["source/Plugins/**/CMakeLists.txt"]) if name not in excluded]
+]
+
+# liblldb
+
+
+cc_library(
+    name = "liblldb",
+    srcs = glob([
+        "source/API/*.h",
+        "source/API/*.cpp",
+
+        "source/Plugins/ScriptInterpreter/Python/*.h",
+    ]),
+    hdrs = glob([
+        "include/lldb/API/*.h",
+    ]),
+    deps = [
+        ":core",
+    ] + [ "plugin%s" % name[15:-15].replace('/', '') for name in glob(["source/Plugins/**/CMakeLists.txt"]) if name not in excluded]
+)
+

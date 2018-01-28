@@ -1,0 +1,11 @@
+cc_binary(
+    name = "resultexample",
+    srcs = ["ResultExample.cpp"],
+    deps = ["//chi/Support"],
+)
+
+cc_binary(
+    name = "subprocessexample",
+    srcs = ["SubprocessExample.cpp"],
+    deps = ["//chi/Support"],
+)

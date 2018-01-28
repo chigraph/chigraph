@@ -1,4 +1,4 @@
-#include <chi/Result.hpp>
+#include <chi/Support/Result.hpp>
 
 using namespace chi;
 

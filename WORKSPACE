@@ -60,6 +60,13 @@ new_local_repository(
     path = "/home/russellg/projects/clang-release_50",
 )
 
+new_local_repository(
+    name = "lldb",
+    build_file = "//third_party/llvm:lldb.bazel",
+    path = "/home/russellg/projects/lldb-release_50",
+)
+
+
 new_http_archive(
     name = "zlib_archive",
     build_file = "//:third_party/zlib.BUILD",

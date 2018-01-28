@@ -14,7 +14,7 @@ cc_binary(
     testonly = 1,
     srcs = ["errorchecker.cpp"],
     deps = [
-        "//chi/Core:core",
-        "//chi/Support:support",
+        "//chi/Core",
+        "//chi/Support",
     ],
 )

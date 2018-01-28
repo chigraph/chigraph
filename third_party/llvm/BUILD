@@ -6,6 +6,7 @@ py_binary(
     srcs_version = "PY2AND3",
     visibility = [
         "@clang//:__subpackages__",
+        "@lldb//:__subpackages__",
         "@llvm//:__subpackages__",
     ],
 )

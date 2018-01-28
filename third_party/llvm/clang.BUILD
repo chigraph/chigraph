@@ -1,3 +1,4 @@
+package(default_visibility = ["//visibility:public"])
 
 load(
     "@org_chigraph_chigraph//:third_party/llvm/llvm.bzl",
@@ -194,22 +195,33 @@ cc_binary (
         "tools/driver/*.cpp"
     ]),
     deps = [
+        ":basic",
         ":code_gen",
-        ":frontend_tool",
+        ":driver",
         ":frontend",
-        "@llvm//:scalar",
-        "@llvm//:instrumentation",
-        "@llvm//:ipo",
-        "@llvm//:objc_arc",
+        ":frontend_tool",
+        "@llvm//:analysis",
         "@llvm//:code_gen",
+        "@llvm//:core",
+        "@llvm//:ipo",
+        "@llvm//:inst_combine",
+        "@llvm//:instrumentation",
+        "@llvm//:mc",
+        "@llvm//:mc_parser",
+        "@llvm//:objc_arc",
+        "@llvm//:option",
+        "@llvm//:scalar",
+        "@llvm//:support",
+        "@llvm//:transform_utils",
+        "@llvm//:vectorize",
+
         "@llvm//:aarch64_code_gen",
         "@llvm//:arm_code_gen",
-        "@llvm//:nvptx_code_gen",
         "@llvm//:powerpc_code_gen",
         "@llvm//:x86_code_gen",
+
         "@llvm//:aarch64_asm_parser",
         "@llvm//:arm_asm_parser",
-        "@llvm//:nvptx_asm_parser",
         "@llvm//:powerpc_asm_parser",
         "@llvm//:x86_asm_parser",
     ]
@@ -234,6 +246,30 @@ cc_library (
         ":serialization",
         ":parse",
         ":driver",
+        "@llvm//:bit_reader",
+        "@llvm//:option",
+        "@llvm//:profile_data",
+        "@llvm//:support",
+    ]
+)
+
+cc_library (
+    name = "rewrite_frontend",
+    srcs = glob([
+        "lib/Frontend/Rewrite/*.cpp",
+        "lib/Frontend/Rewrite/*.h",
+    ]),
+    hdrs = glob([
+        "include/Frontend/Rewrite/*.h",
+    ]),
+    deps = [
+        ":ast",
+        ":basic",
+        ":edit",
+        ":frontend",
+        ":lex",
+        ":rewrite",
+        ":serialization",
     ]
 )
 
@@ -248,12 +284,13 @@ cc_library (
         "include/clang/Rewrite/Frontend/*.h",
     ]),
     deps = [
-        ":lex"
+        ":lex",
+        "@llvm//:support",
     ]
 )
 
 cc_library (
-    name = "toolingcore",
+    name = "tooling_core",
     srcs = glob([
         "lib/Tooling/Core/*.h",
         "lib/Tooling/Core/*.cpp",
@@ -263,7 +300,8 @@ cc_library (
     ]),
     deps = [
         ":ast",
-        ":rewrite"
+        ":rewrite",
+        "@llvm//:support",
     ]
 )
 
@@ -278,6 +316,7 @@ cc_library (
     ]),
     deps = [
         ":ast",
+        "@llvm//:support",
     ],
 )
 
@@ -294,6 +333,7 @@ cc_library (
         ":static_analyzer_checkers",
         ":serialization",
         ":frontend",
+        "@llvm//:support",
     ],
 )
 
@@ -308,7 +348,8 @@ cc_library (
     ]),
     deps = [
         ":static_analyzer_core",
-        ":ast_matchers"
+        ":ast_matchers",
+        "@llvm//:support",
     ],
 )
 
@@ -324,6 +365,7 @@ cc_library (
     deps = [
         ":static_analyzer_checkers",
         ":frontend",
+        "@llvm//:support",
     ],
 )
 
@@ -347,6 +389,7 @@ cc_library (
         ":ast",
         ":rewrite",
         ":analysis",
+        "@llvm//:support",
     ],
 )
 
@@ -363,7 +406,9 @@ cc_library (
         ":static_analyzer_frontend",
         ":arc_migrate",
         ":code_gen",
-        ":rewrite",
+        ":rewrite_frontend",
+        "@llvm//:support",
+        "@llvm//:option",
     ],
     includes = ["include"]
 )
@@ -381,6 +426,8 @@ cc_library (
         ":serialization",
         ":toolingcore",
         ":format",
+        "@llvm//:support",
+        "@llvm//:core",
     ],
 )
 
@@ -397,6 +444,29 @@ cc_library (
         ":ast",
         ":analysis",
         ":frontend",
+        "@llvm//:analysis",
+        "@llvm//:bit_reader",
+        "@llvm//:bit_writer",
+        "@llvm//:core",
+        "@llvm//:coroutines",
+        "@llvm//:coverage",
+  		"@llvm//:ipo",
+  		"@llvm//:ir_reader",
+  		"@llvm//:inst_combine",
+  		"@llvm//:instrumentation",
+  		"@llvm//:lto",
+  		"@llvm//:linker",
+  		"@llvm//:mc",
+  		"@llvm//:objc_arc",
+  		"@llvm//:object",
+  		"@llvm//:passes",
+  		"@llvm//:profile_data",
+  		"@llvm//:scalar",
+  		"@llvm//:support",
+  		"@llvm//:target",
+  		"@llvm//:transform_utils",
+
+
     ],
 )
 
@@ -417,6 +487,8 @@ cc_library (
         ":sema",
         ":ast",
         ":lex",
+        "@llvm//:bit_reader",
+        "@llvm//:support",
     ],
 )
 
@@ -435,6 +507,9 @@ cc_library (
     deps = [
         ":sema",
         ":ast",
+        "@llvm//:mc",
+        "@llvm//:mc_parser",
+        "@llvm//:support",
     ],
 )
 
@@ -457,6 +532,7 @@ cc_library (
         ":ast",
         ":analysis",
         ":edit",
+        "@llvm//:support",
     ],
 )
 
@@ -470,7 +546,8 @@ cc_library (
         "include/clang/Format/*.h",
     ]),
     deps = [
-        ":toolingcore",
+        ":tooling_core",
+        "@llvm//:support",
     ],
 )
 
@@ -485,6 +562,7 @@ cc_library (
     ]),
     deps = [
         ":ast",
+        "@llvm//:support",
     ],
 )
 
@@ -499,6 +577,7 @@ cc_library (
     ]),
     deps = [
         ":ast_matchers",
+        "@llvm//:support",
     ],
 )
 
@@ -520,7 +599,9 @@ cc_library (
     ],
     deps = [
         ":ast_matchers",
-        "@llvm//:option"
+        "@llvm//:binary_format",
+        "@llvm//:option",
+        "@llvm//:support",
     ],
     includes = [
         "lib/Driver"
@@ -544,6 +625,7 @@ cc_library (
     ]),
     deps = [
         ":ast",
+        "@llvm//:support",
     ],
 )
 
@@ -577,6 +659,8 @@ cc_library (
     deps = [
         ":basic",
         ":lex",
+        "@llvm//:binary_format",
+        "@llvm//:support",
     ]
 )
 
@@ -605,7 +689,8 @@ cc_library (
     ],
     deps = [
         "@llvm//:support",
-        "@llvm//:target",
+        "@llvm//:mc",
+        "@llvm//:core",
     ],
     includes = ["include"],
 )

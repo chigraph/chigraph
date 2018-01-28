@@ -25,7 +25,6 @@ llvm_targets = [
     # TODO(phawkins): use a configure-time test.
     # "AMDGPU",
     "ARM",
-    "NVPTX",
     "PowerPC",
     "X86",
 ]
@@ -241,7 +240,7 @@ cc_library(
         "_DEBUG",
         "LLVM_BUILD_GLOBAL_ISEL",
     ],
-    includes = ["include"],
+    includes = ["include"]
 )
 
 # A creator of an empty file include/llvm/Support/VCSRevision.h.
@@ -404,18 +403,6 @@ llvm_target_list = [
         ],
     },
     {
-        "name": "NVPTX",
-        "lower_name": "nvptx",
-        "short_name": "NVPTX",
-        "tbl_outs": [
-            ("-gen-register-info", "lib/Target/NVPTX/NVPTXGenRegisterInfo.inc"),
-            ("-gen-instr-info", "lib/Target/NVPTX/NVPTXGenInstrInfo.inc"),
-            ("-gen-asm-writer", "lib/Target/NVPTX/NVPTXGenAsmWriter.inc"),
-            ("-gen-dag-isel", "lib/Target/NVPTX/NVPTXGenDAGISel.inc"),
-            ("-gen-subtarget", "lib/Target/NVPTX/NVPTXGenSubtargetInfo.inc"),
-        ],
-    },
-    {
         "name": "PowerPC",
         "lower_name": "powerpc",
         "short_name": "PPC",
@@ -490,6 +477,64 @@ filegroup(
         "utils/docker/build_docker_image.sh",
     ]),
     visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "lto",
+    srcs = glob([
+        "lib/LTO/*.cpp",
+        "lib/LTO/*.h"
+    ]),
+    hdrs = glob([
+        "include/llvm/LTO/*.h",
+    ]),
+    deps = [
+        ":config",
+    ],
+)
+
+cc_library(
+    name = "coroutines",
+    srcs = glob([
+        "lib/Transforms/Coroutines/*.h",
+        "lib/Transforms/Coroutines/*.cpp",
+    ]),
+    hdrs = glob([
+        "include/llvm/Transforms/Coroutines/*.h",
+    ]),
+    deps = [
+        ":config",
+    ],
+
+)
+
+cc_library(
+    name = "coverage",
+    srcs = glob([
+        "lib/ProfileData/Coverage/*.cpp",
+        "lib/ProfileData/Coverage/*.h",
+    ]),
+    hdrs = glob([
+        "include/llvm/ProfileData/Coverage/*.h",
+    ]),
+    deps = [
+        ":config",
+    ],
+)
+
+cc_library(
+    name = "passes",
+    srcs = glob([
+        "lib/Passes/*.cpp",
+        "lib/Passes/*.h",
+    ]),
+    hdrs = glob([
+        "include/llvm/Passes/*.h",
+        "lib/Passes/*.def",
+    ]),
+    deps = [
+        ":config",
+    ],
 )
 
 cc_library(
@@ -1555,114 +1600,6 @@ cc_library(
         ":support",
         ":execution_engine",
     ]
-)
-
-cc_library(
-    name = "nvptx_asm_printer",
-    srcs = glob([
-        "lib/Target/NVPTX/InstPrinter/*.c",
-        "lib/Target/NVPTX/InstPrinter/*.cpp",
-        "lib/Target/NVPTX/InstPrinter/*.inc",
-    ]),
-    hdrs = glob([
-        "include/llvm/Target/NVPTX/InstPrinter/*.h",
-        "include/llvm/Target/NVPTX/InstPrinter/*.def",
-        "include/llvm/Target/NVPTX/InstPrinter/*.inc",
-        "lib/Target/NVPTX/InstPrinter/*.h",
-    ]),
-    copts = ["-Iexternal/llvm/lib/Target/NVPTX"],
-    deps = [
-        "nvptx_target_gen",
-        ":attributes_gen",
-        ":config",
-        ":mc",
-        ":nvptx_info",
-        ":support",
-    ],
-)
-
-cc_library(
-    name = "nvptx_code_gen",
-    srcs = glob([
-        "lib/Target/NVPTX/*.c",
-        "lib/Target/NVPTX/*.cpp",
-        "lib/Target/NVPTX/*.inc",
-    ]),
-    hdrs = glob([
-        "include/llvm/Target/NVPTX/*.h",
-        "include/llvm/Target/NVPTX/*.def",
-        "include/llvm/Target/NVPTX/*.inc",
-        "lib/Target/NVPTX/*.h",
-    ]),
-    copts = ["-Iexternal/llvm/lib/Target/NVPTX"],
-    deps = [
-        ":analysis",
-        ":asm_printer",
-        ":code_gen",
-        ":config",
-        ":core",
-        ":ipo",
-        ":mc",
-        ":nvptx_asm_printer",
-        ":nvptx_desc",
-        ":nvptx_info",
-        ":scalar",
-        ":selection_dag",
-        ":support",
-        ":target",
-        ":transform_utils",
-        ":vectorize",
-    ],
-)
-
-cc_library(
-    name = "nvptx_desc",
-    srcs = glob([
-        "lib/Target/NVPTX/MCTargetDesc/*.c",
-        "lib/Target/NVPTX/MCTargetDesc/*.cpp",
-        "lib/Target/NVPTX/MCTargetDesc/*.inc",
-    ]),
-    hdrs = glob([
-        "include/llvm/Target/NVPTX/MCTargetDesc/*.h",
-        "include/llvm/Target/NVPTX/MCTargetDesc/*.def",
-        "include/llvm/Target/NVPTX/MCTargetDesc/*.inc",
-        "lib/Target/NVPTX/MCTargetDesc/*.h",
-    ]),
-    copts = ["-Iexternal/llvm/lib/Target/NVPTX"],
-    deps = [
-        "nvptx_target_gen",
-        ":config",
-        ":mc",
-        ":nvptx_asm_printer",
-        ":nvptx_info",
-        ":support",
-    ],
-)
-
-cc_library(
-    name = "nvptx_info",
-    srcs = glob([
-        "lib/Target/NVPTX/TargetInfo/*.c",
-        "lib/Target/NVPTX/TargetInfo/*.cpp",
-        "lib/Target/NVPTX/TargetInfo/*.inc",
-        "lib/Target/NVPTX/MCTargetDesc/*.h",
-    ]),
-    hdrs = glob([
-        "include/llvm/Target/NVPTX/TargetInfo/*.h",
-        "include/llvm/Target/NVPTX/TargetInfo/*.def",
-        "include/llvm/Target/NVPTX/TargetInfo/*.inc",
-        "lib/Target/NVPTX/NVPTX.h",
-        "lib/Target/NVPTX/TargetInfo/*.h",
-    ]),
-    copts = ["-Iexternal/llvm/lib/Target/NVPTX"],
-    deps = [
-        "nvptx_target_gen",
-        ":attributes_gen",
-        ":config",
-        ":core",
-        ":support",
-        ":target",
-    ],
 )
 
 cc_library(

@@ -1,8 +1,8 @@
 /// A simple example on how to use the Subprocess class
 /// The explanation for this is in the chi::Subprocess documentation
 
-#include <chi/Subprocess.hpp>
-#include <chi/Result.hpp>
+#include <chi/Support/Subprocess.hpp>
+#include <chi/Support/Result.hpp>
 
 #include <iostream>
 

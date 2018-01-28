@@ -22,7 +22,7 @@ headers = [
 ]
 
 cc_library(
-    name = "core_impl",
+    name = "Core",
     srcs = [
         "Context.cpp",
         "NameMangler.cpp",
@@ -44,11 +44,11 @@ cc_library(
         "ClangFinder.cpp",
     ] + headers,
     nocopts = "-std=c\+\+0x",
-    visibility = ["//visibility:private"],
+    visibility = ["//visibility:public"],
     deps = [
-        "//chi/CodeSupport:codesupport",
-        "//chi/Runtime:runtime",
-        "//chi/Support:support",
+        "//chi/CodeSupport",
+        "//chi/Runtime",
+        "//chi/Support",
         "@boost//:bimap",
         "@boost//:uuid",
         "@llvm//:asm_parser",
@@ -63,15 +63,8 @@ cc_library(
     ],
 )
 
-cc_inc_library(
-    name = "core",
-    hdrs = headers,
-    visibility = ["//visibility:public"],
-    deps = [":core_impl"],
-)
-
 cc_test(
-    name = "core_test",
+    name = "Core_test",
     srcs = [
         "ContextTests.cpp",
         "GraphFunctionEntryTest.cpp",
@@ -85,7 +78,7 @@ cc_test(
     ],
     nocopts = "-std=c\+\+0x",
     deps = [
-        ":core",
+        ":Core",
         "//test:common",
         "@catch//:main",
     ],

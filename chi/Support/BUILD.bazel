@@ -6,58 +6,49 @@ headers = [
     "Result.hpp",
     "HashFilesystemPath.hpp",
     "Flags.hpp",
-    "ExecutablePath.hpp"
+    "ExecutablePath.hpp",
 ]
 
-cc_library (
-    name = "support_impl",
+cc_library(
+    name = "Support",
     srcs = [
         "LibCLocator.cpp",
         "Result.cpp",
         "Subprocess.cpp",
-        "ExecutablePath.cpp"
+        "ExecutablePath.cpp",
     ] + headers,
-    nocopts = "-std=c\+\+0x",
-    visibility = ["//visibility:private"],
     linkopts = ["-lpthread"],
-    deps = [
-        "@nlohmann_json//:json",
-        "@boost//:filesystem",
-        "@boost//:container",
-        "@boost//:algorithm",
-        "@boost//:dynamic_bitset"
-    ]
-)
-
-cc_inc_library (
-    name = "support",
-    hdrs = headers,
+    nocopts = "-std=c\+\+0x",
     visibility = ["//visibility:public"],
     deps = [
-        ":support_impl"
-    ]
-)
-
-cc_binary (
-    name = "subprocesstesterchild",
-    srcs = [
-        "SubprocessTesterChild.cpp"
+        "@boost//:algorithm",
+        "@boost//:container",
+        "@boost//:dynamic_bitset",
+        "@boost//:filesystem",
+        "@nlohmann_json//:json",
     ],
-    testonly = 1,
 )
 
-cc_test (
-    name = "support_test",
+cc_binary(
+    name = "subprocesstesterchild",
+    testonly = 1,
+    srcs = [
+        "SubprocessTesterChild.cpp",
+    ],
+)
+
+cc_test(
+    name = "Support_test",
     srcs = [
         "ResultTest.cpp",
-        "SubprocessTest.cpp"
-    ],
-    deps = [
-        ":support",
-        "@catch//:main",
-        "//test:common",
+        "SubprocessTest.cpp",
     ],
     data = [
-        ":subprocesstesterchild"
+        ":subprocesstesterchild",
+    ],
+    deps = [
+        ":Support",
+        "//test:common",
+        "@catch//:main",
     ],
 )

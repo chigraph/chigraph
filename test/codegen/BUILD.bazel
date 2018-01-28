@@ -13,7 +13,7 @@ cc_binary(
     name = "codegentester",
     srcs = ["codegentester.cpp"],
     deps = [
-        "//chi/Core:core",
+        "//chi/Core",
     ],
 )
 
