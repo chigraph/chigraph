@@ -10,6 +10,7 @@ foreach(child ${children})
   endif()
 endforeach()
 
+file (DOWNLAOD )
 
 foreach(MODULEPATH ${CODEGEN_TESTS})
 	
