@@ -213,7 +213,11 @@ int compile(const std::vector<std::string>& opts) {
 	    (outpath.string(), ec, OpenFlags);
 #endif
 	if (binaryOutput) {
-		llvm::WriteBitcodeToFile(llmod.get(), outFile->os());
+		llvm::WriteBitcodeToFile(
+#if LLVM_VERSION_AT_LEAST(7, 0)
+			*
+#endif
+			llmod.get(), outFile->os());
 	} else {
 		llmod->print(outFile->os(), nullptr);
 	}

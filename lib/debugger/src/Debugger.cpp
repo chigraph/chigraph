@@ -173,9 +173,17 @@ Result Debugger::start(const char** argv, const char** envp,
 #else
 			    ec,
 #endif
+#if LLVM_VERSION_LESS_EQUAL(6, 0)
 			    llvm::sys::fs::F_RW
+#else
+				llvm::sys::fs::FA_Read | llvm::sys::fs::FA_Write
+#endif
 		};
-		llvm::WriteBitcodeToFile(mod.get(), file);
+		llvm::WriteBitcodeToFile(
+#if LLVM_VERSION_AT_LEAST(7, 0)
+			*
+#endif
+			mod.get(), file);
 	}
 
 	// create args

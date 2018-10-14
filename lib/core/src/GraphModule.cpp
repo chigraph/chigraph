@@ -84,7 +84,11 @@ struct CFuncNode : NodeType {
 		}
 
 		// create a copy of the module
-		auto copymod = llvm::CloneModule(llcompiledmod.get());
+		auto copymod = llvm::CloneModule(
+#if LLVM_VERSION_AT_LEAST(7, 0)
+			*
+#endif
+			llcompiledmod.get());
 
 		// link it in
 

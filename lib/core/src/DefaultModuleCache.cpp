@@ -49,7 +49,12 @@ Result DefaultModuleCache::cacheModule(const boost::filesystem::path& moduleName
 #else
 			    errCode,
 #endif
+
+#if LLVM_VERSION_LESS_EQUAL(6, 0)
 			    llvm::sys::fs::F_RW
+#else
+				llvm::sys::fs::FA_Read | llvm::sys::fs::FA_Write
+#endif
 		};
 
 		if (errCode || !errString.empty()) {
@@ -58,7 +63,11 @@ Result DefaultModuleCache::cacheModule(const boost::filesystem::path& moduleName
 		}
 
 		// write it
-		llvm::WriteBitcodeToFile(&compiledModule, fileStream);
+		llvm::WriteBitcodeToFile(
+#if LLVM_VERSION_LESS_EQUAL(6, 0)
+			&
+#endif
+			compiledModule, fileStream);
 	}
 
 	// set age to be correct
