@@ -4,6 +4,7 @@ set(CHI_SRCS
 	compile.cpp
 	run.cpp
 	interpret.cpp
+	init.cpp
 )
 
 if (CG_BUILD_FETCHER) 

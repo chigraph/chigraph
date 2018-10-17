@@ -18,18 +18,20 @@ extern int compile(const std::vector<std::string>& opts);
 extern int get(const std::vector<std::string>& opts);
 extern int run(const std::vector<std::string>& opts, const char* argv0);
 extern int interpret(const std::vector<std::string>& opts, const char* argv0);
+extern int init(const std::vector<std::string>& opts);
 
 const char* helpString =
-    "Usage: chi [ -C <path> ] <command> <command arguments>\n"
-    "\n"
-    "Available commands:\n"
-    "\n"
-    "compile      Compile a chigraph module to an LLVM module\n"
-    "run          Run a chigraph module\n"
-    "interpret    Interpret LLVM IR (similar to lli)\n"
-    "get          Fetch modules from the internet\n"
-    "\n"
-    "Use chi <command> --help to get usage for a command";
+R"(Usage: chi [ -C <path> ] <command> <command arguments>
+
+Available commands:
+
+compile      Compile a chigraph module to an LLVM module
+run          Run a chigraph module
+interpret    Interpret LLVM IR (similar to lli)
+get          Fetch modules from the internet
+init         Initialize a new workspace with a hello world module
+
+Use chi <command> --help to get usage for a command)";
 
 using namespace chi;
 
@@ -79,8 +81,9 @@ int main(int argc, char** argv) {
 	if (cmd == "run") { return run(opts, argv[0]); }
 	if (cmd == "interpret") { return interpret(opts, argv[0]); }
 	if (cmd == "get") { return get(opts); }
+	if (cmd == "init") { return init(opts); }
 	// TODO: write other ones
 
-	std::cerr << "Unrecognized command: " << cmd << std::endl;
+	std::cerr << "Unrecognized command: " << cmd << " see chi --help for commands" << std::endl;
 	return 1;
 }
