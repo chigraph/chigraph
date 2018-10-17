@@ -289,7 +289,7 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 			             {{"File", fileName.string()}, {"Error Message", e.what()}});
 		}
 
-		if (j.find("dependencies") != j.end() || !j["dependencies"].is_array()) { return res; }
+		if (j.find("dependencies") == j.end() || !j["dependencies"].is_array()) { return res; }
 
 		// fetch the dependencies
 		for (const auto& dep : j["dependencies"]) {

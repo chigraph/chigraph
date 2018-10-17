@@ -25,4 +25,5 @@ TEST_CASE("Contexts can fetch remote modules", "[Context]") {
 	REQUIRE(res.dump() == "");
 
 	REQUIRE(fs::is_directory(workspaceDir / "src" / "github.com" / "chigraph" / "hellochigraph"));
+	REQUIRE(fs::is_directory(workspaceDir / "src" / "github.com" / "chigraph" / "std")); // it should have fetched the dependency as well
 }
