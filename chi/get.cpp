@@ -19,7 +19,6 @@ int get(const std::vector<std::string>& opts) {
 	// clang-format off
 	get_options.add_options()
 		("module", po::value<std::vector<std::string>>(), "Modules to get")
-		("workspace,w", po::value<std::string>()->default_value(fs::current_path().string()), "The workspace path. Leave blank to inferr from the working directory")
 		;
 	// clang-format on
 
@@ -35,7 +34,7 @@ int get(const std::vector<std::string>& opts) {
 	}
 	auto modules = vm["module"].as<std::vector<std::string>>();
 
-	auto workspacePath = workspaceFromChildPath(vm["workspace"].as<std::string>());
+	auto workspacePath = workspaceFromChildPath(fs::current_path());
 
 	if (workspacePath.empty()) {
 		std::cerr << "Workspace path not an actual workspace" << std::endl;
