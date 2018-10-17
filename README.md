@@ -1,3 +1,5 @@
+***DISCLAIMER: CHIGRAPH IS IN PRE-PRE-PRE-PRE ALPHA STATUS AND MAY NEVER REACH A STABLE RELEASE. IT'S A TOY PROJECT AS A PROOF OF CONCEPT.***
+
 ![chigraph logo](doc/images/chigraph.png)
 
 [![Coveralls](https://img.shields.io/coveralls/chigraph/chigraph.svg?style=flat-square)](https://coveralls.io/github/chigraph/chigraph)    [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/chigraph/)
