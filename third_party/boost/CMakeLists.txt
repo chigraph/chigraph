@@ -16,7 +16,11 @@ add_library(boost_filesystem STATIC
 )
 target_include_directories(boost_filesystem PUBLIC include)
 target_link_libraries(boost_filesystem PUBLIC boost_system)
-target_compile_options(boost_filesystem PUBLIC -Wno-error=parentheses)
+
+# This is violated all over the place, make sure it doesn't error out.
+if (NOT MSVC)
+    target_compile_options(boost_filesystem PUBLIC -Wno-error=parentheses)
+endif(NOT MSVC)
 
 add_library(boost_program_options STATIC
     program_options/options_description.cpp
