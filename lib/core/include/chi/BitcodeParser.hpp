@@ -6,17 +6,17 @@
 #define CHI_BITCODE_PARSER_HPP
 
 #include "chi/Fwd.hpp"
+#include "chi/Owned.hpp"
 
-#include <boost/filesystem/path.hpp>
+#include <filesystem>
 
 namespace chi {
 
 /// Parse a bitcode file. Convenience function to make it LLVM version independent and reutrn a
 /// result
-Result parseBitcodeFile(const boost::filesystem::path& file, llvm::LLVMContext& ctx,
-                        std::unique_ptr<llvm::Module>* toFill);
-Result parseBitcodeString(const std::string& bitcode, llvm::LLVMContext& ctx,
-                          std::unique_ptr<llvm::Module>* toFill);
-}
+Result parseBitcodeFile(const std::filesystem::path& file, LLVMContextRef ctx,
+                        OwnedLLVMModule* toFill);
+Result parseBitcodeString(const std::string& bitcode, LLVMContextRef ctx, OwnedLLVMModule* toFill);
+}  // namespace chi
 
 #endif  // CHI_BITCODE_PARSER_HPP

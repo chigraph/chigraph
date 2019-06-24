@@ -8,6 +8,7 @@
 #define INCLUDE_global_h__
 
 #include "common.h"
+
 #include "mwindow.h"
 #include "hash.h"
 
@@ -23,11 +24,6 @@ typedef struct {
 	 */
 	git_thread *current_thread;
 } git_global_st;
-
-#ifdef GIT_OPENSSL
-# include <openssl/ssl.h>
-extern SSL_CTX *git__ssl_ctx;
-#endif
 
 git_global_st *git__global_state(void);
 

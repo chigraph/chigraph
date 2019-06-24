@@ -29,8 +29,8 @@ namespace boost{ namespace math{
 
    namespace concepts {
 
-      struct real_concept;
-      struct std_real_concept;
+      class real_concept;
+      class std_real_concept;
 
    }
 
@@ -73,7 +73,7 @@ inline T normalize_value(const T& val, const mpl::true_&)
    BOOST_STATIC_ASSERT(std::numeric_limits<T>::is_specialized);
    BOOST_STATIC_ASSERT(std::numeric_limits<T>::radix != 2);
 
-   boost::intmax_t shift = std::numeric_limits<T>::digits - ilogb(val) - 1;
+   boost::intmax_t shift = (boost::intmax_t)std::numeric_limits<T>::digits - (boost::intmax_t)ilogb(val) - 1;
    T result = scalbn(val, shift);
    result = round(result);
    return scalbn(result, -shift); 

@@ -4,10 +4,11 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
-#ifndef INCLUDE_git_path_w32_h__
-#define INCLUDE_git_path_w32_h__
+#ifndef INCLUDE_win32_path_w32_h__
+#define INCLUDE_win32_path_w32_h__
 
 #include "common.h"
+
 #include "vector.h"
 
 /*
@@ -81,5 +82,23 @@ extern int git_win32_path_to_utf8(git_win32_utf8_path dest, const wchar_t *src);
 extern char *git_win32_path_8dot3_name(const char *path);
 
 extern int git_win32_path_readlink_w(git_win32_path dest, const git_win32_path path);
+
+/**
+ * Removes any trailing backslashes from a path, except in the case of a drive
+ * letter path (C:\, D:\, etc.). This function cannot fail.
+ *
+ * @param path The path which should be trimmed.
+ * @return The length of the modified string (<= the input length)
+ */
+size_t git_win32_path_trim_end(wchar_t *str, size_t len);
+
+/**
+ * Removes any of the following namespace prefixes from a path,
+ * if found: "\??\", "\\?\", "\\?\UNC\". This function cannot fail.
+ *
+ * @param path The path which should be converted.
+ * @return The length of the modified string (<= the input length)
+ */
+size_t git_win32_path_remove_namespace(wchar_t *str, size_t len);
 
 #endif

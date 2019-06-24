@@ -83,8 +83,8 @@ void test_reset_hard__resetting_reverts_modified_files(void)
 		}
 	}
 
-	git_buf_free(&content);
-	git_buf_free(&path);
+	git_buf_dispose(&content);
+	git_buf_dispose(&path);
 }
 
 void test_reset_hard__cannot_reset_in_a_bare_repository(void)
@@ -108,7 +108,7 @@ static void index_entry_init(git_index *index, int side, git_oid *oid)
 	memset(&entry, 0x0, sizeof(git_index_entry));
 
 	entry.path = "conflicting_file";
-	GIT_IDXENTRY_STAGE_SET(&entry, side);
+	GIT_INDEX_ENTRY_STAGE_SET(&entry, side);
 	entry.mode = 0100644;
 	git_oid_cpy(&entry.id, oid);
 
@@ -192,10 +192,10 @@ void test_reset_hard__cleans_up_merge(void)
 	cl_assert(git_path_exists(git_buf_cstr(&orig_head_path)));
 	cl_git_pass(p_unlink(git_buf_cstr(&orig_head_path)));
 
-	git_buf_free(&merge_head_path);
-	git_buf_free(&merge_msg_path);
-	git_buf_free(&merge_mode_path);
-	git_buf_free(&orig_head_path);
+	git_buf_dispose(&merge_head_path);
+	git_buf_dispose(&merge_msg_path);
+	git_buf_dispose(&merge_mode_path);
+	git_buf_dispose(&orig_head_path);
 }
 
 void test_reset_hard__reflog_is_correct(void)
@@ -223,7 +223,7 @@ void test_reset_hard__reflog_is_correct(void)
 	reflog_check(repo, "HEAD", 4, NULL, git_buf_cstr(&buf));
 	reflog_check(repo, "refs/heads/master", 4, NULL, git_buf_cstr(&buf));
 
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 
 	/* Moved branch, expect revspec in message */
 	exp_msg = "reset: moving to HEAD~^{commit}";
@@ -248,7 +248,7 @@ void test_reset_hard__switch_file_to_dir(void)
 	git_oid src_id, tgt_id;
 
 	cl_git_pass(git_repository_odb(&odb, repo));
-	cl_git_pass(git_odb_write(&entry.id, odb, "", 0, GIT_OBJ_BLOB));
+	cl_git_pass(git_odb_write(&entry.id, odb, "", 0, GIT_OBJECT_BLOB));
 	git_odb_free(odb);
 
 	entry.mode = GIT_FILEMODE_BLOB;
@@ -282,12 +282,12 @@ void test_reset_hard__switch_file_to_dir(void)
 	git_signature_free(sig);
 
 	/* Let's go to a known state of the src commit with the file named 'dir' */
-	cl_git_pass(git_object_lookup(&commit, repo, &src_id, GIT_OBJ_COMMIT));
+	cl_git_pass(git_object_lookup(&commit, repo, &src_id, GIT_OBJECT_COMMIT));
 	cl_git_pass(git_reset(repo, commit, GIT_RESET_HARD, NULL));
 	git_object_free(commit);
 
 	/* And now we move over to the commit with the directory named 'dir' */
-	cl_git_pass(git_object_lookup(&commit, repo, &tgt_id, GIT_OBJ_COMMIT));
+	cl_git_pass(git_object_lookup(&commit, repo, &tgt_id, GIT_OBJECT_COMMIT));
 	cl_git_pass(git_reset(repo, commit, GIT_RESET_HARD, NULL));
 	git_object_free(commit);
 }

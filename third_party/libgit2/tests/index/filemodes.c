@@ -47,8 +47,8 @@ static void replace_file_with_mode(
 		path.ptr, content.ptr, content.size,
 		O_WRONLY|O_CREAT|O_TRUNC, create_mode);
 
-	git_buf_free(&path);
-	git_buf_free(&content);
+	git_buf_dispose(&path);
+	git_buf_dispose(&content);
 }
 
 #define add_and_check_mode(I,F,X) add_and_check_mode_(I,F,X,__FILE__,__LINE__)
@@ -78,7 +78,7 @@ void test_index_filemodes__untrusted(void)
 	cl_repo_set_bool(g_repo, "core.filemode", false);
 
 	cl_git_pass(git_repository_index(&index, g_repo));
-	cl_assert((git_index_caps(index) & GIT_INDEXCAP_NO_FILEMODE) != 0);
+	cl_assert((git_index_caps(index) & GIT_INDEX_CAPABILITY_NO_FILEMODE) != 0);
 
 	/* 1 - add 0644 over existing 0644 -> expect 0644 */
 	replace_file_with_mode("exec_off", "filemodes/exec_off.0", 0644);
@@ -122,7 +122,7 @@ void test_index_filemodes__trusted(void)
 	cl_repo_set_bool(g_repo, "core.filemode", true);
 
 	cl_git_pass(git_repository_index(&index, g_repo));
-	cl_assert((git_index_caps(index) & GIT_INDEXCAP_NO_FILEMODE) == 0);
+	cl_assert((git_index_caps(index) & GIT_INDEX_CAPABILITY_NO_FILEMODE) == 0);
 
 	/* 1 - add 0644 over existing 0644 -> expect 0644 */
 	replace_file_with_mode("exec_off", "filemodes/exec_off.0", 0644);
@@ -245,14 +245,76 @@ void test_index_filemodes__invalid(void)
 	cl_git_pass(git_index_add_bypath(index, "dummy-file.txt"));
 	cl_assert((dummy = git_index_get_bypath(index, "dummy-file.txt", 0)));
 
-	GIT_IDXENTRY_STAGE_SET(&entry, 0);
+	GIT_INDEX_ENTRY_STAGE_SET(&entry, 0);
 	entry.path = "foo";
-	entry.mode = GIT_OBJ_BLOB;
+	entry.mode = GIT_OBJECT_BLOB;
 	git_oid_cpy(&entry.id, &dummy->id);
 	cl_git_fail(git_index_add(index, &entry));
 
 	entry.mode = GIT_FILEMODE_BLOB;
 	cl_git_pass(git_index_add(index, &entry));
+
+	git_index_free(index);
+}
+
+void test_index_filemodes__frombuffer_requires_files(void)
+{
+	git_index *index;
+	git_index_entry new_entry;
+	const git_index_entry *ret_entry;
+	const char *content = "hey there\n";
+
+	memset(&new_entry, 0, sizeof(new_entry));
+	cl_git_pass(git_repository_index(&index, g_repo));
+
+	/* regular blob */
+	new_entry.path = "dummy-file.txt";
+	new_entry.mode = GIT_FILEMODE_BLOB;
+
+	cl_git_pass(git_index_add_frombuffer(index,
+		&new_entry, content, strlen(content)));
+
+	cl_assert((ret_entry = git_index_get_bypath(index, "dummy-file.txt", 0)));
+	cl_assert_equal_s("dummy-file.txt", ret_entry->path);
+	cl_assert_equal_i(GIT_FILEMODE_BLOB, ret_entry->mode);
+
+	/* executable blob */
+	new_entry.path = "dummy-file.txt";
+	new_entry.mode = GIT_FILEMODE_BLOB_EXECUTABLE;
+
+	cl_git_pass(git_index_add_frombuffer(index,
+		&new_entry, content, strlen(content)));
+
+	cl_assert((ret_entry = git_index_get_bypath(index, "dummy-file.txt", 0)));
+	cl_assert_equal_s("dummy-file.txt", ret_entry->path);
+	cl_assert_equal_i(GIT_FILEMODE_BLOB_EXECUTABLE, ret_entry->mode);
+
+	/* links are also acceptable */
+	new_entry.path = "dummy-link.txt";
+	new_entry.mode = GIT_FILEMODE_LINK;
+
+	cl_git_pass(git_index_add_frombuffer(index,
+		&new_entry, content, strlen(content)));
+
+	cl_assert((ret_entry = git_index_get_bypath(index, "dummy-link.txt", 0)));
+	cl_assert_equal_s("dummy-link.txt", ret_entry->path);
+	cl_assert_equal_i(GIT_FILEMODE_LINK, ret_entry->mode);
+
+	/* trees are rejected */
+	new_entry.path = "invalid_mode.txt";
+	new_entry.mode = GIT_FILEMODE_TREE;
+
+	cl_git_fail(git_index_add_frombuffer(index,
+		&new_entry, content, strlen(content)));
+	cl_assert_equal_p(NULL, git_index_get_bypath(index, "invalid_mode.txt", 0));
+
+	/* submodules are rejected */
+	new_entry.path = "invalid_mode.txt";
+	new_entry.mode = GIT_FILEMODE_COMMIT;
+
+	cl_git_fail(git_index_add_frombuffer(index,
+		&new_entry, content, strlen(content)));
+	cl_assert_equal_p(NULL, git_index_get_bypath(index, "invalid_mode.txt", 0));
 
 	git_index_free(index);
 }

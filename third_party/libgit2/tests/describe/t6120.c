@@ -2,7 +2,7 @@
 #include "describe_helpers.h"
 #include "repository.h"
 
-// Ported from https://github.com/git/git/blob/adfc1857bdb090786fd9d22c1acec39371c76048/t/t6120-describe.sh
+/* Ported from https://github.com/git/git/blob/adfc1857bdb090786fd9d22c1acec39371c76048/t/t6120-describe.sh */
 
 static git_repository *repo;
 
@@ -104,8 +104,8 @@ static void commit_and_tag(
 
 	cl_git_append2file("describe/file", "\n");
 	
-	git_index_add_bypath(index, "describe/file");
-	git_index_write(index);
+	cl_git_pass(git_index_add_bypath(index, "file"));
+	cl_git_pass(git_index_write(index));
 
 	*time += 10;
 	cl_repo_commit_from_index(&commit_id, repo, NULL, *time, commit_msg);

@@ -39,7 +39,7 @@ void test_submodule_init__absolute_url(void)
 	cl_git_pass(git_config_get_string(&config_url, cfg, "submodule.testrepo.url"));
 	cl_assert_equal_s(absolute_url.ptr, config_url);
 
-	git_buf_free(&absolute_url);
+	git_buf_dispose(&absolute_url);
 	git_config_free(cfg);
 	git_submodule_free(sm);
 }
@@ -69,7 +69,7 @@ void test_submodule_init__relative_url(void)
 	cl_git_pass(git_config_get_string(&config_url, cfg, "submodule.testrepo.url"));
 	cl_assert_equal_s(absolute_url.ptr, config_url);
 
-	git_buf_free(&absolute_url);
+	git_buf_dispose(&absolute_url);
 	git_config_free(cfg);
 	git_submodule_free(sm);
 }
@@ -87,7 +87,7 @@ void test_submodule_init__relative_url_detached_head(void)
 
 	/* Put the parent repository into a detached head state. */
 	cl_git_pass(git_repository_head(&head_ref, g_repo));
-	cl_git_pass(git_reference_peel(&head_commit, head_ref, GIT_OBJ_COMMIT));
+	cl_git_pass(git_reference_peel(&head_commit, head_ref, GIT_OBJECT_COMMIT));
 
 	cl_git_pass(git_repository_set_head_detached(g_repo, git_commit_id((git_commit *)head_commit)));
 
@@ -107,7 +107,7 @@ void test_submodule_init__relative_url_detached_head(void)
 	cl_git_pass(git_config_get_string(&config_url, cfg, "submodule.testrepo.url"));
 	cl_assert_equal_s(absolute_url.ptr, config_url);
 
-	git_buf_free(&absolute_url);
+	git_buf_dispose(&absolute_url);
 	git_config_free(cfg);
 	git_object_free(head_commit);
 	git_reference_free(head_ref);

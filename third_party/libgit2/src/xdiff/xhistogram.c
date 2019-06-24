@@ -44,7 +44,6 @@
 #include "xinclude.h"
 #include "xtypes.h"
 #include "xdiff.h"
-#include "common.h"
 
 #define MAX_PTR	UINT_MAX
 #define MAX_CNT	UINT_MAX
@@ -303,7 +302,7 @@ static int histogram_diff(
 
 	index.table_bits = xdl_hashbits(count1);
 	sz = index.records_size = 1 << index.table_bits;
-	GITERR_CHECK_ALLOC_MULTIPLY(&sz, sz, sizeof(struct record *));
+	GIT_ERROR_CHECK_ALLOC_MULTIPLY(&sz, sz, sizeof(struct record *));
 
 	if (!(index.records = (struct record **) xdl_malloc(sz)))
 		goto cleanup;

@@ -10,8 +10,6 @@
 #include <chi/Support/Result.hpp>
 #include <chi/Support/json.hpp>
 
-#include <llvm/IR/Module.h>
-
 using namespace chi;
 using namespace nlohmann;
 
@@ -32,11 +30,12 @@ int checkForErrors(Result res, const char* expectedErr) {
 }
 
 int main(int argc, char** argv) {
+	assert(argc == 4);
 	const char* mode        = argv[1];
 	const char* file        = argv[2];
 	const char* expectedErr = argv[3];
 
-	assert(boost::filesystem::is_regular_file(file) && "Pass a real file");
+	assert(std::filesystem::is_regular_file(file) && "Pass a real file");
 
 	std::ifstream ifile(file);
 	std::string   str((std::istreambuf_iterator<char>(ifile)), std::istreambuf_iterator<char>());
@@ -58,7 +57,7 @@ int main(int argc, char** argv) {
 		int ret = checkForErrors(res, expectedErr);
 		if (ret != 1) return ret;
 
-		std::unique_ptr<llvm::Module> llmod = nullptr;
+		OwnedLLVMModule llmod = nullptr;
 		res += c.compileModule(mod->fullName(), CompileSettings::Default, &llmod);
 
 		ret = checkForErrors(res, expectedErr);
@@ -82,7 +81,7 @@ int main(int argc, char** argv) {
 		if (ret != 1) return ret;
 
 		// create module for the functions
-		std::unique_ptr<llvm::Module> llmod;
+		OwnedLLVMModule llmod;
 
 		res += c.compileModule("main", CompileSettings::Default, &llmod);
 

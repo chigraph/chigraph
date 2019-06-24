@@ -4,20 +4,20 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
-#include "git2/version.h"
-#include "common.h"
+
 #include "diff.h"
+
+#include "git2/version.h"
 #include "diff_generate.h"
 #include "patch.h"
 #include "commit.h"
 #include "index.h"
 
-#define DIFF_FLAG_IS_SET(DIFF,FLAG) \
-	(((DIFF)->opts.flags & (FLAG)) != 0)
-#define DIFF_FLAG_ISNT_SET(DIFF,FLAG) \
-	(((DIFF)->opts.flags & (FLAG)) == 0)
-#define DIFF_FLAG_SET(DIFF,FLAG,VAL) (DIFF)->opts.flags = \
-	(VAL) ? ((DIFF)->opts.flags | (FLAG)) : ((DIFF)->opts.flags & ~(VAL))
+struct patch_id_args {
+	git_hash_ctx ctx;
+	git_oid result;
+	int first_file;
+};
 
 GIT_INLINE(const char *) diff_delta__path(const git_diff_delta *delta)
 {
@@ -114,7 +114,7 @@ int git_diff_is_sorted_icase(const git_diff *diff)
 int git_diff_get_perfdata(git_diff_perfdata *out, const git_diff *diff)
 {
 	assert(out);
-	GITERR_CHECK_VERSION(out, GIT_DIFF_PERFDATA_VERSION, "git_diff_perfdata");
+	GIT_ERROR_CHECK_VERSION(out, GIT_DIFF_PERFDATA_VERSION, "git_diff_perfdata");
 	out->stat_calls = diff->perf.stat_calls;
 	out->oid_calculations = diff->perf.oid_calculations;
 	return 0;
@@ -251,7 +251,7 @@ int git_diff_format_email(
 	assert(out && diff && opts);
 	assert(opts->summary && opts->id && opts->author);
 
-	GITERR_CHECK_VERSION(opts,
+	GIT_ERROR_CHECK_VERSION(opts,
 		GIT_DIFF_FORMAT_EMAIL_OPTIONS_VERSION,
 		"git_format_email_options");
 
@@ -260,14 +260,14 @@ int git_diff_format_email(
 
 	if (!ignore_marker) {
 		if (opts->patch_no > opts->total_patches) {
-			giterr_set(GITERR_INVALID,
+			git_error_set(GIT_ERROR_INVALID,
 				"patch %"PRIuZ" out of range. max %"PRIuZ,
 				opts->patch_no, opts->total_patches);
 			return -1;
 		}
 
 		if (opts->patch_no == 0) {
-			giterr_set(GITERR_INVALID,
+			git_error_set(GIT_ERROR_INVALID,
 				"invalid patch no %"PRIuZ". should be >0", opts->patch_no);
 			return -1;
 		}
@@ -280,14 +280,14 @@ int git_diff_format_email(
 		size_t offset = 0;
 
 		if ((offset = (loc - opts->summary)) == 0) {
-			giterr_set(GITERR_INVALID, "summary is empty");
+			git_error_set(GIT_ERROR_INVALID, "summary is empty");
 			error = -1;
 			goto on_error;
 		}
 
-		GITERR_CHECK_ALLOC_ADD(&allocsize, offset, 1);
+		GIT_ERROR_CHECK_ALLOC_ADD(&allocsize, offset, 1);
 		summary = git__calloc(allocsize, sizeof(char));
-		GITERR_CHECK_ALLOC(summary);
+		GIT_ERROR_CHECK_ALLOC(summary);
 
 		strncpy(summary, opts->summary, offset);
 	}
@@ -374,3 +374,142 @@ int git_diff_format_email_init_options(
 	return 0;
 }
 
+static int flush_hunk(git_oid *result, git_hash_ctx *ctx)
+{
+	git_oid hash;
+	unsigned short carry = 0;
+	int error, i;
+
+	if ((error = git_hash_final(&hash, ctx)) < 0 ||
+	    (error = git_hash_init(ctx)) < 0)
+		return error;
+
+	for (i = 0; i < GIT_OID_RAWSZ; i++) {
+		carry += result->id[i] + hash.id[i];
+		result->id[i] = (unsigned char)carry;
+		carry >>= 8;
+	}
+
+	return 0;
+}
+
+static void strip_spaces(git_buf *buf)
+{
+	char *src = buf->ptr, *dst = buf->ptr;
+	char c;
+	size_t len = 0;
+
+	while ((c = *src++) != '\0') {
+		if (!git__isspace(c)) {
+			*dst++ = c;
+			len++;
+		}
+	}
+
+	git_buf_truncate(buf, len);
+}
+
+static int file_cb(
+	const git_diff_delta *delta,
+	float progress,
+	void *payload)
+{
+	struct patch_id_args *args = (struct patch_id_args *) payload;
+	git_buf buf = GIT_BUF_INIT;
+	int error;
+
+	GIT_UNUSED(progress);
+
+	if (!args->first_file &&
+	    (error = flush_hunk(&args->result, &args->ctx)) < 0)
+		goto out;
+	args->first_file = 0;
+
+	if ((error = git_buf_printf(&buf,
+				    "diff--gita/%sb/%s---a/%s+++b/%s",
+				    delta->old_file.path,
+				    delta->new_file.path,
+				    delta->old_file.path,
+				    delta->new_file.path)) < 0)
+		goto out;
+
+	strip_spaces(&buf);
+
+	if ((error = git_hash_update(&args->ctx, buf.ptr, buf.size)) < 0)
+		goto out;
+
+out:
+	git_buf_dispose(&buf);
+	return error;
+}
+
+static int line_cb(
+	const git_diff_delta *delta,
+	const git_diff_hunk *hunk,
+	const git_diff_line *line,
+	void *payload)
+{
+	struct patch_id_args *args = (struct patch_id_args *) payload;
+	git_buf buf = GIT_BUF_INIT;
+	int error;
+
+	GIT_UNUSED(delta);
+	GIT_UNUSED(hunk);
+
+	switch (line->origin) {
+	    case GIT_DIFF_LINE_ADDITION:
+		git_buf_putc(&buf, '+');
+		break;
+	    case GIT_DIFF_LINE_DELETION:
+		git_buf_putc(&buf, '-');
+		break;
+	    case GIT_DIFF_LINE_CONTEXT:
+		break;
+	    default:
+		git_error_set(GIT_ERROR_PATCH, "invalid line origin for patch");
+		return -1;
+	}
+
+	git_buf_put(&buf, line->content, line->content_len);
+	strip_spaces(&buf);
+
+	if ((error = git_hash_update(&args->ctx, buf.ptr, buf.size)) < 0)
+		goto out;
+
+out:
+	git_buf_dispose(&buf);
+	return error;
+}
+
+int git_diff_patchid_init_options(git_diff_patchid_options *opts, unsigned int version)
+{
+	GIT_INIT_STRUCTURE_FROM_TEMPLATE(
+		opts, version, git_diff_patchid_options, GIT_DIFF_PATCHID_OPTIONS_INIT);
+	return 0;
+}
+
+int git_diff_patchid(git_oid *out, git_diff *diff, git_diff_patchid_options *opts)
+{
+	struct patch_id_args args;
+	int error;
+
+	GIT_ERROR_CHECK_VERSION(
+		opts, GIT_DIFF_PATCHID_OPTIONS_VERSION, "git_diff_patchid_options");
+
+	memset(&args, 0, sizeof(args));
+	args.first_file = 1;
+	if ((error = git_hash_ctx_init(&args.ctx)) < 0)
+		goto out;
+
+	if ((error = git_diff_foreach(diff, file_cb, NULL, NULL, line_cb, &args)) < 0)
+		goto out;
+
+	if ((error = (flush_hunk(&args.result, &args.ctx))) < 0)
+		goto out;
+
+	git_oid_cpy(out, &args.result);
+
+out:
+	git_hash_ctx_cleanup(&args.ctx);
+	return error;
+}

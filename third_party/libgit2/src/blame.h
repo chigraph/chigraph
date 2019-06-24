@@ -1,8 +1,9 @@
 #ifndef INCLUDE_blame_h__
 #define INCLUDE_blame_h__
 
-#include "git2/blame.h"
 #include "common.h"
+
+#include "git2/blame.h"
 #include "vector.h"
 #include "diff.h"
 #include "array.h"
@@ -66,6 +67,7 @@ typedef struct git_blame__entry {
 struct git_blame {
 	char *path;
 	git_repository *repository;
+	git_mailmap *mailmap;
 	git_blame_options options;
 
 	git_vector hunks;

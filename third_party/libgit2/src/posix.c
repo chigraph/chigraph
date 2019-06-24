@@ -4,8 +4,9 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
-#include "common.h"
+
 #include "posix.h"
+
 #include "path.h"
 #include <stdio.h>
 #include <ctype.h>
@@ -40,7 +41,7 @@ int p_getaddrinfo(
 	if (ainfo->ai_servent)
 		ainfo->ai_port = ainfo->ai_servent->s_port;
 	else
-		ainfo->ai_port = atol(port);
+		ainfo->ai_port = htons(atol(port));
 
 	memcpy(&ainfo->ai_addr_in.sin_addr,
 			ainfo->ai_hostent->h_addr_list[0],
@@ -242,17 +243,17 @@ int p_mmap(git_map *out, size_t len, int prot, int flags, int fd, git_off_t offs
 	out->len = 0;
 
 	if ((prot & GIT_PROT_WRITE) && ((flags & GIT_MAP_TYPE) == GIT_MAP_SHARED)) {
-		giterr_set(GITERR_OS, "trying to map shared-writeable");
+		git_error_set(GIT_ERROR_OS, "trying to map shared-writeable");
 		return -1;
 	}
 
 	out->data = malloc(len);
-	GITERR_CHECK_ALLOC(out->data);
+	GIT_ERROR_CHECK_ALLOC(out->data);
 
 	if (!git__is_ssizet(len) ||
 		(p_lseek(fd, offset, SEEK_SET) < 0) ||
 		(p_read(fd, out->data, len) != (ssize_t)len)) {
-		giterr_set(GITERR_OS, "mmap emulation failed");
+		git_error_set(GIT_ERROR_OS, "mmap emulation failed");
 		return -1;
 	}
 

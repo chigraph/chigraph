@@ -5,11 +5,12 @@
 #include <chi/LangModule.hpp>
 #include <chi/NodeType.hpp>
 #include <chi/Support/Result.hpp>
+#include <chi/Support/TempFile.hpp>
 
-#include <llvm/IR/DerivedTypes.h>
+#include <fstream>
 
 using namespace chi;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 TEST_CASE("Contexts can be created and modules can be added to them", "[Context]") {
 	GIVEN("A default constructed context") {
@@ -23,12 +24,11 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 		}
 
 		// create a workspace
-		fs::path workspaceDir =
-		    boost::filesystem::temp_directory_path() / fs::unique_path();  // this is a tmp file
+		fs::path workspaceDir = makeTempPath();
 		fs::create_directories(workspaceDir);
 
 		// create the .chigraphworkspace file
-		{ fs::ofstream stream{workspaceDir / ".chigraphworkspace"}; }
+		{ std::ofstream stream{workspaceDir / ".chigraphworkspace"}; }
 
 		THEN("It resolves workspace paths correctly") {
 			REQUIRE(workspaceFromChildPath(workspaceDir) == workspaceDir);
@@ -39,10 +39,11 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 
 		THEN("There will be no modules in it") { REQUIRE(c.modules().size() == 0); }
 		THEN("stringifyType return proper strings") {
-			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt32Ty(c.llvmContext())) == "i32");
-			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt1Ty(c.llvmContext())) == "i1");
-			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt32PtrTy(c.llvmContext())) == "i32*");
-			REQUIRE(stringifyLLVMType(llvm::IntegerType::getInt8Ty(c.llvmContext())) == "i8");
+			REQUIRE(stringifyLLVMType(LLVMInt32TypeInContext(c.llvmContext())) == "i32");
+			REQUIRE(stringifyLLVMType(LLVMInt1TypeInContext(c.llvmContext())) == "i1");
+			REQUIRE(stringifyLLVMType(
+			            LLVMPointerType(LLVMInt32TypeInContext(c.llvmContext()), 0)) == "i32*");
+			REQUIRE(stringifyLLVMType(LLVMInt8TypeInContext(c.llvmContext())) == "i8");
 		}
 
 		WHEN("A LangModule is created and added") {
@@ -93,7 +94,7 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 			}
 
 			THEN("getType should work for basic types") {
-				auto checkTy = [&](boost::string_view ty) {
+				auto checkTy = [&](std::string_view ty) {
 					DataType chigty;
 					res = c.typeFromModule("lang", ty, &chigty);
 					REQUIRE(stringifyLLVMType(chigty.llvmType()) == ty);
@@ -103,7 +104,11 @@ TEST_CASE("Contexts can be created and modules can be added to them", "[Context]
 				checkTy("i1");
 				checkTy("i32");
 				checkTy("i8*");
-				checkTy("float");
+
+				// float is special, it resolves to a double
+				DataType chigty;
+				res = c.typeFromModule("lang", "float", &chigty);
+				REQUIRE(stringifyLLVMType(chigty.llvmType()) == "double");
 			}
 
 			THEN("getType should fail for incorrect modules and types") {

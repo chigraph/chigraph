@@ -431,7 +431,7 @@ Result Subprocess::start() {
 
 	// child process
 	if (mPimpl->childPID == 0) {
-		boost::filesystem::current_path(mWorkingDir);
+		std::filesystem::current_path(mWorkingDir);
 
 		// make read end of stdin pipe the stdin stream, and same for the other pipes
 		dup2(mPimpl->stdinPipe[0], 0);
@@ -569,9 +569,9 @@ bool Subprocess::running() {
 namespace chi {
 
 // Common functions
-Subprocess::Subprocess(const boost::filesystem::path& path)
+Subprocess::Subprocess(const std::filesystem::path& path)
     : mPimpl{std::make_unique<Subprocess::Implementation>()}, mExePath{path} {
-	assert(boost::filesystem::is_regular_file(path) &&
+	assert(std::filesystem::is_regular_file(path) &&
 	       "the path passed to subprocess is not a regular file");
 }
 

@@ -4,43 +4,26 @@
 #ifndef CHI_FWD_HPP
 #define CHI_FWD_HPP
 
+#include <llvm-c/Types.h>
 #include "chi/Support/Fwd.hpp"
 
 namespace chi {
 struct ChiModule;
 struct Context;
 struct DataType;
+struct DataType;
+struct FunctionCompiler;
+struct Graph;
+struct GraphFunction;
+struct GraphModule;
+struct GraphStruct;
+struct LangModule;
+struct ModuleCache;
 struct NamedDataType;
 struct NodeCompiler;
-struct FunctionCompiler;
-struct GraphFunction;
-struct GraphStruct;
-struct Graph;
-struct GraphModule;
-struct LangModule;
 struct NodeInstance;
 struct NodeType;
-struct DataType;
-struct ModuleCache;
 struct PureCompiler;
-}
-
-// some basic LLVM stuff to make compiles speedy quick
-namespace llvm {
-class Module;
-class LLVMContext;
-class Type;
-class DIType;
-class DIBuilder;
-class DICompileUnit;
-class DISubprogram;
-class Function;
-class FunctionType;
-class BasicBlock;
-class IndirectBrInst;
-class DebugLoc;
-class Value;
-struct GenericValue;
-}
+}  // namespace chi
 
 #endif  // CHI_FWD_HPP

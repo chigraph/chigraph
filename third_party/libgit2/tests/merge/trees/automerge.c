@@ -55,7 +55,7 @@ static git_repository *repo;
 	  "", \
 	  "5c3b68a71fc4fa5d362fd3875e53137c6a5ab7a5" }
 
-// Fixture setup and teardown
+/* Fixture setup and teardown */
 void test_merge_trees_automerge__initialize(void)
 {
 	repo = cl_git_sandbox_init(TEST_REPO_PATH);
@@ -100,7 +100,7 @@ void test_merge_trees_automerge__automerge(void)
 	cl_assert((entry = git_index_get_bypath(index, "automergeable.txt", 0)) != NULL);
 	cl_assert(entry->file_size == strlen(AUTOMERGEABLE_MERGED_FILE));
 
-	cl_git_pass(git_object_lookup((git_object **)&blob, repo, &entry->id, GIT_OBJ_BLOB));
+	cl_git_pass(git_object_lookup((git_object **)&blob, repo, &entry->id, GIT_OBJECT_BLOB));
 	cl_assert(memcmp(git_blob_rawcontent(blob), AUTOMERGEABLE_MERGED_FILE, (size_t)entry->file_size) == 0);
 
 	git_index_free(index);

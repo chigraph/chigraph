@@ -64,8 +64,8 @@ typedef struct {
 	/**
 	 * If cert verification fails, this will be called to let the
 	 * user make the final decision of whether to allow the
-	 * connection to proceed. Returns 1 to allow the connection, 0
-	 * to disallow it or a negative value to indicate an error.
+	 * connection to proceed. Returns 0 to allow the connection
+	 * or a negative value to indicate an error.
 	 */
         git_transport_certificate_check_cb certificate_check;
 
@@ -80,10 +80,14 @@ typedef struct {
 #define GIT_PROXY_OPTIONS_INIT {GIT_PROXY_OPTIONS_VERSION}
 
 /**
- * Initialize a proxy options structure
+ * Initialize git_proxy_options structure
  *
- * @param opts the options struct to initialize
- * @param version the version of the struct, use `GIT_PROXY_OPTIONS_VERSION`
+ * Initializes a `git_proxy_options` with default values. Equivalent to
+ * creating an instance with `GIT_PROXY_OPTIONS_INIT`.
+ *
+ * @param opts The `git_proxy_options` struct to initialize.
+ * @param version The struct version; pass `GIT_PROXY_OPTIONS_VERSION`.
+ * @return Zero on success; -1 on failure.
  */
 GIT_EXTERN(int) git_proxy_init_options(git_proxy_options *opts, unsigned int version);
 

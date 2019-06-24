@@ -7,16 +7,12 @@
 #define CHI_FUNCTION_COMPILER_HPP
 
 #include "chi/Fwd.hpp"
-#include "chi/LLVMVersion.hpp"
 #include "chi/NodeCompiler.hpp"
-
-#include <llvm/IR/DebugInfo.h>
 
 #include <memory>
 #include <unordered_map>
 
 #include <boost/bimap.hpp>
-#include <boost/utility/string_view.hpp>
 
 namespace chi {
 
@@ -25,10 +21,10 @@ struct FunctionCompiler {
 	/// Constructor
 	/// \param func The function to compile
 	/// \param moduleToGenInto The module to create the function in
-	/// \param debugCU The compile unit we're in
+	/// \param debugCU The compile unit we're in, this is a DICompileUnit
 	/// \param debugBuilder The Debug information builder for the module
-	FunctionCompiler(const GraphFunction& func, llvm::Module& moduleToGenInto,
-	                 llvm::DICompileUnit& debugCU, llvm::DIBuilder& debugBuilder);
+	FunctionCompiler(const GraphFunction& func, LLVMModuleRef moduleToGenInto,
+	                 LLVMMetadataRef debugCU, LLVMDIBuilderRef debugBuilder);
 
 	/// Creates the function, but don't actually generate into it
 	/// \pre `initialized() == false`
@@ -44,33 +40,14 @@ struct FunctionCompiler {
 	/// \return The Result
 	Result compile();
 
-	using DebugFunctionType =
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	    llvm::DICompositeType
-#else
-	    llvm::DISubroutineType*
-#endif
-	    ;
-
 	/// Create the subroutine type for the function
 	/// \return The subroutine type
-	DebugFunctionType createSubroutineType();
-
-	using DebugFunction = llvm::DISubprogram
-#if LLVM_VERSION_AT_LEAST(3, 7)
-	    *
-#endif
-	    ;
-	using DebugFile = llvm::DIFile
-#if LLVM_VERSION_AT_LEAST(3, 7)
-	    *
-#endif
-	    ;
+	LLVMMetadataRef createSubroutineType();
 
 	/// Get the debug function.
 	/// \pre `initialized() == true`
 	/// \return The debug function
-	DebugFunction diFunction() {
+	LLVMMetadataRef diFunction() {
 		assert(initialized() &&
 		       "Please initialize the function compiler before getting the debug function");
 		return mDebugFunc;
@@ -78,46 +55,50 @@ struct FunctionCompiler {
 
 	/// Get the module being generated
 	/// \return The Module
-	llvm::Module& llvmModule() const { return *mModule; }
+	LLVMModuleRef llvmModule() const { return mModule; }
 
 	/// The debug builder we're using for the module
 	/// \return The DIBuilder
-	llvm::DIBuilder& diBuilder() const { return *mDIBuilder; }
+	LLVMDIBuilderRef diBuilder() const { return mDIBuilder; }
 
 	/// The compile unit for the module
 	/// \return The DICompileUnit
-	llvm::DICompileUnit* debugCompileUnit() const { return mDebugCU; }
+	LLVMMetadataRef debugCompileUnit() const { return mDebugCU; }
+
+	/// The debug file that this function is in
+	/// \return The debug file
+	LLVMMetadataRef debugFile() const { return mDIFile; }
 
 	/// The block for allocating variables at the beginning of the function
 	/// \pre `initialized() == true`
 	/// \return The alloc block
-	llvm::BasicBlock& allocBlock() const {
+	LLVMBasicBlockRef allocBlock() const {
 		assert(initialized() &&
 		       "Please initialize the function compiler before getting the alloc block");
-		return *mAllocBlock;
+		return mAllocBlock;
 	}
 
 	/// Get the value for a local variable
 	/// \pre `initialized() == true`
 	/// \return nullptr if it doesn't exist. A value if it's valid.
-	llvm::Value* localVariable(boost::string_view name);
+	LLVMValueRef localVariable(std::string_view name);
 
 	/// Get the llvm function this compiler is generating
 	/// \pre `initialized() == true`
 	/// \return The function.
-	llvm::Function& llFunction() const {
+	LLVMValueRef llFunction() const {
 		assert(initialized() &&
 		       "Please initialize the function compiler before trying to get the LLVM function");
-		return *mLLFunction;
+		return mLLFunction;
 	}
 
 	/// Get the value for the address to jump back to
 	/// \pre `initialized() == true`
 	/// \return The value
-	llvm::Value& postPureBreak() const {
+	LLVMValueRef postPureBreak() const {
 		assert(initialized() &&
 		       "Please initialize the function compiler before trying to get the post-pure break");
-		return *mPostPureBreak;
+		return mPostPureBreak;
 	}
 
 	/// Get the graph function
@@ -158,18 +139,18 @@ struct FunctionCompiler {
 	NodeCompiler* getOrCreateNodeCompiler(NodeInstance& node);
 
 private:
-	std::unordered_map<std::string, llvm::Value*> mLocalVariables;
+	std::unordered_map<std::string, LLVMValueRef> mLocalVariables;
 
-	llvm::Module*        mModule    = nullptr;
-	llvm::DIBuilder*     mDIBuilder = nullptr;
-	llvm::DICompileUnit* mDebugCU   = nullptr;
-	DebugFile            mDIFile{};
-	DebugFunction        mDebugFunc{};
+	LLVMModuleRef    mModule    = nullptr;
+	LLVMDIBuilderRef mDIBuilder = nullptr;
+	LLVMMetadataRef  mDebugCU   = nullptr;
+	LLVMMetadataRef  mDIFile{};
+	LLVMMetadataRef  mDebugFunc{};
 
 	const GraphFunction* mFunction = nullptr;
 
-	llvm::Function*   mLLFunction = nullptr;
-	llvm::BasicBlock* mAllocBlock = nullptr;
+	LLVMValueRef      mLLFunction = nullptr;
+	LLVMBasicBlockRef mAllocBlock = nullptr;
 
 	std::unordered_map<NodeInstance*, NodeCompiler> mNodeCompilers;
 
@@ -178,7 +159,7 @@ private:
 	bool mInitialized = false;
 	bool mCompiled    = false;
 
-	llvm::Value* mPostPureBreak = nullptr;
+	LLVMValueRef mPostPureBreak = nullptr;
 };
 
 /// Compile the graph to an \c llvm::Function (usually called from JsonModule::generateModule)
@@ -187,8 +168,8 @@ private:
 /// \param debugCU The compilation unit that the GraphFunction resides in.
 /// \param debugBuilder The debug builder to build debug info
 /// \return The result
-Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
-                       llvm::DIBuilder& debugBuilder);
+Result compileFunction(const GraphFunction& func, LLVMModuleRef mod, LLVMMetadataRef debugCU,
+                       LLVMDIBuilderRef debugBuilder);
 }  // namespace chi
 
 #endif  // CHI_FUNCTION_COMPILER_HPP

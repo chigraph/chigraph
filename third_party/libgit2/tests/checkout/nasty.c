@@ -42,7 +42,7 @@ static void test_checkout_passes(const char *refname, const char *filename)
 	cl_assert(!git_path_exists(path.ptr));
 
 	git_commit_free(commit);
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 static void test_checkout_fails(const char *refname, const char *filename)
@@ -63,7 +63,7 @@ static void test_checkout_fails(const char *refname, const char *filename)
 	cl_assert(!git_path_exists(path.ptr));
 
 	git_commit_free(commit);
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 /* A tree that contains ".git" as a tree, with a blob inside
@@ -364,3 +364,15 @@ void test_checkout_nasty__symlink3(void)
 	test_checkout_passes("refs/heads/symlink3", ".git/foobar");
 }
 
+void test_checkout_nasty__gitmodules_symlink(void)
+{
+	cl_repo_set_bool(repo, "core.protectHFS", true);
+	test_checkout_fails("refs/heads/gitmodules-symlink", ".gitmodules");
+	cl_repo_set_bool(repo, "core.protectHFS", false);
+
+	cl_repo_set_bool(repo, "core.protectNTFS", true);
+	test_checkout_fails("refs/heads/gitmodules-symlink", ".gitmodules");
+	cl_repo_set_bool(repo, "core.protectNTFS", false);
+
+	test_checkout_fails("refs/heads/gitmodules-symlink", ".gitmodules");
+}

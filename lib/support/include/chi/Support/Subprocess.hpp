@@ -7,9 +7,8 @@
 
 #include "chi/Support/Fwd.hpp"
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
 #include <boost/optional.hpp>
+#include <filesystem>
 
 #include <chrono>
 #include <string>
@@ -54,8 +53,8 @@ struct Subprocess {
 	using pipeHandler = std::function<void(const char* data, size_t size)>;
 
 	/// Construct a Subprocess with a path to an executable
-	/// \pre `boost::filesystem::is_regular_file(pathToExecutable)`
-	Subprocess(const boost::filesystem::path& pathToExecutable);
+	/// \pre `std::filesystem::is_regular_file(pathToExecutable)`
+	Subprocess(const std::filesystem::path& pathToExecutable);
 
 	/// Wait for the process to exit and close all open handles
 	~Subprocess();
@@ -150,7 +149,7 @@ struct Subprocess {
 	/// Set the working directory of the process.
 	/// \param newWd The new working directory
 	/// \pre `started() == false`
-	void setWorkingDirectory(boost::filesystem::path newWd) { mWorkingDir = std::move(newWd); }
+	void setWorkingDirectory(std::filesystem::path newWd) { mWorkingDir = std::move(newWd); }
 
 	/// \}
 
@@ -217,9 +216,9 @@ private:
 	pipeHandler mStdOutHandler;
 	pipeHandler mStdErrHandler;
 
-	boost::filesystem::path mExePath;
+	std::filesystem::path mExePath;
 
-	boost::filesystem::path mWorkingDir = boost::filesystem::current_path();
+	std::filesystem::path mWorkingDir = std::filesystem::current_path();
 
 	bool mStarted     = false;
 	bool mStdInClosed = false;

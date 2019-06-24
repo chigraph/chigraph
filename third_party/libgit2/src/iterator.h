@@ -8,6 +8,7 @@
 #define INCLUDE_iterator_h__
 
 #include "common.h"
+
 #include "git2/index.h"
 #include "vector.h"
 #include "buffer.h"
@@ -38,6 +39,10 @@ typedef enum {
 	GIT_ITERATOR_DONT_PRECOMPOSE_UNICODE = (1u << 5),
 	/** include conflicts */
 	GIT_ITERATOR_INCLUDE_CONFLICTS = (1u << 6),
+	/** descend into symlinked directories */
+	GIT_ITERATOR_DESCEND_SYMLINKS = (1u << 7),
+	/** hash files in workdir or filesystem iterators */
+	GIT_ITERATOR_INCLUDE_HASH = (1u << 8),
 } git_iterator_flag_t;
 
 typedef enum {
@@ -285,6 +290,19 @@ extern int git_iterator_current_workdir_path(
  * Only implemented for the workdir and index iterators.
  */
 extern git_index *git_iterator_index(git_iterator *iter);
+
+typedef int (*git_iterator_foreach_cb)(
+	const git_index_entry *entry,
+	void *data);
+
+/**
+ * Walk the given iterator and invoke the callback for each path
+ * contained in the iterator.
+ */
+extern int git_iterator_foreach(
+	git_iterator *iterator,
+	git_iterator_foreach_cb cb,
+	void *data);
 
 typedef int (*git_iterator_walk_cb)(
 	const git_index_entry **entries,

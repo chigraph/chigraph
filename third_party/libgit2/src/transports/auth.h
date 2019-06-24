@@ -5,8 +5,10 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
-#ifndef INCLUDE_http_auth_h__
-#define INCLUDE_http_auth_h__
+#ifndef INCLUDE_transports_auth_h__
+#define INCLUDE_transports_auth_h__
+
+#include "common.h"
 
 #include "git2.h"
 #include "netops.h"
@@ -29,7 +31,7 @@ struct git_http_auth_context {
 	int (*set_challenge)(git_http_auth_context *ctx, const char *challenge);
 
 	/** Gets the next authentication token from the context */
-	int (*next_token)(git_buf *out, git_http_auth_context *ctx, git_cred *cred);
+	int (*next_token)(git_buf *out, git_http_auth_context *ctx, const char *header_name, git_cred *cred);
 
 	/** Frees the authentication context */
 	void (*free)(git_http_auth_context *ctx);
@@ -60,4 +62,3 @@ int git_http_auth_basic(
 	const gitno_connection_data *connection_data);
 
 #endif
-

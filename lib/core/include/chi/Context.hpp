@@ -14,11 +14,9 @@
 #include "chi/Support/Flags.hpp"
 #include "chi/Support/json.hpp"
 
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/Support/CodeGen.h>  // for CodeGenOpt
+#include <filesystem>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/utility/string_view.hpp>
+#include <llvm-c/TargetMachine.h>
 
 namespace chi {
 
@@ -55,7 +53,7 @@ enum class CompileSettings {
 struct Context {
 	/// Creates a context with just the lang module
 	/// \param workPath Path to the workspace, or a subdirectory of the workspace
-	Context(const boost::filesystem::path& workPath = {});
+	Context(const std::filesystem::path& workPath = {});
 
 	/// Destructor
 	~Context();
@@ -68,12 +66,12 @@ struct Context {
 	/// \param fullModuleName The name of the module to find
 	/// \return ret_module The module that has the full name \c fullModuleName, nullptr if none were
 	/// found
-	ChiModule* moduleByFullName(const boost::filesystem::path& fullModuleName) const noexcept;
+	ChiModule* moduleByFullName(const std::filesystem::path& fullModuleName) const noexcept;
 
 	/// Create a new GraphModule with the given full name
 	/// \param fullName The new name
 	/// \return The created GraphModule
-	GraphModule* newGraphModule(const boost::filesystem::path& fullName);
+	GraphModule* newGraphModule(const std::filesystem::path& fullName);
 
 	/// Get the list of modules in the workspace
 	/// \return The module list
@@ -86,14 +84,14 @@ struct Context {
 	/// to fetch all dependencies as well. Leave as default to only use local modules.
 	/// \param[out] toFill The module that was loaded, optional
 	/// \return The result
-	Result loadModule(const boost::filesystem::path& name, ChiModule** toFill = nullptr);
+	Result loadModule(const std::filesystem::path& name, ChiModule** toFill = nullptr);
 
 	/// Load a module from JSON -- avoid this use the string overload
 	/// \param[in] fullName The full path of the module, including URL
 	/// \param[in] json The JSON data
 	/// \param[out] toFill The GraphModule* to fill into, optional
 	/// \return The Result
-	Result addModuleFromJson(const boost::filesystem::path& fullName, const nlohmann::json& json,
+	Result addModuleFromJson(const std::filesystem::path& fullName, const nlohmann::json& json,
 	                         GraphModule** toFill = nullptr);
 
 	/// Adds a custom module to the Context
@@ -104,7 +102,7 @@ struct Context {
 	/// Unloads a module
 	/// \param fullName The full name of the module to unload
 	/// \return True if a module was unloaded
-	bool unloadModule(const boost::filesystem::path& fullName);
+	bool unloadModule(const std::filesystem::path& fullName);
 
 	/// Gets a DataType from a module
 	/// \param[in] module The full name of the module
@@ -112,7 +110,7 @@ struct Context {
 	/// \param[out] toFill The type to fill
 	/// \pre `toFill != nullptr`
 	/// \return The result
-	Result typeFromModule(const boost::filesystem::path& module, boost::string_view name,
+	Result typeFromModule(const std::filesystem::path& module, std::string_view name,
 	                      DataType* toFill) noexcept;
 
 	/// Gets a NodeType from the JSON and name
@@ -123,19 +121,20 @@ struct Context {
 	/// \pre `toFill != nullptr` (the value the `unique_ptr` points to be can be null, but not the
 	/// pointer to the `unique_ptr`)
 	/// \return The Result
-	Result nodeTypeFromModule(const boost::filesystem::path& moduleName,
-	                          boost::string_view typeName, const nlohmann::json& data,
+	Result nodeTypeFromModule(const std::filesystem::path& moduleName, std::string_view typeName,
+	                          const nlohmann::json&      data,
 	                          std::unique_ptr<NodeType>* toFill) noexcept;
-							  
+
 	/// Create a converter node
 	/// \param[in] fromType The type to convert from
 	/// \param[in] toType The type to convert to
 	/// \return The node type, or nullptr
-	std::unique_ptr<NodeType> createConverterNodeType(const DataType& fromType, const DataType& toType);
+	std::unique_ptr<NodeType> createConverterNodeType(const DataType& fromType,
+	                                                  const DataType& toType);
 
 	/// Get the workspace path of the Context
 	/// \return The workspace path
-	boost::filesystem::path workspacePath() const { return mWorkspacePath; }
+	std::filesystem::path workspacePath() const { return mWorkspacePath; }
 	/// Check if this context has a workspace bound to it -- same as !workspacePath().empty()
 	/// \return If it has a workspace
 	bool hasWorkspace() const noexcept { return !workspacePath().empty(); }
@@ -148,8 +147,8 @@ struct Context {
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \return The `Result`
-	Result compileModule(const boost::filesystem::path& fullName, Flags<CompileSettings> settings,
-	                     std::unique_ptr<llvm::Module>* toFill);
+	Result compileModule(const std::filesystem::path& fullName, Flags<CompileSettings> settings,
+	                     OwnedLLVMModule* toFill);
 
 	/// Compile a module to a \c llvm::Module
 	/// \param[in] mod The module to compile
@@ -158,19 +157,18 @@ struct Context {
 	/// \pre `toFill != nullptr` (the value the `unique_ptr` points to be can be null, but not the
 	/// pointer to the `unique_ptr`)
 	/// \return The `Result`
-	Result compileModule(ChiModule& mod, Flags<CompileSettings> settings,
-	                     std::unique_ptr<llvm::Module>* toFill);
+	Result compileModule(ChiModule& mod, Flags<CompileSettings> settings, OwnedLLVMModule* toFill);
 
 	/// Find all uses of a node type in all the loaded modules
 	/// \param moduleName The name of the module that the type being search for is in
 	/// \param typeName The name of the type in `module` to search for
 	/// \return All the `NodeInstance`s that are of that type
-	std::vector<NodeInstance*> findInstancesOfType(const boost::filesystem::path& moduleName,
-	                                               boost::string_view             typeName) const;
+	std::vector<NodeInstance*> findInstancesOfType(const std::filesystem::path& moduleName,
+	                                               std::string_view             typeName) const;
 
 	/// Get the `LLVMContext`
 	/// \return The `LLVMContext`
-	llvm::LLVMContext& llvmContext() { return mLLVMContext; }
+	LLVMContextRef llvmContext() { return *mLLVMContext; }
 
 	/// Get the `LangModule`, if it has been loaded
 	/// \return The `LangModule`
@@ -198,22 +196,35 @@ struct Context {
 	/// \pre `newCache != nullptr`
 	void setModuleCache(std::unique_ptr<ModuleCache> newCache);
 
-private:
-	boost::filesystem::path mWorkspacePath;
+	// Helpers
 
-	llvm::LLVMContext mLLVMContext;
+	/// Get a constant i32
+	LLVMValueRef constI32(int32_t value);
+
+	/// Get a constant f64
+	LLVMValueRef constF64(double value);
+
+	// Get a constant bool
+	LLVMValueRef constBool(bool value);
+
+private:
+	std::filesystem::path mWorkspacePath;
+
+	OwnedLLVMContext mLLVMContext;
 
 	std::vector<std::unique_ptr<ChiModule>> mModules;
 
 	// This cache is only for use during compilation to not duplicate modules
-	std::unordered_map<std::string /*full name*/, llvm::Module* /*the compiled module*/>
+	std::unordered_map<std::string /*full name*/, LLVMModuleRef /*the compiled module*/>
 	    mCompileCache;
 
 	LangModule* mLangModule = nullptr;
 
 	std::unique_ptr<ModuleCache> mModuleCache;
-	
-	std::unordered_map<std::string /*from Type*/, std::unordered_map<std::string /*to type*/, std::unique_ptr<NodeType>>> mTypeConverters;
+
+	std::unordered_map<std::string /*from Type*/,
+	                   std::unordered_map<std::string /*to type*/, std::unique_ptr<NodeType>>>
+	    mTypeConverters;
 };
 
 /// Get the workspace directory from a child of the workspace directory
@@ -221,12 +232,12 @@ private:
 /// If you used this with ~/chi/src/ it would return ~/chi/
 /// \param path The child path
 /// \return The workspace path, or an empty path if it wasn't found
-boost::filesystem::path workspaceFromChildPath(const boost::filesystem::path& path);
+std::filesystem::path workspaceFromChildPath(const std::filesystem::path& path);
 
 /// Turns a type into a string
 /// \param ty The type to stringify
 /// \return The return string
-std::string stringifyLLVMType(llvm::Type* ty);
+std::string stringifyLLVMType(LLVMTypeRef ty);
 
 /// Interpret LLVM IR, just a convenience function
 /// \param[in] mod The LLVM Module to interpret
@@ -236,10 +247,9 @@ std::string stringifyLLVMType(llvm::Type* ty);
 /// \param[in] funcToRun The function to run. By default it uses "main".
 /// \param[out] ret The `GenericValue` to fill with the result of the function. Optional
 /// \return The Result
-Result interpretLLVMIR(std::unique_ptr<llvm::Module>          mod,
-                       llvm::CodeGenOpt::Level                optLevel = llvm::CodeGenOpt::Default,
-                       const std::vector<llvm::GenericValue>& args     = {},
-                       llvm::Function* funcToRun = nullptr, llvm::GenericValue* ret = nullptr);
+Result interpretLLVMIR(OwnedLLVMModule mod, LLVMCodeGenOptLevel optLevel = LLVMCodeGenLevelDefault,
+                       std::vector<LLVMGenericValueRef> args = {}, LLVMValueRef funcToRun = nullptr,
+                       LLVMGenericValueRef* ret = nullptr);
 
 /// Interpret LLVM IR as if it were the main function
 /// \param[in] mod The module to interpret
@@ -248,10 +258,10 @@ Result interpretLLVMIR(std::unique_ptr<llvm::Module>          mod,
 /// \param[in] funcToRun The function, defaults to "main" from `mod`
 /// \param[out] ret The return from main. Optional.
 /// \return The Result
-Result interpretLLVMIRAsMain(std::unique_ptr<llvm::Module>   mod,
-                             llvm::CodeGenOpt::Level         optLevel = llvm::CodeGenOpt::Default,
+Result interpretLLVMIRAsMain(OwnedLLVMModule                 mod,
+                             LLVMCodeGenOptLevel             optLevel = LLVMCodeGenLevelDefault,
                              const std::vector<std::string>& args     = {},
-                             llvm::Function* funcToRun = nullptr, int* ret = nullptr);
+                             LLVMValueRef funcToRun = nullptr, int* ret = nullptr);
 }  // namespace chi
 
 #endif  // CHI_CONTEXT_HPP

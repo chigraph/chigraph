@@ -17,8 +17,8 @@ if (NOT EXISTS "${CLANG_EXE}")
 endif()
 message(STATUS "Clang found at: ${CLANG_EXE}")
 
-if("CG_RUNTIME_COMPILER" STREQUAL "")
-    if ("LLVM_VERSION" STREQUAL 3.5)
+if(CG_RUNTIME_COMPILER STREQUAL "")
+    if (LLVM_VERSION STREQUAL 3.5)
         message(FATAL_ERROR "For llvm 3.5, a runtime compiler must be specified or else the runtimr will not compile")
 	
     endif()

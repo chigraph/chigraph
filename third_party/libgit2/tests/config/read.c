@@ -6,7 +6,7 @@ static git_buf buf = GIT_BUF_INIT;
 
 void test_config_read__cleanup(void)
 {
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_config_read__simple_read(void)
@@ -289,9 +289,9 @@ void test_config_read__foreach(void)
 
 	cl_git_pass(git_config_new(&cfg));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config9"),
-		GIT_CONFIG_LEVEL_SYSTEM, 0));
+		GIT_CONFIG_LEVEL_SYSTEM, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config15"),
-		GIT_CONFIG_LEVEL_GLOBAL, 0));
+		GIT_CONFIG_LEVEL_GLOBAL, NULL, 0));
 
 	count = 0;
 	cl_git_pass(git_config_foreach(cfg, count_cfg_entries_and_compare_levels, &count));
@@ -306,6 +306,15 @@ void test_config_read__foreach(void)
 
 void test_config_read__iterator(void)
 {
+	const char *keys[] = {
+		"core.dummy2",
+		"core.verylong",
+		"core.dummy",
+		"remote.ab.url",
+		"remote.abba.url",
+		"core.dummy2",
+		"core.global"
+	};
 	git_config *cfg;
 	git_config_iterator *iter;
 	git_config_entry *entry;
@@ -313,14 +322,15 @@ void test_config_read__iterator(void)
 
 	cl_git_pass(git_config_new(&cfg));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config9"),
-		GIT_CONFIG_LEVEL_SYSTEM, 0));
+		GIT_CONFIG_LEVEL_SYSTEM, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config15"),
-		GIT_CONFIG_LEVEL_GLOBAL, 0));
+		GIT_CONFIG_LEVEL_GLOBAL, NULL, 0));
 
 	count = 0;
 	cl_git_pass(git_config_iterator_new(&iter, cfg));
 
 	while ((ret = git_config_next(&entry, iter)) == 0) {
+		cl_assert_equal_s(entry->name, keys[count]);
 		count++;
 	}
 
@@ -445,7 +455,7 @@ void test_config_read__read_git_config_entry(void)
 
 	cl_git_pass(git_config_new(&cfg));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config9"),
-		GIT_CONFIG_LEVEL_SYSTEM, 0));
+		GIT_CONFIG_LEVEL_SYSTEM, NULL, 0));
 
 	cl_git_pass(git_config_get_entry(&entry, cfg, "core.dummy2"));
 	cl_assert_equal_s("core.dummy2", entry->name);
@@ -469,11 +479,11 @@ void test_config_read__local_config_overrides_global_config_overrides_system_con
 
 	cl_git_pass(git_config_new(&cfg));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config9"),
-		GIT_CONFIG_LEVEL_SYSTEM, 0));
+		GIT_CONFIG_LEVEL_SYSTEM, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config15"),
-		GIT_CONFIG_LEVEL_GLOBAL, 0));
+		GIT_CONFIG_LEVEL_GLOBAL, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config16"),
-		GIT_CONFIG_LEVEL_LOCAL, 0));
+		GIT_CONFIG_LEVEL_LOCAL, NULL, 0));
 
 	cl_git_pass(git_config_get_int32(&i, cfg, "core.dummy2"));
 	cl_assert_equal_i(28, i);
@@ -482,9 +492,9 @@ void test_config_read__local_config_overrides_global_config_overrides_system_con
 
 	cl_git_pass(git_config_new(&cfg));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config9"),
-		GIT_CONFIG_LEVEL_SYSTEM, 0));
+		GIT_CONFIG_LEVEL_SYSTEM, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config15"),
-		GIT_CONFIG_LEVEL_GLOBAL, 0));
+		GIT_CONFIG_LEVEL_GLOBAL, NULL, 0));
 
 	cl_git_pass(git_config_get_int32(&i, cfg, "core.dummy2"));
 	cl_assert_equal_i(7, i);
@@ -510,16 +520,36 @@ void test_config_read__fallback_from_local_to_global_and_from_global_to_system(v
 
 	cl_git_pass(git_config_new(&cfg));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config9"),
-		GIT_CONFIG_LEVEL_SYSTEM, 0));
+		GIT_CONFIG_LEVEL_SYSTEM, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config15"),
-		GIT_CONFIG_LEVEL_GLOBAL, 0));
+		GIT_CONFIG_LEVEL_GLOBAL, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config16"),
-		GIT_CONFIG_LEVEL_LOCAL, 0));
+		GIT_CONFIG_LEVEL_LOCAL, NULL, 0));
 
 	cl_git_pass(git_config_get_int32(&i, cfg, "core.global"));
 	cl_assert_equal_i(17, i);
 	cl_git_pass(git_config_get_int32(&i, cfg, "core.system"));
 	cl_assert_equal_i(11, i);
+
+	git_config_free(cfg);
+}
+
+void test_config_read__parent_dir_is_file(void)
+{
+	git_config *cfg;
+	int count;
+
+	cl_git_pass(git_config_new(&cfg));
+	/*
+	 * Verify we can add non-existing files when the parent directory is not
+	 * a directory.
+	 */
+	cl_git_pass(git_config_add_file_ondisk(cfg, "/dev/null/.gitconfig",
+		GIT_CONFIG_LEVEL_SYSTEM, NULL, 0));
+
+	count = 0;
+	cl_git_pass(git_config_foreach(cfg, count_cfg_entries_and_compare_levels, &count));
+	cl_assert_equal_i(0, count);
 
 	git_config_free(cfg);
 }
@@ -546,9 +576,9 @@ void test_config_read__simple_read_from_specific_level(void)
 
 	cl_git_pass(git_config_new(&cfg));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config18"),
-		GIT_CONFIG_LEVEL_GLOBAL, 0));
+		GIT_CONFIG_LEVEL_GLOBAL, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, cl_fixture("config/config19"),
-		GIT_CONFIG_LEVEL_SYSTEM, 0));
+		GIT_CONFIG_LEVEL_SYSTEM, NULL, 0));
 
 	cl_git_pass(git_config_open_level(&cfg_specific, cfg, GIT_CONFIG_LEVEL_GLOBAL));
 
@@ -678,28 +708,136 @@ void test_config_read__path(void)
 	cl_git_pass(git_config_open_ondisk(&cfg, "./testconfig"));
 	cl_git_pass(git_config_get_path(&path, cfg, "some.path"));
 	cl_assert_equal_s(expected_path.ptr, path.ptr);
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 
 	cl_git_mkfile("./testconfig", "[some]\n path = ~/");
 	cl_git_pass(git_path_join_unrooted(&expected_path, "", home_path.ptr, NULL));
 
 	cl_git_pass(git_config_get_path(&path, cfg, "some.path"));
 	cl_assert_equal_s(expected_path.ptr, path.ptr);
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 
 	cl_git_mkfile("./testconfig", "[some]\n path = ~");
 	cl_git_pass(git_buf_sets(&expected_path, home_path.ptr));
 
 	cl_git_pass(git_config_get_path(&path, cfg, "some.path"));
 	cl_assert_equal_s(expected_path.ptr, path.ptr);
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 
 	cl_git_mkfile("./testconfig", "[some]\n path = ~user/foo");
 	cl_git_fail(git_config_get_path(&path, cfg, "some.path"));
 
 	cl_git_pass(git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_GLOBAL, old_path.ptr));
-	git_buf_free(&old_path);
-	git_buf_free(&home_path);
-	git_buf_free(&expected_path);
+	git_buf_dispose(&old_path);
+	git_buf_dispose(&home_path);
+	git_buf_dispose(&expected_path);
+	git_config_free(cfg);
+}
+
+void test_config_read__crlf_style_line_endings(void)
+{
+	git_buf buf = GIT_BUF_INIT;
+	git_config *cfg;
+
+	cl_set_cleanup(&clean_test_config, NULL);
+	cl_git_mkfile("./testconfig", "[some]\r\n var = value\r\n");
+	cl_git_pass(git_config_open_ondisk(&cfg, "./testconfig"));
+	cl_git_pass(git_config_get_string_buf(&buf, cfg, "some.var"));
+	cl_assert_equal_s(buf.ptr, "value");
+
+	git_config_free(cfg);
+	git_buf_dispose(&buf);
+}
+
+void test_config_read__trailing_crlf(void)
+{
+	git_buf buf = GIT_BUF_INIT;
+	git_config *cfg;
+
+	cl_set_cleanup(&clean_test_config, NULL);
+	cl_git_mkfile("./testconfig", "[some]\r\n var = value\r\n\r\n");
+	cl_git_pass(git_config_open_ondisk(&cfg, "./testconfig"));
+	cl_git_pass(git_config_get_string_buf(&buf, cfg, "some.var"));
+	cl_assert_equal_s(buf.ptr, "value");
+
+	git_config_free(cfg);
+	git_buf_dispose(&buf);
+}
+
+void test_config_read__bom(void)
+{
+	git_buf buf = GIT_BUF_INIT;
+	git_config *cfg;
+
+	cl_set_cleanup(&clean_test_config, NULL);
+	cl_git_mkfile("./testconfig", "\xEF\xBB\xBF[some]\n var = value\n");
+	cl_git_pass(git_config_open_ondisk(&cfg, "./testconfig"));
+	cl_git_pass(git_config_get_string_buf(&buf, cfg, "some.var"));
+	cl_assert_equal_s(buf.ptr, "value");
+
+	git_config_free(cfg);
+	git_buf_dispose(&buf);
+}
+
+void test_config_read__single_line(void)
+{
+	git_buf buf = GIT_BUF_INIT;
+	git_config *cfg;
+
+	cl_set_cleanup(&clean_test_config, NULL);
+	cl_git_mkfile("./testconfig", "[some] var = value\n[some \"OtheR\"] var = value");
+	cl_git_pass(git_config_open_ondisk(&cfg, "./testconfig"));
+	cl_git_pass(git_config_get_string_buf(&buf, cfg, "some.var"));
+	cl_assert_equal_s(buf.ptr, "value");
+
+	git_buf_clear(&buf);
+	cl_git_pass(git_config_get_string_buf(&buf, cfg, "some.OtheR.var"));
+	cl_assert_equal_s(buf.ptr, "value");
+
+	git_config_free(cfg);
+	cl_git_mkfile("./testconfig", "[some] var = value\n[some \"OtheR\"]var = value");
+	cl_git_pass(git_config_open_ondisk(&cfg, "./testconfig"));
+	git_buf_clear(&buf);
+	cl_git_pass(git_config_get_string_buf(&buf, cfg, "some.var"));
+	cl_assert_equal_s(buf.ptr, "value");
+
+	git_buf_clear(&buf);
+	cl_git_pass(git_config_get_string_buf(&buf, cfg, "some.OtheR.var"));
+	cl_assert_equal_s(buf.ptr, "value");
+
+	git_config_free(cfg);
+	git_buf_dispose(&buf);
+}
+
+static int read_nosection_cb(const git_config_entry *entry, void *payload) {
+	int *seen = (int*)payload;
+	if (strcmp(entry->name, "key") == 0) {
+		(*seen)++;
+	}
+	return 0;
+}
+
+/* This would ideally issue a warning, if we had a way to do so. */
+void test_config_read__nosection(void)
+{
+	git_config *cfg;
+	git_buf buf = GIT_BUF_INIT;
+	int seen = 0;
+
+	cl_git_pass(git_config_open_ondisk(&cfg, cl_fixture("config/config-nosection")));
+
+	/*
+	 * Given a key with no section, we do not allow reading it,
+	 * but we do include it in an iteration over the config
+	 * store. This appears to match how git's own APIs (and
+	 * git-config(1)) behave.
+	 */
+
+	cl_git_fail_with(git_config_get_string_buf(&buf, cfg, "key"), GIT_EINVALIDSPEC);
+
+	cl_git_pass(git_config_foreach(cfg, read_nosection_cb, &seen));
+	cl_assert_equal_i(seen, 1);
+
+	git_buf_dispose(&buf);
 	git_config_free(cfg);
 }

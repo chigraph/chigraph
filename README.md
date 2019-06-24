@@ -88,6 +88,6 @@ If you have any questions, you're more than welcome to email me: [russellgreene8
 - [LLVM/Clang](http://llvm.org) for compilation
 - [libgit2](https://libgit2.github.com/) for downloading remote modules
 - [Catch](https://github.com/philsquared/Catch/) for unit tests
-- [boost](https://boost.org) for [filesystem](http://www.boost.org/doc/libs/1_63_0/libs/filesystem/doc/index.htm), [parsing program arguments](http://www.boost.org/doc/libs/1_63_0/doc/html/program_options.html), [uuid](http://www.boost.org/doc/libs/1_63_0/libs/uuid/uuid.html), [bimap](http://www.boost.org/doc/libs/1_63_0/libs/bimap/doc/html/index.html), [range](http://www.boost.org/doc/libs/1_63_0/libs/range/doc/html/index.html), [string_view](http://www.boost.org/doc/libs/1_63_0/boost/utility/string_view.hpp), [dynamic_bitset](http://www.boost.org/doc/libs/1_63_0/libs/dynamic_bitset/dynamic_bitset.html)
+- [boost](https://boost.org) for [filesystem](http://www.boost.org/doc/libs/1_63_0/libs/filesystem/doc/index.htm), [parsing program arguments](http://www.boost.org/doc/libs/1_63_0/doc/html/program_options.html), [uuid](http://www.boost.org/doc/libs/1_63_0/libs/uuid/uuid.html), [bimap](http://www.boost.org/doc/libs/1_63_0/libs/bimap/doc/html/index.html), [range](http://www.boost.org/doc/libs/1_63_0/libs/range/doc/html/index.html), [dynamic_bitset](http://www.boost.org/doc/libs/1_63_0/libs/dynamic_bitset/dynamic_bitset.html)
 
 > Written with [StackEdit](https://stackedit.io/).

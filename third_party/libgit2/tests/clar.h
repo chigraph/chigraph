@@ -12,13 +12,16 @@
 enum cl_test_status {
 	CL_TEST_OK,
 	CL_TEST_FAILURE,
-	CL_TEST_SKIP
+	CL_TEST_SKIP,
+	CL_TEST_NOTRUN,
 };
 
+/** Setup clar environment */
 void clar_test_init(int argc, char *argv[]);
 int clar_test_run(void);
 void clar_test_shutdown(void);
 
+/** One shot setup & run */
 int clar_test(int argc, char *argv[]);
 
 const char *clar_sandbox_path(void);
@@ -72,6 +75,7 @@ void cl_trace_register(cl_trace_cb *cb, void *payload);
 const char *cl_fixture(const char *fixture_name);
 void cl_fixture_sandbox(const char *fixture_name);
 void cl_fixture_cleanup(const char *fixture_name);
+const char *cl_fixture_basename(const char *fixture_name);
 #endif
 
 /**

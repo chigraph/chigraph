@@ -5,11 +5,9 @@
 #include <chi/NodeType.hpp>
 #include <chi/Support/Result.hpp>
 
-#include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 
-#include <llvm/Support/raw_os_ostream.h>
-
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -21,7 +19,7 @@ extern int interpret(const std::vector<std::string>& opts, const char* argv0);
 extern int init(const std::vector<std::string>& opts);
 
 const char* helpString =
-R"(Usage: chi [ -C <path> ] <command> <command arguments>
+    R"(Usage: chi [ -C <path> ] <command> <command arguments>
 
 Available commands:
 
@@ -64,7 +62,7 @@ int main(int argc, char** argv) {
 
 	po::notify(vm);
 
-	if (vm.count("C") == 1) { boost::filesystem::current_path(vm["C"].as<std::string>()); }
+	if (vm.count("C") == 1) { std::filesystem::current_path(vm["C"].as<std::string>()); }
 
 	if (vm.count("command") != 1) {
 		std::cout << helpString << std::endl;

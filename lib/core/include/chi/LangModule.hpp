@@ -21,10 +21,10 @@ struct LangModule : ChiModule {
 	/// Destructor
 	~LangModule();
 
-	Result nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
+	Result nodeTypeFromName(std::string_view name, const nlohmann::json& jsonData,
 	                        std::unique_ptr<NodeType>* toFill) override;
 
-	DataType typeFromName(boost::string_view name) override;
+	DataType typeFromName(std::string_view name) override;
 
 	std::vector<std::string> nodeTypeNames() const override {
 		std::vector<std::string> ret;
@@ -40,15 +40,16 @@ struct LangModule : ChiModule {
 		return {"i32", "i1", "float", "i8*"};  // TODO: do i need more?
 	}
 
-	Result addForwardDeclarations(llvm::Module& module) const override;
+	LLVMMetadataRef debugType(FunctionCompiler& compiler, const DataType& dType) const override;
 
-	Result generateModule(llvm::Module& /*module*/) override;
+	Result addForwardDeclarations(LLVMModuleRef module) const override;
+
+	Result generateModule(LLVMModuleRef /*module*/) override;
 
 private:
 	std::unordered_map<std::string,
 	                   std::function<std::unique_ptr<NodeType>(const nlohmann::json&, Result&)>>
 	    nodes;
-	std::unordered_map<std::string, llvm::DIType*> mDebugTypes;
 };
 }  // namespace chi
 

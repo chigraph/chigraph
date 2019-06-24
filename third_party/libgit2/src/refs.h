@@ -8,6 +8,7 @@
 #define INCLUDE_refs_h__
 
 #include "common.h"
+
 #include "git2/oid.h"
 #include "git2/refs.h"
 #include "git2/refdb.h"
@@ -29,7 +30,7 @@ extern bool git_reference__enable_symbolic_ref_target_validation;
 
 #define GIT_SYMREF "ref: "
 #define GIT_PACKEDREFS_FILE "packed-refs"
-#define GIT_PACKEDREFS_HEADER "# pack-refs with: peeled fully-peeled "
+#define GIT_PACKEDREFS_HEADER "# pack-refs with: peeled fully-peeled sorted "
 #define GIT_PACKEDREFS_FILE_MODE 0666
 
 #define GIT_HEAD_FILE "HEAD"
@@ -54,8 +55,8 @@ extern bool git_reference__enable_symbolic_ref_target_validation;
 #define GIT_STASH_FILE "stash"
 #define GIT_REFS_STASH_FILE GIT_REFS_DIR GIT_STASH_FILE
 
-#define GIT_REF_FORMAT__PRECOMPOSE_UNICODE	(1u << 16)
-#define GIT_REF_FORMAT__VALIDATION_DISABLE	(1u << 15)
+#define GIT_REFERENCE_FORMAT__PRECOMPOSE_UNICODE	(1u << 16)
+#define GIT_REFERENCE_FORMAT__VALIDATION_DISABLE	(1u << 15)
 
 #define GIT_REFNAME_MAX 1024
 
@@ -63,7 +64,7 @@ typedef char git_refname_t[GIT_REFNAME_MAX];
 
 struct git_reference {
 	git_refdb *db;
-	git_ref_t type;
+	git_reference_t type;
 
 	union {
 		git_oid oid;
@@ -115,6 +116,10 @@ int git_reference_lookup_resolved(
  * with the given name pointing to the reference pointed to by
  * the file. If it is not a symbolic reference, it will return
  * the resolved reference.
+ *
+ * Note that because the refdb is not involved for symbolic references, they
+ * won't be owned, hence you should either not make the returned reference
+ * 'externally visible', or perform the lookup before returning it to the user.
  */
 int git_reference__read_head(
 	git_reference **out,
@@ -130,5 +135,7 @@ int git_reference__update_for_commit(
 	const char *ref_name,
 	const git_oid *id,
 	const char *operation);
+
+int git_reference__is_unborn_head(bool *unborn, const git_reference *ref, git_repository *repo);
 
 #endif

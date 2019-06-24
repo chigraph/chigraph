@@ -1,20 +1,19 @@
 #include <catch.hpp>
 
+#include <chi/Support/ExecutablePath.hpp>
 #include <chi/Support/Result.hpp>
 #include <chi/Support/Subprocess.hpp>
-
-#include <llvm/Support/FileSystem.h>
 
 #include <thread>
 
 using namespace chi;
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 using namespace std::chrono_literals;
 
 TEST_CASE("Subprocess", "") {
-	auto childPath = fs::path{llvm::sys::fs::getMainExecutable(nullptr, nullptr)}.parent_path() /
+	auto childPath = executablePath().parent_path() /
 	                 "subprocess_tester_child"
 #ifdef WIN32
 	                 ".exe"

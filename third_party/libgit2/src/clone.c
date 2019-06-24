@@ -5,6 +5,8 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
+#include "clone.h"
+
 #include <assert.h>
 
 #include "git2/clone.h"
@@ -16,7 +18,6 @@
 #include "git2/commit.h"
 #include "git2/tree.h"
 
-#include "common.h"
 #include "remote.h"
 #include "fileops.h"
 #include "refs.h"
@@ -47,7 +48,7 @@ static int create_branch(
 		return error;
 
 	error = git_reference_create(&branch_ref, repo, git_buf_cstr(&refname), target, 0, log_message);
-	git_buf_free(&refname);
+	git_buf_dispose(&refname);
 	git_commit_free(head_obj);
 
 	if (!error)
@@ -86,8 +87,8 @@ static int setup_tracking_config(
 	error = 0;
 
 cleanup:
-	git_buf_free(&remote_key);
-	git_buf_free(&merge_key);
+	git_buf_dispose(&remote_key);
+	git_buf_dispose(&merge_key);
 	return error;
 }
 
@@ -175,7 +176,7 @@ static int update_head_to_remote(
 	refspec = git_remote__matching_refspec(remote, git_buf_cstr(&branch));
 
 	if (refspec == NULL) {
-		giterr_set(GITERR_NET, "the remote's default branch does not fit the refspec configuration");
+		git_error_set(GIT_ERROR_NET, "the remote's default branch does not fit the refspec configuration");
 		error = GIT_EINVALIDSPEC;
 		goto cleanup;
 	}
@@ -194,8 +195,8 @@ static int update_head_to_remote(
 		reflog_message);
 
 cleanup:
-	git_buf_free(&remote_master_name);
-	git_buf_free(&branch);
+	git_buf_dispose(&remote_master_name);
+	git_buf_dispose(&branch);
 
 	return error;
 }
@@ -224,7 +225,7 @@ static int update_head_to_branch(
 
 cleanup:
 	git_reference_free(remote_ref);
-	git_buf_free(&remote_branch_name);
+	git_buf_dispose(&remote_branch_name);
 	return retcode;
 }
 
@@ -331,7 +332,7 @@ static int clone_into(git_repository *repo, git_remote *_remote, const git_fetch
 	assert(repo && _remote);
 
 	if (!git_repository_is_empty(repo)) {
-		giterr_set(GITERR_INVALID, "the repository is not empty");
+		git_error_set(GIT_ERROR_INVALID, "the repository is not empty");
 		return -1;
 	}
 
@@ -350,7 +351,7 @@ static int clone_into(git_repository *repo, git_remote *_remote, const git_fetch
 
 cleanup:
 	git_remote_free(remote);
-	git_buf_free(&reflog_message);
+	git_buf_dispose(&reflog_message);
 
 	return error;
 }
@@ -377,7 +378,7 @@ int git_clone__should_clone_local(const char *url_or_path, git_clone_local_t loc
 		git_path_isdir(path);
 
 done:
-	git_buf_free(&fromurl);
+	git_buf_dispose(&fromurl);
 	return is_local;
 }
 
@@ -399,11 +400,11 @@ int git_clone(
 	if (_options)
 		memcpy(&options, _options, sizeof(git_clone_options));
 
-	GITERR_CHECK_VERSION(&options, GIT_CLONE_OPTIONS_VERSION, "git_clone_options");
+	GIT_ERROR_CHECK_VERSION(&options, GIT_CLONE_OPTIONS_VERSION, "git_clone_options");
 
 	/* Only clone to a new directory or an empty directory */
 	if (git_path_exists(local_path) && !git_path_is_empty_dir(local_path)) {
-		giterr_set(GITERR_INVALID,
+		git_error_set(GIT_ERROR_INVALID,
 			"'%s' exists and is not an empty directory", local_path);
 		return GIT_EEXISTS;
 	}
@@ -440,14 +441,14 @@ int git_clone(
 
 	if (error != 0) {
 		git_error_state last_error = {0};
-		giterr_state_capture(&last_error, error);
+		git_error_state_capture(&last_error, error);
 
 		git_repository_free(repo);
 		repo = NULL;
 
 		(void)git_futils_rmdir_r(local_path, NULL, rmdir_flags);
 
-		giterr_state_restore(&last_error);
+		git_error_state_restore(&last_error);
 	}
 
 	*out = repo;
@@ -495,7 +496,7 @@ static int clone_local_into(git_repository *repo, git_remote *remote, const git_
 	assert(repo && remote);
 
 	if (!git_repository_is_empty(repo)) {
-		giterr_set(GITERR_INVALID, "the repository is not empty");
+		git_error_set(GIT_ERROR_INVALID, "the repository is not empty");
 		return -1;
 	}
 
@@ -509,7 +510,7 @@ static int clone_local_into(git_repository *repo, git_remote *remote, const git_
 
 	/* Copy .git/objects/ from the source to the target */
 	if ((error = git_repository_open(&src, git_buf_cstr(&src_path))) < 0) {
-		git_buf_free(&src_path);
+		git_buf_dispose(&src_path);
 		return error;
 	}
 
@@ -548,10 +549,10 @@ static int clone_local_into(git_repository *repo, git_remote *remote, const git_
 	error = checkout_branch(repo, remote, co_opts, branch, git_buf_cstr(&reflog_message));
 
 cleanup:
-	git_buf_free(&reflog_message);
-	git_buf_free(&src_path);
-	git_buf_free(&src_odb);
-	git_buf_free(&dst_odb);
+	git_buf_dispose(&reflog_message);
+	git_buf_dispose(&src_path);
+	git_buf_dispose(&src_odb);
+	git_buf_dispose(&dst_odb);
 	git_repository_free(src);
 	return error;
 }

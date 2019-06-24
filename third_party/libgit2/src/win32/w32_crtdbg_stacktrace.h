@@ -4,10 +4,46 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
-#ifndef INCLUDE_w32_crtdbg_stacktrace_h__
-#define INCLUDE_w32_crtdbg_stacktrace_h__
+#ifndef INCLUDE_win32_w32_crtdbg_stacktrace_h__
+#define INCLUDE_win32_w32_crtdbg_stacktrace_h__
+
+#include "common.h"
 
 #if defined(GIT_MSVC_CRTDBG)
+
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#include "git2/errors.h"
+#include "strnlen.h"
+
+/* MSVC CRTDBG memory leak reporting.
+ *
+ * We DO NOT use the "_CRTDBG_MAP_ALLOC" macro described in the MSVC
+ * documentation because all allocs/frees in libgit2 already go through
+ * the "git__" routines defined in this file.  Simply using the normal
+ * reporting mechanism causes all leaks to be attributed to a routine
+ * here in util.h (ie, the actual call to calloc()) rather than the
+ * caller of git__calloc().
+ *
+ * Therefore, we declare a set of "git__crtdbg__" routines to replace
+ * the corresponding "git__" routines and re-define the "git__" symbols
+ * as macros.  This allows us to get and report the file:line info of
+ * the real caller.
+ *
+ * We DO NOT replace the "git__free" routine because it needs to remain
+ * a function pointer because it is used as a function argument when
+ * setting up various structure "destructors".
+ *
+ * We also DO NOT use the "_CRTDBG_MAP_ALLOC" macro because it causes
+ * "free" to be remapped to "_free_dbg" and this causes problems for
+ * structures which define a field named "free".
+ *
+ * Finally, CRTDBG must be explicitly enabled and configured at program
+ * startup.  See tests/main.c for an example.
+ */
+
+int git_win32_crtdbg_init_allocator(git_allocator *allocator);
 
 /**
  * Initialize our memory leak tracking and de-dup data structures.

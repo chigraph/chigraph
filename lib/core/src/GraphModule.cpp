@@ -9,7 +9,6 @@
 #include "chi/GraphStruct.hpp"
 #include "chi/JsonDeserializer.hpp"
 #include "chi/JsonSerializer.hpp"
-#include "chi/LLVMVersion.hpp"
 #include "chi/NameMangler.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
@@ -17,22 +16,17 @@
 #include "chi/Support/Result.hpp"
 #include "chi/Support/Subprocess.hpp"
 
-#include <llvm/IR/DIBuilder.h>
-#include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/Module.h>
-#include <llvm/Linker/Linker.h>
-#include <llvm/Support/Compiler.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/MemoryBuffer.h>
-#include <llvm/Support/Program.h>
-#include <llvm/Transforms/Utils/Cloning.h>
-
-#include <boost/filesystem.hpp>
 #include <boost/range.hpp>
-
 #include <boost/uuid/uuid_io.hpp>
 
-namespace fs = boost::filesystem;
+#include <filesystem>
+#include <fstream>
+
+#include <llvm-c/Core.h>
+#include <llvm-c/DebugInfo.h>
+#include <llvm-c/Linker.h>
+
+namespace fs = std::filesystem;
 
 namespace chi {
 
@@ -56,9 +50,9 @@ struct CFuncNode : NodeType {
 		if (mOutput.valid()) { setDataOutputs({{"", mOutput}}); }
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t /*execInputID*/,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == dataInputs().size() + dataOutputs().size() && outputBlocks.size() == 1);
 
 		Result res;
@@ -83,34 +77,22 @@ struct CFuncNode : NodeType {
 			if (!res) { return res; }
 		}
 
-		// create a copy of the module
-		auto copymod = llvm::CloneModule(
-#if LLVM_VERSION_AT_LEAST(7, 0)
-			*
-#endif
-			llcompiledmod.get());
+		auto copymod = OwnedLLVMModule(LLVMCloneModule(*llcompiledmod));
 
 		// link it in
+		auto parentModule = compiler.llvmModule();
 
-		auto parentModule = &compiler.llvmModule();
+		if (LLVMLinkModules2(parentModule, copymod.take_ownership())) {
+			res.addEntry("EUKN", "Failed to link modules", {});
+			return res;
+		}
+		LLVMSetDataLayout(parentModule, "");
 
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-		llvm::Linker::LinkModules(parentModule, copymod
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-		                          ,
-		                          llvm::Linker::DestroySource, nullptr
-#endif
-		);
-#else
-		llvm::Linker::linkModules(*parentModule, std::move(copymod));
-#endif
-
-		parentModule->setDataLayout("");
-
-		auto llfunc = parentModule->getFunction(mFunctionName);
+		auto llfunc = LLVMGetNamedFunction(parentModule, mFunctionName.c_str());
 		assert(llfunc != nullptr);
 
-		llvm::IRBuilder<> builder(&codegenInto);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
 
 		size_t ioSize = io.size();
 
@@ -122,17 +104,15 @@ struct CFuncNode : NodeType {
 			outputName = dataOutputs()[0].name;
 		}
 
-		auto callinst = builder.CreateCall(llfunc, {io.data(), ioSize}, outputName);
-		callinst->setDebugLoc(nodeLocation);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
+		auto callInst =
+		    LLVMBuildCall(*builder, llfunc, const_cast<LLVMValueRef*>(io.data()), io.size(), "");
 
 		// store theoutput if there are any
-		if (!dataOutputs().empty()) {
-			auto stoInst = builder.CreateStore(callinst, io[dataInputs().size()]);
-			stoInst->setDebugLoc(nodeLocation);
-		}
+		if (!dataOutputs().empty()) { LLVMBuildStore(*builder, callInst, io[dataInputs().size()]); }
 
-		auto brInst = builder.CreateBr(outputBlocks[0]);
-		brInst->setDebugLoc(nodeLocation);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return res;
 	}
@@ -177,8 +157,8 @@ struct CFuncNode : NodeType {
 	DataType                   mOutput;
 	GraphModule*               mGraphModule;
 
-	std::unique_ptr<llvm::Module> llcompiledmod;
-};
+	OwnedLLVMModule llcompiledmod;
+};  // namespace
 
 struct GraphFuncCallType : public NodeType {
 	GraphFuncCallType(GraphModule& json_module, std::string funcname, Result* resPtr)
@@ -202,16 +182,18 @@ struct GraphFuncCallType : public NodeType {
 		setExecOutputs(mygraph->execOutputs());
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		Result res = {};
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		auto func = compiler.funcCompiler().llvmModule().getFunction(
-		    mangleFunctionName(module().fullName(), name()));
+		auto func = LLVMGetNamedFunction(compiler.funcCompiler().llvmModule(),
+		                                 mangleFunctionName(module().fullName(), name()).c_str());
 
 		if (func == nullptr) {
 			res.addEntry("EINT", "Could not find function in llvm module",
@@ -220,19 +202,21 @@ struct GraphFuncCallType : public NodeType {
 		}
 
 		// add the execInputID to the argument list
-		std::vector<llvm::Value*> passingIO;
-		passingIO.push_back(builder.getInt32(execInputID));
+		std::vector<LLVMValueRef> passingIO;
+		passingIO.push_back(context().constI32(execInputID));
 
 		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
 
-		auto ret = builder.CreateCall(func, passingIO, "call_function");
+		auto ret =
+		    LLVMBuildCall(*builder, func, passingIO.data(), passingIO.size(), "call_function");
 
 		// create switch on return
-		auto switchInst = builder.CreateSwitch(ret, outputBlocks[0]);  // TODO: better default
+		auto switchInst = LLVMBuildSwitch(*builder, ret, outputBlocks[0],
+		                                  outputBlocks.size());  // TODO: better default
 
 		auto id = 0ull;
 		for (auto out : outputBlocks) {
-			switchInst->addCase(builder.getInt32(id), out);
+			LLVMAddCase(switchInst, context().constI32(id), out);
 			++id;
 		}
 
@@ -261,24 +245,22 @@ struct MakeStructNodeType : public NodeType {
 		setDataOutputs({{"", ty.dataType()}});
 	}
 
-	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto,
-	               size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>&      io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
-		llvm::IRBuilder<> builder{&codegenInto};
-		builder.SetCurrentDebugLocation(nodeLocation);
+	Result codegen(NodeCompiler& /*compiler*/, LLVMBasicBlockRef codegenInto,
+	               size_t /*execInputID*/, LLVMMetadataRef       nodeLocation,
+	               const std::vector<LLVMValueRef>&      io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		llvm::Value* out = io[io.size() - 1];  // output goes last
+		LLVMValueRef out = io[io.size() - 1];  // output goes last
 		for (auto id = 0ull; id < io.size() - 1; ++id) {
-			auto ptr = builder.CreateStructGEP(
-#if LLVM_VERSION_AT_LEAST(3, 7)
-			    mStruct->dataType().llvmType(),
-#endif
-			    out, id);
-			builder.CreateStore(io[id], ptr);
+			auto ptr = LLVMBuildStructGEP2(*builder, mStruct->dataType().llvmType(), out, id, "");
+			LLVMBuildStore(*builder, io[id], ptr);
 		}
 
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -304,30 +286,27 @@ struct BreakStructNodeType : public NodeType {
 		setDataOutputs(ty.types());
 	}
 
-	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto,
-	               size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>&      io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
-		llvm::IRBuilder<> builder{&codegenInto};
-		builder.SetCurrentDebugLocation(nodeLocation);
+	Result codegen(NodeCompiler& /*compiler*/, LLVMBasicBlockRef codegenInto,
+	               size_t /*execInputID*/, LLVMMetadataRef       nodeLocation,
+	               const std::vector<LLVMValueRef>&      io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
 		// create temp struct
-		auto tempStruct = builder.CreateAlloca(mStruct->dataType().llvmType());
-		builder.CreateStore(io[0], tempStruct);
+		auto tempStruct = LLVMBuildAlloca(*builder, mStruct->dataType().llvmType(), "temp_struct");
+		LLVMBuildStore(*builder, io[0], tempStruct);
 
 		for (auto id = 1ull; id < io.size(); ++id) {
-			auto ptr = builder.CreateStructGEP(
-#if LLVM_VERSION_AT_LEAST(3, 7)
-			    nullptr,
-#endif
-			    tempStruct, id - 1);
-			std::string s = stringifyLLVMType(ptr->getType());
+			auto ptr = LLVMBuildStructGEP(*builder, tempStruct, id - 1, "");
 
-			auto val = builder.CreateLoad(ptr);
-			builder.CreateStore(val, io[id]);
+			auto val = LLVMBuildLoad(*builder, ptr, "");
+			LLVMBuildStore(*builder, val, io[id]);
 		}
 
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -351,19 +330,21 @@ struct SetLocalNodeType : public NodeType {
 		setExecOutputs({""});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t /*execInputID*/,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
-		llvm::IRBuilder<> builder{&codegenInto};
-		builder.SetCurrentDebugLocation(nodeLocation);
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t /*execInputID*/,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
 		auto value = compiler.funcCompiler().localVariable(mDataType.name);
 		assert(value != nullptr);
 
 		// set the value!
-		builder.CreateStore(io[0], value);
+		LLVMBuildStore(*builder, io[0], value);
 
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -386,18 +367,20 @@ struct GetLocalNodeType : public NodeType {
 		makePure();
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
-		llvm::IRBuilder<> builder{&codegenInto};
-		builder.SetCurrentDebugLocation(nodeLocation);
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
 		auto value = compiler.funcCompiler().localVariable(mDataType.name);
 		assert(value != nullptr);
 
-		builder.CreateStore(builder.CreateLoad(value), io[0]);
+		LLVMBuildStore(*builder, LLVMBuildLoad(*builder, value, ""), io[0]);
 
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -412,8 +395,8 @@ struct GetLocalNodeType : public NodeType {
 
 }  // namespace
 
-GraphModule::GraphModule(Context& cont, boost::filesystem::path fullName,
-                         const std::vector<boost::filesystem::path>& dependencies)
+GraphModule::GraphModule(Context& cont, std::filesystem::path fullName,
+                         const std::vector<std::filesystem::path>& dependencies)
     : ChiModule(cont, fullName) {
 	// load the dependencies from the context
 	for (const auto& dep : dependencies) { addDependency(dep); }
@@ -428,17 +411,24 @@ std::vector<std::string> GraphModule::typeNames() const {
 	return ret;
 }
 
-Result GraphModule::addForwardDeclarations(llvm::Module& module) const {
+LLVMMetadataRef GraphModule::debugType(FunctionCompiler& compiler, const DataType& dType) const {
+	auto struc = structFromName(dType.unqualifiedName());
+	if (!struc) { return nullptr; }
+
+	return struc->debugType(compiler);
+}
+
+Result GraphModule::addForwardDeclarations(LLVMModuleRef module) const {
 	// create prototypes
 	for (auto& graph : mFunctions) {
-		module.getOrInsertFunction(mangleFunctionName(fullName(), graph->name()),
-		                           graph->functionType());
+		LLVMAddFunction(module, mangleFunctionName(fullName(), graph->name()).c_str(),
+		                graph->functionType());
 	}
 
 	return {};
 }
 
-Result GraphModule::generateModule(llvm::Module& module) {
+Result GraphModule::generateModule(LLVMModuleRef module) {
 	Result res = {};
 
 	// if C support was enabled, compile the C files
@@ -447,7 +437,9 @@ Result GraphModule::generateModule(llvm::Module& module) {
 		if (fs::is_directory(cPath)) {
 			// compile the files
 			for (auto direntry : boost::make_iterator_range(
-			         fs::recursive_directory_iterator{cPath, fs::symlink_option::recurse}, {})) {
+			         fs::recursive_directory_iterator{
+			             cPath, fs::directory_options::follow_directory_symlink},
+			         {})) {
 				const fs::path& CFile = direntry;
 
 				if (!fs::is_regular_file(CFile) ||
@@ -465,55 +457,41 @@ Result GraphModule::generateModule(llvm::Module& module) {
 				}
 
 				// compile it
-				std::unique_ptr<llvm::Module> generatedModule;
+				OwnedLLVMModule generatedModule;
 				res += compileCToLLVM(clangExe, context().llvmContext(), {CFile.string()}, "",
 				                      &generatedModule);
 
 				if (!res) { return res; }
 
-					// link it
-
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-				llvm::Linker::LinkModules(&module, generatedModule.get()
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-				                                       ,
-				                          llvm::Linker::DestroySource, nullptr
-#endif
-				);
-#else
-				llvm::Linker::linkModules(module, std::move(generatedModule));
-#endif
+				// link it
+				if (LLVMLinkModules2(module, generatedModule.take_ownership())) {
+					res.addEntry("EUKN", "Failed to link modules", {});
+					return res;
+				}
 			}
 		}
 	}
 
 	// debug info
-	llvm::DIBuilder debugBuilder(module);
+	auto debugBuilder = OwnedLLVMDIBuilder(LLVMCreateDIBuilder(module));
 
-	auto compileUnit = debugBuilder.createCompileUnit(llvm::dwarf::DW_LANG_C,
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-	                                                  sourceFilePath().filename().string(),
-	                                                  sourceFilePath().parent_path().string(),
-#else
-	                                                  debugBuilder.createFile(
-	                                                      sourceFilePath().filename().string(),
-	                                                      sourceFilePath().parent_path().string()),
-#endif
-	                                                  "Chigraph Compiler", false, "", 0);
+	auto srcFile     = sourceFilePath().filename().c_str();
+	auto srcPath     = sourceFilePath().parent_path().c_str();
+	auto compilerID  = "Chigraph Compiler";
+	auto compileUnit = LLVMDIBuilderCreateCompileUnit(
+	    *debugBuilder, LLVMDWARFSourceLanguageC,
+	    LLVMDIBuilderCreateFile(*debugBuilder, srcFile, strlen(srcFile), srcPath, strlen(srcPath)),
+	    compilerID, strlen(compilerID), false, "", 0, 0, "", 0, LLVMDWARFEmissionFull, 0, true,
+	    false);  // TODO: resarch these parameters, these are defaults
 
 	// create prototypes
 	addForwardDeclarations(module);
 
 	for (auto& graph : mFunctions) {
-		res += compileFunction(*graph, &module,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		                       &
-#endif
-		                       compileUnit,
-		                       debugBuilder);
+		res += compileFunction(*graph, module, compileUnit, *debugBuilder);
 	}
 
-	debugBuilder.finalize();
+	LLVMDIBuilderFinalize(*debugBuilder);
 
 	return res;
 }
@@ -543,7 +521,7 @@ Result GraphModule::saveToDisk() const {
 	nlohmann::json toFill = graphModuleToJson(*this);
 
 	// save
-	fs::ofstream ostr(modulePath);
+	std::ofstream ostr(modulePath);
 	ostr << toFill.dump(2);
 
 	return res;
@@ -572,7 +550,7 @@ GraphFunction* GraphModule::getOrCreateFunction(std::string                name,
 	return mFunctions[mFunctions.size() - 1].get();
 }
 
-bool GraphModule::removeFunction(boost::string_view name, bool deleteReferences) {
+bool GraphModule::removeFunction(std::string_view name, bool deleteReferences) {
 	// invalidate the cache
 	updateLastEditTime();
 
@@ -602,7 +580,7 @@ void GraphModule::removeFunction(GraphFunction& func, bool deleteReferences) {
 	mFunctions.erase(iter);
 }
 
-GraphFunction* GraphModule::functionFromName(boost::string_view name) const {
+GraphFunction* GraphModule::functionFromName(std::string_view name) const {
 	auto iter = std::find_if(mFunctions.begin(), mFunctions.end(),
 	                         [&](auto& ptr) { return ptr->name() == name; });
 
@@ -610,7 +588,7 @@ GraphFunction* GraphModule::functionFromName(boost::string_view name) const {
 	return nullptr;
 }
 
-Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
+Result GraphModule::nodeTypeFromName(std::string_view name, const nlohmann::json& jsonData,
                                      std::unique_ptr<NodeType>* toFill) {
 	Result res = {};
 
@@ -715,22 +693,21 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 
 	if (graph == nullptr) {
 		// if it wasn't found, then see if it's a struct breaker or maker
-		std::string nameStr{name.to_string()};
-		if (nameStr.substr(0, 6) == "_make_") {
-			auto str = structFromName(nameStr.substr(6));
+		if (name.substr(0, 6) == "_make_") {
+			auto str = structFromName(name.substr(6));
 			if (str != nullptr) {
 				*toFill = std::make_unique<MakeStructNodeType>(*str);
 				return res;
 			}
 		}
-		if (nameStr.substr(0, 7) == "_break_") {
-			auto str = structFromName(nameStr.substr(7));
+		if (name.substr(0, 7) == "_break_") {
+			auto str = structFromName(name.substr(7));
 			if (str != nullptr) {
 				*toFill = std::make_unique<BreakStructNodeType>(*str);
 				return res;
 			}
 		}
-		if (nameStr.substr(0, 5) == "_get_") {
+		if (name.substr(0, 5) == "_get_") {
 			if (jsonData.is_string()) {
 				std::string module, typeName;
 
@@ -739,15 +716,15 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 				DataType ty;
 				res += context().typeFromModule(module, typeName, &ty);
 
-				*toFill =
-				    std::make_unique<GetLocalNodeType>(*this, NamedDataType{nameStr.substr(5), ty});
+				*toFill = std::make_unique<GetLocalNodeType>(
+				    *this, NamedDataType{std::string(name.substr(5)), ty});
 			} else {
 				res.addEntry("EUKN", "Json data for _get_ node type isn't a string",
 				             {{"Given Data", jsonData}});
 			}
 			return res;
 		}
-		if (nameStr.substr(0, 5) == "_set_") {
+		if (name.substr(0, 5) == "_set_") {
 			if (jsonData.is_string()) {
 				std::string module, typeName;
 
@@ -757,7 +734,7 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 				res += context().typeFromModule(module, typeName, &ty);
 
 				*toFill = std::make_unique<SetLocalNodeType>(
-				    *this, NamedDataType{nameStr.substr(5), std::move(ty)});
+				    *this, NamedDataType{std::string(name.substr(5)), std::move(ty)});
 			} else {
 				res.addEntry("EUKN", "Json data for _set_ node type isn't a string",
 				             {{"Given Data", jsonData}});
@@ -767,15 +744,15 @@ Result GraphModule::nodeTypeFromName(boost::string_view name, const nlohmann::js
 
 		// if we get here than it's for sure not a thing
 		res.addEntry("EUKN", "Graph not found in module",
-		             {{"Module Name", fullName()}, {"Requested Graph", name.to_string()}});
+		             {{"Module Name", fullName()}, {"Requested Graph", name}});
 		return res;
 	}
 
-	*toFill = std::make_unique<GraphFuncCallType>(*this, name.to_string(), &res);
+	*toFill = std::make_unique<GraphFuncCallType>(*this, std::string(name), &res);
 	return res;
 }
 
-DataType GraphModule::typeFromName(boost::string_view name) {
+DataType GraphModule::typeFromName(std::string_view name) {
 	auto func = structFromName(name);
 
 	if (func == nullptr) { return {}; }
@@ -821,7 +798,7 @@ boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() c
 	return ret;
 }
 
-GraphStruct* GraphModule::structFromName(boost::string_view name) const {
+GraphStruct* GraphModule::structFromName(std::string_view name) const {
 	for (const auto& str : structs()) {
 		if (str->name() == name) { return str.get(); }
 	}
@@ -844,7 +821,7 @@ GraphStruct* GraphModule::getOrCreateStruct(std::string name, bool* inserted) {
 	return mStructs[mStructs.size() - 1].get();
 }
 
-bool GraphModule::removeStruct(boost::string_view name) {
+bool GraphModule::removeStruct(std::string_view name) {
 	// invalidate the cache
 	updateLastEditTime();
 
@@ -862,16 +839,15 @@ bool GraphModule::removeStruct(boost::string_view name) {
 void GraphModule::removeStruct(GraphStruct& tyToDel) {
 	assert(&tyToDel.module() == this);
 
-	LLVM_ATTRIBUTE_UNUSED bool succeeded = removeStruct(tyToDel.name());
+	BOOST_ATTRIBUTE_UNUSED bool succeeded = removeStruct(tyToDel.name());
 	assert(succeeded);
 }
 
-boost::filesystem::path GraphModule::sourceFilePath() const {
+std::filesystem::path GraphModule::sourceFilePath() const {
 	return context().workspacePath() / "src" / (fullName() + ".chimod");
 }
 
-Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
-                                            boost::string_view         functionName,
+Result GraphModule::createNodeTypeFromCCode(std::string_view code, std::string_view functionName,
                                             std::vector<std::string>   clangArgs,
                                             std::unique_ptr<NodeType>* toFill) {
 	assert(toFill != nullptr);
@@ -882,7 +858,7 @@ Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
 	clangArgs.push_back("-I");
 	clangArgs.push_back(pathToCSources().string());
 
-	std::unique_ptr<llvm::Module> mod;
+	OwnedLLVMModule mod;
 	// find clang
 	auto clangExe = findClang();
 	if (clangExe.empty()) {
@@ -894,27 +870,33 @@ Result GraphModule::createNodeTypeFromCCode(boost::string_view         code,
 
 	if (!res) { return res; }
 
-	auto llFunc = mod->getFunction(functionName.to_string());
+	auto llFunc = LLVMGetNamedFunction(*mod, std::string(functionName).c_str());
 
 	if (llFunc == nullptr) {
 		res.addEntry("EUKN", "Failed to find function in C code",
-		             {{"Function Name", functionName.to_string()}, {"C Code", code.to_string()}});
+		             {{"Function Name", functionName}, {"C Code", code}});
 		return res;
 	}
 
 	std::vector<NamedDataType> dInputs;
-	for (const auto& argument : llFunc->args()) {
+	for (auto argument = LLVMGetFirstParam(llFunc); argument != nullptr;
+	     argument      = LLVMGetNextParam(argument)) {
 		DataType ty;
-		context().typeFromModule("lang", stringifyLLVMType(argument.getType()), &ty);
-		dInputs.emplace_back(argument.getName(), ty);
+		context().typeFromModule("lang", stringifyLLVMType(LLVMTypeOf(argument)), &ty);
+
+		size_t      len;
+		const char* name = LLVMGetValueName2(argument, &len);
+		dInputs.emplace_back(std::string(name, len), ty);
 	}
 
 	DataType output;
-	auto     ret = llFunc->getReturnType();
+	auto     ret = LLVMGetReturnType(LLVMTypeOf(llFunc));
 
-	if (!ret->isVoidTy()) { context().typeFromModule("lang", stringifyLLVMType(ret), &output); }
+	if (LLVMGetTypeKind(ret) != LLVMVoidTypeKind) {
+		context().typeFromModule("lang", stringifyLLVMType(ret), &output);
+	}
 
-	*toFill = std::make_unique<CFuncNode>(*this, code.to_string(), functionName.to_string(),
+	*toFill = std::make_unique<CFuncNode>(*this, std::string(code), std::string(functionName),
 	                                      clangArgs, dInputs, output);
 
 	return res;

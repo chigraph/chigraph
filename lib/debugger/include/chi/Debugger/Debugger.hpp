@@ -41,11 +41,10 @@ public:
 	/// null-terminated then this will _probably_ crash
 	/// \param[in] workingDirectory The working directory to debug in, by default it's the current
 	/// working directory of this process
-	/// \pre `boost::filesystem::is_directory(workingDirectory)`
+	/// \pre `std::filesystem::is_directory(workingDirectory)`
 	/// \return The result
-	Result start(
-	    const char** argv = nullptr, const char** envp = nullptr,
-	    const boost::filesystem::path& workingDirectory = boost::filesystem::current_path());
+	Result start(const char** argv = nullptr, const char** envp = nullptr,
+	             const std::filesystem::path& workingDirectory = std::filesystem::current_path());
 
 	/// Terminate the inferior process
 	/// \return The result
@@ -98,7 +97,7 @@ public:
 	/// Get the value of a local variable
 	/// \param name The name ofthe local variable to get the value of
 	/// \return The value, or an invalid `SBValue` if the local variable wasn't found
-	lldb::SBValue inspectLocalVariable(boost::string_view name);
+	lldb::SBValue inspectLocalVariable(std::string_view name);
 
 	/// Get a NodeInstance from a frame
 	/// \param frame The frame to get the function for. If this isn't a valid `SBFrame` (the

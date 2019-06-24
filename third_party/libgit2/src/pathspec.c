@@ -5,9 +5,10 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
+#include "pathspec.h"
+
 #include "git2/pathspec.h"
 #include "git2/diff.h"
-#include "pathspec.h"
 #include "buf_text.h"
 #include "attr_file.h"
 #include "iterator.h"
@@ -35,7 +36,7 @@ char *git_pathspec_prefix(const git_strarray *pathspec)
 	git_buf_truncate(&prefix, scan - prefix.ptr);
 
 	if (prefix.size <= 0) {
-		git_buf_free(&prefix);
+		git_buf_dispose(&prefix);
 		return NULL;
 	}
 
@@ -257,7 +258,7 @@ int git_pathspec_new(git_pathspec **out, const git_strarray *pathspec)
 {
 	int error = 0;
 	git_pathspec *ps = git__malloc(sizeof(git_pathspec));
-	GITERR_CHECK_ALLOC(ps);
+	GIT_ERROR_CHECK_ALLOC(ps);
 
 	if ((error = git_pathspec__init(ps, pathspec)) < 0) {
 		git__free(ps);
@@ -415,7 +416,7 @@ static int pathspec_match_from_iterator(
 
 	if (out) {
 		*out = m = pathspec_match_alloc(ps, PATHSPEC_DATATYPE_STRINGS);
-		GITERR_CHECK_ALLOC(m);
+		GIT_ERROR_CHECK_ALLOC(m);
 	}
 
 	if ((error = git_iterator_reset_range(iter, ps->prefix, ps->prefix)) < 0)
@@ -487,7 +488,7 @@ static int pathspec_match_from_iterator(
 
 	/* if every pattern failed to match, then we have failed */
 	if ((flags & GIT_PATHSPEC_NO_MATCH_ERROR) != 0 && !found_files) {
-		giterr_set(GITERR_INVALID, "no matching files were found");
+		git_error_set(GIT_ERROR_INVALID, "no matching files were found");
 		error = GIT_ENOTFOUND;
 	}
 
@@ -603,7 +604,7 @@ int git_pathspec_match_diff(
 
 	if (out) {
 		*out = m = pathspec_match_alloc(ps, PATHSPEC_DATATYPE_DIFF);
-		GITERR_CHECK_ALLOC(m);
+		GIT_ERROR_CHECK_ALLOC(m);
 	}
 
 	pathspec_match_context_init(
@@ -658,7 +659,7 @@ int git_pathspec_match_diff(
 
 	/* if every pattern failed to match, then we have failed */
 	if ((flags & GIT_PATHSPEC_NO_MATCH_ERROR) != 0 && !found_deltas) {
-		giterr_set(GITERR_INVALID, "no matching deltas were found");
+		git_error_set(GIT_ERROR_INVALID, "no matching deltas were found");
 		error = GIT_ENOTFOUND;
 	}
 

@@ -1,34 +1,18 @@
 #include <chi/Context.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/JsonSerializer.hpp>
+#include <chi/Support/LibCLocator.hpp>
 #include <chi/Support/Result.hpp>
 #include <chi/Support/Subprocess.hpp>
-#include <chi/Support/LibCLocator.hpp>
 
-#include <boost/filesystem.hpp>
-
-#include <llvm/ADT/STLExtras.h>
-#include <llvm/IR/Argument.h>
-#include <llvm/IR/BasicBlock.h>
-#include <llvm/IR/Constants.h>
-#include <llvm/IR/DerivedTypes.h>
-#include <llvm/IR/Function.h>
-#include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/Instructions.h>
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
-#include <llvm/IR/Type.h>
-#include <llvm/IRReader/IRReader.h>
-#include <llvm/Support/Casting.h>
-#include <llvm/Support/ManagedStatic.h>
-#include <llvm/Support/SourceMgr.h>
-#include <llvm/Support/TargetSelect.h>
-#include <llvm/Support/raw_ostream.h>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 
 using namespace chi;
 using namespace nlohmann;
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 const char* exesuffix =
 #ifdef WIN32
@@ -183,8 +167,8 @@ int main(int argc, char** argv) {
 		std::cerr << JSONfile << " doesn't exist" << std::endl;
 		return 1;
 	}
-	
-	fs::ifstream jsonstream{JSONfile};
+
+	std::ifstream jsonstream{JSONfile};
 
 	json j;
 
@@ -490,9 +474,9 @@ int main(int argc, char** argv) {
 		}
 
 		// load the module into memory
-		auto         modfile = moduleDir / "main.chimod";
-		fs::ifstream inmodfile(modfile);
-		json         chimodule;
+		auto          modfile = moduleDir / "main.chimod";
+		std::ifstream inmodfile(modfile);
+		json          chimodule;
 		inmodfile >> chimodule;
 
 		std::string err = areJsonEqual(serializedmodule, chimodule);

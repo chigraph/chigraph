@@ -12,7 +12,7 @@
 static git_repository *repo;
 static git_index *repo_index;
 
-// Fixture setup and teardown
+/* Fixture setup and teardown */
 void test_revert_workdir__initialize(void)
 {
 	git_config *cfg;
@@ -80,7 +80,7 @@ void test_revert_workdir__conflicts(void)
 	git_oid_fromstr(&revert_oid, "72333f47d4e83616630ff3b0ffe4c0faebcc3c45");
 
 	cl_git_pass(git_repository_head(&head_ref, repo));
-	cl_git_pass(git_reference_peel((git_object **)&head, head_ref, GIT_OBJ_COMMIT));
+	cl_git_pass(git_reference_peel((git_object **)&head, head_ref, GIT_OBJECT_COMMIT));
 	cl_git_pass(git_reset(repo, (git_object *)head, GIT_RESET_HARD, NULL));
 
 	cl_git_pass(git_commit_lookup(&commit, repo, &revert_oid));
@@ -126,8 +126,8 @@ void test_revert_workdir__conflicts(void)
 	git_commit_free(commit);
 	git_commit_free(head);
 	git_reference_free(head_ref);
-	git_buf_free(&mergemsg_buf);
-	git_buf_free(&conflicting_buf);
+	git_buf_dispose(&mergemsg_buf);
+	git_buf_dispose(&conflicting_buf);
 }
 
 /* git reset --hard 39467716290f6df775a91cdb9a4eb39295018145
@@ -178,7 +178,7 @@ void test_revert_workdir__again(void)
 	};
 
 	cl_git_pass(git_repository_head(&head_ref, repo));
-	cl_git_pass(git_reference_peel((git_object **)&orig_head, head_ref, GIT_OBJ_COMMIT));
+	cl_git_pass(git_reference_peel((git_object **)&orig_head, head_ref, GIT_OBJECT_COMMIT));
 	cl_git_pass(git_reset(repo, (git_object *)orig_head, GIT_RESET_HARD, NULL));
 
 	cl_git_pass(git_revert(repo, orig_head, NULL));
@@ -350,7 +350,7 @@ void test_revert_workdir__again_after_edit_two(void)
 	git_commit_free(revert_commit);
 	git_commit_free(head_commit);
 	git_config_free(config);
-	git_buf_free(&diff_buf);
+	git_buf_dispose(&diff_buf);
 }
 
 /* git reset --hard 72333f47d4e83616630ff3b0ffe4c0faebcc3c45
@@ -477,7 +477,7 @@ void test_revert_workdir__head(void)
 
 	/* HEAD is 2d440f2b3147d3dc7ad1085813478d6d869d5a4d */
 	cl_git_pass(git_repository_head(&head, repo));
-	cl_git_pass(git_reference_peel((git_object **)&commit, head, GIT_OBJ_COMMIT));
+	cl_git_pass(git_reference_peel((git_object **)&commit, head, GIT_OBJECT_COMMIT));
 	cl_git_pass(git_reset(repo, (git_object *)commit, GIT_RESET_HARD, NULL));
 	cl_git_pass(git_revert(repo, commit, NULL));
 
@@ -495,7 +495,7 @@ void test_revert_workdir__nonmerge_fails_mainline_specified(void)
 	git_revert_options opts = GIT_REVERT_OPTIONS_INIT;
 
 	cl_git_pass(git_repository_head(&head, repo));
-	cl_git_pass(git_reference_peel((git_object **)&commit, head, GIT_OBJ_COMMIT));
+	cl_git_pass(git_reference_peel((git_object **)&commit, head, GIT_OBJECT_COMMIT));
 
 	opts.mainline = 1;
 	cl_must_fail(git_revert(repo, commit, &opts));

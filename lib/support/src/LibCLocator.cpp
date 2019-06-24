@@ -3,7 +3,7 @@
 
 // This requires 3 separate implementations--one for windows, one for linux, and one for macOS.
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 #if defined __linux__ || defined __APPLE__
 
@@ -19,7 +19,7 @@ namespace chi {
 // The linux implementation finds gcc and runs what's basically gcc -xc -E -v - < /dev/null which
 // prints out the search paths.
 
-Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {
+Result stdCIncludePaths(std::vector<std::filesystem::path>& toFill) {
 	Result res;
 
 	// first see if CHI_STDC_INCLUDE_PATH is defined in the environment
@@ -120,7 +120,7 @@ Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) {
 
 namespace chi {
 
-Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill) { return {}; }
+Result stdCIncludePaths(std::vector<std::filesystem::path>& toFill) { return {}; }
 
 }  // namespace chi
 

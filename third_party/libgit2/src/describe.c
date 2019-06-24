@@ -4,12 +4,14 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
+
+#include "common.h"
+
 #include "git2/describe.h"
 #include "git2/strarray.h"
 #include "git2/diff.h"
 #include "git2/status.h"
 
-#include "common.h"
 #include "commit.h"
 #include "commit_list.h"
 #include "oidmap.h"
@@ -34,7 +36,7 @@ struct commit_name {
 
 static void *oidmap_value_bykey(git_oidmap *map, const git_oid *key)
 {
-	khint_t pos = git_oidmap_lookup_index(map, key);
+	size_t pos = git_oidmap_lookup_index(map, key);
 
 	if (!git_oidmap_valid_index(map, pos))
 		return NULL;
@@ -106,7 +108,7 @@ static int add_to_known_names(
 	if (replace_name(&tag, repo, e, prio, sha1)) {
 		if (!found) {
 			e = git__malloc(sizeof(struct commit_name));
-			GITERR_CHECK_ALLOC(e);
+			GIT_ERROR_CHECK_ALLOC(e);
 
 			e->path = NULL;
 			e->tag = NULL;
@@ -149,7 +151,7 @@ static int retrieve_peeled_tag_or_object_oid(
 	if ((error = git_reference_lookup_resolved(&ref, repo, refname, -1)) < 0)
 		return error;
 
-	if ((error = git_reference_peel(&peeled, ref, GIT_OBJ_ANY)) < 0)
+	if ((error = git_reference_peel(&peeled, ref, GIT_OBJECT_ANY)) < 0)
 		goto cleanup;
 
 	git_oid_cpy(ref_target_out, git_reference_target(ref));
@@ -189,7 +191,7 @@ static int commit_name_dup(struct commit_name **out, struct commit_name *in)
 	struct commit_name *name;
 
 	name = git__malloc(sizeof(struct commit_name));
-	GITERR_CHECK_ALLOC(name);
+	GIT_ERROR_CHECK_ALLOC(name);
 
 	memcpy(name, in,  sizeof(struct commit_name));
 	name->tag = NULL;
@@ -199,7 +201,7 @@ static int commit_name_dup(struct commit_name **out, struct commit_name *in)
 		return -1;
 
 	name->path = git__strdup(in->path);
-	GITERR_CHECK_ALLOC(name->path);
+	GIT_ERROR_CHECK_ALLOC(name->path);
 
 	*out = name;
 	return 0;
@@ -265,7 +267,7 @@ static int possible_tag_dup(struct possible_tag **out, struct possible_tag *in)
 	int error;
 
 	tag = git__malloc(sizeof(struct possible_tag));
-	GITERR_CHECK_ALLOC(tag);
+	GIT_ERROR_CHECK_ALLOC(tag);
 
 	memcpy(tag, in, sizeof(struct possible_tag));
 	tag->name = NULL;
@@ -333,14 +335,14 @@ static int display_name(git_buf *buf, git_repository *repo, struct commit_name *
 {
 	if (n->prio == 2 && !n->tag) {
 		if (git_tag_lookup(&n->tag, repo, &n->sha1) < 0) {
-			giterr_set(GITERR_TAG, "annotated tag '%s' not available", n->path);
+			git_error_set(GIT_ERROR_TAG, "annotated tag '%s' not available", n->path);
 			return -1;
 		}
 	}
 
 	if (n->tag && !n->name_checked) {
 		if (!git_tag_name(n->tag)) {
-			giterr_set(GITERR_TAG, "annotated tag '%s' has no embedded name", n->path);
+			git_error_set(GIT_ERROR_TAG, "annotated tag '%s' has no embedded name", n->path);
 			return -1;
 		}
 
@@ -364,7 +366,7 @@ static int find_unique_abbrev_size(
 	int *out,
 	git_repository *repo,
 	const git_oid *oid_in,
-	int abbreviated_size)
+	unsigned int abbreviated_size)
 {
 	size_t size = abbreviated_size;
 	git_odb *odb;
@@ -390,7 +392,7 @@ static int find_unique_abbrev_size(
 
 	/* If we didn't find any shorter prefix, we have to do the whole thing */
 	*out = GIT_OID_HEXSZ;
-	
+
 	return 0;
 }
 
@@ -399,7 +401,7 @@ static int show_suffix(
 	int depth,
 	git_repository *repo,
 	const git_oid* id,
-	size_t abbrev_size)
+	unsigned int abbrev_size)
 {
 	int error, size = 0;
 
@@ -423,7 +425,7 @@ static int describe_not_found(const git_oid *oid, const char *message_format) {
 	char oid_str[GIT_OID_HEXSZ + 1];
 	git_oid_tostr(oid_str, sizeof(oid_str), oid);
 
-	giterr_set(GITERR_DESCRIBE, message_format, oid_str);
+	git_error_set(GIT_ERROR_DESCRIBE, message_format, oid_str);
 	return GIT_ENOTFOUND;
 }
 
@@ -502,7 +504,7 @@ static int describe(
 				unannotated_cnt++;
 			} else if (match_cnt < data->opts->max_candidates_tags) {
 				struct possible_tag *t = git__malloc(sizeof(struct commit_name));
-				GITERR_CHECK_ALLOC(t);
+				GIT_ERROR_CHECK_ALLOC(t);
 				if ((error = git_vector_insert(&all_matches, t)) < 0)
 					goto cleanup;
 
@@ -561,14 +563,14 @@ static int describe(
 			goto cleanup;
 		}
 		if (unannotated_cnt) {
-			error = describe_not_found(git_commit_id(commit), 
+			error = describe_not_found(git_commit_id(commit),
 				"cannot describe - "
 				"no annotated tags can describe '%s'; "
 			    "however, there were unannotated tags.");
 			goto cleanup;
 		}
 		else {
-			error = describe_not_found(git_commit_id(commit), 
+			error = describe_not_found(git_commit_id(commit),
 				"cannot describe - "
 				"no tags can describe '%s'.");
 			goto cleanup;
@@ -665,7 +667,7 @@ int git_describe_commit(
 	assert(committish);
 
 	data.result = git__calloc(1, sizeof(git_describe_result));
-	GITERR_CHECK_ALLOC(data.result);
+	GIT_ERROR_CHECK_ALLOC(data.result);
 	data.result->repo = git_object_owner(committish);
 
 	data.repo = git_object_owner(committish);
@@ -673,18 +675,18 @@ int git_describe_commit(
 	if ((error = normalize_options(&normalized, opts)) < 0)
 		return error;
 
-	GITERR_CHECK_VERSION(
+	GIT_ERROR_CHECK_VERSION(
 		&normalized,
 		GIT_DESCRIBE_OPTIONS_VERSION,
 		"git_describe_options");
 	data.opts = &normalized;
 
 	data.names = git_oidmap_alloc();
-	GITERR_CHECK_ALLOC(data.names);
+	GIT_ERROR_CHECK_ALLOC(data.names);
 
 	/** TODO: contains to be implemented */
 
-	if ((error = git_object_peel((git_object **)(&commit), committish, GIT_OBJ_COMMIT)) < 0)
+	if ((error = git_object_peel((git_object **)(&commit), committish, GIT_OBJECT_COMMIT)) < 0)
 		goto cleanup;
 
 	if ((error = git_reference_foreach_name(
@@ -693,7 +695,7 @@ int git_describe_commit(
 				goto cleanup;
 
 	if (git_oidmap_size(data.names) == 0 && !opts->show_commit_oid_as_fallback) {
-		giterr_set(GITERR_DESCRIBE, "cannot describe - "
+		git_error_set(GIT_ERROR_DESCRIBE, "cannot describe - "
 			"no reference found, cannot describe anything.");
 		error = -1;
 		goto cleanup;
@@ -736,7 +738,7 @@ int git_describe_workdir(
 	if ((error = git_reference_name_to_id(&current_id, repo, GIT_HEAD_FILE)) < 0)
 		return error;
 
-	if ((error = git_object_lookup(&commit, repo, &current_id, GIT_OBJ_COMMIT)) < 0)
+	if ((error = git_object_lookup(&commit, repo, &current_id, GIT_OBJECT_COMMIT)) < 0)
 		return error;
 
 	/* The first step is to perform a describe of HEAD, so we can leverage this */
@@ -784,14 +786,14 @@ int git_describe_format(git_buf *out, const git_describe_result *result, const g
 
 	assert(out && result);
 
-	GITERR_CHECK_VERSION(given, GIT_DESCRIBE_FORMAT_OPTIONS_VERSION, "git_describe_format_options");
+	GIT_ERROR_CHECK_VERSION(given, GIT_DESCRIBE_FORMAT_OPTIONS_VERSION, "git_describe_format_options");
 	normalize_format_options(&opts, given);
 
 	git_buf_sanitize(out);
 
 
 	if (opts.always_use_long_format && opts.abbreviated_size == 0) {
-		giterr_set(GITERR_DESCRIBE, "cannot describe - "
+		git_error_set(GIT_ERROR_DESCRIBE, "cannot describe - "
 			"'always_use_long_format' is incompatible with a zero"
 			"'abbreviated_size'");
 		return -1;

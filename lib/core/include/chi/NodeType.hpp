@@ -44,10 +44,10 @@ public:
 	/// \param outputBlocks The blocks that can be outputted. This will be the same size as
 	/// numOutputExecs.
 	/// \return The Result
-	virtual Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto,
-	                       size_t execInputID, const llvm::DebugLoc& nodeLocation,
-	                       const std::vector<llvm::Value*>&      io,
-	                       const std::vector<llvm::BasicBlock*>& outputBlocks) = 0;
+	virtual Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto,
+	                       size_t execInputID, LLVMMetadataRef nodeLocation,
+	                       const std::vector<LLVMValueRef>&      io,
+	                       const std::vector<LLVMBasicBlockRef>& outputBlocks) = 0;
 
 	/// Create the JSON necessary to store the object.
 	/// \return The json obejct
@@ -84,7 +84,7 @@ public:
 	/// Get if this node is pure
 	/// \return If it's pure
 	bool pure() { return mPure; }
-	
+
 	/// Get if this node is a converter
 	bool converter() { return mConverter; }
 
@@ -118,7 +118,7 @@ protected:
 	/// When they are called they are backpropagated and all called
 	/// They should usually be cheap and sideaffectless
 	void makePure();
-	
+
 	/// Make this a converter node
 	/// \pre `pure() == true`
 	/// Allows for this node to be created automatically for conversions
@@ -141,7 +141,7 @@ private:
 	std::vector<std::string> mExecInputs;
 	std::vector<std::string> mExecOutputs;
 
-	bool mPure = false;
+	bool mPure      = false;
 	bool mConverter = false;
 };
 }  // namespace chi

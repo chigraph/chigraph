@@ -12,7 +12,7 @@
 static git_repository *repo;
 static git_index *repo_index;
 
-// Fixture setup and teardown
+/* Fixture setup and teardown */
 void test_cherrypick_workdir__initialize(void)
 {
 	repo = cl_git_sandbox_init(TEST_REPO_PATH);
@@ -228,8 +228,8 @@ void test_cherrypick_workdir__conflicts(void)
 
 	git_commit_free(commit);
 	git_commit_free(head);
-	git_buf_free(&mergemsg_buf);
-	git_buf_free(&conflicting_buf);
+	git_buf_dispose(&mergemsg_buf);
+	git_buf_dispose(&conflicting_buf);
 }
 
 /* git reset --hard bafbf6912c09505ac60575cd43d3f2aba3bd84d8
@@ -358,7 +358,7 @@ void test_cherrypick_workdir__both_renamed(void)
 		"\tfile3.txt.renamed\n" \
 		"\tfile3.txt.renamed_on_branch\n") == 0);
 
-	git_buf_free(&mergemsg_buf);
+	git_buf_dispose(&mergemsg_buf);
 	git_commit_free(commit);
 	git_commit_free(head);
 }
@@ -370,7 +370,7 @@ void test_cherrypick_workdir__nonmerge_fails_mainline_specified(void)
 	git_cherrypick_options opts = GIT_CHERRYPICK_OPTIONS_INIT;
 
 	cl_git_pass(git_repository_head(&head, repo));
-	cl_git_pass(git_reference_peel((git_object **)&commit, head, GIT_OBJ_COMMIT));
+	cl_git_pass(git_reference_peel((git_object **)&commit, head, GIT_OBJECT_COMMIT));
 
 	opts.mainline = 1;
 	cl_must_fail(git_cherrypick(repo, commit, &opts));

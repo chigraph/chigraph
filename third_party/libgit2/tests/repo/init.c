@@ -4,6 +4,7 @@
 #include "config.h"
 #include "path.h"
 #include "config/config_helpers.h"
+#include "repo/repo_helpers.h"
 
 enum repo_mode {
 	STANDARD_REPOSITORY = 0,
@@ -12,7 +13,6 @@ enum repo_mode {
 
 static git_repository *_repo = NULL;
 static git_buf _global_path = GIT_BUF_INIT;
-static git_buf _tmp_path = GIT_BUF_INIT;
 static mode_t g_umask = 0;
 
 void test_repo_init__initialize(void)
@@ -33,11 +33,9 @@ void test_repo_init__cleanup(void)
 {
 	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_GLOBAL,
 		_global_path.ptr);
-	git_buf_free(&_global_path);
+	git_buf_dispose(&_global_path);
 
-	if (_tmp_path.size > 0 && git_path_isdir(_tmp_path.ptr))
-		git_futils_rmdir_r(_tmp_path.ptr, NULL, GIT_RMDIR_REMOVE_FILES);
-	git_buf_free(&_tmp_path);
+	cl_fixture_cleanup("tmp_global_path");
 }
 
 static void cleanup_repository(void *path)
@@ -131,8 +129,8 @@ void test_repo_init__bare_repo_escaping_current_workdir(void)
 
 	cl_git_pass(chdir(git_buf_cstr(&path_current_workdir)));
 
-	git_buf_free(&path_current_workdir);
-	git_buf_free(&path_repository);
+	git_buf_dispose(&path_current_workdir);
+	git_buf_dispose(&path_repository);
 
 	cleanup_repository("a");
 }
@@ -193,7 +191,7 @@ void test_repo_init__additional_templates(void)
 	cl_assert(git_path_isdir(git_buf_cstr(&path)));
 	/* won't confirm specific contents of hooks dir since it may vary */
 
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 static void assert_config_entry_on_init_bytype(
@@ -245,6 +243,68 @@ void test_repo_init__detect_ignorecase(void)
 
 	assert_config_entry_on_init(
 		"core.ignorecase", found_without_match ? true : GIT_ENOTFOUND);
+}
+
+/*
+ * Windows: if the filesystem supports symlinks (because we're running
+ * as administrator, or because the user has opted into it for normal
+ * users) then we can also opt-in explicitly by settings `core.symlinks`
+ * in the global config.  Symlinks remain off by default.
+ */
+
+void test_repo_init__symlinks_win32_enabled_by_global_config(void)
+{
+#ifndef GIT_WIN32
+	cl_skip();
+#else
+	git_config *config, *repo_config;
+	int val;
+
+	if (!filesystem_supports_symlinks("link"))
+		cl_skip();
+
+	create_tmp_global_config("tmp_global_config", "core.symlinks", "true");
+
+	/*
+	 * Create a new repository (can't use `assert_config_on_init` since we
+	 * want to examine configuration levels with more granularity.)
+	 */
+	cl_git_pass(git_repository_init(&_repo, "config_entry/test.non.bare.git", false));
+
+	/* Ensure that core.symlinks remains set (via the global config). */
+	cl_git_pass(git_repository_config(&config, _repo));
+	cl_git_pass(git_config_get_bool(&val, config, "core.symlinks"));
+	cl_assert_equal_i(1, val);
+
+	/*
+	 * Ensure that the repository config does not set core.symlinks.
+	 * It should remain inherited.
+	 */
+	cl_git_pass(git_config_open_level(&repo_config, config, GIT_CONFIG_LEVEL_LOCAL));
+	cl_git_fail_with(GIT_ENOTFOUND, git_config_get_bool(&val, repo_config, "core.symlinks"));
+	git_config_free(repo_config);
+
+	git_config_free(config);
+#endif
+}
+
+void test_repo_init__symlinks_win32_off_by_default(void)
+{
+#ifndef GIT_WIN32
+	cl_skip();
+#else
+	assert_config_entry_on_init("core.symlinks", false);
+#endif
+}
+
+void test_repo_init__symlinks_posix_detected(void)
+{
+#ifdef GIT_WIN32
+	cl_skip();
+#else
+	assert_config_entry_on_init(
+	    "core.symlinks", filesystem_supports_symlinks("link") ? GIT_ENOTFOUND : false);
+#endif
 }
 
 void test_repo_init__detect_precompose_unicode_required(void)
@@ -320,6 +380,17 @@ void test_repo_init__sets_logAllRefUpdates_according_to_type_of_repository(void)
 	assert_config_entry_on_init_bytype("core.logallrefupdates", true, false);
 }
 
+void test_repo_init__empty_template_path(void)
+{
+	git_repository_init_options opts = GIT_REPOSITORY_INIT_OPTIONS_INIT;
+	opts.template_path = "";
+
+	cl_git_pass(git_futils_mkdir("foo", 0755, 0));
+	cl_git_pass(git_repository_init_ext(&_repo, "foo", &opts));
+
+	cleanup_repository("foo");
+}
+
 void test_repo_init__extended_0(void)
 {
 	git_repository_init_options opts = GIT_REPOSITORY_INIT_OPTIONS_INIT;
@@ -371,7 +442,7 @@ void test_repo_init__extended_1(void)
 		cl_assert((S_ISGID & st.st_mode) == 0);
 
 	cl_git_pass(git_reference_lookup(&ref, _repo, "HEAD"));
-	cl_assert(git_reference_type(ref) == GIT_REF_SYMBOLIC);
+	cl_assert(git_reference_type(ref) == GIT_REFERENCE_SYMBOLIC);
 	cl_assert_equal_s("refs/heads/development", git_reference_symbolic_target(ref));
 	git_reference_free(ref);
 
@@ -412,7 +483,7 @@ void test_repo_init__relative_gitdir(void)
 	cl_git_pass(git_futils_readbuffer(&dot_git_content, "root/b/c_wd/.git"));
 	cl_assert_equal_s("gitdir: ../my_repository/", dot_git_content.ptr);
 
-	git_buf_free(&dot_git_content);
+	git_buf_dispose(&dot_git_content);
 	cleanup_repository("root");
 }
 
@@ -433,7 +504,7 @@ void test_repo_init__relative_gitdir_2(void)
 
 	/* make the directory first, then it should succeed */
 	cl_git_pass(git_repository_init_ext(&_repo, "root/b/my_repository", &opts));
-	git_buf_free(&full_path);
+	git_buf_dispose(&full_path);
 
 	cl_assert(!git__suffixcmp(git_repository_workdir(_repo), "root/b/c_wd/"));
 	cl_assert(!git__suffixcmp(git_repository_path(_repo), "root/b/my_repository/"));
@@ -449,7 +520,7 @@ void test_repo_init__relative_gitdir_2(void)
 	cl_git_pass(git_futils_readbuffer(&dot_git_content, "root/b/c_wd/.git"));
 	cl_assert_equal_s("gitdir: ../my_repository/", dot_git_content.ptr);
 
-	git_buf_free(&dot_git_content);
+	git_buf_dispose(&dot_git_content);
 	cleanup_repository("root");
 }
 
@@ -486,8 +557,8 @@ static void assert_hooks_match(
 		cl_assert_equal_i_fmt(expected_mode, st.st_mode, "%07o");
 	}
 
-	git_buf_free(&expected);
-	git_buf_free(&actual);
+	git_buf_dispose(&expected);
+	git_buf_dispose(&actual);
 }
 
 static void assert_mode_seems_okay(
@@ -499,7 +570,7 @@ static void assert_mode_seems_okay(
 
 	cl_git_pass(git_buf_joinpath(&full, base, path));
 	cl_git_pass(git_path_lstat(full.ptr, &st));
-	git_buf_free(&full);
+	git_buf_dispose(&full);
 
 	if (!core_filemode) {
 		CLEAR_FOR_CORE_FILEMODE(expect_mode);
@@ -541,37 +612,18 @@ static const char *template_sandbox(const char *name)
 	/* create a file starting with a dot */
 	cl_git_pass(git_buf_joinpath(&dotfile_path, hooks_path.ptr, ".dotfile"));
 	cl_git_mkfile(dotfile_path.ptr, "something\n");
-	git_buf_free(&dotfile_path);
+	git_buf_dispose(&dotfile_path);
 
-	git_buf_free(&dotfile_path);
-	git_buf_free(&link_path);
-	git_buf_free(&hooks_path);
+	git_buf_dispose(&dotfile_path);
+	git_buf_dispose(&link_path);
+	git_buf_dispose(&hooks_path);
 
 	return path;
 }
 
 static void configure_templatedir(const char *template_path)
 {
-	git_buf config_path = GIT_BUF_INIT;
-	git_buf config_data = GIT_BUF_INIT;
-
-    cl_git_pass(git_libgit2_opts(GIT_OPT_GET_SEARCH_PATH,
-		GIT_CONFIG_LEVEL_GLOBAL, &_tmp_path));
-	cl_git_pass(git_buf_puts(&_tmp_path, ".tmp"));
-	cl_git_pass(git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH,
-		GIT_CONFIG_LEVEL_GLOBAL, _tmp_path.ptr));
-
-	cl_must_pass(p_mkdir(_tmp_path.ptr, 0777));
-
-	cl_git_pass(git_buf_joinpath(&config_path, _tmp_path.ptr, ".gitconfig"));
-
-	cl_git_pass(git_buf_printf(&config_data,
-		"[init]\n\ttemplatedir = \"%s\"\n", template_path));
-
-	cl_git_mkfile(config_path.ptr, config_data.ptr);
-
-	git_buf_free(&config_path);
-	git_buf_free(&config_data);
+	create_tmp_global_config("tmp_global_path", "init.templatedir", template_path);
 }
 
 static void validate_templates(git_repository *repo, const char *template_path)
@@ -606,10 +658,10 @@ static void validate_templates(git_repository *repo, const char *template_path)
 		template_path, git_repository_path(repo),
 		"hooks/.dotfile", filemode);
 
-	git_buf_free(&expected);
-	git_buf_free(&actual);
-	git_buf_free(&repo_description);
-	git_buf_free(&template_description);
+	git_buf_dispose(&expected);
+	git_buf_dispose(&actual);
+	git_buf_dispose(&repo_description);
+	git_buf_dispose(&template_description);
 }
 
 void test_repo_init__external_templates_specified_in_options(void)
@@ -655,7 +707,7 @@ void test_repo_init__external_templates_specified_in_config(void)
 	validate_templates(_repo, "template");
 	cl_fixture_cleanup("template");
 
-	git_buf_free(&template_path);
+	git_buf_dispose(&template_path);
 }
 
 void test_repo_init__external_templates_with_leading_dot(void)
@@ -682,7 +734,7 @@ void test_repo_init__external_templates_with_leading_dot(void)
 	validate_templates(_repo, ".template_with_leading_dot");
 	cl_fixture_cleanup(".template_with_leading_dot");
 
-	git_buf_free(&template_path);
+	git_buf_dispose(&template_path);
 }
 
 void test_repo_init__extended_with_template_and_shared_mode(void)
@@ -744,7 +796,7 @@ void test_repo_init__init_with_initial_commit(void)
 	/* Initialize the repository */
 	cl_git_pass(git_repository_init(&_repo, "committed", 0));
 
-	/* Init will be automatically created when requested for a new repo */
+	/* Index will be automatically created when requested for a new repo */
 	cl_git_pass(git_repository_index(&index, _repo));
 
 	/* Create a file so we can commit it
@@ -822,6 +874,18 @@ void test_repo_init__at_filesystem_root(void)
 	cl_assert(git_path_isdir(root.ptr));
 	cl_git_pass(git_futils_rmdir_r(root.ptr, NULL, GIT_RMDIR_REMOVE_FILES));
 
-	git_buf_free(&root);
+	git_buf_dispose(&root);
 	git_repository_free(repo);
+}
+
+void test_repo_init__nonexistent_paths(void)
+{
+	git_repository *repo;
+
+#ifdef GIT_WIN32
+	cl_git_fail(git_repository_init(&repo, "Q:/non/existent/path", 0));
+	cl_git_fail(git_repository_init(&repo, "Q:\\non\\existent\\path", 0));
+#else
+	cl_git_fail(git_repository_init(&repo, "/non/existent/path", 0));
+#endif
 }

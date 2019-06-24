@@ -12,7 +12,7 @@
 namespace chi {
 
 Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
-                         const boost::filesystem::path& fullName, GraphModule** toFill) {
+                         const std::filesystem::path& fullName, GraphModule** toFill) {
 	Result res;
 
 	auto resCtx = res.addScopedContext({{"Loading Module Name", fullName.string()},
@@ -447,7 +447,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 	return res;
 }
 
-Result jsonToGraphStruct(GraphModule& mod, boost::string_view name, const nlohmann::json& input,
+Result jsonToGraphStruct(GraphModule& mod, std::string_view name, const nlohmann::json& input,
                          GraphStruct** toFill) {
 	Result res;
 
@@ -456,7 +456,7 @@ Result jsonToGraphStruct(GraphModule& mod, boost::string_view name, const nlohma
 		return res;
 	}
 
-	auto createdStruct = mod.getOrCreateStruct(name.to_string());
+	auto createdStruct = mod.getOrCreateStruct(std::string(name));
 	if (toFill != nullptr) { *toFill = createdStruct; }
 
 	for (const auto& str : input) {

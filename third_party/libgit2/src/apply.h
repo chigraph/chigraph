@@ -7,7 +7,10 @@
 #ifndef INCLUDE_apply_h__
 #define INCLUDE_apply_h__
 
+#include "common.h"
+
 #include "git2/patch.h"
+#include "git2/apply.h"
 #include "buffer.h"
 
 extern int git_apply__patch(
@@ -16,6 +19,7 @@ extern int git_apply__patch(
 	unsigned int *mode,
 	const char *source,
 	size_t source_len,
-	git_patch *patch);
+	git_patch *patch,
+	const git_apply_options *opts);
 
 #endif

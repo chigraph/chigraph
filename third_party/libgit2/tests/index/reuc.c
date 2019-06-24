@@ -18,7 +18,7 @@ static git_index *repo_index;
 #define TWO_OUR_OID "8f3c06cff9a83757cec40c80bc9bf31a2582bde9"
 #define TWO_THEIR_OID "887b153b165d32409c70163e0f734c090f12f673"
 
-// Fixture setup and teardown
+/* Fixture setup and teardown */
 void test_index_reuc__initialize(void)
 {
 	repo = cl_git_sandbox_init("mergedrepo");
@@ -56,6 +56,8 @@ void test_index_reuc__add(void)
 	cl_assert_equal_oid(&reuc->oid[0], &ancestor_oid);
 	cl_assert_equal_oid(&reuc->oid[1], &our_oid);
 	cl_assert_equal_oid(&reuc->oid[2], &their_oid);
+
+	cl_git_pass(git_index_write(repo_index));
 }
 
 void test_index_reuc__add_no_ancestor(void)
@@ -81,6 +83,8 @@ void test_index_reuc__add_no_ancestor(void)
 	cl_assert_equal_oid(&reuc->oid[0], &ancestor_oid);
 	cl_assert_equal_oid(&reuc->oid[1], &our_oid);
 	cl_assert_equal_oid(&reuc->oid[2], &their_oid);
+
+	cl_git_pass(git_index_write(repo_index));
 }
 
 void test_index_reuc__read_bypath(void)
@@ -125,12 +129,12 @@ void test_index_reuc__ignore_case(void)
 
 	index_caps = git_index_caps(repo_index);
 
-	index_caps &= ~GIT_INDEXCAP_IGNORE_CASE;
+	index_caps &= ~GIT_INDEX_CAPABILITY_IGNORE_CASE;
 	cl_git_pass(git_index_set_caps(repo_index, index_caps));
 
 	cl_assert(!git_index_reuc_get_bypath(repo_index, "TWO.txt"));
 
-	index_caps |= GIT_INDEXCAP_IGNORE_CASE;
+	index_caps |= GIT_INDEX_CAPABILITY_IGNORE_CASE;
 	cl_git_pass(git_index_set_caps(repo_index, index_caps));
 
 	cl_assert_equal_i(2, git_index_reuc_entrycount(repo_index));
@@ -193,7 +197,7 @@ void test_index_reuc__updates_existing(void)
 
 	index_caps = git_index_caps(repo_index);
 
-	index_caps |= GIT_INDEXCAP_IGNORE_CASE;
+	index_caps |= GIT_INDEX_CAPABILITY_IGNORE_CASE;
 	cl_git_pass(git_index_set_caps(repo_index, index_caps));
 
 	git_oid_fromstr(&ancestor_oid, TWO_ANCESTOR_OID);
@@ -338,12 +342,12 @@ void test_index_reuc__cleaned_on_checkout_tree(void)
 	git_object *obj;
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 
-	opts.checkout_strategy = GIT_CHECKOUT_SAFE | GIT_CHECKOUT_UPDATE_ONLY;
+	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
 
 	test_index_reuc__add();
-	git_reference_name_to_id(&oid, repo, "refs/heads/master");
-	git_object_lookup(&obj, repo, &oid, GIT_OBJ_ANY);
-	git_checkout_tree(repo, obj, &opts);
+	cl_git_pass(git_reference_name_to_id(&oid, repo, "refs/heads/master"));
+	cl_git_pass(git_object_lookup(&obj, repo, &oid, GIT_OBJECT_ANY));
+	cl_git_pass(git_checkout_tree(repo, obj, &opts));
 	cl_assert(reuc_entry_exists() == false);
 
 	git_object_free(obj);
@@ -353,10 +357,10 @@ void test_index_reuc__cleaned_on_checkout_head(void)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 
-	opts.checkout_strategy = GIT_CHECKOUT_SAFE | GIT_CHECKOUT_UPDATE_ONLY;
+	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
 
 	test_index_reuc__add();
-	git_checkout_head(repo, &opts);
+	cl_git_pass(git_checkout_head(repo, &opts));
 	cl_assert(reuc_entry_exists() == false);
 }
 
@@ -364,9 +368,9 @@ void test_index_reuc__retained_on_checkout_index(void)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 
-	opts.checkout_strategy = GIT_CHECKOUT_SAFE | GIT_CHECKOUT_UPDATE_ONLY;
+	opts.checkout_strategy = GIT_CHECKOUT_FORCE;
 
 	test_index_reuc__add();
-	git_checkout_index(repo, repo_index, &opts);
+	cl_git_pass(git_checkout_index(repo, repo_index, &opts));
 	cl_assert(reuc_entry_exists() == true);
 }

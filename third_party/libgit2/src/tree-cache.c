@@ -6,6 +6,7 @@
  */
 
 #include "tree-cache.h"
+
 #include "pool.h"
 #include "tree.h"
 
@@ -90,7 +91,7 @@ static int read_tree_internal(git_tree_cache **out,
 		return -1;
 
 	/* Blank-terminated ASCII decimal number of entries in this tree */
-	if (git__strtol32(&count, buffer, &buffer, 10) < 0)
+	if (git__strntol32(&count, buffer, buffer_end - buffer, &buffer, 10) < 0)
 		goto corrupted;
 
 	tree->entry_count = count;
@@ -99,7 +100,7 @@ static int read_tree_internal(git_tree_cache **out,
 		goto corrupted;
 
 	 /* Number of children of the tree, newline-terminated */
-	if (git__strtol32(&count, buffer, &buffer, 10) < 0 || count < 0)
+	if (git__strntol32(&count, buffer, buffer_end - buffer, &buffer, 10) < 0 || count < 0)
 		goto corrupted;
 
 	tree->children_count = count;
@@ -122,7 +123,7 @@ static int read_tree_internal(git_tree_cache **out,
 		unsigned int i;
 
 		tree->children = git_pool_malloc(pool, tree->children_count * sizeof(git_tree_cache *));
-		GITERR_CHECK_ALLOC(tree->children);
+		GIT_ERROR_CHECK_ALLOC(tree->children);
 
 		memset(tree->children, 0x0, tree->children_count * sizeof(git_tree_cache *));
 
@@ -137,7 +138,7 @@ static int read_tree_internal(git_tree_cache **out,
 	return 0;
 
  corrupted:
-	giterr_set(GITERR_INDEX, "corrupted TREE extension in index");
+	git_error_set(GIT_ERROR_INDEX, "corrupted TREE extension in index");
 	return -1;
 }
 
@@ -149,7 +150,7 @@ int git_tree_cache_read(git_tree_cache **tree, const char *buffer, size_t buffer
 		return -1;
 
 	if (buffer < buffer_end) {
-		giterr_set(GITERR_INDEX, "corrupted TREE extension in index (unexpected trailing data)");
+		git_error_set(GIT_ERROR_INDEX, "corrupted TREE extension in index (unexpected trailing data)");
 		return -1;
 	}
 
@@ -183,7 +184,7 @@ static int read_tree_recursive(git_tree_cache *cache, const git_tree *tree, git_
 
 	cache->children_count = ntrees;
 	cache->children = git_pool_mallocz(pool, ntrees * sizeof(git_tree_cache *));
-	GITERR_CHECK_ALLOC(cache->children);
+	GIT_ERROR_CHECK_ALLOC(cache->children);
 
 	j = 0;
 	for (i = 0; i < nentries; i++) {
@@ -236,7 +237,7 @@ int git_tree_cache_new(git_tree_cache **out, const char *name, git_pool *pool)
 
 	name_len = strlen(name);
 	tree = git_pool_malloc(pool, sizeof(git_tree_cache) + name_len + 1);
-	GITERR_CHECK_ALLOC(tree);
+	GIT_ERROR_CHECK_ALLOC(tree);
 
 	memset(tree, 0x0, sizeof(git_tree_cache));
 	/* NUL-terminated tree name */

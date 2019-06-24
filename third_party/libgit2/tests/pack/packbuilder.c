@@ -76,7 +76,7 @@ static void seed_packbuilder(void)
 
 	git_vector_foreach(&_commits, i, o) {
 		git_object *obj;
-		cl_git_pass(git_object_lookup(&obj, _repo, o, GIT_OBJ_COMMIT));
+		cl_git_pass(git_object_lookup(&obj, _repo, o, GIT_OBJECT_COMMIT));
 		cl_git_pass(git_packbuilder_insert_tree(_packbuilder,
 					git_commit_tree_id((git_commit *)obj)));
 		git_object_free(obj);
@@ -100,7 +100,7 @@ void test_pack_packbuilder__create_pack(void)
 
 	seed_packbuilder();
 
-	cl_git_pass(git_indexer_new(&_indexer, ".", 0, NULL, NULL, NULL));
+	cl_git_pass(git_indexer_new(&_indexer, ".", 0, NULL, NULL));
 	cl_git_pass(git_packbuilder_foreach(_packbuilder, feed_indexer, &stats));
 	cl_git_pass(git_indexer_commit(_indexer, &stats));
 
@@ -128,8 +128,8 @@ void test_pack_packbuilder__create_pack(void)
 	cl_git_pass(git_hash_final(&hash, &ctx));
 	git_hash_ctx_cleanup(&ctx);
 
-	git_buf_free(&path);
-	git_buf_free(&buf);
+	git_buf_dispose(&path);
+	git_buf_dispose(&buf);
 
 	git_oid_fmt(hex, &hash);
 
@@ -237,7 +237,7 @@ void test_pack_packbuilder__foreach(void)
 	git_indexer *idx;
 
 	seed_packbuilder();
-	cl_git_pass(git_indexer_new(&idx, ".", 0, NULL, NULL, NULL));
+	cl_git_pass(git_indexer_new(&idx, ".", 0, NULL, NULL));
 	cl_git_pass(git_packbuilder_foreach(_packbuilder, foreach_cb, idx));
 	cl_git_pass(git_indexer_commit(idx, &_stats));
 	git_indexer_free(idx);
@@ -255,7 +255,7 @@ void test_pack_packbuilder__foreach_with_cancel(void)
 	git_indexer *idx;
 
 	seed_packbuilder();
-	cl_git_pass(git_indexer_new(&idx, ".", 0, NULL, NULL, NULL));
+	cl_git_pass(git_indexer_new(&idx, ".", 0, NULL, NULL));
 	cl_git_fail_with(
 		git_packbuilder_foreach(_packbuilder, foreach_cancel_cb, idx), -1111);
 	git_indexer_free(idx);

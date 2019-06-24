@@ -1,41 +1,59 @@
 #include "clar_libgit2.h"
 #include "buffer.h"
 
-#if defined(GIT_ARCH_64)
-#define TOOBIG 0xffffffffffffff00
-#else
-#define TOOBIG 0xffffff00
-#endif
+/* Override default allocators with ones that will fail predictably. */
 
-/**
- * If we make a ridiculously large request the first time we
- * actually allocate some space in the git_buf, the realloc()
- * will fail.  And because the git_buf_grow() wrapper always
- * sets mark_oom, the code in git_buf_try_grow() will free
- * the internal buffer and set it to git_buf__oom.
- * 
- * We initialized the internal buffer to (the static variable)
- * git_buf__initbuf.  The purpose of this test is to make sure
- * that we don't try to free the static buffer.
- */
+static git_allocator std_alloc;
+static git_allocator oom_alloc;
+
+static void *oom_malloc(size_t n, const char *file, int line)
+{
+	/* Reject any allocation of more than 100 bytes */
+	return (n > 100) ? NULL : std_alloc.gmalloc(n, file, line);
+}
+
+static void *oom_realloc(void *p, size_t n, const char *file, int line)
+{
+	/* Reject any allocation of more than 100 bytes */
+	return (n > 100) ? NULL : std_alloc.grealloc(p, n, file, line);
+}
+
+void test_buf_oom__initialize(void)
+{
+	git_stdalloc_init_allocator(&std_alloc);
+	git_stdalloc_init_allocator(&oom_alloc);
+
+	oom_alloc.gmalloc = oom_malloc;
+	oom_alloc.grealloc = oom_realloc;
+
+	cl_git_pass(git_libgit2_opts(GIT_OPT_SET_ALLOCATOR, &oom_alloc));
+}
+
+void test_buf_oom__cleanup(void)
+{
+	cl_git_pass(git_libgit2_opts(GIT_OPT_SET_ALLOCATOR, NULL));
+}
+
 void test_buf_oom__grow(void)
 {
 	git_buf buf = GIT_BUF_INIT;
 
-	git_buf_clear(&buf);
+	cl_git_pass(git_buf_grow(&buf, 42));
+	cl_assert(!git_buf_oom(&buf));
 
-	cl_assert(git_buf_grow(&buf, TOOBIG) == -1);
+	cl_assert(git_buf_grow(&buf, 101) == -1);
 	cl_assert(git_buf_oom(&buf));
 
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_buf_oom__grow_by(void)
 {
 	git_buf buf = GIT_BUF_INIT;
 
-	buf.size = SIZE_MAX-10;
+	cl_git_pass(git_buf_grow_by(&buf, 42));
+	cl_assert(!git_buf_oom(&buf));
 
-	cl_assert(git_buf_grow_by(&buf, 50) == -1);
+	cl_assert(git_buf_grow_by(&buf, 101) == -1);
 	cl_assert(git_buf_oom(&buf));
 }

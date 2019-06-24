@@ -3,19 +3,15 @@
 #include "chi/LangModule.hpp"
 #include "chi/Context.hpp"
 #include "chi/DataType.hpp"
-#include "chi/LLVMVersion.hpp"
+#include "chi/Dwarf.hpp"
+#include "chi/FunctionCompiler.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
 
-#include <llvm/AsmParser/Parser.h>
-#include <llvm/IR/DebugInfo.h>
-#include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/Module.h>
-#include <llvm/Support/SourceMgr.h>
+#include <llvm-c/Core.h>
+#include <llvm-c/DebugInfo.h>
 
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-#include <llvm/IR/DIBuilder.h>
-#endif
+using namespace std::string_literals;
 
 namespace chi {
 
@@ -29,15 +25,18 @@ struct IfNodeType : NodeType {
 		setDataInputs({{"condition", mod.typeFromName("i1")}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 2);
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
 
-		builder.CreateCondBr(io[0], outputBlocks[0], outputBlocks[1]);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
+
+		LLVMBuildCondBr(*builder, io[0], outputBlocks[0], outputBlocks[1]);
 
 		return {};
 	}
@@ -54,28 +53,31 @@ struct EntryNodeType : NodeType {
 		setDataOutputs(std::move(dataInputs));
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == dataOutputs().size() && outputBlocks.size() == execOutputs().size());
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
 		// store the arguments
-		auto arg_iter = codegenInto.getParent()->arg_begin();
-		++arg_iter;  // skip the first argument, which is the input exec ID
-		for (const auto& iovalue : io) {
-			builder.CreateStore(&*arg_iter, iovalue);
+		auto function = LLVMGetBasicBlockParent(codegenInto);
 
-			++arg_iter;
+		auto current_arg = LLVMGetParam(function, 1);
+		for (const auto& iovalue : io) {
+			LLVMBuildStore(*builder, current_arg, iovalue);
+
+			current_arg = LLVMGetNextParam(current_arg);
 		}
 
-		auto inExecID   = &*codegenInto.getParent()->arg_begin();
-		auto switchInst = builder.CreateSwitch(inExecID, outputBlocks[0], execOutputs().size());
+		auto inExecID   = LLVMGetFirstParam(function);
+		auto switchInst = LLVMBuildSwitch(*builder, inExecID, outputBlocks[0], outputBlocks.size());
 
 		for (auto id = 0ull; id < execOutputs().size(); ++id) {
-			switchInst->addCase(builder.getInt32(id), outputBlocks[id]);
+			LLVMAddCase(switchInst, context().constI32(id), outputBlocks[id]);
 		}
 		return {};
 	}
@@ -109,16 +111,18 @@ struct ConstIntNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i32")}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		builder.CreateStore(builder.getInt32(number), io[0], false);
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildStore(*builder, context().constI32(number), io[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -139,16 +143,18 @@ struct ConstFloatNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("float")}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		builder.CreateStore(llvm::ConstantFP::get(builder.getFloatTy(), number), io[0]);
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildStore(*builder, context().constF64(number), io[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -169,16 +175,18 @@ struct ConstBoolNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i1")}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		builder.CreateStore(builder.getInt1(value), io[0], false);
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildStore(*builder, context().constBool(value), io[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -201,26 +209,28 @@ struct ExitNodeType : NodeType {
 		setDataInputs(std::move(dataOutputs));
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(execInputID < execInputs().size() && io.size() == dataInputs().size());
 
 		// assign the return types
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		llvm::Function* f = codegenInto.getParent();
-		size_t          ret_start =
-		    f->arg_size() - io.size();  // returns are after args, find where returns start
-		auto arg_iter = f->arg_begin();
-		std::advance(arg_iter, ret_start);
+		auto   f = LLVMGetBasicBlockParent(codegenInto);
+		size_t ret_start =
+		    LLVMCountParams(f) - io.size();  // returns are after args, find where returns start
+		auto current_arg = LLVMGetParam(f, ret_start);
 		for (auto& value : io) {
-			builder.CreateStore(value, &*arg_iter, false);  // TODO: volitility?
-			++arg_iter;
+			LLVMBuildStore(*builder, value, current_arg);
+
+			current_arg = LLVMGetNextParam(current_arg);
 		}
 
-		builder.CreateRet(builder.getInt32(execInputID));
+		LLVMBuildRet(*builder, context().constI32(execInputID));
 
 		return {};
 	}
@@ -254,30 +264,21 @@ struct StringLiteralNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i8*")}});
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == 1 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		auto global = builder.CreateGlobalString(literalString);
+		auto global = LLVMBuildGlobalStringPtr(*builder, literalString.c_str(), "");
 
-		auto const0ID = llvm::ConstantInt::get(context().llvmContext(), llvm::APInt(32, 0, false));
-		auto gep      = builder.CreateGEP(global,
-// LLVM 3.6- doesn't have std::initializer_list constructor to llvm::ArrayRef
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		                             std::vector<llvm::Value*> {
-			                             { const0ID, const0ID }
-			                         }
-#else
-		                             { const0ID, const0ID }
-#endif
-		                             );
-		builder.CreateStore(gep, io[0], false);
+		LLVMBuildStore(*builder, global, io[0]);
 
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -296,24 +297,26 @@ struct IntToFloatNodeType : NodeType {
 
 		setDataInputs({{"", mod.typeFromName("i32")}});
 		setDataOutputs({{"", mod.typeFromName("float")}});
-		
+
 		makeConverter();
 	}
 
-	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto,
-	               size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>&      io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& /*compiler*/, LLVMBasicBlockRef codegenInto,
+	               size_t /*execInputID*/, LLVMMetadataRef       nodeLocation,
+	               const std::vector<LLVMValueRef>&      io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == 2 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		auto casted =
-		    builder.CreateCast(llvm::Instruction::CastOps::SIToFP, io[0], builder.getFloatTy());
-		builder.CreateStore(casted, io[1]);
+		auto casted = LLVMBuildCast(*builder, LLVMSIToFP, io[0],
+		                            LLVMDoubleTypeInContext(context().llvmContext()), "");
+		LLVMBuildStore(*builder, casted, io[1]);
 
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -329,23 +332,25 @@ struct FloatToIntNodeType : NodeType {
 
 		setDataInputs({{"", mod.typeFromName("float")}});
 		setDataOutputs({{"", mod.typeFromName("i32")}});
-		
+
 		makeConverter();
 	}
 
-	Result codegen(NodeCompiler& compiler, llvm::BasicBlock& codegenInto, size_t execInputID,
-	               const llvm::DebugLoc& nodeLocation, const std::vector<llvm::Value*>& io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto, size_t execInputID,
+	               LLVMMetadataRef nodeLocation, const std::vector<LLVMValueRef>& io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == 2 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		auto casted =
-		    builder.CreateCast(llvm::Instruction::CastOps::FPToSI, io[0], builder.getInt32Ty());
-		builder.CreateStore(casted, io[1]);
+		auto casted = LLVMBuildCast(*builder, LLVMFPToSI, io[0],
+		                            LLVMInt32TypeInContext(context().llvmContext()), "");
+		LLVMBuildStore(*builder, casted, io[1]);
 
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -393,44 +398,46 @@ struct BinaryOperationNodeType : NodeType {
 		setDataOutputs({{"", ty}});
 	}
 
-	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto,
-	               size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>&      io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& /*compiler*/, LLVMBasicBlockRef codegenInto,
+	               size_t /*execInputID*/, LLVMMetadataRef       nodeLocation,
+	               const std::vector<LLVMValueRef>&      io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == 3 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		llvm::Value* result = nullptr;
+		LLVMValueRef result = nullptr;
 		if (mType.unqualifiedName() == "i32") {
 			result = [&](BinOp b) {
 				switch (b) {
-				case BinOp::Add: return builder.CreateAdd(io[0], io[1]);
-				case BinOp::Subtract: return builder.CreateSub(io[0], io[1]);
-				case BinOp::Multiply: return builder.CreateMul(io[0], io[1]);
-				case BinOp::Divide: return builder.CreateSDiv(io[0], io[1]);
-				default: return (llvm::Value*)nullptr;
+				case BinOp::Add: return LLVMBuildAdd(*builder, io[0], io[1], "");
+				case BinOp::Subtract: return LLVMBuildSub(*builder, io[0], io[1], "");
+				case BinOp::Multiply: return LLVMBuildMul(*builder, io[0], io[1], "");
+				case BinOp::Divide: return LLVMBuildSDiv(*builder, io[0], io[1], "");
+				default: return (LLVMValueRef) nullptr;
 				}
-				return (llvm::Value*)nullptr;
+				return (LLVMValueRef) nullptr;
 			}(mBinOp);
 
 		} else {
 			result = [&](BinOp b) {
 				switch (b) {
-				case BinOp::Add: return builder.CreateFAdd(io[0], io[1]);
-				case BinOp::Subtract: return builder.CreateFSub(io[0], io[1]);
-				case BinOp::Multiply: return builder.CreateFMul(io[0], io[1]);
-				case BinOp::Divide: return builder.CreateFDiv(io[0], io[1]);
-				default: return (llvm::Value*)nullptr;
+				case BinOp::Add: return LLVMBuildFAdd(*builder, io[0], io[1], "");
+				case BinOp::Subtract: return LLVMBuildFSub(*builder, io[0], io[1], "");
+				case BinOp::Multiply: return LLVMBuildFMul(*builder, io[0], io[1], "");
+				case BinOp::Divide: return LLVMBuildFDiv(*builder, io[0], io[1], "");
+				default: return (LLVMValueRef) nullptr;
 				}
-				return (llvm::Value*)nullptr;
+				return (LLVMValueRef) nullptr;
 			}(mBinOp);
 		}
 
-		builder.CreateStore(result, io[2]);
+		LLVMBuildStore(*builder, result, io[2]);
 
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -470,48 +477,48 @@ struct CompareNodeType : NodeType {
 		setDataOutputs({{"", mod.typeFromName("i1")}});
 	}
 
-	Result codegen(NodeCompiler& /*compiler*/, llvm::BasicBlock& codegenInto,
-	               size_t /*execInputID*/, const llvm::DebugLoc& nodeLocation,
-	               const std::vector<llvm::Value*>&      io,
-	               const std::vector<llvm::BasicBlock*>& outputBlocks) override {
+	Result codegen(NodeCompiler& /*compiler*/, LLVMBasicBlockRef codegenInto,
+	               size_t /*execInputID*/, LLVMMetadataRef       nodeLocation,
+	               const std::vector<LLVMValueRef>&      io,
+	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
 		assert(io.size() == 3 && outputBlocks.size() == 1);
 
-		llvm::IRBuilder<> builder(&codegenInto);
-		builder.SetCurrentDebugLocation(nodeLocation);
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilder());
+		LLVMPositionBuilder(*builder, codegenInto, nullptr);
+		LLVMSetCurrentDebugLocation(*builder,
+		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 
-		llvm::Value* result = nullptr;
+		LLVMValueRef result = nullptr;
 		if (mType.unqualifiedName() == "i32") {
-			result = [&](CmpOp b) -> llvm::Value* {
-				switch (b) {
-				case CmpOp::Lt: return builder.CreateICmpSLT(io[0], io[1]);
-				case CmpOp::Gt: return builder.CreateICmpSGT(io[0], io[1]);
-				case CmpOp::Let: return builder.CreateICmpSLE(io[0], io[1]);
-				case CmpOp::Get: return builder.CreateICmpSGE(io[0], io[1]);
-				case CmpOp::Eq: return builder.CreateICmpEQ(io[0], io[1]);
-				case CmpOp::Neq: return builder.CreateICmpNE(io[0], io[1]);
-				default: return nullptr;
-				}
-				return nullptr;
-			}(mCompOp);
+			LLVMIntPredicate pred;
+			switch (mCompOp) {
+			case CmpOp::Lt: pred = LLVMIntSLT; break;
+			case CmpOp::Gt: pred = LLVMIntSGT; break;
+			case CmpOp::Let: pred = LLVMIntSLE; break;
+			case CmpOp::Get: pred = LLVMIntSGE; break;
+			case CmpOp::Eq: pred = LLVMIntEQ; break;
+			case CmpOp::Neq: pred = LLVMIntNE; break;
+			default: assert(false);
+			}
+			result = LLVMBuildICmp(*builder, pred, io[0], io[1], "");
 
 		} else {
-			result = [&](CmpOp b) -> llvm::Value* {
-				switch (b) {
-				case CmpOp::Lt: return builder.CreateFCmpULT(io[0], io[1]);
-				case CmpOp::Gt: return builder.CreateFCmpUGT(io[0], io[1]);
-				case CmpOp::Let: return builder.CreateFCmpULE(io[0], io[1]);
-				case CmpOp::Get: return builder.CreateFCmpUGE(io[0], io[1]);
-				case CmpOp::Eq: return builder.CreateFCmpUEQ(io[0], io[1]);
-				case CmpOp::Neq: return builder.CreateFCmpUNE(io[0], io[1]);
-				default: return nullptr;
-				}
-				return nullptr;
-			}(mCompOp);
+			LLVMRealPredicate pred;
+			switch (mCompOp) {
+			case CmpOp::Lt: pred = LLVMRealOLT; break;
+			case CmpOp::Gt: pred = LLVMRealOGT; break;
+			case CmpOp::Let: pred = LLVMRealOLE; break;
+			case CmpOp::Get: pred = LLVMRealOGE; break;
+			case CmpOp::Eq: pred = LLVMRealOEQ; break;
+			case CmpOp::Neq: pred = LLVMRealONE; break;
+			default: assert(false);
+			}
+			result = LLVMBuildFCmp(*builder, pred, io[0], io[1], "");
 		}
 
-		builder.CreateStore(result, io[2]);
+		LLVMBuildStore(*builder, result, io[2]);
 
-		builder.CreateBr(outputBlocks[0]);
+		LLVMBuildBr(*builder, outputBlocks[0]);
 
 		return {};
 	}
@@ -527,8 +534,6 @@ struct CompareNodeType : NodeType {
 }  // anonymous namespace
 
 LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
-	using namespace std::string_literals;
-
 	// populate them
 	nodes = {
 	    {"if"s,
@@ -537,109 +542,108 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("i32"), BinOp::Add);
-		 }},
+	     }},
 	    {"i32-i32"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("i32"), BinOp::Subtract);
-		 }},
+	     }},
 	    {"i32*i32"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("i32"), BinOp::Multiply);
-		 }},
+	     }},
 	    {"i32/i32"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("i32"), BinOp::Divide);
-		 }},
+	     }},
 	    {"float+float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("float"), BinOp::Add);
-		 }},
+	     }},
 	    {"float-float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("float"), BinOp::Subtract);
-		 }},
+	     }},
 	    {"float*float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("float"), BinOp::Multiply);
-		 }},
+	     }},
 	    {"float/float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<BinaryOperationNodeType>(
 		         *this, LangModule::typeFromName("float"), BinOp::Divide);
-		 }},
+	     }},
 	    {"i32<i32"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
 		                                              CmpOp::Lt);
-		 }},
+	     }},
 	    {"i32>i32"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
 		                                              CmpOp::Gt);
-		 }},
+	     }},
 	    {"i32<=i32"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
 		                                              CmpOp::Let);
-		 }},
+	     }},
 	    {"i32>=i32"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
 		                                              CmpOp::Get);
-		 }},
+	     }},
 	    {"i32==i32"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
 		                                              CmpOp::Eq);
-		 }},
+	     }},
 	    {"i32!=i32"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("i32"),
 		                                              CmpOp::Neq);
-		 }},
+	     }},
 	    {"float<float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
 		                                              CmpOp::Lt);
-		 }},
+	     }},
 	    {"float>float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
 		                                              CmpOp::Gt);
-		 }},
+	     }},
 	    {"float<=float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
 		                                              CmpOp::Let);
-		 }},
+	     }},
 	    {"float>=float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
 		                                              CmpOp::Get);
-		 }},
+	     }},
 	    {"float==float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
 		                                              CmpOp::Eq);
-		 }},
+	     }},
 	    {"float!=float"s,
 	     [this](const nlohmann::json&, Result&) {
 		     return std::make_unique<CompareNodeType>(*this, LangModule::typeFromName("float"),
 		                                              CmpOp::Neq);
-		 }},
+	     }},
 	    {"inttofloat"s, [this](const nlohmann::json&,
 	                           Result&) { return std::make_unique<IntToFloatNodeType>(*this); }},
 	    {"floattoint"s, [this](const nlohmann::json&,
 	                           Result&) { return std::make_unique<FloatToIntNodeType>(*this); }},
 	    {"entry"s,
 	     [this](const nlohmann::json& injson, Result& res) {
-
 		     // transform the JSON data into this data structure
 		     std::vector<NamedDataType> dataInputs;
 
@@ -659,7 +663,6 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 					     std::string type   = qualifiedType.substr(qualifiedType.find(':') + 1);
 
 					     DataType cty;
-					     // TODO: maybe not discard res
 					     res += context().typeFromModule(module, type, &cty);
 
 					     if (!res) { continue; }
@@ -694,7 +697,7 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 			                                            std::move(execInputs));
 		     }
 		     return std::unique_ptr<EntryNodeType>();
-		 }},
+	     }},
 	    {"exit"s,
 	     [this](const nlohmann::json& injson, Result& res) {
 		     // transform the JSON data into this data structure
@@ -749,11 +752,9 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 
 		     return std::make_unique<ExitNodeType>(*this, std::move(dataOutputs),
 		                                           std::move(execOutputs));
-
-		 }},
+	     }},
 	    {"const-int"s,
 	     [this](const nlohmann::json& data, Result& res) {
-
 		     int num = 0;
 
 		     if (data.is_number_integer()) {
@@ -764,10 +765,9 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 		     }
 
 		     return std::make_unique<ConstIntNodeType>(*this, num);
-		 }},
+	     }},
 	    {"const-float"s,
 	     [this](const nlohmann::json& data, Result& res) {
-
 		     float num = 0;
 
 		     if (data.is_number()) {
@@ -778,10 +778,9 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 		     }
 
 		     return std::make_unique<ConstFloatNodeType>(*this, num);
-		 }},
+	     }},
 	    {"const-bool"s,
 	     [this](const nlohmann::json& data, Result& res) {
-
 		     bool val = false;
 
 		     if (data.is_boolean()) {
@@ -792,7 +791,7 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 		     }
 
 		     return std::make_unique<ConstBoolNodeType>(*this, val);
-		 }},
+	     }},
 	    {"strliteral"s, [this](const nlohmann::json& data, Result& res) {
 		     std::string str;
 		     if (data.is_string()) {
@@ -803,111 +802,70 @@ LangModule::LangModule(Context& ctx) : ChiModule(ctx, "lang") {
 		     }
 
 		     return std::make_unique<StringLiteralNodeType>(*this, str);
-		 }}};
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	// create a temp module so we can make a DIBuilder
-	auto mod = std::make_unique<llvm::Module>("tmp", context().llvmContext());
-
-	auto builder = std::make_unique<llvm::DIBuilder>(*mod);
-	mDebugTypes["i32"] =
-	    new llvm::DIType(builder->createBasicType("lang:i32", 32, 32, llvm::dwarf::DW_ATE_signed));
-	mDebugTypes["i1"] =
-	    new llvm::DIType(builder->createBasicType("lang:i1", 8, 7, llvm::dwarf::DW_ATE_boolean));
-	mDebugTypes["float"] =
-	    new llvm::DIType(builder->createBasicType("lang:float", 64, 64, llvm::dwarf::DW_ATE_float));
-
-	auto charType = builder->createBasicType("lang:i8", 8, 8, llvm::dwarf::DW_ATE_unsigned_char);
-
-	mDebugTypes["i8*"] = new llvm::DIType(builder->createPointerType(charType, 64, 64, "lang:i8*"));
-
-#else
-	// create debug types
-	mDebugTypes["i32"] =
-	    llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i32",
-	                           32, 32, llvm::dwarf::DW_ATE_signed);
-	mDebugTypes["i1"] =
-	    llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:i1", 8,
-	                           8, llvm::dwarf::DW_ATE_boolean);
-	mDebugTypes["float"] =
-	    llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type, "lang:float",
-	                           64, 64, llvm::dwarf::DW_ATE_float);
-	auto charType = llvm::DIBasicType::get(context().llvmContext(), llvm::dwarf::DW_TAG_base_type,
-	                                       "lang:i8", 8, 8, llvm::dwarf::DW_ATE_unsigned_char);
-
-	mDebugTypes["i8*"] =
-	    llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_pointer_type, nullptr,
-	                             nullptr, 0, nullptr, charType, 64, 64, 0,
-#if LLVM_VERSION_AT_LEAST(5, 0)
-	                             llvm::None,
-#endif
-	                             llvm::DINode::DIFlags());  // TODO: 32bit support?
-#endif
+	     }}};
 }
 
-Result LangModule::nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
+Result LangModule::nodeTypeFromName(std::string_view name, const nlohmann::json& jsonData,
                                     std::unique_ptr<NodeType>* toFill) {
 	Result res;
 
-	auto iter = nodes.find(name.to_string());
+	auto iter = nodes.find(std::string(name));
 	if (iter != nodes.end()) {
 		*toFill = iter->second(jsonData, res);
 		return res;
 	}
 
 	res.addEntry("E37", "Failed to find node in module",
-	             {{"Module", "lang"}, {"Requested Node Type", name.to_string()}});
+	             {{"Module", "lang"}, {"Requested Node Type", name}});
 
 	return res;
 }
 
-LangModule::~LangModule() {
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	// free those newed pointers
-	for (const auto& ptr : mDebugTypes) { delete ptr.second; }
-#endif
-}
+LangModule::~LangModule() = default;
 
 // the lang module just has the basic llvm types.
-DataType LangModule::typeFromName(boost::string_view name) {
-	using namespace std::string_literals;
-
-	llvm::Type* ty;
-
-	auto err = llvm::SMDiagnostic();
-#if LLVM_VERSION_LESS_EQUAL(3, 8)
-	// just parse the type
-	auto IR = "@G = external global "s + name.to_string();
-
-	auto tmpModule = llvm::
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-	    ParseAssemblyString(IR.c_str(), new llvm::Module("tmp", context().llvmContext()), err,
-	                        context().llvmContext());
-#else
-	    parseAssemblyString(IR, err, context().llvmContext());
-#endif
-
-	if (!tmpModule) { return nullptr; }
-
-	ty = tmpModule->getNamedValue("G")->getType()->getContainedType(0);
-#else
-	{
-		llvm::Module tMod("tmp", context().llvmContext());
-		ty = llvm::parseType(name.to_string(), err, tMod, nullptr);
+DataType LangModule::typeFromName(std::string_view name) {
+	LLVMTypeRef ty = nullptr;
+	if (name == "i32") {
+		ty = LLVMInt32TypeInContext(context().llvmContext());
+	} else if (name == "i1") {
+		ty = LLVMInt1TypeInContext(context().llvmContext());
+	} else if (name == "float") {
+		ty = LLVMDoubleTypeInContext(context().llvmContext());
+	} else if (name == "i8*") {
+		ty = LLVMPointerType(LLVMInt8TypeInContext(context().llvmContext()), 0);
+	} else {
+		return {};
 	}
-#endif
 
-	// get debug type
-	auto iter = mDebugTypes.find(name.to_string());
-	if (iter == mDebugTypes.end()) { return {}; }
+	return DataType{this, std::string(name), ty};
+}  // namespace chi
 
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-	delete tmpModule;
-#endif
+LLVMMetadataRef LangModule::debugType(FunctionCompiler& compiler, const DataType& dType) const {
+	auto getDebugType = [&](const char* name, size_t size, DwarfEncoding encoding) {
+		auto full_name = "lang:"s + name;
+		return LLVMDIBuilderCreateBasicType(compiler.diBuilder(), full_name.c_str(),
+		                                    full_name.size(), size, (LLVMDWARFTypeEncoding)encoding,
+		                                    LLVMDIFlagZero);
+	};
 
-	return DataType{this, name.to_string(), ty, iter->second};
+	if (dType.unqualifiedName() == "i32") {
+		return getDebugType("i32", 32, DwarfEncoding::Signed);
+	} else if (dType.unqualifiedName() == "i1") {
+		return getDebugType("i1", 8, DwarfEncoding::Boolean);
+	} else if (dType.unqualifiedName() == "float") {
+		return getDebugType("float", 64, DwarfEncoding::Float);
+	} else if (dType.unqualifiedName() == "i8*") {
+		auto charType = LLVMDIBuilderCreateBasicType(
+		    compiler.diBuilder(), "lang:i8", strlen("lang:i8"), 8,
+		    (LLVMDWARFTypeEncoding)DwarfEncoding::SignedChar, LLVMDIFlagZero);
+		return LLVMDIBuilderCreatePointerType(compiler.diBuilder(), charType, 64, 0, 0, "lang:i8*",
+		                                      strlen("lang:i8*"));
+	}
+	return nullptr;
 }
 
-Result LangModule::addForwardDeclarations(llvm::Module&) const { return {}; }
+Result LangModule::addForwardDeclarations(LLVMModuleRef) const { return {}; }
 
-Result LangModule::generateModule(llvm::Module&) { return {}; }
+Result LangModule::generateModule(LLVMModuleRef) { return {}; }
 }  // namespace chi

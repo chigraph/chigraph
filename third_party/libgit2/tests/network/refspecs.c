@@ -8,7 +8,7 @@ static void assert_refspec(unsigned int direction, const char *input, bool is_ex
 	int error;
 
 	error = git_refspec__parse(&refspec, input, direction == GIT_DIRECTION_FETCH);
-	git_refspec__free(&refspec);
+	git_refspec__dispose(&refspec);
 
 	if (is_expected_to_be_valid)
 		cl_assert_equal_i(0, error);
@@ -18,7 +18,7 @@ static void assert_refspec(unsigned int direction, const char *input, bool is_ex
 
 void test_network_refspecs__parsing(void)
 {
-	// Ported from https://github.com/git/git/blob/abd2bde78bd994166900290434a2048e660dabed/t/t5511-refspec.sh
+	/* Ported from https://github.com/git/git/blob/abd2bde78bd994166900290434a2048e660dabed/t/t5511-refspec.sh */
 
 	assert_refspec(GIT_DIRECTION_PUSH, "", false);
 	assert_refspec(GIT_DIRECTION_PUSH, ":", true);
@@ -40,8 +40,8 @@ void test_network_refspecs__parsing(void)
 	 * code.  They will be caught downstream anyway, but we may want to
 	 * have tighter check later...
 	 */
-	//assert_refspec(GIT_DIRECTION_PUSH, "refs/heads/master::refs/remotes/frotz/xyzzy", false);
-	//assert_refspec(GIT_DIRECTION_PUSH, "refs/heads/maste :refs/remotes/frotz/xyzzy", false);
+	/*assert_refspec(GIT_DIRECTION_PUSH, "refs/heads/master::refs/remotes/frotz/xyzzy", false); */
+	/*assert_refspec(GIT_DIRECTION_PUSH, "refs/heads/maste :refs/remotes/frotz/xyzzy", false); */
 
 	assert_refspec(GIT_DIRECTION_FETCH, "refs/heads/*:refs/remotes/frotz/*", true);
 	assert_refspec(GIT_DIRECTION_FETCH, "refs/heads/*:refs/remotes/frotz", false);
@@ -97,8 +97,8 @@ static void assert_valid_transform(const char *refspec, const char *name, const 
 	cl_git_pass(git_refspec_transform(&buf, &spec, name));
 	cl_assert_equal_s(result, buf.ptr);
 
-	git_buf_free(&buf);
-	git_refspec__free(&spec);
+	git_buf_dispose(&buf);
+	git_refspec__dispose(&spec);
 }
 
 void test_network_refspecs__transform_mid_star(void)
@@ -111,6 +111,11 @@ void test_network_refspecs__transform_mid_star(void)
 	assert_valid_transform("refs/*:refs/*", "refs/heads/master", "refs/heads/master");
 }
 
+void test_network_refspecs__no_dst(void)
+{
+	assert_valid_transform("refs/heads/master:", "refs/heads/master", "");
+}
+
 static void assert_invalid_transform(const char *refspec, const char *name)
 {
 	git_refspec spec;
@@ -119,8 +124,8 @@ static void assert_invalid_transform(const char *refspec, const char *name)
 	git_refspec__parse(&spec, refspec, true);
 	cl_git_fail(git_refspec_transform(&buf, &spec, name));
 
-	git_buf_free(&buf);
-	git_refspec__free(&spec);
+	git_buf_dispose(&buf);
+	git_refspec__dispose(&spec);
 }
 
 void test_network_refspecs__invalid(void)
@@ -137,8 +142,8 @@ static void assert_invalid_rtransform(const char *refspec, const char *name)
 	git_refspec__parse(&spec, refspec, true);
 	cl_git_fail(git_refspec_rtransform(&buf, &spec, name));
 
-	git_buf_free(&buf);
-	git_refspec__free(&spec);
+	git_buf_dispose(&buf);
+	git_refspec__dispose(&spec);
 }
 
 void test_network_refspecs__invalid_reverse(void)
@@ -156,5 +161,17 @@ void test_network_refspecs__matching(void)
 	cl_assert_equal_s("", spec.src);
 	cl_assert_equal_s("", spec.dst);
 
-	git_refspec__free(&spec);
+	git_refspec__dispose(&spec);
+}
+
+void test_network_refspecs__parse_free(void)
+{
+	git_refspec *spec = NULL;
+
+	cl_git_fail(git_refspec_parse(&spec, "", 0));
+	cl_git_fail(git_refspec_parse(&spec, ":::", 0));
+	cl_git_pass(git_refspec_parse(&spec, "HEAD:", 1));
+
+	cl_assert(spec != NULL);
+	git_refspec_free(spec);
 }

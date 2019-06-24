@@ -2,19 +2,11 @@
 
 #include "chi/GraphStruct.hpp"
 #include "chi/Context.hpp"
+#include "chi/FunctionCompiler.hpp"
 #include "chi/GraphModule.hpp"
-#include "chi/LLVMVersion.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
-
-#include <llvm/IR/DIBuilder.h>
-#include <llvm/IR/DebugInfo.h>
-#include <llvm/IR/DerivedTypes.h>
-
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-#include <llvm/IR/Module.h>
-#endif
 
 namespace chi {
 
@@ -115,75 +107,46 @@ DataType GraphStruct::dataType() {
 	if (types().empty()) { return {}; }
 
 	// create llvm::Type
-	std::vector<llvm::Type*> llTypes;
+	std::vector<LLVMTypeRef> llTypes;
 	llTypes.reserve(types().size());
 
-	std::vector<
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-	    llvm::Value*
-#else
-	    llvm::Metadata*
-#endif
-	    >
-	    diTypes;
+	for (const auto& type : types()) { llTypes.push_back(type.type.llvmType()); }
+
+	auto llType = LLVMStructType(llTypes.data(), llTypes.size(), false);
+
+	mDataType = DataType(&module(), name(), llType);
+
+	return mDataType;
+}
+
+LLVMMetadataRef GraphStruct::debugType(FunctionCompiler& compiler) {
+	if (mDebugType != nullptr) { return mDebugType; }
+
+	std::vector<LLVMMetadataRef> diTypes;
 	diTypes.reserve(types().size());
 
 	size_t currentOffset = 0;
 
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	// make a temp module so we can make a DIBuilder
-	auto tmpMod    = std::make_unique<llvm::Module>("tmp", context().llvmContext());
-	auto diBuilder = std::make_unique<llvm::DIBuilder>(*tmpMod);
-#endif
-
 	for (const auto& type : types()) {
-		auto debugType = type.type.debugType();
+		auto debugType = type.type.debugType(compiler);
 
-		llTypes.push_back(type.type.llvmType());
-
-		auto member =
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    diBuilder->createMemberType(llvm::DIDescriptor(), type.name, llvm::DIFile(), 0,
-		                                debugType->getSizeInBits(), 8, currentOffset, 0, *debugType)
-#else
-		    llvm::DIDerivedType::get(context().llvmContext(), llvm::dwarf::DW_TAG_member,
-#if LLVM_VERSION_LESS_EQUAL(3, 8)
-		                             llvm::MDString::get(context().llvmContext(), type.name),
-#else
-		                             type.name,
-#endif
-		                             nullptr, 0, nullptr, debugType, debugType->getSizeInBits(), 8,
-		                             currentOffset,
-#if LLVM_VERSION_AT_LEAST(5, 0)
-		                             llvm::None,
-#endif
-		                             llvm::DINode::DIFlags{}, nullptr)
-#endif
-		    ;
+		auto member = LLVMDIBuilderCreateMemberType(
+		    compiler.diBuilder(), compiler.debugFile(), type.name.c_str(), type.name.size(),
+		    compiler.debugFile(), 0, LLVMDITypeGetSizeInBits(debugType), 0, currentOffset,
+		    LLVMDIFlagZero, nullptr);
 
 		diTypes.push_back(member);
 
-		currentOffset += debugType->getSizeInBits();
+		currentOffset += LLVMDITypeGetSizeInBits(debugType);
 	}
-	auto llType = llvm::StructType::create(llTypes, name());
 
-	auto diStructType =
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	    new llvm::DICompositeType(diBuilder->createStructType(
-	        llvm::DIDescriptor(), name(), llvm::DIFile(), 0, currentOffset, 8, 0, llvm::DIType(),
-	        diBuilder->getOrCreateArray(
-	            diTypes)));  // TODO (#77): yeah this is a memory leak. Fix it.
-#else
-	    llvm::DICompositeType::get(
-	        context().llvmContext(), llvm::dwarf::DW_TAG_structure_type, name(), nullptr, 0,
-	        nullptr, nullptr, currentOffset, 8, 0, llvm::DINode::DIFlags{},
-	        llvm::MDTuple::get(context().llvmContext(), diTypes), 0, nullptr, {}, "")
-#endif
-	;
+	mDebugType = LLVMDIBuilderCreateStructType(
+	    compiler.diBuilder(), compiler.debugFile(), name().c_str(), name().size(),
+	    compiler.debugFile(), 0, currentOffset, 0, LLVMDIFlagZero, nullptr, diTypes.data(),
+	    diTypes.size(), 0, nullptr, dataType().qualifiedName().c_str(),
+	    dataType().qualifiedName().length());
 
-	mDataType = DataType(&module(), name(), llType, diStructType);
-
-	return mDataType;
+	return mDebugType;
 }
 
 void GraphStruct::updateNodeReferences() {

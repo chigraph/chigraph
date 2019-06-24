@@ -177,7 +177,7 @@ void test_revwalk_basic__glob_heads_with_invalid(void)
 		/* walking */;
 
 	/* git log --branches --oneline | wc -l => 16 */
-	cl_assert_equal_i(19, i);
+	cl_assert_equal_i(20, i);
 }
 
 void test_revwalk_basic__push_head(void)
@@ -195,6 +195,31 @@ void test_revwalk_basic__push_head(void)
 
 	/* git log HEAD --oneline | wc -l => 7 */
 	cl_assert_equal_i(i, 7);
+}
+
+void test_revwalk_basic__sorted_after_reset(void)
+{
+	int i = 0;
+	git_oid oid;
+
+	revwalk_basic_setup_walk(NULL);
+
+	git_oid_fromstr(&oid, commit_head);
+
+	/* push, sort, and test the walk */
+	cl_git_pass(git_revwalk_push(_walk, &oid));
+	git_revwalk_sorting(_walk, GIT_SORT_TIME);
+
+	cl_git_pass(test_walk_only(_walk, commit_sorting_time, 2));
+
+	/* reset, push, and test again - we should see all entries */
+	git_revwalk_reset(_walk);
+	cl_git_pass(git_revwalk_push(_walk, &oid));
+
+	while (git_revwalk_next(&oid, _walk) == 0)
+		i++;
+
+	cl_assert_equal_i(i, commit_count);
 }
 
 void test_revwalk_basic__push_head_hide_ref(void)
@@ -267,9 +292,9 @@ void test_revwalk_basic__multiple_push_1(void)
 }
 
 /*
-* Difference between test_revwalk_basic__multiple_push_1 and 
+* Difference between test_revwalk_basic__multiple_push_1 and
 * test_revwalk_basic__multiple_push_2 is in the order reference
-* refs/heads/packed-test and commit 5b5b02 are pushed. 
+* refs/heads/packed-test and commit 5b5b02 are pushed.
 * revwalk should return same commits in both the tests.
 
 * $ git rev-list 5b5b02 HEAD ^refs/heads/packed-test
@@ -484,10 +509,10 @@ void test_revwalk_basic__big_timestamp(void)
 	revwalk_basic_setup_walk("testrepo.git");
 
 	cl_git_pass(git_repository_head(&head, _repo));
-	cl_git_pass(git_reference_peel((git_object **) &tip, head, GIT_OBJ_COMMIT));
+	cl_git_pass(git_reference_peel((git_object **) &tip, head, GIT_OBJECT_COMMIT));
 
 	/* Commit with a far-ahead timestamp, we should be able to parse it in the revwalk */
-	cl_git_pass(git_signature_new(&sig, "Joe", "joe@example.com", 2399662595, 0));
+	cl_git_pass(git_signature_new(&sig, "Joe", "joe@example.com", 2399662595ll, 0));
 	cl_git_pass(git_commit_tree(&tree, tip));
 
 	cl_git_pass(git_commit_create(&id, _repo, "HEAD", sig, sig, NULL, "some message", tree, 1,
@@ -552,6 +577,33 @@ void test_revwalk_basic__old_hidden_commit_two(void)
 
 	cl_git_pass(git_revwalk_next(&oid, _walk));
 	cl_assert(!git_oid_streq(&oid, "bd758010071961f28336333bc41e9c64c9a64866"));
+
+	cl_git_fail_with(GIT_ITEROVER, git_revwalk_next(&oid, _walk));
+}
+
+/*
+ * Ensure that we correctly hide all parent commits of a newer
+ * commit when first hiding older commits.
+ *
+ * % git rev-list D ^B ^A ^E
+ * 790ba0facf6fd103699a5c40cd19dad277ff49cd
+ * b82cee5004151ae0c4f82b69fb71b87477664b6f
+ */
+void test_revwalk_basic__newer_hidden_commit_hides_old_commits(void)
+{
+	git_oid oid;
+
+	revwalk_basic_setup_walk("revwalk.git");
+
+	cl_git_pass(git_revwalk_push_ref(_walk, "refs/heads/D"));
+	cl_git_pass(git_revwalk_hide_ref(_walk, "refs/heads/B"));
+	cl_git_pass(git_revwalk_hide_ref(_walk, "refs/heads/A"));
+	cl_git_pass(git_revwalk_hide_ref(_walk, "refs/heads/E"));
+
+	cl_git_pass(git_revwalk_next(&oid, _walk));
+	cl_assert(git_oid_streq(&oid, "b82cee5004151ae0c4f82b69fb71b87477664b6f"));
+	cl_git_pass(git_revwalk_next(&oid, _walk));
+	cl_assert(git_oid_streq(&oid, "790ba0facf6fd103699a5c40cd19dad277ff49cd"));
 
 	cl_git_fail_with(GIT_ITEROVER, git_revwalk_next(&oid, _walk));
 }

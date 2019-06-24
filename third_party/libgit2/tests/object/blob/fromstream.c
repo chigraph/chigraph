@@ -27,7 +27,7 @@ void test_object_blob_fromstream__multiple_write(void)
 	cl_git_pass(git_oid_fromstr(&expected_id, "321cbdf08803c744082332332838df6bd160f8f9"));
 
 	cl_git_fail_with(GIT_ENOTFOUND,
-			 git_object_lookup(&blob, repo, &expected_id, GIT_OBJ_ANY));
+			 git_object_lookup(&blob, repo, &expected_id, GIT_OBJECT_ANY));
 
 	cl_git_pass(git_blob_create_fromstream(&stream, repo, NULL));
 
@@ -37,7 +37,7 @@ void test_object_blob_fromstream__multiple_write(void)
 	cl_git_pass(git_blob_create_fromstream_commit(&id, stream));
 	cl_assert_equal_oid(&expected_id, &id);
 
-	cl_git_pass(git_object_lookup(&blob, repo, &expected_id, GIT_OBJ_BLOB));
+	cl_git_pass(git_object_lookup(&blob, repo, &expected_id, GIT_OBJECT_BLOB));
 
 	git_object_free(blob);
 }
@@ -56,7 +56,7 @@ static void write_attributes(git_repository *repo)
 	cl_git_pass(git_futils_mkpath2file(git_buf_cstr(&buf), 0777));
 	cl_git_rewritefile(git_buf_cstr(&buf), GITATTR);
 
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 static void assert_named_chunked_blob(const char *expected_sha, const char *fake_name)

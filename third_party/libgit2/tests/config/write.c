@@ -2,7 +2,6 @@
 #include "buffer.h"
 #include "fileops.h"
 #include "git2/sys/config.h"
-#include "config_file.h"
 #include "config.h"
 
 void test_config_write__initialize(void)
@@ -93,9 +92,9 @@ void test_config_write__delete_value_at_specific_level(void)
 
 	cl_git_pass(git_config_new(&cfg));
 	cl_git_pass(git_config_add_file_ondisk(cfg, "config9",
-		GIT_CONFIG_LEVEL_LOCAL, 0));
+		GIT_CONFIG_LEVEL_LOCAL, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, "config15",
-		GIT_CONFIG_LEVEL_GLOBAL, 0));
+		GIT_CONFIG_LEVEL_GLOBAL, NULL, 0));
 
 	cl_git_pass(git_config_open_level(&cfg_specific, cfg, GIT_CONFIG_LEVEL_GLOBAL));
 
@@ -293,7 +292,7 @@ void test_config_write__write_subsection(void)
 	cl_git_pass(git_config_get_string_buf(&buf, cfg, "my.own.var"));
 	cl_assert_equal_s("works", git_buf_cstr(&buf));
 
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 	git_config_free(cfg);
 }
 
@@ -335,7 +334,7 @@ void test_config_write__value_containing_quotes(void)
 	cl_git_pass(git_config_open_ondisk(&cfg, "config9"));
 	cl_git_pass(git_config_get_string_buf(&buf, cfg, "core.somevar"));
 	cl_assert_equal_s("this also \"has\" quotes", git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 	git_config_free(cfg);
 }
 
@@ -354,7 +353,7 @@ void test_config_write__escape_value(void)
 	cl_git_pass(git_config_open_ondisk(&cfg, "config9"));
 	cl_git_pass(git_config_get_string_buf(&buf, cfg, "core.somevar"));
 	cl_assert_equal_s("this \"has\" quotes and \t", git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 	git_config_free(cfg);
 }
 
@@ -365,12 +364,12 @@ void test_config_write__add_value_at_specific_level(void)
 	int64_t l, expected = +9223372036854775803;
 	git_buf buf = GIT_BUF_INIT;
 
-	// open config15 as global level config file
+	/* open config15 as global level config file */
 	cl_git_pass(git_config_new(&cfg));
 	cl_git_pass(git_config_add_file_ondisk(cfg, "config9",
-		GIT_CONFIG_LEVEL_LOCAL, 0));
+		GIT_CONFIG_LEVEL_LOCAL, NULL, 0));
 	cl_git_pass(git_config_add_file_ondisk(cfg, "config15",
-		GIT_CONFIG_LEVEL_GLOBAL, 0));
+		GIT_CONFIG_LEVEL_GLOBAL, NULL, 0));
 
 	cl_git_pass(git_config_open_level(&cfg_specific, cfg, GIT_CONFIG_LEVEL_GLOBAL));
 
@@ -381,7 +380,7 @@ void test_config_write__add_value_at_specific_level(void)
 	git_config_free(cfg_specific);
 	git_config_free(cfg);
 
-	// open config15 as local level config file
+	/* open config15 as local level config file */
 	cl_git_pass(git_config_open_ondisk(&cfg, "config15"));
 
 	cl_git_pass(git_config_get_int32(&i, cfg, "core.int32global"));
@@ -393,7 +392,7 @@ void test_config_write__add_value_at_specific_level(void)
 	cl_git_pass(git_config_get_string_buf(&buf, cfg, "core.stringglobal"));
 	cl_assert_equal_s("I'm a global config value!", git_buf_cstr(&buf));
 
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 	git_config_free(cfg);
 }
 
@@ -489,7 +488,7 @@ void test_config_write__can_set_an_empty_value(void)
 	cl_git_pass(git_config_get_string_buf(&buf, config, "core.somevar"));
 	cl_assert_equal_s("", buf.ptr);
 
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 	git_config_free(config);
 	cl_git_sandbox_cleanup();
 }
@@ -581,7 +580,7 @@ void test_config_write__preserves_whitespace_and_comments(void)
 
 	cl_assert_equal_s("[newsection]\n\tnewname = new_value\n", n);
 
-	git_buf_free(&newfile);
+	git_buf_dispose(&newfile);
 	git_config_free(cfg);
 }
 
@@ -600,7 +599,7 @@ void test_config_write__preserves_entry_with_name_only(void)
 	cl_git_pass(git_futils_readbuffer(&newfile, file_name));
 	cl_assert_equal_s("[section \"foo\"]\n\tname\n\tother = otherval\n[newsection]\n\tnewname = new_value\n", newfile.ptr);
 
-	git_buf_free(&newfile);
+	git_buf_dispose(&newfile);
 	git_config_free(cfg);
 }
 
@@ -618,7 +617,7 @@ void test_config_write__to_empty_file(void)
 	cl_git_pass(git_futils_readbuffer(&result, "config-file"));
 	cl_assert_equal_s("[section]\n\tname = value\n", result.ptr);
 
-	git_buf_free(&result);
+	git_buf_dispose(&result);
 }
 
 void test_config_write__to_file_with_only_comment(void)
@@ -635,7 +634,7 @@ void test_config_write__to_file_with_only_comment(void)
 	cl_git_pass(git_futils_readbuffer(&result, "config-file"));
 	cl_assert_equal_s("\n\n[section]\n\tname = value\n", result.ptr);
 
-	git_buf_free(&result);
+	git_buf_dispose(&result);
 }
 
 void test_config_write__locking(void)
@@ -718,7 +717,30 @@ void test_config_write__repeated(void)
 
 	cl_git_pass(git_futils_readbuffer(&result, filename));
 	cl_assert_equal_s(expected, result.ptr);
-	git_buf_free(&result);
+	git_buf_dispose(&result);
+
+	git_config_free(cfg);
+}
+
+void test_config_write__preserve_case(void)
+{
+	const char *filename = "config-preserve-case";
+	git_config *cfg;
+	git_buf result = GIT_BUF_INIT;
+	const char *expected = "[sOMe]\n" \
+		"\tThInG = foo\n" \
+		"\tOtheR = thing\n";
+
+	cl_git_pass(git_config_open_ondisk(&cfg, filename));
+	cl_git_pass(git_config_set_string(cfg, "sOMe.ThInG", "foo"));
+	cl_git_pass(git_config_set_string(cfg, "SomE.OtheR", "thing"));
+	git_config_free(cfg);
+
+	cl_git_pass(git_config_open_ondisk(&cfg, filename));
+
+	cl_git_pass(git_futils_readbuffer(&result, filename));
+	cl_assert_equal_s(expected, result.ptr);
+	git_buf_dispose(&result);
 
 	git_config_free(cfg);
 }

@@ -5,21 +5,23 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
-#include "common.h"
+#include "revwalk.h"
+
 #include "commit.h"
 #include "odb.h"
 #include "pool.h"
 
-#include "revwalk.h"
 #include "git2/revparse.h"
 #include "merge.h"
 #include "vector.h"
+
+static int get_revision(git_commit_list_node **out, git_revwalk *walk, git_commit_list **list);
 
 git_commit_list_node *git_revwalk__commit_lookup(
 	git_revwalk *walk, const git_oid *oid)
 {
 	git_commit_list_node *commit;
-	khiter_t pos;
+	size_t pos;
 	int ret;
 
 	/* lookup and reserve space if not already present */
@@ -48,10 +50,10 @@ static int push_commit(git_revwalk *walk, const git_oid *oid, int uninteresting,
 	git_commit_list_node *commit;
 	git_commit_list *list;
 
-	if ((error = git_object_lookup(&oobj, walk->repo, oid, GIT_OBJ_ANY)) < 0)
+	if ((error = git_object_lookup(&oobj, walk->repo, oid, GIT_OBJECT_ANY)) < 0)
 		return error;
 
-	error = git_object_peel(&obj, oobj, GIT_OBJ_COMMIT);
+	error = git_object_peel(&obj, oobj, GIT_OBJECT_COMMIT);
 	git_object_free(oobj);
 
 	if (error == GIT_ENOTFOUND || error == GIT_EINVALIDSPEC || error == GIT_EPEEL) {
@@ -59,7 +61,7 @@ static int push_commit(git_revwalk *walk, const git_oid *oid, int uninteresting,
 		if (from_glob)
 			return 0;
 
-		giterr_set(GITERR_INVALID, "object is not a committish");
+		git_error_set(GIT_ERROR_INVALID, "object is not a committish");
 		return -1;
 	}
 	if (error < 0)
@@ -76,15 +78,17 @@ static int push_commit(git_revwalk *walk, const git_oid *oid, int uninteresting,
 	if (commit->uninteresting)
 		return 0;
 
-	if (uninteresting)
+	if (uninteresting) {
+		walk->limited = 1;
 		walk->did_hide = 1;
-	else
+	} else {
 		walk->did_push = 1;
+	}
 
 	commit->uninteresting = uninteresting;
 	list = walk->user_input;
 	if (git_commit_list_insert(commit, &list) == NULL) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -131,7 +135,7 @@ static int push_glob(git_revwalk *walk, const char *glob, int hide)
 		git_buf_joinpath(&buf, GIT_REFS_DIR, glob);
 	else
 		git_buf_puts(&buf, glob);
-	GITERR_CHECK_ALLOC_BUF(&buf);
+	GIT_ERROR_CHECK_ALLOC_BUF(&buf);
 
 	/* If no '?', '*' or '[' exist, we append '/ *' to the glob */
 	wildcard = strcspn(glob, "?*[");
@@ -152,7 +156,7 @@ static int push_glob(git_revwalk *walk, const char *glob, int hide)
 	if (error == GIT_ITEROVER)
 		error = 0;
 out:
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 	return error;
 }
 
@@ -196,7 +200,7 @@ int git_revwalk_push_range(git_revwalk *walk, const char *range)
 
 	if (revspec.flags & GIT_REVPARSE_MERGE_BASE) {
 		/* TODO: support "<commit>...<commit>" */
-		giterr_set(GITERR_INVALID, "symmetric differences not implemented in revwalk");
+		git_error_set(GIT_ERROR_INVALID, "symmetric differences not implemented in revwalk");
 		return GIT_EINVALIDSPEC;
 	}
 
@@ -239,15 +243,16 @@ static int revwalk_next_timesort(git_commit_list_node **object_out, git_revwalk 
 		}
 	}
 
-	giterr_clear();
+	git_error_clear();
 	return GIT_ITEROVER;
 }
 
 static int revwalk_next_unsorted(git_commit_list_node **object_out, git_revwalk *walk)
 {
+	int error;
 	git_commit_list_node *next;
 
-	while ((next = git_commit_list_pop(&walk->iterator_rand)) != NULL) {
+	while (!(error = get_revision(&next, walk, &walk->iterator_rand))) {
 		/* Some commits might become uninteresting after being added to the list */
 		if (!next->uninteresting) {
 			*object_out = next;
@@ -255,15 +260,15 @@ static int revwalk_next_unsorted(git_commit_list_node **object_out, git_revwalk 
 		}
 	}
 
-	giterr_clear();
-	return GIT_ITEROVER;
+	return error;
 }
 
 static int revwalk_next_toposort(git_commit_list_node **object_out, git_revwalk *walk)
 {
+	int error;
 	git_commit_list_node *next;
 
-	while ((next = git_commit_list_pop(&walk->iterator_topo)) != NULL) {
+	while (!(error = get_revision(&next, walk, &walk->iterator_topo))) {
 		/* Some commits might become uninteresting after being added to the list */
 		if (!next->uninteresting) {
 			*object_out = next;
@@ -271,8 +276,7 @@ static int revwalk_next_toposort(git_commit_list_node **object_out, git_revwalk 
 		}
 	}
 
-	giterr_clear();
-	return GIT_ITEROVER;
+	return error;
 }
 
 static int revwalk_next_reverse(git_commit_list_node **object_out, git_revwalk *walk)
@@ -375,20 +379,6 @@ static int add_parents_to_list(git_revwalk *walk, git_commit_list_node *commit, 
 	return 0;
 }
 
-static int everybody_uninteresting(git_commit_list *orig)
-{
-	git_commit_list *list = orig;
-
-	while (list) {
-		git_commit_list_node *commit = list->item;
-		list = list->next;
-		if (!commit->uninteresting)
-			return 0;
-	}
-
-	return 1;
-}
-
 /* How many unintersting commits we want to look at after we run out of interesting ones */
 #define SLOP 5
 
@@ -399,15 +389,20 @@ static int still_interesting(git_commit_list *list, int64_t time, int slop)
 		return 0;
 
 	/*
-	 * If the destination list has commits with an earlier date
-	 * than our source we want to continue looking.
+	 * If the destination list has commits with an earlier date than our
+	 * source, we want to reset the slop counter as we're not done.
 	 */
 	if (time <= list->item->time)
 		return SLOP;
 
-	/* If we find interesting commits, we reset the slop count */
-	if (!everybody_uninteresting(list))
-		return SLOP;
+	for (; list; list = list->next) {
+		/*
+		 * If the destination list still contains interesting commits we
+		 * want to continue looking.
+		 */
+		if (!list->item->uninteresting || list->item->time > time)
+			return SLOP;
+	}
 
 	/* Everything's uninteresting, reduce the count */
 	return slop - 1;
@@ -416,7 +411,7 @@ static int still_interesting(git_commit_list *list, int64_t time, int slop)
 static int limit_list(git_commit_list **out, git_revwalk *walk, git_commit_list *commits)
 {
 	int error, slop = SLOP;
-	int64_t time = ~0ll;
+	int64_t time = INT64_MAX;
 	git_commit_list *list = commits;
 	git_commit_list *newlist = NULL;
 	git_commit_list **p = &newlist;
@@ -437,8 +432,8 @@ static int limit_list(git_commit_list **out, git_revwalk *walk, git_commit_list 
 			break;
 		}
 
-		if (!commit->uninteresting && walk->hide_cb && walk->hide_cb(&commit->oid, walk->hide_cb_payload))
-				continue;
+		if (walk->hide_cb && walk->hide_cb(&commit->oid, walk->hide_cb_payload))
+			continue;
 
 		time = commit->time;
 		p = &git_commit_list_insert(commit, p)->next;
@@ -446,6 +441,30 @@ static int limit_list(git_commit_list **out, git_revwalk *walk, git_commit_list 
 
 	git_commit_list_free(&list);
 	*out = newlist;
+	return 0;
+}
+
+static int get_revision(git_commit_list_node **out, git_revwalk *walk, git_commit_list **list)
+{
+	int error;
+	git_commit_list_node *commit;
+
+	commit = git_commit_list_pop(list);
+	if (!commit) {
+		git_error_clear();
+		return GIT_ITEROVER;
+	}
+
+	/*
+	 * If we did not run limit_list and we must add parents to the
+	 * list ourselves.
+	 */
+	if (!walk->limited) {
+		if ((error = add_parents_to_list(walk, commit, list)) < 0)
+			return error;
+	}
+
+	*out = commit;
 	return 0;
 }
 
@@ -537,13 +556,13 @@ cleanup:
 
 static int prepare_walk(git_revwalk *walk)
 {
-	int error;
+	int error = 0;
 	git_commit_list *list, *commits = NULL;
 	git_commit_list_node *next;
 
 	/* If there were no pushes, we know that the walk is already over */
 	if (!walk->did_push) {
-		giterr_clear();
+		git_error_clear();
 		return GIT_ITEROVER;
 	}
 
@@ -561,7 +580,7 @@ static int prepare_walk(git_revwalk *walk)
 		}
 	}
 
-	if ((error = limit_list(&commits, walk, commits)) < 0)
+	if (walk->limited && (error = limit_list(&commits, walk, commits)) < 0)
 		return error;
 
 	if (walk->sorting & GIT_SORT_TOPOLOGICAL) {
@@ -605,10 +624,10 @@ static int prepare_walk(git_revwalk *walk)
 int git_revwalk_new(git_revwalk **revwalk_out, git_repository *repo)
 {
 	git_revwalk *walk = git__calloc(1, sizeof(git_revwalk));
-	GITERR_CHECK_ALLOC(walk);
+	GIT_ERROR_CHECK_ALLOC(walk);
 
 	walk->commits = git_oidmap_alloc();
-	GITERR_CHECK_ALLOC(walk->commits);
+	GIT_ERROR_CHECK_ALLOC(walk->commits);
 
 	if (git_pqueue_init(&walk->iterator_time, 0, 8, git_commit_list_time_cmp) < 0)
 		return -1;
@@ -664,6 +683,9 @@ void git_revwalk_sorting(git_revwalk *walk, unsigned int sort_mode)
 		walk->get_next = &revwalk_next_unsorted;
 		walk->enqueue = &revwalk_enqueue_unsorted;
 	}
+
+	if (walk->sorting != GIT_SORT_NONE)
+		walk->limited = 1;
 }
 
 void git_revwalk_simplify_first_parent(git_revwalk *walk)
@@ -687,7 +709,7 @@ int git_revwalk_next(git_oid *oid, git_revwalk *walk)
 
 	if (error == GIT_ITEROVER) {
 		git_revwalk_reset(walk);
-		giterr_clear();
+		git_error_clear();
 		return GIT_ITEROVER;
 	}
 
@@ -719,7 +741,9 @@ void git_revwalk_reset(git_revwalk *walk)
 	git_commit_list_free(&walk->user_input);
 	walk->first_parent = 0;
 	walk->walking = 0;
+	walk->limited = 0;
 	walk->did_push = walk->did_hide = 0;
+	walk->sorting = GIT_SORT_NONE;
 }
 
 int git_revwalk_add_hide_cb(
@@ -732,14 +756,11 @@ int git_revwalk_add_hide_cb(
 	if (walk->walking)
 		git_revwalk_reset(walk);
 
-	if (walk->hide_cb) {
-		/* There is already a callback added */
-		giterr_set(GITERR_INVALID, "there is already a callback added to hide commits in revwalk");
-		return -1;
-	}
-
 	walk->hide_cb = hide_cb;
 	walk->hide_cb_payload = payload;
+
+	if (hide_cb)
+		walk->limited = 1;
 
 	return 0;
 }

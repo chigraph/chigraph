@@ -71,6 +71,9 @@ struct GraphStruct {
 	/// \return The DataType
 	DataType dataType();
 
+	/// Get the debug type of the struct
+	LLVMMetadataRef debugType(FunctionCompiler& compiler);
+
 private:
 	void updateNodeReferences();
 
@@ -81,7 +84,8 @@ private:
 
 	std::string mName;
 
-	DataType mDataType;
+	DataType        mDataType;
+	LLVMMetadataRef mDebugType = nullptr;
 };
 }  // namespace chi
 

@@ -1,27 +1,20 @@
 #include <chi/Context.hpp>
-#include <chi/LLVMVersion.hpp>
+#include <chi/Owned.hpp>
 #include <chi/Support/Result.hpp>
 
-#include <llvm/IR/Module.h>
-#include <llvm/IRReader/IRReader.h>
-#include <llvm/Linker/Linker.h>
-#include <llvm/Support/SourceMgr.h>
-#include <llvm/Support/raw_os_ostream.h>
-
-#include <llvm/ExecutionEngine/GenericValue.h>
-#include <llvm/ExecutionEngine/Interpreter.h>
-#include <llvm/ExecutionEngine/JITEventListener.h>
-#include <llvm/ExecutionEngine/MCJIT.h>
-#include <llvm/ExecutionEngine/ObjectCache.h>
-#include <llvm/ExecutionEngine/SectionMemoryManager.h>
+#include <llvm-c/ExecutionEngine.h>
+#include <llvm-c/IRReader.h>
+#include <llvm-c/Linker.h>
 
 #include <deque>
+#include <iostream>
 #include <string>
 #include <vector>
 
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
+using namespace chi;
 
 int interpret(const std::vector<std::string>& opts, const char* argv0) {
 	po::options_description interpret_ops("interpret options");
@@ -54,66 +47,63 @@ int interpret(const std::vector<std::string>& opts, const char* argv0) {
 	auto infiles = vm["input-file"].as<std::vector<std::string>>();
 
 	// get opt value
-	llvm::CodeGenOpt::Level optLevel;
+	LLVMCodeGenOptLevel optLevel;
 	switch (vm["optimization"].as<int>()) {
-	case 0: optLevel = llvm::CodeGenOpt::None; break;
-	case 1: optLevel = llvm::CodeGenOpt::Less; break;
-	case 2: optLevel = llvm::CodeGenOpt::Default; break;
-	case 3: optLevel = llvm::CodeGenOpt::Aggressive; break;
+	case 0: optLevel = LLVMCodeGenLevelNone; break;
+	case 1: optLevel = LLVMCodeGenLevelLess; break;
+	case 2: optLevel = LLVMCodeGenLevelDefault; break;
+	case 3: optLevel = LLVMCodeGenLevelAggressive; break;
 	default:
 		std::cerr << "Unrecognized optimization level: " << vm["optimization"].as<int>()
 		          << std::endl;
 		return 1;
 	}
 
-	chi::Context ctx;
+	Context ctx;
 
 	// load the modules
-	std::deque<std::unique_ptr<llvm::Module>> mods;
+	std::deque<OwnedLLVMModule> mods;
 	for (const auto& file : infiles) {
-		llvm::SMDiagnostic err;
+		OwnedLLVMMemoryBuffer buffer;
+		if (file == "-") {
+			OwnedMessage message;
+			if (LLVMCreateMemoryBufferWithSTDIN(&*buffer, &*message)) {
+				std::cerr << "Failed to create a memory buffer from stdin: " << *message
+				          << std::endl;
+				return 1;
+			}
+		} else {
+			OwnedMessage message;
+			if (LLVMCreateMemoryBufferWithContentsOfFile(file.c_str(), &*buffer, &*message)) {
+				std::cerr << "Failed to open input file \"" << file << "\": " << message
+				          << std::endl;
+				return 1;
+			}
+		}
 
-		// this recognizes stdin correctly
-		auto mod =
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-		    std::unique_ptr<llvm::Module>(llvm::ParseIRFile
-#else
-		    (llvm::parseIRFile
-#endif
-		                                  (file, err, ctx.llvmContext()));
-
-		if (mod == nullptr) {
-			llvm::raw_os_ostream errstream(std::cerr);
-			std::cerr << "Failed to read IR: " << std::endl;
-			err.print("chig", errstream);
-			std::cerr << std::endl;
-
+		OwnedLLVMModule mod;
+		OwnedMessage    message;
+		if (LLVMParseIRInContext(ctx.llvmContext(), *buffer, &*mod, &*message)) {
+			std::cerr << "Failed to parse IR from \"" << file << "\": " << message << std::endl;
 			return 1;
 		}
 		mods.push_back(std::move(mod));
 	}
 
 	// link them all together
-	std::unique_ptr<llvm::Module> realMod = std::move(mods[0]);
+	OwnedLLVMModule realMod = std::move(mods[0]);
 	mods.pop_front();
 
 	while (!mods.empty()) {
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-		llvm::Linker::LinkModules(realMod.get(), mods[0].get()
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-		                                             ,
-		                          llvm::Linker::DestroySource, nullptr
-#endif
-		                          );
-#else
-		llvm::Linker::linkModules(*realMod, std::move(mods[0]));
-#endif
+		if (LLVMLinkModules2(*realMod, mods[0].take_ownership())) {
+			std::cerr << "Failed to link modules." << std::endl;
+			return 1;
+		}
 		mods.pop_front();
 	}
 
 	// run it
-	llvm::Function* func = realMod->getFunction(vm["function"].as<std::string>());
-
+	auto func = LLVMGetNamedFunction(*realMod, vm["function"].as<std::string>().c_str());
 	if (func == nullptr) {
 		std::cerr << "Failed to find function in module: " << vm["function"].as<std::string>()
 		          << std::endl;
@@ -123,7 +113,7 @@ int interpret(const std::vector<std::string>& opts, const char* argv0) {
 
 	int ret;
 
-	auto res = chi::interpretLLVMIRAsMain(std::move(realMod), optLevel, command_opts, func, &ret);
+	auto res = interpretLLVMIRAsMain(std::move(realMod), optLevel, command_opts, func, &ret);
 	if (!res) {
 		std::cerr << "Faied to run module: " << std::endl << res << std::endl;
 		return 1;

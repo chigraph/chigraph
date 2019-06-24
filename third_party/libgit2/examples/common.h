@@ -91,6 +91,15 @@ extern int match_int_arg(
 	int *out, struct args_info *args, const char *opt, int allow_negative);
 
 /**
+ * Check current `args` entry against a "bool" `opt` (ie. --[no-]progress).
+ * If `opt` matches positively, out will be set to 1, or if `opt` matches
+ * negatively, out will be set to 0, and in both cases 1 will be returned.
+ * If neither the positive or the negative form of opt matched, out will be -1,
+ * and 0 will be returned.
+ */
+extern int match_bool_arg(int *out, struct args_info *args, const char *opt);
+
+/**
  * Basic output function for plain text diff output
  * Pass `FILE*` such as `stdout` or `stderr` as payload (or NULL == `stdout`)
  */
@@ -103,3 +112,13 @@ extern int diff_output(
  */
 extern void treeish_to_tree(
 	git_tree **out, git_repository *repo, const char *treeish);
+
+/**
+ * A realloc that exits on failure
+ */
+extern void *xrealloc(void *oldp, size_t newsz);
+
+/**
+ * Convert a refish to an annotated commit.
+ */
+extern int resolve_refish(git_annotated_commit **commit, git_repository *repo, const char *refish);

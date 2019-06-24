@@ -57,11 +57,10 @@ namespace std{
 
 #include <boost/serialization/assume_abstract.hpp>
 
-#ifndef BOOST_MSVC
-    #define DONT_USE_HAS_NEW_OPERATOR (                    \
-           BOOST_WORKAROUND(__IBMCPP__, < 1210)            \
-        || defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x590)   \
-    )
+#if !defined(BOOST_MSVC) && \
+    (BOOST_WORKAROUND(__IBMCPP__, < 1210) || \
+    defined(__SUNPRO_CC) && (__SUNPRO_CC < 0x590))
+    #define DONT_USE_HAS_NEW_OPERATOR 1
 #else
     #define DONT_USE_HAS_NEW_OPERATOR 0
 #endif
@@ -89,6 +88,8 @@ namespace std{
 #include <boost/archive/detail/basic_pointer_iserializer.hpp>
 #include <boost/archive/detail/archive_serializer_map.hpp>
 #include <boost/archive/detail/check.hpp>
+
+#include <boost/core/addressof.hpp>
 
 namespace boost {
 
@@ -122,8 +123,7 @@ private:
     virtual void destroy(/*const*/ void *address) const {
         boost::serialization::access::destroy(static_cast<T *>(address));
     }
-protected:
-    // protected constructor since it's always created by singleton
+public:
     explicit iserializer() :
         basic_iserializer(
             boost::serialization::singleton<
@@ -132,7 +132,6 @@ protected:
             >::get_const_instance()
         )
     {}
-public:
     virtual BOOST_DLLEXPORT void load_object_data(
         basic_iarchive & ar,
         void *x, 
@@ -234,7 +233,7 @@ struct heap_allocation {
                 // that the class might have class specific new with NO
                 // class specific delete at all.  Patches (compatible with
                 // C++03) welcome!
-                delete t;
+                (operator delete)(t);
             }
         };
         struct doesnt_have_new_operator {
@@ -243,7 +242,7 @@ struct heap_allocation {
             }
             static void invoke_delete(T * t) {
                 // Note: I'm reliance upon automatic conversion from T * to void * here
-                delete t;
+                (operator delete)(t);
             }
         };
         static T * invoke_new() {
@@ -306,7 +305,7 @@ private:
         void * x,
         const unsigned int file_version
     ) const BOOST_USED;
-protected:
+public:
     // this should alway be a singleton so make the constructor protected
     pointer_iserializer();
     ~pointer_iserializer();
@@ -406,7 +405,7 @@ struct load_non_pointer_type {
     struct load_standard {
         template<class T>
         static void invoke(Archive &ar, const T & t){
-            void * x = & const_cast<T &>(t);
+            void * x = boost::addressof(const_cast<T &>(t));
             ar.load_object(
                 x, 
                 boost::serialization::singleton<
@@ -484,7 +483,7 @@ struct load_pointer_type {
     };
 
     template<class T>
-    static const basic_pointer_iserializer * register_type(Archive &ar, const T & /*t*/){
+    static const basic_pointer_iserializer * register_type(Archive &ar, const T* const /*t*/){
         // there should never be any need to load an abstract polymorphic 
         // class pointer.  Inhibiting code generation for this
         // permits abstract base classes to be used - note: exception
@@ -523,7 +522,7 @@ struct load_pointer_type {
     }
 
     template<class T>
-    static void check_load(T & /* t */){
+    static void check_load(T * const /* t */){
         check_pointer_level< T >();
         check_pointer_tracking< T >();
     }
@@ -537,8 +536,8 @@ struct load_pointer_type {
 
     template<class Tptr>
     static void invoke(Archive & ar, Tptr & t){
-        check_load(*t);
-        const basic_pointer_iserializer * bpis_ptr = register_type(ar, *t);
+        check_load(t);
+        const basic_pointer_iserializer * bpis_ptr = register_type(ar, t);
         const basic_pointer_iserializer * newbpis_ptr = ar.load_pointer(
             // note major hack here !!!
             // I tried every way to convert Tptr &t (where Tptr might

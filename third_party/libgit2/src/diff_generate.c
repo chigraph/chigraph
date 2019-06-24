@@ -4,9 +4,10 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
-#include "common.h"
-#include "diff.h"
+
 #include "diff_generate.h"
+
+#include "diff.h"
 #include "patch_generate.h"
 #include "fileops.h"
 #include "config.h"
@@ -23,7 +24,7 @@
 	(((DIFF)->base.opts.flags & (FLAG)) == 0)
 #define DIFF_FLAG_SET(DIFF,FLAG,VAL) (DIFF)->base.opts.flags = \
 	(VAL) ? ((DIFF)->base.opts.flags | (FLAG)) : \
-	((DIFF)->base.opts.flags & ~(VAL))
+	((DIFF)->base.opts.flags & ~(FLAG))
 
 typedef struct {
 	struct git_diff base;
@@ -80,7 +81,7 @@ static int diff_insert_delta(
 			if (error > 0)	/* positive value means to skip this delta */
 				return 0;
 			else			/* negative value means to cancel diff */
-				return giterr_set_after_callback_function(error, "git_diff");
+				return git_error_set_after_callback_function(error, "git_diff");
 		}
 	}
 
@@ -137,7 +138,7 @@ static int diff_delta__from_one(
 	if (DIFF_FLAG_IS_SET(diff, GIT_DIFF_REVERSE))
 		has_old = !has_old;
 
-	if ((entry->flags & GIT_IDXENTRY_VALID) != 0)
+	if ((entry->flags & GIT_INDEX_ENTRY_VALID) != 0)
 		return 0;
 
 	if (status == GIT_DELTA_IGNORED &&
@@ -156,7 +157,7 @@ static int diff_delta__from_one(
 		return 0;
 
 	delta = diff_delta__alloc(diff, status, entry->path);
-	GITERR_CHECK_ALLOC(delta);
+	GIT_ERROR_CHECK_ALLOC(delta);
 
 	/* This fn is just for single-sided diffs */
 	assert(status != GIT_DELTA_MODIFIED);
@@ -219,7 +220,7 @@ static int diff_delta__from_two(
 	}
 
 	delta = diff_delta__alloc(diff, status, canonical_path);
-	GITERR_CHECK_ALLOC(delta);
+	GIT_ERROR_CHECK_ALLOC(delta);
 	delta->nfiles = 2;
 
 	if (!git_index_entry_is_conflict(old_entry)) {
@@ -272,7 +273,8 @@ static git_diff_delta *diff_delta__last_for_item(
 		break;
 	case GIT_DELTA_MODIFIED:
 		if (git_oid__cmp(&delta->old_file.id, &item->id) == 0 ||
-			git_oid__cmp(&delta->new_file.id, &item->id) == 0)
+		    (delta->new_file.mode == item->mode &&
+			git_oid__cmp(&delta->new_file.id, &item->id) == 0))
 			return delta;
 		break;
 	default:
@@ -388,6 +390,7 @@ static void diff_generated_free(git_diff *d)
 {
 	git_diff_generated *diff = (git_diff_generated *)d;
 
+	git_attr_session__free(&diff->base.attrsession);
 	git_vector_free_deep(&diff->base.deltas);
 
 	git_pathspec__vfree(&diff->pathspec);
@@ -410,13 +413,14 @@ static git_diff_generated *diff_generated_alloc(
 	if ((diff = git__calloc(1, sizeof(git_diff_generated))) == NULL)
 		return NULL;
 
-	GIT_REFCOUNT_INC(diff);
+	GIT_REFCOUNT_INC(&diff->base);
 	diff->base.type = GIT_DIFF_TYPE_GENERATED;
 	diff->base.repo = repo;
 	diff->base.old_src = old_iter->type;
 	diff->base.new_src = new_iter->type;
 	diff->base.patch_fn = git_patch_generated_from_diff;
 	diff->base.free_fn = diff_generated_free;
+	git_attr_session__init(&diff->base.attrsession, repo);
 	memcpy(&diff->base.opts, &dflt, sizeof(git_diff_options));
 
 	git_pool_init(&diff->base.pool, 1);
@@ -513,7 +517,7 @@ static int diff_generated_apply_options(
 
 		if (entry && git_submodule_parse_ignore(
 				&diff->base.opts.ignore_submodules, entry->value) < 0)
-			giterr_clear();
+			git_error_clear();
 		git_config_entry_free(entry);
 	}
 
@@ -560,9 +564,14 @@ int git_diff__oid_for_file(
 {
 	git_index_entry entry;
 
+	if (size < 0 || size > UINT32_MAX) {
+		git_error_set(GIT_ERROR_NOMEMORY, "file size overflow (for 32-bits) on '%s'", path);
+		return -1;
+	}
+
 	memset(&entry, 0, sizeof(entry));
 	entry.mode = mode;
-	entry.file_size = size;
+	entry.file_size = (uint32_t)size;
 	entry.path = (char *)path;
 
 	return git_diff__oid_for_entry(out, diff, &entry, mode, NULL);
@@ -597,7 +606,7 @@ int git_diff__oid_for_entry(
 
 		if (p_stat(full_path.ptr, &st) < 0) {
 			error = git_path_set_error(errno, entry.path, "stat");
-			git_buf_free(&full_path);
+			git_buf_dispose(&full_path);
 			return error;
 		}
 
@@ -618,13 +627,13 @@ int git_diff__oid_for_entry(
 			/* if submodule lookup failed probably just in an intermediate
 			 * state where some init hasn't happened, so ignore the error
 			 */
-			giterr_clear();
+			git_error_clear();
 		}
 	} else if (S_ISLNK(mode)) {
 		error = git_odb__hashlink(out, full_path.ptr);
 		diff->base.perf.oid_calculations++;
 	} else if (!git__is_sizet(entry.file_size)) {
-		giterr_set(GITERR_OS, "file size overflow (for 32-bits) on '%s'",
+		git_error_set(GIT_ERROR_NOMEMORY, "file size overflow (for 32-bits) on '%s'",
 			entry.path);
 		error = -1;
 	} else if (!(error = git_filter_list_load(&fl,
@@ -636,7 +645,7 @@ int git_diff__oid_for_entry(
 			error = fd;
 		else {
 			error = git_odb__hashfd_filtered(
-				out, fd, (size_t)entry.file_size, GIT_OBJ_BLOB, fl);
+				out, fd, (size_t)entry.file_size, GIT_OBJECT_BLOB, fl);
 			p_close(fd);
 			diff->base.perf.oid_calculations++;
 		}
@@ -660,7 +669,7 @@ int git_diff__oid_for_entry(
 		}
  	}
 
-	git_buf_free(&full_path);
+	git_buf_dispose(&full_path);
 	return error;
 }
 
@@ -696,7 +705,7 @@ static int maybe_modified_submodule(
 
 		/* GIT_EEXISTS means dir with .git in it was found - ignore it */
 		if (error == GIT_EEXISTS) {
-			giterr_clear();
+			git_error_clear();
 			error = 0;
 		}
 		return error;
@@ -760,11 +769,11 @@ static int maybe_modified(
 		status = GIT_DELTA_CONFLICTED;
 
 	/* support "assume unchanged" (poorly, b/c we still stat everything) */
-	} else if ((oitem->flags & GIT_IDXENTRY_VALID) != 0) {
+	} else if ((oitem->flags & GIT_INDEX_ENTRY_VALID) != 0) {
 		status = GIT_DELTA_UNMODIFIED;
 
 	/* support "skip worktree" index bit */
-	} else if ((oitem->flags_extended & GIT_IDXENTRY_SKIP_WORKTREE) != 0) {
+	} else if ((oitem->flags_extended & GIT_INDEX_ENTRY_SKIP_WORKTREE) != 0) {
 		status = GIT_DELTA_UNMODIFIED;
 
 	/* if basic type of file changed, then split into delete and add */
@@ -1056,7 +1065,7 @@ static int handle_unmatched_new_item(
 
 			/* if directory is empty, can't advance into it, so skip it */
 			if (error == GIT_ENOTFOUND) {
-				giterr_clear();
+				git_error_clear();
 				error = iterator_advance(&info->nitem, info->new_iter);
 			}
 
@@ -1078,7 +1087,7 @@ static int handle_unmatched_new_item(
 	else if (nitem->mode == GIT_FILEMODE_COMMIT) {
 		/* ignore things that are not actual submodules */
 		if (git_submodule_lookup(NULL, info->repo, nitem->path) != 0) {
-			giterr_clear();
+			git_error_clear();
 			delta_type = GIT_DELTA_IGNORED;
 
 			/* if this contains a tracked item, treat as normal TREE */
@@ -1087,7 +1096,7 @@ static int handle_unmatched_new_item(
 				if (error != GIT_ENOTFOUND)
 					return error;
 
-				giterr_clear();
+				git_error_clear();
 				return iterator_advance(&info->nitem, info->new_iter);
 			}
 		}
@@ -1188,7 +1197,7 @@ int git_diff__from_iterators(
 	*out = NULL;
 
 	diff = diff_generated_alloc(repo, old_iter, new_iter);
-	GITERR_CHECK_ALLOC(diff);
+	GIT_ERROR_CHECK_ALLOC(diff);
 
 	info.repo = repo;
 	info.old_iter = old_iter;
@@ -1265,7 +1274,7 @@ cleanup:
 	b_opts.flags = FLAGS_SECOND; \
 	b_opts.start = pfx; \
 	b_opts.end = pfx; \
-	GITERR_CHECK_VERSION(opts, GIT_DIFF_OPTIONS_VERSION, "git_diff_options"); \
+	GIT_ERROR_CHECK_VERSION(opts, GIT_DIFF_OPTIONS_VERSION, "git_diff_options"); \
 	if (opts && (opts->flags & GIT_DIFF_DISABLE_PATHSPEC_MATCH)) { \
 		a_opts.pathlist.strings = opts->pathspec.strings; \
 		a_opts.pathlist.count = opts->pathspec.count; \
@@ -1316,7 +1325,7 @@ static int diff_load_index(git_index **index, git_repository *repo)
 
 	/* reload the repository index when user did not pass one in */
 	if (!error && git_index_read(*index, false) < 0)
-		giterr_clear();
+		git_error_clear();
 
 	return error;
 }
@@ -1548,7 +1557,7 @@ int git_diff__paired_foreach(
 		}
 
 		if ((error = cb(h2i, i2w, payload)) != 0) {
-			giterr_set_after_callback(error);
+			git_error_set_after_callback(error);
 			break;
 		}
 	}
@@ -1587,7 +1596,7 @@ int git_diff__commit(
 		char commit_oidstr[GIT_OID_HEXSZ + 1];
 
 		error = -1;
-		giterr_set(GITERR_INVALID, "commit %s is a merge commit",
+		git_error_set(GIT_ERROR_INVALID, "commit %s is a merge commit",
 			git_oid_tostr(commit_oidstr, GIT_OID_HEXSZ + 1, git_commit_id(commit)));
 		goto on_error;
 	}

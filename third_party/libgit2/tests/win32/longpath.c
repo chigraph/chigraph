@@ -28,7 +28,7 @@ void test_win32_longpath__initialize(void)
 
 void test_win32_longpath__cleanup(void)
 {
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 #ifdef GIT_WIN32
@@ -38,7 +38,7 @@ void assert_name_too_long(void)
 	size_t expected_len, actual_len;
 	char *expected_msg;
 
-	err = giterr_last();
+	err = git_error_last();
 	actual_len = strlen(err->message);
 
 	expected_msg = git_win32_get_error_message(ERROR_FILENAME_EXCED_RANGE);

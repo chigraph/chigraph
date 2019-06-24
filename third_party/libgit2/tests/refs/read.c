@@ -28,24 +28,24 @@ void test_refs_read__cleanup(void)
 
 void test_refs_read__loose_tag(void)
 {
-   // lookup a loose tag reference
+	/* lookup a loose tag reference */
 	git_reference *reference;
 	git_object *object;
 	git_buf ref_name_from_tag_name = GIT_BUF_INIT;
 
 	cl_git_pass(git_reference_lookup(&reference, g_repo, loose_tag_ref_name));
-	cl_assert(git_reference_type(reference) & GIT_REF_OID);
+	cl_assert(git_reference_type(reference) & GIT_REFERENCE_DIRECT);
 	cl_assert(reference_is_packed(reference) == 0);
 	cl_assert_equal_s(reference->name, loose_tag_ref_name);
 
-	cl_git_pass(git_object_lookup(&object, g_repo, git_reference_target(reference), GIT_OBJ_ANY));
+	cl_git_pass(git_object_lookup(&object, g_repo, git_reference_target(reference), GIT_OBJECT_ANY));
 	cl_assert(object != NULL);
-	cl_assert(git_object_type(object) == GIT_OBJ_TAG);
+	cl_assert(git_object_type(object) == GIT_OBJECT_TAG);
 
 	/* Ensure the name of the tag matches the name of the reference */
 	cl_git_pass(git_buf_joinpath(&ref_name_from_tag_name, GIT_REFS_TAGS_DIR, git_tag_name((git_tag *)object)));
 	cl_assert_equal_s(ref_name_from_tag_name.ptr, loose_tag_ref_name);
-	git_buf_free(&ref_name_from_tag_name);
+	git_buf_dispose(&ref_name_from_tag_name);
 
 	git_object_free(object);
 
@@ -54,7 +54,7 @@ void test_refs_read__loose_tag(void)
 
 void test_refs_read__nonexisting_tag(void)
 {
-   // lookup a loose tag reference that doesn't exist
+	/* lookup a loose tag reference that doesn't exist */
 	git_reference *reference;
 
 	cl_git_fail(git_reference_lookup(&reference, g_repo, non_existing_tag_ref_name));
@@ -65,22 +65,22 @@ void test_refs_read__nonexisting_tag(void)
 
 void test_refs_read__symbolic(void)
 {
-   // lookup a symbolic reference
+	/* lookup a symbolic reference */
 	git_reference *reference, *resolved_ref;
 	git_object *object;
 	git_oid id;
 
 	cl_git_pass(git_reference_lookup(&reference, g_repo, GIT_HEAD_FILE));
-	cl_assert(git_reference_type(reference) & GIT_REF_SYMBOLIC);
+	cl_assert(git_reference_type(reference) & GIT_REFERENCE_SYMBOLIC);
 	cl_assert(reference_is_packed(reference) == 0);
 	cl_assert_equal_s(reference->name, GIT_HEAD_FILE);
 
 	cl_git_pass(git_reference_resolve(&resolved_ref, reference));
-	cl_assert(git_reference_type(resolved_ref) == GIT_REF_OID);
+	cl_assert(git_reference_type(resolved_ref) == GIT_REFERENCE_DIRECT);
 
-	cl_git_pass(git_object_lookup(&object, g_repo, git_reference_target(resolved_ref), GIT_OBJ_ANY));
+	cl_git_pass(git_object_lookup(&object, g_repo, git_reference_target(resolved_ref), GIT_OBJECT_ANY));
 	cl_assert(object != NULL);
-	cl_assert(git_object_type(object) == GIT_OBJ_COMMIT);
+	cl_assert(git_object_type(object) == GIT_OBJECT_COMMIT);
 
 	git_oid_fromstr(&id, current_master_tip);
 	cl_assert_equal_oid(&id, git_object_id(object));
@@ -93,22 +93,22 @@ void test_refs_read__symbolic(void)
 
 void test_refs_read__nested_symbolic(void)
 {
-   // lookup a nested symbolic reference
+	/* lookup a nested symbolic reference */
 	git_reference *reference, *resolved_ref;
 	git_object *object;
 	git_oid id;
 
 	cl_git_pass(git_reference_lookup(&reference, g_repo, head_tracker_sym_ref_name));
-	cl_assert(git_reference_type(reference) & GIT_REF_SYMBOLIC);
+	cl_assert(git_reference_type(reference) & GIT_REFERENCE_SYMBOLIC);
 	cl_assert(reference_is_packed(reference) == 0);
 	cl_assert_equal_s(reference->name, head_tracker_sym_ref_name);
 
 	cl_git_pass(git_reference_resolve(&resolved_ref, reference));
-	cl_assert(git_reference_type(resolved_ref) == GIT_REF_OID);
+	cl_assert(git_reference_type(resolved_ref) == GIT_REFERENCE_DIRECT);
 
-	cl_git_pass(git_object_lookup(&object, g_repo, git_reference_target(resolved_ref), GIT_OBJ_ANY));
+	cl_git_pass(git_object_lookup(&object, g_repo, git_reference_target(resolved_ref), GIT_OBJECT_ANY));
 	cl_assert(object != NULL);
-	cl_assert(git_object_type(object) == GIT_OBJ_COMMIT);
+	cl_assert(git_object_type(object) == GIT_OBJECT_COMMIT);
 
 	git_oid_fromstr(&id, current_master_tip);
 	cl_assert_equal_oid(&id, git_object_id(object));
@@ -121,7 +121,7 @@ void test_refs_read__nested_symbolic(void)
 
 void test_refs_read__head_then_master(void)
 {
-   // lookup the HEAD and resolve the master branch
+	/* lookup the HEAD and resolve the master branch */
 	git_reference *reference, *resolved_ref, *comp_base_ref;
 
 	cl_git_pass(git_reference_lookup(&reference, g_repo, head_tracker_sym_ref_name));
@@ -145,7 +145,7 @@ void test_refs_read__head_then_master(void)
 
 void test_refs_read__master_then_head(void)
 {
-   // lookup the master branch and then the HEAD
+	/* lookup the master branch and then the HEAD */
 	git_reference *reference, *master_ref, *resolved_ref;
 
 	cl_git_pass(git_reference_lookup(&master_ref, g_repo, current_head_target));
@@ -162,18 +162,18 @@ void test_refs_read__master_then_head(void)
 
 void test_refs_read__packed(void)
 {
-   // lookup a packed reference
+	/* lookup a packed reference */
 	git_reference *reference;
 	git_object *object;
 
 	cl_git_pass(git_reference_lookup(&reference, g_repo, packed_head_name));
-	cl_assert(git_reference_type(reference) & GIT_REF_OID);
+	cl_assert(git_reference_type(reference) & GIT_REFERENCE_DIRECT);
 	cl_assert(reference_is_packed(reference));
 	cl_assert_equal_s(reference->name, packed_head_name);
 
-	cl_git_pass(git_object_lookup(&object, g_repo, git_reference_target(reference), GIT_OBJ_ANY));
+	cl_git_pass(git_object_lookup(&object, g_repo, git_reference_target(reference), GIT_OBJECT_ANY));
 	cl_assert(object != NULL);
-	cl_assert(git_object_type(object) == GIT_OBJ_COMMIT);
+	cl_assert(git_object_type(object) == GIT_OBJECT_COMMIT);
 
 	git_object_free(object);
 
@@ -182,13 +182,13 @@ void test_refs_read__packed(void)
 
 void test_refs_read__loose_first(void)
 {
-   // assure that a loose reference is looked up before a packed reference
+	/* assure that a loose reference is looked up before a packed reference */
 	git_reference *reference;
 
 	cl_git_pass(git_reference_lookup(&reference, g_repo, packed_head_name));
 	git_reference_free(reference);
 	cl_git_pass(git_reference_lookup(&reference, g_repo, packed_test_head_name));
-	cl_assert(git_reference_type(reference) & GIT_REF_OID);
+	cl_assert(git_reference_type(reference) & GIT_REFERENCE_DIRECT);
 	cl_assert(reference_is_packed(reference) == 0);
 	cl_assert_equal_s(reference->name, packed_test_head_name);
 

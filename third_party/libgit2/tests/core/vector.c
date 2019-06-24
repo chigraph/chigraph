@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #include "clar_libgit2.h"
 #include "vector.h"
 
@@ -18,13 +20,13 @@ void test_core_vector__0(void)
 void test_core_vector__1(void)
 {
 	git_vector x;
-	// make initial capacity exact for our insertions.
+	/* make initial capacity exact for our insertions. */
 	git_vector_init(&x, 3, NULL);
 	git_vector_insert(&x, (void*) 0xabc);
 	git_vector_insert(&x, (void*) 0xdef);
 	git_vector_insert(&x, (void*) 0x123);
 
-	git_vector_remove(&x, 0); // used to read past array bounds.
+	git_vector_remove(&x, 0); /* used to read past array bounds. */
 	git_vector_free(&x);
 }
 
@@ -66,14 +68,14 @@ void test_core_vector__2(void)
 
 static int compare_them(const void *a, const void *b)
 {
-	return (int)((long)a - (long)b);
+	return (int)((intptr_t)a - (intptr_t)b);
 }
 
 /* insert_sorted */
 void test_core_vector__3(void)
 {
 	git_vector x;
-	long i;
+	intptr_t i;
 	git_vector_init(&x, 1, &compare_them);
 
 	for (i = 0; i < 10; i += 2) {
@@ -96,7 +98,7 @@ void test_core_vector__3(void)
 void test_core_vector__4(void)
 {
 	git_vector x;
-	long i;
+	intptr_t i;
 	git_vector_init(&x, 1, &compare_them);
 
 	for (i = 0; i < 10; i += 2) {
@@ -406,4 +408,23 @@ void test_core_vector__reverse(void)
 		cl_assert_equal_p(out2[i], git_vector_get(&v, i));
 
 	git_vector_free(&v);
+}
+
+void test_core_vector__dup_empty_vector(void)
+{
+	git_vector v = GIT_VECTOR_INIT;
+	git_vector dup = GIT_VECTOR_INIT;
+	int dummy;
+
+	cl_assert_equal_i(0, v.length);
+
+	cl_git_pass(git_vector_dup(&dup, &v, v._cmp));
+	cl_assert_equal_i(0, dup._alloc_size);
+	cl_assert_equal_i(0, dup.length);
+
+	cl_git_pass(git_vector_insert(&dup, &dummy));
+	cl_assert_equal_i(8, dup._alloc_size);
+	cl_assert_equal_i(1, dup.length);
+
+	git_vector_free(&dup);
 }

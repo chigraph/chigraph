@@ -21,10 +21,10 @@ else()
 	set_property(TARGET Boost::system PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}boost_system${CMAKE_STATIC_LIBRARY_SUFFIX})
 	set_property(TARGET Boost::system PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
 	
-	add_library(Boost::filesystem STATIC IMPORTED)
-	set_property(TARGET Boost::filesystem PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}boost_filesystem${CMAKE_STATIC_LIBRARY_SUFFIX})
-	set_property(TARGET Boost::filesystem PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
-	set_property(TARGET Boost::filesystem PROPERTY INTERFACE_LINK_LIBRARIES Boost::system)
+	add_library(std::filesystem STATIC IMPORTED)
+	set_property(TARGET std::filesystem PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}boost_filesystem${CMAKE_STATIC_LIBRARY_SUFFIX})
+	set_property(TARGET std::filesystem PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
+	set_property(TARGET std::filesystem PROPERTY INTERFACE_LINK_LIBRARIES Boost::system)
 endif()
 
 # setup threads
@@ -64,12 +64,12 @@ message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 add_library(chigraphsupport STATIC IMPORTED)
 set_property(TARGET chigraphsupport PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}chigraphsupport${CMAKE_STATIC_LIBRARY_SUFFIX})
 set_property(TARGET chigraphsupport PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
-set_property(TARGET chigraphsupport PROPERTY INTERFACE_LINK_LIBRARIES Boost::filesystem Threads::Threads)
+set_property(TARGET chigraphsupport PROPERTY INTERFACE_LINK_LIBRARIES std::filesystem Threads::Threads)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
 		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
 		CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	set_property(TARGET chigraphsupport PROPERTY INTERFACE_COMPILE_OPTIONS -std=c++14)
+	set_property(TARGET chigraphsupport PROPERTY INTERFACE_COMPILE_OPTIONS -std=c++17)
 endif()
 
 add_library(chigraphcore STATIC IMPORTED)

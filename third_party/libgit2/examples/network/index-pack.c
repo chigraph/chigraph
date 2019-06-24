@@ -19,8 +19,10 @@
 #endif
 #include "common.h"
 
-// This could be run in the main loop whilst the application waits for
-// the indexing to finish in a worker thread
+/*
+ * This could be run in the main loop whilst the application waits for
+ * the indexing to finish in a worker thread
+ */
 static int index_cb(const git_transfer_progress *stats, void *data)
 {
 	(void)data;
@@ -46,7 +48,7 @@ int index_pack(git_repository *repo, int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	if (git_indexer_new(&idx, ".", 0, NULL, NULL, NULL) < 0) {
+	if (git_indexer_new(&idx, ".", 0, NULL, NULL) < 0) {
 		puts("bad idx");
 		return -1;
 	}

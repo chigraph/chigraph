@@ -10,12 +10,6 @@
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
 
-#include <llvm/AsmParser/Parser.h>
-#include <llvm/IR/DIBuilder.h>
-#include <llvm/IR/DerivedTypes.h>
-#include <llvm/IR/Verifier.h>
-#include <llvm/Support/SourceMgr.h>
-
 #include <boost/dynamic_bitset.hpp>
 #include <boost/range/counting_range.hpp>
 #include <boost/range/join.hpp>
@@ -84,8 +78,8 @@ Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float 
 	return res;
 }
 
-std::vector<NodeInstance*> GraphFunction::nodesWithType(const boost::filesystem::path& module,
-                                                        boost::string_view name) const noexcept {
+std::vector<NodeInstance*> GraphFunction::nodesWithType(const std::filesystem::path& module,
+                                                        std::string_view name) const noexcept {
 	std::vector<NodeInstance*> ret;
 	for (const auto& node : mNodes) {
 		if (node.second->type().module().fullName() == module &&
@@ -97,9 +91,9 @@ std::vector<NodeInstance*> GraphFunction::nodesWithType(const boost::filesystem:
 	return ret;
 }
 
-Result GraphFunction::insertNode(const boost::filesystem::path& moduleName,
-                                 boost::string_view typeName, const nlohmann::json& typeJSON,
-                                 float x, float y, boost::uuids::uuid id, NodeInstance** toFill) {
+Result GraphFunction::insertNode(const std::filesystem::path& moduleName, std::string_view typeName,
+                                 const nlohmann::json& typeJSON, float x, float y,
+                                 boost::uuids::uuid id, NodeInstance** toFill) {
 	// invalidate the cache
 	module().updateLastEditTime();
 
@@ -278,22 +272,22 @@ void GraphFunction::retypeDataOutput(size_t idx, DataType newType) {
 	updateExits();
 }
 
-llvm::FunctionType* GraphFunction::functionType() const {
-	std::vector<llvm::Type*> arguments;
+LLVMTypeRef GraphFunction::functionType() const {
+	std::vector<LLVMTypeRef> arguments;
 	arguments.reserve(1 + dataInputs().size() + dataOutputs().size());
 
 	// this is for which exec input
-	arguments.push_back(llvm::IntegerType::getInt32Ty(context().llvmContext()));
+	arguments.push_back(LLVMInt32TypeInContext(context().llvmContext()));
 
 	for (const auto& p : dataInputs()) { arguments.push_back(p.type.llvmType()); }
 
 	// make these pointers
 	for (const auto& p : dataOutputs()) {
-		arguments.push_back(llvm::PointerType::get(p.type.llvmType(), 0));
+		arguments.push_back(LLVMPointerType(p.type.llvmType(), 0));
 	}
 
-	return llvm::FunctionType::get(llvm::IntegerType::getInt32Ty(context().llvmContext()),
-	                               arguments, false);
+	return LLVMFunctionType(LLVMInt32TypeInContext(context().llvmContext()), arguments.data(),
+	                        arguments.size(), false);
 }
 
 void GraphFunction::addExecInput(std::string name, size_t addBefore) {
@@ -376,7 +370,7 @@ void GraphFunction::updateExits() {
 	}
 }
 
-NamedDataType GraphFunction::localVariableFromName(boost::string_view name) const {
+NamedDataType GraphFunction::localVariableFromName(std::string_view name) const {
 	for (auto local : mLocalVariables) {
 		if (local.name == name) { return local; }
 	}
@@ -402,7 +396,7 @@ NamedDataType GraphFunction::getOrCreateLocalVariable(std::string name, DataType
 	return mLocalVariables[mLocalVariables.size() - 1];
 }
 
-bool GraphFunction::removeLocalVariable(boost::string_view name) {
+bool GraphFunction::removeLocalVariable(std::string_view name) {
 	auto iter = std::find_if(mLocalVariables.begin(), mLocalVariables.end(),
 	                         [&](auto& toTest) { return toTest.name == name; });
 
@@ -417,9 +411,9 @@ bool GraphFunction::removeLocalVariable(boost::string_view name) {
 	module().updateLastEditTime();
 
 	// remove set and get nodes
-	auto setNodes = nodesWithType(module().fullName(), "_set_" + name.to_string());
+	auto setNodes = nodesWithType(module().fullName(), "_set_" + std::string(name));
 	for (const auto& node : setNodes) { removeNode(*node); }
-	auto             getNodes = nodesWithType(module().fullName(), "_get_" + name.to_string());
+	auto getNodes = nodesWithType(module().fullName(), "_get_" + std::string(name));
 	for (const auto& node : getNodes) { removeNode(*node); }
 
 	return true;
@@ -466,7 +460,7 @@ void GraphFunction::renameLocalVariable(std::string oldName, std::string newName
 	}
 }
 
-void GraphFunction::retypeLocalVariable(boost::string_view name, DataType newType) {
+void GraphFunction::retypeLocalVariable(std::string_view name, DataType newType) {
 	// invalidate the cache
 	module().updateLastEditTime();
 
@@ -480,36 +474,35 @@ void GraphFunction::retypeLocalVariable(boost::string_view name, DataType newTyp
 	}
 
 	// update existing nodes
-	auto setNodes = nodesWithType(module().fullName(), "_set_" + name.to_string());
+	auto setNodes = nodesWithType(module().fullName(), "_set_" + std::string(name));
 	for (const auto& node : setNodes) {
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
 
-		auto res = module().nodeTypeFromName("_set_" + name.to_string(), qualifiedName, &ty);
+		auto res = module().nodeTypeFromName("_set_" + std::string(name), qualifiedName, &ty);
 		assert(!!res);
 
 		node->setType(std::move(ty));
 	}
 
-	auto getNodes = nodesWithType(module().fullName(), "_get_" + name.to_string());
+	auto getNodes = nodesWithType(module().fullName(), "_get_" + std::string(name));
 	for (const auto& node : getNodes) {
 		// create a new node type
 		std::unique_ptr<NodeType> ty;
 
-		auto res = module().nodeTypeFromName("_get_" + name.to_string(), qualifiedName, &ty);
+		auto res = module().nodeTypeFromName("_get_" + std::string(name), qualifiedName, &ty);
 		assert(!!res);
 
 		node->setType(std::move(ty));
 	}
 }
 
-std::vector<NodeInstance*> GraphFunction::setName(boost::string_view newName,
-                                                  bool               updateReferences) {
+std::vector<NodeInstance*> GraphFunction::setName(std::string_view newName, bool updateReferences) {
 	// invalidate the cache
 	module().updateLastEditTime();
 
 	auto oldName = mName;
-	mName        = newName.to_string();
+	mName        = std::string(newName);
 
 	if (updateReferences) {
 		auto toUpdate = context().findInstancesOfType(module().fullName(), oldName);

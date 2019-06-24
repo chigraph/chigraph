@@ -4,12 +4,11 @@
 
 #include "chi/Support/ExecutablePath.hpp"
 
-#include <boost/filesystem/operations.hpp>
-
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 // linux implementation
 #ifdef __linux__
+#include <assert.h>
 #include <dirent.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -62,7 +61,7 @@ fs::path executablePath() {
 
 namespace chi {
 
-boost::filesystem::path executablePath() {
+std::filesystem::path executablePath() {
 	std::vector<wchar_t> PathName(MAX_PATH);
 	DWORD                Size = ::GetModuleFileNameW(NULL, PathName.data(), PathName.size());
 
@@ -80,14 +79,16 @@ boost::filesystem::path executablePath() {
 	// Convert the result from UTF-16 to UTF-8.
 	std::string PathNameUTF8(MAX_PATH, '\0');
 
-	int numWritten = WideCharToMultiByte(CP_ACP, WC_COMPOSITECHECK, PathName.data(), PathName.size(), &PathNameUTF8[0], PathNameUTF8.size(), nullptr, nullptr);
+	int numWritten =
+	    WideCharToMultiByte(CP_ACP, WC_COMPOSITECHECK, PathName.data(), PathName.size(),
+	                        &PathNameUTF8[0], PathNameUTF8.size(), nullptr, nullptr);
 	if (numWritten == 0) return "";
 
 	PathNameUTF8.resize(numWritten);
 	return PathNameUTF8;
 }
 
-} // namespace chi
+}  // namespace chi
 #else
 #error GetMainExecutable is not implemented on this host yet.
 #endif

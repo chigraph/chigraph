@@ -6,7 +6,6 @@
 #include "chi/FunctionValidator.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
-#include "chi/LLVMVersion.hpp"
 #include "chi/LangModule.hpp"
 #include "chi/NameMangler.hpp"
 #include "chi/NodeInstance.hpp"
@@ -18,19 +17,17 @@
 #include <boost/range/join.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+#include <llvm-c/DebugInfo.h>
+
 #include <unordered_map>
 
-#include <llvm/IR/DIBuilder.h>
-#include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/Module.h>
-
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace chi {
 
-FunctionCompiler::FunctionCompiler(const chi::GraphFunction& func, llvm::Module& moduleToGenInto,
-                                   llvm::DICompileUnit& debugCU, llvm::DIBuilder& debugBuilder)
-    : mModule{&moduleToGenInto}, mDIBuilder{&debugBuilder}, mDebugCU{&debugCU}, mFunction{&func} {}
+FunctionCompiler::FunctionCompiler(const GraphFunction& func, LLVMModuleRef moduleToGenInto,
+                                   LLVMMetadataRef debugCU, LLVMDIBuilderRef debugBuilder)
+    : mModule{moduleToGenInto}, mDIBuilder{debugBuilder}, mDebugCU{debugCU}, mFunction{&func} {}
 
 Result FunctionCompiler::initialize(bool validate) {
 	assert(initialized() == false && "Cannot initialize a FunctionCompiler more than once");
@@ -39,7 +36,7 @@ Result FunctionCompiler::initialize(bool validate) {
 
 	Result res;
 	auto   compilerCtx = res.addScopedContext(
-	    {{"Function", function().name()}, {"Module", function().module().fullName()}});
+        {{"Function", function().name()}, {"Module", function().module().fullName()}});
 
 	if (validate) {
 		res += validateFunction(function());
@@ -55,12 +52,13 @@ Result FunctionCompiler::initialize(bool validate) {
 
 	// create function
 	auto mangledName = mangleFunctionName(module().fullName(), function().name());
-	mLLFunction      = llvm::cast<llvm::Function>(
-	    llvmModule().getOrInsertFunction(mangledName, function().functionType()));
+	mLLFunction      = LLVMAddFunction(llvmModule(), mangledName.c_str(),
+                                  function().functionType());  // create the debug file
 
-	// create the debug file
-	mDIFile = diBuilder().createFile(debugCompileUnit()->getFilename(),
-	                                 debugCompileUnit()->getDirectory());
+	auto filename = module().sourceFilePath().filename();
+	auto dir      = module().sourceFilePath().parent_path();
+	mDIFile       = LLVMDIBuilderCreateFile(diBuilder(), filename.c_str(), strlen(filename.c_str()),
+                                      dir.c_str(), strlen(dir.c_str()));
 
 	auto subroutineType = createSubroutineType();
 
@@ -68,69 +66,37 @@ Result FunctionCompiler::initialize(bool validate) {
 	auto entryLN   = nodeLineNumber(*entry);
 
 	// TODO(#65): line numbers?
+	auto name = module().fullName() + ":" + function().name();
 	mDebugFunc =
-	    diBuilder().createFunction(mDIFile, module().fullName() + ":" + function().name(),
-	                               mangledName, mDIFile, entryLN, subroutineType, false, true, 0,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	                               0,
-#else
-	                               llvm::DINode::DIFlags{},
-#endif
-	                               false);
+	    LLVMDIBuilderCreateFunction(diBuilder(), mDIFile, name.c_str(), name.length(),
+	                                mangledName.c_str(), mangledName.length(), mDIFile, entryLN,
+	                                subroutineType, false, true, 0, LLVMDIFlagZero, false);
 
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	mDebugFunc.replaceFunction(mLLFunction);
-#elif LLVM_VERSION_LESS_EQUAL(3, 7)
-	mDebugFunc->replaceFunction(mLLFunction);
-#else
-	mLLFunction->setSubprogram(mDebugFunc);
-#endif
+	LLVMSetSubprogram(mLLFunction, mDebugFunc);
 
-	mAllocBlock = llvm::BasicBlock::Create(context().llvmContext(), "alloc", mLLFunction);
+	mAllocBlock = LLVMAppendBasicBlockInContext(context().llvmContext(), mLLFunction, "alloc");
 
 	// set argument names
 	auto idx = 0ull;
-	for (auto& arg : mLLFunction->
-#if LLVM_VERSION_AT_LEAST(5, 0)
-	                 args()
-#else
-	                 getArgumentList()
-#endif
-	         ) {
+	for (auto arg = LLVMGetFirstParam(mLLFunction); arg != nullptr; arg = LLVMGetNextParam(arg)) {
 		// the first one is the input exec ID
 		if (idx == 0) {
-			arg.setName("inputexec_id");
+			LLVMSetValueName(arg, "inputexec_id");
 
 			// create debug info
 			DataType intDataType;
 			res += context().typeFromModule("lang", "i32", &intDataType);
 			assert(intDataType.valid());
-			auto debugParam = diBuilder().
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-			                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, mDebugFunc,
-			                                      "inputexec_id", mDIFile, entryLN,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			                                      *
-#endif
-			                                      intDataType.debugType());
-#else
 
-			                  createParameterVariable(mDebugFunc, "inputexec_id", 1, mDIFile,
-			                                          entryLN, intDataType.debugType());
-#endif
-			diBuilder()
-			    .insertDeclare(&arg, debugParam,
-#if LLVM_VERSION_AT_LEAST(3, 6)
-			                   diBuilder().createExpression(),
-#if LLVM_VERSION_AT_LEAST(3, 7)
-			                   llvm::DebugLoc::get(entryLN, 1, mDebugFunc),
-#endif
-#endif
-			                   &allocBlock())
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, mDebugFunc))
-#endif
-			    ;  // TODO(#65): "line" numbers
+			auto debugParam = LLVMDIBuilderCreateParameterVariable(
+			    diBuilder(), mDebugFunc, "inputexec_id", strlen("inputexec_id"), idx, mDIFile,
+			    entryLN, intDataType.debugType(*this), false, LLVMDIFlagZero);
+
+			LLVMDIBuilderInsertDeclareAtEnd(
+			    diBuilder(), arg, debugParam, nullptr,  // TODO: can this be nullptr
+			    LLVMDIBuilderCreateDebugLocation(context().llvmContext(), entryLN, 1, mDebugFunc,
+			                                     nullptr),
+			    allocBlock());
 
 			++idx;
 			continue;
@@ -143,53 +109,37 @@ Result FunctionCompiler::initialize(bool validate) {
 		} else {
 			tyAndName = function().dataOutputs()[idx - 1 - entry->type().dataOutputs().size()];
 		}
-		arg.setName(tyAndName.name);
-
-		// create debug info
+		LLVMSetValueName2(arg, tyAndName.name.c_str(), tyAndName.name.size());
 
 		// create DIType*
-		llvm::DIType* dType      = tyAndName.type.debugType();
-		auto          debugParam = diBuilder().
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-		                  createLocalVariable(llvm::dwarf::DW_TAG_arg_variable, mDebugFunc,
-		                                      tyAndName.name, mDIFile, entryLN,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		                                      *
-#endif
-		                                      dType);
-#else
-		                  createParameterVariable(mDebugFunc, tyAndName.name,
-		                                          idx + 1,  // + 1 because it starts at 1
-		                                          mDIFile, entryLN, dType);
-#endif
-		diBuilder()
-		    .insertDeclare(&arg, debugParam,
-#if LLVM_VERSION_AT_LEAST(3, 6)
-		                   diBuilder().createExpression(),
-#if LLVM_VERSION_AT_LEAST(3, 7)
-		                   llvm::DebugLoc::get(entryLN, 1, mDebugFunc),
-#endif
-#endif
-		                   &allocBlock())
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    ->setDebugLoc(llvm::DebugLoc::get(entryLN, 1, mDebugFunc))
-#endif
-		    ;  // TODO(#65): line numbers
+		LLVMMetadataRef dType      = tyAndName.type.debugType(*this);
+		auto            debugParam = LLVMDIBuilderCreateParameterVariable(
+            diBuilder(), mDebugFunc, tyAndName.name.c_str(), tyAndName.name.length(), idx + 1,
+            mDIFile, entryLN, dType, false, LLVMDIFlagZero);
+
+		LLVMDIBuilderInsertDeclareAtEnd(
+		    diBuilder(), arg, debugParam, nullptr,
+		    LLVMDIBuilderCreateDebugLocation(context().llvmContext(), entryLN, 1, mDebugFunc,
+		                                     nullptr),
+		    allocBlock());
 
 		++idx;
 	}
 
 	// create mPostPureBreak
-	llvm::IRBuilder<> allocBuilder{&allocBlock()};
-	mPostPureBreak = allocBuilder.CreateAlloca(
-	    llvm::IntegerType::getInt8PtrTy(context().llvmContext()), nullptr, "pure_jumpback");
+	auto allocBuilder = OwnedLLVMBuilder(LLVMCreateBuilderInContext(context().llvmContext()));
+	LLVMPositionBuilder(*allocBuilder, allocBlock(), nullptr);
+
+	mPostPureBreak = LLVMBuildAlloca(
+	    *allocBuilder, LLVMPointerType(LLVMInt8TypeInContext(context().llvmContext()), 0),
+	    "pure_jumpback");
 
 	// alloc local variables and zero them
 	for (const auto& localVar : function().localVariables()) {
-		mLocalVariables[localVar.name] =
-		    allocBuilder.CreateAlloca(localVar.type.llvmType(), nullptr, "var_" + localVar.name);
-		allocBuilder.CreateStore(llvm::Constant::getNullValue(localVar.type.llvmType()),
-		                         mLocalVariables[localVar.name]);
+		mLocalVariables[localVar.name] = LLVMBuildAlloca(*allocBuilder, localVar.type.llvmType(),
+		                                                 ("var_" + localVar.name).c_str());
+		LLVMBuildStore(*allocBuilder, LLVMConstNull(localVar.type.llvmType()),
+		               mLocalVariables[localVar.name]);
 	}
 
 	return res;
@@ -238,7 +188,7 @@ Result FunctionCompiler::compile() {
 		res += compilePureDependencies(node);
 		if (!res) { return res; }
 
-		std::vector<llvm::BasicBlock*> outputBlocks;
+		std::vector<LLVMBasicBlockRef> outputBlocks;
 		// make sure the output nodes have done stage 1 and collect output blocks
 		for (const auto& conn : node.outputExecConnections) {
 			res += compilePureDependencies(*conn.first);
@@ -247,7 +197,7 @@ Result FunctionCompiler::compile() {
 			auto depCompiler = getOrCreateNodeCompiler(*conn.first);
 			depCompiler->compile_stage1(conn.second);
 
-			outputBlocks.push_back(&depCompiler->firstBlock(conn.second));
+			outputBlocks.push_back(depCompiler->firstBlock(conn.second));
 		}
 
 		// compile this one
@@ -266,72 +216,43 @@ Result FunctionCompiler::compile() {
 
 	if (!res) { return res; }
 
-	llvm::IRBuilder<> allocBuilder{&allocBlock()};
-	allocBuilder.CreateBr(&nodeCompiler(*entry)->firstBlock(0));
+	auto allocBuilder = OwnedLLVMBuilder(LLVMCreateBuilderInContext(context().llvmContext()));
+	LLVMPositionBuilder(*allocBuilder, allocBlock(), nullptr);
+	LLVMBuildBr(*allocBuilder, nodeCompiler(*entry)->firstBlock(0));
 
 	return res;
 }
 
-FunctionCompiler::DebugFunctionType FunctionCompiler::createSubroutineType() {
+LLVMMetadataRef FunctionCompiler::createSubroutineType() {
 	// create param list
-	std::vector<
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-	    llvm::Value*
-#else
-	    llvm::Metadata*
-#endif
-	    >
-	    params;
+	std::vector<LLVMMetadataRef> params;
 	{
 		// ret first
 		DataType intType = function().context().langModule()->typeFromName("i32");
 		assert(intType.valid());
 
-		params.push_back(
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    *
-#endif
-		    intType.debugType());
+		params.push_back(intType.debugType(*this));
 
 		// then first in inputexec id
-		params.push_back(
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-		    *
-#endif
-		    intType.debugType());
+		params.push_back(intType.debugType(*this));
 
 		// add paramters
 		for (const auto& dType :
 		     boost::range::join(function().dataInputs(), function().dataOutputs())) {
-			params.push_back(
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			    *
-#endif
-			    dType.type.debugType());
+			params.push_back(dType.type.debugType(*this));
 		}
 	}
 
 	// create type
-	auto subroutineType = diBuilder().createSubroutineType(
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-	    mDIFile,
-#endif
-	    diBuilder().
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-	    getOrCreateArray
-#else
-	    getOrCreateTypeArray
-#endif
-	    (params));
-
-	return subroutineType;
+	return LLVMDIBuilderCreateSubroutineType(diBuilder(), mDIFile, params.data(), params.size(),
+	                                         LLVMDIFlagZero);
 }
 
-llvm::Value* FunctionCompiler::localVariable(boost::string_view name) {
+LLVMValueRef FunctionCompiler::localVariable(std::string_view name) {
 	assert(initialized() &&
 	       "Please initialize the function compiler before getting a local variable");
 
-	auto iter = mLocalVariables.find(name.to_string());
+	auto iter = mLocalVariables.find(std::string(name));
 	if (iter != mLocalVariables.end()) { return iter->second; }
 	return nullptr;
 }
@@ -368,9 +289,9 @@ NodeCompiler* FunctionCompiler::getOrCreateNodeCompiler(NodeInstance& node) {
 	return &mNodeCompilers.emplace(&node, NodeCompiler{*this, node}).first->second;
 }
 
-Result compileFunction(const GraphFunction& func, llvm::Module* mod, llvm::DICompileUnit* debugCU,
-                       llvm::DIBuilder& debugBuilder) {
-	FunctionCompiler compiler{func, *mod, *debugCU, debugBuilder};
+Result compileFunction(const GraphFunction& func, LLVMModuleRef mod, LLVMMetadataRef debugCU,
+                       LLVMDIBuilderRef debugBuilder) {
+	FunctionCompiler compiler{func, mod, debugCU, debugBuilder};
 
 	auto res = compiler.initialize();
 	if (!res) { return res; }

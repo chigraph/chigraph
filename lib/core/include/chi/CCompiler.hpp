@@ -3,10 +3,12 @@
 #ifndef CHI_C_COMPILER_HPP
 #define CHI_C_COMPILER_HPP
 
-#include "chi/Fwd.hpp"
+#include <filesystem>
+#include <string_view>
+#include <vector>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/utility/string_view.hpp>
+#include "chi/Fwd.hpp"
+#include "chi/Owned.hpp"
 
 namespace chi {
 
@@ -19,9 +21,9 @@ namespace chi {
 /// be empty.
 /// \param[out] toFill The unique pointer module to create the module inside
 /// \return The Result
-Result compileCToLLVM(const boost::filesystem::path& clangPath, llvm::LLVMContext& llvmContext,
-                      std::vector<std::string> arguments, boost::string_view inputCCode,
-                      std::unique_ptr<llvm::Module>* toFill);
+Result compileCToLLVM(const std::filesystem::path& clangPath, LLVMContextRef llvmContext,
+                      std::vector<std::string> arguments, std::string_view inputCCode,
+                      OwnedLLVMModule* toFill);
 
 }  // namespace chi
 

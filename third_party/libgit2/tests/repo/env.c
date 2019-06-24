@@ -45,7 +45,7 @@ static int GIT_FORMAT_PRINTF(2, 3) cl_setenv_printf(const char *name, const char
 	va_end(args);
 
 	ret = cl_setenv(name, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 	return ret;
 }
 
@@ -85,7 +85,7 @@ static void env_cd_(
 	cl_must_pass(p_chdir(path));
 	passfail_(NULL, file, line);
 	cl_must_pass(p_chdir(git_buf_cstr(&cwd_buf)));
-	git_buf_free(&cwd_buf);
+	git_buf_dispose(&cwd_buf);
 }
 #define env_cd_pass(path) env_cd_((path), env_pass_, __FILE__, __LINE__)
 #define env_cd_fail(path) env_cd_((path), env_fail_, __FILE__, __LINE__)
@@ -101,24 +101,24 @@ static void env_check_objects_(bool a, bool t, bool p, const char *file, int lin
 	cl_git_expect(git_repository_open_ext(&repo, "attr", GIT_REPOSITORY_OPEN_FROM_ENV, NULL), 0, file, line);
 
 	if (a) {
-		cl_git_expect(git_object_lookup(&object, repo, &oid_a, GIT_OBJ_BLOB), 0, file, line);
+		cl_git_expect(git_object_lookup(&object, repo, &oid_a, GIT_OBJECT_BLOB), 0, file, line);
 		git_object_free(object);
 	} else {
-		cl_git_fail_at_line(git_object_lookup(&object, repo, &oid_a, GIT_OBJ_BLOB), file, line);
+		cl_git_fail_at_line(git_object_lookup(&object, repo, &oid_a, GIT_OBJECT_BLOB), file, line);
 	}
 
 	if (t) {
-		cl_git_expect(git_object_lookup(&object, repo, &oid_t, GIT_OBJ_BLOB), 0, file, line);
+		cl_git_expect(git_object_lookup(&object, repo, &oid_t, GIT_OBJECT_BLOB), 0, file, line);
 		git_object_free(object);
 	} else {
-		cl_git_fail_at_line(git_object_lookup(&object, repo, &oid_t, GIT_OBJ_BLOB), file, line);
+		cl_git_fail_at_line(git_object_lookup(&object, repo, &oid_t, GIT_OBJECT_BLOB), file, line);
 	}
 
 	if (p) {
-		cl_git_expect(git_object_lookup(&object, repo, &oid_p, GIT_OBJ_COMMIT), 0, file, line);
+		cl_git_expect(git_object_lookup(&object, repo, &oid_p, GIT_OBJECT_COMMIT), 0, file, line);
 		git_object_free(object);
 	} else {
-		cl_git_fail_at_line(git_object_lookup(&object, repo, &oid_p, GIT_OBJ_COMMIT), file, line);
+		cl_git_fail_at_line(git_object_lookup(&object, repo, &oid_p, GIT_OBJECT_COMMIT), file, line);
 	}
 
 	git_repository_free(repo);
@@ -271,7 +271,7 @@ void test_repo_env__open(void)
 	cl_fixture_cleanup("testrepo.git");
 	cl_fixture_cleanup("attr");
 
-	git_buf_free(&repo_dir_buf);
+	git_buf_dispose(&repo_dir_buf);
 
 	clear_git_env();
 }

@@ -162,6 +162,8 @@ typedef enum {
 	GIT_MERGE_FILE_DIFF_MINIMAL = (1 << 7),
 } git_merge_file_flag_t;
 
+#define GIT_MERGE_CONFLICT_MARKER_SIZE	7
+
 /**
  * Options for merging a file
  */
@@ -191,18 +193,23 @@ typedef struct {
 
 	/** see `git_merge_file_flag_t` above */
 	git_merge_file_flag_t flags;
+
+	/** The size of conflict markers (eg, "<<<<<<<").  Default is
+	 * GIT_MERGE_CONFLICT_MARKER_SIZE. */
+	unsigned short marker_size;
 } git_merge_file_options;
 
 #define GIT_MERGE_FILE_OPTIONS_VERSION 1
 #define GIT_MERGE_FILE_OPTIONS_INIT {GIT_MERGE_FILE_OPTIONS_VERSION}
 
 /**
- * Initializes a `git_merge_file_options` with default values. Equivalent to
- * creating an instance with GIT_MERGE_FILE_OPTIONS_INIT.
+ * Initialize git_merge_file_options structure
  *
- * @param opts the `git_merge_file_options` instance to initialize.
- * @param version the version of the struct; you should pass
- *        `GIT_MERGE_FILE_OPTIONS_VERSION` here.
+ * Initializes a `git_merge_file_options` with default values. Equivalent to
+ * creating an instance with `GIT_MERGE_FILE_OPTIONS_INIT`.
+ *
+ * @param opts The `git_merge_file_options` struct to initialize.
+ * @param version The struct version; pass `GIT_MERGE_FILE_OPTIONS_VERSION`.
  * @return Zero on success; -1 on failure.
  */
 GIT_EXTERN(int) git_merge_file_init_options(
@@ -294,12 +301,13 @@ typedef struct {
 	GIT_MERGE_OPTIONS_VERSION, GIT_MERGE_FIND_RENAMES }
 
 /**
- * Initializes a `git_merge_options` with default values. Equivalent to
- * creating an instance with GIT_MERGE_OPTIONS_INIT.
+ * Initialize git_merge_options structure
  *
- * @param opts the `git_merge_options` instance to initialize.
- * @param version the version of the struct; you should pass
- *        `GIT_MERGE_OPTIONS_VERSION` here.
+ * Initializes a `git_merge_options` with default values. Equivalent to
+ * creating an instance with `GIT_MERGE_OPTIONS_INIT`.
+ *
+ * @param opts The `git_merge_options` struct to initialize.
+ * @param version The struct version; pass `GIT_MERGE_OPTIONS_VERSION`.
  * @return Zero on success; -1 on failure.
  */
 GIT_EXTERN(int) git_merge_init_options(
@@ -377,6 +385,25 @@ GIT_EXTERN(int) git_merge_analysis(
 	git_merge_analysis_t *analysis_out,
 	git_merge_preference_t *preference_out,
 	git_repository *repo,
+	const git_annotated_commit **their_heads,
+	size_t their_heads_len);
+
+/**
+ * Analyzes the given branch(es) and determines the opportunities for
+ * merging them into a reference.
+ *
+ * @param analysis_out analysis enumeration that the result is written into
+ * @param repo the repository to merge
+ * @param our_ref the reference to perform the analysis from
+ * @param their_heads the heads to merge into
+ * @param their_heads_len the number of heads to merge
+ * @return 0 on success or error code
+ */
+GIT_EXTERN(int) git_merge_analysis_for_ref(
+	git_merge_analysis_t *analysis_out,
+	git_merge_preference_t *preference_out,
+	git_repository *repo,
+	git_reference *our_ref,
 	const git_annotated_commit **their_heads,
 	size_t their_heads_len);
 

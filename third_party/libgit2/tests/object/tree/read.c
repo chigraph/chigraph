@@ -6,7 +6,7 @@ static const char *tree_oid = "1810dff58d8a660512d4832e740f692884338ccd";
 
 static git_repository *g_repo;
 
-// Fixture setup and teardown
+/* Fixture setup and teardown */
 void test_object_tree_read__initialize(void)
 {
    g_repo = cl_git_sandbox_init("testrepo");
@@ -21,7 +21,7 @@ void test_object_tree_read__cleanup(void)
 
 void test_object_tree_read__loaded(void)
 {
-   // acces randomly the entries on a loaded tree
+	/* acces randomly the entries on a loaded tree */
 	git_oid id;
 	git_tree *tree;
 
@@ -42,7 +42,7 @@ void test_object_tree_read__loaded(void)
 
 void test_object_tree_read__two(void)
 {
-   // read a tree from the repository
+	/* read a tree from the repository */
 	git_oid id;
 	git_tree *tree;
 	const git_tree_entry *entry;
@@ -55,11 +55,11 @@ void test_object_tree_read__two(void)
 	cl_assert(git_tree_entrycount(tree) == 3);
 
 	/* GH-86: git_object_lookup() should also check the type if the object comes from the cache */
-	cl_assert(git_object_lookup(&obj, g_repo, &id, GIT_OBJ_TREE) == 0);
+	cl_assert(git_object_lookup(&obj, g_repo, &id, GIT_OBJECT_TREE) == 0);
 	cl_assert(obj != NULL);
 	git_object_free(obj);
 	obj = NULL;
-	cl_git_fail(git_object_lookup(&obj, g_repo, &id, GIT_OBJ_BLOB));
+	cl_git_fail(git_object_lookup(&obj, g_repo, &id, GIT_OBJECT_BLOB));
 	cl_assert(obj == NULL);
 
 	entry = git_tree_entry_byname(tree, "README");

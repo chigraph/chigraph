@@ -13,7 +13,7 @@ static git_repository *repo;
 #define TEST_INDEX_PATH TEST_REPO_PATH "/.git/index"
 
 
-// Fixture setup and teardown
+/* Fixture setup and teardown */
 void test_merge_trees_trivial__initialize(void)
 {
 	repo = cl_git_sandbox_init(TEST_REPO_PATH);
@@ -51,7 +51,7 @@ static int merge_trivial(git_index **index, const char *ours, const char *theirs
 
 	cl_git_pass(git_merge_trees(index, repo, ancestor_tree, our_tree, their_tree, &opts));
 
-	git_buf_free(&branch_buf);
+	git_buf_dispose(&branch_buf);
 	git_tree_free(our_tree);
 	git_tree_free(their_tree);
 	git_tree_free(ancestor_tree);

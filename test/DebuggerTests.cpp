@@ -5,22 +5,22 @@
 #include <chi/GraphModule.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/NodeType.hpp>
+#include <chi/Support/ExecutablePath.hpp>
 #include <chi/Support/Result.hpp>
-
-#include <llvm/Support/FileSystem.h>
 
 #include <lldb/API/SBEvent.h>
 #include <lldb/API/SBFrame.h>
 #include <lldb/API/SBProcess.h>
 #include <lldb/API/SBThread.h>
 
+#include <iostream>
 #include <thread>
 
 using namespace chi;
 using namespace nlohmann;
 using namespace std::chrono_literals;
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 TEST_CASE("Debugger", "") {
 	// load the ctx
@@ -61,11 +61,9 @@ TEST_CASE("Debugger", "") {
 	auto exitNode = putsNode->outputExecConnections[0].first;
 
 	// make a debugger
-	boost::filesystem::path chiPath =
-	    boost::filesystem::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path() /
-	    "chi";
+	std::filesystem::path chiPath = executablePath().parent_path() / "chi";
 #ifdef _WIN32
-	chiPath.replace_extension(boost::filesystem::path(".exe"));
+	chiPath.replace_extension(std::filesystem::path(".exe"));
 #endif
 	REQUIRE(fs::is_regular_file(chiPath));
 
@@ -90,7 +88,6 @@ TEST_CASE("Debugger", "") {
 		auto state = lldb::SBProcess::GetStateFromEvent(ev);
 		REQUIRE(state != lldb::eStateExited);
 		if (state == lldb::eStateStopped) break;
-
 	}
 
 	dbg.processContinue();

@@ -7,7 +7,7 @@ void cl_git_report_failure(
 	int error, int expected, const char *file, int line, const char *fncall)
 {
 	char msg[4096];
-	const git_error *last = giterr_last();
+	const git_error *last = git_error_last();
 
 	if (expected)
 		p_snprintf(msg, 4096, "error %d (expected %d) - %s",
@@ -171,13 +171,16 @@ static git_repository *_cl_repo = NULL;
 
 git_repository *cl_git_sandbox_init(const char *sandbox)
 {
+	/* Get the name of the sandbox folder which will be created */
+	const char *basename = cl_fixture_basename(sandbox);
+
 	/* Copy the whole sandbox folder from our fixtures to our test sandbox
 	 * area.  After this it can be accessed with `./sandbox`
 	 */
 	cl_fixture_sandbox(sandbox);
 	_cl_sandbox = sandbox;
 
-	cl_git_pass(p_chdir(sandbox));
+	cl_git_pass(p_chdir(basename));
 
 	/* If this is not a bare repo, then rename `sandbox/.gitted` to
 	 * `sandbox/.git` which must be done since we cannot store a folder
@@ -200,7 +203,7 @@ git_repository *cl_git_sandbox_init(const char *sandbox)
 	cl_git_pass(p_chdir(".."));
 
 	/* Now open the sandbox repository and make it available for tests */
-	cl_git_pass(git_repository_open(&_cl_repo, sandbox));
+	cl_git_pass(git_repository_open(&_cl_repo, basename));
 
 	/* Adjust configs after copying to new filesystem */
 	cl_git_pass(git_repository_reinit_filesystem(_cl_repo, 0));
@@ -222,7 +225,8 @@ git_repository *cl_git_sandbox_reopen(void)
 		git_repository_free(_cl_repo);
 		_cl_repo = NULL;
 
-		cl_git_pass(git_repository_open(&_cl_repo, _cl_sandbox));
+		cl_git_pass(git_repository_open(
+			&_cl_repo, cl_fixture_basename(_cl_sandbox)));
 	}
 
 	return _cl_repo;
@@ -310,9 +314,38 @@ const char* cl_git_path_url(const char *path)
 	cl_assert(url_buf.size < 4096);
 
 	strncpy(url, git_buf_cstr(&url_buf), 4096);
-	git_buf_free(&url_buf);
-	git_buf_free(&path_buf);
+	git_buf_dispose(&url_buf);
+	git_buf_dispose(&path_buf);
 	return url;
+}
+
+const char *cl_git_sandbox_path(int is_dir, ...)
+{
+	const char *path = NULL;
+	static char _temp[GIT_PATH_MAX];
+	git_buf buf = GIT_BUF_INIT;
+	va_list arg;
+
+	cl_git_pass(git_buf_sets(&buf, clar_sandbox_path()));
+
+	va_start(arg, is_dir);
+
+	while ((path = va_arg(arg, const char *)) != NULL) {
+		cl_git_pass(git_buf_joinpath(&buf, buf.ptr, path));
+	}
+	va_end(arg);
+
+	cl_git_pass(git_path_prettify(&buf, buf.ptr, NULL));
+	if (is_dir)
+		git_path_to_dir(&buf);
+
+	/* make sure we won't truncate */
+	cl_assert(git_buf_len(&buf) < sizeof(_temp));
+	git_buf_copy_cstr(_temp, sizeof(_temp), &buf);
+
+	git_buf_dispose(&buf);
+
+	return _temp;
 }
 
 typedef struct {
@@ -359,7 +392,7 @@ int cl_git_remove_placeholders(const char *directory_path, const char *filename)
 
 	error = remove_placeholders_recurs(&data, &buffer);
 
-	git_buf_free(&buffer);
+	git_buf_dispose(&buffer);
 
 	return error;
 }
@@ -437,7 +470,7 @@ int cl_repo_get_bool(git_repository *repo, const char *cfg)
 	git_config *config;
 	cl_git_pass(git_repository_config(&config, repo));
 	if (git_config_get_bool(&val, config, cfg) < 0)
-		giterr_clear();
+		git_error_clear();
 	git_config_free(config);
 	return val;
 }
@@ -544,7 +577,7 @@ void cl_fake_home(void)
 	cl_git_pass(git_path_prettify(&path, "home", NULL));
 	cl_git_pass(git_libgit2_opts(
 		GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_GLOBAL, path.ptr));
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 void cl_sandbox_set_search_path_defaults(void)
@@ -565,7 +598,7 @@ void cl_sandbox_set_search_path_defaults(void)
 	git_libgit2_opts(
 		GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_PROGRAMDATA, path.ptr);
 
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 #ifdef GIT_WIN32
@@ -584,7 +617,7 @@ bool cl_sandbox_supports_8dot3(void)
 	supported = (shortname != NULL);
 
 	git__free(shortname);
-	git_buf_free(&longpath);
+	git_buf_dispose(&longpath);
 
 	return supported;
 }

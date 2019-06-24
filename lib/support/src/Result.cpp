@@ -8,7 +8,7 @@ namespace {
 
 /// merges `from` into `into`. If an entry is in both, it keeps into.
 void mergeJsonIntoConservative(nlohmann::json& into, const nlohmann::json& from) {
-	for (const auto& j : nlohmann::json::iterator_wrapper(from)) {
+	for (const auto& j : from.items()) {
 		if (into.find(j.key()) == into.end()) { into[j.key()] = j.value(); }
 	}
 }
@@ -84,20 +84,23 @@ std::string Result::dump() const {
 int Result::addContext(const nlohmann::json& data) {
 	assert(data.is_object() && "Json added to context must be an object");
 
-	static int ctxId = 0;
-
-	mContexts.emplace(ctxId, data);
-	return ctxId++;
+	mContexts.emplace_back(mNextCtx, data);
+	return mNextCtx++;
 }
 
-void chi::Result::removeContext(int id) { mContexts.erase(id); }
+void chi::Result::removeContext(int id) {
+	auto iter = std::find_if(mContexts.begin(), mContexts.end(),
+	                         [id](const auto& ctx) { return ctx.first == id; });
+
+	if (iter != mContexts.end()) { mContexts.erase(iter); }
+}
 
 nlohmann::json Result::contextJson() const {
 	// merge all the contexts
 	auto merged = nlohmann::json::object();
 
-	for (const auto& ctx : mContexts | boost::adaptors::reversed) {
-		mergeJsonIntoConservative(merged, ctx.second);
+	for (auto iter = mContexts.rbegin(); iter != mContexts.rend(); ++iter) {
+		mergeJsonIntoConservative(merged, iter->second);
 	}
 
 	return merged;
@@ -113,13 +116,13 @@ Result operator+(const Result& lhs, const Result& rhs) {
 		               // apply the context
 		               mergeJsonIntoConservative(j["data"], rhs.contextJson());
 		               return j;
-		           });
+	               });
 	std::transform(rhs.result_json.begin(), rhs.result_json.end(),
 	               std::back_inserter(ret.result_json), [&](nlohmann::json j) {
 		               // apply context
 		               mergeJsonIntoConservative(j["data"], lhs.contextJson());
 		               return j;
-		           });
+	               });
 
 	return ret;
 }
@@ -137,7 +140,7 @@ Result& operator+=(Result& lhs, const Result& rhs) {
 	               std::back_inserter(lhs.result_json), [&](nlohmann::json j) {
 		               mergeJsonIntoConservative(j["data"], lhs.contextJson());
 		               return j;
-		           });
+	               });
 
 	return lhs;
 }

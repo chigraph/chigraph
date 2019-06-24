@@ -252,8 +252,8 @@ Real cubic_b_spline_imp<Real>::operator()(Real x) const
     using std::ceil;
     using std::floor;
 
-    size_t k_min = (size_t) max(static_cast<long>(0), boost::math::ltrunc(ceil(t - 2)));
-    size_t k_max = (size_t) max(min(static_cast<long>(m_beta.size() - 1), boost::math::ltrunc(floor(t + 2))), (long) 0);
+    size_t k_min = (size_t) (max)(static_cast<long>(0), boost::math::ltrunc(ceil(t - 2)));
+    size_t k_max = (size_t) (max)((min)(static_cast<long>(m_beta.size() - 1), boost::math::ltrunc(floor(t + 2))), (long) 0);
     for (size_t k = k_min; k <= k_max; ++k)
     {
         z += m_beta[k]*b3_spline(t - k);
@@ -273,8 +273,8 @@ Real cubic_b_spline_imp<Real>::prime(Real x) const
     using std::ceil;
     using std::floor;
 
-    size_t k_min = (size_t) max(static_cast<long>(0), boost::math::ltrunc(ceil(t - 2)));
-    size_t k_max = (size_t) min(static_cast<long>(m_beta.size() - 1), boost::math::ltrunc(floor(t + 2)));
+    size_t k_min = (size_t) (max)(static_cast<long>(0), boost::math::ltrunc(ceil(t - 2)));
+    size_t k_max = (size_t) (min)(static_cast<long>(m_beta.size() - 1), boost::math::ltrunc(floor(t + 2)));
 
     for (size_t k = k_min; k <= k_max; ++k)
     {

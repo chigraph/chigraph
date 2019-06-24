@@ -4,8 +4,12 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
-#ifndef INCLUDE_posix__unix_h__
-#define INCLUDE_posix__unix_h__
+#ifndef INCLUDE_unix_posix_h__
+#define INCLUDE_unix_posix_h__
+
+#ifndef LIBGIT2_NO_FEATURES_H
+# include "git2/sys/features.h"
+#endif
 
 #include <stdio.h>
 #include <dirent.h>
@@ -71,7 +75,7 @@ GIT_INLINE(int) p_fsync(int fd)
 
 #define p_timeval timeval
 
-#ifdef HAVE_FUTIMENS
+#ifdef GIT_USE_FUTIMENS
 GIT_INLINE(int) p_futimes(int f, const struct p_timeval t[2])
 {
 	struct timespec s[2];
@@ -85,7 +89,7 @@ GIT_INLINE(int) p_futimes(int f, const struct p_timeval t[2])
 # define p_futimes futimes
 #endif
 
-#ifdef HAVE_REGCOMP_L
+#ifdef GIT_USE_REGCOMP_L
 #include <xlocale.h>
 GIT_INLINE(int) p_regcomp(regex_t *preg, const char *pattern, int cflags)
 {

@@ -7,42 +7,18 @@
 #ifndef INCLUDE_util_h__
 #define INCLUDE_util_h__
 
-#include "git2/buffer.h"
-#include "buffer.h"
+#include "common.h"
 
-#if defined(GIT_MSVC_CRTDBG)
-/* Enable MSVC CRTDBG memory leak reporting.
- *
- * We DO NOT use the "_CRTDBG_MAP_ALLOC" macro described in the MSVC
- * documentation because all allocs/frees in libgit2 already go through
- * the "git__" routines defined in this file.  Simply using the normal
- * reporting mechanism causes all leaks to be attributed to a routine
- * here in util.h (ie, the actual call to calloc()) rather than the
- * caller of git__calloc().
- *
- * Therefore, we declare a set of "git__crtdbg__" routines to replace
- * the corresponding "git__" routines and re-define the "git__" symbols
- * as macros.  This allows us to get and report the file:line info of
- * the real caller.
- *
- * We DO NOT replace the "git__free" routine because it needs to remain
- * a function pointer because it is used as a function argument when
- * setting up various structure "destructors".
- *
- * We also DO NOT use the "_CRTDBG_MAP_ALLOC" macro because it causes
- * "free" to be remapped to "_free_dbg" and this causes problems for
- * structures which define a field named "free".
- *
- * Finally, CRTDBG must be explicitly enabled and configured at program
- * startup.  See tests/main.c for an example.
- */
-#include <stdlib.h>
-#include <crtdbg.h>
-#include "win32/w32_crtdbg_stacktrace.h"
+#ifndef GIT_WIN32
+# include <ctype.h>
 #endif
 
+#include "git2/buffer.h"
+
+#include "buffer.h"
 #include "common.h"
 #include "strnlen.h"
+#include "thread-utils.h"
 
 #define ARRAY_SIZE(x) (sizeof(x)/sizeof(x[0]))
 #define bitsizeof(x) (CHAR_BIT * sizeof(x))
@@ -65,187 +41,6 @@
  */
 #define CONST_STRLEN(x) ((sizeof(x)/sizeof(x[0])) - 1)
 
-#if defined(GIT_MSVC_CRTDBG)
-
-GIT_INLINE(void *) git__crtdbg__malloc(size_t len, const char *file, int line)
-{
-	void *ptr = _malloc_dbg(len, _NORMAL_BLOCK, git_win32__crtdbg_stacktrace(1,file), line);
-	if (!ptr) giterr_set_oom();
-	return ptr;
-}
-
-GIT_INLINE(void *) git__crtdbg__calloc(size_t nelem, size_t elsize, const char *file, int line)
-{
-	void *ptr = _calloc_dbg(nelem, elsize, _NORMAL_BLOCK, git_win32__crtdbg_stacktrace(1,file), line);
-	if (!ptr) giterr_set_oom();
-	return ptr;
-}
-
-GIT_INLINE(char *) git__crtdbg__strdup(const char *str, const char *file, int line)
-{
-	char *ptr = _strdup_dbg(str, _NORMAL_BLOCK, git_win32__crtdbg_stacktrace(1,file), line);
-	if (!ptr) giterr_set_oom();
-	return ptr;
-}
-
-GIT_INLINE(char *) git__crtdbg__strndup(const char *str, size_t n, const char *file, int line)
-{
-	size_t length = 0, alloclength;
-	char *ptr;
-
-	length = p_strnlen(str, n);
-
-	if (GIT_ADD_SIZET_OVERFLOW(&alloclength, length, 1) ||
-		!(ptr = git__crtdbg__malloc(alloclength, file, line)))
-		return NULL;
-
-	if (length)
-		memcpy(ptr, str, length);
-
-	ptr[length] = '\0';
-
-	return ptr;
-}
-
-GIT_INLINE(char *) git__crtdbg__substrdup(const char *start, size_t n, const char *file, int line)
-{
-	char *ptr;
-	size_t alloclen;
-
-	if (GIT_ADD_SIZET_OVERFLOW(&alloclen, n, 1) ||
-		!(ptr = git__crtdbg__malloc(alloclen, file, line)))
-		return NULL;
-
-	memcpy(ptr, start, n);
-	ptr[n] = '\0';
-	return ptr;
-}
-
-GIT_INLINE(void *) git__crtdbg__realloc(void *ptr, size_t size, const char *file, int line)
-{
-	void *new_ptr = _realloc_dbg(ptr, size, _NORMAL_BLOCK, git_win32__crtdbg_stacktrace(1,file), line);
-	if (!new_ptr) giterr_set_oom();
-	return new_ptr;
-}
-
-GIT_INLINE(void *) git__crtdbg__reallocarray(void *ptr, size_t nelem, size_t elsize, const char *file, int line)
-{
-	size_t newsize;
-
-	return GIT_MULTIPLY_SIZET_OVERFLOW(&newsize, nelem, elsize) ?
-		NULL : _realloc_dbg(ptr, newsize, _NORMAL_BLOCK, git_win32__crtdbg_stacktrace(1,file), line);
-}
-
-GIT_INLINE(void *) git__crtdbg__mallocarray(size_t nelem, size_t elsize, const char *file, int line)
-{
-	return git__crtdbg__reallocarray(NULL, nelem, elsize, file, line);
-}
-
-#define git__malloc(len)                      git__crtdbg__malloc(len, __FILE__, __LINE__)
-#define git__calloc(nelem, elsize)            git__crtdbg__calloc(nelem, elsize, __FILE__, __LINE__)
-#define git__strdup(str)                      git__crtdbg__strdup(str, __FILE__, __LINE__)
-#define git__strndup(str, n)                  git__crtdbg__strndup(str, n, __FILE__, __LINE__)
-#define git__substrdup(str, n)                git__crtdbg__substrdup(str, n, __FILE__, __LINE__)
-#define git__realloc(ptr, size)               git__crtdbg__realloc(ptr, size, __FILE__, __LINE__)
-#define git__reallocarray(ptr, nelem, elsize) git__crtdbg__reallocarray(ptr, nelem, elsize, __FILE__, __LINE__)
-#define git__mallocarray(nelem, elsize)       git__crtdbg__mallocarray(nelem, elsize, __FILE__, __LINE__)
-
-#else
-
-/*
- * Custom memory allocation wrappers
- * that set error code and error message
- * on allocation failure
- */
-GIT_INLINE(void *) git__malloc(size_t len)
-{
-	void *ptr = malloc(len);
-	if (!ptr) giterr_set_oom();
-	return ptr;
-}
-
-GIT_INLINE(void *) git__calloc(size_t nelem, size_t elsize)
-{
-	void *ptr = calloc(nelem, elsize);
-	if (!ptr) giterr_set_oom();
-	return ptr;
-}
-
-GIT_INLINE(char *) git__strdup(const char *str)
-{
-	char *ptr = strdup(str);
-	if (!ptr) giterr_set_oom();
-	return ptr;
-}
-
-GIT_INLINE(char *) git__strndup(const char *str, size_t n)
-{
-	size_t length = 0, alloclength;
-	char *ptr;
-
-	length = p_strnlen(str, n);
-
-	if (GIT_ADD_SIZET_OVERFLOW(&alloclength, length, 1) ||
-		!(ptr = git__malloc(alloclength)))
-		return NULL;
-
-	if (length)
-		memcpy(ptr, str, length);
-
-	ptr[length] = '\0';
-
-	return ptr;
-}
-
-/* NOTE: This doesn't do null or '\0' checking.  Watch those boundaries! */
-GIT_INLINE(char *) git__substrdup(const char *start, size_t n)
-{
-	char *ptr;
-	size_t alloclen;
-
-	if (GIT_ADD_SIZET_OVERFLOW(&alloclen, n, 1) ||
-		!(ptr = git__malloc(alloclen)))
-		return NULL;
-
-	memcpy(ptr, start, n);
-	ptr[n] = '\0';
-	return ptr;
-}
-
-GIT_INLINE(void *) git__realloc(void *ptr, size_t size)
-{
-	void *new_ptr = realloc(ptr, size);
-	if (!new_ptr) giterr_set_oom();
-	return new_ptr;
-}
-
-/**
- * Similar to `git__realloc`, except that it is suitable for reallocing an
- * array to a new number of elements of `nelem`, each of size `elsize`.
- * The total size calculation is checked for overflow.
- */
-GIT_INLINE(void *) git__reallocarray(void *ptr, size_t nelem, size_t elsize)
-{
-	size_t newsize;
-	return GIT_MULTIPLY_SIZET_OVERFLOW(&newsize, nelem, elsize) ?
-		NULL : realloc(ptr, newsize);
-}
-
-/**
- * Similar to `git__calloc`, except that it does not zero memory.
- */
-GIT_INLINE(void *) git__mallocarray(size_t nelem, size_t elsize)
-{
-	return git__reallocarray(NULL, nelem, elsize);
-}
-
-#endif /* !MSVC_CTRDBG */
-
-GIT_INLINE(void) git__free(void *ptr)
-{
-	free(ptr);
-}
-
 #define STRCMP_CASESELECT(IGNORE_CASE, STR1, STR2) \
 	((IGNORE_CASE) ? strcasecmp((STR1), (STR2)) : strcmp((STR1), (STR2)))
 
@@ -254,6 +49,7 @@ GIT_INLINE(void) git__free(void *ptr)
 
 extern int git__prefixcmp(const char *str, const char *prefix);
 extern int git__prefixcmp_icase(const char *str, const char *prefix);
+extern int git__prefixncmp(const char *str, size_t str_n, const char *prefix);
 extern int git__prefixncmp_icase(const char *str, size_t str_n, const char *prefix);
 extern int git__suffixcmp(const char *str, const char *suffix);
 
@@ -262,9 +58,7 @@ GIT_INLINE(int) git__signum(int val)
 	return ((val > 0) - (val < 0));
 }
 
-extern int git__strtol32(int32_t *n, const char *buff, const char **end_buf, int base);
 extern int git__strntol32(int32_t *n, const char *buff, size_t buff_len, const char **end_buf, int base);
-extern int git__strtol64(int64_t *n, const char *buff, const char **end_buf, int base);
 extern int git__strntol64(int64_t *n, const char *buff, size_t buff_len, const char **end_buf, int base);
 
 
@@ -317,6 +111,9 @@ GIT_INLINE(const void *) git__memrchr(const void *s, int c, size_t n)
 	return NULL;
 }
 
+extern const void * git__memmem(const void *haystack, size_t haystacklen,
+				const void *needle, size_t needlelen);
+
 typedef int (*git__tsort_cmp)(const void *a, const void *b);
 
 extern void git__tsort(void **dst, size_t size, git__tsort_cmp cmp);
@@ -363,8 +160,6 @@ extern int git__strncasecmp(const char *a, const char *b, size_t sz);
 
 extern int git__strcasesort_cmp(const char *a, const char *b);
 
-#include "thread-utils.h"
-
 typedef struct {
 	git_atomic refcount;
 	void *owner;
@@ -373,22 +168,22 @@ typedef struct {
 typedef void (*git_refcount_freeptr)(void *r);
 
 #define GIT_REFCOUNT_INC(r) { \
-	git_atomic_inc(&((git_refcount *)(r))->refcount);	\
+	git_atomic_inc(&(r)->rc.refcount);	\
 }
 
 #define GIT_REFCOUNT_DEC(_r, do_free) { \
-	git_refcount *r = (git_refcount *)(_r); \
+	git_refcount *r = &(_r)->rc; \
 	int val = git_atomic_dec(&r->refcount); \
 	if (val <= 0 && r->owner == NULL) { do_free(_r); } \
 }
 
 #define GIT_REFCOUNT_OWN(r, o) { \
-	((git_refcount *)(r))->owner = o; \
+	(r)->rc.owner = o; \
 }
 
-#define GIT_REFCOUNT_OWNER(r) (((git_refcount *)(r))->owner)
+#define GIT_REFCOUNT_OWNER(r) ((r)->rc.owner)
 
-#define GIT_REFCOUNT_VAL(r) git_atomic_get(&((git_refcount *)(r))->refcount)
+#define GIT_REFCOUNT_VAL(r) git_atomic_get((r)->rc.refcount)
 
 
 static signed char from_hex[] = {
@@ -525,6 +320,16 @@ extern size_t git__unescape(char *str);
 extern int git__utf8_iterate(const uint8_t *str, int str_len, int32_t *dst);
 
 /*
+ * Iterate through an UTF-8 string and stops after finding any invalid UTF-8
+ * codepoints.
+ *
+ * @param str string to scan
+ * @param str_len size of the string
+ * @return length in bytes of the string that contains valid data
+ */
+extern size_t git__utf8_valid_buf_length(const uint8_t *str, size_t str_len);
+
+/*
  * Safely zero-out memory, making sure that the compiler
  * doesn't optimize away the operation.
  */
@@ -614,4 +419,6 @@ GIT_INLINE(double) git__timer(void)
 
 extern int git__getenv(git_buf *out, const char *name);
 
-#endif /* INCLUDE_util_h__ */
+#include "alloc.h"
+
+#endif

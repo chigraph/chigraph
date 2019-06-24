@@ -1,6 +1,8 @@
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
+
 
 #include <chi/Context.hpp>
 #include <chi/GraphFunction.hpp>
@@ -10,23 +12,10 @@
 #include <chi/Support/Result.hpp>
 #include <chi/Support/json.hpp>
 
-#include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 
-#include <llvm/ExecutionEngine/GenericValue.h>
-#include <llvm/ExecutionEngine/Interpreter.h>
-#include <llvm/ExecutionEngine/JITEventListener.h>
-#include <llvm/ExecutionEngine/MCJIT.h>
-#include <llvm/ExecutionEngine/ObjectCache.h>
-#include <llvm/ExecutionEngine/SectionMemoryManager.h>
-#include <llvm/IR/Module.h>
-
-#include <llvm/CodeGen/LinkAllCodegenComponents.h>
-
-#include <llvm/Support/TargetSelect.h>
-
 namespace po = boost::program_options;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 using namespace chi;
 
@@ -96,7 +85,7 @@ int run(const std::vector<std::string>& opts, const char* argv0) {
 		return 1;
 	}
 
-	std::unique_ptr<llvm::Module> llmod;
+	OwnedLLVMModule llmod;
 	res += c.compileModule(jmod->fullName(), CompileSettings::Default, &llmod);
 
 	if (!res) {
@@ -107,7 +96,7 @@ int run(const std::vector<std::string>& opts, const char* argv0) {
 	// run it!
 
 	int ret;
-	res += interpretLLVMIRAsMain(std::move(llmod), llvm::CodeGenOpt::Default, command_opts, nullptr,
+	res += interpretLLVMIRAsMain(std::move(llmod), LLVMCodeGenLevelDefault, command_opts, nullptr,
 	                             &ret);
 	if (!res) {
 		std::cerr << res << std::endl;

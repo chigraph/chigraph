@@ -10,6 +10,7 @@ endif()
 set(CG_THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/)
 
 option(CG_BUILD_TESTS "Should unit tests be built?" ON)
+option(CG_BUILD_NETWORK_TESTS "Should tests that require a network connection be ran?" ON)
 option(CG_BUILD_EXAMPLES "Should the examples be built?" OFF)
 option(CG_BUILD_DEBUGGER "Should the debugger be built?" ON)
 option(CG_BUILD_FETCHER "Should the fetcher be built? Requires libgit2." ON)
@@ -76,12 +77,11 @@ endif()
 add_definitions("-DBOOST_ALL_NO_LIB")
 
 if (CG_USE_SYSTEM_BOOST)
-	find_package(Boost REQUIRED COMPONENTS filesystem system program_options)
+	find_package(Boost REQUIRED COMPONENTS program_options)
 else()
 	add_subdirectory(third_party/boost)
-	set(Boost_FILESYSTEM_LIBRARY boost_filesystem)
-	set(Boost_SYSTEM_LIBRARY boost_system)
 	set(Boost_PROGRAM_OPTIONS_LIBRARY boost_program_options)
+	set(Boost_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost/include)
 endif()
 
 # compile libgit2 if required

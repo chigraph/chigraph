@@ -39,19 +39,20 @@ static int apply_patchfile(
 
 	cl_git_pass(git_patch_from_buffer(&patch, patchfile, strlen(patchfile), NULL));
 
-	error = git_apply__patch(&result, &filename, &mode, old, old_len, patch);
+	error = git_apply__patch(&result, &filename, &mode, old, old_len, patch, NULL);
 
 	if (error == 0) {
 		cl_assert_equal_i(new_len, result.size);
-		cl_assert(memcmp(new, result.ptr, new_len) == 0);
+		if (new_len)
+			cl_assert(memcmp(new, result.ptr, new_len) == 0);
 
 		cl_assert_equal_s(filename_expected, filename);
 		cl_assert_equal_i(mode_expected, mode);
 	}
 
 	git__free(filename);
-	git_buf_free(&result);
-	git_buf_free(&patchbuf);
+	git_buf_dispose(&result);
+	git_buf_dispose(&patchbuf);
 	git_patch_free(patch);
 
 	return error;
@@ -81,7 +82,7 @@ static int validate_and_apply_patchfile(
 
 	error = apply_patchfile(old, old_len, new, new_len, patchfile, filename_expected, mode_expected);
 
-	git_buf_free(&validated);
+	git_buf_dispose(&validated);
 	git_patch_free(patch_fromdiff);
 
 	return error;

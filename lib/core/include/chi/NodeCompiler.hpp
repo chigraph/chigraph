@@ -64,7 +64,7 @@ struct NodeCompiler {
 	/// Either it's pure (in which case `trailingBlock` is ignored) or it must be defined
 	/// \param inputExecID The input exec ID to compile
 	/// \pre `inputExecID < inputExecs()`
-	Result compile_stage2(std::vector<llvm::BasicBlock*> trailingBlocks, size_t inputExecID);
+	Result compile_stage2(std::vector<LLVMBasicBlockRef> trailingBlocks, size_t inputExecID);
 
 	/// Get if compile_stage2 has been called for a given inputExecID
 	/// \param inputExecID the ID to check
@@ -79,17 +79,17 @@ struct NodeCompiler {
 	/// \param inputExecID the ID to get the block for.
 	/// \pre `inputExecID < inputExecs()`
 	/// \return The basic block.
-	llvm::BasicBlock& firstBlock(size_t inputExecID) const;
+	LLVMBasicBlockRef firstBlock(size_t inputExecID) const;
 
 	/// Get the code block for a given inputExecID
 	/// Requires that `compile_stage1` has been called for this ID
 	/// \param inputExecID the ID to get the code block for
 	/// \pre `inputExecID < inputExecs()`
 	/// \return The BasicBlock
-	llvm::BasicBlock& codeBlock(size_t inputExecID) const;
+	LLVMBasicBlockRef codeBlock(size_t inputExecID) const;
 
 	/// \copydoc chi::FunctionCompiler::llvmModule
-	llvm::Module& llvmModule() const;
+	LLVMModuleRef llvmModule() const;
 
 	/// Just node().context()
 	Context& context() const;
@@ -102,28 +102,28 @@ struct NodeCompiler {
 
 	/// Get return values
 	/// \return a vector of the return values
-	std::vector<llvm::Value*> returnValues() const { return mReturnValues; }
+	std::vector<LLVMValueRef> returnValues() const { return mReturnValues; }
 
 	/// Get the IndirectBrInst* for the pure
 	/// \pre `pure()`
 	/// \return The indirectbr instance
-	llvm::IndirectBrInst& jumpBackInst() const {
+	LLVMValueRef jumpBackInst() const {
 		assert(pure() && "Cannot get jump back inst for a nonpure node");
-		return *mJumpBackInst;
+		return mJumpBackInst;
 	}
 
 private:
 	FunctionCompiler* mCompiler;
 	NodeInstance*     mNode;
 
-	std::vector<std::vector<llvm::BasicBlock*>> mPureBlocks;
-	std::vector<llvm::BasicBlock*>              mCodeBlocks;
+	std::vector<std::vector<LLVMBasicBlockRef>> mPureBlocks;
+	std::vector<LLVMBasicBlockRef>              mCodeBlocks;
 
-	std::vector<llvm::Value*> mReturnValues;
+	std::vector<LLVMValueRef> mReturnValues;
 
 	boost::dynamic_bitset<> mCompiledInputs;
 
-	llvm::IndirectBrInst* mJumpBackInst = nullptr;
+	LLVMValueRef mJumpBackInst = nullptr;
 };
 
 /// Get the pures a NodeInstance relies on

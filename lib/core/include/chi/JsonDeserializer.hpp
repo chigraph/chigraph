@@ -9,8 +9,7 @@
 #include "chi/Fwd.hpp"
 #include "chi/Support/json.hpp"
 
-#include <boost/filesystem.hpp>
-#include <boost/utility/string_view.hpp>
+#include <filesystem>
 
 namespace chi {
 
@@ -24,7 +23,7 @@ namespace chi {
 /// \param[out] toFill The GraphModule* to set, optional
 /// \return The Result
 Result jsonToGraphModule(Context& createInside, const nlohmann::json& input,
-                         const boost::filesystem::path& fullName, GraphModule** toFill = nullptr);
+                         const std::filesystem::path& fullName, GraphModule** toFill = nullptr);
 
 /// Create a forward declaration of a function in a module with an empty graph
 /// \param[in] createInside the GraphModule to create the forward declaration in
@@ -47,7 +46,7 @@ Result jsonToGraphFunction(GraphFunction& createInside, const nlohmann::json& in
 /// \param[in] input The JSON to load
 /// \param[out] toFill The object to fill, optional
 /// \return The Result
-Result jsonToGraphStruct(GraphModule& mod, boost::string_view name, const nlohmann::json& input,
+Result jsonToGraphStruct(GraphModule& mod, std::string_view name, const nlohmann::json& input,
                          GraphStruct** toFill = nullptr);
 
 /// Parse something that looks like: {"hello": "there"} into {"hello", "there"}

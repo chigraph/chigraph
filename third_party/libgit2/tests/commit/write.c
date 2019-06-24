@@ -15,7 +15,7 @@ static char *head_old;
 static git_reference *head, *branch;
 static git_commit *commit;
 
-// Fixture setup
+/* Fixture setup */
 static git_repository *g_repo;
 void test_commit_write__initialize(void)
 {
@@ -42,7 +42,7 @@ void test_commit_write__cleanup(void)
 }
 
 
-// write a new commit object from memory to disk
+/* write a new commit object from memory to disk */
 void test_commit_write__from_memory(void)
 {
    git_oid tree_id, parent_id, commit_id;
@@ -130,14 +130,14 @@ This is a root commit\n\
    This is a root commit and should be the only one in this branch\n\
 ");
 
-	git_buf_free(&commit);
+	git_buf_dispose(&commit);
 	git_tree_free(tree);
 	git_commit_free(parent);
 	git_signature_free(author);
 	git_signature_free(committer);
 }
 
-// create a root commit
+/* create a root commit */
 void test_commit_write__root(void)
 {
 	git_oid tree_id, commit_id;
@@ -157,7 +157,7 @@ void test_commit_write__root(void)
 
 	/* First we need to update HEAD so it points to our non-existant branch */
 	cl_git_pass(git_reference_lookup(&head, g_repo, "HEAD"));
-	cl_assert(git_reference_type(head) == GIT_REF_SYMBOLIC);
+	cl_assert(git_reference_type(head) == GIT_REFERENCE_SYMBOLIC);
 	head_old = git__strdup(git_reference_symbolic_target(head));
 	cl_assert(head_old != NULL);
 	git_reference_free(head);

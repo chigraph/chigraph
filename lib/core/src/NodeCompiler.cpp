@@ -5,73 +5,45 @@
 #include "chi/Context.hpp"
 #include "chi/DataType.hpp"
 #include "chi/FunctionCompiler.hpp"
-#include "chi/LLVMVersion.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
 
-#include <llvm/IR/DIBuilder.h>
-#include <llvm/IR/DebugInfo.h>
-#include <llvm/IR/Function.h>
-#include <llvm/IR/IRBuilder.h>
+#include <llvm-c/Core.h>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace chi {
 
 NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& inst)
     : mCompiler{&functionCompiler}, mNode{&inst} {
 	// alloca the outputs
-	llvm::IRBuilder<> allocBuilder(&funcCompiler().allocBlock());
+	auto allocBuilder = OwnedLLVMBuilder(LLVMCreateBuilderInContext(context().llvmContext()));
+	LLVMPositionBuilder(*allocBuilder, funcCompiler().allocBlock(), nullptr);
+
 	for (auto idx = 0ull; idx < node().type().dataOutputs().size(); ++idx) {
 		const auto& namedType = node().type().dataOutputs()[idx];
 
 		// alloca the outputs
-		auto alloca = allocBuilder.CreateAlloca(namedType.type.llvmType(), nullptr,
-		                                        node().stringId() + "__" + std::to_string(idx));
+		auto alloca = LLVMBuildAlloca(*allocBuilder, namedType.type.llvmType(),
+		                              (node().stringId() + "__" + std::to_string(idx)).c_str());
 
 		// create debug info for the alloca
 		{
 			// get type
-			llvm::DIType* dType = namedType.type.debugType();
+			LLVMMetadataRef dType = namedType.type.debugType(funcCompiler());
 
 			// TODO(#63): better names
-			auto debugVar =
-			    funcCompiler().diBuilder().
-#if LLVM_VERSION_LESS_EQUAL(3, 7)
-			    createLocalVariable(
-			        llvm::dwarf::DW_TAG_auto_variable,
-#else
-			    createAutoVariable(
-#endif
-			        funcCompiler().diFunction(), node().stringId() + "__" + std::to_string(idx),
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			        funcCompiler().diBuilder().createFile(
-			            fs::path(funcCompiler().diFunction().getFilename()).filename().string(),
-			            fs::path(funcCompiler().diFunction().getFilename()).parent_path().string()),
-#else
-			        funcCompiler().diFunction()->getFile(),
-#endif
-			        1,
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			        *
-#endif
-			        dType);
+			auto name     = node().stringId() + "__" + std::to_string(idx);
+			auto debugVar = LLVMDIBuilderCreateAutoVariable(
+			    funcCompiler().diBuilder(), funcCompiler().diFunction(), name.c_str(),
+			    name.length(), funcCompiler().debugFile(), 1, dType, false, LLVMDIFlagZero, 0);
 
-			funcCompiler()
-			    .diBuilder()
-			    .insertDeclare(alloca, debugVar,
-#if LLVM_VERSION_AT_LEAST(3, 6)
-			                   funcCompiler().diBuilder().createExpression(),
-#if LLVM_VERSION_AT_LEAST(3, 7)
-			                   llvm::DebugLoc::get(1, 1, funcCompiler().diFunction()),
-#endif
-#endif
-			                   &funcCompiler().allocBlock())
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-			    ->setDebugLoc(llvm::DebugLoc::get(1, 1, funcCompiler().diFunction()))
-#endif
-			    ;
+			LLVMDIBuilderInsertDeclareAtEnd(
+			    funcCompiler().diBuilder(), alloca, debugVar, nullptr,
+			    LLVMDIBuilderCreateDebugLocation(context().llvmContext(), 1, 1,
+			                                     funcCompiler().diFunction(), nullptr),
+			    funcCompiler().allocBlock());
 		}
 
 		mReturnValues.push_back(alloca);
@@ -98,9 +70,9 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 	// if we've already done stage 1 before, then just exit
 	if (codeBlock != nullptr) { return; }
 
-	codeBlock = llvm::BasicBlock::Create(
-	    context().llvmContext(), "node_" + node().stringId() + "__" + std::to_string(inputExecID),
-	    &funcCompiler().llFunction());
+	codeBlock = LLVMAppendBasicBlockInContext(
+	    context().llvmContext(), funcCompiler().llFunction(),
+	    ("node_" + node().stringId() + "__" + std::to_string(inputExecID)).c_str());
 
 	// only do this for non-pure nodes because pure nodes don't call their dependencies, they are
 	// called by the non-pure
@@ -114,41 +86,42 @@ void NodeCompiler::compile_stage1(size_t inputExecID) {
 
 		// create the first pure block--the loop only creates the next one
 		if (!depPures.empty()) {
-			pureBlocks[0] = llvm::BasicBlock::Create(context().llvmContext(),
-			                                         "node_" + node().stringId() + "__" +
-			                                             std::to_string(inputExecID) + "__" +
-			                                             depPures[0]->stringId(),
-			                                         &funcCompiler().llFunction());
+			auto name = "node_" + node().stringId() + "__" + std::to_string(inputExecID) + "__" +
+			            depPures[0]->stringId();
+
+			pureBlocks[0] = LLVMAppendBasicBlockInContext(
+			    context().llvmContext(), funcCompiler().llFunction(), name.c_str());
 		}
 
 		for (auto id = 0ull; id < depPures.size(); ++id) {
 			// create a BasicBlock for the next one to br to--if we're on the last one, use the code
 			// block
-			llvm::BasicBlock* nextBlock = [&] {
+			LLVMBasicBlockRef nextBlock = [&] {
 				if (id == depPures.size() - 1) { return codeBlock; }
-				pureBlocks[id + 1] = llvm::BasicBlock::Create(
-				    context().llvmContext(),
-				    "node_" + node().stringId() + "__" + std::to_string(inputExecID) + "__" +
-				        depPures[id + 1]->stringId(),
-				    &funcCompiler().llFunction());
+				auto name = "node_" + node().stringId() + "__" + std::to_string(inputExecID) +
+				            "__" + depPures[id + 1]->stringId();
+				pureBlocks[id + 1] = LLVMAppendBasicBlockInContext(
+				    context().llvmContext(), funcCompiler().llFunction(), name.c_str());
 				return pureBlocks[id + 1];
 			}();
 
 			// add nextBlock to the list of possible locations for the indirectbr
-			funcCompiler().nodeCompiler(*depPures[id])->jumpBackInst().addDestination(nextBlock);
+			LLVMAddDestination(funcCompiler().nodeCompiler(*depPures[id])->jumpBackInst(),
+			                   nextBlock);
 
 			// set post-pure break to go to the next one
-			llvm::IRBuilder<> irBuilder{pureBlocks[id]};
-			irBuilder.CreateStore(llvm::BlockAddress::get(nextBlock),
-			                      &funcCompiler().postPureBreak());
+			auto irBuilder = OwnedLLVMBuilder(LLVMCreateBuilderInContext(context().llvmContext()));
+			LLVMPositionBuilder(*irBuilder, pureBlocks[id], nullptr);
+			LLVMBuildStore(*irBuilder, LLVMBlockAddress(funcCompiler().llFunction(), nextBlock),
+			               funcCompiler().postPureBreak());
 
 			// br to the pure, terminating that BasicBlock
-			irBuilder.CreateBr(&funcCompiler().nodeCompiler(*depPures[id])->firstBlock(0));
+			LLVMBuildBr(*irBuilder, funcCompiler().nodeCompiler(*depPures[id])->firstBlock(0));
 		}
 	}
 }
 
-Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlocks,
+Result NodeCompiler::compile_stage2(std::vector<LLVMBasicBlockRef> trailingBlocks,
                                     size_t                         inputExecID) {
 	assert((pure() || trailingBlocks.size() == node().outputExecConnections.size()) &&
 	       "Trailing blocks is the wrong size");
@@ -161,10 +134,11 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 
 	// if we haven't done stage 1, then do it
 	if (codeBlock == nullptr) { compile_stage1(inputExecID); }
-	llvm::IRBuilder<> codeBuilder{codeBlock};
+	auto codeBuilder = OwnedLLVMBuilder(LLVMCreateBuilderInContext(context().llvmContext()));
+	LLVMPositionBuilder(*codeBuilder, codeBlock, nullptr);
 
 	// inputs and outputs (inputs followed by outputs)
-	std::vector<llvm::Value*> io;
+	std::vector<LLVMValueRef> io;
 
 	// add inputs
 	for (auto idx = 0ull; idx < node().inputDataConnections.size(); ++idx) {
@@ -175,11 +149,11 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 		assert(remoteID < funcCompiler().nodeCompiler(remoteNode)->returnValues().size() &&
 		       "Internal error: connection to a value doesn't exist");
 
-		auto loaded = codeBuilder.CreateLoad(
-		    funcCompiler().nodeCompiler(remoteNode)->returnValues()[remoteID]);
+		auto loaded = LLVMBuildLoad(
+		    *codeBuilder, funcCompiler().nodeCompiler(remoteNode)->returnValues()[remoteID], "");
 		io.push_back(loaded);
 
-		assert(io[io.size() - 1]->getType() == node().type().dataInputs()[idx].type.llvmType() &&
+		assert(LLVMTypeOf(io[io.size() - 1]) == node().type().dataInputs()[idx].type.llvmType() &&
 		       "Internal error: types do not match");
 	}
 
@@ -188,42 +162,46 @@ Result NodeCompiler::compile_stage2(std::vector<llvm::BasicBlock*> trailingBlock
 
 	// on pure, jump to the set loc
 	if (pure()) {
-		auto brBlock = llvm::BasicBlock::Create(context().llvmContext(),
-		                                        "node_" + node().stringId() + "_jumpback",
-		                                        &funcCompiler().llFunction());
-		llvm::IRBuilder<> builder(brBlock);
+		auto brBlock =
+		    LLVMAppendBasicBlockInContext(context().llvmContext(), funcCompiler().llFunction(),
+		                                  ("node_" + node().stringId() + "_jumpback").c_str());
+		auto builder = OwnedLLVMBuilder(LLVMCreateBuilderInContext(context().llvmContext()));
+		LLVMPositionBuilder(*builder, brBlock, nullptr);
 
-		mJumpBackInst =
-		    builder.CreateIndirectBr(builder.CreateLoad(&funcCompiler().postPureBreak()));
+		mJumpBackInst = LLVMBuildIndirectBr(
+		    *builder, LLVMBuildLoad(*builder, funcCompiler().postPureBreak(), ""),
+		    10);  // 10 is just the default
 
 		trailingBlocks.resize(1);
 		trailingBlocks[0] = brBlock;
 	}
 
 	// codegen
-	Result res = node().type().codegen(
-	    *this, *codeBlock, inputExecID,
-	    llvm::DebugLoc::get(funcCompiler().nodeLineNumber(node()), 1, funcCompiler().diFunction()),
-	    io, trailingBlocks);
+	Result res =
+	    node().type().codegen(*this, codeBlock, inputExecID,
+	                          LLVMDIBuilderCreateDebugLocation(
+	                              context().llvmContext(), funcCompiler().nodeLineNumber(node()), 1,
+	                              funcCompiler().diFunction(), nullptr),
+	                          io, trailingBlocks);
 
 	mCompiledInputs[inputExecID] = true;
 
 	return res;
 }
 
-llvm::BasicBlock& NodeCompiler::firstBlock(size_t inputExecID) const {
+LLVMBasicBlockRef NodeCompiler::firstBlock(size_t inputExecID) const {
 	assert(inputExecID < inputExecs());
 
 	if (mPureBlocks[inputExecID].empty()) { return codeBlock(inputExecID); }
-	return *mPureBlocks[inputExecID][0];
+	return mPureBlocks[inputExecID][0];
 }
 
-llvm::BasicBlock& NodeCompiler::codeBlock(size_t inputExecID) const {
+LLVMBasicBlockRef NodeCompiler::codeBlock(size_t inputExecID) const {
 	assert(inputExecID < inputExecs());
-	return *mCodeBlocks[inputExecID];
+	return mCodeBlocks[inputExecID];
 }
 
-llvm::Module& NodeCompiler::llvmModule() const { return funcCompiler().llvmModule(); }
+LLVMModuleRef NodeCompiler::llvmModule() const { return funcCompiler().llvmModule(); }
 
 bool NodeCompiler::compiled(size_t inputExecID) const {
 	assert(inputExecID < inputExecs());

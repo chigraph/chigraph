@@ -7,6 +7,8 @@
 #ifndef INCLUDE_commit_h__
 #define INCLUDE_commit_h__
 
+#include "common.h"
+
 #include "git2/commit.h"
 #include "tree.h"
 #include "repository.h"
@@ -33,5 +35,6 @@ struct git_commit {
 
 void git_commit__free(void *commit);
 int git_commit__parse(void *commit, git_odb_object *obj);
+int git_commit__parse_raw(void *commit, const char *data, size_t size);
 
 #endif

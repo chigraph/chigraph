@@ -15,22 +15,22 @@ struct DefaultModuleCache : public ModuleCache {
 	/// Get the cache name for a module. Basically `context().workspacePath() / moduleName + ".bc"`
 	/// \param moduleName The name of the module to get a cache path for
 	/// \return The path
-	boost::filesystem::path cachePathForModule(const boost::filesystem::path& moduleName) const;
+	std::filesystem::path cachePathForModule(const std::filesystem::path& moduleName) const;
 
 	/// \copydoc ModuleCache::cacheModule
-	Result cacheModule(const boost::filesystem::path& moduleName, llvm::Module& compiledModule,
-	                   std::time_t timeAtFileRead) override;
+	Result cacheModule(const std::filesystem::path& moduleName, LLVMModuleRef compiledModule,
+	                   time_point timeAtFileRead) override;
 
 	/// \copydoc ModuleCache::invalidateModule
-	void invalidateCache(const boost::filesystem::path& moduleName) override;
+	void invalidateCache(const std::filesystem::path& moduleName) override;
 
 	/// \copydoc ModuleCache::cacheUpdateTime
-	std::time_t cacheUpdateTime(const boost::filesystem::path& moduleName) const override;
+	time_point cacheUpdateTime(const std::filesystem::path& moduleName) const override;
 
 	/// \copydoc ModuleCache::retrieveFromCache
-	std::unique_ptr<llvm::Module> retrieveFromCache(const boost::filesystem::path& moduleName,
-	                                                std::time_t atLeastThisNew) override;
+	OwnedLLVMModule retrieveFromCache(const std::filesystem::path& moduleName,
+	                                  time_point                   atLeastThisNew) override;
 };
-}
+}  // namespace chi
 
 #endif  // CHI_DEFAULT_MODULE_CACHE_HPP

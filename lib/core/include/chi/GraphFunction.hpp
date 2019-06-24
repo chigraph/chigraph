@@ -12,10 +12,9 @@
 
 #include <unordered_map>
 
-#include <boost/filesystem.hpp>
-#include <boost/utility/string_view.hpp>
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid.hpp>
+#include <filesystem>
 
 namespace chi {
 /// this is an AST-like representation of a function in a graph
@@ -82,8 +81,8 @@ struct GraphFunction {
 	/// \param module The module the type is in
 	/// \param name The name of the type
 	/// \return A vector of NodeInstance
-	std::vector<NodeInstance*> nodesWithType(const boost::filesystem::path& module,
-	                                         boost::string_view             name) const noexcept;
+	std::vector<NodeInstance*> nodesWithType(const std::filesystem::path& module,
+	                                         std::string_view             name) const noexcept;
 
 	/// Add a node to the graph using module, type, and json
 	/// \param moduleName The name of the module that typeName is in
@@ -94,7 +93,7 @@ struct GraphFunction {
 	/// \param id The node ID
 	/// \retval toFill The NodeInstance* to fill to, optional
 	/// \return The Result
-	Result insertNode(const boost::filesystem::path& moduleName, boost::string_view typeName,
+	Result insertNode(const std::filesystem::path& moduleName, std::string_view typeName,
 	                  const nlohmann::json& typeJSON, float x, float y,
 	                  boost::uuids::uuid id     = boost::uuids::random_generator()(),
 	                  NodeInstance**     toFill = nullptr);
@@ -134,7 +133,7 @@ struct GraphFunction {
 
 	/// Get the LLVM function type for the function
 	/// \return The function type
-	llvm::FunctionType* functionType() const;
+	LLVMTypeRef functionType() const;
 
 	// TODO: check uses and replace to avoid errors
 	/// \name Data input modifiers
@@ -267,7 +266,7 @@ struct GraphFunction {
 	/// Get a local varaible by name
 	/// \param name The name of the variable
 	/// \return The local or {} if not found
-	NamedDataType localVariableFromName(boost::string_view name) const;
+	NamedDataType localVariableFromName(std::string_view name) const;
 
 	/// Create a new local varaible in the module
 	/// \param name The name of the local variable
@@ -280,7 +279,7 @@ struct GraphFunction {
 	/// Remove a local variable from the function by name
 	/// \param name The name of the local variable to remove
 	/// \return True if a local was actually removed, false if no local by that name existed
-	bool removeLocalVariable(boost::string_view name);
+	bool removeLocalVariable(std::string_view name);
 
 	/// Rename a local variable
 	/// \param oldName The name of the existing local to change
@@ -290,7 +289,7 @@ struct GraphFunction {
 	/// Set a new type to a local variable
 	/// \param name The name of the local to change
 	/// \param newType The new type
-	void retypeLocalVariable(boost::string_view name, DataType newType);
+	void retypeLocalVariable(std::string_view name, DataType newType);
 
 	/// \}
 
@@ -321,7 +320,7 @@ struct GraphFunction {
 	/// \param updateReferences should the references be updated?
 	/// If true, all modules in the context will be scanned and updated
 	/// \return All the updated nodes
-	std::vector<NodeInstance*> setName(boost::string_view newName, bool updateReferences = true);
+	std::vector<NodeInstance*> setName(std::string_view newName, bool updateReferences = true);
 
 	/// Get the GraphModule that contains this GraphFunction
 	/// \return The GraphModule.

@@ -1,89 +1,54 @@
 /// \file BitcodeParser.cpp
 
 #include "chi/BitcodeParser.hpp"
-#include "chi/LLVMVersion.hpp"
 #include "chi/Support/Result.hpp"
 
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-#include <llvm/Bitcode/ReaderWriter.h>
-#else
-#include <llvm/Bitcode/BitcodeReader.h>
-#endif
-
-#include <llvm/IR/Module.h>
-#include <llvm/Support/MemoryBuffer.h>
+#include <llvm-c/BitReader.h>
+#include <llvm-c/Core.h>
+#include <llvm-c/Error.h>
 
 namespace chi {
 
 namespace {
 
-template <typename MemBuffType>
-Result parseBitcodeMemBuff(MemBuffType buff, llvm::LLVMContext& ctx,
-                           std::unique_ptr<llvm::Module>* toFill) {
+Result parseBitcodeMemBuff(LLVMMemoryBufferRef buff, LLVMContextRef ctx, OwnedLLVMModule* toFill) {
 	assert(toFill != nullptr && "Cannot pass a null toFill pointer to parseBitcodeMemBuff");
 
 	Result res;
 
-	auto errorOrMod = llvm::parseBitcodeFile(buff, ctx);
-	if (!errorOrMod) {
-		std::vector<std::string> errorMsgs;
-
-#if LLVM_VERSION_AT_LEAST(4, 0)
-		auto E = errorOrMod.takeError();
-
-		llvm::handleAllErrors(std::move(E), [&errorMsgs](llvm::ErrorInfoBase& err) {
-			errorMsgs.push_back(err.message());
-		});
-#endif
-
-		res.addEntry("EUKN", "Failed to parse generated bitcode.", {{"Error Messages", errorMsgs}});
+	LLVMModuleRef module;
+	OwnedMessage  message;
+	if (LLVMParseBitcodeInContext(ctx, buff, &module, &*message)) {
+		res.addEntry("EUKN", "Failed to parse generated bitcode.", {{"Error Message", *message}});
 
 		return res;
 	}
-	*toFill =
-#if LLVM_VERSION_LESS_EQUAL(3, 6)
-	    std::unique_ptr<llvm::Module>
-#else
-	    std::move
-#endif
-	    (errorOrMod.get());
+	*toFill = OwnedLLVMModule(module);
 
 	return res;
-}
+}  // namespace
 
 }  // namespace
 
-Result parseBitcodeFile(const boost::filesystem::path& file, llvm::LLVMContext& ctx,
-                        std::unique_ptr<llvm::Module>* toFill) {
+Result parseBitcodeFile(const std::filesystem::path& file, LLVMContextRef ctx,
+                        OwnedLLVMModule* toFill) {
 	Result res;
 
 	// if all of this is true, then we can read the cache
-	auto bcFileBufferOrError = llvm::MemoryBuffer::getFile(file.string());
-	if (!bcFileBufferOrError) {
-		res.addEntry("EUKN", "Failed to load LLVM module from disk", {{"File", file.string()}});
+	OwnedMessage          message;
+	OwnedLLVMMemoryBuffer buffer;
+	if (LLVMCreateMemoryBufferWithContentsOfFile(file.c_str(), &*buffer, &*message)) {
+		res.addEntry("EUKN", "Failed to load LLVM module from disk",
+		             {{"File", file.string()}, {"Error Message", *message}});
+
 		return res;
 	}
-
-	return parseBitcodeMemBuff(bcFileBufferOrError
-	                               .get()
-#if LLVM_VERSION_AT_LEAST(3, 6)
-	                               ->getMemBufferRef()
-#else
-	                               .get()
-#endif
-	                               ,
+	return parseBitcodeMemBuff(*buffer, ctx, toFill);
+}  // namespace chi
+Result parseBitcodeString(const std::string& bitcode, LLVMContextRef ctx, OwnedLLVMModule* toFill) {
+	return parseBitcodeMemBuff(*OwnedLLVMMemoryBuffer(LLVMCreateMemoryBufferWithMemoryRange(
+	                               bitcode.data(), bitcode.length(), "generated.bc", false)),
 	                           ctx, toFill);
-}
-Result parseBitcodeString(const std::string& bitcode, llvm::LLVMContext& ctx,
-                          std::unique_ptr<llvm::Module>* toFill) {
-	return parseBitcodeMemBuff(
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-	    llvm::MemoryBuffer::getMemBufferCopy
-#else
-	    llvm::MemoryBufferRef
-#endif
-	    (bitcode, "generated.bc"),
-	    ctx, toFill);
 }
 
 }  // namespace chi

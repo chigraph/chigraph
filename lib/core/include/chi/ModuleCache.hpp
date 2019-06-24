@@ -6,9 +6,10 @@
 #define CHI_MODULE_CACHE_HPP
 
 #include <chi/Fwd.hpp>
+#include <chi/Owned.hpp>
 
-#include <boost/filesystem/path.hpp>
 #include <ctime>
+#include <filesystem>
 
 namespace chi {
 
@@ -26,6 +27,8 @@ struct ModuleCache {
 	ModuleCache& operator=(const ModuleCache&) = delete;
 	ModuleCache& operator=(ModuleCache&&) = delete;
 
+	using time_point = std::filesystem::file_time_type;
+
 	/// Cache a module
 	/// \param moduleName The name of the module to cache
 	/// \pre `!moduleName.empty()`
@@ -33,26 +36,26 @@ struct ModuleCache {
 	/// \param timeAtFileRead The time to store as the cache time. Should be the time the module was
 	/// read from disk
 	/// \return The Result
-	virtual Result cacheModule(const boost::filesystem::path& moduleName,
-	                           llvm::Module& compiledModule, std::time_t timeAtFileRead) = 0;
+	virtual Result cacheModule(const std::filesystem::path& moduleName,
+	                           LLVMModuleRef compiledModule, time_point timeAtFileRead) = 0;
 
 	/// Inavlidate the cache, ie. delete the cache file
 	/// \param moduleName The name of the module to invalidate
 	/// \pre `!moduleName.empty()`
-	virtual void invalidateCache(const boost::filesystem::path& moduleName) = 0;
+	virtual void invalidateCache(const std::filesystem::path& moduleName) = 0;
 
 	/// Get the time that a cache was updated
 	/// \param moduleName The module to get the last update time for
 	/// \return The time it was updated, or 0 if there is no cache
-	virtual std::time_t cacheUpdateTime(const boost::filesystem::path& moduleName) const = 0;
+	virtual time_point cacheUpdateTime(const std::filesystem::path& moduleName) const = 0;
 
 	/// Retrieve a module from the cache
 	/// \param moduleName The name of the module to retrieve
 	/// \pre `!moduleName.empty()`
 	/// \param atLeastThisNew Make sure the cache is at least as new as this
 	/// \return A llvm::Module, or nullptr if no suitable cache was found
-	virtual std::unique_ptr<llvm::Module> retrieveFromCache(
-	    const boost::filesystem::path& moduleName, std::time_t atLeastThisNew) = 0;
+	virtual OwnedLLVMModule retrieveFromCache(const std::filesystem::path& moduleName,
+	                                          time_point                   atLeastThisNew) = 0;
 
 	/// Get the context this cache is bound to
 	/// \return the `Context`

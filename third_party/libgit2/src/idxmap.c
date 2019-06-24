@@ -7,17 +7,27 @@
 
 #include "idxmap.h"
 
+#define kmalloc git__malloc
+#define kcalloc git__calloc
+#define krealloc git__realloc
+#define kreallocarray git__reallocarray
+#define kfree git__free
+#include "khash.h"
+
+__KHASH_TYPE(idx, const git_index_entry *, git_index_entry *)
+__KHASH_TYPE(idxicase, const git_index_entry *, git_index_entry *)
+
 /* This is __ac_X31_hash_string but with tolower and it takes the entry's stage into account */
 static kh_inline khint_t idxentry_hash(const git_index_entry *e)
 {
 	const char *s = e->path;
 	khint_t h = (khint_t)git__tolower(*s);
 	if (h) for (++s ; *s; ++s) h = (h << 5) - h + (khint_t)git__tolower(*s);
-	return h + GIT_IDXENTRY_STAGE(e);
+	return h + GIT_INDEX_ENTRY_STAGE(e);
 }
 
-#define idxentry_equal(a, b) (GIT_IDXENTRY_STAGE(a) == GIT_IDXENTRY_STAGE(b) && strcmp(a->path, b->path) == 0)
-#define idxentry_icase_equal(a, b) (GIT_IDXENTRY_STAGE(a) == GIT_IDXENTRY_STAGE(b) && strcasecmp(a->path, b->path) == 0)
+#define idxentry_equal(a, b) (GIT_INDEX_ENTRY_STAGE(a) == GIT_INDEX_ENTRY_STAGE(b) && strcmp(a->path, b->path) == 0)
+#define idxentry_icase_equal(a, b) (GIT_INDEX_ENTRY_STAGE(a) == GIT_INDEX_ENTRY_STAGE(b) && strcasecmp(a->path, b->path) == 0)
 
 __KHASH_IMPL(idx, static kh_inline, const git_index_entry *, git_index_entry *, 1, idxentry_hash, idxentry_equal)
 __KHASH_IMPL(idxicase, static kh_inline, const git_index_entry *, git_index_entry *, 1, idxentry_hash, idxentry_icase_equal)
@@ -25,7 +35,7 @@ __KHASH_IMPL(idxicase, static kh_inline, const git_index_entry *, git_index_entr
 int git_idxmap_alloc(git_idxmap **map)
 {
 	if ((*map = kh_init(idx)) == NULL) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -35,7 +45,7 @@ int git_idxmap_alloc(git_idxmap **map)
 int git_idxmap_icase_alloc(git_idxmap_icase **map)
 {
 	if ((*map = kh_init(idxicase)) == NULL) {
-		giterr_set_oom();
+		git_error_set_oom();
 		return -1;
 	}
 
@@ -104,9 +114,19 @@ void git_idxmap_free(git_idxmap *map)
 	kh_destroy(idx, map);
 }
 
+void git_idxmap_icase_free(git_idxmap_icase *map)
+{
+	kh_destroy(idxicase, map);
+}
+
 void git_idxmap_clear(git_idxmap *map)
 {
 	kh_clear(idx, map);
+}
+
+void git_idxmap_icase_clear(git_idxmap_icase *map)
+{
+	kh_clear(idxicase, map);
 }
 
 void git_idxmap_delete_at(git_idxmap *map, size_t idx)

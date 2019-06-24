@@ -5,13 +5,13 @@
 #ifndef CHI_SUPPORT_EXECUTABLE_PATH_HPP
 #define CHI_SUPPORT_EXECUTABLE_PATH_HPP
 
-#include <boost/filesystem/path.hpp>
+#include <filesystem>
 
 namespace chi {
 
 /// Get the path of the executable
 /// \return The exectuable path
-boost::filesystem::path executablePath();
-}
+std::filesystem::path executablePath();
+}  // namespace chi
 
 #endif  // CHI_SUPPORT_EXECUTABLE_PATH_HPP

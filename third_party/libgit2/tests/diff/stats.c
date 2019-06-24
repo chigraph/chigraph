@@ -54,11 +54,11 @@ void test_diff_stats__stat(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
 	cl_assert(strcmp(git_buf_cstr(&buf), stat) == 0);
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 80));
 	cl_assert(strcmp(git_buf_cstr(&buf), stat) == 0);
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__multiple_hunks(void)
@@ -78,7 +78,7 @@ void test_diff_stats__multiple_hunks(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__numstat(void)
@@ -93,7 +93,7 @@ void test_diff_stats__numstat(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_NUMBER, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__shortstat(void)
@@ -111,7 +111,7 @@ void test_diff_stats__shortstat(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_SHORT, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__shortstat_noinsertions(void)
@@ -129,7 +129,7 @@ void test_diff_stats__shortstat_noinsertions(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_SHORT, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__shortstat_nodeletions(void)
@@ -147,7 +147,7 @@ void test_diff_stats__shortstat_nodeletions(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_SHORT, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__rename(void)
@@ -167,7 +167,7 @@ void test_diff_stats__rename(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__rename_nochanges(void)
@@ -187,7 +187,7 @@ void test_diff_stats__rename_nochanges(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__rename_and_modifiy(void)
@@ -207,7 +207,26 @@ void test_diff_stats__rename_and_modifiy(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
+}
+
+void test_diff_stats__rename_in_subdirectory(void)
+{
+	git_buf buf = GIT_BUF_INIT;
+	const char *stat =
+	" dir/{orig.txt => renamed.txt} | 0\n"
+	" 1 file changed, 0 insertions(+), 0 deletions(-)\n";
+
+	diff_stats_from_commit_oid(
+		&_stats, "0db2a262bc8c5c3cba55254730045a8258da7a37", true);
+
+	cl_assert_equal_sz(1, git_diff_stats_files_changed(_stats));
+	cl_assert_equal_sz(0, git_diff_stats_insertions(_stats));
+	cl_assert_equal_sz(0, git_diff_stats_deletions(_stats));
+
+	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
+	cl_assert_equal_s(stat, git_buf_cstr(&buf));
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__rename_no_find(void)
@@ -229,7 +248,7 @@ void test_diff_stats__rename_no_find(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__rename_nochanges_no_find(void)
@@ -251,10 +270,10 @@ void test_diff_stats__rename_nochanges_no_find(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
-void test_diff_stats__rename_and_modifiy_no_find(void)
+void test_diff_stats__rename_and_modify_no_find(void)
 {
 	git_buf buf = GIT_BUF_INIT;
 	const char *stat =
@@ -272,7 +291,7 @@ void test_diff_stats__rename_and_modifiy_no_find(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__binary(void)
@@ -292,7 +311,7 @@ void test_diff_stats__binary(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__binary_numstat(void)
@@ -306,7 +325,7 @@ void test_diff_stats__binary_numstat(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_NUMBER, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_stats__mode_change(void)
@@ -322,5 +341,5 @@ void test_diff_stats__mode_change(void)
 
 	cl_git_pass(git_diff_stats_to_buf(&buf, _stats, GIT_DIFF_STATS_FULL | GIT_DIFF_STATS_INCLUDE_SUMMARY, 0));
 	cl_assert_equal_s(stat, git_buf_cstr(&buf));
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 }

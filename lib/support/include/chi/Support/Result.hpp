@@ -6,9 +6,8 @@
 
 #pragma once
 
+#include <unordered_map>
 #include "chi/Support/json.hpp"
-
-#include <boost/container/flat_map.hpp>
 
 namespace chi {
 /// The result object, used for identifiying errors with good diagnostics
@@ -155,7 +154,8 @@ struct Result {
 	bool mSuccess = true;
 
 private:
-	boost::container::flat_map<int, nlohmann::json> mContexts;
+	std::vector<std::pair<int, nlohmann::json>> mContexts;
+	size_t mNextCtx = 0;
 };
 
 /// \example ResultExample.cpp

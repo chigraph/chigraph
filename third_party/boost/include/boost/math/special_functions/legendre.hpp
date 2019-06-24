@@ -192,7 +192,7 @@ std::vector<T> legendre_p_zeros_imp(int n, const Policy& pol)
         T cos_nk = cos(theta_nk);
         T upper_bound = cos_nk;
         // First guess follows from:
-        //  F. G. Tricomi, Sugli zeri dei polinomi sferici ed ultrasferici, Ann. Mat. Pura Appl., 31 (1950), pp. 93–97;
+        //  F. G. Tricomi, Sugli zeri dei polinomi sferici ed ultrasferici, Ann. Mat. Pura Appl., 31 (1950), pp. 93-97;
         T inv_n_sq = 1/static_cast<T>(n*n);
         T sin_nk = sin(theta_nk);
         T x_nk_guess = (1 - inv_n_sq/static_cast<T>(8) + inv_n_sq /static_cast<T>(8*n) - (inv_n_sq*inv_n_sq/384)*(39  - 28 / (sin_nk*sin_nk) ) )*cos_nk;

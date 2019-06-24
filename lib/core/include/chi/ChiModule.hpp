@@ -10,12 +10,10 @@
 #include "chi/Support/HashFilesystemPath.hpp"
 #include "chi/Support/json.hpp"
 
-#include <boost/filesystem.hpp>
-#include <boost/utility/string_view.hpp>
-
-#include <set>
-
 #include <ctime>
+#include <filesystem>
+#include <set>
+#include <string_view>
 
 /// The namespace where chigraph lives
 namespace chi {
@@ -25,9 +23,9 @@ struct ChiModule {
 	/// Default constructor. This is usually run by Context::loadModule
 	/// \param contextArg The context to create the module insides
 	/// \param moduleFullName The full name of the module
-	ChiModule(Context& contextArg, boost::filesystem::path moduleFullName);
+	ChiModule(Context& contextArg, std::filesystem::path moduleFullName);
 
-	/// Destructor
+	/// r
 	virtual ~ChiModule() = default;
 
 	/// Create a node type that is in the module from the name and json
@@ -37,13 +35,13 @@ struct ChiModule {
 	/// \pre toFill isn't null (the value the unique_ptr points to be can be null, but not the
 	/// pointer to the unique_ptr)
 	/// \return The result
-	virtual Result nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
+	virtual Result nodeTypeFromName(std::string_view name, const nlohmann::json& jsonData,
 	                                std::unique_ptr<NodeType>* toFill) = 0;
 
 	/// Get a DataType from the name
 	/// \param name The name of the type
 	/// \return The data type, or an invalid DataType if failed
-	virtual DataType typeFromName(boost::string_view name) = 0;
+	virtual DataType typeFromName(std::string_view name) = 0;
 
 	/// Get the possible node type names
 	/// \return A std::vector of the possible names
@@ -53,6 +51,9 @@ struct ChiModule {
 	/// \return A `std::vector` of all the names of types this module has
 	virtual std::vector<std::string> typeNames() const = 0;
 
+	/// Get the debug type for a datatype
+	virtual LLVMMetadataRef debugType(FunctionCompiler& compiler, const DataType& dType) const = 0;
+
 	/// Get the short name of the module (the last bit)
 	/// \return The name
 	std::string shortName() const { return mName; }
@@ -60,8 +61,8 @@ struct ChiModule {
 	/// \return The full name
 	std::string fullName() const { return mFullName.generic_string(); }
 	/// Get the full name of the module in a path
-	/// \return The full name, as a boost::filesystem::path
-	boost::filesystem::path fullNamePath() const { return mFullName; }
+	/// \return The full name, as a std::filesystem::path
+	std::filesystem::path fullNamePath() const { return mFullName; }
 	/// Get the Context that this module belongs to
 	/// \return The context
 
@@ -70,23 +71,23 @@ struct ChiModule {
 	/// Adds forward declartions for the functions in this module
 	/// \param module The module to add forward declartions to
 	/// \return The Result
-	virtual Result addForwardDeclarations(llvm::Module& module) const = 0;
+	virtual Result addForwardDeclarations(LLVMModuleRef module) const = 0;
 
-	/// Generate a llvm::Module from the module. Usually called by Context::compileModule
-	/// \param module The llvm::Module to fill into -- must be already filled with forward
+	/// Generate a LLVMModuleRef from the module. Usually called by Context::compileModule
+	/// \param module The LLVModuleRef to fill into -- must be already filled with forward
 	/// declarations of dependencies
 	/// \return The Result
-	virtual Result generateModule(llvm::Module& module) = 0;
+	virtual Result generateModule(LLVMModuleRef module) = 0;
 
 	/// Get the dependencies
 	/// \return The dependencies
-	const std::set<boost::filesystem::path>& dependencies() const { return mDependencies; }
+	const std::set<std::filesystem::path>& dependencies() const { return mDependencies; }
 
 	/// Add a dependency to the module
 	/// Loads the module from context() if it isn't already loaded
 	/// \param newDepFullPath The dependency, full path
 	/// \return The result
-	Result addDependency(boost::filesystem::path newDepFullPath);
+	Result addDependency(std::filesystem::path newDepFullPath);
 
 	/// Remove a dependency
 	/// Does not unload from context
@@ -98,22 +99,23 @@ struct ChiModule {
 
 	/// Get the time that this module was last edited
 	/// \return The `std::time_t` at which it was last edited
-	std::time_t lastEditTime() const { return mLastEditTime; }
+	std::filesystem::file_time_type lastEditTime() const { return mLastEditTime; }
 
 	/// Update the last edit time, signifying that it's been edited
 	/// \param newLastEditTime The new time, or current time for default
-	void updateLastEditTime(std::time_t newLastEditTime = std::time(nullptr)) {
+	void updateLastEditTime(std::filesystem::file_time_type newLastEditTime =
+	                            std::filesystem::file_time_type::clock::now()) {
 		mLastEditTime = newLastEditTime;
 	}
 
 private:
-	boost::filesystem::path mFullName;
-	std::string             mName;
-	Context*                mContext;
+	std::filesystem::path mFullName;
+	std::string           mName;
+	Context*              mContext;
 
-	std::set<boost::filesystem::path> mDependencies;
+	std::set<std::filesystem::path> mDependencies;
 
-	std::time_t mLastEditTime = 0;
+	std::filesystem::file_time_type mLastEditTime;
 };
 }  // namespace chi
 

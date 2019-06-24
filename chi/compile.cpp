@@ -1,38 +1,25 @@
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 
-#include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 
 #include <chi/Context.hpp>
 #include <chi/GraphFunction.hpp>
 #include <chi/GraphModule.hpp>
-#include <chi/LLVMVersion.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/NodeType.hpp>
 #include <chi/Support/Result.hpp>
 #include <chi/Support/json.hpp>
 
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-#include <llvm/Bitcode/ReaderWriter.h>
-#else
-#include <llvm/Bitcode/BitcodeReader.h>
-#include <llvm/Bitcode/BitcodeWriter.h>
-#endif
-
-#include <llvm/IR/DebugInfo.h>
-#include <llvm/IR/LegacyPassManager.h>
-#include <llvm/IR/Module.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/ToolOutputFile.h>
-#include <llvm/Support/raw_os_ostream.h>
-#include <llvm/Transforms/IPO.h>
-#include <llvm/Transforms/IPO/PassManagerBuilder.h>
+#include <llvm-c/BitWriter.h>
+#include <llvm-c/Transforms/PassManagerBuilder.h>
 
 using namespace chi;
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 namespace po = boost::program_options;
 
 int compile(const std::vector<std::string>& opts) {
@@ -84,9 +71,9 @@ int compile(const std::vector<std::string>& opts) {
 
 	// resolve the path---first see if it's relative to the current directory. if it's not, then
 	// try to get it relative to 'src'
-	auto infileRelToPwd = fs::absolute(infile, fs::current_path());
+	auto infileRelToPwd = fs::absolute(infile);
 	if (!fs::is_regular_file(infileRelToPwd)) {
-		auto infileRelToSrc = fs::absolute(infile, c.workspacePath() / "src");
+		auto infileRelToSrc = fs::absolute(c.workspacePath() / "src" / infile);
 
 		// if we still didn't find it, then error
 		if (!fs::is_regular_file(infileRelToSrc)) {
@@ -118,7 +105,7 @@ int compile(const std::vector<std::string>& opts) {
 	if (vm.count("no-dependencies") == 0) { settings |= CompileSettings::LinkDependencies; }
 	if (vm.count("fresh") == 0) { settings |= CompileSettings::UseCache; }
 
-	std::unique_ptr<llvm::Module> llmod;
+	OwnedLLVMModule llmod;
 	res += c.compileModule(*chiModule, settings, &llmod);
 
 	if (!res) {
@@ -131,7 +118,7 @@ int compile(const std::vector<std::string>& opts) {
 	}
 
 	// strip debug if specified
-	if (vm.count("no-debug") != 0) { llvm::StripDebugInfo(*llmod); }
+	if (vm.count("no-debug") != 0) { LLVMStripModuleDebugInfo(*llmod); }
 
 	// optimize
 
@@ -144,29 +131,27 @@ int compile(const std::vector<std::string>& opts) {
 		return 1;
 	}
 
-	llvm::PassManagerBuilder passBuilder;
-	passBuilder.OptLevel = levelInt;
+	auto passBuilder = OwnedLLVMPassManagerBuilder(LLVMPassManagerBuilderCreate());
+	LLVMPassManagerBuilderSetOptLevel(*passBuilder, levelInt);
 
 	// add inliner
 	if (levelInt > 1) {
-		passBuilder.Inliner = llvm::createFunctionInliningPass(levelInt, 1
-#if LLVM_VERSION_AT_LEAST(5, 0)
-		                                                       ,
-		                                                       false
-#endif
-		);
+		LLVMPassManagerBuilderUseInlinerWithThreshold(*passBuilder, 250);  // 250 is default for -O3
 	}
 
-	llvm::legacy::FunctionPassManager fpm{llmod.get()};
-	passBuilder.populateFunctionPassManager(fpm);
+	auto fpm = OwnedLLVMPassManager(LLVMCreateFunctionPassManagerForModule(*llmod));
+	LLVMPassManagerBuilderPopulateFunctionPassManager(*passBuilder, *fpm);
 
-	llvm::legacy::PassManager mpm;
-	passBuilder.populateModulePassManager(mpm);
+	auto mpm = OwnedLLVMPassManager(LLVMCreatePassManager());
+	LLVMPassManagerBuilderPopulateModulePassManager(*passBuilder, *mpm);
 
 	// run function passes
-	for (auto& func : *llmod) { fpm.run(func); }
+	for (auto func = LLVMGetFirstFunction(*llmod); func != nullptr;
+	     func      = LLVMGetNextFunction(func)) {
+		LLVMRunFunctionPassManager(*fpm, func);
+	}
 
-	mpm.run(*llmod);
+	LLVMRunPassManager(*mpm, *llmod);
 
 	// get outpath
 	fs::path outpath = vm["output"].as<std::string>();
@@ -193,35 +178,27 @@ int compile(const std::vector<std::string>& opts) {
 	if (vm.count("-S") != 0) { binaryOutput = false; }
 	if (vm.count("-c") != 0) { binaryOutput = true; }
 
-	std::error_code          ec;
-	llvm::sys::fs::OpenFlags OpenFlags = llvm::sys::fs::F_None;
-	if (!binaryOutput) { OpenFlags |= llvm::sys::fs::F_Text; }
+	auto writeOutput = [&](std::ostream& outputStream) {
+		if (binaryOutput) {
+			auto buffer = OwnedLLVMMemoryBuffer(LLVMWriteBitcodeToMemoryBuffer(*llmod));
 
-	using toolOutput = llvm::
-#if LLVM_VERSION_LESS_EQUAL(5, 0)
-	    tool_output_file
-#else
-	    ToolOutputFile
-#endif
-	    ;
+			outputStream.write(LLVMGetBufferStart(*buffer), LLVMGetBufferSize(*buffer));
+			outputStream.flush();
+		} else {
+			auto module = OwnedMessage(LLVMPrintModuleToString(*llmod));
 
-	std::string errorString;  // only for LLVM 3.5-
-	auto        outFile = std::make_unique<toolOutput>
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-	    (outpath.string().c_str(), errorString, OpenFlags);
-#else
-	    (outpath.string(), ec, OpenFlags);
-#endif
-	if (binaryOutput) {
-		llvm::WriteBitcodeToFile(
-#if LLVM_VERSION_AT_LEAST(7, 0)
-			*
-#endif
-			llmod.get(), outFile->os());
+			outputStream << module;
+			outputStream.flush();
+		}
+	};
+
+	if (outpath == "-") {
+		writeOutput(std::cout);
 	} else {
-		llmod->print(outFile->os(), nullptr);
+		std::ofstream file(outpath, binaryOutput ? std::ios_base::out | std::ios_base::binary
+		                                         : std::ios_base::out);
+		writeOutput(file);
 	}
-	outFile->keep();
 
 	return 0;
 }

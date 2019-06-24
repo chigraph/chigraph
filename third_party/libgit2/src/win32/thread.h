@@ -8,7 +8,7 @@
 #ifndef INCLUDE_win32_thread_h__
 #define INCLUDE_win32_thread_h__
 
-#include "../common.h"
+#include "common.h"
 
 #if defined (_MSC_VER)
 #	define GIT_RESTRICT __restrict
@@ -61,4 +61,4 @@ int git_rwlock_wrlock(git_rwlock *);
 int git_rwlock_wrunlock(git_rwlock *);
 int git_rwlock_free(git_rwlock *);
 
-#endif /* INCLUDE_win32_thread_h__ */
+#endif

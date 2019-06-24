@@ -7,7 +7,7 @@
 
 #include <chi/Support/Result.hpp>
 
-#include <boost/filesystem/path.hpp>
+#include <filesystem>
 
 namespace chi {
 
@@ -27,14 +27,14 @@ enum class VCSType {
 /// \param name The name of the module to fetch
 /// \param recursive Should all dependencies be cloned as well?
 /// \return The Result
-Result fetchModule(const boost::filesystem::path& workspacePath,
-                   const boost::filesystem::path& name, bool recursive);
+Result fetchModule(const std::filesystem::path& workspacePath, const std::filesystem::path& name,
+                   bool recursive);
 
 /// Get the URL for a VCS repository from a module name.
 /// \param path The module name
 /// \return {The type of VCS that it is, the URL to clone, the relative path to clone to}
 std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
-    const boost::filesystem::path& path);
-}
+    const std::filesystem::path& path);
+}  // namespace chi
 
 #endif  // CHI_FETCHER_HPP

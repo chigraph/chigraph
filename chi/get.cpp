@@ -1,3 +1,5 @@
+#include <filesystem>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -5,11 +7,10 @@
 #include <chi/Fetcher/Fetcher.hpp>
 #include <chi/Support/Result.hpp>
 
-#include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 using namespace chi;
 

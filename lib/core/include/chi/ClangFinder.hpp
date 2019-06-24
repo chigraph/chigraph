@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <boost/filesystem/path.hpp>
+#include <filesystem>
 
 namespace chi {
-boost::filesystem::path findClang();
+std::filesystem::path findClang();
 }
 
 #endif  // CHI_CLANG_FINDER_HPP

@@ -76,7 +76,7 @@ extern char *git_buf_detach(git_buf *buf);
 extern int git_buf_attach(git_buf *buf, char *ptr, size_t asize);
 
 /* Populates a `git_buf` where the contents are not "owned" by the
- * buffer, and calls to `git_buf_free` will not free the given buf.
+ * buffer, and calls to `git_buf_dispose` will not free the given buf.
  */
 extern void git_buf_attach_notowned(
 	git_buf *buf, const char *ptr, size_t size);
@@ -189,6 +189,9 @@ int git_buf_decode_base64(git_buf *buf, const char *base64, size_t len);
 int git_buf_encode_base85(git_buf *buf, const char *data, size_t len);
 /* Decode the given "base85" and write the result to the buffer */
 int git_buf_decode_base85(git_buf *buf, const char *base64, size_t len, size_t output_len);
+
+/* Decode the given percent-encoded string and write the result to the buffer */
+int git_buf_decode_percent(git_buf *buf, const char *str, size_t len);
 
 /*
  * Insert, remove or replace a portion of the buffer.

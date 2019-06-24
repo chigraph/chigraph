@@ -29,7 +29,7 @@ int git_buf_text_puts_escaped(
 		scan += count;
 	}
 
-	GITERR_CHECK_ALLOC_ADD(&alloclen, total, 1);
+	GIT_ERROR_CHECK_ALLOC_ADD(&alloclen, total, 1);
 	if (git_buf_grow_by(buf, alloclen) < 0)
 		return -1;
 
@@ -75,7 +75,7 @@ int git_buf_text_crlf_to_lf(git_buf *tgt, const git_buf *src)
 		return git_buf_set(tgt, src->ptr, src->size);
 
 	/* reduce reallocs while in the loop */
-	GITERR_CHECK_ALLOC_ADD(&new_size, src->size, 1);
+	GIT_ERROR_CHECK_ALLOC_ADD(&new_size, src->size, 1);
 	if (git_buf_grow(tgt, new_size) < 0)
 		return -1;
 
@@ -122,8 +122,8 @@ int git_buf_text_lf_to_crlf(git_buf *tgt, const git_buf *src)
 		return git_buf_set(tgt, src->ptr, src->size);
 
 	/* attempt to reduce reallocs while in the loop */
-	GITERR_CHECK_ALLOC_ADD(&alloclen, src->size, src->size >> 4);
-	GITERR_CHECK_ALLOC_ADD(&alloclen, alloclen, 1);
+	GIT_ERROR_CHECK_ALLOC_ADD(&alloclen, src->size, src->size >> 4);
+	GIT_ERROR_CHECK_ALLOC_ADD(&alloclen, alloclen, 1);
 	if (git_buf_grow(tgt, alloclen) < 0)
 		return -1;
 	tgt->size = 0;
@@ -135,7 +135,7 @@ int git_buf_text_lf_to_crlf(git_buf *tgt, const git_buf *src)
 		if (copylen && next[-1] == '\r')
 			copylen--;
 
-		GITERR_CHECK_ALLOC_ADD(&alloclen, copylen, 3);
+		GIT_ERROR_CHECK_ALLOC_ADD(&alloclen, copylen, 3);
 		if (git_buf_grow_by(tgt, alloclen) < 0)
 			return -1;
 
@@ -188,7 +188,7 @@ bool git_buf_text_is_binary(const git_buf *buf)
 	git_bom_t bom;
 	int printable = 0, nonprintable = 0;
 
-	scan += git_buf_text_detect_bom(&bom, buf, 0);
+	scan += git_buf_text_detect_bom(&bom, buf);
 
 	if (bom > GIT_BOM_UTF8)
 		return 1;
@@ -215,18 +215,18 @@ bool git_buf_text_contains_nul(const git_buf *buf)
 	return (memchr(buf->ptr, '\0', buf->size) != NULL);
 }
 
-int git_buf_text_detect_bom(git_bom_t *bom, const git_buf *buf, size_t offset)
+int git_buf_text_detect_bom(git_bom_t *bom, const git_buf *buf)
 {
 	const char *ptr;
 	size_t len;
 
 	*bom = GIT_BOM_NONE;
-	/* need at least 2 bytes after offset to look for any BOM */
-	if (buf->size < offset + 2)
+	/* need at least 2 bytes to look for any BOM */
+	if (buf->size < 2)
 		return 0;
 
-	ptr = buf->ptr + offset;
-	len = buf->size - offset;
+	ptr = buf->ptr;
+	len = buf->size;
 
 	switch (*ptr++) {
 	case 0:
@@ -274,7 +274,7 @@ bool git_buf_text_gather_stats(
 	memset(stats, 0, sizeof(*stats));
 
 	/* BOM detection */
-	skip = git_buf_text_detect_bom(&stats->bom, buf, 0);
+	skip = git_buf_text_detect_bom(&stats->bom, buf);
 	if (skip_bom)
 		scan += skip;
 
@@ -310,6 +310,7 @@ bool git_buf_text_gather_stats(
 			}
 	}
 
-	return (stats->nul > 0 ||
+	/* Treat files with a bare CR as binary */
+	return (stats->cr != stats->crlf || stats->nul > 0 ||
 		((stats->printable >> 7) < stats->nonprintable));
 }

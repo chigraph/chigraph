@@ -1,6 +1,19 @@
 #include "clar_libgit2.h"
 #include "diff_helpers.h"
 
+#define BLOB_DIFF \
+    "diff --git a/file b/file\n" \
+    "index 45141a7..4d713dc 100644\n" \
+    "--- a/file\n" \
+    "+++ b/file\n" \
+    "@@ -1 +1,6 @@\n" \
+    " Hello from the root\n" \
+    "+\n" \
+    "+Some additional lines\n" \
+    "+\n" \
+    "+Down here below\n" \
+    "+\n"
+
 static git_repository *g_repo = NULL;
 static diff_expects expected;
 static git_diff_options opts;
@@ -63,6 +76,32 @@ static void assert_one_modified(
 	cl_assert_equal_i(ctxt,  exp->line_ctxt);
 	cl_assert_equal_i(adds,  exp->line_adds);
 	cl_assert_equal_i(dels,  exp->line_dels);
+}
+
+void test_diff_blob__patch_with_freed_blobs(void)
+{
+	git_oid a_oid, b_oid;
+	git_blob *a, *b;
+	git_patch *p;
+	git_buf buf = GIT_BUF_INIT;
+
+	/* tests/resources/attr/root_test1 */
+	cl_git_pass(git_oid_fromstrn(&a_oid, "45141a79", 8));
+	cl_git_pass(git_blob_lookup_prefix(&a, g_repo, &a_oid, 4));
+	/* tests/resources/attr/root_test2 */
+	cl_git_pass(git_oid_fromstrn(&b_oid, "4d713dc4", 8));
+	cl_git_pass(git_blob_lookup_prefix(&b, g_repo, &b_oid, 4));
+
+	cl_git_pass(git_patch_from_blobs(&p, a, NULL, b, NULL, NULL));
+
+	git_blob_free(a);
+	git_blob_free(b);
+
+	cl_git_pass(git_patch_to_buf(&buf, p));
+	cl_assert_equal_s(buf.ptr, BLOB_DIFF);
+
+	git_patch_free(p);
+	git_buf_dispose(&buf);
 }
 
 void test_diff_blob__can_compare_text_blobs(void)
@@ -543,8 +582,8 @@ void test_diff_blob__checks_options_version_too_low(void)
 	cl_git_fail(git_diff_blobs(
 		d, NULL, alien, NULL, &opts,
 		diff_file_cb, diff_binary_cb, diff_hunk_cb, diff_line_cb, &expected));
-	err = giterr_last();
-	cl_assert_equal_i(GITERR_INVALID, err->klass);
+	err = git_error_last();
+	cl_assert_equal_i(GIT_ERROR_INVALID, err->klass);
 }
 
 void test_diff_blob__checks_options_version_too_high(void)
@@ -555,8 +594,8 @@ void test_diff_blob__checks_options_version_too_high(void)
 	cl_git_fail(git_diff_blobs(
 		d, NULL, alien, NULL, &opts,
 		diff_file_cb, diff_binary_cb, diff_hunk_cb, diff_line_cb, &expected));
-	err = giterr_last();
-	cl_assert_equal_i(GITERR_INVALID, err->klass);
+	err = git_error_last();
+	cl_assert_equal_i(GIT_ERROR_INVALID, err->klass);
 }
 
 void test_diff_blob__can_correctly_detect_a_binary_blob_as_binary(void)
@@ -977,7 +1016,7 @@ void test_diff_blob__using_path_and_attributes(void)
 	git_buf_clear(&buf);
 	git_patch_free(p);
 
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 	git_blob_free(nonbin);
 	git_blob_free(bin);
 }

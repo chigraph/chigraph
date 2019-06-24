@@ -1,7 +1,7 @@
 #include "clar_libgit2.h"
 #include "fileops.h"
 
-// Fixture setup and teardown
+/* Fixture setup and teardown */
 void test_core_futils__initialize(void)
 {
 	cl_must_pass(p_mkdir("futils", 0777));
@@ -33,8 +33,8 @@ void test_core_futils__writebuffer(void)
 
 	cl_assert_equal_file(out.ptr, out.size, "futils/test-file");
 
-	git_buf_free(&out);
-	git_buf_free(&append);
+	git_buf_dispose(&out);
+	git_buf_dispose(&append);
 }
 
 void test_core_futils__write_hidden_file(void)
@@ -61,8 +61,8 @@ void test_core_futils__write_hidden_file(void)
 	cl_git_pass(git_win32__hidden(&hidden, "futils/test-file"));
 	cl_assert(hidden);
 
-	git_buf_free(&out);
-	git_buf_free(&append);
+	git_buf_dispose(&out);
+	git_buf_dispose(&append);
 #endif
 }
 

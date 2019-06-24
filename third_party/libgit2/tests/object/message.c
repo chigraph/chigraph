@@ -9,13 +9,13 @@ static void assert_message_prettifying(char *expected_output, char *input, int s
 	git_message_prettify(&prettified_message, input, strip_comments, '#');
 	cl_assert_equal_s(expected_output, git_buf_cstr(&prettified_message));
 
-	git_buf_free(&prettified_message);
+	git_buf_dispose(&prettified_message);
 }
 
 #define t40 "A quick brown fox jumps over the lazy do"
 #define s40 "                                        "
-#define sss s40 s40 s40 s40 s40 s40 s40 s40 s40 s40 // # 400
-#define ttt t40 t40 t40 t40 t40 t40 t40 t40 t40 t40 // # 400
+#define sss s40 s40 s40 s40 s40 s40 s40 s40 s40 s40 /* # 400 */
+#define ttt t40 t40 t40 t40 t40 t40 t40 t40 t40 t40 /* # 400 */
 
 /* Ported from git.git */
 /* see https://github.com/git/git/blob/master/t/t0030-stripspace.sh */
@@ -177,23 +177,23 @@ void test_object_message__message_prettify(void)
 	memset(&buffer, 0, sizeof(buffer));
 	cl_git_pass(git_message_prettify(&buffer, "", 0, '#'));
 	cl_assert_equal_s(buffer.ptr, "");
-	git_buf_free(&buffer);
+	git_buf_dispose(&buffer);
 	cl_git_pass(git_message_prettify(&buffer, "", 1, '#'));
 	cl_assert_equal_s(buffer.ptr, "");
-	git_buf_free(&buffer);
+	git_buf_dispose(&buffer);
 
 	cl_git_pass(git_message_prettify(&buffer, "Short", 0, '#'));
 	cl_assert_equal_s("Short\n", buffer.ptr);
-	git_buf_free(&buffer);
+	git_buf_dispose(&buffer);
 	cl_git_pass(git_message_prettify(&buffer, "Short", 1, '#'));
 	cl_assert_equal_s("Short\n", buffer.ptr);
-	git_buf_free(&buffer);
+	git_buf_dispose(&buffer);
 
 	cl_git_pass(git_message_prettify(&buffer, "This is longer\nAnd multiline\n# with some comments still in\n", 0, '#'));
 	cl_assert_equal_s(buffer.ptr, "This is longer\nAnd multiline\n# with some comments still in\n");
-	git_buf_free(&buffer);
+	git_buf_dispose(&buffer);
 
 	cl_git_pass(git_message_prettify(&buffer, "This is longer\nAnd multiline\n# with some comments still in\n", 1, '#'));
 	cl_assert_equal_s(buffer.ptr, "This is longer\nAnd multiline\n");
-	git_buf_free(&buffer);
+	git_buf_dispose(&buffer);
 }

@@ -6,6 +6,7 @@
  */
 
 #include "common.h"
+
 #include "commit.h"
 #include "tag.h"
 #include "merge.h"
@@ -20,8 +21,8 @@
 
 int git_reset_default(
 	git_repository *repo,
-	git_object *target,
-	git_strarray* pathspecs)
+	const git_object *target,
+	const git_strarray* pathspecs)
 {
 	git_object *commit = NULL;
 	git_tree *tree = NULL;
@@ -41,12 +42,12 @@ int git_reset_default(
 
 	if (target) {
 		if (git_object_owner(target) != repo) {
-			giterr_set(GITERR_OBJECT,
+			git_error_set(GIT_ERROR_OBJECT,
 				"%s_default - The given target does not belong to this repository.", ERROR_MSG);
 			return -1;
 		}
 
-		if ((error = git_object_peel(&commit, target, GIT_OBJ_COMMIT)) < 0 ||
+		if ((error = git_object_peel(&commit, target, GIT_OBJECT_COMMIT)) < 0 ||
 			(error = git_commit_tree(&tree, (git_commit *)commit)) < 0)
 			goto cleanup;
 	}
@@ -69,7 +70,7 @@ int git_reset_default(
 		error = git_index_conflict_remove(index, delta->old_file.path);
 		if (error < 0) {
 			if (delta->status == GIT_DELTA_ADDED && error == GIT_ENOTFOUND)
-				giterr_clear();
+				git_error_clear();
 			else
 				goto cleanup;
 		}
@@ -100,7 +101,7 @@ cleanup:
 
 static int reset(
 	git_repository *repo,
-	git_object *target,
+	const git_object *target,
 	const char *to,
 	git_reset_t reset_type,
 	const git_checkout_options *checkout_opts)
@@ -118,7 +119,7 @@ static int reset(
 		opts = *checkout_opts;
 
 	if (git_object_owner(target) != repo) {
-		giterr_set(GITERR_OBJECT,
+		git_error_set(GIT_ERROR_OBJECT,
 			"%s - The given target does not belong to this repository.", ERROR_MSG);
 		return -1;
 	}
@@ -128,7 +129,7 @@ static int reset(
 			reset_type == GIT_RESET_MIXED ? "reset mixed" : "reset hard")) < 0)
 		return error;
 
-	if ((error = git_object_peel(&commit, target, GIT_OBJ_COMMIT)) < 0 ||
+	if ((error = git_object_peel(&commit, target, GIT_OBJECT_COMMIT)) < 0 ||
 		(error = git_repository_index(&index, repo)) < 0 ||
 		(error = git_commit_tree(&tree, (git_commit *)commit)) < 0)
 		goto cleanup;
@@ -137,7 +138,7 @@ static int reset(
 		(git_repository_state(repo) == GIT_REPOSITORY_STATE_MERGE ||
 		 git_index_has_conflicts(index)))
 	{
-		giterr_set(GITERR_OBJECT, "%s (soft) in the middle of a merge", ERROR_MSG);
+		git_error_set(GIT_ERROR_OBJECT, "%s (soft) in the middle of a merge", ERROR_MSG);
 		error = GIT_EUNMERGED;
 		goto cleanup;
 	}
@@ -166,7 +167,7 @@ static int reset(
 			goto cleanup;
 
 		if ((error = git_repository_state_cleanup(repo)) < 0) {
-			giterr_set(GITERR_INDEX, "%s - failed to clean up merge data", ERROR_MSG);
+			git_error_set(GIT_ERROR_INDEX, "%s - failed to clean up merge data", ERROR_MSG);
 			goto cleanup;
 		}
 	}
@@ -175,14 +176,14 @@ cleanup:
 	git_object_free(commit);
 	git_index_free(index);
 	git_tree_free(tree);
-	git_buf_free(&log_message);
+	git_buf_dispose(&log_message);
 
 	return error;
 }
 
 int git_reset(
 	git_repository *repo,
-	git_object *target,
+	const git_object *target,
 	git_reset_t reset_type,
 	const git_checkout_options *checkout_opts)
 {
@@ -191,7 +192,7 @@ int git_reset(
 
 int git_reset_from_annotated(
 	git_repository *repo,
-	git_annotated_commit *commit,
+	const git_annotated_commit *commit,
 	git_reset_t reset_type,
 	const git_checkout_options *checkout_opts)
 {

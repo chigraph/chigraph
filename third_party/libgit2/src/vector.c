@@ -5,8 +5,8 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
-#include "common.h"
 #include "vector.h"
+
 #include "integer.h"
 
 /* In elements, not bytes */
@@ -32,8 +32,11 @@ GIT_INLINE(int) resize_vector(git_vector *v, size_t new_size)
 {
 	void *new_contents;
 
+	if (new_size == 0)
+		return 0;
+
 	new_contents = git__reallocarray(v->contents, new_size, sizeof(void *));
-	GITERR_CHECK_ALLOC(new_contents);
+	GIT_ERROR_CHECK_ALLOC(new_contents);
 
 	v->_alloc_size = new_size;
 	v->contents = new_contents;
@@ -50,22 +53,24 @@ int git_vector_size_hint(git_vector *v, size_t size_hint)
 
 int git_vector_dup(git_vector *v, const git_vector *src, git_vector_cmp cmp)
 {
-	size_t bytes;
-
 	assert(v && src);
 
-	GITERR_CHECK_ALLOC_MULTIPLY(&bytes, src->length, sizeof(void *));
-
-	v->_alloc_size = src->length;
+	v->_alloc_size = 0;
+	v->contents = NULL;
 	v->_cmp = cmp ? cmp : src->_cmp;
 	v->length = src->length;
 	v->flags  = src->flags;
 	if (cmp != src->_cmp)
 		git_vector_set_sorted(v, 0);
-	v->contents = git__malloc(bytes);
-	GITERR_CHECK_ALLOC(v->contents);
 
-	memcpy(v->contents, src->contents, bytes);
+	if (src->length) {
+		size_t bytes;
+		GIT_ERROR_CHECK_ALLOC_MULTIPLY(&bytes, src->length, sizeof(void *));
+		v->contents = git__malloc(bytes);
+		GIT_ERROR_CHECK_ALLOC(v->contents);
+		v->_alloc_size = src->length;
+		memcpy(v->contents, src->contents, bytes);
+	}
 
 	return 0;
 }
@@ -337,7 +342,7 @@ int git_vector_insert_null(git_vector *v, size_t idx, size_t insert_len)
 
 	assert(insert_len > 0 && idx <= v->length);
 
-	GITERR_CHECK_ALLOC_ADD(&new_length, v->length, insert_len);
+	GIT_ERROR_CHECK_ALLOC_ADD(&new_length, v->length, insert_len);
 
 	if (new_length > v->_alloc_size && resize_vector(v, new_length) < 0)
 		return -1;

@@ -8,11 +8,12 @@
 
 #include "chi/Fwd.hpp"
 
+#include <cassert>
 #include <string>
 
 namespace chi {
 /// A type of data
-/// Loose wrapper around llvm::Type*, except it knows which ChiModule it's in and it embeds debug
+/// Loose wrapper around LLVMTypeRef, except it knows which ChiModule it's in and it embeds debug
 /// types
 struct DataType {
 	/// Constructor
@@ -20,9 +21,8 @@ struct DataType {
 	/// \param typeName The ID of the type in the module
 	/// \param llvmtype The underlying type
 	/// \param debugTy The debug type for the DataType
-	DataType(ChiModule* chiMod = nullptr, std::string typeName = {}, llvm::Type* llvmtype = nullptr,
-	         llvm::DIType* debugTy = nullptr)
-	    : mModule(chiMod), mName{typeName}, mLLVMType{llvmtype}, mDIType{debugTy} {}
+	DataType(ChiModule* chiMod = nullptr, std::string typeName = {}, LLVMTypeRef llvmtype = nullptr)
+	    : mModule(chiMod), mName{typeName}, mLLVMType{llvmtype} {}
 
 	/// Get the module this is a part of
 	/// \return The module
@@ -35,21 +35,17 @@ struct DataType {
 	std::string qualifiedName() const;
 	/// Get the underlying \c llvm::Type
 	/// \return the \c llvm::Type
-	llvm::Type* llvmType() const { return mLLVMType; }
+	LLVMTypeRef llvmType() const { return mLLVMType; }
 	/// Get the debug type
-	/// \return The debug type
-	llvm::DIType* debugType() const { return mDIType; }
+	LLVMMetadataRef debugType(FunctionCompiler& compiler) const;
 	/// Check if the DataType is valid (if it's actually bound to a type and module)
 	/// \return `true` if valid, `false` otherwise
-	bool valid() const {
-		return mModule != nullptr && mName != "" && mLLVMType != nullptr && mDIType != nullptr;
-	}
+	bool valid() const { return mModule != nullptr && mName != "" && mLLVMType != nullptr; }
 
 private:
-	ChiModule*    mModule;
-	std::string   mName;
-	llvm::Type*   mLLVMType;
-	llvm::DIType* mDIType;
+	ChiModule*  mModule;
+	std::string mName;
+	LLVMTypeRef mLLVMType;
 };
 
 /// Equality check

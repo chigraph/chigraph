@@ -5,7 +5,8 @@
 #ifndef CHI_LIBCLOCATOR_HPP
 #define CHI_LIBCLOCATOR_HPP
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
+#include <vector>
 
 #include "chi/Support/Fwd.hpp"
 
@@ -15,9 +16,9 @@ namespace chi {
 /// \{
 
 /// Gets the location of the standard C library to include
-Result stdCIncludePaths(std::vector<boost::filesystem::path>& toFill);
+Result stdCIncludePaths(std::vector<std::filesystem::path>& toFill);
 
 /// \}
-}
+}  // namespace chi
 
 #endif  // CHI_LIBCLOCATOR_HPP

@@ -115,16 +115,15 @@ typedef enum {
  * @param payload value you passed to the foreach function as payload
  * @return 0 on success or error code
  */
-typedef int (*git_submodule_cb)(
+typedef int GIT_CALLBACK(git_submodule_cb)(
 	git_submodule *sm, const char *name, void *payload);
 
 /**
  * Submodule update options structure
  *
- * Use the GIT_SUBMODULE_UPDATE_OPTIONS_INIT to get the default settings,
- * like this:
+ * Initialize with `GIT_SUBMODULE_UPDATE_OPTIONS_INIT`. Alternatively, you can
+ * use `git_submodule_update_init_options`.
  *
- * git_submodule_update_options opts = GIT_SUBMODULE_UPDATE_OPTIONS_INIT;
  */
 typedef struct git_submodule_update_options {
 	unsigned int version;
@@ -134,7 +133,7 @@ typedef struct git_submodule_update_options {
 	 * checkout, set the `checkout_strategy` to
 	 * `GIT_CHECKOUT_NONE`. Generally you will want the use
 	 * GIT_CHECKOUT_SAFE to update files in the working
-	 * directory. 
+	 * directory.
 	 */
 	git_checkout_options checkout_opts;
 
@@ -160,11 +159,13 @@ typedef struct git_submodule_update_options {
 	GIT_FETCH_OPTIONS_INIT, 1 }
 
 /**
- * Initializes a `git_submodule_update_options` with default values.
- * Equivalent to creating an instance with GIT_SUBMODULE_UPDATE_OPTIONS_INIT.
+ * Initialize git_submodule_update_options structure
  *
- * @param opts The `git_submodule_update_options` instance to initialize.
- * @param version Version of struct; pass `GIT_SUBMODULE_UPDATE_OPTIONS_VERSION`
+ * Initializes a `git_submodule_update_options` with default values. Equivalent to
+ * creating an instance with `GIT_SUBMODULE_UPDATE_OPTIONS_INIT`.
+ *
+ * @param opts The `git_submodule_update_options` struct to initialize.
+ * @param version The struct version; pass `GIT_SUBMODULE_UPDATE_OPTIONS_VERSION`.
  * @return Zero on success; -1 on failure.
  */
 GIT_EXTERN(int) git_submodule_update_init_options(
@@ -186,7 +187,7 @@ GIT_EXTERN(int) git_submodule_update_init_options(
  *        function works as though GIT_SUBMODULE_UPDATE_OPTIONS_INIT was passed.
  * @return 0 on success, any non-zero return value from a callback
  *         function, or a negative value to indicate an error (use
- *         `giterr_last` for a detailed error message).
+ *         `git_error_last` for a detailed error message).
  */
 GIT_EXTERN(int) git_submodule_update(git_submodule *submodule, int init, git_submodule_update_options *options);
 

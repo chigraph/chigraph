@@ -1,11 +1,10 @@
 #include "chi/Fetcher/Fetcher.hpp"
 
+#include <fstream>
+
 #include <git2.h>
 
-#include <boost/filesystem/fstream.hpp>
-#include <boost/filesystem/operations.hpp>
-
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace chi {
 
@@ -86,7 +85,6 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 			    if (is_merge != 0u) { oids_to_merge = {name, *oid}; }
 
 			    return 0;
-
 		    },
 		    &oid_to_merge);
 
@@ -282,7 +280,7 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 		// TODO(#79): is there a cleaner way to do this?
 		nlohmann::json j;
 		try {
-			fs::ifstream file{fileName};
+			std::ifstream file{fileName};
 			file >> j;
 		} catch (std::exception& e) {
 			res.addEntry("EUKN", "Failed to parse JSON",
@@ -302,7 +300,7 @@ Result fetchModule(const fs::path& workspacePath, const fs::path& name, bool rec
 }
 
 std::tuple<VCSType, std::string, std::string> resolveUrlFromModuleName(
-    const boost::filesystem::path& path) {
+    const std::filesystem::path& path) {
 	// handle github
 	{
 		auto beginIter = path.begin();

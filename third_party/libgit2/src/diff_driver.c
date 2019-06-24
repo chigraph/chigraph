@@ -4,12 +4,12 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
-#include "common.h"
+
+#include "diff_driver.h"
 
 #include "git2/attr.h"
 
 #include "diff.h"
-#include "diff_driver.h"
 #include "strmap.h"
 #include "map.h"
 #include "buf_text.h"
@@ -121,7 +121,7 @@ static int diff_driver_add_patterns(
 
 	if (error && pat != NULL)
 		(void)git_array_pop(drv->fn_patterns); /* release last item */
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 
 	/* We want to ignore bad patterns, so return success regardless */
 	return 0;
@@ -149,7 +149,7 @@ static git_diff_driver_registry *git_repository_driver_registry(
 	}
 
 	if (!repo->diff_drivers)
-		giterr_set(GITERR_REPOSITORY, "unable to create diff driver registry");
+		git_error_set(GIT_ERROR_REPOSITORY, "unable to create diff driver registry");
 
 	return repo->diff_drivers;
 }
@@ -162,11 +162,11 @@ static int diff_driver_alloc(
 		namelen = strlen(name),
 		alloclen;
 
-	GITERR_CHECK_ALLOC_ADD(&alloclen, driverlen, namelen);
-	GITERR_CHECK_ALLOC_ADD(&alloclen, alloclen, 1);
+	GIT_ERROR_CHECK_ALLOC_ADD(&alloclen, driverlen, namelen);
+	GIT_ERROR_CHECK_ALLOC_ADD(&alloclen, alloclen, 1);
 
 	driver = git__calloc(1, alloclen);
-	GITERR_CHECK_ALLOC(driver);
+	GIT_ERROR_CHECK_ALLOC(driver);
 
 	memcpy(driver->name, name, namelen);
 
@@ -211,7 +211,7 @@ static int git_diff_driver_builtin(
 		(error = p_regcomp(
 			&drv->word_pattern, ddef->words, ddef->flags | REG_EXTENDED)))
 	{
-		error = giterr_set_regex(&drv->word_pattern, error);
+		error = git_error_set_regex(&drv->word_pattern, error);
 		goto done;
 	}
 
@@ -234,8 +234,7 @@ static int git_diff_driver_load(
 	int error = 0;
 	git_diff_driver_registry *reg;
 	git_diff_driver *drv = NULL;
-	size_t namelen;
-	khiter_t pos;
+	size_t namelen, pos;
 	git_config *cfg = NULL;
 	git_buf name = GIT_BUF_INIT;
 	git_config_entry *ce = NULL;
@@ -257,7 +256,7 @@ static int git_diff_driver_load(
 
 	/* if you can't read config for repo, just use default driver */
 	if (git_repository_config_snapshot(&cfg, repo) < 0) {
-		giterr_clear();
+		git_error_clear();
 		goto done;
 	}
 
@@ -288,7 +287,7 @@ static int git_diff_driver_load(
 			cfg, name.ptr, NULL, diff_driver_xfuncname, drv)) < 0) {
 		if (error != GIT_ENOTFOUND)
 			goto done;
-		giterr_clear(); /* no diff.<driver>.xfuncname, so just continue */
+		git_error_clear(); /* no diff.<driver>.xfuncname, so just continue */
 	}
 
 	git_buf_truncate(&name, namelen + strlen("diff.."));
@@ -297,7 +296,7 @@ static int git_diff_driver_load(
 			cfg, name.ptr, NULL, diff_driver_funcname, drv)) < 0) {
 		if (error != GIT_ENOTFOUND)
 			goto done;
-		giterr_clear(); /* no diff.<driver>.funcname, so just continue */
+		git_error_clear(); /* no diff.<driver>.funcname, so just continue */
 	}
 
 	/* if we found any patterns, set driver type to use correct callback */
@@ -316,7 +315,7 @@ static int git_diff_driver_load(
 		found_driver = true;
 	else {
 		/* TODO: warn about bad regex instead of failure */
-		error = giterr_set_regex(&drv->word_pattern, error);
+		error = git_error_set_regex(&drv->word_pattern, error);
 		goto done;
 	}
 
@@ -338,7 +337,7 @@ static int git_diff_driver_load(
 
 done:
 	git_config_entry_free(ce);
-	git_buf_free(&name);
+	git_buf_dispose(&name);
 	git_config_free(cfg);
 
 	if (!*out) {
@@ -354,30 +353,33 @@ done:
 }
 
 int git_diff_driver_lookup(
-	git_diff_driver **out, git_repository *repo, const char *path)
+	git_diff_driver **out, git_repository *repo,
+	git_attr_session *attrsession, const char *path)
 {
 	int error = 0;
-	const char *value;
+	const char *values[1], *attrs[] = { "diff" };
 
 	assert(out);
 	*out = NULL;
 
 	if (!repo || !path || !strlen(path))
 		/* just use the auto value */;
-	else if ((error = git_attr_get(&value, repo, 0, path, "diff")) < 0)
+	else if ((error = git_attr_get_many_with_session(values, repo,
+			attrsession, 0, path, 1, attrs)) < 0)
 		/* return error below */;
-	else if (GIT_ATTR_UNSPECIFIED(value))
+
+	else if (GIT_ATTR_UNSPECIFIED(values[0]))
 		/* just use the auto value */;
-	else if (GIT_ATTR_FALSE(value))
+	else if (GIT_ATTR_FALSE(values[0]))
 		*out = &global_drivers[DIFF_DRIVER_BINARY];
-	else if (GIT_ATTR_TRUE(value))
+	else if (GIT_ATTR_TRUE(values[0]))
 		*out = &global_drivers[DIFF_DRIVER_TEXT];
 
 	/* otherwise look for driver information in config and build driver */
-	else if ((error = git_diff_driver_load(out, repo, value)) < 0) {
+	else if ((error = git_diff_driver_load(out, repo, values[0])) < 0) {
 		if (error == GIT_ENOTFOUND) {
 			error = 0;
-			giterr_clear();
+			git_error_clear();
 		}
 	}
 
@@ -513,7 +515,7 @@ void git_diff_find_context_init(
 void git_diff_find_context_clear(git_diff_find_context_payload *payload)
 {
 	if (payload) {
-		git_buf_free(&payload->line);
+		git_buf_dispose(&payload->line);
 		payload->driver = NULL;
 	}
 }

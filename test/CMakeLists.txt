@@ -26,7 +26,7 @@ set(FETCH_TEST_SRCS
 	FetchTests.cpp
 )
 
-if (CG_BUILD_FETCHER)
+if (CG_BUILD_FETCHER AND CG_BUILD_NETWORK_TESTS)
 	list(APPEND TEST_SRCS ${FETCH_TEST_SRCS})
 endif()
 
@@ -56,7 +56,7 @@ add_executable(subprocess_tester_child SubprocessTesterChild.cpp)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
 	CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
 	CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	target_compile_options(subprocess_tester_child PUBLIC -std=c++14)
+	target_compile_options(subprocess_tester_child PUBLIC -std=c++17)
 endif()
 
 

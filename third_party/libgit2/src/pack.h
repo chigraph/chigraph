@@ -8,11 +8,12 @@
 #ifndef INCLUDE_pack_h__
 #define INCLUDE_pack_h__
 
+#include "common.h"
+
 #include <zlib.h>
 
 #include "git2/oid.h"
 
-#include "common.h"
 #include "map.h"
 #include "mwindow.h"
 #include "odb.h"
@@ -65,7 +66,7 @@ struct pack_chain_elem {
 	git_off_t base_key;
 	git_off_t offset;
 	size_t size;
-	git_otype type;
+	git_object_t type;
 };
 
 typedef git_array_t(struct pack_chain_elem) git_dependency_chain;
@@ -122,20 +123,20 @@ typedef struct git_packfile_stream {
 	git_mwindow *mw;
 } git_packfile_stream;
 
-size_t git_packfile__object_header(unsigned char *hdr, size_t size, git_otype type);
+size_t git_packfile__object_header(unsigned char *hdr, size_t size, git_object_t type);
 
 int git_packfile__name(char **out, const char *path);
 
 int git_packfile_unpack_header(
 		size_t *size_p,
-		git_otype *type_p,
+		git_object_t *type_p,
 		git_mwindow_file *mwf,
 		git_mwindow **w_curs,
 		git_off_t *curpos);
 
 int git_packfile_resolve_header(
 		size_t *size_p,
-		git_otype *type_p,
+		git_object_t *type_p,
 		struct git_pack_file *p,
 		git_off_t offset);
 
@@ -143,10 +144,10 @@ int git_packfile_unpack(git_rawobj *obj, struct git_pack_file *p, git_off_t *obj
 
 int git_packfile_stream_open(git_packfile_stream *obj, struct git_pack_file *p, git_off_t curpos);
 ssize_t git_packfile_stream_read(git_packfile_stream *obj, void *buffer, size_t len);
-void git_packfile_stream_free(git_packfile_stream *obj);
+void git_packfile_stream_dispose(git_packfile_stream *obj);
 
 git_off_t get_delta_base(struct git_pack_file *p, git_mwindow **w_curs,
-		git_off_t *curpos, git_otype type,
+		git_off_t *curpos, git_object_t type,
 		git_off_t delta_obj_offset);
 
 void git_packfile_close(struct git_pack_file *p, bool unlink_packfile);

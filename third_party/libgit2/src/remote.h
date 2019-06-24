@@ -7,6 +7,8 @@
 #ifndef INCLUDE_remote_h__
 #define INCLUDE_remote_h__
 
+#include "common.h"
+
 #include "git2/remote.h"
 #include "git2/transport.h"
 #include "git2/sys/transport.h"
@@ -33,6 +35,15 @@ struct git_remote {
 	int prune_refs;
 	int passed_refspecs;
 };
+
+typedef struct git_remote_connection_opts {
+	const git_strarray *custom_headers;
+	const git_proxy_options *proxy;
+} git_remote_connection_opts;
+
+#define GIT_REMOTE_CONNECTION_OPTIONS_INIT { NULL, NULL }
+
+int git_remote__connect(git_remote *remote, git_direction direction, const git_remote_callbacks *callbacks, const git_remote_connection_opts *conn);
 
 const char* git_remote__urlfordirection(struct git_remote *remote, int direction);
 int git_remote__get_http_proxy(git_remote *remote, bool use_ssl, char **proxy_url);

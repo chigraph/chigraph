@@ -3,6 +3,7 @@
 #include "git2/sys/diff.h"
 
 #include "buffer.h"
+#include "delta.h"
 #include "filebuf.h"
 #include "repository.h"
 
@@ -57,7 +58,7 @@ void test_patch(
 
 	cl_assert_equal_s(expected, actual.ptr);
 
-	git_buf_free(&actual);
+	git_buf_dispose(&actual);
 	git_patch_free(patch);
 	git_diff_free(diff);
 	git_tree_free(tree_one);
@@ -238,7 +239,7 @@ void test_diff_binary__delta(void)
 		expected);
 
 	git_index_free(index);
-	git_buf_free(&contents);
+	git_buf_dispose(&contents);
 }
 
 void test_diff_binary__delta_append(void)
@@ -298,7 +299,7 @@ void test_diff_binary__empty_for_no_diff(void)
 
 	cl_assert_equal_s("", actual.ptr);
 
-	git_buf_free(&actual);
+	git_buf_dispose(&actual);
 	git_diff_free(diff);
 	git_commit_free(commit);
 	git_tree_free(tree);
@@ -346,7 +347,7 @@ void test_diff_binary__index_to_workdir(void)
 		&opts,
 		expected);
 
-	git_buf_free(&actual);
+	git_buf_dispose(&actual);
 	git_patch_free(patch);
 	git_diff_free(diff);
 	git_index_free(index);
@@ -402,7 +403,7 @@ void test_diff_binary__print_patch_from_diff(void)
 
 	cl_assert_equal_s(expected, actual.ptr);
 
-	git_buf_free(&actual);
+	git_buf_dispose(&actual);
 	git_diff_free(diff);
 	git_index_free(index);
 }
@@ -540,6 +541,6 @@ void test_diff_binary__blob_to_blob(void)
 	git__free(diff_data.old_path);
 	git__free(diff_data.new_path);
 
-	git_buf_free(&diff_data.old_binary_base85);
-	git_buf_free(&diff_data.new_binary_base85);
+	git_buf_dispose(&diff_data.old_binary_base85);
+	git_buf_dispose(&diff_data.new_binary_base85);
 }

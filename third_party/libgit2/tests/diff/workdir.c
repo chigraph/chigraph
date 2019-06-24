@@ -145,12 +145,12 @@ void test_diff_workdir__to_index_with_assume_unchanged(void)
 
 	cl_assert((iep = git_index_get_bypath(idx, "modified_file", 0)) != NULL);
 	memcpy(&ie, iep, sizeof(ie));
-	ie.flags |= GIT_IDXENTRY_VALID;
+	ie.flags |= GIT_INDEX_ENTRY_VALID;
 	cl_git_pass(git_index_add(idx, &ie));
 
 	cl_assert((iep = git_index_get_bypath(idx, "file_deleted", 0)) != NULL);
 	memcpy(&ie, iep, sizeof(ie));
-	ie.flags |= GIT_IDXENTRY_VALID;
+	ie.flags |= GIT_INDEX_ENTRY_VALID;
 	cl_git_pass(git_index_add(idx, &ie));
 
 	cl_git_pass(git_index_write(idx));
@@ -749,7 +749,7 @@ void test_diff_workdir__filemode_changes_with_filemode_false(void)
 	cl_git_pass(git_diff_index_to_workdir(&diff, g_repo, NULL, NULL));
 
 	memset(&exp, 0, sizeof(exp));
-	cl_git_pass(git_diff_foreach(diff, 
+	cl_git_pass(git_diff_foreach(diff,
 		diff_file_cb, diff_binary_cb, diff_hunk_cb, diff_line_cb, &exp));
 
 	cl_assert_equal_i(0, exp.files);
@@ -1221,14 +1221,14 @@ void test_diff_workdir__checks_options_version(void)
 
 	opts.version = 0;
 	cl_git_fail(git_diff_tree_to_workdir(&diff, g_repo, NULL, &opts));
-	err = giterr_last();
-	cl_assert_equal_i(GITERR_INVALID, err->klass);
+	err = git_error_last();
+	cl_assert_equal_i(GIT_ERROR_INVALID, err->klass);
 
-	giterr_clear();
+	git_error_clear();
 	opts.version = 1024;
 	cl_git_fail(git_diff_tree_to_workdir(&diff, g_repo, NULL, &opts));
-	err = giterr_last();
-	cl_assert_equal_i(GITERR_INVALID, err->klass);
+	err = git_error_last();
+	cl_assert_equal_i(GIT_ERROR_INVALID, err->klass);
 }
 
 void test_diff_workdir__can_diff_empty_file(void)
@@ -1677,7 +1677,7 @@ void test_diff_workdir__patience_diff(void)
 	cl_assert_equal_s(expected_patience, buf.ptr);
 	git_buf_clear(&buf);
 
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 	git_patch_free(patch);
 	git_diff_free(diff);
 }
@@ -1807,7 +1807,7 @@ void test_diff_workdir__can_update_index(void)
 		git_buf path = GIT_BUF_INIT;
 		cl_git_pass(git_buf_sets(&path, "status"));
 		cl_git_pass(git_path_direach(&path, 0, touch_file, NULL));
-		git_buf_free(&path);
+		git_buf_dispose(&path);
 	}
 
 	opts.flags |= GIT_DIFF_INCLUDE_IGNORED | GIT_DIFF_INCLUDE_UNTRACKED;
@@ -1910,7 +1910,7 @@ void test_diff_workdir__binary_detection(void)
 		cl_git_write2file(
 			b.ptr, data[i].ptr, data[i].size, O_WRONLY|O_TRUNC, 0664);
 	}
-	git_index_write(idx);
+	cl_git_pass(git_index_write(idx));
 
 	cl_git_pass(git_diff_index_to_workdir(&diff, g_repo, NULL, NULL));
 
@@ -1938,7 +1938,7 @@ void test_diff_workdir__binary_detection(void)
 
 		cl_git_write2file(b.ptr, "baseline\n", 9, O_WRONLY|O_TRUNC, 0664);
 	}
-	git_index_write(idx);
+	cl_git_pass(git_index_write(idx));
 
 	cl_git_pass(git_diff_index_to_workdir(&diff, g_repo, NULL, NULL));
 
@@ -1959,7 +1959,7 @@ void test_diff_workdir__binary_detection(void)
 	git_diff_free(diff);
 
 	git_index_free(idx);
-	git_buf_free(&b);
+	git_buf_dispose(&b);
 }
 
 void test_diff_workdir__to_index_conflicted(void) {
@@ -2016,7 +2016,7 @@ void test_diff_workdir__only_writes_index_when_necessary(void)
 
 	cl_git_pass(git_repository_index(&index, g_repo));
 	cl_git_pass(git_repository_head(&head, g_repo));
-	cl_git_pass(git_reference_peel(&head_object, head, GIT_OBJ_COMMIT));
+	cl_git_pass(git_reference_peel(&head_object, head, GIT_OBJECT_COMMIT));
 
 	cl_git_pass(git_reset(g_repo, head_object, GIT_RESET_HARD, NULL));
 
@@ -2050,7 +2050,7 @@ void test_diff_workdir__only_writes_index_when_necessary(void)
 	git_oid_cpy(&second, git_index_checksum(index));
 	cl_assert(!git_oid_equal(&first, &second));
 
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 	git_object_free(head_object);
 	git_reference_free(head);
 	git_index_free(index);

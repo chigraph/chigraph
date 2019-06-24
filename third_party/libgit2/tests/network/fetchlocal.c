@@ -314,12 +314,6 @@ void test_network_fetchlocal__prune_tag(void)
 	git_repository_free(repo);
 }
 
-static void cleanup_sandbox(void *unused)
-{
-	GIT_UNUSED(unused);
-	cl_git_sandbox_cleanup();
-}
-
 void test_network_fetchlocal__partial(void)
 {
 	git_repository *repo = cl_git_sandbox_init("partial-testrepo");
@@ -332,7 +326,6 @@ void test_network_fetchlocal__partial(void)
 	options.callbacks.transfer_progress = transfer_cb;
 	options.callbacks.payload = &callcount;
 
-	cl_set_cleanup(&cleanup_sandbox, NULL);
 	cl_git_pass(git_reference_list(&refnames, repo));
 	cl_assert_equal_i(1, (int)refnames.count);
 
@@ -376,7 +369,7 @@ void test_network_fetchlocal__clone_into_mirror(void)
 	cl_git_pass(git_clone(&repo, cl_git_fixture_url("testrepo.git"), "./foo.git", &opts));
 
 	cl_git_pass(git_reference_lookup(&ref, repo, "HEAD"));
-	cl_assert_equal_i(GIT_REF_SYMBOLIC, git_reference_type(ref));
+	cl_assert_equal_i(GIT_REFERENCE_SYMBOLIC, git_reference_type(ref));
 	cl_assert_equal_s("refs/heads/master", git_reference_symbolic_target(ref));
 
 	git_reference_free(ref);
@@ -420,7 +413,6 @@ void test_network_fetchlocal__multi_remotes(void)
 	git_strarray refnames = {0};
 	git_fetch_options options = GIT_FETCH_OPTIONS_INIT;
 
-	cl_set_cleanup(&cleanup_sandbox, NULL);
 	options.callbacks.transfer_progress = transfer_cb;
 	cl_git_pass(git_remote_set_url(repo, "test", cl_git_fixture_url("testrepo.git")));
 	cl_git_pass(git_remote_lookup(&test, repo, "test"));

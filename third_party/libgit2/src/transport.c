@@ -4,7 +4,9 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
+
 #include "common.h"
+
 #include "git2/types.h"
 #include "git2/remote.h"
 #include "git2/net.h"
@@ -121,7 +123,7 @@ int git_transport_new(git_transport **out, git_remote *owner, const char *url)
 	int error;
 
 	if ((error = transport_find_fn(&fn, url, &param)) == GIT_ENOTFOUND) {
-		giterr_set(GITERR_NET, "unsupported URL protocol");
+		git_error_set(GIT_ERROR_NET, "unsupported URL protocol");
 		return -1;
 	} else if (error < 0)
 		return error;
@@ -129,7 +131,7 @@ int git_transport_new(git_transport **out, git_remote *owner, const char *url)
 	if ((error = fn(&transport, owner, param)) < 0)
 		return error;
 
-	GITERR_CHECK_VERSION(transport, GIT_TRANSPORT_VERSION, "git_transport");
+	GIT_ERROR_CHECK_VERSION(transport, GIT_TRANSPORT_VERSION, "git_transport");
 
 	*out = transport;
 
@@ -160,7 +162,7 @@ int git_transport_register(
 	}
 
 	definition = git__calloc(1, sizeof(transport_definition));
-	GITERR_CHECK_ALLOC(definition);
+	GIT_ERROR_CHECK_ALLOC(definition);
 
 	definition->prefix = git_buf_detach(&prefix);
 	definition->fn = cb;
@@ -172,7 +174,7 @@ int git_transport_register(
 	return 0;
 
 on_error:
-	git_buf_free(&prefix);
+	git_buf_dispose(&prefix);
 	git__free(definition);
 	return error;
 }
@@ -208,7 +210,7 @@ int git_transport_unregister(const char *scheme)
 	error = GIT_ENOTFOUND;
 
 done:
-	git_buf_free(&prefix);
+	git_buf_dispose(&prefix);
 	return error;
 }
 

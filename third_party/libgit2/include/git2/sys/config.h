@@ -39,12 +39,12 @@ struct git_config_iterator {
 	 * Return the current entry and advance the iterator. The
 	 * memory belongs to the library.
 	 */
-	int (*next)(git_config_entry **entry, git_config_iterator *iter);
+	int GIT_CALLBACK(next)(git_config_entry **entry, git_config_iterator *iter);
 
 	/**
 	 * Free the iterator
 	 */
-	void (*free)(git_config_iterator *iter);
+	void GIT_CALLBACK(free)(git_config_iterator *iter);
 };
 
 /**
@@ -58,15 +58,15 @@ struct git_config_backend {
 	struct git_config *cfg;
 
 	/* Open means open the file/database and parse if necessary */
-	int (*open)(struct git_config_backend *, git_config_level_t level);
-	int (*get)(struct git_config_backend *, const char *key, git_config_entry **entry);
-	int (*set)(struct git_config_backend *, const char *key, const char *value);
-	int (*set_multivar)(git_config_backend *cfg, const char *name, const char *regexp, const char *value);
-	int (*del)(struct git_config_backend *, const char *key);
-	int (*del_multivar)(struct git_config_backend *, const char *key, const char *regexp);
-	int (*iterator)(git_config_iterator **, struct git_config_backend *);
+	int GIT_CALLBACK(open)(struct git_config_backend *, git_config_level_t level, const git_repository *repo);
+	int GIT_CALLBACK(get)(struct git_config_backend *, const char *key, git_config_entry **entry);
+	int GIT_CALLBACK(set)(struct git_config_backend *, const char *key, const char *value);
+	int GIT_CALLBACK(set_multivar)(git_config_backend *cfg, const char *name, const char *regexp, const char *value);
+	int GIT_CALLBACK(del)(struct git_config_backend *, const char *key);
+	int GIT_CALLBACK(del_multivar)(struct git_config_backend *, const char *key, const char *regexp);
+	int GIT_CALLBACK(iterator)(git_config_iterator **, struct git_config_backend *);
 	/** Produce a read-only version of this backend */
-	int (*snapshot)(struct git_config_backend **, struct git_config_backend *);
+	int GIT_CALLBACK(snapshot)(struct git_config_backend **, struct git_config_backend *);
 	/**
 	 * Lock this backend.
 	 *
@@ -74,14 +74,14 @@ struct git_config_backend {
 	 * backend. Any updates must not be visible to any other
 	 * readers.
 	 */
-	int (*lock)(struct git_config_backend *);
+	int GIT_CALLBACK(lock)(struct git_config_backend *);
 	/**
 	 * Unlock the data store backing this backend. If success is
 	 * true, the changes should be committed, otherwise rolled
 	 * back.
 	 */
-	int (*unlock)(struct git_config_backend *, int success);
-	void (*free)(struct git_config_backend *);
+	int GIT_CALLBACK(unlock)(struct git_config_backend *, int success);
+	void GIT_CALLBACK(free)(struct git_config_backend *);
 };
 #define GIT_CONFIG_BACKEND_VERSION 1
 #define GIT_CONFIG_BACKEND_INIT {GIT_CONFIG_BACKEND_VERSION}
@@ -111,6 +111,8 @@ GIT_EXTERN(int) git_config_init_backend(
  * @param cfg the configuration to add the file to
  * @param file the configuration file (backend) to add
  * @param level the priority level of the backend
+ * @param repo optional repository to allow parsing of
+ *  conditional includes
  * @param force if a config file already exists for the given
  *  priority level, replace it
  * @return 0 on success, GIT_EEXISTS when adding more than one file
@@ -120,6 +122,7 @@ GIT_EXTERN(int) git_config_add_backend(
 	git_config *cfg,
 	git_config_backend *file,
 	git_config_level_t level,
+	const git_repository *repo,
 	int force);
 
 /** @} */

@@ -1,18 +1,21 @@
 #include "chi/ClangFinder.hpp"
+#include "chi/Support/ExecutablePath.hpp"
+#include "chi/Support/FindProgram.hpp"
 
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Program.h>
-
-#include <boost/filesystem/operations.hpp>
 #include <boost/preprocessor/stringize.hpp>
 
-namespace fs = boost::filesystem;
+// only non llvm-c include, for LLVM_VERSION*
+#include <llvm/Config/llvm-config.h>
+
+namespace fs = std::filesystem;
 
 namespace chi {
 
 fs::path findClang() {
-	fs::path fileName = std::string("clang-") + BOOST_PP_STRINGIZE(LLVM_VERSION_MAJOR) + "." +
-	                    BOOST_PP_STRINGIZE(LLVM_VERSION_MINOR)
+	fs::path fileName = std::string("clang-") + BOOST_PP_STRINGIZE(LLVM_VERSION_MAJOR)
+#if LLVM_VERSION_MAJOR < 7
+	                    + "." + BOOST_PP_STRINGIZE(LLVM_VERSION_MINOR)
+#endif
 #ifdef WIN32
 	                    + ".exe"
 #endif
@@ -26,19 +29,19 @@ fs::path findClang() {
 
 	// 2st location--current executable path
 	{
-		auto exeLoc = fs::path(llvm::sys::fs::getMainExecutable(nullptr, nullptr)).parent_path();
+		auto exeLoc = executablePath().parent_path();
 
 		if (fs::is_regular_file(exeLoc / fileName)) { return exeLoc / fileName; }
 	}
-	// 3nd location--path
+	// 3rd location--path
 	{
-		auto possibleLoc = llvm::sys::findProgramByName(fileName.string());
-		if (possibleLoc) { return *possibleLoc; }
+		auto possibleLoc = findProgram(fileName.c_str());
+		if (!possibleLoc.empty()) { return possibleLoc; }
 	}
-	// 4nd location--path without version
+	// 4th location--path without version
 	{
-		auto possibleLoc = llvm::sys::findProgramByName("clang");
-		if (possibleLoc) { return *possibleLoc; }
+		auto possibleLoc = findProgram("clang");
+		if (!possibleLoc.empty()) { return possibleLoc; }
 	}
 
 	return {};

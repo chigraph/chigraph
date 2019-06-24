@@ -3,30 +3,23 @@
 #include "chi/Debugger/Debugger.hpp"
 
 #include <chi/Context.hpp>
-#include <chi/LLVMVersion.hpp>
 #include <chi/NameMangler.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/Support/Result.hpp>
+#include <chi/Support/TempFile.hpp>
 
-#include <boost/filesystem.hpp>
-#include <boost/uuid/uuid_io.hpp>
-
-#if LLVM_VERSION_LESS_EQUAL(3, 9)
-#include <llvm/Bitcode/ReaderWriter.h>
-#else
-#include <llvm/Bitcode/BitcodeWriter.h>
-#endif
-
-#include <llvm/IR/Module.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/raw_ostream.h>
+#include <llvm-c/BitWriter.h>
 
 #include <lldb/API/SBListener.h>
 #include <lldb/API/SBThread.h>
 
-#include <stdlib.h>  // for setenv
+#include <boost/uuid/uuid_io.hpp>
 
-namespace fs = boost::filesystem;
+#include <stdlib.h>  // for setenv
+#include <filesystem>
+#include <iostream>
+
+namespace fs = std::filesystem;
 
 namespace chi {
 
@@ -45,7 +38,7 @@ Debugger::Debugger(const char* pathToChig, GraphModule& mod) : mModule{&mod} {
 	    [](const char* msg, void* dbg) {
 		    std::cerr << msg;
 		    std::cerr.flush();
-		},
+	    },
 	    this);
 
 	const char* val[] = {"api", nullptr};
@@ -143,8 +136,8 @@ bool Debugger::removeBreakpoint(NodeInstance& node) {
 }
 
 Result Debugger::start(const char** argv, const char** envp,
-                       const boost::filesystem::path& workingDirectory) {
-	assert(boost::filesystem::is_directory(workingDirectory));
+                       const std::filesystem::path& workingDirectory) {
+	assert(std::filesystem::is_directory(workingDirectory));
 
 	Result res;
 
@@ -154,36 +147,17 @@ Result Debugger::start(const char** argv, const char** envp,
 	}
 
 	// generate IR
-	std::unique_ptr<llvm::Module> mod;
+	OwnedLLVMModule mod;
 	{
 		res = module().context().compileModule(module(), CompileSettings::Default, &mod);
 		if (!res) { return res; }
 	}
 
 	// write it to a file
-	fs::path tmpIRPath;
-	{
-		tmpIRPath = boost::filesystem::temp_directory_path() / fs::unique_path();
-		std::error_code      ec;           // TODO: use ec
-		std::string          errorString;  // only for LLVM 3.5
-		llvm::raw_fd_ostream file {
-			tmpIRPath.string().c_str(),
-#if LLVM_VERSION_LESS_EQUAL(3, 5)
-			    errorString,
-#else
-			    ec,
-#endif
-#if LLVM_VERSION_LESS_EQUAL(6, 0)
-			    llvm::sys::fs::F_RW
-#else
-				llvm::sys::fs::FA_Read | llvm::sys::fs::FA_Write
-#endif
-		};
-		llvm::WriteBitcodeToFile(
-#if LLVM_VERSION_AT_LEAST(7, 0)
-			*
-#endif
-			mod.get(), file);
+	auto tmpIRPath = makeTempPath(".ll");
+	if (LLVMWriteBitcodeToFile(*mod, tmpIRPath.c_str()) != 0) {
+		res.addEntry("EUKN", "Failed to write to temporary file", {});
+		return res;
 	}
 
 	// create args

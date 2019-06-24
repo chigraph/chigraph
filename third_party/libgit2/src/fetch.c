@@ -5,16 +5,16 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
+#include "fetch.h"
+
 #include "git2/oid.h"
 #include "git2/refs.h"
 #include "git2/revwalk.h"
 #include "git2/transport.h"
 
-#include "common.h"
 #include "remote.h"
 #include "refspec.h"
 #include "pack.h"
-#include "fetch.h"
 #include "netops.h"
 #include "repository.h"
 #include "refs.h"
@@ -78,7 +78,7 @@ static int filter_wants(git_remote *remote, const git_fetch_options *opts)
 			goto cleanup;
 
 		error = git_refspec__dwim_one(&remote->active_refspecs, &head, &remote->refs);
-		git_refspec__free(&head);
+		git_refspec__dispose(&head);
 
 		if (error < 0)
 			goto cleanup;
@@ -96,7 +96,7 @@ static int filter_wants(git_remote *remote, const git_fetch_options *opts)
 	}
 
 cleanup:
-	git_refspec__free(&tagspec);
+	git_refspec__dispose(&tagspec);
 
 	return error;
 }
@@ -113,7 +113,7 @@ int git_fetch_negotiate(git_remote *remote, const git_fetch_options *opts)
 	remote->need_pack = 0;
 
 	if (filter_wants(remote, opts) < 0) {
-		giterr_set(GITERR_NET, "failed to filter the reference list for wants");
+		git_error_set(GIT_ERROR_NET, "failed to filter the reference list for wants");
 		return -1;
 	}
 

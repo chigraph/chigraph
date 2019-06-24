@@ -3,6 +3,7 @@
 #include "repository.h"
 #include "fileops.h"
 #include "../submodule/submodule_helpers.h"
+#include "../merge/merge_helpers.h"
 #include "iterator_helpers.h"
 #include <stdarg.h>
 
@@ -460,7 +461,7 @@ void test_iterator_workdir__icase_starts_and_ends(void)
 static void build_workdir_tree(const char *root, int dirs, int subs)
 {
 	int i, j;
-	char buf[64], sub[64];
+	char buf[64], sub[80];
 
 	for (i = 0; i < dirs; ++i) {
 		if (i % 2 == 0) {
@@ -610,6 +611,7 @@ void test_iterator_workdir__filesystem2(void)
 	static const char *expect_base[] = {
 		"heads/br2",
 		"heads/dir",
+		"heads/executable",
 		"heads/ident",
 		"heads/long-file-name",
 		"heads/master",
@@ -630,7 +632,7 @@ void test_iterator_workdir__filesystem2(void)
 
 	cl_git_pass(git_iterator_for_filesystem(
 		&i, "testrepo/.git/refs", NULL));
-	expect_iterator_items(i, 15, expect_base, 15, expect_base);
+	expect_iterator_items(i, 16, expect_base, 16, expect_base);
 	git_iterator_free(i);
 }
 
@@ -659,12 +661,12 @@ void test_iterator_workdir__filesystem_gunk(void)
 
 	cl_git_pass(git_iterator_for_filesystem(&i, "testrepo/.git/refs", NULL));
 
-	/* should only have 13 items, since we're not asking for trees to be
+	/* should only have 16 items, since we're not asking for trees to be
 	 * returned.  the goal of this test is simply to not crash.
 	 */
-	expect_iterator_items(i, 13, NULL, 13, NULL);
+	expect_iterator_items(i, 16, NULL, 15, NULL);
 	git_iterator_free(i);
-	git_buf_free(&parent);
+	git_buf_dispose(&parent);
 }
 
 void test_iterator_workdir__skips_unreadable_dirs(void)
@@ -741,6 +743,8 @@ void test_iterator_workdir__skips_fifos_and_special_files(void)
 	cl_assert_equal_i(GIT_ITEROVER, git_iterator_advance(&e, i));
 
 	git_iterator_free(i);
+#else
+	cl_skip();
 #endif
 }
 
@@ -1038,7 +1042,7 @@ static void create_paths(const char *root, int depth)
 		}
 	}
 
-	git_buf_free(&fullpath);
+	git_buf_dispose(&fullpath);
 }
 
 void test_iterator_workdir__pathlist_for_deeply_nested_item(void)
@@ -1471,3 +1475,48 @@ void test_iterator_workdir__pathlist_with_directory_include_trees(void)
 	git_vector_free(&filelist);
 }
 
+void test_iterator_workdir__hash_when_requested(void)
+{
+	git_iterator *iter;
+	const git_index_entry *entry;
+	git_iterator_options iter_opts = GIT_ITERATOR_OPTIONS_INIT;
+	git_oid expected_id = {{0}};
+	size_t i;
+
+	struct merge_index_entry expected[] = {
+		{ 0100644, "ffb36e513f5fdf8a6ba850a20142676a2ac4807d", 0, "asparagus.txt" },
+		{ 0100644, "68f6182f4c85d39e1309d97c7e456156dc9c0096", 0, "beef.txt" },
+		{ 0100644, "4b7c5650008b2e747fe1809eeb5a1dde0e80850a", 0, "bouilli.txt" },
+		{ 0100644, "c4e6cca3ec6ae0148ed231f97257df8c311e015f", 0, "gravy.txt" },
+		{ 0100644, "7c7e08f9559d9e1551b91e1cf68f1d0066109add", 0, "oyster.txt" },
+		{ 0100644, "898d12687fb35be271c27c795a6b32c8b51da79e", 0, "veal.txt" },
+	};
+
+	g_repo = cl_git_sandbox_init("merge-recursive");
+
+	/* do the iteration normally, ensure there are no hashes */
+	cl_git_pass(git_iterator_for_workdir(&iter, g_repo, NULL, NULL, &iter_opts));
+
+	for (i = 0; i < sizeof(expected) / sizeof(struct merge_index_entry); i++) {
+		cl_git_pass(git_iterator_advance(&entry, iter));
+
+		cl_assert_equal_oid(&expected_id, &entry->id);
+		cl_assert_equal_s(expected[i].path, entry->path);
+	}
+	cl_assert_equal_i(GIT_ITEROVER, git_iterator_advance(&entry, iter));
+	git_iterator_free(iter);
+
+	/* do the iteration requesting hashes */
+	iter_opts.flags |= GIT_ITERATOR_INCLUDE_HASH;
+	cl_git_pass(git_iterator_for_workdir(&iter, g_repo, NULL, NULL, &iter_opts));
+
+	for (i = 0; i < sizeof(expected) / sizeof(struct merge_index_entry); i++) {
+		cl_git_pass(git_iterator_advance(&entry, iter));
+
+		cl_git_pass(git_oid_fromstr(&expected_id, expected[i].oid_str));
+		cl_assert_equal_oid(&expected_id, &entry->id);
+		cl_assert_equal_s(expected[i].path, entry->path);
+	}
+	cl_assert_equal_i(GIT_ITEROVER, git_iterator_advance(&entry, iter));
+	git_iterator_free(iter);
+}

@@ -19,10 +19,10 @@ struct test_entry {
 
 static struct test_entry test_entries[] = {
    {4, "Makefile", 5064, 0x4C3F7F33},
-   {62, "tests/Makefile", 2631, 0x4C3F7F33},
-   {36, "src/index.c", 10014, 0x4C43368D},
    {6, "git.git-authors", 2709, 0x4C3F7F33},
-   {48, "src/revobject.h", 1448, 0x4C3F7FE2}
+   {36, "src/index.c", 10014, 0x4C43368D},
+   {48, "src/revobject.h", 1448, 0x4C3F7FE2},
+   {62, "tests/Makefile", 2631, 0x4C3F7F33}
 };
 
 /* Helpers */
@@ -40,7 +40,7 @@ static void copy_file(const char *src, const char *dst)
 	cl_git_pass(p_write(dst_fd, source_buf.ptr, source_buf.size));
 
 cleanup:
-	git_buf_free(&source_buf);
+	git_buf_dispose(&source_buf);
 	p_close(dst_fd);
 }
 
@@ -54,14 +54,14 @@ static void files_are_equal(const char *a, const char *b)
 		cl_assert(0);
 
 	if (git_futils_readbuffer(&buf_b, b) < 0) {
-		git_buf_free(&buf_a);
+		git_buf_dispose(&buf_a);
 		cl_assert(0);
 	}
 
 	pass = (buf_a.size == buf_b.size && !memcmp(buf_a.ptr, buf_b.ptr, buf_a.size));
 
-	git_buf_free(&buf_a);
-	git_buf_free(&buf_b);
+	git_buf_dispose(&buf_a);
+	git_buf_dispose(&buf_b);
 
 	cl_assert(pass);
 }
@@ -70,6 +70,11 @@ static void files_are_equal(const char *a, const char *b)
 /* Fixture setup and teardown */
 void test_index_tests__initialize(void)
 {
+}
+
+void test_index_tests__cleanup(void)
+{
+	cl_git_pass(git_libgit2_opts(GIT_OPT_ENABLE_UNSAVED_INDEX_SAFETY, 0));
 }
 
 void test_index_tests__empty_index(void)
@@ -331,6 +336,90 @@ void test_index_tests__add_frombuffer(void)
 	git_repository_free(repo);
 }
 
+void test_index_tests__dirty_and_clean(void)
+{
+	git_repository *repo;
+	git_index *index;
+	git_index_entry entry = {{0}};
+
+	/* Index is not dirty after opening */
+	cl_git_pass(git_repository_init(&repo, "./myrepo", 0));
+	cl_git_pass(git_repository_index(&index, repo));
+
+	cl_assert(git_index_entrycount(index) == 0);
+	cl_assert(!git_index_is_dirty(index));
+
+	/* Index is dirty after adding an entry */
+	entry.mode = GIT_FILEMODE_BLOB;
+	entry.path = "test.txt";
+	cl_git_pass(git_index_add_frombuffer(index, &entry, "Hi.\n", 4));
+	cl_assert(git_index_entrycount(index) == 1);
+	cl_assert(git_index_is_dirty(index));
+
+	/* Index is not dirty after write */
+	cl_git_pass(git_index_write(index));
+	cl_assert(!git_index_is_dirty(index));
+
+	/* Index is dirty after removing an entry */
+	cl_git_pass(git_index_remove_bypath(index, "test.txt"));
+	cl_assert(git_index_entrycount(index) == 0);
+	cl_assert(git_index_is_dirty(index));
+
+	/* Index is not dirty after write */
+	cl_git_pass(git_index_write(index));
+	cl_assert(!git_index_is_dirty(index));
+
+	/* Index remains not dirty after read */
+	cl_git_pass(git_index_read(index, 0));
+	cl_assert(!git_index_is_dirty(index));
+
+	/* Index is dirty when we do an unforced read with dirty content */
+	cl_git_pass(git_index_add_frombuffer(index, &entry, "Hi.\n", 4));
+	cl_assert(git_index_entrycount(index) == 1);
+	cl_assert(git_index_is_dirty(index));
+
+	cl_git_pass(git_index_read(index, 0));
+	cl_assert(git_index_is_dirty(index));
+
+	/* Index is clean when we force a read with dirty content */
+	cl_git_pass(git_index_read(index, 1));
+	cl_assert(!git_index_is_dirty(index));
+
+	git_index_free(index);
+	git_repository_free(repo);
+}
+
+void test_index_tests__dirty_fails_optionally(void)
+{
+	git_repository *repo;
+	git_index *index;
+	git_index_entry entry = {{0}};
+
+	/* Index is not dirty after opening */
+	repo = cl_git_sandbox_init("testrepo");
+	cl_git_pass(git_repository_index(&index, repo));
+
+	/* Index is dirty after adding an entry */
+	entry.mode = GIT_FILEMODE_BLOB;
+	entry.path = "test.txt";
+	cl_git_pass(git_index_add_frombuffer(index, &entry, "Hi.\n", 4));
+	cl_assert(git_index_is_dirty(index));
+
+	cl_git_pass(git_checkout_head(repo, NULL));
+
+	/* Index is dirty (again) after adding an entry */
+	entry.mode = GIT_FILEMODE_BLOB;
+	entry.path = "test.txt";
+	cl_git_pass(git_index_add_frombuffer(index, &entry, "Hi.\n", 4));
+	cl_assert(git_index_is_dirty(index));
+
+	cl_git_pass(git_libgit2_opts(GIT_OPT_ENABLE_UNSAVED_INDEX_SAFETY, 1));
+	cl_git_fail_with(GIT_EINDEXDIRTY, git_checkout_head(repo, NULL));
+
+	git_index_free(index);
+	cl_git_sandbox_cleanup();
+}
+
 void test_index_tests__add_frombuffer_reset_entry(void)
 {
 	git_index *index;
@@ -468,7 +557,7 @@ static void add_invalid_filename(git_repository *repo, const char *fn)
 
 	cl_assert(git_index_entrycount(index) == 0);
 
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 	git_index_free(index);
 }
 
@@ -545,9 +634,33 @@ static void write_invalid_filename(git_repository *repo, const char *fn_orig)
 	p_unlink(path.ptr);
 
 	cl_git_pass(git_index_remove_all(index, NULL, NULL, NULL));
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 	git_index_free(index);
 	git__free(fn);
+}
+
+void test_index_tests__write_tree_invalid_unowned_index(void)
+{
+	git_index *idx;
+	git_repository *repo;
+	git_index_entry entry = {{0}};
+	git_oid tree_id;
+
+	cl_git_pass(git_index_new(&idx));
+
+	cl_git_pass(git_oid_fromstr(&entry.id, "8312e0a89a9cbab77c732b6bc39b51a783e3a318"));
+	entry.path = "foo";
+	entry.mode = GIT_FILEMODE_BLOB;
+	cl_git_pass(git_index_add(idx, &entry));
+
+	cl_git_pass(git_repository_init(&repo, "./invalid-id", 0));
+
+	cl_git_fail(git_index_write_tree_to(&tree_id, idx, repo));
+
+	git_index_free(idx);
+	git_repository_free(repo);
+
+	cl_fixture_cleanup("invalid-id");
 }
 
 /* Test that writing an invalid filename fails */
@@ -697,7 +810,7 @@ void test_index_tests__preserves_case(void)
 	cl_git_rewritefile("myrepo/TEST.txt", "hello again\n");
 	cl_git_pass(git_index_add_bypath(index, "TEST.txt"));
 
-	if (index_caps & GIT_INDEXCAP_IGNORE_CASE)
+	if (index_caps & GIT_INDEX_CAPABILITY_IGNORE_CASE)
 		cl_assert_equal_i(1, (int)git_index_entrycount(index));
 	else
 		cl_assert_equal_i(2, (int)git_index_entrycount(index));
@@ -708,7 +821,7 @@ void test_index_tests__preserves_case(void)
 	cl_assert(git__strcmp(entry->path, "test.txt") == 0);
 
 	cl_assert((entry = git_index_get_bypath(index, "TEST.txt", 0)) != NULL);
-	if (index_caps & GIT_INDEXCAP_IGNORE_CASE)
+	if (index_caps & GIT_INDEX_CAPABILITY_IGNORE_CASE)
 		/* The path should *not* have changed without an explicit remove */
 		cl_assert(git__strcmp(entry->path, "test.txt") == 0);
 	else
@@ -736,8 +849,8 @@ void test_index_tests__elocked(void)
 	error = git_index_write(index);
 	cl_assert_equal_i(GIT_ELOCKED, error);
 
-	err = giterr_last();
-	cl_assert_equal_i(err->klass, GITERR_INDEX);
+	err = git_error_last();
+	cl_assert_equal_i(err->klass, GIT_ERROR_INDEX);
 
 	git_filebuf_cleanup(&file);
 	git_index_free(index);
@@ -810,13 +923,13 @@ void test_index_tests__reload_while_ignoring_case(void)
 	cl_git_pass(git_vector_verify_sorted(&index->entries));
 
 	caps = git_index_caps(index);
-	cl_git_pass(git_index_set_caps(index, caps &= ~GIT_INDEXCAP_IGNORE_CASE));
+	cl_git_pass(git_index_set_caps(index, caps &= ~GIT_INDEX_CAPABILITY_IGNORE_CASE));
 	cl_git_pass(git_index_read(index, true));
 	cl_git_pass(git_vector_verify_sorted(&index->entries));
 	cl_assert(git_index_get_bypath(index, ".HEADER", 0));
 	cl_assert_equal_p(NULL, git_index_get_bypath(index, ".header", 0));
 
-	cl_git_pass(git_index_set_caps(index, caps | GIT_INDEXCAP_IGNORE_CASE));
+	cl_git_pass(git_index_set_caps(index, caps | GIT_INDEX_CAPABILITY_IGNORE_CASE));
 	cl_git_pass(git_index_read(index, true));
 	cl_git_pass(git_vector_verify_sorted(&index->entries));
 	cl_assert(git_index_get_bypath(index, ".HEADER", 0));
@@ -835,7 +948,7 @@ void test_index_tests__change_icase_on_instance(void)
 	cl_git_pass(git_vector_verify_sorted(&index->entries));
 
 	caps = git_index_caps(index);
-	cl_git_pass(git_index_set_caps(index, caps &= ~GIT_INDEXCAP_IGNORE_CASE));
+	cl_git_pass(git_index_set_caps(index, caps &= ~GIT_INDEX_CAPABILITY_IGNORE_CASE));
 	cl_assert_equal_i(false, index->ignore_case);
 	cl_git_pass(git_vector_verify_sorted(&index->entries));
 	cl_assert(e = git_index_get_bypath(index, "src/common.h", 0));
@@ -843,7 +956,7 @@ void test_index_tests__change_icase_on_instance(void)
 	cl_assert(e = git_index_get_bypath(index, "COPYING", 0));
 	cl_assert_equal_p(NULL, e = git_index_get_bypath(index, "copying", 0));
 
-	cl_git_pass(git_index_set_caps(index, caps | GIT_INDEXCAP_IGNORE_CASE));
+	cl_git_pass(git_index_set_caps(index, caps | GIT_INDEX_CAPABILITY_IGNORE_CASE));
 	cl_assert_equal_i(true, index->ignore_case);
 	cl_git_pass(git_vector_verify_sorted(&index->entries));
 	cl_assert(e = git_index_get_bypath(index, "COPYING", 0));
@@ -856,11 +969,14 @@ void test_index_tests__change_icase_on_instance(void)
 
 void test_index_tests__can_lock_index(void)
 {
+	git_repository *repo;
 	git_index *index;
 	git_indexwriter one = GIT_INDEXWRITER_INIT,
 		two = GIT_INDEXWRITER_INIT;
 
-	cl_git_pass(git_index_open(&index, TEST_INDEX_PATH));
+	repo = cl_git_sandbox_init("testrepo.git");
+
+	cl_git_pass(git_repository_index(&index, repo));
 	cl_git_pass(git_indexwriter_init(&one, index));
 
 	cl_git_fail_with(GIT_ELOCKED, git_indexwriter_init(&two, index));
@@ -872,5 +988,93 @@ void test_index_tests__can_lock_index(void)
 
 	git_indexwriter_cleanup(&one);
 	git_indexwriter_cleanup(&two);
+	git_index_free(index);
+	cl_git_sandbox_cleanup();
+}
+
+void test_index_tests__can_iterate(void)
+{
+	git_index *index;
+	git_index_iterator *iterator;
+	const git_index_entry *entry;
+	size_t i, iterator_idx = 0, found = 0;
+	int ret;
+
+	cl_git_pass(git_index_open(&index, TEST_INDEX_PATH));
+	cl_git_pass(git_index_iterator_new(&iterator, index));
+
+	cl_assert(git_vector_is_sorted(&iterator->snap));
+
+	for (i = 0; i < ARRAY_SIZE(test_entries); i++) {
+		/* Advance iterator to next test entry index */
+		do {
+			ret = git_index_iterator_next(&entry, iterator);
+
+			if (ret == GIT_ITEROVER)
+				cl_fail("iterator did not contain all test entries");
+
+			cl_git_pass(ret);
+		} while (iterator_idx++ < test_entries[i].index);
+
+		cl_assert_equal_s(entry->path, test_entries[i].path);
+		cl_assert_equal_i(entry->mtime.seconds, test_entries[i].mtime);
+		cl_assert_equal_i(entry->file_size, test_entries[i].file_size);
+		found++;
+	}
+
+	while ((ret = git_index_iterator_next(&entry, iterator)) == 0)
+		;
+
+	if (ret != GIT_ITEROVER)
+		cl_git_fail(ret);
+
+	cl_assert_equal_i(found, ARRAY_SIZE(test_entries));
+
+	git_index_iterator_free(iterator);
+	git_index_free(index);
+}
+
+void test_index_tests__can_modify_while_iterating(void)
+{
+	git_index *index;
+	git_index_iterator *iterator;
+	const git_index_entry *entry;
+	git_index_entry new_entry = {{0}};
+	size_t expected = 0, seen = 0;
+	int ret;
+
+	cl_git_pass(git_index_open(&index, TEST_INDEX_PATH));
+	cl_git_pass(git_index_iterator_new(&iterator, index));
+
+	expected = git_index_entrycount(index);
+	cl_assert(git_vector_is_sorted(&iterator->snap));
+
+	/*
+	 * After we've counted the entries, add a new one and change another;
+	 * ensure that our iterator is backed by a snapshot and thus returns
+	 * the number of entries from when the iterator was created.
+	 */
+	cl_git_pass(git_oid_fromstr(&new_entry.id, "8312e0a89a9cbab77c732b6bc39b51a783e3a318"));
+	new_entry.path = "newfile";
+	new_entry.mode = GIT_FILEMODE_BLOB;
+	cl_git_pass(git_index_add(index, &new_entry));
+
+	cl_git_pass(git_oid_fromstr(&new_entry.id, "4141414141414141414141414141414141414141"));
+	new_entry.path = "Makefile";
+	new_entry.mode = GIT_FILEMODE_BLOB;
+	cl_git_pass(git_index_add(index, &new_entry));
+
+	while (true) {
+		ret = git_index_iterator_next(&entry, iterator);
+
+		if (ret == GIT_ITEROVER)
+			break;
+
+		seen++;
+	}
+
+	cl_assert_equal_i(expected, seen);
+
+	git_index_iterator_free(iterator);
 	git_index_free(index);
 }

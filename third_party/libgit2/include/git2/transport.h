@@ -21,7 +21,7 @@
 GIT_BEGIN_DECL
 
 /** Signature of a function which creates a transport */
-typedef int (*git_transport_cb)(git_transport **out, git_remote *owner, void *param);
+typedef int GIT_CALLBACK(git_transport_cb)(git_transport **out, git_remote *owner, void *param);
 
 /**
  * Type of SSH host fingerprint
@@ -77,45 +77,74 @@ typedef struct {
  *** Begin interface for credentials acquisition ***
  */
 
-/** Authentication type requested */
+/**
+ * Supported credential types
+ *
+ * This represents the various types of authentication methods supported by
+ * the library.
+ */
 typedef enum {
-	/* git_cred_userpass_plaintext */
+	/**
+	 * A vanilla user/password request
+	 * @see git_cred_userpass_plaintext_new
+	 */
 	GIT_CREDTYPE_USERPASS_PLAINTEXT = (1u << 0),
 
-	/* git_cred_ssh_key */
+	/**
+	 * An SSH key-based authentication request
+	 * @see git_cred_ssh_key_new
+	 */
 	GIT_CREDTYPE_SSH_KEY = (1u << 1),
 
-	/* git_cred_ssh_custom */
+	/**
+	 * An SSH key-based authentication request, with a custom signature
+	 * @see git_cred_ssh_custom_new
+	 */
 	GIT_CREDTYPE_SSH_CUSTOM = (1u << 2),
 
-	/* git_cred_default */
+	/**
+	 * An NTLM/Negotiate-based authentication request.
+	 * @see git_cred_default
+	 */
 	GIT_CREDTYPE_DEFAULT = (1u << 3),
 
-	/* git_cred_ssh_interactive */
+	/**
+	 * An SSH interactive authentication request
+	 * @see git_cred_ssh_interactive_new
+	 */
 	GIT_CREDTYPE_SSH_INTERACTIVE = (1u << 4),
 
 	/**
-	 * Username-only information
+	 * Username-only authentication request
 	 *
-	 * If the SSH transport does not know which username to use,
-	 * it will ask via this credential type.
+	 * Used as a pre-authentication step if the underlying transport
+	 * (eg. SSH, with no username in its URL) does not know which username
+	 * to use.
+	 *
+	 * @see git_cred_username_new
 	 */
 	GIT_CREDTYPE_USERNAME = (1u << 5),
 
 	/**
-	 * Credentials read from memory.
+	 * An SSH key-based authentication request
 	 *
-	 * Only available for libssh2+OpenSSL for now.
+	 * Allows credentials to be read from memory instead of files.
+	 * Note that because of differences in crypto backend support, it might
+	 * not be functional.
+	 *
+	 * @see git_cred_ssh_key_memory_new
 	 */
 	GIT_CREDTYPE_SSH_MEMORY = (1u << 6),
 } git_credtype_t;
 
-/* The base structure for all credential types */
 typedef struct git_cred git_cred;
 
+/**
+ * The base structure for all credential types
+ */
 struct git_cred {
-	git_credtype_t credtype;
-	void (*free)(git_cred *cred);
+	git_credtype_t credtype; /**< A type of credential */
+	void GIT_CALLBACK(free)(git_cred *cred);
 };
 
 /** A plaintext username and password */
@@ -136,8 +165,8 @@ typedef struct _LIBSSH2_USERAUTH_KBDINT_PROMPT LIBSSH2_USERAUTH_KBDINT_PROMPT;
 typedef struct _LIBSSH2_USERAUTH_KBDINT_RESPONSE LIBSSH2_USERAUTH_KBDINT_RESPONSE;
 #endif
 
-typedef int (*git_cred_sign_callback)(LIBSSH2_SESSION *session, unsigned char **sig, size_t *sig_len, const unsigned char *data, size_t data_len, void **abstract);
-typedef void (*git_cred_ssh_interactive_callback)(const char* name, int name_len, const char* instruction, int instruction_len, int num_prompts, const LIBSSH2_USERAUTH_KBDINT_PROMPT* prompts, LIBSSH2_USERAUTH_KBDINT_RESPONSE* responses, void **abstract);
+typedef int GIT_CALLBACK(git_cred_sign_callback)(LIBSSH2_SESSION *session, unsigned char **sig, size_t *sig_len, const unsigned char *data, size_t data_len, void **abstract);
+typedef void GIT_CALLBACK(git_cred_ssh_interactive_callback)(const char* name, int name_len, const char* instruction, int instruction_len, int num_prompts, const LIBSSH2_USERAUTH_KBDINT_PROMPT* prompts, LIBSSH2_USERAUTH_KBDINT_RESPONSE* responses, void **abstract);
 
 /**
  * A ssh key from disk
@@ -330,7 +359,7 @@ GIT_EXTERN(void) git_cred_free(git_cred *cred);
  * @return 0 for success, < 0 to indicate an error, > 0 to indicate
  *       no credential was acquired
  */
-typedef int (*git_cred_acquire_cb)(
+typedef int GIT_CALLBACK(git_cred_acquire_cb)(
 	git_cred **cred,
 	const char *url,
 	const char *username_from_url,

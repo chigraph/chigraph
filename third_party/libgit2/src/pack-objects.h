@@ -29,7 +29,7 @@
 
 typedef struct git_pobject {
 	git_oid id;
-	git_otype type;
+	git_object_t type;
 	git_off_t offset;
 
 	size_t size;
@@ -51,12 +51,6 @@ typedef struct git_pobject {
 	    tagged:1,
 	    filled:1;
 } git_pobject;
-
-typedef struct {
-	git_oid id;
-	unsigned int uninteresting:1,
-		seen:1;
-} git_walk_object;
 
 struct git_packbuilder {
 	git_repository *repo; /* associated repository */
@@ -104,4 +98,4 @@ struct git_packbuilder {
 
 int git_packbuilder_write_buf(git_buf *buf, git_packbuilder *pb);
 
-#endif /* INCLUDE_pack_objects_h__ */
+#endif

@@ -69,7 +69,7 @@ static int wildcard_filter_check(
 	if (strcmp(attr_values[0], "wcflip") == 0 ||
 		strcmp(attr_values[0], "wcreverse") == 0) {
 		*payload = git__strdup(attr_values[0]);
-		GITERR_CHECK_ALLOC(*payload);
+		GIT_ERROR_CHECK_ALLOC(*payload);
 		return 0;
 	}
 
@@ -137,8 +137,8 @@ void test_filter_wildcard__reverse(void)
 		0, memcmp(reversed, out.ptr, out.size));
 
 	git_filter_list_free(fl);
-	git_buf_free(&out);
-	git_buf_free(&in);
+	git_buf_dispose(&out);
+	git_buf_dispose(&in);
 }
 
 void test_filter_wildcard__flip(void)
@@ -158,8 +158,8 @@ void test_filter_wildcard__flip(void)
 		0, memcmp(flipped, out.ptr, out.size));
 
 	git_filter_list_free(fl);
-	git_buf_free(&out);
-	git_buf_free(&in);
+	git_buf_dispose(&out);
+	git_buf_dispose(&in);
 }
 
 void test_filter_wildcard__none(void)
@@ -179,6 +179,6 @@ void test_filter_wildcard__none(void)
 		0, memcmp(input, out.ptr, out.size));
 
 	git_filter_list_free(fl);
-	git_buf_free(&out);
-	git_buf_free(&in);
+	git_buf_dispose(&out);
+	git_buf_dispose(&in);
 }

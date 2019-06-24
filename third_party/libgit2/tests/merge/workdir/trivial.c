@@ -14,7 +14,7 @@ static git_index *repo_index;
 #define TEST_INDEX_PATH TEST_REPO_PATH "/.git/index"
 
 
-// Fixture setup and teardown
+/* Fixture setup and teardown */
 void test_merge_workdir_trivial__initialize(void)
 {
 	repo = cl_git_sandbox_init(TEST_REPO_PATH);
@@ -49,7 +49,7 @@ static int merge_trivial(const char *ours, const char *theirs)
 
 	cl_git_pass(git_merge(repo, (const git_annotated_commit **)their_heads, 1, NULL, NULL));
 
-	git_buf_free(&branch_buf);
+	git_buf_dispose(&branch_buf);
 	git_reference_free(our_ref);
 	git_reference_free(their_ref);
 	git_annotated_commit_free(their_heads[0]);

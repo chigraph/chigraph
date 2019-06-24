@@ -19,7 +19,7 @@ void test_threads_basic__cleanup(void)
 
 void test_threads_basic__cache(void)
 {
-	// run several threads polling the cache at the same time
+	/* run several threads polling the cache at the same time */
 	cl_assert(1 == 1);
 }
 
@@ -38,7 +38,7 @@ void test_threads_basic__multiple_init(void)
 
 static void *set_error(void *dummy)
 {
-	giterr_set(GITERR_INVALID, "oh no, something happened!\n");
+	git_error_set(GIT_ERROR_INVALID, "oh no, something happened!\n");
 
 	return dummy;
 }

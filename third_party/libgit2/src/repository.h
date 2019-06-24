@@ -7,6 +7,8 @@
 #ifndef INCLUDE_repository_h__
 #define INCLUDE_repository_h__
 
+#include "common.h"
+
 #include "git2/common.h"
 #include "git2/oid.h"
 #include "git2/odb.h"
@@ -103,7 +105,10 @@ typedef enum {
 	/* core.safecrlf */
 	GIT_SAFE_CRLF_DEFAULT = GIT_CVAR_FALSE,
 	/* core.logallrefupdates */
+	GIT_LOGALLREFUPDATES_FALSE = GIT_CVAR_FALSE,
+	GIT_LOGALLREFUPDATES_TRUE = GIT_CVAR_TRUE,
 	GIT_LOGALLREFUPDATES_UNSET = 2,
+	GIT_LOGALLREFUPDATES_ALWAYS = 3,
 	GIT_LOGALLREFUPDATES_DEFAULT = GIT_LOGALLREFUPDATES_UNSET,
 	/* core.protectHFS */
 	GIT_PROTECTHFS_DEFAULT = GIT_CVAR_FALSE,
@@ -209,8 +214,8 @@ GIT_INLINE(int) git_repository__ensure_not_bare(
 	if (!git_repository_is_bare(repo))
 		return 0;
 
-	giterr_set(
-		GITERR_REPOSITORY,
+	git_error_set(
+		GIT_ERROR_REPOSITORY,
 		"cannot %s. This operation is not allowed against bare repositories.",
 		operation_name);
 

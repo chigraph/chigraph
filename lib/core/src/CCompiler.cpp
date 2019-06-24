@@ -2,27 +2,21 @@
 
 #include "chi/CCompiler.hpp"
 #include "chi/BitcodeParser.hpp"
-#include "chi/LLVMVersion.hpp"
 #include "chi/Support/LibCLocator.hpp"
 #include "chi/Support/Result.hpp"
 #include "chi/Support/Subprocess.hpp"
 
-#include <llvm/IR/Module.h>
-#include <llvm/Support/MemoryBuffer.h>
-
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace chi {
 
-Result compileCToLLVM(const boost::filesystem::path& clangPath, llvm::LLVMContext& llvmContext,
-                      std::vector<std::string> arguments, boost::string_view inputCCode,
-                      std::unique_ptr<llvm::Module>* toFill) {
+Result compileCToLLVM(const std::filesystem::path& clangPath, LLVMContextRef llvmContext,
+                      std::vector<std::string> arguments, std::string_view inputCCode,
+                      OwnedLLVMModule* toFill) {
 	assert(toFill != nullptr && "null toFill passed to compileCToLLVM");
-	assert(fs::is_regular_file(clangPath) &&
-	       "invalid path passed to compileCToLLVM for clangPath");
+	assert(fs::is_regular_file(clangPath) && "invalid path passed to compileCToLLVM for clangPath");
 
 	Result res;
-
 
 	// gather std include paths
 	std::vector<fs::path> stdIncludePaths;
@@ -47,15 +41,13 @@ Result compileCToLLVM(const boost::filesystem::path& clangPath, llvm::LLVMContex
 	arguments.emplace_back("-o");
 	arguments.emplace_back("-");
 
-
 	auto argumentsContext = res.addScopedContext({{"clang arguments", arguments}});
 
 	std::string errors;
 
 	// call clang
-	std::unique_ptr<llvm::Module> mod;
+	OwnedLLVMModule mod;
 	{
-
 		std::string generatedBitcode;
 		Subprocess  clangExe(clangPath);
 		clangExe.setArguments(arguments);
@@ -98,4 +90,4 @@ Result compileCToLLVM(const boost::filesystem::path& clangPath, llvm::LLVMContex
 	return res;
 }
 
-}  // namepsace chi
+}  // namespace chi

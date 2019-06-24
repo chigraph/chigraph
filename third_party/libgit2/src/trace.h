@@ -7,6 +7,8 @@
 #ifndef INCLUDE_trace_h__
 #define INCLUDE_trace_h__
 
+#include "common.h"
+
 #include <git2/trace.h>
 #include "buffer.h"
 
@@ -33,7 +35,7 @@ GIT_INLINE(void) git_trace__write_fmt(
 
 	callback(level, git_buf_cstr(&message));
 
-	git_buf_free(&message);
+	git_buf_dispose(&message);
 }
 
 #define git_trace_level()		(git_trace__data.level)

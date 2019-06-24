@@ -4,8 +4,8 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
-#ifndef INCLUDE_compat_h__
-#define INCLUDE_compat_h__
+#ifndef INCLUDE_cc_compat_h__
+#define INCLUDE_cc_compat_h__
 
 #include <stdarg.h>
 
@@ -47,12 +47,24 @@
 
 /* Define the printf format specifer to use for size_t output */
 #if defined(_MSC_VER) || defined(__MINGW32__)
-#	define PRIuZ "Iu"
-#	define PRIxZ "Ix"
-#	define PRIdZ "Id"
+
+/* The first block is needed to avoid warnings on MingW amd64 */
+#	if (SIZE_MAX == ULLONG_MAX)
+#		define PRIuZ "I64u"
+#		define PRIxZ "I64x"
+#		define PRIXZ "I64X"
+#		define PRIdZ "I64d"
+#	else
+#		define PRIuZ "Iu"
+#		define PRIxZ "Ix"
+#		define PRIXZ "IX"
+#		define PRIdZ "Id"
+#	endif
+
 #else
 #	define PRIuZ "zu"
 #	define PRIxZ "zx"
+#	define PRIXZ "zX"
 #	define PRIdZ "zd"
 #endif
 
@@ -84,4 +96,4 @@
 #	endif
 #endif
 
-#endif /* INCLUDE_compat_h__ */
+#endif

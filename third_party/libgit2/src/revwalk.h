@@ -7,6 +7,8 @@
 #ifndef INCLUDE_revwalk_h__
 #define INCLUDE_revwalk_h__
 
+#include "common.h"
+
 #include "git2/revwalk.h"
 #include "oidmap.h"
 #include "commit_list.h"
@@ -34,7 +36,8 @@ struct git_revwalk {
 	unsigned walking:1,
 		first_parent: 1,
 		did_hide: 1,
-		did_push: 1;
+		did_push: 1,
+		limited: 1;
 	unsigned int sorting;
 
 	/* the pushes and hides */

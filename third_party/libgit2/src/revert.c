@@ -6,6 +6,7 @@
 */
 
 #include "common.h"
+
 #include "repository.h"
 #include "filebuf.h"
 #include "merge.h"
@@ -35,7 +36,7 @@ static int write_revert_head(
 	if (error < 0)
 		git_filebuf_cleanup(&file);
 
-	git_buf_free(&file_path);
+	git_buf_dispose(&file_path);
 
 	return error;
 }
@@ -61,7 +62,7 @@ cleanup:
 	if (error < 0)
 		git_filebuf_cleanup(&file);
 
-	git_buf_free(&file_path);
+	git_buf_dispose(&file_path);
 
 	return error;
 }
@@ -111,7 +112,7 @@ static int revert_seterr(git_commit *commit, const char *fmt)
 	git_oid_fmt(commit_oidstr, git_commit_id(commit));
 	commit_oidstr[GIT_OID_HEXSZ] = '\0';
 
-	giterr_set(GITERR_REVERT, fmt, commit_oidstr);
+	git_error_set(GIT_ERROR_REVERT, fmt, commit_oidstr);
 
 	return -1;
 }
@@ -181,7 +182,7 @@ int git_revert(
 
 	assert(repo && commit);
 
-	GITERR_CHECK_VERSION(given_opts, GIT_REVERT_OPTIONS_VERSION, "git_revert_options");
+	GIT_ERROR_CHECK_VERSION(given_opts, GIT_REVERT_OPTIONS_VERSION, "git_revert_options");
 
 	if ((error = git_repository__ensure_not_bare(repo, "revert")) < 0)
 		return error;
@@ -200,7 +201,7 @@ int git_revert(
 		(error = write_revert_head(repo, commit_oidstr)) < 0 ||
 		(error = write_merge_msg(repo, commit_oidstr, commit_msg)) < 0 ||
 		(error = git_repository_head(&our_ref, repo)) < 0 ||
-		(error = git_reference_peel((git_object **)&our_commit, our_ref, GIT_OBJ_COMMIT)) < 0 ||
+		(error = git_reference_peel((git_object **)&our_commit, our_ref, GIT_OBJECT_COMMIT)) < 0 ||
 		(error = git_revert_commit(&index, repo, commit, our_commit, opts.mainline, &opts.merge_opts)) < 0 ||
 		(error = git_merge__check_result(repo, index)) < 0 ||
 		(error = git_merge__append_conflicts_to_merge_msg(repo, index)) < 0 ||
@@ -218,7 +219,7 @@ done:
 	git_index_free(index);
 	git_commit_free(our_commit);
 	git_reference_free(our_ref);
-	git_buf_free(&their_label);
+	git_buf_dispose(&their_label);
 
 	return error;
 }

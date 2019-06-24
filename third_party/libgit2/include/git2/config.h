@@ -64,8 +64,9 @@ typedef enum {
 typedef struct git_config_entry {
 	const char *name; /**< Name of the entry (normalised) */
 	const char *value; /**< String value of the entry */
+	unsigned int include_depth; /**< Depth of includes where this variable was found */
 	git_config_level_t level; /**< Which config file this was found in */
-	void (*free)(struct git_config_entry *entry); /**< Free function for this entry */
+	void GIT_CALLBACK(free)(struct git_config_entry *entry); /**< Free function for this entry */
 	void *payload; /**< Opaque value for the free function. Do not read or write */
 } git_config_entry;
 
@@ -74,7 +75,17 @@ typedef struct git_config_entry {
  */
 GIT_EXTERN(void) git_config_entry_free(git_config_entry *);
 
-typedef int  (*git_config_foreach_cb)(const git_config_entry *, void *);
+/**
+ * A config enumeration callback
+ *
+ * @param entry the entry currently being enumerated
+ * @param payload a user-specified pointer
+ */
+typedef int GIT_CALLBACK(git_config_foreach_cb)(const git_config_entry *entry, void *payload);
+
+/**
+ * An opaque structure for a configuration iterator
+ */
 typedef struct git_config_iterator git_config_iterator;
 
 /**
@@ -199,6 +210,8 @@ GIT_EXTERN(int) git_config_new(git_config **out);
  * @param path path to the configuration file to add
  * @param level the priority level of the backend
  * @param force replace config file at the given priority level
+ * @param repo optional repository to allow parsing of
+ *  conditional includes
  * @return 0 on success, GIT_EEXISTS when adding more than one file
  *  for a given priority level (and force_replace set to 0),
  *  GIT_ENOTFOUND when the file doesn't exist or error code
@@ -207,6 +220,7 @@ GIT_EXTERN(int) git_config_add_file_ondisk(
 	git_config *cfg,
 	const char *path,
 	git_config_level_t level,
+	const git_repository *repo,
 	int force);
 
 /**
@@ -248,7 +262,7 @@ GIT_EXTERN(int) git_config_open_level(
  * Open the global/XDG configuration file according to git's rules
  *
  * Git allows you to store your global configuration at
- * `$HOME/.config` or `$XDG_CONFIG_HOME/git/config`. For backwards
+ * `$HOME/.gitconfig` or `$XDG_CONFIG_HOME/git/config`. For backwards
  * compatability, the XDG file shouldn't be used unless the use has
  * created it explicitly. With this function you'll open the correct
  * one to write to.
@@ -398,6 +412,10 @@ GIT_EXTERN(int) git_config_get_string_buf(git_buf *out, const git_config *cfg, c
  *
  * The callback will be called on each variable found
  *
+ * The regular expression is applied case-sensitively on the normalized form of
+ * the variable name: the section and variable parts are lower-cased. The
+ * subsection is left unchanged.
+ *
  * @param cfg where to look for the variable
  * @param name the variable's name
  * @param regexp regular expression to filter which variables we're
@@ -409,6 +427,10 @@ GIT_EXTERN(int) git_config_get_multivar_foreach(const git_config *cfg, const cha
 
 /**
  * Get each value of a multivar
+ *
+ * The regular expression is applied case-sensitively on the normalized form of
+ * the variable name: the section and variable parts are lower-cased. The
+ * subsection is left unchanged.
  *
  * @param out pointer to store the iterator
  * @param cfg where to look for the variable
@@ -487,6 +509,8 @@ GIT_EXTERN(int) git_config_set_string(git_config *cfg, const char *name, const c
 /**
  * Set a multivar in the local config file.
  *
+ * The regular expression is applied case-sensitively on the value.
+ *
  * @param cfg where to look for the variable
  * @param name the variable's name
  * @param regexp a regular expression to indicate which values to replace
@@ -505,6 +529,8 @@ GIT_EXTERN(int) git_config_delete_entry(git_config *cfg, const char *name);
 
 /**
  * Deletes one or several entries from a multivar in the local config file.
+ *
+ * The regular expression is applied case-sensitively on the value.
  *
  * @param cfg where to look for the variables
  * @param name the variable's name
@@ -552,6 +578,10 @@ GIT_EXTERN(int) git_config_iterator_new(git_config_iterator **out, const git_con
  * Use `git_config_next` to advance the iteration and
  * `git_config_iterator_free` when done.
  *
+ * The regular expression is applied case-sensitively on the normalized form of
+ * the variable name: the section and variable parts are lower-cased. The
+ * subsection is left unchanged.
+ *
  * @param out pointer to store the iterator
  * @param cfg where to ge the variables from
  * @param regexp regular expression to match the names
@@ -561,12 +591,16 @@ GIT_EXTERN(int) git_config_iterator_glob_new(git_config_iterator **out, const gi
 /**
  * Perform an operation on each config variable matching a regular expression.
  *
- * This behaviors like `git_config_foreach` with an additional filter of a
+ * This behaves like `git_config_foreach` with an additional filter of a
  * regular expression that filters which config keys are passed to the
  * callback.
  *
- * The pointers passed to the callback are only valid as long as the
- * iteration is ongoing.
+ * The regular expression is applied case-sensitively on the normalized form of
+ * the variable name: the section and variable parts are lower-cased. The
+ * subsection is left unchanged.
+ *
+ * The regular expression is applied case-sensitively on the normalized form of
+ * the variable name: the case-insensitive parts are lower-case.
  *
  * @param cfg where to get the variables from
  * @param regexp regular expression to match against config names
@@ -687,11 +721,15 @@ GIT_EXTERN(int) git_config_parse_int64(int64_t *out, const char *value);
 GIT_EXTERN(int) git_config_parse_path(git_buf *out, const char *value);
 
 /**
- * Perform an operation on each config variable in given config backend
+ * Perform an operation on each config variable in a given config backend,
  * matching a regular expression.
  *
- * This behaviors like `git_config_foreach_match` except instead of all config
- * entries it just enumerates through the given backend entry.
+ * This behaves like `git_config_foreach_match` except that only config
+ * entries from the given backend entry are enumerated.
+ *
+ * The regular expression is applied case-sensitively on the normalized form of
+ * the variable name: the section and variable parts are lower-cased. The
+ * subsection is left unchanged.
  *
  * @param backend where to get the variables from
  * @param regexp regular expression to match against config names (can be NULL)

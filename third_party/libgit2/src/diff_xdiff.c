@@ -4,11 +4,13 @@
  * This file is part of libgit2, distributed under the GNU GPL v2 with
  * a Linking Exception. For full terms see the included COPYING file.
  */
+
+#include "diff_xdiff.h"
+#include "util.h"
+
 #include "git2/errors.h"
-#include "common.h"
 #include "diff.h"
 #include "diff_driver.h"
-#include "diff_xdiff.h"
 #include "patch_generate.h"
 
 static int git_xdiff_scan_int(const char **str, int *value)
@@ -50,7 +52,7 @@ static int git_xdiff_parse_hunk(git_diff_hunk *hunk, const char *header)
 	return 0;
 
 fail:
-	giterr_set(GITERR_INVALID, "malformed hunk header from xdiff");
+	git_error_set(GIT_ERROR_INVALID, "malformed hunk header from xdiff");
 	return -1;
 }
 
@@ -99,7 +101,7 @@ static int diff_update_lines(
 		info->new_lineno += (int)line->num_lines;
 		break;
 	default:
-		giterr_set(GITERR_INVALID, "unknown diff line origin %02x",
+		git_error_set(GIT_ERROR_INVALID, "unknown diff line origin %02x",
 			(unsigned int)line->origin);
 		return -1;
 	}
@@ -114,6 +116,7 @@ static int git_xdiff_cb(void *priv, mmbuffer_t *bufs, int len)
 	const git_diff_delta *delta = patch->base.delta;
 	git_patch_generated_output *output = &info->xo->output;
 	git_diff_line line;
+	size_t buffer_len;
 
 	if (len == 1) {
 		output->error = git_xdiff_parse_hunk(&info->hunk, bufs[0].ptr);
@@ -123,6 +126,16 @@ static int git_xdiff_cb(void *priv, mmbuffer_t *bufs, int len)
 		info->hunk.header_len = bufs[0].size;
 		if (info->hunk.header_len >= sizeof(info->hunk.header))
 			info->hunk.header_len = sizeof(info->hunk.header) - 1;
+
+		/* Sanitize the hunk header in case there is invalid Unicode */
+		buffer_len = git__utf8_valid_buf_length((const uint8_t *) bufs[0].ptr, info->hunk.header_len);
+		/* Sanitizing the hunk header may delete the newline, so add it back again if there is room */
+		if (buffer_len < info->hunk.header_len) {
+			bufs[0].ptr[buffer_len] = '\n';
+			buffer_len += 1;
+			info->hunk.header_len = buffer_len;
+		}
+
 		memcpy(info->hunk.header, bufs[0].ptr, info->hunk.header_len);
 		info->hunk.header[info->hunk.header_len] = '\0';
 
@@ -211,7 +224,7 @@ static int git_xdiff(git_patch_generated_output *output, git_patch_generated *pa
 
 	if (info.xd_old_data.size > GIT_XDIFF_MAX_SIZE ||
 		info.xd_new_data.size > GIT_XDIFF_MAX_SIZE) {
-		giterr_set(GITERR_INVALID, "files too large for diff");
+		git_error_set(GIT_ERROR_INVALID, "files too large for diff");
 		return -1;
 	}
 
@@ -238,6 +251,8 @@ void git_xdiff_init(git_xdiff_output *xo, const git_diff_options *opts)
 		xo->params.flags |= XDF_IGNORE_WHITESPACE_CHANGE;
 	if (flags & GIT_DIFF_IGNORE_WHITESPACE_EOL)
 		xo->params.flags |= XDF_IGNORE_WHITESPACE_AT_EOL;
+	if (flags & GIT_DIFF_INDENT_HEURISTIC)
+		xo->params.flags |= XDF_INDENT_HEURISTIC;
 
 	if (flags & GIT_DIFF_PATIENCE)
 		xo->params.flags |= XDF_PATIENCE_DIFF;

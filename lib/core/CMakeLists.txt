@@ -2,49 +2,50 @@
 
 # Create the library
 set(CHI_PUBLIC_FILES
-	include/chi/FunctionValidator.hpp
-	include/chi/NodeCompiler.hpp
-	include/chi/NameMangler.hpp
-	include/chi/DataType.hpp
-	include/chi/ModuleCache.hpp
-	include/chi/GraphFunction.hpp
+	include/chi/BitcodeParser.hpp
+	include/chi/CCompiler.hpp
 	include/chi/ChiModule.hpp
-	include/chi/JsonSerializer.hpp
+	include/chi/ClangFinder.hpp
 	include/chi/Context.hpp
-	include/chi/NodeType.hpp
+	include/chi/DataType.hpp
+	include/chi/DefaultModuleCache.hpp
+	include/chi/Dwarf.hpp
 	include/chi/FunctionCompiler.hpp
+	include/chi/FunctionValidator.hpp
 	include/chi/Fwd.hpp
+	include/chi/GraphFunction.hpp
 	include/chi/GraphModule.hpp
 	include/chi/GraphStruct.hpp
 	include/chi/JsonDeserializer.hpp
+	include/chi/JsonSerializer.hpp
 	include/chi/LangModule.hpp
-	include/chi/LLVMVersion.hpp
-	include/chi/DefaultModuleCache.hpp
+	include/chi/ModuleCache.hpp
+	include/chi/NameMangler.hpp
+	include/chi/NodeCompiler.hpp
 	include/chi/NodeInstance.hpp
-	include/chi/CCompiler.hpp
-	include/chi/BitcodeParser.hpp
-	include/chi/ClangFinder.hpp
+	include/chi/NodeType.hpp
+	include/chi/Owned.hpp
 )
 set(CHI_PRIVATE_FILES
-	src/Context.cpp
-	src/NameMangler.cpp
-	src/FunctionValidator.cpp
-	src/GraphStruct.cpp
-	src/JsonSerializer.cpp
-	src/GraphFunction.cpp
-	src/NodeType.cpp
-	src/LangModule.cpp
-	src/JsonDeserializer.cpp
-	src/DefaultModuleCache.cpp
-	src/ChiModule.cpp
-	src/GraphModule.cpp
-	src/NodeInstance.cpp
-	src/FunctionCompiler.cpp
-	src/DataType.cpp
-	src/NodeCompiler.cpp
-	src/CCompiler.cpp
 	src/BitcodeParser.cpp
+	src/CCompiler.cpp
+	src/ChiModule.cpp
 	src/ClangFinder.cpp
+	src/Context.cpp
+	src/DataType.cpp
+	src/DefaultModuleCache.cpp
+	src/FunctionCompiler.cpp
+	src/FunctionValidator.cpp
+	src/GraphFunction.cpp
+	src/GraphModule.cpp
+	src/GraphStruct.cpp
+	src/JsonDeserializer.cpp
+	src/JsonSerializer.cpp
+	src/LangModule.cpp
+	src/NameMangler.cpp
+	src/NodeCompiler.cpp
+	src/NodeInstance.cpp
+	src/NodeType.cpp
 )
 add_library(chigraphcore STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
@@ -100,8 +101,6 @@ message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 
 target_link_libraries(chigraphcore
 PUBLIC
-	${Boost_SYSTEM_LIBRARY}
-	${Boost_FILESYSTEM_LIBRARY}
 	${LLVM_LD_FLAGS_LIST}
 	${LLVM_LINK_LIST}
 	${LLVM_SYSTEM_LINK_LIST}

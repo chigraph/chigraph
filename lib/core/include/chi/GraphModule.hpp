@@ -18,8 +18,8 @@ struct GraphModule : public ChiModule {
 	/// \param cont The context
 	/// \param fullName The full name of the module
 	/// \param dependencies The dependencies
-	GraphModule(Context& cont, boost::filesystem::path fullName,
-	            const std::vector<boost::filesystem::path>& dependencies = {});
+	GraphModule(Context& cont, std::filesystem::path fullName,
+	            const std::vector<std::filesystem::path>& dependencies = {});
 
 	// No copy or move -- pointer only
 	GraphModule(const GraphModule&) = delete;
@@ -30,17 +30,19 @@ struct GraphModule : public ChiModule {
 	// ChiModule interface
 	///////////////////////
 
-	Result nodeTypeFromName(boost::string_view name, const nlohmann::json& jsonData,
+	Result nodeTypeFromName(std::string_view name, const nlohmann::json& jsonData,
 	                        std::unique_ptr<NodeType>* toFill) override;
 
-	DataType typeFromName(boost::string_view name) override;
+	DataType                 typeFromName(std::string_view name) override;
 	std::vector<std::string> nodeTypeNames() const override;
 
 	std::vector<std::string> typeNames() const override;
 
-	Result addForwardDeclarations(llvm::Module& module) const override;
+	LLVMMetadataRef debugType(FunctionCompiler& compiler, const DataType& dType) const override;
 
-	Result generateModule(llvm::Module& module) override;
+	Result addForwardDeclarations(LLVMModuleRef module) const override;
+
+	Result generateModule(LLVMModuleRef module) override;
 
 	/////////////////////
 
@@ -55,7 +57,7 @@ struct GraphModule : public ChiModule {
 	/// Get the path to the source file
 	/// It's not garunteed to exist, because it could have not been saved
 	/// \return The path
-	boost::filesystem::path sourceFilePath() const;
+	std::filesystem::path sourceFilePath() const;
 
 	/// \name Function Creation and Manipulation
 	/// \{
@@ -78,7 +80,7 @@ struct GraphModule : public ChiModule {
 	/// \param name The name of the function to remove
 	/// \param deleteReferences should all the references in the context be deleted?
 	/// \return True if there was a function matching name that was removed
-	bool removeFunction(boost::string_view name, bool deleteReferences = true);
+	bool removeFunction(std::string_view name, bool deleteReferences = true);
 
 	/// Remove a function from the module
 	/// \param func The function to remove
@@ -88,7 +90,7 @@ struct GraphModule : public ChiModule {
 	/// Get a function from the name
 	/// \param name The name to get
 	/// \return The GraphFunction or nullptr if it doesn't exist
-	GraphFunction* functionFromName(boost::string_view name) const;
+	GraphFunction* functionFromName(std::string_view name) const;
 
 	/// Get functions
 	/// \return The functions
@@ -104,7 +106,7 @@ struct GraphModule : public ChiModule {
 	/// Get a struct by name
 	/// \param name The name of the struct
 	/// \return The struct or nullptr if not found
-	GraphStruct* structFromName(boost::string_view name) const;
+	GraphStruct* structFromName(std::string_view name) const;
 
 	/// Create a new struct in the module
 	/// \param name The name of the struct
@@ -115,7 +117,7 @@ struct GraphModule : public ChiModule {
 	/// Remove a struct from the module by name
 	/// \param name The name of the struct to remove
 	/// \return True if a struct was actually removed, false if no struct by that name existed
-	bool removeStruct(boost::string_view name);
+	bool removeStruct(std::string_view name);
 
 	/// Remove a struct from the module by pointer
 	/// \param tyToDel Struct to delete, must be in this module
@@ -142,12 +144,12 @@ struct GraphModule : public ChiModule {
 	/// \param toFill The unique_ptr to fill
 	/// \pre toFill must not be nullptr (the unique_ptr it points to can be though)
 	/// \return The Result
-	Result createNodeTypeFromCCode(boost::string_view code, boost::string_view functionName,
+	Result createNodeTypeFromCCode(std::string_view code, std::string_view functionName,
 	                               std::vector<std::string>   clangArgs,
 	                               std::unique_ptr<NodeType>* toFill);
 
 	/// Get the path to the .c directory. It is not garunteed to exist, even if cEnabled() is true
-	boost::filesystem::path pathToCSources() const {
+	std::filesystem::path pathToCSources() const {
 		return sourceFilePath().parent_path() / (shortName() + ".c");
 	}
 

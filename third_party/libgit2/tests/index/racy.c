@@ -46,7 +46,7 @@ void test_index_racy__diff(void)
 
 	git_index_free(index);
 	git_diff_free(diff);
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 void test_index_racy__write_index_just_after_file(void)
@@ -95,7 +95,7 @@ void test_index_racy__write_index_just_after_file(void)
 	cl_git_pass(git_diff_index_to_workdir(&diff, g_repo, index, NULL));
 	cl_assert_equal_i(1, git_diff_num_deltas(diff));
 
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 	git_diff_free(diff);
 	git_index_free(index);
 }
@@ -126,10 +126,10 @@ static void setup_race(void)
 	cl_assert(entry = (git_index_entry *)git_index_get_bypath(index, "A", 0));
 
 	/* force a race */
-	entry->mtime.seconds = st.st_mtime;
-	entry->mtime.nanoseconds = st.st_mtime_nsec;
+	entry->mtime.seconds = (int32_t)st.st_mtime;
+	entry->mtime.nanoseconds = (int32_t)st.st_mtime_nsec;
 
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 void test_index_racy__smudges_index_entry_on_save(void)
@@ -196,7 +196,7 @@ static void setup_uptodate_files(void)
 	cl_git_pass(git_index_add_frombuffer(index, &new_entry, "hello!\n", 7));
 
 	git_index_free(index);
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 void test_index_racy__adding_to_index_is_uptodate(void)
@@ -210,13 +210,13 @@ void test_index_racy__adding_to_index_is_uptodate(void)
 
 	/* ensure that they're all uptodate */
 	cl_assert((entry = git_index_get_bypath(index, "A", 0)));
-	cl_assert_equal_i(GIT_IDXENTRY_UPTODATE, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(GIT_INDEX_ENTRY_UPTODATE, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	cl_assert((entry = git_index_get_bypath(index, "B", 0)));
-	cl_assert_equal_i(GIT_IDXENTRY_UPTODATE, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(GIT_INDEX_ENTRY_UPTODATE, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	cl_assert((entry = git_index_get_bypath(index, "C", 0)));
-	cl_assert_equal_i(GIT_IDXENTRY_UPTODATE, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(GIT_INDEX_ENTRY_UPTODATE, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	cl_git_pass(git_index_write(index));
 
@@ -237,13 +237,13 @@ void test_index_racy__reading_clears_uptodate_bit(void)
 
 	/* ensure that no files are uptodate */
 	cl_assert((entry = git_index_get_bypath(index, "A", 0)));
-	cl_assert_equal_i(0, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(0, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	cl_assert((entry = git_index_get_bypath(index, "B", 0)));
-	cl_assert_equal_i(0, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(0, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	cl_assert((entry = git_index_get_bypath(index, "C", 0)));
-	cl_assert_equal_i(0, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(0, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	git_index_free(index);
 }
@@ -264,13 +264,13 @@ void test_index_racy__read_tree_clears_uptodate_bit(void)
 
 	/* ensure that no files are uptodate */
 	cl_assert((entry = git_index_get_bypath(index, "A", 0)));
-	cl_assert_equal_i(0, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(0, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	cl_assert((entry = git_index_get_bypath(index, "B", 0)));
-	cl_assert_equal_i(0, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(0, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	cl_assert((entry = git_index_get_bypath(index, "C", 0)));
-	cl_assert_equal_i(0, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(0, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	git_tree_free(tree);
 	git_index_free(index);
@@ -311,13 +311,13 @@ void test_index_racy__read_index_clears_uptodate_bit(void)
 
 	/* ensure that files brought in from the other index are not uptodate */
 	cl_assert((entry = git_index_get_bypath(newindex, "A", 0)));
-	cl_assert_equal_i(0, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(0, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	cl_assert((entry = git_index_get_bypath(newindex, "B", 0)));
-	cl_assert_equal_i(0, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(0, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	cl_assert((entry = git_index_get_bypath(newindex, "C", 0)));
-	cl_assert_equal_i(0, (entry->flags_extended & GIT_IDXENTRY_UPTODATE));
+	cl_assert_equal_i(0, (entry->flags_extended & GIT_INDEX_ENTRY_UPTODATE));
 
 	git_index_free(index);
 	git_index_free(newindex);

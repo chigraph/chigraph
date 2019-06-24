@@ -2,6 +2,7 @@
 #include "git2/repository.h"
 #include "git2/sys/index.h"
 #include "fileops.h"
+#include "repository.h"
 
 static git_repository *g_repo;
 static git_index *g_index;
@@ -93,7 +94,7 @@ static void create_index(struct checkout_index_entry *entries, size_t entries_le
 		if (entries[i].stage == 3 && (i == 0 || strcmp(entries[i-1].path, entries[i].path) != 0 || entries[i-1].stage != 2))
 			p_unlink(git_buf_cstr(&path));
 
-		git_index_remove_bypath(g_index, entries[i].path);
+		cl_git_pass(git_index_remove_bypath(g_index, entries[i].path));
 	}
 
 	for (i = 0; i < entries_len; i++) {
@@ -102,14 +103,14 @@ static void create_index(struct checkout_index_entry *entries, size_t entries_le
 		memset(&entry, 0x0, sizeof(git_index_entry));
 
 		entry.mode = entries[i].mode;
-		GIT_IDXENTRY_STAGE_SET(&entry, entries[i].stage);
+		GIT_INDEX_ENTRY_STAGE_SET(&entry, entries[i].stage);
 		git_oid_fromstr(&entry.id, entries[i].oid_str);
 		entry.path = entries[i].path;
 
 		cl_git_pass(git_index_add(g_index, &entry));
 	}
 
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 }
 
 static void create_index_names(struct checkout_name_entry *entries, size_t entries_len)
@@ -133,7 +134,7 @@ static void create_conflicting_index(void)
 	};
 
 	create_index(checkout_index_entries, 3);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 }
 
 static void ensure_workdir_contents(const char *path, const char *contents)
@@ -146,8 +147,8 @@ static void ensure_workdir_contents(const char *path, const char *contents)
 	cl_git_pass(git_futils_readbuffer(&data_buf, git_buf_cstr(&fullpath)));
 	cl_assert(strcmp(git_buf_cstr(&data_buf), contents) == 0);
 
-	git_buf_free(&fullpath);
-	git_buf_free(&data_buf);
+	git_buf_dispose(&fullpath);
+	git_buf_dispose(&data_buf);
 }
 
 static void ensure_workdir_oid(const char *path, const char *oid_str)
@@ -155,7 +156,7 @@ static void ensure_workdir_oid(const char *path, const char *oid_str)
 	git_oid expected, actual;
 
 	cl_git_pass(git_oid_fromstr(&expected, oid_str));
-	cl_git_pass(git_repository_hashfile(&actual, g_repo, path, GIT_OBJ_BLOB, NULL));
+	cl_git_pass(git_repository_hashfile(&actual, g_repo, path, GIT_OBJECT_BLOB, NULL));
 	cl_assert_equal_oid(&expected, &actual);
 }
 
@@ -174,7 +175,7 @@ static void ensure_workdir_mode(const char *path, int mode)
 	cl_git_pass(p_stat(git_buf_cstr(&fullpath), &st));
 	cl_assert_equal_i((mode & S_IRWXU), (st.st_mode & S_IRWXU));
 
-	git_buf_free(&fullpath);
+	git_buf_dispose(&fullpath);
 #endif
 }
 
@@ -184,28 +185,35 @@ static void ensure_workdir(const char *path, int mode, const char *oid_str)
 	ensure_workdir_oid(path, oid_str);
 }
 
-static void ensure_workdir_link(const char *path, const char *target)
+static void ensure_workdir_link(
+	git_repository *repo,
+	const char *path,
+	const char *target)
 {
-#ifdef GIT_WIN32
-	ensure_workdir_contents(path, target);
-#else
-	git_buf fullpath = GIT_BUF_INIT;
-	char actual[1024];
-	struct stat st;
-	int len;
+	int symlinks;
 
-	cl_git_pass(
-		git_buf_joinpath(&fullpath, git_repository_workdir(g_repo), path));
+	cl_git_pass(git_repository__cvar(&symlinks, repo, GIT_CVAR_SYMLINKS));
 
-	cl_git_pass(p_lstat(git_buf_cstr(&fullpath), &st));
-	cl_assert(S_ISLNK(st.st_mode));
+	if (!symlinks) {
+		ensure_workdir_contents(path, target);
+	} else {
+		git_buf fullpath = GIT_BUF_INIT;
+		char actual[1024];
+		struct stat st;
+		int len;
 
-	cl_assert((len = p_readlink(git_buf_cstr(&fullpath), actual, 1024)) > 0);
-	actual[len] = '\0';
-	cl_assert(strcmp(actual, target) == 0);
+		cl_git_pass(
+			git_buf_joinpath(&fullpath, git_repository_workdir(g_repo), path));
 
-	git_buf_free(&fullpath);
-#endif
+		cl_git_pass(p_lstat(git_buf_cstr(&fullpath), &st));
+		cl_assert(S_ISLNK(st.st_mode));
+
+		cl_assert((len = p_readlink(git_buf_cstr(&fullpath), actual, 1024)) > 0);
+		actual[len] = '\0';
+		cl_assert(strcmp(actual, target) == 0);
+
+		git_buf_dispose(&fullpath);
+	}
 }
 
 void test_checkout_conflict__ignored(void)
@@ -271,7 +279,7 @@ void test_checkout_conflict__automerge(void)
 	};
 
 	create_index(checkout_index_entries, 3);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 
@@ -303,7 +311,7 @@ void test_checkout_conflict__directory_file(void)
 	opts.checkout_strategy |= GIT_CHECKOUT_SAFE;
 
 	create_index(checkout_index_entries, 12);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 
@@ -344,7 +352,7 @@ void test_checkout_conflict__directory_file_with_custom_labels(void)
 	opts.their_label = "branch";
 
 	create_index(checkout_index_entries, 12);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 
@@ -383,7 +391,7 @@ void test_checkout_conflict__link_file(void)
 	opts.checkout_strategy |= GIT_CHECKOUT_SAFE;
 
 	create_index(checkout_index_entries, 12);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 
@@ -410,13 +418,13 @@ void test_checkout_conflict__links(void)
 	opts.checkout_strategy |= GIT_CHECKOUT_SAFE;
 
 	create_index(checkout_index_entries, 5);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 
 	/* Conflicts with links always keep the ours side (even with -Xtheirs) */
-	ensure_workdir_link("link-1", LINK_OURS_TARGET);
-	ensure_workdir_link("link-2", LINK_OURS_TARGET);
+	ensure_workdir_link(g_repo, "link-1", LINK_OURS_TARGET);
+	ensure_workdir_link(g_repo, "link-2", LINK_OURS_TARGET);
 }
 
 void test_checkout_conflict__add_add(void)
@@ -431,7 +439,7 @@ void test_checkout_conflict__add_add(void)
 	opts.checkout_strategy |= GIT_CHECKOUT_SAFE;
 
 	create_index(checkout_index_entries, 2);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 
@@ -472,7 +480,7 @@ void test_checkout_conflict__mode_change(void)
 	opts.checkout_strategy |= GIT_CHECKOUT_SAFE;
 
 	create_index(checkout_index_entries, 18);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 
@@ -604,7 +612,7 @@ void test_checkout_conflict__renames(void)
 
 	create_index(checkout_index_entries, 41);
 	create_index_names(checkout_name_entries, 9);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 
@@ -684,7 +692,7 @@ void test_checkout_conflict__renames(void)
 void test_checkout_conflict__rename_keep_ours(void)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
-	
+
 	struct checkout_index_entry checkout_index_entries[] = {
 		{ 0100644, "68c6c84b091926c7d90aa6a79b2bc3bb6adccd8e", 0, "0a-no-change.txt" },
 		{ 0100644, "f0ce2b8e4986084d9b308fb72709e414c23eb5e6", 0, "0b-duplicated-in-ours.txt" },
@@ -728,122 +736,122 @@ void test_checkout_conflict__rename_keep_ours(void)
 		{ 0100644, "b42712cfe99a1a500b2a51fe984e0b8a7702ba11", 2, "7-both-renamed.txt" },
 		{ 0100644, "b69fe837e4cecfd4c9a40cdca7c138468687df07", 3, "7-both-renamed.txt" }
 	};
-	
+
 	struct checkout_name_entry checkout_name_entries[] = {
 		{
 			"3a-renamed-in-ours-deleted-in-theirs.txt",
 			"3a-newname-in-ours-deleted-in-theirs.txt",
 			""
 		},
-		
+
 		{
 			"3b-renamed-in-theirs-deleted-in-ours.txt",
 			"",
 			"3b-newname-in-theirs-deleted-in-ours.txt"
 		},
-		
+
 		{
 			"4a-renamed-in-ours-added-in-theirs.txt",
 			"4a-newname-in-ours-added-in-theirs.txt",
 			""
 		},
-		
+
 		{
 			"4b-renamed-in-theirs-added-in-ours.txt",
 			"",
 			"4b-newname-in-theirs-added-in-ours.txt"
 		},
-		
+
 		{
 			"5a-renamed-in-ours-added-in-theirs.txt",
 			"5a-newname-in-ours-added-in-theirs.txt",
 			"5a-renamed-in-ours-added-in-theirs.txt"
 		},
-		
+
 		{
 			"5b-renamed-in-theirs-added-in-ours.txt",
 			"5b-renamed-in-theirs-added-in-ours.txt",
 			"5b-newname-in-theirs-added-in-ours.txt"
 		},
-		
+
 		{
 			"6-both-renamed-1-to-2.txt",
 			"6-both-renamed-1-to-2-ours.txt",
 			"6-both-renamed-1-to-2-theirs.txt"
 		},
-		
+
 		{
 			"7-both-renamed-side-1.txt",
 			"7-both-renamed.txt",
 			"7-both-renamed-side-1.txt"
 		},
-		
+
 		{
 			"7-both-renamed-side-2.txt",
 			"7-both-renamed-side-2.txt",
 			"7-both-renamed.txt"
 		}
 	};
-	
+
 	opts.checkout_strategy |= GIT_CHECKOUT_SAFE | GIT_CHECKOUT_USE_OURS;
-	
+
 	create_index(checkout_index_entries, 41);
 	create_index_names(checkout_name_entries, 9);
-	git_index_write(g_index);
-	
+	cl_git_pass(git_index_write(g_index));
+
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
-		
+
 	ensure_workdir("0a-no-change.txt",
 				   0100644, "68c6c84b091926c7d90aa6a79b2bc3bb6adccd8e");
-	
+
 	ensure_workdir("0b-duplicated-in-ours.txt",
 				   0100644, "f0ce2b8e4986084d9b308fb72709e414c23eb5e6");
-	
+
 	ensure_workdir("0b-rewritten-in-ours.txt",
 				   0100644, "e376fbdd06ebf021c92724da9f26f44212734e3e");
-	
+
 	ensure_workdir("0c-duplicated-in-theirs.txt",
 				   0100644, "2f56120107d680129a5d9791b521cb1e73a2ed31");
-	
+
 	ensure_workdir("0c-rewritten-in-theirs.txt",
 				   0100644, "efc9121fdedaf08ba180b53ebfbcf71bd488ed09");
-	
+
 	ensure_workdir("1a-newname-in-ours-edited-in-theirs.txt",
 				   0100644, "0d872f8e871a30208305978ecbf9e66d864f1638");
-	
+
 	ensure_workdir("1a-newname-in-ours.txt",
 				   0100644, "d0d4594e16f2e19107e3fa7ea63e7aaaff305ffb");
-	
+
 	ensure_workdir("1b-newname-in-theirs-edited-in-ours.txt",
 				   0100644, "ed9523e62e453e50dd9be1606af19399b96e397a");
-	
+
 	ensure_workdir("1b-newname-in-theirs.txt",
 				   0100644, "2b5f1f181ee3b58ea751f5dd5d8f9b445520a136");
-	
+
 	ensure_workdir("2-newname-in-both.txt",
 				   0100644, "178940b450f238a56c0d75b7955cb57b38191982");
 
 	ensure_workdir("3a-newname-in-ours-deleted-in-theirs.txt",
 				   0100644, "18cb316b1cefa0f8a6946f0e201a8e1a6f845ab9");
-	
+
 	ensure_workdir("3b-newname-in-theirs-deleted-in-ours.txt",
 				   0100644, "36219b49367146cb2e6a1555b5a9ebd4d0328495");
-	
+
 	ensure_workdir("4a-newname-in-ours-added-in-theirs.txt",
 				   0100644, "227792b52aaa0b238bea00ec7e509b02623f168c");
-	
+
 	ensure_workdir("4b-newname-in-theirs-added-in-ours.txt",
 				   0100644, "de872ee3618b894992e9d1e18ba2ebe256a112f9");
-	
+
 	ensure_workdir("5a-newname-in-ours-added-in-theirs.txt",
 				   0100644, "d3719a5ae8e4d92276b5313ce976f6ee5af2b436");
-		
+
 	ensure_workdir("5b-newname-in-theirs-added-in-ours.txt",
 				   0100644, "385c8a0f26ddf79e9041e15e17dc352ed2c4cced");
 
 	ensure_workdir("6-both-renamed-1-to-2-ours.txt",
 				   0100644, "d8fa77b6833082c1ea36b7828a582d4c43882450");
-	
+
 	ensure_workdir("7-both-renamed.txt",
 				   0100644, "b42712cfe99a1a500b2a51fe984e0b8a7702ba11");
 }
@@ -922,7 +930,7 @@ void test_checkout_conflict__name_mangled_file_exists_in_workdir(void)
 
 	create_index(checkout_index_entries, 24);
 	create_index_names(checkout_name_entries, 6);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	/* Add some files on disk that conflict with the names that would be chosen
 	 * for the files written for each side. */
@@ -1012,7 +1020,7 @@ void test_checkout_conflict__update_only(void)
 	opts.checkout_strategy |= GIT_CHECKOUT_UPDATE_ONLY;
 
 	create_index(checkout_index_entries, 3);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(p_mkdir("merge-resolve/directory_file-two", 0777));
 	cl_git_rewritefile("merge-resolve/directory_file-two/file", CONFLICTING_OURS_FILE);
@@ -1063,7 +1071,7 @@ void test_checkout_conflict__path_filters(void)
 	opts.paths = patharray;
 
 	create_index(checkout_index_entries, 12);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 
@@ -1120,7 +1128,7 @@ void test_checkout_conflict__report_progress(void)
 
 
 	create_index(checkout_index_entries, 12);
-	git_index_write(g_index);
+	cl_git_pass(git_index_write(g_index));
 
 	cl_git_pass(git_checkout_index(g_repo, g_index, &opts));
 

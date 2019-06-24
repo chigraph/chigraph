@@ -1,4 +1,12 @@
-#include "common.h"
+/*
+ * Copyright (C) the libgit2 contributors. All rights reserved.
+ *
+ * This file is part of libgit2, distributed under the GNU GPL v2 with
+ * a Linking Exception. For full terms see the included COPYING file.
+ */
+
+#include "attrcache.h"
+
 #include "repository.h"
 #include "attr_file.h"
 #include "config.h"
@@ -10,7 +18,7 @@ GIT_INLINE(int) attr_cache_lock(git_attr_cache *cache)
 	GIT_UNUSED(cache); /* avoid warning if threading is off */
 
 	if (git_mutex_lock(&cache->lock) < 0) {
-		giterr_set(GITERR_OS, "unable to get attr cache lock");
+		git_error_set(GIT_ERROR_OS, "unable to get attr cache lock");
 		return -1;
 	}
 	return 0;
@@ -25,7 +33,7 @@ GIT_INLINE(void) attr_cache_unlock(git_attr_cache *cache)
 GIT_INLINE(git_attr_file_entry *) attr_cache_lookup_entry(
 	git_attr_cache *cache, const char *path)
 {
-	khiter_t pos = git_strmap_lookup_index(cache->files, path);
+	size_t pos = git_strmap_lookup_index(cache->files, path);
 
 	if (git_strmap_valid_index(cache->files, pos))
 		return git_strmap_value_at(cache->files, pos);
@@ -52,7 +60,7 @@ int git_attr_cache__alloc_file_entry(
 	}
 
 	ce = git_pool_mallocz(pool, (uint32_t)cachesize);
-	GITERR_CHECK_ALLOC(ce);
+	GIT_ERROR_CHECK_ALLOC(ce);
 
 	if (baselen) {
 		memcpy(ce->fullpath, base, baselen);
@@ -196,7 +204,7 @@ cleanup:
 	*out_file  = file;
 	*out_entry = entry;
 
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 	return error;
 }
 
@@ -242,7 +250,7 @@ int git_attr_cache__get(
 		}
 		/* no error if file simply doesn't exist */
 		if (error == GIT_ENOTFOUND) {
-			giterr_clear();
+			git_error_clear();
 			error = 0;
 		}
 	}
@@ -258,7 +266,7 @@ bool git_attr_cache__is_cached(
 {
 	git_attr_cache *cache = git_repository_attr_cache(repo);
 	git_strmap *files;
-	khiter_t pos;
+	size_t pos;
 	git_attr_file_entry *entry;
 
 	if (!cache || !(files = cache->files))
@@ -302,7 +310,7 @@ static int attr_cache__lookup_path(
 	}
 
 	git_config_entry_free(entry);
-	git_buf_free(&buf);
+	git_buf_dispose(&buf);
 
 	return error;
 }
@@ -366,11 +374,11 @@ int git_attr_cache__init(git_repository *repo)
 		return 0;
 
 	cache = git__calloc(1, sizeof(git_attr_cache));
-	GITERR_CHECK_ALLOC(cache);
+	GIT_ERROR_CHECK_ALLOC(cache);
 
 	/* set up lock */
 	if (git_mutex_init(&cache->lock) < 0) {
-		giterr_set(GITERR_OS, "unable to initialize lock for attr cache");
+		git_error_set(GIT_ERROR_OS, "unable to initialize lock for attr cache");
 		git__free(cache);
 		return -1;
 	}
@@ -435,7 +443,7 @@ int git_attr_cache__insert_macro(git_repository *repo, git_attr_rule *macro)
 		return 0;
 
 	if (attr_cache_lock(cache) < 0) {
-		giterr_set(GITERR_OS, "unable to get attr cache lock");
+		git_error_set(GIT_ERROR_OS, "unable to get attr cache lock");
 		error = -1;
 	} else {
 		git_strmap_insert(macros, macro->match.pattern, macro, &error);
@@ -449,7 +457,7 @@ git_attr_rule *git_attr_cache__lookup_macro(
 	git_repository *repo, const char *name)
 {
 	git_strmap *macros = git_repository_attr_cache(repo)->macros;
-	khiter_t pos;
+	size_t pos;
 
 	pos = git_strmap_lookup_index(macros, name);
 

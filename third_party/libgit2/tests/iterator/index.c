@@ -222,10 +222,10 @@ static void check_index_range(
 	cl_git_pass(git_repository_index(&index, repo));
 
 	caps = git_index_caps(index);
-	is_ignoring_case = ((caps & GIT_INDEXCAP_IGNORE_CASE) != 0);
+	is_ignoring_case = ((caps & GIT_INDEX_CAPABILITY_IGNORE_CASE) != 0);
 
 	if (ignore_case != is_ignoring_case)
-		cl_git_pass(git_index_set_caps(index, caps ^ GIT_INDEXCAP_IGNORE_CASE));
+		cl_git_pass(git_index_set_caps(index, caps ^ GIT_INDEX_CAPABILITY_IGNORE_CASE));
 
 	i_opts.flags = 0;
 	i_opts.start = start;
@@ -284,7 +284,7 @@ void test_iterator_index__case_folding(void)
 
 	cl_git_pass(git_buf_joinpath(&path, cl_fixture("icase"), ".gitted/CoNfIg"));
 	fs_is_ci = git_path_exists(path.ptr);
-	git_buf_free(&path);
+	git_buf_dispose(&path);
 
 	index_iterator_test(
 		"icase", NULL, NULL, 0, ARRAY_SIZE(expected_index_cs),
@@ -363,7 +363,7 @@ void test_iterator_index__icase_1(void)
 	caps = git_index_caps(index);
 
 	/* force case sensitivity */
-	cl_git_pass(git_index_set_caps(index, caps & ~GIT_INDEXCAP_IGNORE_CASE));
+	cl_git_pass(git_index_set_caps(index, caps & ~GIT_INDEX_CAPABILITY_IGNORE_CASE));
 
 	/* autoexpand with no tree entries over range */
 	i_opts.start = "c";
@@ -409,7 +409,7 @@ void test_iterator_index__icase_1(void)
 	git_iterator_free(i);
 
 	/* force case insensitivity */
-	cl_git_pass(git_index_set_caps(index, caps | GIT_INDEXCAP_IGNORE_CASE));
+	cl_git_pass(git_index_set_caps(index, caps | GIT_INDEX_CAPABILITY_IGNORE_CASE));
 
 	/* autoexpand with no tree entries over range */
 	i_opts.flags = 0;
@@ -783,7 +783,7 @@ void test_iterator_index__pathlist_1(void)
 	cl_git_pass(git_vector_insert(&filelist, "k/a"));
 
 	/* In this test we DO NOT force a case setting on the index. */
-	default_icase = ((git_index_caps(index) & GIT_INDEXCAP_IGNORE_CASE) != 0);
+	default_icase = ((git_index_caps(index) & GIT_INDEX_CAPABILITY_IGNORE_CASE) != 0);
 
 	i_opts.pathlist.strings = (char **)filelist.contents;
 	i_opts.pathlist.count = filelist.length;
@@ -825,7 +825,7 @@ void test_iterator_index__pathlist_2(void)
 	cl_git_pass(git_vector_insert(&filelist, "kZZZZZZZ"));
 
 	/* In this test we DO NOT force a case setting on the index. */
-	default_icase = ((git_index_caps(index) & GIT_INDEXCAP_IGNORE_CASE) != 0);
+	default_icase = ((git_index_caps(index) & GIT_INDEX_CAPABILITY_IGNORE_CASE) != 0);
 
 	i_opts.pathlist.strings = (char **)filelist.contents;
 	i_opts.pathlist.count = filelist.length;
@@ -867,7 +867,7 @@ void test_iterator_index__pathlist_four(void)
 	cl_git_pass(git_vector_insert(&filelist, "kZZZZZZZ"));
 
 	/* In this test we DO NOT force a case setting on the index. */
-	default_icase = ((git_index_caps(index) & GIT_INDEXCAP_IGNORE_CASE) != 0);
+	default_icase = ((git_index_caps(index) & GIT_INDEX_CAPABILITY_IGNORE_CASE) != 0);
 
 	i_opts.pathlist.strings = (char **)filelist.contents;
 	i_opts.pathlist.count = filelist.length;
@@ -910,7 +910,7 @@ void test_iterator_index__pathlist_icase(void)
 	caps = git_index_caps(index);
 
 	/* force case sensitivity */
-	cl_git_pass(git_index_set_caps(index, caps & ~GIT_INDEXCAP_IGNORE_CASE));
+	cl_git_pass(git_index_set_caps(index, caps & ~GIT_INDEX_CAPABILITY_IGNORE_CASE));
 
 	/* All indexfilelist iterator tests are "autoexpand with no tree entries" */
 
@@ -930,7 +930,7 @@ void test_iterator_index__pathlist_icase(void)
 	git_iterator_free(i);
 
 	/* force case insensitivity */
-	cl_git_pass(git_index_set_caps(index, caps | GIT_INDEXCAP_IGNORE_CASE));
+	cl_git_pass(git_index_set_caps(index, caps | GIT_INDEX_CAPABILITY_IGNORE_CASE));
 
 	i_opts.start = "c";
 	i_opts.end = "k/D";
@@ -1007,7 +1007,7 @@ static void create_paths(git_index *index, const char *root, int depth)
 		}
 	}
 
-	git_buf_free(&fullpath);
+	git_buf_dispose(&fullpath);
 }
 
 void test_iterator_index__pathlist_for_deeply_nested_item(void)
@@ -1297,17 +1297,17 @@ static void add_conflict(
 	ancestor.path = ancestor_path;
 	ancestor.mode = GIT_FILEMODE_BLOB;
 	git_oid_fromstr(&ancestor.id, "d44e18fb93b7107b5cd1b95d601591d77869a1b6");
-	GIT_IDXENTRY_STAGE_SET(&ancestor, 1);
+	GIT_INDEX_ENTRY_STAGE_SET(&ancestor, 1);
 
 	ours.path = our_path;
 	ours.mode = GIT_FILEMODE_BLOB;
 	git_oid_fromstr(&ours.id, "d44e18fb93b7107b5cd1b95d601591d77869a1b6");
-	GIT_IDXENTRY_STAGE_SET(&ours, 2);
+	GIT_INDEX_ENTRY_STAGE_SET(&ours, 2);
 
 	theirs.path = their_path;
 	theirs.mode = GIT_FILEMODE_BLOB;
 	git_oid_fromstr(&theirs.id, "d44e18fb93b7107b5cd1b95d601591d77869a1b6");
-	GIT_IDXENTRY_STAGE_SET(&theirs, 3);
+	GIT_INDEX_ENTRY_STAGE_SET(&theirs, 3);
 
 	cl_git_pass(git_index_conflict_add(index, &ancestor, &ours, &theirs));
 }

@@ -6,8 +6,6 @@
 #include <chi/NodeType.hpp>
 #include <chi/Support/Result.hpp>
 
-#include <llvm/IR/DerivedTypes.h>
-
 using namespace chi;
 
 TEST_CASE("LangModule", "[module]") {
@@ -22,21 +20,21 @@ TEST_CASE("LangModule", "[module]") {
 
 			res = c.typeFromModule("lang", "i32", &test);
 			REQUIRE(!!res);
-			REQUIRE(test.llvmType() == llvm::IntegerType::getInt32Ty(c.llvmContext()));
+			REQUIRE(test.llvmType() == LLVMInt32TypeInContext(c.llvmContext()));
 			REQUIRE(&test.module() == mod);
 			REQUIRE(test.unqualifiedName() == "i32");
 			REQUIRE(test.qualifiedName() == "lang:i32");
 
 			res = c.typeFromModule("lang", "i8*", &test);
 			REQUIRE(!!res);
-			REQUIRE(test.llvmType() == llvm::IntegerType::getInt8PtrTy(c.llvmContext()));
+			REQUIRE(test.llvmType() == LLVMPointerType(LLVMInt8TypeInContext(c.llvmContext()), 0));
 			REQUIRE(&test.module() == mod);
 			REQUIRE(test.unqualifiedName() == "i8*");
 			REQUIRE(test.qualifiedName() == "lang:i8*");
 
 			res = c.typeFromModule("lang", "float", &test);
 			REQUIRE(!!res);
-			REQUIRE(test.llvmType() == llvm::IntegerType::getFloatTy(c.llvmContext()));
+			REQUIRE(test.llvmType() == LLVMDoubleTypeInContext(c.llvmContext()));
 			REQUIRE(&test.module() == mod);
 			REQUIRE(test.unqualifiedName() == "float");
 			REQUIRE(test.qualifiedName() == "lang:float");
