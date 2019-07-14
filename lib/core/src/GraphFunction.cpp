@@ -10,11 +10,6 @@
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
 
-#include <boost/dynamic_bitset.hpp>
-#include <boost/range/counting_range.hpp>
-#include <boost/range/join.hpp>
-#include <boost/uuid/uuid_io.hpp>
-
 namespace chi {
 GraphFunction::GraphFunction(GraphModule& mod, std::string name, std::vector<NamedDataType> dataIns,
                              std::vector<NamedDataType> dataOuts, std::vector<std::string> execIns,
@@ -29,7 +24,7 @@ GraphFunction::GraphFunction(GraphModule& mod, std::string name, std::vector<Nam
 	// TODO(#66): check that it has at least 1 exec input and output
 }
 
-NodeInstance* GraphFunction::nodeByID(const boost::uuids::uuid& id) const {
+NodeInstance* GraphFunction::nodeByID(const Uuid& id) const {
 	auto iter = nodes().find(id);
 	if (iter != nodes().end()) { return iter->second.get(); }
 	return nullptr;
@@ -55,8 +50,8 @@ NodeInstance* GraphFunction::entryNode() const noexcept {
 	return nullptr;
 }
 
-Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y,
-                                 boost::uuids::uuid id, NodeInstance** toFill) {
+Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float y, Uuid id,
+                                 NodeInstance** toFill) {
 	// invalidate the cache
 	module().updateLastEditTime();
 
@@ -65,7 +60,7 @@ Result GraphFunction::insertNode(std::unique_ptr<NodeType> type, float x, float 
 	// make sure the ID doesn't exist
 	if (nodes().find(id) != nodes().end()) {
 		res.addEntry("E47", "Cannot have two nodes with the same ID",
-		             {{"Requested ID", boost::uuids::to_string(id)}});
+		             {{"Requested ID", id.toString()}});
 		return res;
 	}
 
@@ -92,8 +87,8 @@ std::vector<NodeInstance*> GraphFunction::nodesWithType(const std::filesystem::p
 }
 
 Result GraphFunction::insertNode(const std::filesystem::path& moduleName, std::string_view typeName,
-                                 const nlohmann::json& typeJSON, float x, float y,
-                                 boost::uuids::uuid id, NodeInstance** toFill) {
+                                 const nlohmann::json& typeJSON, float x, float y, Uuid id,
+                                 NodeInstance** toFill) {
 	// invalidate the cache
 	module().updateLastEditTime();
 
@@ -183,8 +178,7 @@ Result GraphFunction::createExitNodeType(std::unique_ptr<NodeType>* toFill) cons
 	return res;
 }
 
-Result GraphFunction::getOrInsertEntryNode(float x, float y, boost::uuids::uuid id,
-                                           NodeInstance** toFill) {
+Result GraphFunction::getOrInsertEntryNode(float x, float y, Uuid id, NodeInstance** toFill) {
 	Result res;
 
 	if (auto ent = entryNode()) {

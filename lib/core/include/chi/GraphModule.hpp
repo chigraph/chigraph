@@ -9,8 +9,6 @@
 #include <chi/ChiModule.hpp>
 #include <chi/Fwd.hpp>
 
-#include <boost/bimap.hpp>
-
 namespace chi {
 /// Module that holds graph functions
 struct GraphModule : public ChiModule {
@@ -47,8 +45,10 @@ struct GraphModule : public ChiModule {
 	/////////////////////
 
 	/// Create the associations from line number and function in debug info
-	/// \return A bimap of function to line number
-	boost::bimap<unsigned, NodeInstance*> createLineNumberAssoc() const;
+	/// \return A "bimap" of function to line number and vice versa
+	std::pair<std::unordered_map<NodeInstance*, unsigned>,
+	          std::unordered_map<unsigned, NodeInstance*>>
+	createLineNumberAssoc() const;
 
 	/// Serialize to disk in the context
 	/// \return The Result

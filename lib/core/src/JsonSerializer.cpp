@@ -8,8 +8,6 @@
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 
-#include <boost/uuid/uuid_io.hpp>  // for boost::uuids::to_string
-
 namespace chi {
 
 nlohmann::json graphFunctionToJson(const GraphFunction& func) {
@@ -58,12 +56,12 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 
 	for (const auto& nodepair : func.nodes()) {
 		auto&       node   = nodepair.second;
-		std::string nodeID = boost::uuids::to_string(nodepair.first);
+		std::string nodeID = nodepair.first.toString();
 
 		nlohmann::json nodeJson = node->type().toJSON();
 		jsonNodes[nodeID]       = {{"type", node->type().qualifiedName()},
-		                     {"location", {node->x(), node->y()}},
-		                     {"data", nodeJson}};
+                             {"location", {node->x(), node->y()}},
+                             {"data", nodeJson}};
 		// add its connections. Just out the outputs to avoid duplicates
 
 		// add the exec outputs
@@ -71,10 +69,9 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 			auto& conn = node->outputExecConnections[conn_id];
 			// if there is actually a connection
 			if (conn.first != nullptr) {
-				jsonConnections.push_back(
-				    {{"type", "exec"},
-				     {"input", {nodeID, conn_id}},
-				     {"output", {boost::uuids::to_string(conn.first->id()), conn.second}}});
+				jsonConnections.push_back({{"type", "exec"},
+				                           {"input", {nodeID, conn_id}},
+				                           {"output", {conn.first->stringId(), conn.second}}});
 			}
 		}
 
@@ -83,10 +80,9 @@ nlohmann::json graphFunctionToJson(const GraphFunction& func) {
 			// if there is actually a connection
 			auto& connpair = node->inputDataConnections[conn_id];
 			if (connpair.first != nullptr) {
-				jsonConnections.push_back(
-				    {{"type", "data"},
-				     {"input", {boost::uuids::to_string(connpair.first->id()), connpair.second}},
-				     {"output", {nodeID, conn_id}}});
+				jsonConnections.push_back({{"type", "data"},
+				                           {"input", {connpair.first->stringId(), connpair.second}},
+				                           {"output", {nodeID, conn_id}}});
 			}
 		}
 	}

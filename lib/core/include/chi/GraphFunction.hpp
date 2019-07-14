@@ -7,14 +7,11 @@
 #pragma once
 
 #include "chi/Fwd.hpp"
-#include "chi/Support/HashUuid.hpp"
+#include "chi/Support/Uuid.hpp"
 #include "chi/Support/json.hpp"
 
-#include <unordered_map>
-
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid.hpp>
 #include <filesystem>
+#include <unordered_map>
 
 namespace chi {
 /// this is an AST-like representation of a function in a graph
@@ -47,18 +44,14 @@ struct GraphFunction {
 	/// Get the nodes in the function
 	/// Usually called by connectData or connectExec or GraphFunction
 	/// \return The nodes, mapped by id, value
-	std::unordered_map<boost::uuids::uuid, std::unique_ptr<NodeInstance>>& nodes() {
-		return mNodes;
-	}
+	std::unordered_map<Uuid, std::unique_ptr<NodeInstance>>& nodes() { return mNodes; }
 	/// \copydoc GraphFunction::nodes
-	const std::unordered_map<boost::uuids::uuid, std::unique_ptr<NodeInstance>>& nodes() const {
-		return mNodes;
-	}
+	const std::unordered_map<Uuid, std::unique_ptr<NodeInstance>>& nodes() const { return mNodes; }
 
 	/// Get a node with a given ID
 	/// \param id The ID of the node
 	/// \return The NodeInstance, or nullptr if the ID wasn't found
-	NodeInstance* nodeByID(const boost::uuids::uuid& id) const;
+	NodeInstance* nodeByID(const Uuid& id) const;
 
 	/// Gets the node with type lang:entry
 	/// returns nullptr on failure
@@ -73,9 +66,8 @@ struct GraphFunction {
 	/// \param[in] id The node ID
 	/// \param[out] toFill The nodeInstance to fill to, optional.
 	/// \return The result
-	Result insertNode(std::unique_ptr<NodeType> type, float x, float y,
-	                  boost::uuids::uuid id     = boost::uuids::random_generator()(),
-	                  NodeInstance**     toFill = nullptr);
+	Result insertNode(std::unique_ptr<NodeType> type, float x, float y, Uuid id = Uuid::random(),
+	                  NodeInstance** toFill = nullptr);
 
 	/// Gets the nodes with a given type
 	/// \param module The module the type is in
@@ -94,9 +86,8 @@ struct GraphFunction {
 	/// \retval toFill The NodeInstance* to fill to, optional
 	/// \return The Result
 	Result insertNode(const std::filesystem::path& moduleName, std::string_view typeName,
-	                  const nlohmann::json& typeJSON, float x, float y,
-	                  boost::uuids::uuid id     = boost::uuids::random_generator()(),
-	                  NodeInstance**     toFill = nullptr);
+	                  const nlohmann::json& typeJSON, float x, float y, Uuid id = Uuid::random(),
+	                  NodeInstance** toFill = nullptr);
 
 	/// Remove a node from the function. Also disconnect it's connections.
 	/// \param nodeToRemove The node to remove
@@ -111,9 +102,8 @@ struct GraphFunction {
 	/// \param id The ID of the node, disregarded if there is already an entry
 	/// \retval toFill The NodeInstance* to fill, optional
 	/// \return The Result
-	Result getOrInsertEntryNode(float x, float y,
-	                            boost::uuids::uuid id     = boost::uuids::random_generator()(),
-	                            NodeInstance**     toFill = nullptr);
+	Result getOrInsertEntryNode(float x, float y, Uuid id = Uuid::random(),
+	                            NodeInstance** toFill = nullptr);
 
 	/// \}
 
@@ -343,8 +333,7 @@ private:
 
 	std::vector<NamedDataType> mLocalVariables;
 
-	std::unordered_map<boost::uuids::uuid, std::unique_ptr<NodeInstance>>
-	    mNodes;  /// Storage for the nodes
+	std::unordered_map<Uuid, std::unique_ptr<NodeInstance>> mNodes;  /// Storage for the nodes
 };
 
 /// Parse a colonated pair

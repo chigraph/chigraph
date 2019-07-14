@@ -135,6 +135,8 @@ target_include_directories(chigraphcore
 PUBLIC
 	include/
 	${LLVM_INCLUDE_DIR}
+PRIVATE
+	${Boost_INCLUDE_DIRS}
 )
 
 target_compile_options(chigraphcore

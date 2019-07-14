@@ -7,10 +7,11 @@
 
 #include "chi/Support/Fwd.hpp"
 
-#include <boost/optional.hpp>
-#include <filesystem>
-
+#include <cassert>
 #include <chrono>
+#include <filesystem>
+#include <functional>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -223,7 +224,7 @@ private:
 	bool mStarted     = false;
 	bool mStdInClosed = false;
 
-	boost::optional<int> mExitCode;
+	std::optional<int> mExitCode;
 };
 
 /// \example SubprocessExample.cpp

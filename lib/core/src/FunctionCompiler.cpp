@@ -65,8 +65,10 @@ Result FunctionCompiler::initialize(bool validate) {
 
 	auto subroutineType = createSubroutineType();
 
-	mNodeLocations = module().createLineNumberAssoc();
-	auto entryLN   = nodeLineNumber(*entry);
+	auto [locationByNode, nodeByLocation] = module().createLineNumberAssoc();
+	mNodeByLocation                       = std::move(nodeByLocation);
+	mLocationByNode                       = std::move(locationByNode);
+	auto entryLN                          = nodeLineNumber(*entry);
 
 	// TODO(#65): line numbers?
 	auto name = module().fullName() + ":" + function().name();
@@ -268,8 +270,8 @@ int FunctionCompiler::nodeLineNumber(NodeInstance& node) {
 	assert(&node.function() == &function() &&
 	       "Cannot get node line number for a node not in the function");
 
-	auto iter = mNodeLocations.right.find(&node);
-	if (iter == mNodeLocations.right.end()) {
+	auto iter = mLocationByNode.find(&node);
+	if (iter == mLocationByNode.end()) {
 		return -1;  // ?
 	}
 	return iter->second;

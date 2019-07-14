@@ -5,12 +5,12 @@ set (CHIGRAPH_SUPPORT_HEADERS
 	include/chi/Support/Flags.hpp
 	include/chi/Support/Fwd.hpp
 	include/chi/Support/HashFilesystemPath.hpp
-	include/chi/Support/HashUuid.hpp
 	include/chi/Support/json.hpp
 	include/chi/Support/LibCLocator.hpp
 	include/chi/Support/Result.hpp
 	include/chi/Support/Subprocess.hpp
 	include/chi/Support/TempFile.hpp
+	include/chi/Support/Uuid.hpp
 )
 
 set(CHIGRAPH_SUPPORT_SRCS
@@ -20,6 +20,7 @@ set(CHIGRAPH_SUPPORT_SRCS
 	src/Result.cpp
 	src/Subprocess.cpp
 	src/TempFile.cpp
+	src/Uuid.cpp
 )
 
 add_library(chigraphsupport STATIC ${CHIGRAPH_SUPPORT_HEADERS} ${CHIGRAPH_SUPPORT_SRCS})
@@ -27,7 +28,10 @@ add_library(chigraphsupport STATIC ${CHIGRAPH_SUPPORT_HEADERS} ${CHIGRAPH_SUPPOR
 find_package(Threads REQUIRED) # subprocess uses threads
 target_link_libraries(chigraphsupport PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 
-target_include_directories(chigraphsupport PUBLIC include/ ${Boost_INCLUDE_DIRS})
+target_include_directories(chigraphsupport 
+	PUBLIC include/ 
+	PRIVATE ${Boost_INCLUDE_DIRS}
+)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
 		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR

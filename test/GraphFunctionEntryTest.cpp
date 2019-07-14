@@ -24,8 +24,8 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 	auto mod      = c.newGraphModule("test/main");
 	bool inserted = false;
 	auto func     = mod->getOrCreateFunction("main", {{"Hello", langMod.typeFromName("i32")}},
-	                                     {{"HelOut", langMod.typeFromName("i1")}}, {"In Exec"},
-	                                     {"Out Exec"}, &inserted);
+                                         {{"HelOut", langMod.typeFromName("i1")}}, {"In Exec"},
+                                         {"Out Exec"}, &inserted);
 	REQUIRE(inserted == true);
 
 	// it should be all good
@@ -61,10 +61,10 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 		REQUIRE(ty != nullptr);
 
 		NodeInstance* inst;
-		auto          entryUUID = boost::uuids::random_generator()();
+		auto          entryUUID = Uuid::random();
 		res += func->insertNode(std::move(ty), 213.f, 123.f, entryUUID, &inst);
 		REQUIRE(func->nodeByID(entryUUID) == inst);
-		REQUIRE(func->nodeByID(boost::uuids::random_generator()()) == nullptr);
+		REQUIRE(func->nodeByID(Uuid::random()) == nullptr);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
 
@@ -81,7 +81,7 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 	WHEN("We add a correct entry node with getOrInsertEntryNode it should be a-ok") {
 		NodeInstance* inst;
-		auto          entryUUID = boost::uuids::random_generator()();
+		auto          entryUUID = Uuid::random();
 		res                     = func->getOrInsertEntryNode(213.f, 123.f, entryUUID, &inst);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
@@ -97,7 +97,7 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 	WHEN("We add a correct node with the other insertNode function it should be a-ok") {
 		NodeInstance* inst;
-		auto          entryUUID = boost::uuids::random_generator()();
+		auto          entryUUID = Uuid::random();
 		res = func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, entryUUID, &inst);
 		REQUIRE(!!res);
 		REQUIRE(inst != nullptr);
@@ -122,7 +122,7 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 		WHEN("We add another entry node, entryNode should fail") {
 			NodeInstance* inst2;
-			auto          entryUUID = boost::uuids::random_generator()();
+			auto          entryUUID = Uuid::random();
 			res = func->insertNode("lang", "entry", correctEntryJson, 213.f, 123.f, entryUUID,
 			                       &inst2);
 			REQUIRE(!!res);
@@ -133,7 +133,7 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 		WHEN("We try to add another entry node with getOrInsertEntryNode") {
 			NodeInstance* inst2;
-			auto          entryUUID = boost::uuids::random_generator()();
+			auto          entryUUID = Uuid::random();
 			res                     = func->getOrInsertEntryNode(0.f, 0.f, entryUUID, &inst2);
 
 			REQUIRE(inst2 == inst);
@@ -150,7 +150,7 @@ TEST_CASE("Create and manipulate entry nodes in GraphFunctions", "") {
 
 	auto checkInvalidEntry = [&](json obj) {
 		NodeInstance* inst;
-		auto          entryUUID = boost::uuids::random_generator()();
+		auto          entryUUID = Uuid::random();
 		res = func->insertNode("lang", "entry", obj, 213.f, 123.f, entryUUID, &inst);
 
 		REQUIRE(!!res);

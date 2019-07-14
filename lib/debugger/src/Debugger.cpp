@@ -253,19 +253,19 @@ NodeInstance* Debugger::nodeFromFrame(lldb::SBFrame frame) {
 	unsigned lineNo = frame.GetLineEntry().GetLine();
 
 	// create assoc TODO: cache these
-	auto assoc = func->module().createLineNumberAssoc();
+	auto [lineByNode, nodeByLine] = func->module().createLineNumberAssoc();
 
-	auto nodeIter = assoc.left.find(lineNo);
-	if (nodeIter == assoc.left.end()) { return nullptr; }
+	auto nodeIter = nodeByLine.find(lineNo);
+	if (nodeIter == nodeByLine.end()) { return nullptr; }
 
 	return nodeIter->second;
 }
 
 unsigned lineNumberFromNode(NodeInstance& inst) {
 	// TODO: cache these, they're kinda expensive to make
-	auto lineAssoc      = inst.module().createLineNumberAssoc();
-	auto lineNumberIter = lineAssoc.right.find(&inst);
-	if (lineNumberIter == lineAssoc.right.end()) { return -1; }
+	auto [lineByNode, nodeByLine] = inst.module().createLineNumberAssoc();
+	auto lineNumberIter           = lineByNode.find(&inst);
+	if (lineNumberIter == lineByNode.end()) { return -1; }
 
 	return lineNumberIter->second;
 }

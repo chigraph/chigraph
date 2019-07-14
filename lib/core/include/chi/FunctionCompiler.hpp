@@ -12,8 +12,6 @@
 #include <memory>
 #include <unordered_map>
 
-#include <boost/bimap.hpp>
-
 namespace chi {
 
 /// Class for compiling `GraphFunctions` into `llvm::Function`s
@@ -155,7 +153,8 @@ private:
 
 	std::unordered_map<NodeInstance*, NodeCompiler> mNodeCompilers;
 
-	boost::bimap<unsigned, NodeInstance*> mNodeLocations;
+	std::unordered_map<unsigned, NodeInstance*> mNodeByLocation;
+	std::unordered_map<NodeInstance*, unsigned> mLocationByNode;
 
 	bool mInitialized = false;
 	bool mCompiled    = false;

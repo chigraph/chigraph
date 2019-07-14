@@ -12,7 +12,7 @@
 
 namespace chi {
 NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX,
-                           float posY, boost::uuids::uuid nodeID)
+                           float posY, Uuid nodeID)
     : mType{std::move(nodeType)},
       mX{posX},
       mY{posY},
@@ -33,7 +33,7 @@ NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeTy
 	}
 }
 
-NodeInstance::NodeInstance(const NodeInstance& other, boost::uuids::uuid id)
+NodeInstance::NodeInstance(const NodeInstance& other, Uuid id)
     : mType(other.type().clone()),
       mX{other.x()},
       mY{other.y()},

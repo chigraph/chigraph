@@ -11,8 +11,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include <boost/dynamic_bitset.hpp>
-
 namespace chi {
 
 /// Helper to compile nodes
@@ -121,7 +119,7 @@ private:
 
 	std::vector<LLVMValueRef> mReturnValues;
 
-	boost::dynamic_bitset<> mCompiledInputs;
+	std::vector<bool> mCompiledInputs;
 
 	LLVMValueRef mJumpBackInst = nullptr;
 };

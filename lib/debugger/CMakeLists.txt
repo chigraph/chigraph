@@ -28,6 +28,8 @@ add_library(chigraphdebugger STATIC ${DEBUGGER_SRCS} ${DEBUGGER_HEADERS})
 target_include_directories(chigraphdebugger
 PUBLIC
 	include
+PRIVATE
+	${Boost_INCLUDE_DIRS}
 )
 
 # Link to chigraph and LLDB

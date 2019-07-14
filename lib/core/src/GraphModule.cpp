@@ -776,7 +776,8 @@ std::vector<std::string> GraphModule::nodeTypeNames() const {
 	return ret;
 }
 
-boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() const {
+std::pair<std::unordered_map<NodeInstance*, unsigned>, std::unordered_map<unsigned, NodeInstance*>>
+GraphModule::createLineNumberAssoc() const {
 	// create a sorted list of GraphFunctions
 	std::vector<NodeInstance*> nodes;
 	for (const auto& f : functions()) {
@@ -787,16 +788,18 @@ boost::bimap<unsigned int, NodeInstance*> GraphModule::createLineNumberAssoc() c
 	}
 
 	std::sort(nodes.begin(), nodes.end(), [](const auto& lhs, const auto& rhs) {
-		return (lhs->function().name() + ":" + boost::uuids::to_string(lhs->id())) <
-		       (rhs->function().name() + ":" + boost::uuids::to_string(rhs->id()));
+		return (lhs->function().name() + ":" + lhs->stringId()) <
+		       (rhs->function().name() + ":" + rhs->stringId());
 	});
 
-	boost::bimap<unsigned, NodeInstance*> ret;
+	std::unordered_map<NodeInstance*, unsigned> lineByNode;
+	std::unordered_map<unsigned, NodeInstance*> nodeByLine;
 	for (unsigned i = 0; i < nodes.size(); ++i) {
-		ret.left.insert({i + 1, nodes[i]});  // + 1 because line numbers start at 1
+		lineByNode.insert({nodes[i], i + 1});
+		nodeByLine.insert({i + 1, nodes[i]});
 	}
 
-	return ret;
+	return {lineByNode, nodeByLine};
 }
 
 GraphStruct* GraphModule::structFromName(std::string_view name) const {

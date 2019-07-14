@@ -7,12 +7,10 @@
 #pragma once
 
 #include "chi/Fwd.hpp"
+#include "chi/Support/Uuid.hpp"
 
+#include <memory>
 #include <vector>
-
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp>
 
 namespace chi {
 /// An instance of a node
@@ -25,7 +23,7 @@ struct NodeInstance {
 	/// \param posY The Y location of the node
 	/// \param nodeID The unique ID for the node
 	NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX, float posY,
-	             boost::uuids::uuid nodeID = boost::uuids::random_generator()());
+	             Uuid nodeID = Uuid::random());
 
 	/// Destructor
 	~NodeInstance();
@@ -34,8 +32,7 @@ struct NodeInstance {
 	NodeInstance(NodeInstance&&) = default;
 
 	/// Copy constructor
-	explicit NodeInstance(const NodeInstance& other,
-	                      boost::uuids::uuid  id = boost::uuids::random_generator()());
+	explicit NodeInstance(const NodeInstance& other, Uuid id = Uuid::random());
 
 	/// Set the type of the node instance
 	/// \param newType The new type
@@ -61,11 +58,11 @@ struct NodeInstance {
 	void setY(float newY) { mY = newY; }
 	/// Get the ID of the instance, unique to the graph
 	/// \return The ID
-	boost::uuids::uuid id() const { return mId; }
+	Uuid id() const { return mId; }
 
 	/// Get the ID as a string
 	/// \return String representation of the id
-	std::string stringId() const { return boost::uuids::to_string(id()); }
+	std::string stringId() const { return id().toString(); }
 
 	// connections
 
@@ -100,7 +97,7 @@ private:
 	float mX = 0.f;
 	float mY = 0.0;
 
-	boost::uuids::uuid mId;
+	Uuid mId;
 
 	Context*       mContext;
 	GraphFunction* mFunction    = nullptr;

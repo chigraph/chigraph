@@ -16,7 +16,7 @@ option(CG_BUILD_DEBUGGER "Should the debugger be built?" ON)
 option(CG_BUILD_FETCHER "Should the fetcher be built? Requires libgit2." ON)
 option(CG_USE_SYSTEM_LIBGIT2 "Should the system try to find libgit2 from the system instead of the packaged version. Only applies if CG_BUILD_FETCHER is ON" OFF)
 option(CG_USE_SYSTEM_BOOST "Should the system try to find boost from the system instead of the packaged version" OFF)
-option(CG_INSTALL_STANDARD_CLANG_HEADERS "Should the system install the lib/clang folder? Set this to on if you are installing to somewhere other than the clang install prerix." OFF)
+option(CG_INSTALL_STANDARD_CLANG_HEADERS "Should the system install the lib/clang folder? Set this to on if you are installing to somewhere other than the clang install prefix." OFF)
 option(CG_RUNTIME_DEUBG "Use a non-optimzied runtime and generate debug info for it" OFF)
 
 # String options

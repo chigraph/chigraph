@@ -10,8 +10,6 @@
 #include <chi/NodeType.hpp>
 #include <chi/Support/Result.hpp>
 
-#include <boost/uuid/uuid_io.hpp>
-
 using namespace chi;
 using namespace nlohmann;
 
@@ -45,7 +43,6 @@ TEST_CASE("JsonSerializer", "[json]") {
 			nlohmann::json ret = graphFunctionToJson(*func);
 
 			REQUIRE(ret == expected);
-
 		};
 
 		THEN("The JSON should be correct") {
@@ -73,12 +70,11 @@ TEST_CASE("JsonSerializer", "[json]") {
 
 			std::unique_ptr<NodeType> toFill;
 			Result                    res = c.nodeTypeFromModule(
-			    "lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
+                "lang", "entry", R"({"data": [{"in1": "lang:i1"}], "exec": [""]})"_json, &toFill);
 			REQUIRE(!!res);
 			NodeInstance* entry;
-			res += func->insertNode(std::move(toFill), 32, 32, boost::uuids::random_generator()(),
-			                        &entry);
-			std::string entryUUID = boost::uuids::to_string(entry->id());
+			res += func->insertNode(std::move(toFill), 32, 32, Uuid::random(), &entry);
+			std::string entryUUID = entry->stringId();
 			REQUIRE(!!res);
 
 			THEN("The JSON should be correct") {
@@ -115,9 +111,8 @@ TEST_CASE("JsonSerializer", "[json]") {
 				res = c.nodeTypeFromModule("lang", "if", {}, &ifType);
 				REQUIRE(!!res);
 				NodeInstance* ifNode;
-				res += func->insertNode(std::move(ifType), 44.f, 23.f,
-				                        boost::uuids::random_generator()(), &ifNode);
-				std::string ifUUID = boost::uuids::to_string(ifNode->id());
+				res += func->insertNode(std::move(ifType), 44.f, 23.f, Uuid::random(), &ifNode);
+				std::string ifUUID = ifNode->stringId();
 				REQUIRE(!!res);
 
 				THEN("The JSON should be correct") {

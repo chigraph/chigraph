@@ -40,8 +40,8 @@ TEST_CASE("Create and manipulate local varables in GraphFunctions", "") {
 
 		WHEN("We add some set and get nodes") {
 			NodeInstance* setInst = nullptr;
-			res                   = func->insertNode("test/main", "_set_var", "lang:i32", 0.f, 0.f,
-			                       boost::uuids::random_generator()(), &setInst);
+			res = func->insertNode("test/main", "_set_var", "lang:i32", 0.f, 0.f, Uuid::random(),
+			                       &setInst);
 			REQUIRE(!!res);
 			REQUIRE(setInst != nullptr);
 			REQUIRE_FALSE(setInst->type().pure());
@@ -52,8 +52,8 @@ TEST_CASE("Create and manipulate local varables in GraphFunctions", "") {
 			REQUIRE(setInst->type().dataOutputs().size() == 0);
 
 			NodeInstance* getInst = nullptr;
-			res                   = func->insertNode("test/main", "_get_var", "lang:i32", 0.f, 0.f,
-			                       boost::uuids::random_generator()(), &getInst);
+			res = func->insertNode("test/main", "_get_var", "lang:i32", 0.f, 0.f, Uuid::random(),
+			                       &getInst);
 			REQUIRE(!!res);
 			REQUIRE(getInst != nullptr);
 			REQUIRE(getInst->type().pure());
