@@ -42,6 +42,7 @@ set(RUNTIME_SRCS
 
 # Create the dir for it
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib/runtime/runtime.obj)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib/chigraph)
 
 set(RUNTIME_COMPILEDBC "")
 
