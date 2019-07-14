@@ -26,8 +26,13 @@ namespace fs = std::filesystem;
 namespace chi {
 
 FunctionCompiler::FunctionCompiler(const GraphFunction& func, LLVMModuleRef moduleToGenInto,
-                                   LLVMMetadataRef debugCU, LLVMDIBuilderRef debugBuilder)
-    : mModule{moduleToGenInto}, mDIBuilder{debugBuilder}, mDebugCU{debugCU}, mFunction{&func} {}
+                                   LLVMMetadataRef debugFile, LLVMMetadataRef debugCU,
+                                   LLVMDIBuilderRef debugBuilder)
+    : mModule{moduleToGenInto},
+      mDIBuilder{debugBuilder},
+      mDIFile{debugFile},
+      mDebugCU{debugCU},
+      mFunction{&func} {}
 
 Result FunctionCompiler::initialize(bool validate) {
 	assert(initialized() == false && "Cannot initialize a FunctionCompiler more than once");
@@ -52,13 +57,11 @@ Result FunctionCompiler::initialize(bool validate) {
 
 	// create function
 	auto mangledName = mangleFunctionName(module().fullName(), function().name());
-	mLLFunction      = LLVMAddFunction(llvmModule(), mangledName.c_str(),
-                                  function().functionType());  // create the debug file
-
-	auto filename = module().sourceFilePath().filename();
-	auto dir      = module().sourceFilePath().parent_path();
-	mDIFile       = LLVMDIBuilderCreateFile(diBuilder(), filename.c_str(), strlen(filename.c_str()),
-                                      dir.c_str(), strlen(dir.c_str()));
+	mLLFunction      = LLVMGetNamedFunction(llvmModule(), mangledName.c_str());
+	if (mLLFunction == nullptr) {
+		mLLFunction = LLVMAddFunction(llvmModule(), mangledName.c_str(),
+		                              function().functionType());  // create the debug file
+	}
 
 	auto subroutineType = createSubroutineType();
 
@@ -93,7 +96,8 @@ Result FunctionCompiler::initialize(bool validate) {
 			    entryLN, intDataType.debugType(*this), false, LLVMDIFlagZero);
 
 			LLVMDIBuilderInsertDeclareAtEnd(
-			    diBuilder(), arg, debugParam, nullptr,  // TODO: can this be nullptr
+			    diBuilder(), arg, debugParam,
+			    LLVMDIBuilderCreateExpression(diBuilder(), nullptr, 0),
 			    LLVMDIBuilderCreateDebugLocation(context().llvmContext(), entryLN, 1, mDebugFunc,
 			                                     nullptr),
 			    allocBlock());
@@ -118,7 +122,7 @@ Result FunctionCompiler::initialize(bool validate) {
             mDIFile, entryLN, dType, false, LLVMDIFlagZero);
 
 		LLVMDIBuilderInsertDeclareAtEnd(
-		    diBuilder(), arg, debugParam, nullptr,
+		    diBuilder(), arg, debugParam, LLVMDIBuilderCreateExpression(diBuilder(), nullptr, 0),
 		    LLVMDIBuilderCreateDebugLocation(context().llvmContext(), entryLN, 1, mDebugFunc,
 		                                     nullptr),
 		    allocBlock());
@@ -289,9 +293,9 @@ NodeCompiler* FunctionCompiler::getOrCreateNodeCompiler(NodeInstance& node) {
 	return &mNodeCompilers.emplace(&node, NodeCompiler{*this, node}).first->second;
 }
 
-Result compileFunction(const GraphFunction& func, LLVMModuleRef mod, LLVMMetadataRef debugCU,
-                       LLVMDIBuilderRef debugBuilder) {
-	FunctionCompiler compiler{func, mod, debugCU, debugBuilder};
+Result compileFunction(const GraphFunction& func, LLVMModuleRef mod, LLVMMetadataRef debugFile,
+                       LLVMMetadataRef debugCU, LLVMDIBuilderRef debugBuilder) {
+	FunctionCompiler compiler{func, mod, debugFile, debugCU, debugBuilder};
 
 	auto res = compiler.initialize();
 	if (!res) { return res; }

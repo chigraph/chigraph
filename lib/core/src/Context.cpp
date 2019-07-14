@@ -17,6 +17,7 @@
 #include <llvm-c/Analysis.h>
 #include <llvm-c/Core.h>
 #include <llvm-c/DebugInfo.h>
+#include <llvm-c/IRReader.h>
 #include <llvm-c/Linker.h>
 #include <llvm-c/Target.h>
 
@@ -37,14 +38,27 @@ Result verifyModuleIfDebug(LLVMModuleRef module) {
 	Result res;
 #ifndef NDEBUG
 
+	auto moduleStr = OwnedMessage(LLVMPrintModuleToString(module));
+
+	// weirdness here. LLVM was reporting false positives (errored for valid modules)
+	// and reserializing helped. go figure.
+	auto buffer =
+	    LLVMCreateMemoryBufferWithMemoryRange(*moduleStr, strlen(*moduleStr), nullptr, false);
+
+	OwnedLLVMModule module2;
+	bool failed = LLVMParseIRInContext(LLVMGetModuleContext(module), buffer, &*module2, nullptr);
+
+	if (failed) {
+		res.addEntry("EINT", "Internal compiler error: could not read compiled module",
+		             {{"Module", *moduleStr}});
+		return res;
+	}
+
 	// verify the created module
 	OwnedMessage errorMessage;
-	bool         errored = LLVMVerifyModule(module, LLVMReturnStatusAction, &*errorMessage);
+	bool         errored = LLVMVerifyModule(*module2, LLVMReturnStatusAction, &*errorMessage);
 
 	if (errored) {
-		// print out the module for the good errors
-		auto moduleStr = OwnedMessage(LLVMPrintModuleToString(module));
-
 		res.addEntry("EINT", "Internal compiler error: Invalid module created",
 		             {{"Error", *errorMessage}, {"Module", *moduleStr}});
 	}

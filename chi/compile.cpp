@@ -136,7 +136,10 @@ int compile(const std::vector<std::string>& opts) {
 
 	// add inliner
 	if (levelInt > 1) {
-		LLVMPassManagerBuilderUseInlinerWithThreshold(*passBuilder, 250);  // 250 is default for -O3
+		// somehow, this actually causes miscompilation if the level is any higher than 35. This is
+		// sketchy so i'm just diabling it for now
+		// LLVMPassManagerBuilderUseInlinerWithThreshold(*passBuilder, 35);  // 250 is default for
+		// O3
 	}
 
 	auto fpm = OwnedLLVMPassManager(LLVMCreateFunctionPassManagerForModule(*llmod));
@@ -187,7 +190,7 @@ int compile(const std::vector<std::string>& opts) {
 		} else {
 			auto module = OwnedMessage(LLVMPrintModuleToString(*llmod));
 
-			outputStream << module;
+			outputStream << *module;
 			outputStream.flush();
 		}
 	};

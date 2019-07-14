@@ -23,10 +23,10 @@ namespace fs = std::filesystem;
 
 namespace chi {
 
-Debugger::Debugger(const char* pathToChig, GraphModule& mod) : mModule{&mod} {
+Debugger::Debugger(const char* pathToChi, GraphModule& mod) : mModule{&mod} {
 // point it to lldb-server
 #if __linux__
-	auto lldbServerPath = fs::path(pathToChig).parent_path() / "lldb-server";
+	auto lldbServerPath = fs::path(pathToChi).parent_path() / "lldb-server";
 	setenv("LLDB_DEBUGSERVER_PATH", lldbServerPath.c_str(), 1);
 #endif
 
@@ -45,7 +45,7 @@ Debugger::Debugger(const char* pathToChig, GraphModule& mod) : mModule{&mod} {
 	mDebugger.EnableLog("lldb", val);
 
 	// create target
-	mTarget = mDebugger.CreateTarget(pathToChig);
+	mTarget = mDebugger.CreateTarget(pathToChi);
 }
 
 Debugger::~Debugger() { lldb::SBDebugger::Terminate(); }

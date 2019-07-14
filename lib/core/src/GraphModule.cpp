@@ -107,7 +107,7 @@ struct CFuncNode : NodeType {
 		LLVMSetCurrentDebugLocation(*builder,
 		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
 		auto callInst =
-		    LLVMBuildCall(*builder, llfunc, const_cast<LLVMValueRef*>(io.data()), io.size(), "");
+		    LLVMBuildCall(*builder, llfunc, const_cast<LLVMValueRef*>(io.data()), ioSize, "");
 
 		// store theoutput if there are any
 		if (!dataOutputs().empty()) { LLVMBuildStore(*builder, callInst, io[dataInputs().size()]); }
@@ -475,20 +475,21 @@ Result GraphModule::generateModule(LLVMModuleRef module) {
 	// debug info
 	auto debugBuilder = OwnedLLVMDIBuilder(LLVMCreateDIBuilder(module));
 
-	auto srcFile     = sourceFilePath().filename().c_str();
-	auto srcPath     = sourceFilePath().parent_path().c_str();
-	auto compilerID  = "Chigraph Compiler";
+	auto srcFile    = sourceFilePath().filename();
+	auto srcPath    = sourceFilePath().parent_path();
+	auto compilerID = "Chigraph Compiler";
+	auto diFile = LLVMDIBuilderCreateFile(*debugBuilder, srcFile.c_str(), strlen(srcFile.c_str()),
+	                                      srcPath.c_str(), strlen(srcPath.c_str()));
 	auto compileUnit = LLVMDIBuilderCreateCompileUnit(
-	    *debugBuilder, LLVMDWARFSourceLanguageC,
-	    LLVMDIBuilderCreateFile(*debugBuilder, srcFile, strlen(srcFile), srcPath, strlen(srcPath)),
-	    compilerID, strlen(compilerID), false, "", 0, 0, "", 0, LLVMDWARFEmissionFull, 0, true,
+	    *debugBuilder, LLVMDWARFSourceLanguageC, diFile, compilerID, strlen(compilerID), false, "",
+	    0, 0, "", 0, LLVMDWARFEmissionFull, 0, true,
 	    false);  // TODO: resarch these parameters, these are defaults
 
 	// create prototypes
 	addForwardDeclarations(module);
 
 	for (auto& graph : mFunctions) {
-		res += compileFunction(*graph, module, compileUnit, *debugBuilder);
+		res += compileFunction(*graph, module, diFile, compileUnit, *debugBuilder);
 	}
 
 	LLVMDIBuilderFinalize(*debugBuilder);

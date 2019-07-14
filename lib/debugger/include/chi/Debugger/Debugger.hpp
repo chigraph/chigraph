@@ -20,9 +20,9 @@ namespace chi {
 class Debugger {
 public:
 	/// Default constructor
-	/// \param pathToChig The path to the chig executable for JIT
+	/// \param pathToChi The path to the chi executable for JIT
 	/// \param mod The GraphModule to debug, should be a main module
-	Debugger(const char* pathToChig, GraphModule& mod);
+	Debugger(const char* pathToChi, GraphModule& mod);
 
 	// no copy or move, doesn't really make sense
 	Debugger(const Debugger& other) = delete;

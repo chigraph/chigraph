@@ -83,7 +83,9 @@ int interpret(const std::vector<std::string>& opts, const char* argv0) {
 
 		OwnedLLVMModule mod;
 		OwnedMessage    message;
-		if (LLVMParseIRInContext(ctx.llvmContext(), *buffer, &*mod, &*message)) {
+		// LLVMParseIRInContext takes ownership, interestingly enough.
+		// https://llvm.org/doxygen/IRReader_8cpp_source.html#l00115
+		if (LLVMParseIRInContext(ctx.llvmContext(), buffer.take_ownership(), &*mod, &*message)) {
 			std::cerr << "Failed to parse IR from \"" << file << "\": " << message << std::endl;
 			return 1;
 		}

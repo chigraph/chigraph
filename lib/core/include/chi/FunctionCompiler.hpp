@@ -24,7 +24,8 @@ struct FunctionCompiler {
 	/// \param debugCU The compile unit we're in, this is a DICompileUnit
 	/// \param debugBuilder The Debug information builder for the module
 	FunctionCompiler(const GraphFunction& func, LLVMModuleRef moduleToGenInto,
-	                 LLVMMetadataRef debugCU, LLVMDIBuilderRef debugBuilder);
+	                 LLVMMetadataRef debugFile, LLVMMetadataRef debugCU,
+	                 LLVMDIBuilderRef debugBuilder);
 
 	/// Creates the function, but don't actually generate into it
 	/// \pre `initialized() == false`
@@ -143,9 +144,9 @@ private:
 
 	LLVMModuleRef    mModule    = nullptr;
 	LLVMDIBuilderRef mDIBuilder = nullptr;
+	LLVMMetadataRef  mDIFile    = nullptr;
 	LLVMMetadataRef  mDebugCU   = nullptr;
-	LLVMMetadataRef  mDIFile{};
-	LLVMMetadataRef  mDebugFunc{};
+	LLVMMetadataRef  mDebugFunc = nullptr;
 
 	const GraphFunction* mFunction = nullptr;
 
@@ -168,8 +169,8 @@ private:
 /// \param debugCU The compilation unit that the GraphFunction resides in.
 /// \param debugBuilder The debug builder to build debug info
 /// \return The result
-Result compileFunction(const GraphFunction& func, LLVMModuleRef mod, LLVMMetadataRef debugCU,
-                       LLVMDIBuilderRef debugBuilder);
+Result compileFunction(const GraphFunction& func, LLVMModuleRef mod, LLVMMetadataRef debugFile,
+                       LLVMMetadataRef debugCU, LLVMDIBuilderRef debugBuilder);
 }  // namespace chi
 
 #endif  // CHI_FUNCTION_COMPILER_HPP

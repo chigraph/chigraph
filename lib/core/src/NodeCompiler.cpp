@@ -40,7 +40,8 @@ NodeCompiler::NodeCompiler(FunctionCompiler& functionCompiler, NodeInstance& ins
 			    name.length(), funcCompiler().debugFile(), 1, dType, false, LLVMDIFlagZero, 0);
 
 			LLVMDIBuilderInsertDeclareAtEnd(
-			    funcCompiler().diBuilder(), alloca, debugVar, nullptr,
+			    funcCompiler().diBuilder(), alloca, debugVar,
+			    LLVMDIBuilderCreateExpression(funcCompiler().diBuilder(), nullptr, 0),
 			    LLVMDIBuilderCreateDebugLocation(context().llvmContext(), 1, 1,
 			                                     funcCompiler().diFunction(), nullptr),
 			    funcCompiler().allocBlock());

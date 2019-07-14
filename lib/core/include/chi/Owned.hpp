@@ -55,7 +55,7 @@ public:
 	}
 
 private:
-	T mObject;
+	T mObject = nullptr;
 };
 
 using OwnedLLVMModule             = Owned<LLVMModuleRef, LLVMDisposeModule>;

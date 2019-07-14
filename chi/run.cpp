@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 
-
 #include <chi/Context.hpp>
 #include <chi/GraphFunction.hpp>
 #include <chi/GraphModule.hpp>
@@ -44,7 +43,7 @@ int run(const std::vector<std::string>& opts, const char* argv0) {
 	command_opts.insert(command_opts.begin(), argv0);
 
 	if (vm.count("input-file") == 0) {
-		std::cerr << "chig compile: error: no input files" << std::endl;
+		std::cerr << "chi compile: error: no input files" << std::endl;
 		return 1;
 	}
 

@@ -100,7 +100,11 @@ std::string areJsonEqual(json lhs, json rhs) {
 				       " Serialized: " + std::to_string(float(rnode["location"][1]));
 			}
 
-			if (lnode["data"].dump(-1) != rnode["data"].dump(-1)) {
+			// if they are floats, allow them being epsilon apart
+			if (lnode["data"] != rnode["data"] &&
+			    !(lnode["data"].is_number_float() && rnode["data"].is_number_float() &&
+			      std::abs(rnode["data"].get<float>() - lnode["data"].get<float>()) <=
+			          std::numeric_limits<float>::epsilon())) {
 				return "node with id: " + nodeIter.key() + " in graph #" + std::to_string(iter) +
 				       " have non-matching data. Original: \n\n" + rnode["data"].dump(-1) +
 				       "\n\nSerialized: \n\n" + lnode["data"].dump(-1);
@@ -199,10 +203,10 @@ int main(int argc, char** argv) {
 
 	Result res;
 
-	// chig compile + lli
+	// chi compile + lli
 	{
 		std::string generatedir, chigstderr;
-		// go through chig compile
+		// go through chi compile
 		{
 			Subprocess chiexe{chiExePath};
 			chiexe.setArguments({"compile", "-f", "main.chimod"});
@@ -219,7 +223,7 @@ int main(int argc, char** argv) {
 
 			// check stderr and return code
 			if (chiexe.exitCode() != 0) {
-				std::cerr << "Failed to generate module with chig compile: \n"
+				std::cerr << "Failed to generate module with chi compile: \n"
 				          << chigstderr << std::endl;
 				return 1;
 			}
@@ -354,13 +358,13 @@ int main(int argc, char** argv) {
 	std::cout << "testing with chi compile -c | chi interpret";
 	std::cout.flush();
 	{
-		std::string generatedir, chigstderr;
-		// go through chig compile
+		std::string generatedir, chistderr;
+		// go through chi compile
 		{
 			Subprocess chiexe{chiExePath};
 			chiexe.setArguments({"compile", "-c", "-f", "main.chimod"});
 			chiexe.attachToStdErr(
-			    [&chigstderr](const char* data, size_t size) { chigstderr.append(data, size); });
+			    [&chistderr](const char* data, size_t size) { chistderr.append(data, size); });
 			chiexe.attachToStdOut(
 			    [&generatedir](const char* data, size_t size) { generatedir.append(data, size); });
 
@@ -373,7 +377,7 @@ int main(int argc, char** argv) {
 			// check stderr and return code
 			if (chiexe.exitCode() != 0) {
 				std::cerr << "Failed to generate module with chi compile: \n"
-				          << chigstderr << std::endl;
+				          << chistderr << std::endl;
 				return 1;
 			}
 		}
