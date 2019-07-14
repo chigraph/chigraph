@@ -498,7 +498,7 @@ struct CompareNodeType : NodeType {
 			case CmpOp::Get: pred = LLVMIntSGE; break;
 			case CmpOp::Eq: pred = LLVMIntEQ; break;
 			case CmpOp::Neq: pred = LLVMIntNE; break;
-			default: assert(false);
+			default: assert(false); return {};
 			}
 			result = LLVMBuildICmp(*builder, pred, io[0], io[1], "");
 
@@ -511,7 +511,7 @@ struct CompareNodeType : NodeType {
 			case CmpOp::Get: pred = LLVMRealOGE; break;
 			case CmpOp::Eq: pred = LLVMRealOEQ; break;
 			case CmpOp::Neq: pred = LLVMRealONE; break;
-			default: assert(false);
+			default: assert(false); return {};
 			}
 			result = LLVMBuildFCmp(*builder, pred, io[0], io[1], "");
 		}
