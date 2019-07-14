@@ -48,7 +48,7 @@ message(STATUS "LLVM ld flags: ${LLVM_LD_FLAGS_LIST}")
 add_library(chigraphsupport STATIC IMPORTED)
 set_property(TARGET chigraphsupport PROPERTY IMPORTED_LOCATION ${CG_INSTALL_DIRECTORY}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}chigraphsupport${CMAKE_STATIC_LIBRARY_SUFFIX})
 set_property(TARGET chigraphsupport PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CG_INSTALL_DIRECTORY}/include)
-set_property(TARGET chigraphsupport PROPERTY INTERFACE_LINK_LIBRARIES std::filesystem Threads::Threads)
+set_property(TARGET chigraphsupport PROPERTY INTERFACE_LINK_LIBRARIES Threads::Threads)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
 		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
