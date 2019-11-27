@@ -1,28 +1,27 @@
 /// A simple example on how to use the Subprocess class
 /// The explanation for this is in the chi::Subprocess documentation
 
-#include <chi/Subprocess.hpp>
-#include <chi/Result.hpp>
+#include <chi/Support/Result.hpp>
+#include <chi/Support/Subprocess.hpp>
 
 #include <iostream>
 
 int main() {
-	
 	/// [Constructing]
 	chi::Subprocess child{
 #ifdef WIN32
-		"C:\\Windows\\System32\\cmd.exe"
+	    "C:\\Windows\\System32\\cmd.exe"
 #else
-		"/bin/sh"
+	    "/bin/sh"
 #endif
 	};
 	/// [Constructing]
-	
+
 	/// [Setup]
 	std::string stdOut;
 	child.attachStringToStdOut(stdOut);
 	/// [Setup]
-	
+
 	/// [Start]
 	chi::Result res;
 	res += child.start();
@@ -31,7 +30,7 @@ int main() {
 		return 1;
 	}
 	/// [Start]
-	
+
 	/// [Write to stdin]
 	std::string dataToSend = "echo hello";
 	res += child.pushToStdIn(dataToSend.data(), dataToSend.size());
@@ -45,7 +44,7 @@ int main() {
 		return 1;
 	}
 	/// [Write to stdin]
-	
+
 	/// [Get Exit Code]
 	int exitCode = child.exitCode();
 	if (exitCode != 0) {
@@ -53,7 +52,7 @@ int main() {
 		return 1;
 	}
 	/// [Get Exit Code]
-	
+
 	/// [Use byproducts]
 	std::cout << stdOut << std::endl;
 	/// [Use byproducts]
