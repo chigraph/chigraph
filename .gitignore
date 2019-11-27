@@ -35,6 +35,8 @@ CMakeSettings.json
 
 
 build/
+cmake-build-debug/
+.cquery_cache
 *.kdev4
 .kdev4/
 .idea/
@@ -43,7 +45,6 @@ test/codegen/workspace/lib
 
 CMakeLists.txt.user
 
-cmake-build-debug/
 
 .DS_Store
 
