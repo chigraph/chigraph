@@ -1,14 +1,15 @@
 /// \file DefaultModuleCache.cpp
 
 #include "chi/DefaultModuleCache.hpp"
+
+#include <llvm-c/BitWriter.h>
+
+#include <cassert>
+
 #include "chi/BitcodeParser.hpp"
 #include "chi/Context.hpp"
 #include "chi/ModuleCache.hpp"
 #include "chi/Support/Result.hpp"
-
-#include <cassert>
-
-#include <llvm-c/BitWriter.h>
 
 namespace chi {
 

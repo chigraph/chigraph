@@ -1,6 +1,16 @@
 /// \file GraphModule.cpp
 
 #include "chi/GraphModule.hpp"
+
+#include <llvm-c/Core.h>
+#include <llvm-c/DebugInfo.h>
+#include <llvm-c/Linker.h>
+
+#include <boost/range.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <filesystem>
+#include <fstream>
+
 #include "chi/CCompiler.hpp"
 #include "chi/ClangFinder.hpp"
 #include "chi/Context.hpp"
@@ -15,16 +25,6 @@
 #include "chi/Support/LibCLocator.hpp"
 #include "chi/Support/Result.hpp"
 #include "chi/Support/Subprocess.hpp"
-
-#include <boost/range.hpp>
-#include <boost/uuid/uuid_io.hpp>
-
-#include <filesystem>
-#include <fstream>
-
-#include <llvm-c/Core.h>
-#include <llvm-c/DebugInfo.h>
-#include <llvm-c/Linker.h>
 
 namespace fs = std::filesystem;
 

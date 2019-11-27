@@ -1,14 +1,15 @@
 /// \file NodeInstance.cpp
 
 #include "chi/NodeInstance.hpp"
+
+#include <cassert>
+
 #include "chi/DataType.hpp"
 #include "chi/FunctionValidator.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
-
-#include <cassert>
 
 namespace chi {
 NodeInstance::NodeInstance(GraphFunction* func, std::unique_ptr<NodeType> nodeType, float posX,

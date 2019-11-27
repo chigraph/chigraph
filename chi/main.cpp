@@ -1,12 +1,10 @@
+#include <boost/program_options.hpp>
 #include <chi/Context.hpp>
 #include <chi/GraphFunction.hpp>
 #include <chi/GraphModule.hpp>
 #include <chi/LangModule.hpp>
 #include <chi/NodeType.hpp>
 #include <chi/Support/Result.hpp>
-
-#include <boost/program_options.hpp>
-
 #include <filesystem>
 #include <iostream>
 #include <string>

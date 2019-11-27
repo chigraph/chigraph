@@ -6,10 +6,10 @@
 #ifndef CHI_JSON_DESERIALIZER_HPP
 #define CHI_JSON_DESERIALIZER_HPP
 
+#include <filesystem>
+
 #include "chi/Fwd.hpp"
 #include "chi/Support/json.hpp"
-
-#include <filesystem>
 
 namespace chi {
 

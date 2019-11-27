@@ -6,10 +6,10 @@
 #ifndef CHI_DATA_TYPE_HPP
 #define CHI_DATA_TYPE_HPP
 
-#include "chi/Fwd.hpp"
-
 #include <cassert>
 #include <string>
+
+#include "chi/Fwd.hpp"
 
 namespace chi {
 /// A type of data

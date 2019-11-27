@@ -1,11 +1,7 @@
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
+#include <llvm-c/BitWriter.h>
+#include <llvm-c/Transforms/PassManagerBuilder.h>
 
 #include <boost/program_options.hpp>
-
 #include <chi/Context.hpp>
 #include <chi/GraphFunction.hpp>
 #include <chi/GraphModule.hpp>
@@ -13,9 +9,11 @@
 #include <chi/NodeType.hpp>
 #include <chi/Support/Result.hpp>
 #include <chi/Support/json.hpp>
-
-#include <llvm-c/BitWriter.h>
-#include <llvm-c/Transforms/PassManagerBuilder.h>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 
 using namespace chi;
 

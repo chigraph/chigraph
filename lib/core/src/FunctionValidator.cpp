@@ -1,14 +1,15 @@
 /// \file FunctionValidator.cpp
 
 #include "chi/FunctionValidator.hpp"
+
+#include <unordered_map>
+
 #include "chi/DataType.hpp"
 #include "chi/GraphFunction.hpp"
 #include "chi/GraphModule.hpp"
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
-
-#include <unordered_map>
 
 namespace chi {
 
@@ -150,7 +151,7 @@ namespace {
 /// alreadyCalled stores the nodes that have been called at this node, and the inputExecIds it has
 /// been called at, to avoid infinite loops
 Result validatePath(
-    const NodeInstance& inst, int                                            inExecId,
+    const NodeInstance& inst, int inExecId,
     std::unordered_map<const NodeInstance*, std::vector<int> /*in Exec id*/> alreadyCalled) {
 	Result res;
 

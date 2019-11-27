@@ -1,5 +1,7 @@
 #include "chi/NodeCompiler.hpp"
 
+#include <llvm-c/Core.h>
+
 #include <cassert>
 
 #include "chi/Context.hpp"
@@ -8,8 +10,6 @@
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
-
-#include <llvm-c/Core.h>
 
 namespace fs = std::filesystem;
 

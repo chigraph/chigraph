@@ -1,6 +1,7 @@
 /// \file NodeType.cpp
 
 #include "chi/NodeType.hpp"
+
 #include "chi/ChiModule.hpp"
 #include "chi/DataType.hpp"
 
@@ -45,7 +46,7 @@ void NodeType::makeConverter() {
 	assert(pure() && "Cannot have a nonpure converter node");
 	assert(dataInputs().size() == 1 && "A converter node must have one data input");
 	assert(dataOutputs().size() == 1 && "A converter node must have one data output");
-	
+
 	mConverter = true;
 }
 

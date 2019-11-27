@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include <llvm-c/TargetMachine.h>
+
+#include <filesystem>
 #include <memory>
 #include <unordered_map>
 
@@ -13,10 +16,6 @@
 #include "chi/ModuleCache.hpp"
 #include "chi/Support/Flags.hpp"
 #include "chi/Support/json.hpp"
-
-#include <filesystem>
-
-#include <llvm-c/TargetMachine.h>
 
 namespace chi {
 

@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include "chi/Fwd.hpp"
-#include "chi/Support/Uuid.hpp"
-
 #include <memory>
 #include <vector>
+
+#include "chi/Fwd.hpp"
+#include "chi/Support/Uuid.hpp"
 
 namespace chi {
 /// An instance of a node

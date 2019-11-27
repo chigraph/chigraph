@@ -1,17 +1,15 @@
-#include <chi/Context.hpp>
-#include <chi/Owned.hpp>
-#include <chi/Support/Result.hpp>
-
 #include <llvm-c/ExecutionEngine.h>
 #include <llvm-c/IRReader.h>
 #include <llvm-c/Linker.h>
 
+#include <boost/program_options.hpp>
+#include <chi/Context.hpp>
+#include <chi/Owned.hpp>
+#include <chi/Support/Result.hpp>
 #include <deque>
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
 using namespace chi;

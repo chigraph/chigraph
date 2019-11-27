@@ -6,12 +6,12 @@
 
 #pragma once
 
+#include <filesystem>
+#include <unordered_map>
+
 #include "chi/Fwd.hpp"
 #include "chi/Support/Uuid.hpp"
 #include "chi/Support/json.hpp"
-
-#include <filesystem>
-#include <unordered_map>
 
 namespace chi {
 /// this is an AST-like representation of a function in a graph

@@ -1,8 +1,8 @@
 #include "chi/Fetcher/Fetcher.hpp"
 
-#include <fstream>
-
 #include <git2.h>
+
+#include <fstream>
 
 namespace fs = std::filesystem;
 

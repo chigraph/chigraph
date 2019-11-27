@@ -1,6 +1,7 @@
 /// \file GraphFunction.cpp
 
 #include "chi/GraphFunction.hpp"
+
 #include "chi/Context.hpp"
 #include "chi/DataType.hpp"
 #include "chi/FunctionValidator.hpp"

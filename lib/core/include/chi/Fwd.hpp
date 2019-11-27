@@ -5,6 +5,7 @@
 #define CHI_FWD_HPP
 
 #include <llvm-c/Types.h>
+
 #include "chi/Support/Fwd.hpp"
 
 namespace chi {

@@ -6,11 +6,11 @@
 #ifndef CHI_FUNCTION_COMPILER_HPP
 #define CHI_FUNCTION_COMPILER_HPP
 
-#include "chi/Fwd.hpp"
-#include "chi/NodeCompiler.hpp"
-
 #include <memory>
 #include <unordered_map>
+
+#include "chi/Fwd.hpp"
+#include "chi/NodeCompiler.hpp"
 
 namespace chi {
 

@@ -1,6 +1,7 @@
 /// \file GraphStruct.cpp
 
 #include "chi/GraphStruct.hpp"
+
 #include "chi/Context.hpp"
 #include "chi/FunctionCompiler.hpp"
 #include "chi/GraphModule.hpp"

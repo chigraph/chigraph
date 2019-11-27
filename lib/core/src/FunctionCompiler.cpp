@@ -1,6 +1,15 @@
 /// \file FunctionCompiler.cpp
 
 #include "chi/FunctionCompiler.hpp"
+
+#include <llvm-c/DebugInfo.h>
+
+#include <boost/bimap.hpp>
+#include <boost/dynamic_bitset.hpp>
+#include <boost/range/join.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <unordered_map>
+
 #include "chi/Context.hpp"
 #include "chi/DataType.hpp"
 #include "chi/FunctionValidator.hpp"
@@ -11,15 +20,6 @@
 #include "chi/NodeInstance.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
-
-#include <boost/bimap.hpp>
-#include <boost/dynamic_bitset.hpp>
-#include <boost/range/join.hpp>
-#include <boost/uuid/uuid_io.hpp>
-
-#include <llvm-c/DebugInfo.h>
-
-#include <unordered_map>
 
 namespace fs = std::filesystem;
 

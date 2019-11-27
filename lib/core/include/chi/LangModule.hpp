@@ -6,10 +6,10 @@
 
 #pragma once
 
+#include <unordered_map>
+
 #include "chi/ChiModule.hpp"
 #include "chi/Fwd.hpp"
-
-#include <unordered_map>
 
 namespace chi {
 /// The module that provides built-in operations like literals, math operations, etc

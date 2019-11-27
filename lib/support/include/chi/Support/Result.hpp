@@ -7,6 +7,7 @@
 #pragma once
 
 #include <unordered_map>
+
 #include "chi/Support/json.hpp"
 
 namespace chi {
@@ -155,7 +156,7 @@ struct Result {
 
 private:
 	std::vector<std::pair<int, nlohmann::json>> mContexts;
-	size_t mNextCtx = 0;
+	size_t                                      mNextCtx = 0;
 };
 
 /// \example ResultExample.cpp

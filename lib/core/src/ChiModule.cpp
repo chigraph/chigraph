@@ -1,6 +1,7 @@
 /// \file ChiModule.cpp
 
 #include "chi/ChiModule.hpp"
+
 #include "chi/Context.hpp"
 #include "chi/Support/Result.hpp"
 

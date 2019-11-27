@@ -1,12 +1,12 @@
 /// \file Subprocess.cpp
 
 #include "chi/Support/Subprocess.hpp"
-#include "chi/Support/Result.hpp"
 
+#include <boost/algorithm/string/replace.hpp>
 #include <cassert>
 #include <thread>
 
-#include <boost/algorithm/string/replace.hpp>
+#include "chi/Support/Result.hpp"
 
 // Win32 Implementation
 #ifdef WIN32
@@ -25,9 +25,9 @@ std::string GetLastErrorAsString() {
 
 	LPSTR  messageBuffer = nullptr;
 	size_t size          = FormatMessageA(
-	    FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-	    NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0,
-	    NULL);
+        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0,
+        NULL);
 
 	std::string message(messageBuffer, size);
 
@@ -262,7 +262,6 @@ Result Subprocess::start() {
 
 	// start threads for listening for input
 	mPimpl->stderrThread = std::thread([this]() {
-
 		while (true) {
 			DWORD bytesRead;
 
@@ -278,7 +277,6 @@ Result Subprocess::start() {
 			// send it
 			if (mStdErrHandler) { mStdErrHandler(buffer.data(), bytesRead); }
 		}
-
 	});
 
 #ifndef NDEBUG
@@ -479,7 +477,6 @@ Result Subprocess::start() {
 
 	// start threads
 	mPimpl->stdoutThread = std::thread([this] {
-
 		std::array<char, 4096> buffer;
 		while (true) {
 			// read from stdout
@@ -496,7 +493,6 @@ Result Subprocess::start() {
 	});
 
 	mPimpl->stderrThread = std::thread([this] {
-
 		std::array<char, 4096> buffer;
 		while (true) {
 			// read from stdout

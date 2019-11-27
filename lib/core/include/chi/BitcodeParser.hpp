@@ -5,10 +5,10 @@
 #ifndef CHI_BITCODE_PARSER_HPP
 #define CHI_BITCODE_PARSER_HPP
 
+#include <filesystem>
+
 #include "chi/Fwd.hpp"
 #include "chi/Owned.hpp"
-
-#include <filesystem>
 
 namespace chi {
 

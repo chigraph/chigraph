@@ -6,7 +6,6 @@
 #pragma once
 
 #include <chi/Support/Result.hpp>
-
 #include <filesystem>
 
 namespace chi {

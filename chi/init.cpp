@@ -1,12 +1,10 @@
+#include <boost/program_options.hpp>
+#include <chi/Context.hpp>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include <boost/program_options.hpp>
-
-#include <chi/Context.hpp>
 
 extern int get(const std::vector<std::string>& opts);
 

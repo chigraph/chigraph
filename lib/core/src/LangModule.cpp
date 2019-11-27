@@ -1,15 +1,16 @@
 /// \file LangModule.cpp
 
 #include "chi/LangModule.hpp"
+
+#include <llvm-c/Core.h>
+#include <llvm-c/DebugInfo.h>
+
 #include "chi/Context.hpp"
 #include "chi/DataType.hpp"
 #include "chi/Dwarf.hpp"
 #include "chi/FunctionCompiler.hpp"
 #include "chi/NodeType.hpp"
 #include "chi/Support/Result.hpp"
-
-#include <llvm-c/Core.h>
-#include <llvm-c/DebugInfo.h>
 
 using namespace std::string_literals;
 

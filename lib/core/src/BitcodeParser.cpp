@@ -1,11 +1,12 @@
 /// \file BitcodeParser.cpp
 
 #include "chi/BitcodeParser.hpp"
-#include "chi/Support/Result.hpp"
 
 #include <llvm-c/BitReader.h>
 #include <llvm-c/Core.h>
 #include <llvm-c/Error.h>
+
+#include "chi/Support/Result.hpp"
 
 namespace chi {
 

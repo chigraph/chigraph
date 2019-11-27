@@ -56,8 +56,7 @@ std::pair<std::string, std::string> unmangleFunctionName(std::string mangled) {
 		case '_': modName.replace(id, 2, "_"); break;
 		case 's': modName.replace(id, 2, "/"); break;
 		case 'd': modName.replace(id, 2, "."); break;
-		default:
-			assert(false);  // TODO: error handling
+		default: assert(false);  // TODO: error handling
 		}
 
 		++id;

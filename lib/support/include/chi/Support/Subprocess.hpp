@@ -5,8 +5,6 @@
 #ifndef CHI_SUBPROCESS_HPP
 #define CHI_SUBPROCESS_HPP
 
-#include "chi/Support/Fwd.hpp"
-
 #include <cassert>
 #include <chrono>
 #include <filesystem>
@@ -14,6 +12,8 @@
 #include <optional>
 #include <string>
 #include <vector>
+
+#include "chi/Support/Fwd.hpp"
 
 namespace chi {
 

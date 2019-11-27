@@ -110,7 +110,7 @@ Result stdCIncludePaths(std::vector<std::filesystem::path>& toFill) {
 
 	return res;
 }
-}  // chi
+}  // namespace chi
 
 #elif defined WIN32
 

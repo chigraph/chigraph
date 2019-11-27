@@ -2,20 +2,17 @@
 
 #include "chi/Debugger/Debugger.hpp"
 
+#include <lldb/API/SBListener.h>
+#include <lldb/API/SBThread.h>
+#include <llvm-c/BitWriter.h>
+#include <stdlib.h>  // for setenv
+
+#include <boost/uuid/uuid_io.hpp>
 #include <chi/Context.hpp>
 #include <chi/NameMangler.hpp>
 #include <chi/NodeInstance.hpp>
 #include <chi/Support/Result.hpp>
 #include <chi/Support/TempFile.hpp>
-
-#include <llvm-c/BitWriter.h>
-
-#include <lldb/API/SBListener.h>
-#include <lldb/API/SBThread.h>
-
-#include <boost/uuid/uuid_io.hpp>
-
-#include <stdlib.h>  // for setenv
 #include <filesystem>
 #include <iostream>
 

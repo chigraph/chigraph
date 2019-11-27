@@ -1,6 +1,7 @@
 /// \file DataType.cpp
 
 #include "chi/DataType.hpp"
+
 #include "chi/ChiModule.hpp"
 
 namespace chi {

@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include "chi/Fwd.hpp"
-#include "chi/Support/HashFilesystemPath.hpp"
-#include "chi/Support/json.hpp"
-
 #include <ctime>
 #include <filesystem>
 #include <set>
 #include <string_view>
+
+#include "chi/Fwd.hpp"
+#include "chi/Support/HashFilesystemPath.hpp"
+#include "chi/Support/json.hpp"
 
 /// The namespace where chigraph lives
 namespace chi {

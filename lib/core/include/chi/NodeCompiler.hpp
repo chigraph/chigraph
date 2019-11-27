@@ -5,11 +5,11 @@
 #ifndef CHI_NODE_COMPILER_HPP
 #define CHI_NODE_COMPILER_HPP
 
-#include "chi/Fwd.hpp"
-
 #include <cassert>
 #include <unordered_set>
 #include <vector>
+
+#include "chi/Fwd.hpp"
 
 namespace chi {
 

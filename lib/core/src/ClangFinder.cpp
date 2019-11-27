@@ -1,8 +1,9 @@
 #include "chi/ClangFinder.hpp"
-#include "chi/Support/ExecutablePath.hpp"
-#include "chi/Support/FindProgram.hpp"
 
 #include <boost/preprocessor/stringize.hpp>
+
+#include "chi/Support/ExecutablePath.hpp"
+#include "chi/Support/FindProgram.hpp"
 
 // only non llvm-c include, for LLVM_VERSION*
 #include <llvm/Config/llvm-config.h>

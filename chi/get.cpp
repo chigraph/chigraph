@@ -1,13 +1,11 @@
+#include <boost/program_options.hpp>
+#include <chi/Context.hpp>
+#include <chi/Fetcher/Fetcher.hpp>
+#include <chi/Support/Result.hpp>
 #include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include <chi/Context.hpp>
-#include <chi/Fetcher/Fetcher.hpp>
-#include <chi/Support/Result.hpp>
-
-#include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
 namespace fs = std::filesystem;

@@ -1,6 +1,21 @@
 /// \file Context.cpp
 
 #include "chi/Context.hpp"
+
+#include <llvm-c/Analysis.h>
+#include <llvm-c/Core.h>
+#include <llvm-c/DebugInfo.h>
+#include <llvm-c/IRReader.h>
+#include <llvm-c/Linker.h>
+#include <llvm-c/Target.h>
+
+#include <boost/algorithm/string/replace.hpp>
+#include <boost/range.hpp>
+#include <deque>
+#include <filesystem>
+#include <fstream>
+#include <unordered_set>
+
 #include "chi/BitcodeParser.hpp"
 #include "chi/DefaultModuleCache.hpp"
 #include "chi/GraphFunction.hpp"
@@ -13,21 +28,6 @@
 #include "chi/Owned.hpp"
 #include "chi/Support/ExecutablePath.hpp"
 #include "chi/Support/Result.hpp"
-
-#include <llvm-c/Analysis.h>
-#include <llvm-c/Core.h>
-#include <llvm-c/DebugInfo.h>
-#include <llvm-c/IRReader.h>
-#include <llvm-c/Linker.h>
-#include <llvm-c/Target.h>
-
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/range.hpp>
-
-#include <deque>
-#include <filesystem>
-#include <fstream>
-#include <unordered_set>
 
 namespace fs = std::filesystem;
 
@@ -479,8 +479,11 @@ LLVMValueRef Context::constF64(double value) {
 
 LLVMValueRef Context::constBool(bool value) { return LLVMConstInt(LLVMInt1Type(), value, false); }
 
-fs::path workspaceFromChildPath(const std::filesystem::path& path) {
-	fs::path ret = fs::absolute(path);
+fs::path workspaceFromChildPath(const fs::path& path) {
+	fs::path ret;
+	try {
+		ret = fs::absolute(path);
+	} catch (const fs::filesystem_error& /*e*/) { ret = fs::current_path(); }
 
 	// initialize workspace directory
 	// go up until it is a workspace
