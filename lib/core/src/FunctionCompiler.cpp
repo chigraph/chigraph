@@ -9,6 +9,7 @@
 #include <boost/range/join.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <unordered_map>
+#include <deque>
 
 #include "chi/Context.hpp"
 #include "chi/DataType.hpp"

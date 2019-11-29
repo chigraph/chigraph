@@ -28,7 +28,7 @@ Result DefaultModuleCache::cacheModule(const std::filesystem::path& moduleName,
 	std::filesystem::create_directories(cachePath.parent_path());
 
 	// open & write
-	if (LLVMWriteBitcodeToFile(compiledModule, cachePath.c_str()) != 0) {
+	if (LLVMWriteBitcodeToFile(compiledModule, cachePath.string().c_str()) != 0) {
 		res.addEntry("EUKN", "Failed to open file", {{"Path", cachePath.string()}});
 		return res;
 	}

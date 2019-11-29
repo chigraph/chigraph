@@ -33,13 +33,16 @@ target_include_directories(chigraphsupport
 	PRIVATE ${Boost_INCLUDE_DIRS}
 )
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR 
-		CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR
-		CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	target_compile_options(chigraphsupport PUBLIC -std=c++17)
+set_property(TARGET chigraphsupport PROPERTY CXX_STANDARD 17)
+set_property(TARGET chigraphsupport PROPERTY CXX_STANDARD_REQUIRED ON)
+
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "(Clang)|(AppleClang)|(GNU)")
 	target_compile_options(chigraphsupport PUBLIC -Wall -Wextra -pedantic-errors -Werror -Wno-unused-parameter -Wno-missing-field-initializers)
 endif()
 
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	target_link_libraries(chigraphsupport PUBLIC "bcrypt.lib") # boost.uuid expects to be linked to this
+endif()
 
 install(TARGETS chigraphsupport
 	RUNTIME DESTINATION bin

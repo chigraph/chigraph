@@ -15,6 +15,9 @@ endif()
 
 add_executable(chi ${CHI_SRCS})
 
+set_property(TARGET chi PROPERTY CXX_STANDARD 17)
+set_property(TARGET chi PROPERTY CXX_STANDARD_REQUIRED ON)
+
 target_link_libraries(chi chigraphcore ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 if (CG_BUILD_FETCHER) 

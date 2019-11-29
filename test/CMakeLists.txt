@@ -37,6 +37,10 @@ endif()
 add_executable(api_tests ${TEST_SRCS})
 target_link_libraries(api_tests PUBLIC chigraphcore Catch)
 
+set_property(TARGET api_tests PROPERTY CXX_STANDARD 17)
+set_property(TARGET api_tests PROPERTY CXX_STANDARD_REQUIRED ON)
+
+
 if (CG_BUILD_FETCHER)
 	target_link_libraries(api_tests PUBLIC chigraphfetcher)
 endif()

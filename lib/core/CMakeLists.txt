@@ -49,6 +49,9 @@ set(CHI_PRIVATE_FILES
 )
 add_library(chigraphcore STATIC ${CHI_PUBLIC_FILES} ${CHI_PRIVATE_FILES})
 
+set_property(TARGET chigraphcore PROPERTY CXX_STANDARD 17)
+set_property(TARGET chigraphcore PROPERTY CXX_STANDARD_REQUIRED ON)
+
 # get llvm libraries
 set(LLVM_COMPONENTS
 	executionengine
@@ -64,6 +67,8 @@ set(LLVM_COMPONENTS
 	nativecodegen
 	linker
 	mcjit
+	jitlink
+	orcjit
 	scalaropts
 	transformutils
 	codegen

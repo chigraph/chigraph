@@ -38,7 +38,7 @@ Result parseBitcodeFile(const std::filesystem::path& file, LLVMContextRef ctx,
 	// if all of this is true, then we can read the cache
 	OwnedMessage          message;
 	OwnedLLVMMemoryBuffer buffer;
-	if (LLVMCreateMemoryBufferWithContentsOfFile(file.c_str(), &*buffer, &*message)) {
+	if (LLVMCreateMemoryBufferWithContentsOfFile(file.string().c_str(), &*buffer, &*message)) {
 		res.addEntry("EUKN", "Failed to load LLVM module from disk",
 		             {{"File", file.string()}, {"Error Message", *message}});
 

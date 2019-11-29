@@ -509,7 +509,11 @@ OwnedLLVMExecutionEngine createEE(OwnedLLVMModule mod, LLVMCodeGenOptLevel optLe
 	failed      = failed || LLVMInitializeNativeAsmPrinter();
 	failed      = failed || LLVMInitializeNativeAsmParser();
 
-	assert(!failed);  // this only failes if it wasn't compiled with it,
+	// this only failes if it wasn't compiled with it, in theory
+	if (failed) {
+		errMsg = "Failed to initialize LLVM JIT";
+		return nullptr;
+	} 
 
 	OwnedLLVMExecutionEngine engine;
 	OwnedMessage             llErrMsg;
@@ -519,8 +523,8 @@ OwnedLLVMExecutionEngine createEE(OwnedLLVMModule mod, LLVMCodeGenOptLevel optLe
 	}
 	assert(engine);
 
-	return engine;
-}
+		return engine;
+	}
 
 }  // anonymous namespace
 
@@ -600,4 +604,4 @@ Result interpretLLVMIRAsMain(OwnedLLVMModule mod, LLVMCodeGenOptLevel optLevel,
 
 	return res;
 }
-}  // namespace chi
+}  // namespace

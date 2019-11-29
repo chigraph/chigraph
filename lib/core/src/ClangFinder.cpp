@@ -11,16 +11,21 @@
 namespace fs = std::filesystem;
 
 namespace chi {
+#ifdef WIN32
+#define SUFFIX ".exe"
+#else
+#define SUFFIX ""
+#endif
 
 fs::path findClang() {
-	fs::path fileName = std::string("clang-") + BOOST_PP_STRINGIZE(LLVM_VERSION_MAJOR)
+	std::vector<fs::path> fileNames = {
+		"clang" SUFFIX,
+		std::string("clang-") + BOOST_PP_STRINGIZE(LLVM_VERSION_MAJOR)
 #if LLVM_VERSION_MAJOR < 7
-	                    + "." + BOOST_PP_STRINGIZE(LLVM_VERSION_MINOR)
+		    + "." + BOOST_PP_STRINGIZE(LLVM_VERSION_MINOR)
 #endif
-#ifdef WIN32
-	                    + ".exe"
-#endif
-	    ;
+		    + SUFFIX
+	};
 
 	// 1st location--CHI_CLANG_EXECUTABLE environment variable
 	{
@@ -32,17 +37,16 @@ fs::path findClang() {
 	{
 		auto exeLoc = executablePath().parent_path();
 
-		if (fs::is_regular_file(exeLoc / fileName)) { return exeLoc / fileName; }
+		for (const auto& fn : fileNames) {
+			if (fs::is_regular_file(exeLoc / fn)) { return exeLoc / fn; }
+		}
 	}
 	// 3rd location--path
 	{
-		auto possibleLoc = findProgram(fileName.c_str());
-		if (!possibleLoc.empty()) { return possibleLoc; }
-	}
-	// 4th location--path without version
-	{
-		auto possibleLoc = findProgram("clang");
-		if (!possibleLoc.empty()) { return possibleLoc; }
+		for (const auto& fn : fileNames) {
+			auto possibleLoc = findProgram(fn.string().c_str());
+			if (!possibleLoc.empty()) { return possibleLoc; }
+		}
 	}
 
 	return {};

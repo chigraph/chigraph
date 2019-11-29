@@ -10,6 +10,9 @@ set(CHI_FETCHER_HDRS
 
 add_library(chigraphfetcher STATIC ${CHI_FETCHER_SRCS} ${CHI_FETCHER_HDRS})
 
+set_property(TARGET chigraphfetcher PROPERTY CXX_STANDARD 17)
+set_property(TARGET chigraphfetcher PROPERTY CXX_STANDARD_REQUIRED ON)
+
 target_include_directories(chigraphfetcher
 PUBLIC
 	include/
