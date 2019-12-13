@@ -5,8 +5,15 @@
 #include <array>
 #include <cstdint>
 #include <functional>
-#include <optional>
 #include <string>
+
+#if __has_include(<optional>)
+#include <optional>
+#elif __has_include(<experimental/optional>)
+#include <experimental/optional>
+#else
+#error "an implementation of optional is required!"
+#endif
 
 namespace chi {
 
