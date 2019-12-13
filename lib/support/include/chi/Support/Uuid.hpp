@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <functional>
 #include <string>
+#include <string_view>
 
 #if __has_include(<optional>)
 #include <optional>
