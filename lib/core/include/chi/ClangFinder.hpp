@@ -5,6 +5,7 @@
 #pragma once
 
 #include <filesystem>
+#include <vector>
 
 namespace chi {
 std::filesystem::path findClang();
