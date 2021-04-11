@@ -483,7 +483,12 @@ Result GraphModule::generateModule(LLVMModuleRef module) {
 	auto compileUnit = LLVMDIBuilderCreateCompileUnit(
 	    *debugBuilder, LLVMDWARFSourceLanguageC, diFile, compilerID, strlen(compilerID), false, "",
 	    0, 0, "", 0, LLVMDWARFEmissionFull, 0, true,
-	    false);  // TODO: resarch these parameters, these are defaults
+	    false, 
+#if LLVM_VERSION_MAJOR > 10
+		"", 0, "", 0
+#endif
+		
+		);  // TODO: resarch these parameters, these are defaults
 
 	// create prototypes
 	addForwardDeclarations(module);

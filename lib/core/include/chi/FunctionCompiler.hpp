@@ -8,6 +8,8 @@
 
 #include <memory>
 #include <unordered_map>
+#include <string_view>
+#include <string>
 
 #include "chi/Fwd.hpp"
 #include "chi/NodeCompiler.hpp"

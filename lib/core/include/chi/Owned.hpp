@@ -8,6 +8,9 @@
 
 #include "chi/Fwd.hpp"
 
+#include <cstddef>
+#include <utility>
+
 namespace chi {
 namespace detail {
 template <typename T>
@@ -24,13 +27,11 @@ public:
 	explicit Owned(T object) : mObject(object) {}
 
 	// move only
-	Owned(Owned&& other) : mObject{other.mObject} { other.mObject = nullptr; }
+	Owned(Owned&& other) { std::swap(this->mObject, other.mObject); }
 	Owned(const Owned&) = delete;
 
 	Owned& operator=(Owned&& other) {
-		this->mObject = other.mObject;
-		other.mObject = nullptr;
-
+		std::swap(this->mObject, other.mObject);
 		return *this;
 	}
 	Owned& operator=(const Owned&) = delete;
