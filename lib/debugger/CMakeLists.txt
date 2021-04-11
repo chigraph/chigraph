@@ -39,6 +39,8 @@ PUBLIC
 	"${LLDB_LIBRARY}"
 )
 
+set_property(TARGET chigraphdebugger PROPERTY CXX_STANDARD 17)
+
 # Install the library and includes
 install(TARGETS chigraphdebugger
 	RUNTIME DESTINATION bin

@@ -21,7 +21,7 @@ fs::path findProgram(const char* name) {
 
 	std::vector<std::string> paths;
 	boost::algorithm::split(paths, pathEnv, boost::algorithm::is_any_of(sep));
-	for (const auto pathStr : paths) {
+	for (const auto& pathStr : paths) {
 		auto path = fs::path(pathStr) / name;
 		if ((fs::is_regular_file(path) || fs::is_symlink(path)) &&
 		    (fs::status(path).permissions() & fs::perms::others_exec) == fs::perms::others_exec) {

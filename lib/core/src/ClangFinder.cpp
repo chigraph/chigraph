@@ -8,6 +8,8 @@
 // only non llvm-c include, for LLVM_VERSION*
 #include <llvm/Config/llvm-config.h>
 
+#include <vector>
+
 namespace fs = std::filesystem;
 
 namespace chi {

@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <set>
 #include <string_view>
+#include <vector>
 
 #include "chi/Fwd.hpp"
 #include "chi/Support/HashFilesystemPath.hpp"

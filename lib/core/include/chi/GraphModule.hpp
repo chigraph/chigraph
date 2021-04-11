@@ -6,8 +6,15 @@
 
 #pragma once
 
-#include <chi/ChiModule.hpp>
-#include <chi/Fwd.hpp>
+#include <filesystem>
+#include <memory>
+#include <string>
+#include <string_view>
+#include <unordered_map>
+#include <vector>
+
+#include "chi/ChiModule.hpp"
+#include "chi/Fwd.hpp"
 
 namespace chi {
 /// Module that holds graph functions
