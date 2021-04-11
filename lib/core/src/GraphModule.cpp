@@ -478,17 +478,17 @@ Result GraphModule::generateModule(LLVMModuleRef module) {
 	auto srcFile    = sourceFilePath().filename();
 	auto srcPath    = sourceFilePath().parent_path();
 	auto compilerID = "Chigraph Compiler";
-	auto diFile = LLVMDIBuilderCreateFile(*debugBuilder, srcFile.string().c_str(), srcFile.string().size(),
-	                                      srcPath.string().c_str(), srcPath.string().size());
+	auto diFile =
+	    LLVMDIBuilderCreateFile(*debugBuilder, srcFile.string().c_str(), srcFile.string().size(),
+	                            srcPath.string().c_str(), srcPath.string().size());
 	auto compileUnit = LLVMDIBuilderCreateCompileUnit(
 	    *debugBuilder, LLVMDWARFSourceLanguageC, diFile, compilerID, strlen(compilerID), false, "",
-	    0, 0, "", 0, LLVMDWARFEmissionFull, 0, true,
-	    false, 
+	    0, 0, "", 0, LLVMDWARFEmissionFull, 0, true, false
 #if LLVM_VERSION_MAJOR > 10
-		"", 0, "", 0
+	    ,
+	    "", 0, "", 0
 #endif
-		
-		);  // TODO: resarch these parameters, these are defaults
+	);  // TODO: resarch these parameters, these are defaults
 
 	// create prototypes
 	addForwardDeclarations(module);
