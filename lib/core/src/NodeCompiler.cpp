@@ -150,8 +150,8 @@ Result NodeCompiler::compile_stage2(std::vector<LLVMBasicBlockRef> trailingBlock
 		assert(remoteID < funcCompiler().nodeCompiler(remoteNode)->returnValues().size() &&
 		       "Internal error: connection to a value doesn't exist");
 
-		auto loaded = LLVMBuildLoad(
-		    *codeBuilder, funcCompiler().nodeCompiler(remoteNode)->returnValues()[remoteID], "");
+		auto retVal = funcCompiler().nodeCompiler(remoteNode)->returnValues()[remoteID];
+		auto loaded      = LLVMBuildLoad2(*codeBuilder, node().type().dataInputs()[idx].type.llvmType(), retVal, "");
 		io.push_back(loaded);
 
 		assert(LLVMTypeOf(io[io.size() - 1]) == node().type().dataInputs()[idx].type.llvmType() &&
@@ -169,9 +169,12 @@ Result NodeCompiler::compile_stage2(std::vector<LLVMBasicBlockRef> trailingBlock
 		auto builder = OwnedLLVMBuilder(LLVMCreateBuilderInContext(context().llvmContext()));
 		LLVMPositionBuilder(*builder, brBlock, nullptr);
 
-		mJumpBackInst = LLVMBuildIndirectBr(
-		    *builder, LLVMBuildLoad(*builder, funcCompiler().postPureBreak(), ""),
-		    10);  // 10 is just the default
+		auto postPureBreak = funcCompiler().postPureBreak();
+
+		
+		
+		mJumpBackInst    = LLVMBuildIndirectBr(*builder, LLVMBuildLoad2(*builder,  LLVMPointerType(LLVMInt8TypeInContext(context().llvmContext()), 0), postPureBreak, ""),
+		                                       10);  // 10 is just the default
 
 		trailingBlocks.resize(1);
 		trailingBlocks[0] = brBlock;

@@ -4,7 +4,6 @@ set (CHIGRAPH_SUPPORT_HEADERS
 	include/chi/Support/FindProgram.hpp
 	include/chi/Support/Flags.hpp
 	include/chi/Support/Fwd.hpp
-	include/chi/Support/HashFilesystemPath.hpp
 	include/chi/Support/json.hpp
 	include/chi/Support/LibCLocator.hpp
 	include/chi/Support/Result.hpp
@@ -37,7 +36,7 @@ set_property(TARGET chigraphsupport PROPERTY CXX_STANDARD 17)
 set_property(TARGET chigraphsupport PROPERTY CXX_STANDARD_REQUIRED ON)
 
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "(Clang)|(AppleClang)|(GNU)")
-	target_compile_options(chigraphsupport PUBLIC -Wall -Wextra -pedantic-errors -Werror -Wno-unused-parameter -Wno-missing-field-initializers)
+	target_compile_options(chigraphsupport PUBLIC -Wall -Wextra -pedantic-errors -Wno-unused-parameter -Wno-missing-field-initializers)
 endif()
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")

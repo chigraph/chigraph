@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "chi/Fwd.hpp"
-#include "chi/Support/HashFilesystemPath.hpp"
 #include "chi/Support/json.hpp"
 
 /// The namespace where chigraph lives

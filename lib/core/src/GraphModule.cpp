@@ -5,6 +5,7 @@
 #include <llvm-c/Core.h>
 #include <llvm-c/DebugInfo.h>
 #include <llvm-c/Linker.h>
+#include <llvm-c/Types.h>
 
 #include <boost/range.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -106,8 +107,15 @@ struct CFuncNode : NodeType {
 
 		LLVMSetCurrentDebugLocation(*builder,
 		                            LLVMMetadataAsValue(context().llvmContext(), nodeLocation));
+
+		std::vector<LLVMTypeRef> inputTypes;
+		for (const auto& input : mInputs) {
+			inputTypes.push_back(input.type.llvmType());
+		}
+
+		auto funcTy = LLVMFunctionType(mOutput.llvmType() ? mOutput.llvmType() : LLVMVoidTypeInContext(context().llvmContext()), inputTypes.data(), inputTypes.size(), false);
 		auto callInst =
-		    LLVMBuildCall(*builder, llfunc, const_cast<LLVMValueRef*>(io.data()), ioSize, "");
+		    LLVMBuildCall2(*builder, funcTy, llfunc, const_cast<LLVMValueRef*>(io.data()), ioSize, "");
 
 		// store theoutput if there are any
 		if (!dataOutputs().empty()) { LLVMBuildStore(*builder, callInst, io[dataInputs().size()]); }
@@ -208,7 +216,7 @@ struct GraphFuncCallType : public NodeType {
 		std::copy(io.begin(), io.end(), std::back_inserter(passingIO));
 
 		auto ret =
-		    LLVMBuildCall(*builder, func, passingIO.data(), passingIO.size(), "call_function");
+		    LLVMBuildCall2(*builder, JModule->functionFromName(name())->functionType(), func, passingIO.data(), passingIO.size(), "call_function");
 
 		// create switch on return
 		auto switchInst = LLVMBuildSwitch(*builder, ret, outputBlocks[0],
@@ -286,7 +294,7 @@ struct BreakStructNodeType : public NodeType {
 		setDataOutputs(ty.types());
 	}
 
-	Result codegen(NodeCompiler& /*compiler*/, LLVMBasicBlockRef codegenInto,
+	Result codegen(NodeCompiler& compiler, LLVMBasicBlockRef codegenInto,
 	               size_t /*execInputID*/, LLVMMetadataRef       nodeLocation,
 	               const std::vector<LLVMValueRef>&      io,
 	               const std::vector<LLVMBasicBlockRef>& outputBlocks) override {
@@ -300,9 +308,9 @@ struct BreakStructNodeType : public NodeType {
 		LLVMBuildStore(*builder, io[0], tempStruct);
 
 		for (auto id = 1ull; id < io.size(); ++id) {
-			auto ptr = LLVMBuildStructGEP(*builder, tempStruct, id - 1, "");
+			auto ptr = LLVMBuildStructGEP2(*builder, mStruct->dataType().llvmType(), tempStruct, id - 1, "");
 
-			auto val = LLVMBuildLoad(*builder, ptr, "");
+			auto val = LLVMBuildLoad2(*builder, mStruct->types()[id - 1].type.llvmType(),  ptr, "");
 			LLVMBuildStore(*builder, val, io[id]);
 		}
 
@@ -378,7 +386,7 @@ struct GetLocalNodeType : public NodeType {
 		auto value = compiler.funcCompiler().localVariable(mDataType.name);
 		assert(value != nullptr);
 
-		LLVMBuildStore(*builder, LLVMBuildLoad(*builder, value, ""), io[0]);
+		LLVMBuildStore(*builder, LLVMBuildLoad2(*builder, mDataType.type.llvmType(), value, ""), io[0]);
 
 		LLVMBuildBr(*builder, outputBlocks[0]);
 
