@@ -14,8 +14,6 @@ option(CG_BUILD_NETWORK_TESTS "Should tests that require a network connection be
 option(CG_BUILD_EXAMPLES "Should the examples be built?" OFF)
 option(CG_BUILD_DEBUGGER "Should the debugger be built?" ON)
 option(CG_BUILD_FETCHER "Should the fetcher be built? Requires libgit2." ON)
-option(CG_USE_SYSTEM_LIBGIT2 "Should the system try to find libgit2 from the system instead of the packaged version. Only applies if CG_BUILD_FETCHER is ON" OFF)
-option(CG_USE_SYSTEM_BOOST "Should the system try to find boost from the system instead of the packaged version" OFF)
 option(CG_INSTALL_STANDARD_CLANG_HEADERS "Should the system install the lib/clang folder? Set this to on if you are installing to somewhere other than the clang install prefix." OFF)
 option(CG_RUNTIME_DEUBG "Use a non-optimzied runtime and generate debug info for it" OFF)
 
@@ -76,24 +74,11 @@ endif()
 # we're building them ourselves, so don't auto-link in on windows
 add_definitions("-DBOOST_ALL_NO_LIB")
 
-if (CG_USE_SYSTEM_BOOST)
-	find_package(Boost REQUIRED COMPONENTS program_options)
-else()
-	add_subdirectory(third_party/boost)
-	set(Boost_PROGRAM_OPTIONS_LIBRARY boost_program_options)
-	set(Boost_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost/include)
-endif()
+find_package(Boost REQUIRED COMPONENTS program_options)
 
 # compile libgit2 if required
 if (CG_BUILD_FETCHER)
-	if (CG_USE_SYSTEM_LIBGIT2)
-		find_package(libgit2 REQUIRED)
-	else()
-		set(BUILD_CLAR OFF CACHE BOOL "Turn tests off for libgit2")
-		add_subdirectory(third_party/libgit2)
-		set(LIBGIT2_LIBRARIES git2)
-		set(LIBGIT2_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/libgit2/include)
-	endif()
+	find_package(libgit2 REQUIRED)
 endif()
 
 
