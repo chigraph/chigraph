@@ -39,7 +39,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "(Clang)|(AppleClang)|(GNU)")
 	target_compile_options(chigraphsupport PUBLIC -Wall -Wextra -pedantic-errors -Wno-unused-parameter -Wno-missing-field-initializers)
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+if (WIN32)
 	target_link_libraries(chigraphsupport PUBLIC "bcrypt.lib") # boost.uuid expects to be linked to this
 endif()
 

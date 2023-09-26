@@ -4,6 +4,9 @@
 
 #include "chi/Support/ExecutablePath.hpp"
 
+#include <filesystem>
+#include <vector>
+
 namespace fs = std::filesystem;
 
 // linux implementation

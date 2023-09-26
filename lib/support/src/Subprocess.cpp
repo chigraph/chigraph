@@ -47,19 +47,33 @@ typedef struct tagTHREADNAME_INFO {
 } THREADNAME_INFO;
 #pragma pack(pop)
 
-void SetThreadName(HANDLE thread, const char* name) {
+void SetThreadNameHandle(HANDLE thread, const char* name) {
 	THREADNAME_INFO info;
 	info.dwType     = 0x1000;
 	info.szName     = name;
 	info.dwThreadID = GetThreadId(thread);
 	info.dwFlags    = 0;
+#ifndef __MINGW32__
 #pragma warning(push)
 #pragma warning(disable : 6320 6322)
 	__try {
+#endif
 		RaiseException(0x406D1388, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*)&info);
+#ifndef __MINGW32__
 	} __except (EXCEPTION_EXECUTE_HANDLER) {}
 #pragma warning(pop)
+#endif
 }
+
+#ifdef __MINGW32__
+void SetThreadName(pthread_t thread, const char* name) {
+	SetThreadNameHandle(pthread_gethandle(thread), name);
+}
+#else
+void SetThreadName(HANDLE thread, const char* name) {
+	SetThreadNameHandle(thread, name);
+}
+#endif
 }  // namespace
 
 struct Subprocess::Implementation {

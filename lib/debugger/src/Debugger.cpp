@@ -152,7 +152,7 @@ Result Debugger::start(const char** argv, const char** envp,
 
 	// write it to a file
 	auto tmpIRPath = makeTempPath(".ll");
-	if (LLVMWriteBitcodeToFile(*mod, tmpIRPath.c_str()) != 0) {
+	if (LLVMWriteBitcodeToFile(*mod, tmpIRPath.string().c_str()) != 0) {
 		res.addEntry("EUKN", "Failed to write to temporary file", {});
 		return res;
 	}
