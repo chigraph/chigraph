@@ -1,5 +1,5 @@
 #include <llvm-c/BitWriter.h>
-#include <llvm-c/Transforms/PassManagerBuilder.h>
+#include <llvm-c/Transforms/PassBuilder.h>
 
 #include <boost/program_options.hpp>
 #include <chi/Context.hpp>
@@ -84,6 +84,11 @@ int compile(const std::vector<std::string>& opts) {
 		infile = infileRelToPwd;
 	}
 
+	if (LLVMInitializeNativeTarget()) {
+		std::cerr << "Failed to initialize native target" << std::endl;
+		return 1;
+	}
+
 	// get module name
 	auto moduleName = fs::relative(infile, c.workspacePath() / "src").replace_extension("");
 
@@ -129,30 +134,24 @@ int compile(const std::vector<std::string>& opts) {
 		return 1;
 	}
 
-	auto passBuilder = OwnedLLVMPassManagerBuilder(LLVMPassManagerBuilderCreate());
-	LLVMPassManagerBuilderSetOptLevel(*passBuilder, levelInt);
+	auto defaultTriple = LLVMGetDefaultTargetTriple();
+	LLVMTargetRef target;
+	char* msg = nullptr;
+	if (LLVMGetTargetFromTriple(defaultTriple, &target, &msg) != 0) {
+		std::cerr << "Failed to get target from triple: " << defaultTriple << ": " << msg << std::endl;
+		LLVMDisposeMessage(msg);
+		return 1;
+	}
+	LLVMDisposeMessage(defaultTriple);
 
-	// add inliner
-	if (levelInt > 1) {
-		// somehow, this actually causes miscompilation if the level is any higher than 35. This is
-		// sketchy so i'm just diabling it for now
-		// LLVMPassManagerBuilderUseInlinerWithThreshold(*passBuilder, 35);  // 250 is default for
-		// O3
+	auto targetMachine = OwnedTargetMachine(LLVMCreateTargetMachine(target, defaultTriple, nullptr, nullptr, LLVMCodeGenOptLevel(LLVMCodeGenLevelNone + levelInt), LLVMRelocStatic, LLVMCodeModelDefault));
+	if (targetMachine == nullptr) {
+		std::cerr << "Failed to create target machine" << std::endl;
+		return 1;
 	}
 
-	auto fpm = OwnedLLVMPassManager(LLVMCreateFunctionPassManagerForModule(*llmod));
-	LLVMPassManagerBuilderPopulateFunctionPassManager(*passBuilder, *fpm);
-
-	auto mpm = OwnedLLVMPassManager(LLVMCreatePassManager());
-	LLVMPassManagerBuilderPopulateModulePassManager(*passBuilder, *mpm);
-
-	// run function passes
-	for (auto func = LLVMGetFirstFunction(*llmod); func != nullptr;
-	     func      = LLVMGetNextFunction(func)) {
-		LLVMRunFunctionPassManager(*fpm, func);
-	}
-
-	LLVMRunPassManager(*mpm, *llmod);
+	auto pbo = OwnedPassBuilderOptions(LLVMCreatePassBuilderOptions());
+	LLVMRunPasses(*llmod, ("default<O" + std::to_string(levelInt) + ">").c_str(), *targetMachine, *pbo);
 
 	// get outpath
 	fs::path outpath = vm["output"].as<std::string>();

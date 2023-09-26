@@ -4,7 +4,8 @@
 #include <llvm-c/Core.h>
 #include <llvm-c/DebugInfo.h>
 #include <llvm-c/ExecutionEngine.h>
-#include <llvm-c/Transforms/PassManagerBuilder.h>
+#include <llvm-c/TargetMachine.h>
+#include <llvm-c/Transforms/PassBuilder.h>
 
 #include "chi/Fwd.hpp"
 
@@ -69,6 +70,7 @@ using OwnedLLVMBuilder            = Owned<LLVMBuilderRef, LLVMDisposeBuilder>;
 using OwnedLLVMDIBuilder          = Owned<LLVMDIBuilderRef, LLVMDisposeDIBuilder>;
 using OwnedLLVMMemoryBuffer       = Owned<LLVMMemoryBufferRef, LLVMDisposeMemoryBuffer>;
 using OwnedLLVMPassManager        = Owned<LLVMPassManagerRef, LLVMDisposePassManager>;
-using OwnedLLVMPassManagerBuilder = Owned<LLVMPassManagerBuilderRef, LLVMPassManagerBuilderDispose>;
+using OwnedTargetMachine          = Owned<LLVMTargetMachineRef, LLVMDisposeTargetMachine>;
+using OwnedPassBuilderOptions     = Owned<LLVMPassBuilderOptionsRef, LLVMDisposePassBuilderOptions>;
 
 }  // namespace chi
